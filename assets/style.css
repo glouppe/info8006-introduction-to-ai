@@ -23,24 +23,24 @@ body {
 
 .remark-slide-content {
     background-image: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.05));
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 
 .remark-slide-content h1 {
     font-weight: bold;
-    font-size: 2.4em;
+    font-size: 2.5em;
     text-align: center;
     margin: 0 0 .5em 0;
 }
 
 .remark-slide-content h2 {
-    font-size: 2.0em;
+    font-size: 1.5em;
     font-weight: normal;
     margin: 0 0 .5em 0;
 }
 
 .remark-slide-content h3 {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: normal;
     margin: 0 0 .5em 0;
 }
@@ -50,24 +50,31 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 em {
     color: #0288d1;
-    font-style: normal;
 }
 
 strong {
     color: #d11a01;
     font-style: normal;
-    font-weight: normal;
 }
 
 ul > li, ol > li {
      margin: 0.6em 0;
 }
 
-img {
-    width: 80%;
-    height: auto;
+.pull-left {
+    float: left;
+    margin-right: 1em;
+}
+
+.pull-right {
+    float: right;
+    margin-left: 1em;
 }
 
 /* Two-column layout */
