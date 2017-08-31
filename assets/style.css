@@ -77,6 +77,11 @@ ul > li, ol > li {
     margin-left: 1em;
 }
 
+.center img {
+    width: 80%;
+    height: auto;
+}
+
 /* Two-column layout */
 
 .left-column {

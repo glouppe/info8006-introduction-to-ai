@@ -14,7 +14,7 @@ Fall 2017
 
 .pull-right[![Textbook](./figures/textbook.png)]
 ## Textbook
-Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Global Edition.
+Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.
 
 ---
 
@@ -28,7 +28,7 @@ Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Globa
 ## Well established algorithms and state-of-the-art
 
 - Standard algorithms.
-- Introduction to materials new from reserch ($\leq$ 5 years old).
+- Introduction to materials new from research ($\leq$ 5 years old).
 
 ## Practical
 
