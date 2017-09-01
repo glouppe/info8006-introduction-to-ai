@@ -43,7 +43,7 @@ class: middle, center
 
 ---
 
-# 1. Artificial Intelligence
+# 1. Foundations
 
 -   The foundations, history and state-of-the-art *(Chapter 1)*.
 -   Intelligent agents: modeling a rational behavior in a complex environment *(Chapter 2)*.
