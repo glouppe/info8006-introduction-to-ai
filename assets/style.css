@@ -28,21 +28,26 @@ body {
 
 .remark-slide-content h1 {
     font-weight: bold;
-    font-size: 2.5em;
+    font-size: 2.25em;
     text-align: center;
     margin: 0 0 .5em 0;
 }
 
 .remark-slide-content h2 {
+    color: #d11a01;
     font-size: 1.5em;
     font-weight: normal;
     margin: 0 0 .5em 0;
 }
 
 .remark-slide-content h3 {
-    font-size: 1.25em;
+    font-size: 1.0em;
     font-weight: normal;
     margin: 0 0 .5em 0;
+}
+
+.remark-slide-number {
+    font-size: 0.5em;
 }
 
 a {
@@ -56,6 +61,7 @@ a:hover {
 
 em {
     color: #0288d1;
+    font-style: normal;
 }
 
 strong {
@@ -65,6 +71,10 @@ strong {
 
 ul > li, ol > li {
      margin: 0.6em 0;
+}
+
+ul > li > ul > li {
+    font-size: 0.8em;
 }
 
 .pull-left {
@@ -77,9 +87,20 @@ ul > li, ol > li {
     margin-left: 1em;
 }
 
-.center img {
-    width: 80%;
+.gallery {
+    display: block;
+    text-align: center;
+}
+
+.gallery img {
+    width: 200px;
     height: auto;
+}
+
+.caption {
+    display: block;
+    text-align: center;
+    font-size: 0.8em;
 }
 
 /* Two-column layout */

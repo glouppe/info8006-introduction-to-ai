@@ -4,6 +4,11 @@ class: middle, center
 
 Fall 2017
 
+???
+
+http://ai.berkeley.edu/lecture_slides.html
+http://web.engr.oregonstate.edu/~tgd/classes/430/
+
 ---
 
 # Organization
@@ -23,7 +28,7 @@ Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third
 ## Thorough and detailed
 
 - Understand the landscape of artificial intelligence.
-- Be able to write from scratch, debug and run AI algorithms.
+- Be able to write from scratch, debug and run (some) AI algorithms.
 
 ## Well established algorithms and state-of-the-art
 
@@ -47,7 +52,6 @@ class: middle, center
 
 -   The foundations, history and state-of-the-art *(Chapter 1)*.
 -   Intelligent agents: modeling a rational behavior in a complex environment *(Chapter 2)*.
--   **Extra:** Computational Machinery and Intelligence, Alan Turing.
 
 ---
 
@@ -77,7 +81,7 @@ class: middle, center
 
 -   Quantifying Uncertainty *(Chapter 13)*.
 -   Probabilistic reasoning *(Chapter 14)*.
--   **Extra:** Probabilistic reasoning vs. logic-based reasoning (Chapters 7-9)
+-   **Extra:** Probabilistic reasoning vs. logic-based reasoning *(Chapters 7-9)*.
 
 ---
 
