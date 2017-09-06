@@ -199,7 +199,7 @@ class: middle
 
 .center[![](figures/lec1/max-utility.png)
 
-Artificial intelligence = Maximizing the expected utility
+Artificial intelligence = Maximizing expected utility
 ]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -248,38 +248,153 @@ class: middle, center
 - Translate spoken Chinese to spoken English, live?
 - Answer multi choice questions, as good as an 8th grader?
 - Converse with a person for an hour?
-- Play decently at Chess? Go? Poker?
+- Play decently at Chess? Go? Poker? Soccer?
 - Buy groceries on the web? in a supermarket?
 - Prove mathematical theorems?
-- Drive a car safely on a parking lot?
-- Drive a car safely in the middle of San Francisco?
+- Drive a car safely on a parking lot? in New York?
 - Perform a surgery?
+- Identify skin cancer better than a dermatologist?
 - Write a funny story?
-- Compose music?
-
----
-
-# Logic
-
----
-
-# Decision making
+- Paint like Vangogh? Compose music?
+- Show common sense?
 
 ---
 
 # Games
 
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/NJarxpYyoFI?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Deep Blue]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/V1eYniJ0Rnk?&loop=1&start=25" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Playing Atari games]
+]
+]
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/g-dKXOlsf98?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Alpha Go]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/naBLXWb60gQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Starcraft]
+]
+]
+
 ---
 
-# Natural languages
+# Natural language
+
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/Nu-nlQqFCKg?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Speech translation and synthesis]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/heVE_me5VaQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Question answering systems]
+]
+]
 
 ---
 
 # Vision
 
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/cm2VlEGNz5A?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Semantic segmentation]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/8BFzu9m52sc?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Generating image descriptions]
+]
+]
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/pW6nZXeWlGM?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Pose estimation]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/IvmLEq9piJ4?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Detecting skin cancer]
+]
+]
+
 ---
 
 # Robotics
+
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/-96BEoXJMs0?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Automous cars]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/NFNEOooEQX4?&loop=1&start=80" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Playing soccer]
+]
+]
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/gn4nRCC9TwQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Learning to walk]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/gy5g33S0Gzo?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Folding laundry]
+]
+]
+
+---
+
+# Logic
+
+.grid[
+.col-1-2.center[
+![](figures/lec1/isaplanner.png)
+.caption[Automated Theorem Prover]
+]
+.col-1-2.center[
+![](figures/lec1/thecuriosity.jpg)
+.caption[Formal software verification]
+]
+]
+
+---
+
+# Decision making
+
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/BNHR6IQJGZs?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Search engines]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/AuwayMjvuT0?&loop=1&start=35" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Fraud detection]
+]
+]
+.grid[
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/S4RL6prqtGQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Recommendation systems]
+]
+.col-1-2.center[
+<iframe width="280" height="200" src="https://www.youtube.com/embed/_QndP_PCRSw?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+.caption[Sorting packages (routing, planning)]
+]
+]
+
+---
+
+class: center, middle
+
+... and many more impressive applications of AI techniques!
+
+But how far are we from artificial *general* intelligence?
 
 ---
 
@@ -300,3 +415,7 @@ class: middle, center
 ---
 
 # XYZ
+
+---
+
+# Pacman example
