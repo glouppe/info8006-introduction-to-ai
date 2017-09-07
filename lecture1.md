@@ -64,7 +64,7 @@ Artificial intelligence is the science of making machines or programs that:
 operator, after posing some written questions, cannot tell whether the written
 responses come from a person or from a computer.
 
-- This results in an *operational* definition of intelligence.
+- *Operational* definition of intelligence.
 
 .grid[
 .col-2-3[
@@ -142,8 +142,8 @@ through linguistic input alone.
 ]
 ]
 
-For AI, it may not be possible  (if true) to implement a fully functioning computer model of the mind
-without the exact structure and content of this innate knowledge. Huge **technical obstacle** as the brain is hard to reverse-engineer.
+Therefore, it may not be possible  (if true) to implement a fully functioning computer model of the mind
+without the exact structure and content of this innate knowledge.
 
 ---
 
@@ -186,7 +186,8 @@ yes.
 
 - A *rational agent* acts so as to achieve the best (expected) outcome.
     - Correct logical inference is just one of several possible mechanisms for achieving this goal.
-    - The amount of reasoning is adjusted according to available resources and importance of the result.
+    - Perfect rationality cannot be achieved due to computational limitations!
+      The amount of reasoning is adjusted according to available resources and importance of the result.
     - The brain is good at making rational decisions but not perfect either.
 - Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
 - Goals are expressed in terms of the *utility* of outcomes. Being rational means maximizing expected utility.
@@ -206,17 +207,32 @@ Artificial intelligence = Maximizing expected utility
 
 ---
 
+# AI prehistory
+
+- *Philosophy:* logic, methods of reasoning, mind as physical system, foundations of learning, language, rationality.
+- *Mathematics:* formal representation and proof, algorithms, computation, (un)decidability, (in)tractability, probability.
+- *Psychology:* adaptation, phenomena of perception and motor control, psychophysics.
+- *Economics:* formal theory of rational decisions.
+- *Linguistics:* knowledge representation, grammar.
+- *Neuroscience:* plastic physical substrate for mental activity.
+- *Control theory:* homeostatic systems, stability, simple optimal agent designs.
+
+---
+
+class: smaller
+
 # A short history of AI
 
 ## 1940-1950: Early days
 - 1943: McCulloch and Pitts: Boolean circuit model of the brain.
-- 1950: Turing's "Computing machinery and intelligence.
+- 1950: Turing's "Computing machinery and intelligence:.
 
 ## 1950-1970: Excitement and expectations
 - 1950s: Early AI programs, including Samuel's checkers program,
 Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 - 1956: Dartmouth meeting: "Aritificial Intelligence" adopted.
 - 1965: Robinson's complete algorithm for logical reasoning.
+- 1966-1974: AI discovers computational complexity.
 
 ---
 
@@ -226,20 +242,23 @@ class: middle, center
 
 ---
 
+class: smaller
+
 # A short history of AI
 
 ## 1970-1990: Knowledge-based approaches
+- 1966-1974: Neural network research almost dissappears.
 - 1969-1979: Early development of knowledge-based systems.
-- 1980-1988: Expert systems industrial boom
-- 1988-1993: Expert systems industry busts  (AI winter)
+- 1980-1988: Expert systems industrial boom.
+- 1988-1993: Expert systems industry busts  (AI winter).
 
 ## 1990-Present: Statistical approaches
-- 1987-: The return of neural networks
-- 1990-: Resurgence of probability, focus on uncertainty.
-- 1990-: Complete intelligent agents and learning systems (e.g, SOAR).
+- 1985-1995: The return of neural networks.
+- 1988-: Resurgence of probability, focus on uncertainty, general increase in technical depth.
+- 1995-: Complete intelligent agents and learning systems (e.g, SOAR).
 - 2000-: Availability of very large datasets.
 - 2010-: Availability of fast commodity hardware (GPUs).
-- 2012-: Predominance of deep learning-based approaches.
+- 2012-: Resurgence of neural networks with of deep learning approaches.
 
 ---
 
@@ -392,17 +411,9 @@ class: middle, center
 
 class: center, middle
 
-... and many more impressive applications of AI techniques!
+... and many more applications of AI techniques!
 
-But how far are we from artificial *general* intelligence?
-
----
-
-# References
-
-- Turing, Alan M. "Computing machinery and intelligence." Mind 59.236 (1950): 433-460.
-- Newell, Allen, and Herbert Simon. "The logic theory machine--A complex information processing system." IRE Transactions on information theory 2.3 (1956): 61-79.
-- Chomsky, Noam. "Rules and representations." Behavioral and brain sciences 3.1 (1980): 1-15.
+But how do these works? How far are we from general AI?
 
 ---
 
@@ -414,8 +425,26 @@ class: middle, center
 
 ---
 
-# XYZ
+# Agents and environments
 
 ---
 
 # Pacman example
+# Terminator example
+
+---
+
+# Rational agents
+
+- An agent is an entity that *perceives* and *acts*.
+- A *rational agent* selects actions that maximize its (expected) utility.
+- Characteristics of the percepts, environment and action space dictate techniques
+for selecting rational actions.
+
+---
+
+# References
+
+- Turing, Alan M. "Computing machinery and intelligence." Mind 59.236 (1950): 433-460.
+- Newell, Allen, and Herbert Simon. "The logic theory machine--A complex information processing system." IRE Transactions on information theory 2.3 (1956): 61-79.
+- Chomsky, Noam. "Rules and representations." Behavioral and brain sciences 3.1 (1980): 1-15.

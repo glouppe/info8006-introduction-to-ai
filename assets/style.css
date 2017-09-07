@@ -26,6 +26,10 @@ body {
     font-size: 1.4em;
 }
 
+.smaller {
+    font-size: 1.2em;
+}
+
 .remark-slide-content h1 {
     font-weight: bold;
     font-size: 2.25em;

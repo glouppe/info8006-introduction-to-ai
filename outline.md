@@ -118,9 +118,10 @@ class: middle, center
 
 ---
 
-# 10. Meta-learning
+# 10. Artificial General Intelligence
 
 -   Recursive self-improvement, meta learning *(Research)*
+-   AIXI *(Research)*
 
 ---
 
