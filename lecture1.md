@@ -422,10 +422,9 @@ class: middle, center
 
 .center[![](figures/lec1/agent-environment.png)]
 
-- An *agent* is an entity that *perceives* its environment through sensors and *acts* upon
-it through actuators.
+- An *agent* is an entity that *perceives* its environment through sensors and take *actions* through actuators.
 
-- The agent behavior is described by the *agent function*, that maps percept histories to actions:
+- The agent behavior is described by the *agent function*, or *policy*, that maps percept histories to actions:
 $$f : \mathcal{P}^* \to \mathcal{A}$$
 
 - The *agent program* runs on the physical architecture to produce $f$.
@@ -443,6 +442,8 @@ $$f : \mathcal{P}^* \to \mathcal{A}$$
 
 # A vacuum-cleaner agent
 
+Partial tabulation of a simple vacuum-cleaner agent function:
+
 | Percept sequence | Action |
 | ---------------- | ------ |
 | $[A, Clean]$     | $Right$ |
@@ -451,10 +452,12 @@ $$f : \mathcal{P}^* \to \mathcal{A}$$
 | $[A, Dirty]$     | $Suck$ |
 | $[A, Clean], [A, Clean]$     | $Right$ |
 | $[A, Clean], [A, Dirty]$     | $Suck$ |
-| ... | ... |
+| (...) | (...) |
+
+An implementation of the agent function:
 
 ```python
-def reflex_vacuum_agent(location, status):
+def program(location, status):
     if status == "dirty":
         return "suck"
     elif location == "A":
@@ -463,30 +466,245 @@ def reflex_vacuum_agent(location, status):
         return "left"
 ```
 
-- In general, what is the *right* function?
+---
+
+# The optimal vacuum-cleaner?
+
+- What is the *right* agent function? How to formulate the goal of the vacuum-cleaner agent?
+    - 1 point per square cleaned up at time $t$?
+    - 1 point per clean square per time step, minus one per move?
+    - penalize for $>k$ dirty squares?
+
 - Can it be implemented in a *small* agent program?
 
 ---
 
-# Rationality
+# Rational agents
 
-- A *rational agent* is an agent that does the "right thing".
-- A *performance measure* evaluates a sequence of environment states caused
+- Informally, a *rational agent* is an agent that does the "right thing".
+- A *performance measure*, or *utility*, evaluates a sequence of environment states caused
   by the agent's behavior.
-- A rational agent chooses whichever action that
+- A rational agent is an agent that chooses whichever action that
   maximizes the *expected* value of the performance measure, given the percept
-  sequence to date.
+  sequence to date
 
-Remarks:
-- Rationality $\neq$ omniscience (percepts may not supply all relevant information)
-- Rationality $\neq$ clairvoyance (action outcomes may not be as expected)
-- Hence, rational $\neq$ successful
-- However, rationality leads to *exploration*, *learning* and *autonomy*.
+**Remarks**
+- Rationality $\neq$ omniscience    
+    - percepts may not supply all relevant information.
+- Rationality $\neq$ clairvoyance
+    - action outcomes may not be as expected.
+- Hence, rational $\neq$ successful. However, rationality leads to *exploration*, *learning* and *autonomy*.
 
 ---
 
-- Characteristics of the percepts, environment and action space dictate techniques
-for selecting rational actions (PEAS).
+# Performance, environment, actuators, sensors
+
+.grid[
+.col-2-3[
+The characteristics of the performance measure, environment, action space and percepts dictate techniques
+for selecting rational actions.
+
+These characteristics are summarized as the *task environment*.
+]
+.col-1-3[
+![](figures/lec1/rational-agent-cartoon.png)
+]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Performance, environment, actuators, sensors
+
+## Example 1: an autonomous car
+- *performance measure*: safety, destination, legality, comfort, ...
+- *environment*: streets, highways, traffic, pedestrians, weather, ...
+- *actuators*: steering, accelerator, brake, horn, speaker, display, ...
+- *sensors*: video, accelerometers, gauges, engine sensors, GPS, ...
+
+---
+
+# Performance, environment, actuators, sensors
+
+## Example 2: an Internet shopping agent
+- *performance measure*: price, quality, appropriateness, efficiency
+- *environment*: current and future WWW sites, vendors, shippers
+- *actuators*: display to user, follow URL, fill in form, ...
+- *sensors*: web pages (text, graphics, scripts)
+
+---
+
+class: smaller
+
+# Environment types
+
+- Fully observable vs. partially observable
+    - Whether the agent sensors give access to the complete state of the environment, at each point in time.
+- Deterministic vs. stochastic
+    - Whether the next state of the environment is completely determined by the current state and the action executed by the agent.
+- Episodic vs. sequential
+    - Whether the agent's experience is divided into atomic independent episodes.
+- Static vs. dynamic
+    - Whether the environment can change, or the performance measure can change with time.
+- Discrete vs. continuous
+    - Whether the state of the environment, the time, the percepts or the actions are continuous.
+- Single agent vs. multi-agent.
+    - Whether the environment include several agents that may interact which each other.
+
+---
+
+# Examples of environments
+
+Are the following task environments fully observable? deterministic? episodic? static? discrete? single agents?
+
+- Crossword puzzle
+- Chess, with a clock
+- Poker
+- Backgammon
+- Taxi driving
+- Medical diagnosis
+- Image analysis
+- Part-picking robot
+- Refinery controller
+- The real world
+
+---
+
+# Agent programs
+
+$$agent = program + architecture$$
+
+- The job of AI is to design an *agent program* that implements the agent function.
+- This program will run on an *architecture*, that is a computing device with physical sensors and actuators.
+
+Agent programs can be designed and implemented in many ways:
+
+- with tables
+- with rules
+- with search algorithms
+- with learning algorithms
+
+---
+
+# Table-driven agents
+
+```python
+def TableDrivenAgentProgram(table):
+    percepts = []
+    def program(percept):
+        percepts.append(percept)
+        action = table[percepts]
+        return action
+    return program
+```
+
+- A *table-based agent* determines its next action with a table that contains the appropriate action for every possible percept sequence.
+- **Design issue:** one needs to anticipate all sequence of percepts and how the agent should
+- **Technical issue:** the lookup table will contain $\sum_{t=1}^T |\mathcal{P}|^t$ entries.
+    - Automated car: using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
+ respond.
+
+---
+
+# Simple rule-based reflex agents
+
+.center[![](figures/lec1/simple-reflex-agent.png)]
+
+- *Simple reflex agents* select the actions on the basis of the current percept, ignoring the rest of the percept history.
+
+- *Rule-based agents* implement *condition-action rules* that
+match the current percept to an action.
+    - If a car in front of you slow down, you should break. The color and model of the car, the music on the radio or the weather are all irrelevant.
+
+---
+
+# Rule-based reflex agents
+
+```python
+def SimpleReflexAgentProgram(rules, interpret_input):
+    def program(percept):
+        state = interpret_input(percept)
+        rule = rule_match(state, rules)
+        action = rule.action
+        return action
+    return program
+```
+
+- Simple reflex agents are simple but they turn out to have limited intelligence.
+
+- They can only work in a *Markovian* environment, that is if the correct decision can be made on the basis of only the current percept. In other words, if the environment is fully observable.
+
+---
+
+# Model-based reflex agents
+
+.center[![](figures/lec1/model-based-reflex-agent.png)]
+
+- *Model-based agents* handle partial observability of the environment by keeping track of the part of the world they cannot see now.
+
+- The internal state of model-based agents is updated on the basis of a *model* which determines:
+    - how the environment evolves independently of the agent;
+    - how the agent actions affect the world.
+
+---
+
+# Model-based reflex agents
+
+```python
+def ModelBasedReflexAgentProgram(rules, update_state, model):
+    def program(percept):
+        program.state = update_state(program.state,     
+                                     program.action,
+                                     percept,
+                                     model)
+        rule = rule_match(program.state, rules)
+        action = rule.action
+        return action
+    program.state = program.action = None
+    return program
+```
+
+---
+
+# Goal-based agents
+
+.center[![](figures/lec1/goal-based-agent.png)]
+
+- Generate possible sequences of actions,
+  predict the resulting states and assess *goals* in each.
+  - Example: Has the autonomous car arrived to destination?
+- A *goal-based agent* chooses an action that will achieve the goal.
+    - More general than rules. Goals are rarely explicit in condition-action rules.
+    - Finding action sequences that achieve goals is difficult.
+      *Search* and *planning* are two strategies.
+
+---
+
+# Utility-based agents
+
+.center[![](figures/lec1/utility-based-agent.png)]
+
+- *Goals* are often not enough to generate high-quality behavior.
+    - There are many ways to arrive to destination, but some are quicker or more reliable.
+- Goals only provide binary assessment of performance. By contrast, a *utility function* assigns
+  a score to any given sequence of environment states.
+- A rational *utility-based* agent chooses an action that maximizes the *expected* utility
+of its outcomes.
+
+---
+
+# Learning agents
+
+.center[![](figures/lec1/learning-agent.png)]
+
+- XYZ
+
+---
+
+# Summary
+
+- XYZ
 
 ---
 
