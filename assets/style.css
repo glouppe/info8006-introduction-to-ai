@@ -81,6 +81,17 @@ ul > li > ul > li {
     font-size: 0.8em;
 }
 
+table {
+    font-size: 0.8em;
+    width: 80%;
+    margin: auto;
+}
+
+th {
+    background-color: #eee;
+    font-weight: normal;;
+}
+
 .pull-left {
     float: left;
     margin-right: 1em;

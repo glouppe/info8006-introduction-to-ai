@@ -247,7 +247,7 @@ class: smaller
 # A short history of AI
 
 ## 1970-1990: Knowledge-based approaches
-- 1966-1974: Neural network research almost dissappears.
+- 1966-1974: Neural network research almost disappears.
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
 - 1988-1993: Expert systems industry busts  (AI winter).
@@ -255,7 +255,8 @@ class: smaller
 ## 1990-Present: Statistical approaches
 - 1985-1995: The return of neural networks.
 - 1988-: Resurgence of probability, focus on uncertainty, general increase in technical depth.
-- 1995-: Complete intelligent agents and learning systems (e.g, SOAR).
+- 1995-2010: New fade of neural networks.
+- 1995-: Complete intelligent agents and learning systems.
 - 2000-: Availability of very large datasets.
 - 2010-: Availability of fast commodity hardware (GPUs).
 - 2012-: Resurgence of neural networks with of deep learning approaches.
@@ -409,14 +410,6 @@ class: smaller
 
 ---
 
-class: center, middle
-
-... and many more applications of AI techniques!
-
-But how do these works? How far are we from general AI?
-
----
-
 class: middle, center
 
 # Intelligent agents
@@ -427,19 +420,73 @@ class: middle, center
 
 # Agents and environments
 
+.center[![](figures/lec1/agent-environment.png)]
+
+- An *agent* is an entity that *perceives* its environment through sensors and *acts* upon
+it through actuators.
+
+- The agent behavior is described by the *agent function*, that maps percept histories to actions:
+$$f : \mathcal{P}^* \to \mathcal{A}$$
+
+- The *agent program* runs on the physical architecture to produce $f$.
+
 ---
 
-# Pacman example
-# Terminator example
+# Vacuum-cleaner world
+
+.center[![](figures/lec1/vacuum2-environment.png)]
+
+- *Percepts:* location and content, e.g. $[A, Dirty]$
+- *Actions:* $Left, Right, Suck, NoOp$
 
 ---
 
-# Rational agents
+# A vacuum-cleaner agent
 
-- An agent is an entity that *perceives* and *acts*.
-- A *rational agent* selects actions that maximize its (expected) utility.
+| Percept sequence | Action |
+| ---------------- | ------ |
+| $[A, Clean]$     | $Right$ |
+| $[A, Dirty]$     | $Suck$ |
+| $[B, Clean]$     | $Left$ |
+| $[A, Dirty]$     | $Suck$ |
+| $[A, Clean], [A, Clean]$     | $Right$ |
+| $[A, Clean], [A, Dirty]$     | $Suck$ |
+| ... | ... |
+
+```python
+def reflex_vacuum_agent(location, status):
+    if status == "dirty":
+        return "suck"
+    elif location == "A":
+        return "right"
+    elif location == "B":
+        return "left"
+```
+
+- In general, what is the *right* function?
+- Can it be implemented in a *small* agent program?
+
+---
+
+# Rationality
+
+- A *rational agent* is an agent that does the "right thing".
+- A *performance measure* evaluates a sequence of environment states caused
+  by the agent's behavior.
+- A rational agent chooses whichever action that
+  maximizes the *expected* value of the performance measure, given the percept
+  sequence to date.
+
+Remarks:
+- Rationality $\neq$ omniscience (percepts may not supply all relevant information)
+- Rationality $\neq$ clairvoyance (action outcomes may not be as expected)
+- Hence, rational $\neq$ successful
+- However, rationality leads to *exploration*, *learning* and *autonomy*.
+
+---
+
 - Characteristics of the percepts, environment and action space dictate techniques
-for selecting rational actions.
+for selecting rational actions (PEAS).
 
 ---
 
