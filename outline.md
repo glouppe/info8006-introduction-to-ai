@@ -16,7 +16,7 @@ Fall 2017
 ## Textbook
 Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.
 
-Slides take inspiration from:
+Slides are partially adapted from:
 - [CS188 Introduction to AI](http://ai.berkeley.edu/lecture_slides.html) (UC Berkeley)
 - [CS430 Introduction to AI](http://web.engr.oregonstate.edu/~tgd/classes/430/) (Oregon State University)
 
