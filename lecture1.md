@@ -76,7 +76,7 @@ a computer.
 
 ???
 
-- The Turing test is an *aperational* definition of intelligence.
+- The Turing test is an *operational* definition of intelligence.
 
 ---
 
@@ -99,7 +99,7 @@ today.
 # Limitations of the Turing test
 
 - Tends to focus on human-like errors, linguistic tricks, etc.
-- It seems more important to study the *principles* underlying intelligence
+- It seems more important to study the **principles** underlying intelligence
   than to replicate an exemplar.
 
 .center[![](figures/lec1/cargo-plane.jpg)]
@@ -134,12 +134,12 @@ mistakes, learning rates, etc).
 
 .grid[
 .col-2-3[
-- In linguistics, the argument of *poverty of the stimulus* states that children
+- In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
 linguistic input alone.
 
 - Nativists claim that humans are born with a specific representational adaptation
-for language, i.e. biological prewiring.
+for language, i.e. *biological prewiring*.
 ]
 .col-1-3.center[
 ![Noam Chomsky](figures/lec1/chomsky.png)
@@ -159,10 +159,10 @@ innate knowledge.
 
 - The rational thinking approach is concerned with the study of irrefutable
 reasoning processes. It ensures that all actions performed by a computer are
-formally *provable* from inputs and prior knowledge.
+formally **provable** from inputs and prior knowledge.
 
 - The "laws of thought" were supposed to govern the operation of the mind.
-Their study initiated the field of *logic* and the logicist tradition of AI
+Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
 
 ```prolog
@@ -192,13 +192,13 @@ yes.
 
 # Acting rationally
 
-- A *rational agent* acts so as to achieve the best (expected) outcome.
+- A **rational agent** acts so as to achieve the best (expected) outcome.
     - Correct logical inference is just one of several possible mechanisms for achieving this goal.
     - Perfect rationality cannot be achieved due to computational limitations!
       The amount of reasoning is adjusted according to available resources and importance of the result.
     - The brain is good at making rational decisions but not perfect either.
 - Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-- Goals are expressed in terms of the *utility* of outcomes. Being rational means maximizing expected utility.
+- Goals are expressed in terms of the **utility** of outcomes. Being rational means maximizing expected utility.
     - The standard of rationality is general and mathematically well defined.
 - In this course, we will study general principles of rational agents and the components for constructing them.
 
@@ -208,7 +208,7 @@ class: middle
 
 .center[![](figures/lec1/max-utility.png)
 
-Artificial intelligence = Maximizing expected utility
+Artificial intelligence = **Maximizing expected utility**
 ]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -430,14 +430,14 @@ class: middle, center
 
 .center[![](figures/lec1/agent-environment.png)]
 
-- An *agent* is an entity that *perceives* its environment through sensors and
+- An **agent** is an entity that *perceives* its environment through sensors and
   take *actions* through actuators.
 
-- The agent behavior is described by the *agent function*, or *policy*, that
+- The agent behavior is described by the **agent function**, or **policy**, that
   maps percept histories to actions:
   $$f : \mathcal{P}^* \to \mathcal{A}$$
 
-- The *agent program* runs on the physical architecture to produce $f$.
+- The **agent program** runs on the physical architecture to produce $f$.
 
 ---
 
@@ -496,7 +496,7 @@ def program(location, status):
 # Rational agents
 
 - Informally, a *rational agent* is an agent that does the "right thing".
-- A *performance measure*, or *utility*, evaluates a sequence of environment
+- A **performance measure** evaluates a sequence of environment
   states caused by the agent's behavior.
 - A rational agent is an agent that chooses whichever action that maximizes the
   *expected* value of the performance measure, given the percept sequence to date.
@@ -523,7 +523,7 @@ def program(location, status):
 The characteristics of the performance measure, environment, action space and
 percepts dictate techniques for selecting rational actions.
 
-These characteristics are summarized as the *task environment*.
+These characteristics are summarized as the **task environment**.
 
 ## Example 1: an autonomous car
 - *performance measure*: safety, destination, legality, comfort, ...
@@ -547,17 +547,17 @@ class: smaller
 
 # Environment types
 
-- Fully observable vs. partially observable
+- *Fully observable* vs. **partially observable**
     - Whether the agent sensors give access to the complete state of the environment, at each point in time.
-- Deterministic vs. stochastic
+- *Deterministic* vs. **stochastic**
     - Whether the next state of the environment is completely determined by the current state and the action executed by the agent.
-- Episodic vs. sequential
+- *Episodic* vs. **sequential**
     - Whether the agent's experience is divided into atomic independent episodes.
-- Static vs. dynamic
+- *Static* vs. **dynamic**
     - Whether the environment can change, or the performance measure can change with time.
-- Discrete vs. continuous
+- *Discrete* vs. **continuous**
     - Whether the state of the environment, the time, the percepts or the actions are continuous.
-- Single agent vs. multi-agent.
+- *Single agent* vs. **multi-agent**.
     - Whether the environment include several agents that may interact which each other.
 
 ---
@@ -624,7 +624,7 @@ def TableDrivenAgentProgram(table):
 
 - *Simple reflex agents* select actions on the basis of the current percept,
   ignoring the rest of the percept history.
-- *Rule-based agents* implement *condition-action rules* that match the
+- *Rule-based agents* implement **condition-action rules** that match the
   current percept to an action.
 
 ---
@@ -644,7 +644,7 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 - Rules provide a way to *compress* the function table.
     - Example (autonomous car): If a car in front of you slow down, you should break.
       The color and model of the car, the music on the radio or the weather are all irrelevant.
-- Simple reflex agents are simple but they turn out to have *limited intelligence*.
+- Simple reflex agents are simple but they turn out to have **limited intelligence**.
 - They can only work in a *Markovian* environment, that is if the correct
   decision can be made on the basis of only the current percept.
   In other words, if the environment is fully observable.
@@ -658,7 +658,7 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 - *Model-based agents* handle partial observability of the environment by
   keeping track of the part of the world they cannot see now.
 
-- The internal state of model-based agents is updated on the basis of a *model* which determines:
+- The internal state of model-based agents is updated on the basis of a **model** which determines:
     - how the environment evolves independently of the agent;
     - how the agent actions affect the world.
 
@@ -687,7 +687,7 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 .center[![](figures/lec1/goal-based-agent.png)]
 
 - Principle: i) generate possible sequences of actions, ii) predict the
-  resulting states and  iii) assess *goals* in each.
+  resulting states and  iii) assess **goals** in each.
     - Example (autonomous car): Has the car arrived to destination?
 - A *goal-based agent* chooses an action that will achieve the goal.
     - More general than rules. Goals are rarely explicit in condition-action rules.
@@ -702,9 +702,9 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 - *Goals* are often not enough to generate high-quality behavior.
     - There are many ways to arrive to destination, but some are quicker or more reliable.
-- Goals only provide binary assessment of performance. By contrast, a *utility function* assigns
+- Goals only provide binary assessment of performance. By contrast, a **utility function** assigns
   a score to any given sequence of environment states.
-- A rational *utility-based* agent chooses an action that maximizes the *expected* utility
+- A rational utility-based agent chooses an action that maximizes the *expected* utility
 of its outcomes.
 
 ---
@@ -713,7 +713,7 @@ of its outcomes.
 
 .center[![](figures/lec1/learning-agent.png)]
 
-- *Learning agents* are capable of self-improvement. They can become more
+- *Learning agents* are capable of **self-improvement**. They can become more
   competent than their initial knowledge alone might allow.
 - They can make changes to any of the knowledge components by:
     - learning how the world evolves;
@@ -724,12 +724,12 @@ of its outcomes.
 
 # Summary
 
-- An *agent* is an entity that perceives and acts in an environment.
-- The *performance measure* evaluates the agent's behavior. *Rational agents* act so as to maximize the expected value of the performance measure.
+- An **agent** is an entity that perceives and acts in an environment.
+- The *performance measure* evaluates the agent's behavior. **Rational agents** act so as to maximize the expected value of the performance measure.
 - *Task environments* includes performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
-- The *agent program* effectively implements the agent function. Their designs are dictated by the task environment.
-- *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while *utility-based agents* try to maximize their expected performance.
-- All agents can improve their performance through *learning*.
+- The **agent program** effectively implements the agent function. Their designs are dictated by the task environment.
+- *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
+- All agents can improve their performance through **learning**.
 
 ---
 
