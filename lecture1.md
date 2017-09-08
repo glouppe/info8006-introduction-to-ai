@@ -82,14 +82,14 @@ a computer.
 
 # Abilities for passing the test
 
-An AI would not pass the Turing test without the following requirements:
+An agent would not pass the Turing test without the following requirements:
 
 - natural language processing
 - knowledge representation
 - automated reasoning
 - machine learning
 - computer vision (total Turing test)
-- robotics (total Turing test
+- robotics (total Turing test)
 
 Despite being proposed almost 70 years ago, the Turing test is *still relevant*
 today.
