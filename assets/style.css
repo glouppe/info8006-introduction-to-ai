@@ -123,31 +123,8 @@ th {
     font-size: 0.8em;
 }
 
-/* Two-column layout */
 
-.left-column {
-    width: 20%;
-    height: 92%;
-    float: left;
-}
-
-.left-column h2 {
-    font-size: 1em;
-    font-weight: bold;
-    margin: 1em 0 .5em 0;
-}
-
-.right-column {
-    width: 75%;
-    float: right;
-}
-
-.remark-slide-content {
-    background: white !important;
-    text-align: left;
-}
-
-/** BEGIN First slide. ********************************************************/
+/* First slide */
 
 .remark-slide-container:first-child .remark-slide-content:after {
     content: '';
@@ -164,5 +141,3 @@ th {
 .remark-slide-container:first-child .remark-slide-content {
     vertical-align: middle;
 }
-
-/** END First slide. **********************************************************/

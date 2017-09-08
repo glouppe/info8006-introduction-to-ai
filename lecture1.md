@@ -33,22 +33,22 @@ Artificial intelligence is the science of making machines or programs that:
 
 .grid.grid-half[
 .col-1-2[
-![](figures/lec1/ai-think-people.png)
 .center[Think like people]
+![](figures/lec1/ai-think-people.png)
 ]
 .col-1-2[
-![](figures/lec1/ai-think-rationally.png)
 .center[Think rationally]
+![](figures/lec1/ai-think-rationally.png)
 ]
 ]
 .grid.grid-half[
 .col-1-2[
-![](figures/lec1/ai-act-people.png)
 .center[Act like people]
+![](figures/lec1/ai-act-people.png)
 ]
 .col-1-2[
-![](figures/lec1/ai-act-rationally.png)
 .center[Act rationally]
+![](figures/lec1/ai-act-rationally.png)
 ]
 ]
 
@@ -96,7 +96,7 @@ Despite being proposed almost 70 years ago, the Turing test is *still relevant* 
 # Limitations of the Turing test
 
 - Tends to focus on human-like errors, linguistic tricks, etc.
-- It seems more important to study the principles underlying intelligence than to replicate an exemplar.
+- It seems more important to study the *principles* underlying intelligence than to replicate an exemplar.
 
 .center[![](figures/lec1/cargo-plane.jpg)]
 .caption[Aeronautics is not defined as the field of
@@ -111,7 +111,7 @@ other pigeons.]
 .col-1-2[
 ## Cognitive science
 
-- Cognitive science is the *study of the (human) mind* and its processes.
+- *Study of the (human) mind* and its processes.
 Its goal is to form a theory about the structure of the mind, summarized
 *as a comprehensive computer model*.
 
@@ -454,6 +454,10 @@ Partial tabulation of a simple vacuum-cleaner agent function:
 | $[A, Clean], [A, Dirty]$     | $Suck$ |
 | (...) | (...) |
 
+---
+
+# A vacuum-cleaner agent
+
 An implementation of the agent function:
 
 ```python
@@ -508,9 +512,7 @@ def program(location, status):
 # Performance, environment, actuators, sensors
 
 The characteristics of the performance measure, environment, action space and percepts dictate techniques
-for selecting rational actions.
-
-These characteristics are summarized as the *task environment*.
+for selecting rational actions. These characteristics are summarized as the *task environment*.
 
 ## Example 1: an autonomous car
 - *performance measure*: safety, destination, legality, comfort, ...
@@ -568,10 +570,12 @@ Are the following task environments fully observable? deterministic? episodic? s
 
 # Agent programs
 
+The job of AI is to design an *agent program* that implements the agent function.
+This program will run on an *architecture*, that is a computing device with physical sensors and actuators.
+
 $$agent = program + architecture$$
 
-- The job of AI is to design an *agent program* that implements the agent function.
-- This program will run on an *architecture*, that is a computing device with physical sensors and actuators.
+## Implementation
 
 Agent programs can be designed and implemented in many ways:
 
@@ -689,21 +693,11 @@ of its outcomes.
 
 .center[![](figures/lec1/learning-agent.png)]
 
-- *Learning agents* are general-purpose machines that are capable of self-improvement. They can become more competent than their initial knowledge alone might allow.
-
----
-
-# Learning agents
-
-- Learning agents are made of 4 components:
-    - *Learning* element: make improvements.
-    - *Performance* element: select actions.
-    - *Critic*: determine how the performance element should be modified to perform better.
-    - *Problem generator*: suggest actions that will lead to new and informative experiences about the environment.
-- The learning element can make changes to any of the knowledge components of the agent.
-    - Learn how the world evolves.
-    - Learn what are the consequences of actions.
-    - Learn the utility of actions through the *performance standard*, which distinguishes parts of the incoming percepts as *reward* (or *penalty*).
+- *Learning agents* are capable of self-improvement. They can become more competent than their initial knowledge alone might allow.
+- They can make changes to any of the knowledge components by:
+    - learning how the world evolves;
+    - learning what are the consequences of actions;
+    - learning the utility of actions through *rewards*.
 
 ---
 
