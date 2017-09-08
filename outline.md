@@ -4,11 +4,6 @@ class: middle, center
 
 Fall 2017
 
-???
-
-http://ai.berkeley.edu/lecture_slides.html
-http://web.engr.oregonstate.edu/~tgd/classes/430/
-
 ---
 
 # Organization
