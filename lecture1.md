@@ -82,7 +82,7 @@ a computer.
 
 # Abilities for passing the test
 
-An agent would not pass the Turing test without the following requirements:
+An agent would not pass the Turing test without the following **requirements**:
 
 - natural language processing
 - knowledge representation
@@ -98,7 +98,7 @@ today.
 
 # Limitations of the Turing test
 
-- Tends to focus on human-like errors, linguistic tricks, etc.
+- Tends to focus on *human-like errors*, *linguistic tricks*, etc.
 - It seems more important to study the **principles** underlying intelligence
   than to replicate an exemplar.
 
@@ -114,11 +114,11 @@ so exactly like pigeons that they can fool even other pigeons.]
 .col-1-2[
 ## Cognitive science
 
-- *Study of the (human) mind* and its processes. Its goal is to form a theory
-  about the structure of the mind, summarized *as a comprehensive computer
-  model*.
+- Study of the *(human) mind* and its processes. The goal of cognitive science
+  is to form a theory about the structure of the mind, summarized as a comprehensive **computer
+  model**.
 
-- A cognitive architecture usually follows human-like reasoning and can be used to
+- A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 ]
@@ -702,7 +702,7 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 - *Goals* are often not enough to generate high-quality behavior.
     - There are many ways to arrive to destination, but some are quicker or more reliable.
-    - Goals only provide binary assessment of performance
+    - Goals only provide binary assessment of performance.
 - By contrast, a **utility function** assigns
   a score to any given sequence of environment states.
 - A rational utility-based agent chooses an action that maximizes the *expected* utility
