@@ -46,8 +46,12 @@
 	padding-right: 0; /* grid-space to right: (grid-space-left - column-space) e.g. 20px-20px=0 */
 }
 
+.push-left {
+    float: left;
+}
+
 .push-right {
-	float: right;
+    float: right;
 }
 
 .grid img {
