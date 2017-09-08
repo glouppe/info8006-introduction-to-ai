@@ -486,36 +486,31 @@ def program(location, status):
   by the agent's behavior.
 - A rational agent is an agent that chooses whichever action that
   maximizes the *expected* value of the performance measure, given the percept
-  sequence to date
+  sequence to date.
 
-**Remarks**
-- Rationality $\neq$ omniscience    
-    - percepts may not supply all relevant information.
-- Rationality $\neq$ clairvoyance
-    - action outcomes may not be as expected.
-- Hence, rational $\neq$ successful. However, rationality leads to *exploration*, *learning* and *autonomy*.
-
----
-
-# Performance, environment, actuators, sensors
-
-.grid[
-.col-2-3[
-The characteristics of the performance measure, environment, action space and percepts dictate techniques
-for selecting rational actions.
-
-These characteristics are summarized as the *task environment*.
-]
-.col-1-3[
-![](figures/lec1/rational-agent-cartoon.png)
-]
-]
+.center[![](figures/lec1/rational-agent-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
+# Rational agents
+
+- Rationality $\neq$ omniscience    
+    - percepts may not supply all relevant information.
+- Rationality $\neq$ clairvoyance
+    - action outcomes may not be as expected.
+- Hence, rational $\neq$ successful.
+- However, rationality leads to *exploration*, *learning* and *autonomy*.
+
+---
+
 # Performance, environment, actuators, sensors
+
+The characteristics of the performance measure, environment, action space and percepts dictate techniques
+for selecting rational actions.
+
+These characteristics are summarized as the *task environment*.
 
 ## Example 1: an autonomous car
 - *performance measure*: safety, destination, legality, comfort, ...
@@ -599,11 +594,10 @@ def TableDrivenAgentProgram(table):
     return program
 ```
 
-- A *table-based agent* determines its next action with a table that contains the appropriate action for every possible percept sequence.
-- **Design issue:** one needs to anticipate all sequence of percepts and how the agent should
+- A *table-driven agent* determines its next action with a table that contains the appropriate action for every possible percept sequence.
+- **Design issue:** one needs to anticipate all sequence of percepts and how the agent should respond.
 - **Technical issue:** the lookup table will contain $\sum_{t=1}^T |\mathcal{P}|^t$ entries.
-    - Automated car: using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
- respond.
+    - Example (autonomous car): using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
 
 ---
 
@@ -611,11 +605,8 @@ def TableDrivenAgentProgram(table):
 
 .center[![](figures/lec1/simple-reflex-agent.png)]
 
-- *Simple reflex agents* select the actions on the basis of the current percept, ignoring the rest of the percept history.
-
-- *Rule-based agents* implement *condition-action rules* that
-match the current percept to an action.
-    - If a car in front of you slow down, you should break. The color and model of the car, the music on the radio or the weather are all irrelevant.
+- *Simple reflex agents* select actions on the basis of the current percept, ignoring the rest of the percept history.
+- *Rule-based agents* implement *condition-action rules* that match the current percept to an action.
 
 ---
 
@@ -631,8 +622,9 @@ def SimpleReflexAgentProgram(rules, interpret_input):
     return program
 ```
 
-- Simple reflex agents are simple but they turn out to have limited intelligence.
-
+- Rules provide a way to *compress* the function table.
+    - Example (autonomous car): If a car in front of you slow down, you should break. The color and model of the car, the music on the radio or the weather are all irrelevant.
+- Simple reflex agents are simple but they turn out to have *limited intelligence*.
 - They can only work in a *Markovian* environment, that is if the correct decision can be made on the basis of only the current percept. In other words, if the environment is fully observable.
 
 ---
@@ -671,9 +663,8 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 .center[![](figures/lec1/goal-based-agent.png)]
 
-- Generate possible sequences of actions,
-  predict the resulting states and assess *goals* in each.
-  - Example: Has the autonomous car arrived to destination?
+- Principle: i) generate possible sequences of actions, ii) predict the resulting states and  iii) assess *goals* in each.
+    - Example (autonomous car): Has the car arrived to destination?
 - A *goal-based agent* chooses an action that will achieve the goal.
     - More general than rules. Goals are rarely explicit in condition-action rules.
     - Finding action sequences that achieve goals is difficult.
@@ -698,13 +689,32 @@ of its outcomes.
 
 .center[![](figures/lec1/learning-agent.png)]
 
-- XYZ
+- *Learning agents* are general-purpose machines that are capable of self-improvement. They can become more competent than their initial knowledge alone might allow.
+
+---
+
+# Learning agents
+
+- Learning agents are made of 4 components:
+    - *Learning* element: make improvements.
+    - *Performance* element: select actions.
+    - *Critic*: determine how the performance element should be modified to perform better.
+    - *Problem generator*: suggest actions that will lead to new and informative experiences about the environment.
+- The learning element can make changes to any of the knowledge components of the agent.
+    - Learn how the world evolves.
+    - Learn what are the consequences of actions.
+    - Learn the utility of actions through the *performance standard*, which distinguishes parts of the incoming percepts as *reward* (or *penalty*).
 
 ---
 
 # Summary
 
-- XYZ
+- An *agent* is an entity that perceives and acts in an environment.
+- The *performance measure* evaluates the agent's behavior. *Rational agents* act so as to maximize the expected value of the performance measure.
+- *Task environments* includes performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
+- The *agent program* effectively implements the agent function. Their designs are dictated by the task environment.
+- *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while *utility-based agents* try to maximize their expected performance.
+- All agents can improve their performance through *learning*.
 
 ---
 
