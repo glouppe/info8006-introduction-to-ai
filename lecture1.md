@@ -702,7 +702,8 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 - *Goals* are often not enough to generate high-quality behavior.
     - There are many ways to arrive to destination, but some are quicker or more reliable.
-- Goals only provide binary assessment of performance. By contrast, a **utility function** assigns
+    - Goals only provide binary assessment of performance
+- By contrast, a **utility function** assigns
   a score to any given sequence of environment states.
 - A rational utility-based agent chooses an action that maximizes the *expected* utility
 of its outcomes.
