@@ -60,11 +60,9 @@ Artificial intelligence is the science of making machines or programs that:
 
 ## The Turing test (the Imitation Game)
 
-- A computer passes the test if a human
-operator, after posing some written questions, cannot tell whether the written
-responses come from a person or from a computer.
-
-- *Operational* definition of intelligence.
+A computer passes the test if a human operator, after posing some written
+questions, cannot tell whether the written responses come from a person or from
+a computer.
 
 .grid[
 .col-2-3[
@@ -75,6 +73,10 @@ responses come from a person or from a computer.
 .caption[*Can machines think?* (Alan Turing, 1950).]
 ]
 ]
+
+???
+
+- The Turing test is an *aperational* definition of intelligence.
 
 ---
 
@@ -89,19 +91,20 @@ An AI would not pass the Turing test without the following requirements:
 - computer vision (total Turing test)
 - robotics (total Turing test
 
-Despite being proposed almost 70 years ago, the Turing test is *still relevant* today.
+Despite being proposed almost 70 years ago, the Turing test is *still relevant*
+today.
 
 ---
 
 # Limitations of the Turing test
 
 - Tends to focus on human-like errors, linguistic tricks, etc.
-- It seems more important to study the *principles* underlying intelligence than to replicate an exemplar.
+- It seems more important to study the *principles* underlying intelligence
+  than to replicate an exemplar.
 
 .center[![](figures/lec1/cargo-plane.jpg)]
-.caption[Aeronautics is not defined as the field of
-making machines that fly so exactly like pigeons that they can fool even
-other pigeons.]
+.caption[Aeronautics is not defined as the field of making machines that fly
+so exactly like pigeons that they can fool even other pigeons.]
 
 ---
 
@@ -111,13 +114,13 @@ other pigeons.]
 .col-1-2[
 ## Cognitive science
 
-- *Study of the (human) mind* and its processes.
-Its goal is to form a theory about the structure of the mind, summarized
-*as a comprehensive computer model*.
+- *Study of the (human) mind* and its processes. Its goal is to form a theory
+  about the structure of the mind, summarized *as a comprehensive computer
+  model*.
 
-- A cognitive architecture usually follows human-like
-reasoning and can be used to produce testable predictions
-(time of delays during problem solving, kinds of mistakes, learning rates, etc).
+- A cognitive architecture usually follows human-like reasoning and can be used to
+produce testable predictions (time of delays during problem solving, kinds of
+mistakes, learning rates, etc).
 ]
 .col-1-2[
 ![ACT-R](figures/lec1/soar.jpg)
@@ -131,10 +134,12 @@ reasoning and can be used to produce testable predictions
 
 .grid[
 .col-2-3[
-- In linguistics, the argument of *poverty of the stimulus* states that children do not receive sufficient input to generalize grammatical rules
-through linguistic input alone.
+- In linguistics, the argument of *poverty of the stimulus* states that children
+do not receive sufficient input to generalize grammatical rules through
+linguistic input alone.
 
-- Nativists claim that humans are born with a specific representational adaptation for language, i.e. biological prewiring.
+- Nativists claim that humans are born with a specific representational adaptation
+for language, i.e. biological prewiring.
 ]
 .col-1-3.center[
 ![Noam Chomsky](figures/lec1/chomsky.png)
@@ -142,8 +147,9 @@ through linguistic input alone.
 ]
 ]
 
-Therefore, it may not be possible  (if true) to implement a fully functioning computer model of the mind
-without the exact structure and content of this innate knowledge.
+Therefore, it may not be possible  (if true) to implement a fully functioning
+computer model of the mind without the exact structure and content of this
+innate knowledge.
 
 ---
 
@@ -151,11 +157,13 @@ without the exact structure and content of this innate knowledge.
 
 ## The logical approach
 
-- The rational thinking approach is concerned with the study of irrefutable reasoning processes.
-It ensures that all actions performed by a computer are formally *provable* from inputs and prior knowledge.
+- The rational thinking approach is concerned with the study of irrefutable
+reasoning processes. It ensures that all actions performed by a computer are
+formally *provable* from inputs and prior knowledge.
 
 - The "laws of thought" were supposed to govern the operation of the mind.
-Their study initiated the field of *logic* and the logicist tradition of AI  (1960-1990).
+Their study initiated the field of *logic* and the logicist tradition of AI
+(1960-1990).
 
 ```prolog
 /* Example of automated reasoning in Prolog */
@@ -422,10 +430,12 @@ class: middle, center
 
 .center[![](figures/lec1/agent-environment.png)]
 
-- An *agent* is an entity that *perceives* its environment through sensors and take *actions* through actuators.
+- An *agent* is an entity that *perceives* its environment through sensors and
+  take *actions* through actuators.
 
-- The agent behavior is described by the *agent function*, or *policy*, that maps percept histories to actions:
-$$f : \mathcal{P}^* \to \mathcal{A}$$
+- The agent behavior is described by the *agent function*, or *policy*, that
+  maps percept histories to actions:
+  $$f : \mathcal{P}^* \to \mathcal{A}$$
 
 - The *agent program* runs on the physical architecture to produce $f$.
 
@@ -474,11 +484,11 @@ def program(location, status):
 
 # The optimal vacuum-cleaner?
 
-- What is the *right* agent function? How to formulate the goal of the vacuum-cleaner agent?
+- What is the *right* agent function?
+  How to formulate the goal of the vacuum-cleaner agent?
     - 1 point per square cleaned up at time $t$?
     - 1 point per clean square per time step, minus one per move?
     - penalize for $>k$ dirty squares?
-
 - Can it be implemented in a *small* agent program?
 
 ---
@@ -486,11 +496,10 @@ def program(location, status):
 # Rational agents
 
 - Informally, a *rational agent* is an agent that does the "right thing".
-- A *performance measure*, or *utility*, evaluates a sequence of environment states caused
-  by the agent's behavior.
-- A rational agent is an agent that chooses whichever action that
-  maximizes the *expected* value of the performance measure, given the percept
-  sequence to date.
+- A *performance measure*, or *utility*, evaluates a sequence of environment
+  states caused by the agent's behavior.
+- A rational agent is an agent that chooses whichever action that maximizes the
+  *expected* value of the performance measure, given the percept sequence to date.
 
 .center[![](figures/lec1/rational-agent-cartoon.png)]
 
@@ -511,8 +520,10 @@ def program(location, status):
 
 # Performance, environment, actuators, sensors
 
-The characteristics of the performance measure, environment, action space and percepts dictate techniques
-for selecting rational actions. These characteristics are summarized as the *task environment*.
+The characteristics of the performance measure, environment, action space and
+percepts dictate techniques for selecting rational actions.
+
+These characteristics are summarized as the *task environment*.
 
 ## Example 1: an autonomous car
 - *performance measure*: safety, destination, legality, comfort, ...
@@ -553,7 +564,8 @@ class: smaller
 
 # Examples of environments
 
-Are the following task environments fully observable? deterministic? episodic? static? discrete? single agents?
+Are the following task environments fully observable? deterministic? episodic?
+static? discrete? single agents?
 
 - Crossword puzzle
 - Chess, with a clock
@@ -570,8 +582,9 @@ Are the following task environments fully observable? deterministic? episodic? s
 
 # Agent programs
 
-The job of AI is to design an *agent program* that implements the agent function.
-This program will run on an *architecture*, that is a computing device with physical sensors and actuators.
+The job of AI is to design an *agent program* that implements the agent
+function. This program will run on an *architecture*, that is a computing device
+with physical sensors and actuators.
 
 $$agent = program + architecture$$
 
@@ -609,8 +622,10 @@ def TableDrivenAgentProgram(table):
 
 .center[![](figures/lec1/simple-reflex-agent.png)]
 
-- *Simple reflex agents* select actions on the basis of the current percept, ignoring the rest of the percept history.
-- *Rule-based agents* implement *condition-action rules* that match the current percept to an action.
+- *Simple reflex agents* select actions on the basis of the current percept,
+  ignoring the rest of the percept history.
+- *Rule-based agents* implement *condition-action rules* that match the
+  current percept to an action.
 
 ---
 
@@ -627,9 +642,12 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 ```
 
 - Rules provide a way to *compress* the function table.
-    - Example (autonomous car): If a car in front of you slow down, you should break. The color and model of the car, the music on the radio or the weather are all irrelevant.
+    - Example (autonomous car): If a car in front of you slow down, you should break.
+      The color and model of the car, the music on the radio or the weather are all irrelevant.
 - Simple reflex agents are simple but they turn out to have *limited intelligence*.
-- They can only work in a *Markovian* environment, that is if the correct decision can be made on the basis of only the current percept. In other words, if the environment is fully observable.
+- They can only work in a *Markovian* environment, that is if the correct
+  decision can be made on the basis of only the current percept.
+  In other words, if the environment is fully observable.
 
 ---
 
@@ -637,7 +655,8 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 
 .center[![](figures/lec1/model-based-reflex-agent.png)]
 
-- *Model-based agents* handle partial observability of the environment by keeping track of the part of the world they cannot see now.
+- *Model-based agents* handle partial observability of the environment by
+  keeping track of the part of the world they cannot see now.
 
 - The internal state of model-based agents is updated on the basis of a *model* which determines:
     - how the environment evolves independently of the agent;
@@ -667,7 +686,8 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 .center[![](figures/lec1/goal-based-agent.png)]
 
-- Principle: i) generate possible sequences of actions, ii) predict the resulting states and  iii) assess *goals* in each.
+- Principle: i) generate possible sequences of actions, ii) predict the
+  resulting states and  iii) assess *goals* in each.
     - Example (autonomous car): Has the car arrived to destination?
 - A *goal-based agent* chooses an action that will achieve the goal.
     - More general than rules. Goals are rarely explicit in condition-action rules.
@@ -693,7 +713,8 @@ of its outcomes.
 
 .center[![](figures/lec1/learning-agent.png)]
 
-- *Learning agents* are capable of self-improvement. They can become more competent than their initial knowledge alone might allow.
+- *Learning agents* are capable of self-improvement. They can become more
+  competent than their initial knowledge alone might allow.
 - They can make changes to any of the knowledge components by:
     - learning how the world evolves;
     - learning what are the consequences of actions;
