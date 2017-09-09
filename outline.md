@@ -1,4 +1,4 @@
-class: middle, center
+class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
