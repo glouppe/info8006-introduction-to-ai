@@ -19,10 +19,9 @@ class: middle, center
 .gallery[
 ![](figures/lec1/r2d2.jpg)
 ![](figures/lec1/terminator.jpg)
-![](figures/lec1/hal9000.jpg)
+
 ![](figures/lec1/exmachina.jpg)
 ![](figures/lec1/smith.jpg)
-![](figures/lec1/westworld.jpg)
 ]
 
 ---
@@ -69,7 +68,7 @@ a computer.
 ![The Turing test](figures/lec1/turing-test.jpg)
 ]
 .col-1-3.center[
-![Alan Turing](figures/lec1/alan-turing.jpg)
+.circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
 .caption[*Can machines think?* (Alan Turing, 1950).]
 ]
 ]
@@ -142,7 +141,7 @@ linguistic input alone.
 for language, i.e. *biological prewiring*.
 ]
 .col-1-3.center[
-![Noam Chomsky](figures/lec1/chomsky.png)
+.circle[![Noam Chomsky](figures/lec1/chomsky.png)]
 .caption[*How do we know what we know?* (Noam Chomsky, 1980).]
 ]
 ]
@@ -720,6 +719,12 @@ of its outcomes.
     - learning how the world evolves;
     - learning what are the consequences of actions;
     - learning the utility of actions through *rewards*.
+
+---
+
+# Learning agents
+
+XXX: elaborate more about learning agents.
 
 ---
 
