@@ -113,7 +113,7 @@ so exactly like pigeons that they can fool even other pigeons.]
 .col-1-2[
 ## Cognitive science
 
-- Study of the *(human) mind* and its processes. The goal of cognitive science
+- Study of the *human mind* and its processes. The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
 
@@ -135,10 +135,10 @@ mistakes, learning rates, etc).
 .col-2-3[
 - In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
-linguistic input alone.
+linguistic input alone. A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
 
-- Nativists claim that humans are born with a specific representational adaptation
-for language, i.e. *biological prewiring*.
+- (Controversial) Therefore, humans must be *biologically pre-wired*
+with **innate knowledge** for representing language.
 ]
 .col-1-3.center[
 .circle[![Noam Chomsky](figures/lec1/chomsky.png)]
@@ -146,9 +146,9 @@ for language, i.e. *biological prewiring*.
 ]
 ]
 
-Therefore, it may not be possible  (if true) to implement a fully functioning
-computer model of the mind without the exact structure and content of this
-innate knowledge.
+This suggests that it may not be possible to implement a fully functioning
+computer model of the human mind without background knowledge of some sort. This is a huge technical **obstacle**, as accessing
+this knowledge would require reverse-engineering the brain.
 
 ---
 
@@ -156,13 +156,15 @@ innate knowledge.
 
 ## The logical approach
 
-- The rational thinking approach is concerned with the study of irrefutable
-reasoning processes. It ensures that all actions performed by a computer are
+- The rational thinking approach is concerned with the study of *irrefutable
+reasoning processes*. It ensures that all actions performed by a computer are
 formally **provable** from inputs and prior knowledge.
 
 - The "laws of thought" were supposed to govern the operation of the mind.
 Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
+
+- Studied in depth in *Knowledge representation* (Prof. Pascal Gribomont).
 
 ```prolog
 /* Example of automated reasoning in Prolog */
@@ -197,7 +199,7 @@ yes.
       The amount of reasoning is adjusted according to available resources and importance of the result.
     - The brain is good at making rational decisions but not perfect either.
 - Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-- Goals are expressed in terms of the **utility** of outcomes. Being rational means maximizing expected utility.
+- Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
     - The standard of rationality is general and mathematically well defined.
 - In this course, we will study general principles of rational agents and the components for constructing them.
 
@@ -207,7 +209,7 @@ class: middle
 
 .center[![](figures/lec1/max-utility.png)
 
-Artificial intelligence = **Maximizing expected utility**
+In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -266,7 +268,7 @@ class: smaller
 - 1995-: Complete intelligent agents and learning systems.
 - 2000-: Availability of very large datasets.
 - 2010-: Availability of fast commodity hardware (GPUs).
-- 2012-: Resurgence of neural networks with of deep learning approaches.
+- 2012-: Resurgence of neural networks with  deep learning approaches.
 
 ---
 
@@ -470,13 +472,26 @@ Partial tabulation of a simple vacuum-cleaner agent function:
 An implementation of the agent function:
 
 ```python
-def program(location, status):
+def program(percept):
+    location, status = percept
     if status == "dirty":
         return "suck"
     elif location == "A":
         return "right"
     elif location == "B":
         return "left"
+```
+
+The agent in its environment:
+
+```python
+environment = Environment()
+agent = Agent(program)
+
+while True:
+    percept = environment.percept()
+    action = agent.program(percept)
+    environment.execute(action)
 ```
 
 ---
@@ -497,7 +512,7 @@ def program(location, status):
 - Informally, a *rational agent* is an agent that does the "right thing".
 - A **performance measure** evaluates a sequence of environment
   states caused by the agent's behavior.
-- A rational agent is an agent that chooses whichever action that maximizes the
+- A rational agent is an agent that chooses whichever action that **maximizes** the
   *expected* value of the performance measure, given the percept sequence to date.
 
 .center[![](figures/lec1/rational-agent-cartoon.png)]
@@ -556,15 +571,17 @@ class: smaller
     - Whether the environment can change, or the performance measure can change with time.
 - *Discrete* vs. **continuous**
     - Whether the state of the environment, the time, the percepts or the actions are continuous.
-- *Single agent* vs. **multi-agent**.
+- *Single agent* vs. **multi-agent**
     - Whether the environment include several agents that may interact which each other.
+- *Known* vs **unknown**
+    - Reflects the agent's (or its designer's) state of knowledge of the "law of physics" of the environment.
 
 ---
 
 # Examples of environments
 
 Are the following task environments fully observable? deterministic? episodic?
-static? discrete? single agents?
+static? discrete? single agents? Known?
 
 - Crossword puzzle
 - Chess, with a clock
@@ -617,18 +634,18 @@ def TableDrivenAgentProgram(table):
 
 ---
 
-# Simple rule-based reflex agents
+# Simple reflex agents
 
 .center[![](figures/lec1/simple-reflex-agent.png)]
 
 - *Simple reflex agents* select actions on the basis of the current percept,
   ignoring the rest of the percept history.
-- *Rule-based agents* implement **condition-action rules** that match the
+- They implement **condition-action rules** that match the
   current percept to an action.
 
 ---
 
-# Rule-based reflex agents
+# Simple reflex agents
 
 ```python
 def SimpleReflexAgentProgram(rules, interpret_input):
@@ -695,17 +712,18 @@ def ModelBasedReflexAgentProgram(rules, update_state, model):
 
 ---
 
+class: smaller
+
 # Utility-based agents
 
 .center[![](figures/lec1/utility-based-agent.png)]
 
 - *Goals* are often not enough to generate high-quality behavior.
-    - There are many ways to arrive to destination, but some are quicker or more reliable.
+    - Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
     - Goals only provide binary assessment of performance.
-- By contrast, a **utility function** assigns
-  a score to any given sequence of environment states.
-- A rational utility-based agent chooses an action that maximizes the *expected* utility
-of its outcomes.
+- A **utility function** scores any given sequence of environment states.
+    - The utility function is an internalization of the performance measure.
+- A rational utility-based agent chooses an action that **maximizes the expected utility of its outcomes**.
 
 ---
 
@@ -716,15 +734,21 @@ of its outcomes.
 - *Learning agents* are capable of **self-improvement**. They can become more
   competent than their initial knowledge alone might allow.
 - They can make changes to any of the knowledge components by:
-    - learning how the world evolves;
-    - learning what are the consequences of actions;
+    - learning how the *world* evolves;
+    - learning what are the *consequences* of actions;
     - learning the utility of actions through *rewards*.
 
 ---
 
-# Learning agents
+# A learning autonomous car
 
-XXX: elaborate more about learning agents.
+- Performance element:
+    - The current system for selecting actions and driving.
+- The critic observes the world and passes information to the learning element.
+    - E.g., the car make a quick left turn across three lanes of traffic. The critic observes shocking language from the other drivers and informs bad action.
+    - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
+- The problem generator identifies certain areas of behavior in need of improvement and suggest experiments.
+    - E.g., trying out the brakes on different surfaces in different weather conditions.
 
 ---
 
