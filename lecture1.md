@@ -742,12 +742,12 @@ class: smaller
 
 # A learning autonomous car
 
-- Performance element:
+- *Performance element*:
     - The current system for selecting actions and driving.
-- The critic observes the world and passes information to the learning element.
-    - E.g., the car make a quick left turn across three lanes of traffic. The critic observes shocking language from the other drivers and informs bad action.
+- The *critic* observes the world and passes information to the *learning element*.
+    - E.g., the car makes a quick left turn across three lanes of traffic. The critic observes shocking language from the other drivers and informs bad action.
     - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
-- The problem generator identifies certain areas of behavior in need of improvement and suggest experiments.
+- The *problem generator* identifies certain areas of behavior in need of improvement and suggest experiments.
     - E.g., trying out the brakes on different surfaces in different weather conditions.
 
 ---
