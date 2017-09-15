@@ -2,8 +2,8 @@
 
 Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2017.
 
-- Instructor: Gilles Louppe
-- Assistant: XXX
+- Instructor: Gilles Louppe ([g.louppe@ulg.ac.be](mailto:g.louppe@ulg.ac.be))
+- Assistant: Samy Aittahar ([saittahar@ulg.ac.be](mailto:saittahar@ulg.ac.be))
 
 Slides:
 

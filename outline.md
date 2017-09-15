@@ -10,7 +10,7 @@ Fall 2017
 
 ## Logistics
 - Prof. Gilles Louppe ([g.louppe@ulg.ac.be](mailto:g.louppe@ulg.ac.be))
-- Teaching assistant: XXX
+- Teaching assistant: Samy Aittahar ([saittahar@ulg.ac.be](mailto:saittahar@ulg.ac.be))
 
 .pull-right[![Textbook](./figures/textbook.png)]
 ## Textbook
