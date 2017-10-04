@@ -28,6 +28,8 @@ class: middle, center
 
 # What is AI?
 
+--
+
 Artificial intelligence is the science of making machines or programs that:
 
 .grid.grid-half[
@@ -135,7 +137,8 @@ mistakes, learning rates, etc).
 .col-2-3[
 - In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
-linguistic input alone. A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
+linguistic input alone.
+    - A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
 
 - (Controversial) Therefore, humans must be *biologically pre-wired*
 with **innate knowledge** for representing language.
@@ -147,7 +150,8 @@ with **innate knowledge** for representing language.
 ]
 
 This suggests that it may not be possible to implement a fully functioning
-computer model of the human mind without background knowledge of some sort. This is a huge technical **obstacle**, as accessing
+computer model of the human mind without background knowledge of some sort.
+This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
 
 ---
@@ -240,6 +244,7 @@ class: smaller
 - 1950s: Early AI programs, including Samuel's checkers program,
 Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 - 1956: Dartmouth meeting: "Aritificial Intelligence" adopted.
+- 1958: Rosenblatt invents the perceptron.
 - 1965: Robinson's complete algorithm for logical reasoning.
 - 1966-1974: AI discovers computational complexity.
 
@@ -256,7 +261,7 @@ class: smaller
 # A short history of AI
 
 ## 1970-1990: Knowledge-based approaches
-- 1966-1974: Neural network research almost disappears.
+- 1969: Neural network research almost disappears after Minsky and Paper's paper.
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
 - 1988-1993: Expert systems industry busts  (AI winter).

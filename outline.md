@@ -91,6 +91,10 @@ class: middle, center
 
 - CSPs, backtracking, local search, ... *(Chapter 6)*
 
+???
+
+or planning?
+
 ---
 
 # 5. Probabilistic reasoning I
