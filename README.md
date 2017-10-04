@@ -9,5 +9,5 @@ Slides:
 
 - [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md)
 - [Lecture 1: Foundations](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md)
-- Lecture 2: Search
+- [Lecture 2: Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)
 - ...

@@ -15,10 +15,27 @@ Fall 2017
 .pull-right[![Textbook](./figures/textbook.png)]
 ## Textbook
 Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.
+(*Strongly recommended*)
 
 Slides are partially adapted from:
 - [CS188 Introduction to AI](http://ai.berkeley.edu/lecture_slides.html) (UC Berkeley)
 - [CS430 Introduction to AI](http://web.engr.oregonstate.edu/~tgd/classes/430/) (Oregon State University)
+
+---
+
+# Lectures
+
+- Theoretical lectures
+- Exercise sessions
+- Tutorials
+
+---
+
+# Evaluation
+
+- Oral exam (50%)
+- Programming project 1 (15%)
+- Programming project 2 (35%)
 
 ---
 
@@ -31,8 +48,9 @@ Slides are partially adapted from:
 
 ## Well established algorithms and state-of-the-art
 
-- Standard algorithms.
+- Well-established algorithms for building intelligent agents.
 - Introduction to materials new from research ($\leq$ 5 years old).
+- Understand some of the open questions and challenges in the field.
 
 ## Practical
 
@@ -57,7 +75,11 @@ class: middle, center
 # 2. Solving problems by searching
 
 -   Basic search methods *(Chapter 3)*
+
+???
+
 -   Local search, non-determinism, partial observability *(Chapter 4)*
+Not sure this is important, skip directly to Chapter 5?
 
 ---
 
@@ -137,4 +159,18 @@ class: middle, center
 
 ---
 
-XXX
+# Projects
+
+.grid[
+.col-2-3[
+- Programming project 1 (15%):
+    - Implement a simple agent for *tic-tac-toe* (3x3 and larger grids)
+- Programming project 2 (35%):
+    - Implement an intelligent **Pacman** agent
+    - Increasing levels of intelligence
+]
+.col-1-3[
+![](figures/outline/morpion.jpg)
+![](figures/outline/pacman.png)
+]
+]

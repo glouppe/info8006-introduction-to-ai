@@ -15,7 +15,11 @@ body {
 }
 
 .red {
-    color: #fa0000;
+    color: #d11a01;
+}
+
+.Q {
+    color: #009933;
 }
 
 .remark-container {
@@ -157,6 +161,11 @@ td {
 
 .circle img {
     border-radius: 50%;
+}
+
+.stretch img {
+    width: 100%;
+    height: auto;
 }
 
 
