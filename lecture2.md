@@ -139,7 +139,7 @@ among all solutions.
 .stretch[![](figures/lec2/pacman-world.png)]
 
 - A *search state* keeps only the details needed for planning.
-    - Problem: eat-all-dots
+    - Example: eat-all-dots
         - States: $\\{ (x, y), \text{dot booleans}\\}$
         - Actions: NSEW
         - Transition: update location and possibly a dot boolean
@@ -169,24 +169,70 @@ among all solutions.
 
 ---
 
-# Search tree
+# Search trees
+
+The set of possible acceptable sequences starting at the initial state form a **search tree**:
+- Nodes correspond to states in the state space, where the initial state is the root node.
+- Branches correspond to applicable actions.
+    - Child nodes correspond to successors.
+- **For most problems, we can never actually build the whole tree**.
+
+.center[![](figures/lec2/pacman-tree.png)]
 
 ---
 
-# Searching for solutions
+# Tree search algorithms
 
-- tree search
-- guided example
-- problem-solving performance
+.stretch[![](figures/lec2/tree-search.png)]
+
+Important ideas:
+- *Fringe* (or frontier) of partial plans under consideration
+- *Expansion*
+- *Exploration*
+
+<span class="Q">[Q]</span> Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?
+
+---
+
+# Tree search example
+
+.center[![](figures/lec2/search-map.png)]
+
+---
+
+# Problem-solving performance
+
+- A strategy is defined by picking the **order of expansion**.
+- Strategies are evaluated along the following dimensions:
+    - *Completeness*: does it always find a solution if one exists?
+    - *Optimality*: does it always find the least-cost solution?
+    - *Time complexity*: how long does it take to find a solution?
+    - *Space complexity*: how much memory is needed to perform the search?
+- Time and complexity are measured in terms of
+    - $b$: maximum branching factor of the search tree
+    - $d$: depth of the least-cost solution
+    - $m$: maximum length of any path in the state space (may be $\infty$)
 
 ---
 
 # Uninformed search strategies
 
+**Uninformed** search strategies use only the information available in the problem definition.
+
+- Breadth-first search
+- Depth-first search
+- Iterative deepening
+- Uniform-cost search
+
+---
+
+# Graph search
+
 ---
 
 # Informed search strategies
 
+- Greedy search
 - A*
 
 ---
