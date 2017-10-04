@@ -27,7 +27,6 @@ Slides are partially adapted from:
 
 - Theoretical lectures
 - Exercise sessions
-- Tutorials
 
 ---
 
@@ -54,7 +53,6 @@ Slides are partially adapted from:
 
 ## Practical
 
-- Exposition to state-of-the-art software.
 - Fun and challenging course project.
 
 ---
@@ -79,7 +77,6 @@ class: middle, center
 ???
 
 -   Local search, non-determinism, partial observability *(Chapter 4)*
-Not sure this is important, skip directly to Chapter 5?
 
 ---
 
@@ -90,11 +87,9 @@ Not sure this is important, skip directly to Chapter 5?
 
 ---
 
-# 4. Planning
+# 4. Constraint satisfaction problems
 
--   Classical planning: state-space search and planning graphs *(Chapter 10)*
--   Planning in the real world, multi-agent planning *(Chapter 11)*
--   *Extra:* Artificial Swarm Intelligence
+- CSPs, backtracking, local search, ... *(Chapter 6)*
 
 ---
 
