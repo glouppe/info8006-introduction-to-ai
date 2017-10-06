@@ -397,6 +397,10 @@ class: smaller
 ]
 ]
 
+???
+
+Mention https://arxiv.org/pdf/1706.02515.pdf
+
 ---
 
 # Decision making

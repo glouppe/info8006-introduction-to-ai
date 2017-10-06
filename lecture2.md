@@ -254,7 +254,7 @@ class: smaller
 # Properties of DFS
 
 - *Completeness*:
-    - $m$ could be infinite, so only if we prevent cycles.
+    - $m$ could be infinite, so only if we prevent cycles (more on this later).
 - *Optimality*:
     - No, DFS finds the leftmost solution, regardless of depth or cost.
 - *Time complexity*:
@@ -302,40 +302,6 @@ class: smaller
 
 ---
 
-# Uniform-cost search
-
-.stretch[![](figures/lec2/ucs-cartoon.png)]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-# Uniform-cost search
-
-- *Strategy*: expand the cheapest node in the fringe.
-- *Implementation*: fringe is a **priority queue**, using the cumulative cost $g(n)$ as priority.
-
----
-
-class: smaller
-
-# Properties of UCS
-
-- *Completeness*:
-    - Yes, if step cost $\geq \epsilon > 0$.
-- *Optimality*:
-    - Yes, sinces UCS expands nodes in order of their optimal path cost.
-- *Time complexity*:
-     - Assume $C^\*$ is the cost of the optimal solution and that step costs are all $\geq \epsilon$.
-     - The "effective depth" is then roughly $C^\*/\epsilon$.
-     - The worst-case time complexity is $O(b^{C^\*/\epsilon})$.
-- *Space complexity*:
-     - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
-
-.center.width-40[![](figures/lec2/ucs-properties.png)]
-
----
-
 # Iterative deepening
 
 - Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
@@ -358,6 +324,255 @@ class: smaller
 
 ---
 
+# Uniform-cost search
+
+.stretch[![](figures/lec2/ucs-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Uniform-cost search
+
+- *Strategy*: expand the cheapest node in the fringe.
+- *Implementation*: fringe is a **priority queue**, using the cumulative cost $g(n)$ from the initial state to node $n$ as priority.
+
+---
+
+class: smaller
+
+# Properties of UCS
+
+- *Completeness*:
+    - Yes, if step cost $\geq \epsilon > 0$.
+- *Optimality*:
+    - Yes, sinces UCS expands nodes in order of their optimal path cost.
+- *Time complexity*:
+     - Assume $C^\*$ is the cost of the optimal solution and that step costs are all $\geq \epsilon$.
+     - The "effective depth" is then roughly $C^\*/\epsilon$.
+     - The worst-case time complexity is $O(b^{C^\*/\epsilon})$.
+- *Space complexity*:
+     - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
+
+.center.width-40[![](figures/lec2/ucs-properties.png)]
+
+---
+
+# Informed search strategies
+
+One of the **issues of UCS** is that it explores the state space in *every direction*,
+without exploiting information about the (plausible) location of the goal node.
+
+.center.width-50[![](figures/lec2/ucs-issues.png)]
+
+**Informed** search strategies aim to solve this problem by expanding nodes in
+the fringe in decreasing order of *desirability*.
+- Greedy search
+- A*
+
+---
+
+# Heuristics
+
+A **heuristic** (or evaluation) function $h(n)$ is:
+- a function that *estimates* the cost of the cheapest path from node $n$ to a goal state;
+    - $h(n) \geq 0$ for all nodes $n$
+    - $h(n) = 0$ for a goal state.
+- is designed for a *particular* search problem.
+
+.center.width-70[![](figures/lec2/heuristic-pacman.png)]
+
+
+---
+
+# Greedy search
+
+.stretch[![](figures/lec2/gs-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Greedy search
+
+- *Strategy*: expand the node $n$ in the fringe for which $h(n)$ is the lowest.
+- *Implementation*: fringe is a **priority queue**, using $h(n)$ as priority.
+
+---
+
+# Greedy search example
+
+$h(n)$ = straight line distance to Bucharest.
+
+.center.width-70[![](figures/lec2/gs-progress.png)]
+
+---
+
+class: smaller
+
+# Properties of greedy search
+
+- *Completeness*:
+    - No, unless we prevent cycles (more on this later).
+- *Optimality*:
+    - No, e.g. the path via Sibiu and Fagaras is 32km longer than the path through Rimnicu Vilcea and Pitesti.
+- *Time complexity*:
+    - $O(b^m)$, unless we have a good heuristic function.
+- *Space complexity*:
+    - $O(b^m)$, unless we have a good heuristic function.
+
+.center.width-70[![](figures/lec2/gs-properties.png)]
+.caption[At best, greedy search takes you straight to the goal. At worst, it is like a badly-guided BFS.]
+
+---
+
+# A*
+
+.stretch[![](figures/lec2/as-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# A*
+
+- Uniform-cost orders by path cost, or *backward cost* $g(n)$
+- Greedy orders by goal proximity, or *forward cost* $h(n)$
+- **A*** combines the two algorithms and orders by the sum $$f(n) = g(n) + h(n)$$
+- $f(n)$ is the estimated cost of cheapest solution through $n$.
+
+---
+
+# A* example
+
+.center.width-70[![](figures/lec2/as-progress1.png)]
+
+---
+
+# A* example
+
+.center.width-70[![](figures/lec2/as-progress2.png)]
+
+<span class="Q">[Q]</span> Why doesn't A* stop at step (e), since Bucharest is in the fringe?
+
+---
+
+# Admissible heuristics
+
+A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)$ is the true cost to a nearest goal.
+
+.center.width-70[![](figures/lec2/admissible.png)]
+.caption[The Manhattan distance is admissible]
+
+---
+
+# Optimality of A* (tree search)
+
+.grid[
+.col-2-3[
+- *Assumptions*:
+    - $A$ is an optimal goal node
+    - $B$ is a suboptimal goal node
+    - $h$ is admissible
+- *Claim*:
+    - $A$ will exit the fringe before $B$
+]
+.col-1-3[
+![](figures/lec2/astar-proof1.png)
+]
+]
+
+---
+
+# Optimality of A* (tree search)
+
+.grid[
+.col-2-3[
+- Assume $B$ is on the fringe.
+- Some ancestor $n$ of $A$ is on the fringe too.
+- *Claim*: $n$ will be expanded before $B$.
+    - $f(n) \leq f(A)$
+        - $f(n) = g(n) + h(n)$ (by definition)
+        - $f(n) \leq g(A)$ (admissibility of $h$)
+        - $g(A) = f(A)$ ($h=0$ at a goal)
+    - $f(A) < f(B)$
+        - $g(A) < g(B)$ ($B$ is suboptimal)
+        - $f(A) < f(B)$ ($h=0$ at a goal)
+    - $n$ expands before $B$
+        - since $f(n) \leq f(A) < f(B)$
+- All ancestors of $A$ expand before $B$, including $A$. Thefore **A* is optimal**.
+
+]
+.col-1-3[
+![](figures/lec2/astar-proof2.png)
+]
+]
+
+---
+
+# A* contours
+
+- $f$-costs are non-decreasing along any path.
+- We can define **contour levels** $t$ in the state space, that include all nodes for which $f(n) \leq t$.
+
+.center[
+![](figures/lec2/contours-ucs.png)
+![](figures/lec2/contours-as.png)]
+.grid[
+.col-1-2[
+For UCS ($h(n)=0$), bands are circular around the start.
+]
+.col-1-2[
+For A* with accurate heuristics, bands stretch towards the goal.
+]
+]
+
+---
+
+# Comparison
+
+.grid[
+.col-1-3[
+![](figures/lec2/cmp-greedy.jpg)
+]
+.col-1-3[
+![](figures/lec2/cmp-ucs.jpg)
+]
+.col-1-3[
+![](figures/lec2/cmp-as.jpg)
+]
+]
+.center.grid[
+.col-1-3[
+Greedy search
+]
+.col-1-3[
+UCS
+]
+.col-1-3[
+A*
+]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Creating admissible heuristics
+
+- Most of the work in solving hard search problems optimally is in finding admissible heuristics.
+- Admissible heuristics can be derived from the exact solutions to *relaxed problems*, where new actions are available.
+.center.width-70[![](figures/lec2/admissible-relax.png)]
+
+---
+
+# Dominance
+
+- If $h_1$ and $h_2$ are both admissible and if $h_2(n) \geq h_1(n)$ for all $n$, then $h_2$ **dominates** $h_1$ and is *better* for search.
+- Given any admissible heuristics $h_a$ and $h_b$, $$h(n) = \max(h_a(n), h_b(n))$$ is also admissible and dominates $h_a$ and $h_b$.
+
+---
+
 # Redundant paths
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one!
@@ -373,24 +588,24 @@ This amounts to grow a tree directly on the state-space graph.
 
 .stretch[![](figures/lec2/graph-search.png)]
 
-<span class="Q">[Q]</span> What are the properties of DFS/GFS based on graph search?
+<span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
 
 ---
-
-# Informed search strategies
-
-- Greedy search
-- A*
-
----
-
-# Heuristic functions
-
-- learning heuristic from experience
 
 ---
 
 # Summary
+
+- Problem formulation usually requires **abstracting away real-world details** to define a state space that can feasibly be explored.
+- Variety of uninformed search strategies (*DFS*, *BFS*, *UCS*, *Iterative deepening*)
+- **Heuristic functions** estimate costs of shortest paths.
+- Good heuristic can dramatically *reduce search cost*.
+- **Greedy best-first search** expands lowest $h$.
+    - *incomplete* and *not always optimal*.
+- **A*** search expands lower $f=g+h$
+    - *complete* and *optimal*
+- Admissible heuristics can be derived from exact solutions of relaxed problems.
+- *Graph search* can be exponentially more efficient than tree search.
 
 ---
 
