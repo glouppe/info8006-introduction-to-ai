@@ -573,6 +573,12 @@ A*
 
 ---
 
+# Learning heuristics from experience
+
+XXX
+
+---
+
 # Redundant paths
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one!
@@ -589,8 +595,6 @@ This amounts to grow a tree directly on the state-space graph.
 .stretch[![](figures/lec2/graph-search.png)]
 
 <span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
-
----
 
 ---
 
