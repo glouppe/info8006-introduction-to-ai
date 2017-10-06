@@ -10,7 +10,6 @@ Lecture 2: Solving problems by searching
 
 - Agents that plan ahead
 - Search problems
-- Informed search methods
 - Uninformed search methods
     - Depth-first search
     - Breadth-first search
@@ -45,8 +44,7 @@ Reflex agents:
 # Problem-solving agents
 
 Assumptions:
-- *Observable* and *known* environment.
-- *Deterministic* environment
+- *Observable*, *deterministic* (and *known*) environment.
 
 Problem-solving agents:
 - Take decisions based on (hypothesized) consequences of actions.
@@ -95,8 +93,11 @@ A **search problem** consists of the following components:
 - A *path cost* that assigns a numeric value to each path.
   - We may also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
 
+---
+
 A **solution** to a problem is an action sequence that leads from the initial state to a goal state.
-A solution quality is measured by the path cost function and an *optimal solution* has the lowest path cost
+- A solution quality is measured by the path cost function.
+- An *optimal solution* has the lowest path cost
 among all solutions.
 
 <span class="Q">[Q]</span> What if the environment is partially observable? non-deterministic?
@@ -135,15 +136,14 @@ among all solutions.
 - Real world is absurdly complex.
     - The *world state* includes every last detail of the environment.
     - State space must be abstracted for problem solving.
-
-.stretch[![](figures/lec2/pacman-world.png)]
-
 - A *search state* keeps only the details needed for planning.
     - Example: eat-all-dots
         - States: $\\{ (x, y), \text{dot booleans}\\}$
         - Actions: NSEW
         - Transition: update location and possibly a dot boolean
         - Goal test: dots all false
+
+.stretch[![](figures/lec2/pacman-world.png)]
 
 ---
 
@@ -186,7 +186,7 @@ The set of possible acceptable sequences starting at the initial state form a **
 .stretch[![](figures/lec2/tree-search.png)]
 
 Important ideas:
-- *Fringe* (or frontier) of partial plans under consideration
+- *Fringe* (or *frontier*) of partial plans under consideration
 - *Expansion*
 - *Exploration*
 
@@ -200,7 +200,37 @@ Important ideas:
 
 ---
 
-# Problem-solving performance
+# Uninformed search strategies
+
+**Uninformed** search strategies use only the information available in the problem definition.
+
+- Depth-first search
+- Breadth-first search
+- Uniform-cost search
+- Iterative deepening
+
+---
+
+# Depth-first search
+
+.stretch[![](figures/lec2/dfs-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Depth-first search
+
+- *Strategy*: expand the deepest node in the fringe.
+- *Implementation*: fringe is a **LIFO stack**.
+
+.center[![](figures/lec2/dfs-progress.png)]
+
+---
+
+class: smaller
+
+# Properties of search strategies
 
 - A strategy is defined by picking the **order of expansion**.
 - Strategies are evaluated along the following dimensions:
@@ -213,20 +243,137 @@ Important ideas:
     - $d$: depth of the least-cost solution
     - $m$: maximum length of any path in the state space (may be $\infty$)
 
+<span class="Q">[Q]</span> Number of nodes in a tree?
+
+.center.width-50[![](figures/lec2/search-properties.png)]
+
 ---
 
-# Uninformed search strategies
+class: smaller
 
-**Uninformed** search strategies use only the information available in the problem definition.
+# Properties of DFS
 
-- Breadth-first search
-- Depth-first search
-- Iterative deepening
-- Uniform-cost search
+- *Completeness*:
+    - $m$ could be infinite, so only if we prevent cycles.
+- *Optimality*:
+    - No, DFS finds the leftmost solution, regardless of depth or cost.
+- *Time complexity*:
+    - May generate the whole tree (or a good part of it, regardless of $d$).
+      Therefore $O(b^m)$, which might much greater than the size of the state space!
+- *Space complexity*:
+    - Only store siblings on path to root, therefore $O(bm)$.
+
+.center.width-50[![](figures/lec2/dfs-properties.png)]
+
+---
+
+# Breadth-first search
+
+.stretch[![](figures/lec2/bfs-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Breadth-first search
+
+- *Strategy*: expand the shallowest node in the fringe.
+- *Implementation*: fringe is a **FIFO queue**.
+
+.center[![](figures/lec2/bfs-progress.png)]
+
+---
+
+class: smaller
+
+# Properties of BFS
+
+- *Completeness*:
+    - If the shallowest goal node is at some finite depth $d$, BFS will eventually find it after generating all shallower nodes (provided $b$ is finite).
+- *Optimality*:
+    - The shallowest goal is not necessarily the optimal one.
+    - BFS is optimal only if the path cost is a non-decreasing function of the depth of the node.
+- *Time complexity*:
+    - If the solution is a depth $d$, then the total number of nodes generated before finding this node is $b+b^2+b^3+...+b^d = O(b^d)$
+- *Space complexity*:
+    - The number of nodes to maintain in memory is the size of the fringe, which will be the largest at the last tier. That is $O(b^d)$
+
+.center.width-50[![](figures/lec2/bfs-properties.png)]
+
+---
+
+# Uniform-cost search
+
+.stretch[![](figures/lec2/ucs-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Uniform-cost search
+
+- *Strategy*: expand the cheapest node in the fringe.
+- *Implementation*: fringe is a **priority queue**, using the cumulative cost $g(n)$ as priority.
+
+---
+
+class: smaller
+
+# Properties of UCS
+
+- *Completeness*:
+    - Yes, if step cost $\geq \epsilon > 0$.
+- *Optimality*:
+    - Yes, sinces UCS expands nodes in order of their optimal path cost.
+- *Time complexity*:
+     - Assume $C^\*$ is the cost of the optimal solution and that step costs are all $\geq \epsilon$.
+     - The "effective depth" is then roughly $C^\*/\epsilon$.
+     - The worst-case time complexity is $O(b^{C^\*/\epsilon})$.
+- *Space complexity*:
+     - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
+
+.center.width-40[![](figures/lec2/ucs-properties.png)]
+
+---
+
+# Iterative deepening
+
+- Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
+    - Run DFS with depth limit 1.
+    - If no solution, run DFS with depth limit 2.
+    - If no solution, run DFS with depth limit 3.
+    - ...
+
+
+.grid[
+.col-2-3[
+<span class="Q">[Q]</span> What are the properties of iterative deepening?
+
+<span class="Q">[Q]</span> Isn't this process wastefully redundant?
+]
+.col-1-4[
+![](figures/lec2/id-properties.png)
+]
+]
+
+---
+
+# Redundant paths
+
+The failure to detect **repeated states** can turn a linear problem into an exponential one!
+
+.stretch[![](figures/lec2/redundant.png)]
 
 ---
 
 # Graph search
+
+Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
+This amounts to grow a tree directly on the state-space graph.
+
+.stretch[![](figures/lec2/graph-search.png)]
+
+<span class="Q">[Q]</span> What are the properties of DFS/GFS based on graph search?
 
 ---
 
