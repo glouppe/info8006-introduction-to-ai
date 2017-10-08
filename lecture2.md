@@ -558,14 +558,6 @@ A*
 
 ---
 
-class: middle, center
-
-# A* in action
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
-
----
-
 # Creating admissible heuristics
 
 - Most of the work in solving hard search problems optimally is in finding admissible heuristics.
@@ -603,6 +595,27 @@ This amounts to grow a tree directly on the state-space graph.
 .stretch[![](figures/lec2/graph-search.png)]
 
 <span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
+
+---
+
+# Recap example: Super Mario
+
+.center.width-50[![](figures/lec2/mario.jpg)]
+
+- *Task environment*?
+    - performance measure, environment, actuators, sensors?
+- *Type* of environment?
+- *Search problem*?
+    - initial state, actions, transition model, goal test, path cost?
+- *Good heuristic*?
+
+---
+
+class: center
+
+# Super Mario: A* in action
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
 
 ---
 
