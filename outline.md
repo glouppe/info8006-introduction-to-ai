@@ -74,10 +74,6 @@ class: middle, center
 
 -   Basic search methods *(Chapter 3)*
 
-???
-
--   Local search, non-determinism, partial observability *(Chapter 4)*
-
 ---
 
 # 3. Games
