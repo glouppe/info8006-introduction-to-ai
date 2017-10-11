@@ -9,12 +9,12 @@ Lecture 2: Solving problems by searching
 # Today
 
 - Agents that plan ahead
-- Search problems
-- Uninformed search methods
+- **Search problems**
+- *Uninformed* search methods
     - Depth-first search
     - Breadth-first search
     - Uniform-cost search
-- Informed search methods
+- *Informed* search methods
     - A*
     - Heuristics
 
@@ -28,8 +28,6 @@ Reflex agents:
 - Do not consider the future consequences of their actions.
 - Consider only **how the world is now**.
 
-<span class="Q">[Q]</span> Can a reflex agent be rational?
-
 .grid[
 .col-1-2[
 ![](figures/lec2/pacman-reflex.png)
@@ -38,6 +36,12 @@ Reflex agents:
 ![](figures/lec2/pacman-reflex2.png)
 ]
 ]
+
+<span class="Q">[Q]</span> Can a reflex agent be rational?
+
+???
+
+Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
 ---
 
@@ -65,7 +69,7 @@ Problem-solving agents:
 
 .stretch[![](figures/lec2/problem-solving-agent.png)]
 
-Notes:
+Offline vs. Online solving:
 - This is *offline* problem solving. The solution is executed "eyes closed", ignoring the percepts.
 - *Online* problem solving involves acting without complete knowledge.
 
@@ -83,9 +87,11 @@ A **search problem** consists of the following components:
 
 ---
 
-- Together, the initial state, the actions and the transition model define the *state space* of the problem, i.e. the set of all states reachable from the initial state by any sequence of action.
-    - The state space forms a directed graph in which the nodes are states and links between nodes are actions.
-    - A path is a sequence of states connected by actions.
+- Together, the initial state, the actions and the transition model define the **state space** of the problem, i.e. the set of all states reachable from the initial state by any sequence of action.
+    - The state space forms a directed graph:
+        - nodes = states
+        - links = actions
+    - A *path* is a sequence of states connected by actions.
 
 .center[![](figures/lec2/pacman-space.png)]
 
@@ -102,6 +108,15 @@ among all solutions.
 
 <span class="Q">[Q]</span> What if the environment is partially observable? non-deterministic?
 
+???
+
+- With partial observability, the agent needs to keep in which states it might be in.
+    - Percepts narrow down the set of possible states.
+- If stochastic, the agent will need to consider what to do for each contingency that its percepts may reveal.
+    - Percepts reveal which the outcomes has actually occured.
+
+See 4.3 and 4.4 for more details.
+
 ---
 
 # Search problems are models
@@ -109,6 +124,12 @@ among all solutions.
 .stretch[![](figures/lec2/search-problems-models.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+Search problems are models, i.e. abstract mathematical abstractions. These models omit details that not relevant for solving the problem.
+
+The process of removing details from a representation is called abstraction.
 
 ---
 
@@ -133,9 +154,9 @@ among all solutions.
 
 # Selecting a state space
 
-- Real world is absurdly complex.
+- Real world is absurdly **complex**.
     - The *world state* includes every last detail of the environment.
-    - State space must be abstracted for problem solving.
+    - State space must be *abstracted* for problem solving.
 - A *search state* keeps only the details needed for planning.
     - Example: eat-all-dots
         - States: $\\{ (x, y), \text{dot booleans}\\}$
@@ -203,7 +224,9 @@ Important ideas:
 # Uninformed search strategies
 
 **Uninformed** search strategies use only the information available in the problem definition.
+- They do not know whether a state looks more promising than some other.
 
+Strategies:
 - Depth-first search
 - Breadth-first search
 - Uniform-cost search
@@ -247,6 +270,10 @@ class: smaller
 
 .center.width-50[![](figures/lec2/search-properties.png)]
 
+???
+
+- Number of nodes = $\frac{b^{d+1}-1}{b-1}$
+
 ---
 
 class: smaller
@@ -262,6 +289,7 @@ class: smaller
       Therefore $O(b^m)$, which might much greater than the size of the state space!
 - *Space complexity*:
     - Only store siblings on path to root, therefore $O(bm)$.
+    - When all the descendants of a node have been visited, the node can be removed from memory.
 
 .center.width-50[![](figures/lec2/dfs-properties.png)]
 
@@ -434,6 +462,20 @@ class: smaller
 
 ---
 
+# Shakey the Robot
+
+.grid[
+.col-1-2[
+- A\* was first proposed in **1968** to improve robot planning.
+- Goal was to navigate through a room with obstacles.
+]
+.col-1-2.width-80[
+![](figures/lec2/shakey.jpg)
+]
+]
+
+---
+
 # A*
 
 - Uniform-cost orders by path cost, or *backward cost* $g(n)$
@@ -463,6 +505,10 @@ A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)
 
 .center.width-70[![](figures/lec2/admissible.png)]
 .caption[The Manhattan distance is admissible]
+
+???
+
+$h$ is admissible if it underestimates the true cost towards the goal.
 
 ---
 
@@ -494,7 +540,7 @@ A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)
     - $f(n) \leq f(A)$
         - $f(n) = g(n) + h(n)$ (by definition)
         - $f(n) \leq g(A)$ (admissibility of $h$)
-        - $g(A) = f(A)$ ($h=0$ at a goal)
+        - $f(A) = g(A) + h(A) = g(A)$ ($h=0$ at a goal)
     - $f(A) < f(B)$
         - $g(A) < g(B)$ ($B$ is suboptimal)
         - $f(A) < f(B)$ ($h=0$ at a goal)
@@ -513,14 +559,14 @@ A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)
 # A* contours
 
 - $f$-costs are non-decreasing along any path.
-- We can define **contour levels** $t$ in the state space, that include all nodes for which $f(n) \leq t$.
+- We can define **contour levels** $t$ in the state space, that include all nodes $n$ for which $f(n) \leq t$.
 
 .center[
 ![](figures/lec2/contours-ucs.png)
 ![](figures/lec2/contours-as.png)]
 .grid[
 .col-1-2[
-For UCS ($h(n)=0$), bands are circular around the start.
+For UCS ($h(n)=0$ for all $n$), bands are circular around the start.
 ]
 .col-1-2[
 For A* with accurate heuristics, bands stretch towards the goal.
@@ -556,6 +602,10 @@ A*
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
+???
+
+A\* finds the shortest path.
+
 ---
 
 # Creating admissible heuristics
@@ -575,7 +625,11 @@ A*
 
 # Learning heuristics from experience
 
-XXX
+- Assuming an *episodic* environment, an agent can **learn** good heuristics by playing the game many times.
+- Each optimal solution $s^\*$ provides *training examples* from which $h(n)$ can be learned.
+- Each example consists of a state $n$ from the solution path and the actual cost $g(s^\*)$ of the solution from that point.
+- The mapping $n \to g(s^\*)$ can be learned with **supervised learning** algorithms.
+    - Linear models, Neural networks, etc.
 
 ---
 
@@ -629,9 +683,11 @@ class: center
     - *incomplete* and *not always optimal*.
 - **A*** search expands lower $f=g+h$
     - *complete* and *optimal*
-- Admissible heuristics can be derived from exact solutions of relaxed problems.
+- Admissible heuristics can be derived from exact solutions of relaxed problems or *learned* from training examples.
 - *Graph search* can be exponentially more efficient than tree search.
 
 ---
 
 # References
+
+- Hart, Peter E., Nils J. Nilsson, and Bertram Raphael. "A formal basis for the heuristic determination of minimum cost paths." IEEE transactions on Systems Science and Cybernetics 4.2 (1968): 100-107.
