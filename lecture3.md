@@ -33,14 +33,13 @@ class: center
 
 # Types of games
 
-Types of games:
 - Deterministic or stochastic?
 - One, two or more players?
 - Zero-sum game?
 - Perfect information?
 
+XXX: add table
 
-We assume *deterministic*, *turn-taking*, *two-player* **zero-sum games** of *perfect information*.
 
 ---
 
@@ -49,7 +48,7 @@ We assume *deterministic*, *turn-taking*, *two-player* **zero-sum games** of *pe
 A **game** is formally defined as kind of search problem with the following components:
 - The *initial state* $s_0$ of the game.
 - A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
-- A description of the legal *actions* available to a state $s$, denoted $\text{actions}(s)$.
+- A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.
 - A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
 - A *terminal test* which determines whether the game is over.
 
@@ -59,7 +58,13 @@ A **game** is formally defined as kind of search problem with the following comp
     - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
 - Together, the initial state, the $\text{actions}(s)$ function, the $\text{result}(s, a)$ function and the terminal test define the **game tree**.
     - *Nodes* are game states.
-    - *Edges* are moves.
+    - *Edges* are actions.
+
+
+## Assumptions
+
+- We assume *deterministic*, *turn-taking*, *two-player* **zero-sum games** of *perfect information*.
+- We will call our two players MAX and MIN. MAX moves first.
 
 ---
 
@@ -73,9 +78,11 @@ A **game** is formally defined as kind of search problem with the following comp
 
 - In a **zero-sum** game, the total payoff to all players is *constant* for all games.
     - E.g., $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
-- That is, for two-player games, agents have **opposite** utilities (values and outcomes).
-- Equivalently, agents share the same utility function, but one wants to *maximize* it while the other wants to *minimize* it.
-- Adversarial, *pure competition*.
+- For two-player games, agents share the **same utility** function, but one wants to *maximize* it while the other wants to *minimize* it.
+    - MAX maximizes the game's $\text{utility}$ function.
+    - MIN minimizes the game's $\text{utility}$ function.
+- *Strict competition*.
+    - If one wins, the other loses, and vice-versa.
 
 .center.width-50[![](figures/lec3/zero-sum-cartoon.png)]
 
@@ -88,12 +95,12 @@ A **game** is formally defined as kind of search problem with the following comp
 .grid[
 .col-2-3[
 - In a search problem, the optimal solution is a sequence of actions leading to a goal state.
-    - i.e. a terminal state that is a win.
-- In a game, the opponent may react *arbitrarily* to a move.
-- Therefore, a player must define a contingent **strategy** which specifies
+    - i.e. a terminal state where MAX wins.
+- In a game, the opponent (MIN) may react *arbitrarily* to a move.
+- Therefore, a player (MAX) must define a contingent **strategy** which specifies
     - its moves in the initial state,
-    - its moves in the states resulting from every possible response by the opponent,
-    - its moves in the states resulting from every possible response by the opponent in those states,
+    - its moves in the states resulting from every possible response by MIN,
+    - its moves in the states resulting from every possible response by MIN in those states,
     - ...
 ]
 .col-1-3[
@@ -110,12 +117,48 @@ A **game** is formally defined as kind of search problem with the following comp
 
 # Minimax
 
-- Assume a two-player game between players MIN and MAX.
-    - MAX maximizes the game's $\text{utility}$ function.
-    - MIN minimizes the game's $\text{utility}$ function.
-- The **minimax value** $\text{minimax}(s)$ is the largest payoff that MAX can get from state $s$, assuming that MIN plays optimally.
+The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an optimal adversary (MIN).
 
 .center.width-100[![](figures/lec3/minimax.png)]
+
+The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
+- Assuming that MIN is an optimal adversary maximizes the *worst-case outcome* for MAX.
+- This is equivalent to not making an assumption about the strength of the opponent.
+
+---
+
+# Minimax example
+
+.width-100[![](figures/lec3/minimax-example.png)]
+
+---
+
+# Properties of Minimax
+
+- *Completeness*:
+    - Yes, if tree is finite.
+- *Optimal*:
+    - Yes, if MIN is an optimal opponent.
+    - What if MIN is suboptimal?
+        - Show that MAX will do even better.
+    - What if MIN is suboptimal and predictable?
+        - Other strategies might do better than Minimax. However they will do worse on an optimal opponent.
+
+---
+
+# Minimax efficiency
+
+- Assume $\text{minimax}(s)$ is implemented using its recursive definition.
+- How *efficient* is minimax?
+    - Time complexity: $O(b^m)$.
+    - Space complexity:
+        - $O(bm)$, if all actions are generated at once, or
+        - $O(m)$, if actions are generated one at a time.
+- Example: for chess, $b \approx 35$, $m \approx 100$.
+    - Time complexity: $O(35^{100}) = O(10^{154})$
+    - Finding the exact solution is **intractable**!
+
+<span class="Q">[Q]</span> Do we need to explore the whole game tree?
 
 ---
 
