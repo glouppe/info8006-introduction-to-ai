@@ -43,6 +43,8 @@ Reflex agents:
 
 Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
+R: rework what is illustrated in the figures.
+
 ---
 
 # Problem-solving agents
@@ -273,6 +275,7 @@ class: smaller
 ???
 
 - Number of nodes = $\frac{b^{d+1}-1}{b-1}$
+- R: double check that we count depth as the number of actions
 
 ---
 
@@ -327,6 +330,10 @@ class: smaller
     - The number of nodes to maintain in memory is the size of the fringe, which will be the largest at the last tier. That is $O(b^d)$
 
 .center.width-50[![](figures/lec2/bfs-properties.png)]
+
+???
+
+R: dont we also need to store all nodes above?
 
 ---
 
