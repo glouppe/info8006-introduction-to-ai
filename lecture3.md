@@ -33,12 +33,9 @@ class: center
 
 # Types of games
 
-- Deterministic or stochastic?
-- One, two or more players?
-- Zero-sum game?
-- Perfect information?
-
-XXX: add table
+- **Deterministic** or *stochastic*?
+- **Perfect** or *imperfect* information?
+- **One**, *two or more* players?
 
 
 ---
@@ -163,6 +160,10 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 ---
 
 # Alpha-beta pruning
+
+???
+
+Depth matters => show videos
 
 ---
 
