@@ -26,7 +26,6 @@ class: center
     - This is different from search where a solution is a *fixed* sequence.
 - Time **limits**.
     - Branching factor is often very large.
-        - In chess, $b\approx 35$ and games usually last for 100 moves. The size of the search tree is $O(35^{100})$.
     - Unlikely to find goal with standard search algorithms, we need to *approximate*.
 
 ---
@@ -61,7 +60,11 @@ A **game** is formally defined as kind of search problem with the following comp
 ## Assumptions
 
 - We assume *deterministic*, *turn-taking*, *two-player* **zero-sum games** of *perfect information*.
-- We will call our two players MAX and MIN. MAX moves first.
+- We will call our two players **MAX** and *MIN*. **MAX** moves first.
+
+.center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -81,7 +84,7 @@ A **game** is formally defined as kind of search problem with the following comp
 - *Strict competition*.
     - If one wins, the other loses, and vice-versa.
 
-.center.width-50[![](figures/lec3/zero-sum-cartoon.png)]
+.center.width-40[![](figures/lec3/zero-sum-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -92,7 +95,7 @@ A **game** is formally defined as kind of search problem with the following comp
 .grid[
 .col-2-3[
 - In a search problem, the optimal solution is a sequence of actions leading to a goal state.
-    - i.e. a terminal state where MAX wins.
+    - i.e., a terminal state where MAX wins.
 - In a game, the opponent (MIN) may react *arbitrarily* to a move.
 - Therefore, a player (MAX) must define a contingent **strategy** which specifies
     - its moves in the initial state,
@@ -134,7 +137,7 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 - *Completeness*:
     - Yes, if tree is finite.
-- *Optimal*:
+- *Optimality*:
     - Yes, if MIN is an optimal opponent.
     - What if MIN is suboptimal?
         - Show that MAX will do even better.
@@ -147,27 +150,83 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 - Assume $\text{minimax}(s)$ is implemented using its recursive definition.
 - How *efficient* is minimax?
-    - Time complexity: $O(b^m)$.
+    - Time complexity: same as DFS, i.e., $O(b^m)$.
     - Space complexity:
         - $O(bm)$, if all actions are generated at once, or
         - $O(m)$, if actions are generated one at a time.
-- Example: for chess, $b \approx 35$, $m \approx 100$.
-    - Time complexity: $O(35^{100}) = O(10^{154})$
-    - Finding the exact solution is **intractable**!
 
 <span class="Q">[Q]</span> Do we need to explore the whole game tree?
 
 ---
 
-# Alpha-beta pruning
+# Pruning
 
-???
+.center.width-80[![](figures/lec3/minimax-incomplete-tree.png)]
 
-Depth matters => show videos
+.width-100[![](figures/lec3/minimax-incomplete-formula.png)]
+
+Therefore, it is possible to compute the **correct** minimax decision *without looking at every node* in the tree.
+
+---
+
+# Pruning
+
+.center.width-80[![](figures/lec3/minimax-incomplete-stepbystep.png)]
+
+---
+
+class: smaller
+
+# $\alpha$-$\beta$  pruning
+
+We want to compute $v = \text{minimax}(n)$ (for MIN).
+- We loop over $n$'s children.
+- The minimax values are being computed one at a time and $v$ is updated iteratively.
+- Let $\alpha$ be the best value that MAX can get, at any choice point along the current path from root.
+- If $v$ becomes lower than $\alpha$, then **MAX will avoid it**.
+- Therefore, we can *stop iterating* over the remaining $n$'s other children.
+
+.center.width-30[![](figures/lec3/alpha-beta.png)]
+
+---
+
+# $\alpha$-$\beta$  search
+
+.width-100[![](figures/lec3/alpha-beta-impl.png)]
+
+---
+
+# Properties of $\alpha$-$\beta$ search
+
+- Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
+- *Time complexity*:
+    - The effectiveness depends on the order in which the states are examined.
+    - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
+        - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
+        - Equivalent to have an effective branching factor $\sqrt{b}$.
+- *Space complexity*: $O(m)$, as for Minimax.
+
+---
+
+# Game tree size
+
+.center.width-30[![](figures/lec3/chess.jpg)]
+
+Chess:
+- $b \approx 35$ (approximate average branching factor)
+- $d \approx 100$ (depth of a game tree for typical games)
+- $b^d \approx 35^{100} \approx 10^{154}$.
+- For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
+
+Finding the exact solution is completely **infeasible**.
 
 ---
 
 # Imperfect real-time decisions
+
+???
+
+Depth matters => show videos
 
 ---
 
