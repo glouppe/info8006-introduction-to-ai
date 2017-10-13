@@ -179,7 +179,7 @@ class: smaller
 
 # $\alpha$-$\beta$  pruning
 
-We want to compute $v = \text{minimax}(n)$ (for MIN).
+We want to compute $v = \text{minimax}(n)$.
 - We loop over $n$'s children.
 - The minimax values are being computed one at a time and $v$ is updated iteratively.
 - Let $\alpha$ be the best value that MAX can get, at any choice point along the current path from root.
@@ -203,7 +203,7 @@ We want to compute $v = \text{minimax}(n)$ (for MIN).
     - The effectiveness depends on the order in which the states are examined.
     - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
         - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
-        - Equivalent to have an effective branching factor $\sqrt{b}$.
+        - Equivalent favorto have an effective branching factor $\sqrt{b}$.
 - *Space complexity*: $O(m)$, as for Minimax.
 
 ---
@@ -239,7 +239,8 @@ Finding the exact solution is completely **infeasible**.
 
 - An evaluation function returns an **estimate** of the expected utility of the game from a given position.
 - The computation *must be short* (that is the whole point to search faster).
-- Ideally, the evaluation should *order* states in the same way as in Minimax.
+- Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
+    - The evaluation values may be different from the true minimax values, as long as order is preserved.
 - In non-terminal states, the evaluation function should be strongly *correlated with the actual chances of winning*.
 - Like for heuristics in search, evaluation functions can be  *learned* using machine learning algorithms.
 
@@ -252,7 +253,7 @@ Finding the exact solution is completely **infeasible**.
 - These states only differ in the position of the rook at lower right.
 - However, Black has advantage in (a), but not in (b).
 - If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- A sophisticated cutoff test should favor positions that are **quiescent**.
+- A sophisticated cutoff test should be apply to positions that are **quiescent**.
     - i.e., states that are unlikely to exhibit wild swings in value in the near future.
 
 
@@ -262,26 +263,28 @@ Finding the exact solution is completely **infeasible**.
 
 - Evaluations functions are **always imperfect**.
 - Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
+- If not looked deep enough, *bad moves may appear as good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
+    - and vice-versa!
 
 ---
 
 .center[
-<video controls>
-  <source src="figures/lec3/depth2.mp4" type="video/mp4">
+<video controls preload="auto" height="480" width="640">
+  <source src="./figures/lec3/depth2.mp4" type="video/mp4">
 </video>
 
-Cutoff at depth 2, evaluation larger as Pacman is closer to the dot.]
+Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
 .center[
-<video controls>
+<video controls preload="auto" height="480" width="640">
   <source src="figures/lec3/depth10.mp4" type="video/mp4">
 </video>
 
-Cutoff at depth 10, evaluation larger as Pacman is closer to the dot.]
+Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -289,12 +292,121 @@ Cutoff at depth 10, evaluation larger as Pacman is closer to the dot.]
 
 # Stochastic games
 
-expectimax
-videos
+- In real life, many unpredictable external events can put us into unforeseen situations.
+- Games that mirror this unpredictability are called **stochastic games**. They include a random element, such as:
+    - explicit randomness: rolling a dice;
+    - unpredictable opponents: ghosts respond randomly;
+    - actions may fail: when moving a robot, wheels might slip.
+- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
+
+.center.width-30[![](figures/lec3/random-opponent-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-# Partially observable games
+# Stochastic game tree
+
+.center.width-80[![](figures/lec3/stochastic-game-tree.png)]
+
+<span class="Q">[Q]</span> What is the best move?
+
+---
+
+# Expectiminimax
+
+- Because of the uncertainty in the action outcomes, states no longer have a *definite* $\text{minimax}$ value.
+- We can only calculate the **expected** value of a state under optimal play by the opponent.
+    - i.e., the average over all possible outcomes of the chance nodes.
+    - $\text{minimax}$ values correspond instead to the worst-case outcome.
+
+.center.width-100[![](figures/lec3/expectiminimax.png)]
+
+<span class="Q">[Q]</span> Does taking the rational move mean the agent will be successful?
+
+---
+
+# Evaluation functions
+
+- As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
+be approximated by stopping the recursion early and using an evaluation function.
+- However, to obtain correct move, the evaluation function should be a *positive linear transformation* of the expected utility of the state.
+    - It is not enough for the evaluation function to just be order-preserving.
+- If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
+
+.center.width-70[![](figures/lec3/chance-order-preserving.png)]
+.caption[An order-preserving transformation on leaf values changes the best move.]
+
+---
+
+# Monte Carlo simulation
+
+- To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
+- Use the proportion of wins as the state evaluation.
+
+---
+
+# Modeling assumptions
+
+.center[
+![](figures/lec2/search-problems-models.png)
+
+What if our assumptions are incorrect?]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Assumptions vs. reality (1)
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/minimax-vs-adversarial.mp4" type="video/mp4">
+</video>
+
+Minimax Pacman vs. Adversarial ghost]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Assumptions vs. reality (2)
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/minimax-vs-random.mp4" type="video/mp4">
+</video>
+
+Minimax Pacman vs. Random ghost]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Assumptions vs. reality (3)
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/expectimax-vs-random.mp4" type="video/mp4">
+</video>
+
+Expectiminimax Pacman vs. Random ghost]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Assumptions vs. reality (4)
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/expectimax-vs-adversarial.mp4" type="video/mp4">
+</video>
+
+Expectiminimax Pacman vs. Adversarial ghost]
+
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -302,11 +414,10 @@ videos
 
 ---
 
-# Monte Carlo tree search
-
----
-
 # Summary
+
+- What about partially observable games?
+    - See Chapter 17 or INFO8003 Optimal decision making for complex problems.
 
 ---
 
