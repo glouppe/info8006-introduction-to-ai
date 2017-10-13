@@ -52,7 +52,7 @@ A **game** is formally defined as kind of search problem with the following comp
 
 - A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
     - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
-- Together, the initial state, the $\text{actions}(s)$ function, the $\text{result}(s, a)$ function and the terminal test define the **game tree**.
+- Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
     - *Nodes* are game states.
     - *Edges* are actions.
 
@@ -192,7 +192,7 @@ We want to compute $v = \text{minimax}(n)$ (for MIN).
 
 # $\alpha$-$\beta$  search
 
-.width-100[![](figures/lec3/alpha-beta-impl.png)]
+.width-90[![](figures/lec3/alpha-beta-impl.png)]
 
 ---
 
@@ -224,13 +224,73 @@ Finding the exact solution is completely **infeasible**.
 
 # Imperfect real-time decisions
 
-???
+- Under *time constraints*, searching for the exact solution is not feasible in most realistic games.
+- Solution: cut the search earlier.
+    - Replace the $\text{utility}(s)$ function with a heuristic **evaluation function** $\text{eval}(s)$ that estimates the state utility.
+    - Replace the terminal test by a **cutoff test** that decides when to stop expanding a state.
 
-Depth matters => show videos
+.center.width-100[![](figures/lec3/hminimax.png)]
+
+<span class="Q">[Q]</span> Can $\alpha-\beta$ search  be adapted to implement H-Minimax?
+
+---
+
+# Evaluation functions
+
+- An evaluation function returns an **estimate** of the expected utility of the game from a given position.
+- The computation *must be short* (that is the whole point to search faster).
+- Ideally, the evaluation should *order* states in the same way as in Minimax.
+- In non-terminal states, the evaluation function should be strongly *correlated with the actual chances of winning*.
+- Like for heuristics in search, evaluation functions can be  *learned* using machine learning algorithms.
+
+---
+
+# Quiescence
+
+.center.width-70[![](figures/lec3/chess-eval.png)]
+
+- These states only differ in the position of the rook at lower right.
+- However, Black has advantage in (a), but not in (b).
+- If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
+- A sophisticated cutoff test should favor positions that are **quiescent**.
+    - i.e., states that are unlikely to exhibit wild swings in value in the near future.
+
+
+---
+
+# The horizon effect
+
+- Evaluations functions are **always imperfect**.
+- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
+
+---
+
+.center[
+<video controls>
+  <source src="figures/lec3/depth2.mp4" type="video/mp4">
+</video>
+
+Cutoff at depth 2, evaluation larger as Pacman is closer to the dot.]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+.center[
+<video controls>
+  <source src="figures/lec3/depth10.mp4" type="video/mp4">
+</video>
+
+Cutoff at depth 10, evaluation larger as Pacman is closer to the dot.]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
 # Stochastic games
+
+expectimax
+videos
 
 ---
 
