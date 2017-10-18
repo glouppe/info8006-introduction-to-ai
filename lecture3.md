@@ -8,6 +8,12 @@ Lecture 3: Games
 
 # Today
 
+- How to act rationally in a *multi-agent environment*?
+    - How to anticipate and respond to the arbitrary behavior of other agents?
+- **Games** as a case study.
+- *Adversarial search* (Minimax, $\alpha-\beta$ pruning, H-Minimax, Expectiminimax).
+- State-of-the-art agents.
+
 ---
 
 class: center
@@ -56,10 +62,12 @@ A **game** is formally defined as kind of search problem with the following comp
     - *Nodes* are game states.
     - *Edges* are actions.
 
+---
 
-## Assumptions
+# Assumptions
 
-- We assume *deterministic*, *turn-taking*, *two-player* **zero-sum games** of *perfect information*.
+- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
+    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
 - We will call our two players **MAX** and *MIN*. **MAX** moves first.
 
 .center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
@@ -77,7 +85,7 @@ A **game** is formally defined as kind of search problem with the following comp
 # Zero-sum games
 
 - In a **zero-sum** game, the total payoff to all players is *constant* for all games.
-    - E.g., $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
+    - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
 - For two-player games, agents share the **same utility** function, but one wants to *maximize* it while the other wants to *minimize* it.
     - MAX maximizes the game's $\text{utility}$ function.
     - MIN minimizes the game's $\text{utility}$ function.
@@ -108,7 +116,7 @@ A **game** is formally defined as kind of search problem with the following comp
 ]
 ]
 
-<span class="Q">[Q]</span> What is an optimal strategy? How do we find it?
+<span class="Q">[Q]</span> What is an optimal strategy (or perfect play)? How do we find it?
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -203,7 +211,7 @@ We want to compute $v = \text{minimax}(n)$.
     - The effectiveness depends on the order in which the states are examined.
     - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
         - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
-        - Equivalent favorto have an effective branching factor $\sqrt{b}$.
+        - Equivalent to an effective branching factor $\sqrt{b}$.
 - *Space complexity*: $O(m)$, as for Minimax.
 
 ---
@@ -233,6 +241,12 @@ Finding the exact solution is completely **infeasible**.
 
 <span class="Q">[Q]</span> Can $\alpha-\beta$ search  be adapted to implement H-Minimax?
 
+???
+
+Yes.
+
+Replace the if-statements with the terminal test with if-statements with the cutoff test.
+
 ---
 
 # Evaluation functions
@@ -253,7 +267,7 @@ Finding the exact solution is completely **infeasible**.
 - These states only differ in the position of the rook at lower right.
 - However, Black has advantage in (a), but not in (b).
 - If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- A sophisticated cutoff test should be apply to positions that are **quiescent**.
+- Cutoff should only be applied to positions that are **quiescent**.
     - i.e., states that are unlikely to exhibit wild swings in value in the near future.
 
 
@@ -297,9 +311,19 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
     - explicit randomness: rolling a dice;
     - unpredictable opponents: ghosts respond randomly;
     - actions may fail: when moving a robot, wheels might slip.
-- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
 
-.center.width-30[![](figures/lec3/random-opponent-cartoon.png)]
+.center.width-40[![](figures/lec3/random-opponent-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Stochastic games
+
+- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
+- This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
+
+.center.width-30[![](figures/lec3/random-player.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -310,6 +334,10 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 .center.width-80[![](figures/lec3/stochastic-game-tree.png)]
 
 <span class="Q">[Q]</span> What is the best move?
+
+???
+
+The best move cannot be determined anymore, because it depends on chance.
 
 ---
 
@@ -342,7 +370,40 @@ be approximated by stopping the recursion early and using an evaluation function
 # Monte Carlo simulation
 
 - To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
+    - The sequence of random moves is called a *random playout*.
 - Use the proportion of wins as the state evaluation.
+- This strategy does not require domain knowledge!
+    - The game engine is all that is needed.
+
+---
+
+# Monte Carlo tree search
+
+1. *Selection*: start from root, select successive child nodes down to a leaf $\ell$.
+2. *Expansion*: unless $\ell$ is a terminal state, create one or more child nodes and choose a node $c$ among them.
+3. *Simulation*: play a random playout from $c$.
+4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $c$ to the root.
+
+Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
+
+.center.width-70[![](figures/lec3/mcts.png)]
+
+<span class="Q">[Q]</span> How to determine the expansion order?
+
+---
+
+# Multi-agent utilities
+
+- What if the game is not zero-sum, or has *multiple players*?
+- Generalization of Minimax:
+    - Terminal states are labeled with utility **tuples** (1 value per player).
+    - Intermediate states are also labeled with utility tuples.
+    - Each player maximizes its own component.
+    - May give rise to cooperation and competition dynamically
+
+.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -412,13 +473,91 @@ Expectiminimax Pacman vs. Adversarial ghost]
 
 # State-of-the-art game programs
 
+## Checkers
+
+- 1951 (Christopher Strachey): first computer player .
+- 1994 (Jonathan Schaeffer et al.): first computer champion. *Chinook* ended 40-year-reign of human champion Marion Tinsley.
+    - Library of opening moves from grandmasters;
+    - A deep search algorithm;
+    - A good move evaluation function;
+        - Based on a linear model.
+    - A database for all positions with eight pieces or fewer.
+- 2007 (Jonathan Schaeffer et al.): Checkers is **solved**.
+    - A weak solution is computationally proven.
+        - The number of involved calculations was $10^{14}$, over a period of 18 years.
+    - The best an optimal player can achieve against Chinook is a draw.
+
+---
+
+.center.width-70[![](figures/lec3/checkers-proof.png)]
+
+.footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
+
+---
+
+# State-of-the-art game programs
+
+## Chess
+
+- 1997: *Deep Blue* defeats human champion Gary Kasparov.
+    - $200000000$ position evulations per second.
+    - Very sophisticated evaluation function.
+    - Undisclosed methods for extending some lines of search up to 40 plies.
+- Modern programs are better, if less historic.
+- Chess remains *unsolved* due to the complexity of the game.
+
+.center.width-50[![](figures/lec3/deep-blue.jpg)]
+
+---
+
+# State-of-the-art game programs
+
+## Go
+
+- On a 19x19, the number of legal positions is $\pm 2 \times 10^{170}$.
+- This results in **$\pm 10^{800}$ games**, considering a length of $400$ or less.
+- 2010-2014: Using *Monte Carlo tree search* and *machine learning*, computer players reach low dan levels.
+- 2015-2017 (Google Deepmind): *AlphaGo*
+    - 2015: AlphaGo beat Fan Hui, the European Go Champion.
+    - 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
+    - 2017: AlphaGo beat Ke Jie, 1st world human player.
+- AlphaGo combines *Monte Carlo tree search* and *deep learning* with extensive training, both from human and computer play.
+
+---
+
+class: center
+
+# AlphaGo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
+
+---
+
+# AlphaGo Zero
+
+Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
+
+.center.width-50[![](figures/lec3/alphago-zero.png)]
+
 ---
 
 # Summary
 
-- What about partially observable games?
-    - See Chapter 17 or INFO8003 Optimal decision making for complex problems.
+- Multi-player games are variants of search problems.
+- The difficulty rise in the fact that opponents may respond arbitrarily.
+    - The optimal solution is a **strategy**, and not a fixed sequence of actions.
+- *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
+    - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
+    - Approximations can be achieved with heuristics, reducing computing times.
+    - Minimax can be adapted to stochastic games.
+    - Minimax can be adapter to games with more than 2 players.
+- Optimal behavior is **relative** and depends on the assumptions we make about the world.
+- Going further?
+    - See Chapters 16, 17 and 21 or INFO8003 Optimal decision making for complex problems.
 
 ---
 
 # References
+
+- Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.
+- Silver, David, et al. "Mastering the game of Go with deep neural networks and tree search." Nature 529.7587 (2016): 484-489.
