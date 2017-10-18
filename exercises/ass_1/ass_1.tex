@@ -47,8 +47,10 @@
 
 \setlength\parindent{0pt}
 
-\definecolor{CFFFFFF}{HTML}{FFFFFF}
+\definecolor{CFFCC00}{HTML}{FFCC00}
 \definecolor{C000000}{HTML}{000000}
+\definecolor{CFFFFFF}{HTML}{FFFFFF}
+\definecolor{C00FF00}{HTML}{00FF00}
 \begin{document}
 %\sffamily
 \fancypagestyle{plain}
@@ -90,7 +92,8 @@
 \end{itemize}
 
 \section{Basic search}
-\begin{tikzpicture}[inner sep=0pt,scale=0.33]
+\begin{center}
+\begin{tikzpicture}[inner sep=0pt,scale=0.4]
 \node (n0) [minimum height=15.0pt, minimum width=15.0pt,at={(514pt,-187pt)}, fill=yellow, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {1};
 \node (n1) [minimum height=15.0pt, minimum width=15.0pt,at={(625pt,-277pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {2};
 \node (n2) [minimum height=15.0pt, minimum width=15.0pt,at={(717pt,-278pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {3};
@@ -113,7 +116,7 @@
 \path [-,line width=1.0pt,draw,](n5)--(n6);
 \path [-,line width=1.0pt,draw,](n3)--(n6);
 \end{tikzpicture}
-\begin{tikzpicture}[inner sep=0pt,scale=0.33]
+\begin{tikzpicture}[inner sep=0pt,scale=0.4]
 \node (n0) [minimum height=15.0pt, minimum width=15.0pt,at={(518pt,-187pt)}, fill=yellow, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {1};
 \node (n1) [minimum height=15.0pt, minimum width=15.0pt,at={(518pt,-360pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {3};
 \node (n2) [minimum height=15.0pt, minimum width=15.0pt,at={(377pt,-110pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {6};
@@ -144,31 +147,63 @@
 \path [-,line width=1.0pt,draw,](n2)--(n4);
 \path [-,line width=1.0pt,draw,](n6)--(n7);
 \end{tikzpicture}
-\begin{tikzpicture}[inner sep=0pt, scale=0.33]
-\node (n0) [minimum height=15.0pt, minimum width=15.0pt,at={(514pt,-187pt)}, fill=green, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {1};
+
+\begin{tikzpicture}[inner sep=0pt,scale=0.4]
+\node (n0) [minimum height=15.0pt, minimum width=15.0pt,at={(514pt,-187pt)}, fill=CFFCC00, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {1};
 \node (n1) [minimum height=15.0pt, minimum width=15.0pt,at={(655pt,-85pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {2};
 \node (n2) [minimum height=15.0pt, minimum width=15.0pt,at={(649pt,-296pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {3};
 \node (n3) [minimum height=15.0pt, minimum width=15.0pt,at={(828pt,-85pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {4};
 \node (n4) [minimum height=15.0pt, minimum width=15.0pt,at={(828pt,-296pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {5};
 \node (n5) [minimum height=15.0pt, minimum width=15.0pt,at={(996pt,-187pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {6};
 \node (n6) [minimum height=15.0pt, minimum width=15.0pt,at={(1073pt,-90pt)}, fill=CFFFFFF, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {7};
-\node (n7) [minimum height=15.0pt, minimum width=15.0pt,at={(1073pt,-296pt)}, fill=yellow, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {8};
+\node (n7) [minimum height=15.0pt, minimum width=15.0pt,at={(1073pt,-296pt)}, fill=C00FF00, draw, line width=1.0pt,align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{12}{13}\selectfont, shape=circle] {8};
+
+
 \path [->,line width=1.0pt,draw,](n1)--(n0);
+\path (n1) ++(-58.3466186523438pt,-27.0155116953748pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n0)--(n2);
-\path [->,line width=1.0pt,draw,](n0)--(n4);
+\path (n0) ++(55.8292846679688pt,-29.3955770987051pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{1};
+
+
+
 \path [->,line width=1.0pt,draw,](n1)--(n3);
+\path (n1) ++(71.5pt,10.984375pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{1};
+
 \path [->,line width=1.0pt,draw,](n2)--(n1);
+\path (n2) ++(-5.499254271882364pt,90.5060729980469pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{4};
+
 \path [->,line width=1.0pt,draw,](n4)--(n2);
+\path (n4) ++(-74.5pt,10.984375pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n1)--(n4);
+\path (n1) ++(86.9894409179688pt,-75.8208795889265pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{3};
+
 \path [->,line width=1.0pt,draw,](n3)--(n4);
+\path (n3) ++(16.9894409179688pt,-75.8208795889265pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{3};
+
 \path [->,line width=1.0pt,draw,](n6)--(n7);
-\path [<-,line width=1.0pt,draw,](n7)--(n4);
+\path (n6) ++(-7.8173828125pt,-88pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
+\path [>-,line width=1.0pt,draw,](n7)--(n4);
+\path (n7) ++(-107.5pt,10.984375pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n5)--(n4);
+\path (n5) ++(-71.41650390625pt,-31.5769602457682pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n6)--(n5);
+\path (n6) ++(-29.1739501953125pt,-18.4388358376243pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n3)--(n5);
+\path (n3) ++(71.1781616210938pt,-28.6989669799805pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{1};
+
 \path [->,line width=1.0pt,draw,](n6)--(n3);
+\path (n6) ++(-107.503173828125pt,13.2970363071987pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{2};
+
 \path [->,line width=1.0pt,draw,](n5)--(n7);
-\end{tikzpicture}\\
+\path (n5) ++(29.8453369140625pt,-23.0292247425426pt)node[align=center,text width=11.634765625,font=\fontfamily{phv}\fontsize{10}{11}\selectfont]{1};
+\end{tikzpicture}
+\end{center}
 For each of the graphs, perform the following searches and discuss what happens : 
 
 \begin{itemize}
@@ -177,7 +212,8 @@ For each of the graphs, perform the following searches and discuss what happens 
     \item Uniform cost
 \end{itemize}
 
-\danger The last one is directed !\\
+\danger The last one is directed ! Possible to go through an opposite direction but cost is 2x the original one\\
+(At any tie, least labeled node is to be considered first)5
 
 What is common for all these methods ? What are some important properties for each of them ? Can you cite another search method you've seen, either in class or outside ?
 
