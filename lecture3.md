@@ -525,9 +525,19 @@ Expectiminimax Pacman vs. Adversarial ghost]
 
 ---
 
-class: center, middle
+class: center
+
+# AlphaGo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
+
+---
+
+# AlphaGo Zero
+
+Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
+
+.center.width-50[![](figures/lec3/alphago-zero.png)]
 
 ---
 
@@ -543,7 +553,7 @@ class: center, middle
     - Minimax can be adapter to games with more than 2 players.
 - Optimal behavior is **relative** and depends on the assumptions we make about the world.
 - Going further?
-    - See Chapters 16 and 17 or INFO8003 Optimal decision making for complex problems.
+    - See Chapters 16, 17 and 21 or INFO8003 Optimal decision making for complex problems.
 
 ---
 
