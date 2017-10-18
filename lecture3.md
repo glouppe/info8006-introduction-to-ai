@@ -211,7 +211,7 @@ We want to compute $v = \text{minimax}(n)$.
     - The effectiveness depends on the order in which the states are examined.
     - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
         - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
-        - Equivalent favorto have an effective branching factor $\sqrt{b}$.
+        - Equivalent to an effective branching factor $\sqrt{b}$.
 - *Space complexity*: $O(m)$, as for Minimax.
 
 ---
@@ -241,6 +241,12 @@ Finding the exact solution is completely **infeasible**.
 
 <span class="Q">[Q]</span> Can $\alpha-\beta$ search  be adapted to implement H-Minimax?
 
+???
+
+Yes.
+
+Replace the if-statements with the terminal test with if-statements with the cutoff test.
+
 ---
 
 # Evaluation functions
@@ -261,7 +267,7 @@ Finding the exact solution is completely **infeasible**.
 - These states only differ in the position of the rook at lower right.
 - However, Black has advantage in (a), but not in (b).
 - If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- A sophisticated cutoff test should be apply to positions that are **quiescent**.
+- Cutoff should only be applied to positions that are **quiescent**.
     - i.e., states that are unlikely to exhibit wild swings in value in the near future.
 
 
@@ -329,6 +335,10 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
 <span class="Q">[Q]</span> What is the best move?
 
+???
+
+The best move cannot be determined anymore, because it depends on chance.
+
 ---
 
 # Expectiminimax
@@ -362,6 +372,8 @@ be approximated by stopping the recursion early and using an evaluation function
 - To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
     - The sequence of random moves is called a *random playout*.
 - Use the proportion of wins as the state evaluation.
+- This strategy does not require domain knowledge!
+    - The game engine is all that is needed.
 
 ---
 
