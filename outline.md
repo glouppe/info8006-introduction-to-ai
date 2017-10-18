@@ -78,18 +78,15 @@ class: middle, center
 
 # 3. Games
 
--   Games, optimal decisions, stochastic game, partially observable games, ... *(Chapter 5)*
--   *Extra:* Deep Blue, AlphaGo, DeepStack, Starcraft
+-   Games, optimal decisions, stochastic game, ... *(Chapter 5)*
+-   *Extra:* Deep Blue, AlphaGo
 
 ---
 
 # 4. Constraint satisfaction problems
 
 - CSPs, backtracking, local search, ... *(Chapter 6)*
-
-???
-
-or planning?
+- Logical inference as a CSP
 
 ---
 
@@ -97,7 +94,6 @@ or planning?
 
 -   Quantifying Uncertainty *(Chapter 13)*
 -   Probabilistic reasoning *(Chapter 14)*
--   *Extra:* Probabilistic reasoning vs. logic-based reasoning *(Chapters 7-9)*
 
 ---
 
@@ -105,7 +101,6 @@ or planning?
 
 -   Probabilistic reasoning over time *(Chapter 15)*
 -   Learning probabilistic models *(Chapter 20)*
--   *Extra:* Celeste paper; Modern tools for probabilistic models (Stan, etc)
 
 ---
 

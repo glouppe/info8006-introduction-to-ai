@@ -525,12 +525,13 @@ class: center, middle
 - The difficulty rise in the fact that opponents may respond arbitrarily.
     - The optimal solution is a **strategy**, and not a fixed sequence of actions.
 - *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
-    - Approximations can be achieve with heuristics, reducing computing times.
+    - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
+    - Approximations can be achieved with heuristics, reducing computing times.
     - Minimax can be adapted to stochastic games.
     - Minimax can be adapter to games with more than 2 players.
 - Optimal behavior is **relative** and depends on the assumptions we make about the world.
-- What about *partially observable* games?
-    - See Chapter 17 or INFO8003 Optimal decision making for complex problems.
+- Going further?
+    - See Chapters 16 and 17 or INFO8003 Optimal decision making for complex problems.
 
 ---
 
