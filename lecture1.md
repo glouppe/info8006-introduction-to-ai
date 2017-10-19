@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 1: Foundations
 
+???
+
+R: code examples are not really helpful
+
 ---
 
 class: middle, center

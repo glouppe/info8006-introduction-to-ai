@@ -135,7 +135,7 @@ class: middle, center
 
 ---
 
-# 11. AGI, Philosophy and Future of AI
+# 11. Artificial General Intelligence and beyond
 
 Artificial General Intelligence
 -   Recursive self-improvement, meta learning *(Research)*

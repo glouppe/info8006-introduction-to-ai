@@ -100,7 +100,7 @@ Formally, a constraint satisfaction problem (CSP) consists of three components $
 
 .center.width-40[![](figures/lec4/waltz.png)]
 
-The Waltz algorithm is for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
+The Waltz algorithm is a procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
 
 .pull-right.width-70[![](figures/lec4/waltz-inter.png)]
 CSP formulation:
@@ -177,29 +177,98 @@ class: middle, center
 
 ---
 
-# CSPs as standard search problems
+# Standard search formulation
 
-
-
----
-
-# Backtracking search for CSPs
-
----
-
-# Variable ordering and value selection heuristics
+- CSPs can be cast as standard search problems.
+    - For which we have solvers, including DFS, BFS or A*.
+- States are partial assignments:
+    - The *initial state* is the empty assignment $\\{ \\}$.
+    - *Actions*: assign a value to an unassigned variable.
+    - *Goal test*: the current assignment is complete and satisfies all constraints.
+- This algorithm is the same for all CSPs!
 
 ---
 
-# Constraint propagation
+# Search methods
+
+.center.width-50[![](figures/lec4/csp-graph.png)]
+
+- What would BFS or DF do? What problems does naive search have?
+- For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
+    - We generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
+
+XXX: video?
 
 ---
 
-# The structure of problems
+# Backtracking search
+
+
+- Backtracking search is the basic uninformed algorithm for solving CSPs.
+- Idea 1: **One variable at a time**:
+    - The naive application of search algorithms ignore a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
+        - $WA=red$ then $NT=green$ is the same as $NT=green$ then $WA=red$.
+    - One only needs to consider assignments to a single variable at each step.
+        - $b=d$ and there are $d^n$ leaves.
+- Idea 2: **Check constraints as you go**:
+    - Consider only values which do not conflict with current partial assignment.
+    - Incremental goal test.
 
 ---
 
-# Local search for CSPs
+# Backtracking example
+
+.center.width-80[![](figures/lec4/backtracking-example.png)]
+
+---
+
+# Backtracking search
+
+.center.width-100[![](figures/lec4/backtracking.png)]
+
+- Backtracking = DFS + variable-ordering + fail-on-violation
+- What are the choice points?
+
+---
+
+# Improving backtracking
+
+- Can we improve backtracking using general-purpose ideas, without domain-specific knowledge?
+- *Ordering*:
+    - Which variable should be assigned next?
+    - In what order should its values be tried?
+- *Filtering*: can we detect inevitable failure early?
+- *Structure*: can we exploit the problem structure?
+
+---
+
+# Variable ordering
+
+- **Minimum remaining values**:
+Choose the variable *with the fewest legal values left* in its domain.
+- Also known as the *fail-first* heuristic.
+    - Detecting failures quickly is equivalent to pruning large parts of the search tree.
+
+.center.width-100[![](figures/lec4/ordering-mrv.png)]
+
+---
+
+# Value ordering
+
+- **Least constraining value**: Given a choice of variable, choose the *least constraining value*.
+- i.e., the value that rules out the fewest values in the remaining variables.
+
+.center.width-100[![](figures/lec4/ordering-lcv.png)]
+
+<span class="Q">[Q]</span> Why should variable selection be fail-first but value selection be fail-last?
+
+---
+
+# Filtering
+
+---
+
+# Structure
 
 ---
 
