@@ -233,7 +233,7 @@ XXX: video?
 
 # Improving backtracking
 
-- Can we improve backtracking using general-purpose ideas, without domain-specific knowledge?
+- Can we improve backtracking using **general-purpose** ideas, without domain-specific knowledge?
 - *Ordering*:
     - Which variable should be assigned next?
     - In what order should its values be tried?
@@ -264,7 +264,20 @@ Choose the variable *with the fewest legal values left* in its domain.
 
 ---
 
-# Filtering
+# Filtering: Forward checking
+
+- Keep *track of remaining legal values* for unassigned variables.
+    - Whenever a variable $X$ is assigned, and for each unassigned variable $Y$ that is connected to $X$ by a constraint, delete from $Y$'s domain any value that is inconsistent.
+- *Terminate search* when any variable has no legal value left.
+
+.center.width-100[![](figures/lec4/forward-checking.png)]
+
+---
+
+# Filtering: Constraint propagation
+
+
+
 
 ---
 
