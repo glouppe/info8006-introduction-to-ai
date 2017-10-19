@@ -20,7 +20,11 @@ class: center
 
 # Ignore the Blonde
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LJS7Igvk6ZM" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+
+???
+
+R: add subtitles
 
 ---
 
@@ -201,6 +205,10 @@ We want to compute $v = \text{minimax}(n)$.
 # $\alpha$-$\beta$  search
 
 .width-90[![](figures/lec3/alpha-beta-impl.png)]
+
+???
+
+R: be explicit about what alpha and beta correspond to
 
 ---
 
@@ -390,6 +398,10 @@ Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
 
 <span class="Q">[Q]</span> How to determine the expansion order?
 
+???
+
+R: make it clearer that the policy of expansion is important.
+
 ---
 
 # Multi-agent utilities
@@ -523,6 +535,10 @@ Expectiminimax Pacman vs. Adversarial ghost]
     - 2017: AlphaGo beat Ke Jie, 1st world human player.
 - AlphaGo combines *Monte Carlo tree search* and *deep learning* with extensive training, both from human and computer play.
 
+???
+
+R: define value and policy networks and how they relate to MCTS.
+
 ---
 
 class: center
@@ -554,6 +570,7 @@ Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* a
 - Optimal behavior is **relative** and depends on the assumptions we make about the world.
 - Going further?
     - See Chapters 16, 17 and 21 or INFO8003 Optimal decision making for complex problems.
+    - What if the world is unknown?
 
 ---
 

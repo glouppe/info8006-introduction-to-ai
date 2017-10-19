@@ -168,6 +168,14 @@ td {
     height: auto;
 }
 
+.width-10 * {
+    width: 10%;
+}
+
+.width-20 * {
+    width: 20%;
+}
+
 .width-30 * {
     width: 30%;
 }
