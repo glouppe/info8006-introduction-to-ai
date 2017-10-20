@@ -104,7 +104,14 @@ class: middle, center
 
 ---
 
-# 7. Learning
+# 7. Making decisions
+
+-   Making simple decisions *(Chapter 16)*
+-   Mentions of 17? 21?
+
+---
+
+# 8. Learning
 
 -   Discussion on the need for learning
 -   Overview of various learning paradigms *(Chapters 18, 19, 20, 21)*
@@ -112,7 +119,7 @@ class: middle, center
 
 ---
 
-# 8. Communication
+# 9. Communication
 
 -   Natural language processing *(Chapter 22)*.
 -   Natural language for communication *(Chapter 23)*.
@@ -120,7 +127,7 @@ class: middle, center
 
 ---
 
-# 9. Perception
+# 10. Perception
 
 -   Computer vision *(Chapter 24)*
 -   Attention mechanisms *(Research)*
@@ -128,15 +135,13 @@ class: middle, center
 
 ---
 
-# 10. Artificial General Intelligence
+# 11. Artificial General Intelligence and beyond
 
+Artificial General Intelligence
 -   Recursive self-improvement, meta learning *(Research)*
 -   AIXI *(Research)*
 
----
-
-# 11. Philosophical foundations and future of AI
-
+Philosophical foundations and future of AI
 -   Philosophical foundations *(Chapter 26)*
 -   Future of AI, open challenges, safety *(Chapter 27)*
 -   *Extra:*  Probably approximately correct theory
