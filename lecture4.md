@@ -203,7 +203,6 @@ XXX: video?
 
 # Backtracking search
 
-
 - Backtracking search is the basic uninformed algorithm for solving CSPs.
 - Idea 1: **One variable at a time**:
     - The naive application of search algorithms ignore a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
@@ -276,22 +275,76 @@ Choose the variable *with the fewest legal values left* in its domain.
 
 # Filtering: Constraint propagation
 
+Forward checking propagates information assigned to unassigned variables, but does not provide early deteciton for all failures:
 
+.center.width-100[![](figures/lec4/forward-checking-inc.png)]
 
-
----
-
-# Structure
-
----
-
-class: middle, center
-
-# First-order logic as a CSP
+- $NT$ and $SA$ cannot both be blue!
+- **Constraint propagation** repeatedly enforces constraints locally.
 
 ---
 
-# First-order logic
+# Arc consistency
+
+- An arc $X \to Y$ is **consistent** if and only if for every value $x$ in the domain of $X$ there is some value $y$ in the domain of $Y$ that satisfies the associated binary constraint.
+- Forward checking $\Leftrightarrow$ enforcing consistency of arcs pointing to each new assignment.
+- This principle can be generalized to enforce consistency for **all** arcs.
+
+.center.width-100[![](figures/lec4/arc-consistency.png)]
+
+---
+
+# Arc consistency algorithm
+
+.center.width-100[![](figures/lec4/ac3.png)]
+
+<span class="Q">[Q]</span> When in backtracking shall this procedure be called?
+
+---
+
+# Structure (1)
+
+.center.width-50[![](figures/lec4/csp-graph.png)]
+
+- Tasmania and mainland are **independent subproblems**.
+    - Any solution for the mainland combined with any solution for Tasmania yields a solution for the whole map.
+- Independence can be ascertained by finding *connected components* of the constraint graph.
+
+---
+
+# Structure (2)
+
+- Time complexity: Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
+    - E.g., $n=80$, $d=2$, $c=20$.
+    - $2^{80} =$  4 billion years at 10 million nodes/sec.
+    - $4 \times 2^{20} =$ 0.4 seconds at 10 million nodes/sec.
+
+---
+
+# Tree-structured CSPs
+
+.center.width-90[![](figures/lec4/tree-csp-trans.png)]
+
+- Algorithm for tree-structured CSPs:
+    - Order: choose a root variable, order variables so that parents precede children (topological sort).
+    - Remove backward:
+        - for $i=n$ down to $2$, enforce arc consistency of $parent(X_i) \to X_i$.
+    - Assign forward:
+        - for $i=1$ to $n$, assign $X_i$ consistently with its $parent(X_i)$.
+- Time complexity: $O(n d^2)$
+    - Compare to general CSPs, where worst-case time is $O(d^n)$.
+
+---
+
+# Nearly tree-structured CSPs
+
+- *Conditioning*:  instantiate a variable, prune its neighbors' domains.
+- *Cutset conditioning*:
+    - Assign (in all ways) a set $S$ of variables such that the remaining constraint graph is a tree.
+    - Solve the residual CSPs (tree-structured).
+    - If the residual CSP has a solution, return it together with the assignment for $S$.
+
+.center.width-70[![](figures/lec4/cutset.png)]
 
 ---
 
