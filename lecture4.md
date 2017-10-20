@@ -348,6 +348,151 @@ Forward checking propagates information assigned to unassigned variables, but do
 
 ---
 
+class: middle, center
+
+# Logical agents
+
+---
+
+# The Wumpus world
+
+.center.width-70[![](figures/lec4/wumpus-world.png)]
+
+---
+
+class: smaller
+
+# PEAS description
+
+- *Performance measure*:
+    - +1000 for climbing out of the cave with gold;
+    - -1000 for falling into a pit or being eaten by the wumpus;
+    - -1 per step.
+- *Environment*:
+    - $4 \times 4$ grid of rooms;
+    - The agent starts in the lower left square labeled $[1,1]$, facing right;
+    - Locations for gold, the wumpus and pits are chosen randomly from squares other than the start square.
+- *Actuators*:
+    - Forward, Turn left by $90$° or Turn right by $90$°.
+- *Sensors*:
+    - Squares adjacent to wumpus are *smelly*;
+    - Squares adjacent to pit are *breezy*;
+    - *Glitter* if gold is in the same square;
+        - Gold is picked up by reflex, and cannot be dropped.
+    - You *bump* if you walk into a wall.
+    - The agent program with receives the percept $[Stench, Breeze, Glitter, Bump]$.
+
+---
+
+# Wumpus world characterization
+
+- *Deterministic*: Yes, outcomes are exactly specified.
+- *Static*: Yes, Wumpus and pits dot not move.
+- *Discrete*: Yes.
+- *Single-agent*: Yes, Wumpus is essential a natural feature.
+- **Fully observable**: No, only *local* perception.
+- **Episodic**: No, what was observed before is very useful.
+
+The agent need to maintain a model of the world and to update this model upon percepts.
+
+We will use **logical reasoning** to overcome the initial ignorance of the agent.
+
+---
+
+# Exploring the Wumpus world (1)
+
+.center.width-100[![](figures/lec4/wumpus-exploration1.png)]
+
+(a) Percept = $[None, None, None, None]$
+
+(b) Percept = $[None, Breeze, None, None]$
+
+---
+
+# Exploring the Wumpus world (2)
+
+.center.width-100[![](figures/lec4/wumpus-exploration2.png)]
+
+(a) Percept = $[Stench, None, None, None]$
+
+(b) Percept = $[Stench, Breeze, Glitter, None]$
+
+---
+
+# Logical agents
+
+- Most useful in non-episodic, partially observable environments.
+- **Logic (knowledge-based) agents** combine:
+    - A *knowledge base* ($KB$): a list of facts that are known to the agent.
+    - Current *percepts*.
+- Hidden aspects of the current state are **inferred** using rules of inference.
+- **Logic** provides a good formal language for both   
+    - Facts encoded as *axioms*.
+    - Rules of *inference*.
+
+---
+
+# Propositional logic: Syntax
+
+The **syntax** of propositional logic defines allowable *sentences*.
+
+.center.width-80[![](figures/lec4/syntax.png)]
+
+---
+
+# Propositional logic: Semantics
+
+- In propositional logic, a *model* is an assignment of the truth values for every proposition symbol.
+    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
+- The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
+    - The truth value of a proposition symbol is specified in $m$.
+    - $\lnot P$ is true iff $P$ is false;
+    - $P \wedge Q$ is true iff $P$ and $Q$ are true;
+    - $P \lor Q$ is true iff either $P$ or $Q$ is true;
+    - $P \Rightarrow Q$ is true unless $P$ is true and $Q$ is false;
+    - $P \Leftrightarrow Q$ is true iff $P$ and $Q$ are both true of both false.
+
+
+---
+
+# Wumpus world sentences
+
+.grid[
+.col-2-3[
+- Let $P_{i,j}$ be true if there is a pit in $[i,j]$.
+- Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
+
+Examples:
+- Start: $\lnot P\\\_{1,1}$, $\lnot B\\\_{1,1}$, $B\\\_{2,1}$
+- Pits cause breezes in adjacent squares:
+    - $B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1})$
+    - $B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1})$
+
+]
+.col-1-3[![](figures/lec4/wumpus-world.png)]
+]
+
+---
+
+# Entailment
+
+- We say a model $m$ *satisfies* a sentence $\alpha$ if $\alpha$ is true in $m$.
+    - $M(\alpha)$ is the set of all models of $\alpha$.
+- $\alpha \vDash \beta$ iff $M(\alpha) \subseteq M(\beta)$.
+    - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
+    - $\beta$ is true in all models where $\alpha$ is true.
+    - That is, $\beta$ *follows logically* from $\alpha$.
+
+---
+
+# Entailments in the Wumpus world
+
+---
+
+# Unsatisfiability theorem
+
+---
+
 # Summary
 
 ---
