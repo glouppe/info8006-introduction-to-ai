@@ -442,7 +442,7 @@ The **syntax** of propositional logic defines allowable *sentences*.
 
 # Propositional logic: Semantics
 
-- In propositional logic, a *model* is an assignment of the truth values for every proposition symbol.
+- In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
     - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
 - The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
     - The truth value of a proposition symbol is specified in $m$.
@@ -485,11 +485,58 @@ Examples:
 
 ---
 
-# Entailments in the Wumpus world
+# Wumpus models (1)
+
+.center.width-30[![](figures/lec4/wumpus-simple.png)]
+
+- Let consider possible models for $KB$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Situation after:
+    - detecting nothing in $[1,1]$,
+    - moving right, breeze in $[2,1]$.
+
+---
+
+# Wumpus models (2)
+
+.center.width-60[![](figures/lec4/wumpus-kb.png)]
+
+- All 8 possible models in the reduced Wumpus world.
+- The knowledge base $KB$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
+
+---
+
+# Entailments (1)
+
+.center.width-60[![](figures/lec4/wumpus-entailment.png)]
+
+- $\alpha_1$ = "$[1,2]$ is safe". Does $KB$ entails $\alpha_1$?
+- $KB \vDash \alpha_1$ since $M(KB)  \subseteq M(\alpha_1)$.
+    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $KB$ is true.
+- Entailment can be used to carry out **logical inference**.
+
+---
+
+# Entailments (2)
+
+.center.width-60[![](figures/lec4/wumpus-noentailment.png)]
+
+- $\alpha_2$ = "$[2,2]$ is safe". Does $KB$ entails $\alpha_2$?
+- $KB \nvDash \alpha_2$ since $M(KB)  \nsubseteq M(\alpha_2)$.
+- We **cannot** conclude whether $[2,2]$ is safe (it may or may not).
 
 ---
 
 # Unsatisfiability theorem
+
+$$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatisfiable}$$
+
+- $\alpha$ is unsatisfiable iff $M(\alpha) = \\{ \\}$.
+    - i.e., there is no assignment of truth values such that $\alpha$ is true.
+- Proving $\alpha \vDash \beta$ by checking the unsatisfiability of $\alpha \wedge \lnot \beta$ corresponds to the proof technique of reductio ad absurdum.
+- Checking the satisfiability of a sentence $\alpha$ can be cast as CSP!
+    - More efficient than enumerating all models.
+    - But remains NP-complete.
+
 
 ---
 
