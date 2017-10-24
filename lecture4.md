@@ -8,6 +8,18 @@ Lecture 4: Constraint satisfaction problems
 
 # Today
 
+- *Constraint satisfaction problems*:
+    - Exploiting the representation of a state to accelerate search.
+    - Backtracking.
+    - Generic heuristics.
+- *Logical agents*
+    - Propositional logic for reasoning about the world.
+    - ... and its connection with CSPs.
+
+.center.width-50[![](figures/lec4/map-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
 class: middle, center
@@ -31,11 +43,11 @@ class: middle, center
 
 # Constraint satisfaction problems
 
-Formally, a constraint satisfaction problem (CSP) consists of three components $X$, $D$ and $C$:
+Formally, a **constraint satisfaction problem** (CSP) consists of three components $X$, $D$ and $C$:
 
-- $X$ is a set of variables, $\\{X_1, ..., X_n\\}$,
-- $D$ is a set of domains, $\\{D_1, ..., D_n\\}$, one for each variable,
-- $C$ is a set of constraints that specify  allowable combinations of values.
+- $X$ is a set of *variables*, $\\{X_1, ..., X_n\\}$,
+- $D$ is a set of *domains*, $\\{D_1, ..., D_n\\}$, one for each variable,
+- $C$ is a set of *constraints* that specify  allowable combinations of values.
 
 ---
 
@@ -124,7 +136,7 @@ CSP formulation:
         - need a constraint language, e.g. $start_1 + 5 \leq start_2$.
         - Solvable for linear constraints, undecidable otherwise.
 - *Continuous variables*
-    - e.g., precise start/end times of experiments on the Hubble Space telescope (that must obey astronomical and power constraints).
+    - e.g., precise start/end times of experiments.
     - Linear constraints solvable in polynomial time by LP methods.
 
 ---
@@ -135,7 +147,7 @@ CSP formulation:
     - Unary constraint involve a single variable.
         - Equivalent to reducing the domain, e.g. $SA \neq green$.
     - Binary constraints involve pairs of variables, e.g. $SA \neq WA$.
-    - Higher-oder constraints involve 3 or more variables.
+    - Higher-order constraints involve 3 or more variables.
 - *Preferences* (*soft constraints*)
     - e.g., red is better than green.
     - Often representable by a cost for each variable assignment.
@@ -196,8 +208,6 @@ class: middle, center
 - What would BFS or DF do? What problems does naive search have?
 - For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
     - We generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
-
-XXX: video?
 
 ---
 
@@ -536,12 +546,19 @@ $$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatis
 - Checking the satisfiability of a sentence $\alpha$ can be cast as CSP!
     - More efficient than enumerating all models.
     - But remains NP-complete.
+    - See also SAT solvers, tailored for this specific problem.
 
 
 ---
 
 # Summary
 
----
-
-# References
+- Constraint satisfaction problems:
+    - States are represented by a set of variable/value pairs.
+    - Backtracking, a form of depth-first search, is commonly used for solving CSPs.
+    - The complexity of solving a CSP is strongly related to the structure of its constraint graph.
+- Logical agents:
+    - Intelligent agents need knowledge about the world in order to reach good decisions.
+    - Logical inference can be used as tool to reason about the world.
+        - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
+        - This in turn can be cast as a CSP.
