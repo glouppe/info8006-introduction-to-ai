@@ -37,6 +37,7 @@ class: middle, center
         - A state is a black box.
 - Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the *efficiency of the search*.
 - **Constraint satisfaction problem** algorithms *take advantage of this structure* and use *general-purpose* heuristics to solve complex problems.
+    - CSPs are specialized to a family of search sub-problems.
 - Main idea: eliminate large portions of the search space all at once, by identifying combinations of variable/value that violate constraints.
 
 ---
@@ -205,9 +206,15 @@ class: middle, center
 
 .center.width-50[![](figures/lec4/csp-graph.png)]
 
-- What would BFS or DF do? What problems does naive search have?
+- What would BFS or DFS do? What problems does naive search have?
 - For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
     - We generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
+
+???
+
+Simulate the execution on blackboard. Highlight two issues:
+- commutativity
+- constraints are checked only at the end, by the goal function
 
 ---
 
@@ -237,6 +244,14 @@ class: middle, center
 
 - Backtracking = DFS + variable-ordering + fail-on-violation
 - What are the choice points?
+
+???
+
+Choice points:
+- Ordering the variables
+- Ordering the values
+- Filtering
+- Structure
 
 ---
 
@@ -270,6 +285,12 @@ Choose the variable *with the fewest legal values left* in its domain.
 .center.width-100[![](figures/lec4/ordering-lcv.png)]
 
 <span class="Q">[Q]</span> Why should variable selection be fail-first but value selection be fail-last?
+
+???
+
+We are seeking only one solution. Therefore:
+- fail-first variable selection to prune large portions of the tree
+- fail-fast value selection to look for the most likely value
 
 ---
 
@@ -310,6 +331,11 @@ Forward checking propagates information assigned to unassigned variables, but do
 
 <span class="Q">[Q]</span> When in backtracking shall this procedure be called?
 
+???
+
+- After applying AC3, either every arc is arc-consistent, or some variable has an empty domain, indicating that the CSP cannot be solved.
+- This check should be inserted after a new assignment, before the recursive call. If an inconsistency is detected
+
 ---
 
 # Structure (1)
@@ -343,6 +369,10 @@ Forward checking propagates information assigned to unassigned variables, but do
         - for $i=1$ to $n$, assign $X_i$ consistently with its $parent(X_i)$.
 - Time complexity: $O(n d^2)$
     - Compare to general CSPs, where worst-case time is $O(d^n)$.
+
+???
+
+Run the algorithm on the blackboard.
 
 ---
 
@@ -390,7 +420,7 @@ class: smaller
     - *Glitter* if gold is in the same square;
         - Gold is picked up by reflex, and cannot be dropped.
     - You *bump* if you walk into a wall.
-    - The agent program with receives the percept $[Stench, Breeze, Glitter, Bump]$.
+    - The agent program receives the percept $[Stench, Breeze, Glitter, Bump]$.
 
 ---
 
@@ -440,6 +470,8 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
     - Facts encoded as *axioms*.
     - Rules of *inference*.
 
+.center.width-80[![](figures/lec4/kb-agent.png)]
+
 ---
 
 # Propositional logic: Syntax
@@ -473,10 +505,14 @@ The **syntax** of propositional logic defines allowable *sentences*.
 - Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
 
 Examples:
-- Start: $\lnot P\\\_{1,1}$, $\lnot B\\\_{1,1}$, $B\\\_{2,1}$
+- There is not pit in $[1,1]$:
+    - $R\\\_1: \lnot P\\\_{1,1}.$
 - Pits cause breezes in adjacent squares:
-    - $B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1})$
-    - $B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1})$
+    - $R\\\_2: B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1}).$
+    - $R\\\_3: B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1}).$
+- Breeze percept for the first two squares:
+    - $R\\\_4: \lnot B\\\_{1,1}.$
+    - $R\\\_5: B\\\_{2,1}.$
 
 ]
 .col-1-3[![](figures/lec4/wumpus-world.png)]
@@ -487,7 +523,7 @@ Examples:
 # Entailment
 
 - We say a model $m$ *satisfies* a sentence $\alpha$ if $\alpha$ is true in $m$.
-    - $M(\alpha)$ is the set of all models of $\alpha$.
+    - $M(\alpha)$ is the set of all models that satisfy $\alpha$.
 - $\alpha \vDash \beta$ iff $M(\alpha) \subseteq M(\beta)$.
     - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
     - $\beta$ is true in all models where $\alpha$ is true.
@@ -503,6 +539,12 @@ Examples:
 - Situation after:
     - detecting nothing in $[1,1]$,
     - moving right, breeze in $[2,1]$.
+
+<span class="Q">[Q]</span> How many models are there?
+
+???
+
+3 binary variables $P\_{1,2}$, $P\_{2,2}$, $P\_{3,1}$, hence $2^3=8$ models.
 
 ---
 
