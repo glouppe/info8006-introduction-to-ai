@@ -8,6 +8,18 @@ Lecture 4: Constraint satisfaction problems
 
 # Today
 
+- *Constraint satisfaction problems*:
+    - Exploiting the representation of a state to accelerate search.
+    - Backtracking.
+    - Generic heuristics.
+- *Logical agents*
+    - Propositional logic for reasoning about the world.
+    - ... and its connection with CSPs.
+
+.center.width-50[![](figures/lec4/map-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
 class: middle, center
@@ -31,11 +43,11 @@ class: middle, center
 
 # Constraint satisfaction problems
 
-Formally, a constraint satisfaction problem (CSP) consists of three components $X$, $D$ and $C$:
+Formally, a **constraint satisfaction problem** (CSP) consists of three components $X$, $D$ and $C$:
 
-- $X$ is a set of variables, $\\{X_1, ..., X_n\\}$,
-- $D$ is a set of domains, $\\{D_1, ..., D_n\\}$, one for each variable,
-- $C$ is a set of constraints that specify  allowable combinations of values.
+- $X$ is a set of *variables*, $\\{X_1, ..., X_n\\}$,
+- $D$ is a set of *domains*, $\\{D_1, ..., D_n\\}$, one for each variable,
+- $C$ is a set of *constraints* that specify  allowable combinations of values.
 
 ---
 
@@ -124,7 +136,7 @@ CSP formulation:
         - need a constraint language, e.g. $start_1 + 5 \leq start_2$.
         - Solvable for linear constraints, undecidable otherwise.
 - *Continuous variables*
-    - e.g., precise start/end times of experiments on the Hubble Space telescope (that must obey astronomical and power constraints).
+    - e.g., precise start/end times of experiments.
     - Linear constraints solvable in polynomial time by LP methods.
 
 ---
@@ -135,7 +147,7 @@ CSP formulation:
     - Unary constraint involve a single variable.
         - Equivalent to reducing the domain, e.g. $SA \neq green$.
     - Binary constraints involve pairs of variables, e.g. $SA \neq WA$.
-    - Higher-oder constraints involve 3 or more variables.
+    - Higher-order constraints involve 3 or more variables.
 - *Preferences* (*soft constraints*)
     - e.g., red is better than green.
     - Often representable by a cost for each variable assignment.
@@ -197,12 +209,9 @@ class: middle, center
 - For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
     - We generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
 
-XXX: video?
-
 ---
 
 # Backtracking search
-
 
 - Backtracking search is the basic uninformed algorithm for solving CSPs.
 - Idea 1: **One variable at a time**:
@@ -276,27 +285,280 @@ Choose the variable *with the fewest legal values left* in its domain.
 
 # Filtering: Constraint propagation
 
+Forward checking propagates information assigned to unassigned variables, but does not provide early deteciton for all failures:
 
+.center.width-100[![](figures/lec4/forward-checking-inc.png)]
 
+- $NT$ and $SA$ cannot both be blue!
+- **Constraint propagation** repeatedly enforces constraints locally.
 
 ---
 
-# Structure
+# Arc consistency
+
+- An arc $X \to Y$ is **consistent** if and only if for every value $x$ in the domain of $X$ there is some value $y$ in the domain of $Y$ that satisfies the associated binary constraint.
+- Forward checking $\Leftrightarrow$ enforcing consistency of arcs pointing to each new assignment.
+- This principle can be generalized to enforce consistency for **all** arcs.
+
+.center.width-100[![](figures/lec4/arc-consistency.png)]
+
+---
+
+# Arc consistency algorithm
+
+.center.width-100[![](figures/lec4/ac3.png)]
+
+<span class="Q">[Q]</span> When in backtracking shall this procedure be called?
+
+---
+
+# Structure (1)
+
+.center.width-50[![](figures/lec4/csp-graph.png)]
+
+- Tasmania and mainland are **independent subproblems**.
+    - Any solution for the mainland combined with any solution for Tasmania yields a solution for the whole map.
+- Independence can be ascertained by finding *connected components* of the constraint graph.
+
+---
+
+# Structure (2)
+
+- Time complexity: Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
+    - E.g., $n=80$, $d=2$, $c=20$.
+    - $2^{80} =$  4 billion years at 10 million nodes/sec.
+    - $4 \times 2^{20} =$ 0.4 seconds at 10 million nodes/sec.
+
+---
+
+# Tree-structured CSPs
+
+.center.width-90[![](figures/lec4/tree-csp-trans.png)]
+
+- Algorithm for tree-structured CSPs:
+    - Order: choose a root variable, order variables so that parents precede children (topological sort).
+    - Remove backward:
+        - for $i=n$ down to $2$, enforce arc consistency of $parent(X_i) \to X_i$.
+    - Assign forward:
+        - for $i=1$ to $n$, assign $X_i$ consistently with its $parent(X_i)$.
+- Time complexity: $O(n d^2)$
+    - Compare to general CSPs, where worst-case time is $O(d^n)$.
+
+---
+
+# Nearly tree-structured CSPs
+
+- *Conditioning*:  instantiate a variable, prune its neighbors' domains.
+- *Cutset conditioning*:
+    - Assign (in all ways) a set $S$ of variables such that the remaining constraint graph is a tree.
+    - Solve the residual CSPs (tree-structured).
+    - If the residual CSP has a solution, return it together with the assignment for $S$.
+
+.center.width-70[![](figures/lec4/cutset.png)]
 
 ---
 
 class: middle, center
 
-# First-order logic as a CSP
+# Logical agents
 
 ---
 
-# First-order logic
+# The Wumpus world
+
+.center.width-70[![](figures/lec4/wumpus-world.png)]
+
+---
+
+class: smaller
+
+# PEAS description
+
+- *Performance measure*:
+    - +1000 for climbing out of the cave with gold;
+    - -1000 for falling into a pit or being eaten by the wumpus;
+    - -1 per step.
+- *Environment*:
+    - $4 \times 4$ grid of rooms;
+    - The agent starts in the lower left square labeled $[1,1]$, facing right;
+    - Locations for gold, the wumpus and pits are chosen randomly from squares other than the start square.
+- *Actuators*:
+    - Forward, Turn left by $90$° or Turn right by $90$°.
+- *Sensors*:
+    - Squares adjacent to wumpus are *smelly*;
+    - Squares adjacent to pit are *breezy*;
+    - *Glitter* if gold is in the same square;
+        - Gold is picked up by reflex, and cannot be dropped.
+    - You *bump* if you walk into a wall.
+    - The agent program with receives the percept $[Stench, Breeze, Glitter, Bump]$.
+
+---
+
+# Wumpus world characterization
+
+- *Deterministic*: Yes, outcomes are exactly specified.
+- *Static*: Yes, Wumpus and pits dot not move.
+- *Discrete*: Yes.
+- *Single-agent*: Yes, Wumpus is essential a natural feature.
+- **Fully observable**: No, only *local* perception.
+- **Episodic**: No, what was observed before is very useful.
+
+The agent need to maintain a model of the world and to update this model upon percepts.
+
+We will use **logical reasoning** to overcome the initial ignorance of the agent.
+
+---
+
+# Exploring the Wumpus world (1)
+
+.center.width-100[![](figures/lec4/wumpus-exploration1.png)]
+
+(a) Percept = $[None, None, None, None]$
+
+(b) Percept = $[None, Breeze, None, None]$
+
+---
+
+# Exploring the Wumpus world (2)
+
+.center.width-100[![](figures/lec4/wumpus-exploration2.png)]
+
+(a) Percept = $[Stench, None, None, None]$
+
+(b) Percept = $[Stench, Breeze, Glitter, None]$
+
+---
+
+# Logical agents
+
+- Most useful in non-episodic, partially observable environments.
+- **Logic (knowledge-based) agents** combine:
+    - A *knowledge base* ($KB$): a list of facts that are known to the agent.
+    - Current *percepts*.
+- Hidden aspects of the current state are **inferred** using rules of inference.
+- **Logic** provides a good formal language for both   
+    - Facts encoded as *axioms*.
+    - Rules of *inference*.
+
+---
+
+# Propositional logic: Syntax
+
+The **syntax** of propositional logic defines allowable *sentences*.
+
+.center.width-80[![](figures/lec4/syntax.png)]
+
+---
+
+# Propositional logic: Semantics
+
+- In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
+    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
+- The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
+    - The truth value of a proposition symbol is specified in $m$.
+    - $\lnot P$ is true iff $P$ is false;
+    - $P \wedge Q$ is true iff $P$ and $Q$ are true;
+    - $P \lor Q$ is true iff either $P$ or $Q$ is true;
+    - $P \Rightarrow Q$ is true unless $P$ is true and $Q$ is false;
+    - $P \Leftrightarrow Q$ is true iff $P$ and $Q$ are both true of both false.
+
+
+---
+
+# Wumpus world sentences
+
+.grid[
+.col-2-3[
+- Let $P_{i,j}$ be true if there is a pit in $[i,j]$.
+- Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
+
+Examples:
+- Start: $\lnot P\\\_{1,1}$, $\lnot B\\\_{1,1}$, $B\\\_{2,1}$
+- Pits cause breezes in adjacent squares:
+    - $B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1})$
+    - $B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1})$
+
+]
+.col-1-3[![](figures/lec4/wumpus-world.png)]
+]
+
+---
+
+# Entailment
+
+- We say a model $m$ *satisfies* a sentence $\alpha$ if $\alpha$ is true in $m$.
+    - $M(\alpha)$ is the set of all models of $\alpha$.
+- $\alpha \vDash \beta$ iff $M(\alpha) \subseteq M(\beta)$.
+    - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
+    - $\beta$ is true in all models where $\alpha$ is true.
+    - That is, $\beta$ *follows logically* from $\alpha$.
+
+---
+
+# Wumpus models (1)
+
+.center.width-30[![](figures/lec4/wumpus-simple.png)]
+
+- Let consider possible models for $KB$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Situation after:
+    - detecting nothing in $[1,1]$,
+    - moving right, breeze in $[2,1]$.
+
+---
+
+# Wumpus models (2)
+
+.center.width-60[![](figures/lec4/wumpus-kb.png)]
+
+- All 8 possible models in the reduced Wumpus world.
+- The knowledge base $KB$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
+
+---
+
+# Entailments (1)
+
+.center.width-60[![](figures/lec4/wumpus-entailment.png)]
+
+- $\alpha_1$ = "$[1,2]$ is safe". Does $KB$ entails $\alpha_1$?
+- $KB \vDash \alpha_1$ since $M(KB)  \subseteq M(\alpha_1)$.
+    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $KB$ is true.
+- Entailment can be used to carry out **logical inference**.
+
+---
+
+# Entailments (2)
+
+.center.width-60[![](figures/lec4/wumpus-noentailment.png)]
+
+- $\alpha_2$ = "$[2,2]$ is safe". Does $KB$ entails $\alpha_2$?
+- $KB \nvDash \alpha_2$ since $M(KB)  \nsubseteq M(\alpha_2)$.
+- We **cannot** conclude whether $[2,2]$ is safe (it may or may not).
+
+---
+
+# Unsatisfiability theorem
+
+$$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatisfiable}$$
+
+- $\alpha$ is unsatisfiable iff $M(\alpha) = \\{ \\}$.
+    - i.e., there is no assignment of truth values such that $\alpha$ is true.
+- Proving $\alpha \vDash \beta$ by checking the unsatisfiability of $\alpha \wedge \lnot \beta$ corresponds to the proof technique of reductio ad absurdum.
+- Checking the satisfiability of a sentence $\alpha$ can be cast as CSP!
+    - More efficient than enumerating all models.
+    - But remains NP-complete.
+    - See also SAT solvers, tailored for this specific problem.
+
 
 ---
 
 # Summary
 
----
-
-# References
+- Constraint satisfaction problems:
+    - States are represented by a set of variable/value pairs.
+    - Backtracking, a form of depth-first search, is commonly used for solving CSPs.
+    - The complexity of solving a CSP is strongly related to the structure of its constraint graph.
+- Logical agents:
+    - Intelligent agents need knowledge about the world in order to reach good decisions.
+    - Logical inference can be used as tool to reason about the world.
+        - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
+        - This in turn can be cast as a CSP.
