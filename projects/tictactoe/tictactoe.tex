@@ -13,6 +13,7 @@
 \usepackage{sectsty}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{hyperref}
 %\KOMAoptions{optionenliste}
 %\KOMAoptions{Option}{Werteliste}
 
@@ -86,12 +87,14 @@
 \section{Pratical Informations}
 \begin{itemize}
 	\item Individual project ;
-    \item Deadline : TBA, should be end of November ? ;
-    \item Deliverable : A python file with a class named "Solver" which can be initialised with \emph{Solver(X)} which has to implement the following function : $solve(M)$, where $M$ is a NumPy matrix of integers and $X$ your symbol (either 1 or 2), which return a tuple (A,B) with A and B strictly positive natural numbers ;
+    \item Deadline : 30th of November ;
+    \item Deliverable 1 : A python file with a class named "Solver" which can be initialised with \emph{Solver(X,k)} and with the following method : $solve(M)$, where $M$ is a NumPy matrix of integers, $X$ your symbol (either 1 or 2), which return a tuple (A,B) with A and B strictly positive natural numbers ;
     \begin{itemize}
     	\item \danger If your tuple violates the game constraints, you simply miss the turn ;
+        \item \danger Execution time of $solve(M)$ is limited !
     \end{itemize}
-    \item Send your deliverable to saittahar@ulg.ac.be with the subject \emph{name}\_tictactoe, and with enclosed a file with the same name and \emph{.py} extension
+    \item Deliverable 2 : A report of max 3 pages which describes your work. Appendix with some statistics are more than welcome;
+    \item Upload your deliverables (pattern : \emph{name}\_tictactoe.\{ pdf|py \}) at the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}
 
 \end{itemize}
 \newpage
@@ -134,12 +137,11 @@ This is a classical tic tac toe grid. You'll notice that the grid can be really 
 
 Usually, we denote 'X' and 'O' for each player token, but in this project we'll go for $1$ and $2$ ($0$ is empty).\\
 
-The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead to have most complete diagonals/lines/columns with the same symbol, players are expected to cumulate subdiagonals/sublines/subcolumns of size $K$ (denoted as $K$-alignment) with the same symbol.\\
-For each of them, the player earns 1 point. Plus, if a symbol is at an intersection of $i$ $K-1$ alignments, those are counted as $i$ distincts $K$ alignments. When a symbol is used at an intersection, this rule does not apply to symbols along the same direction for which the distance from this former is less than $K-1$. Finally, when a player build at least 1 $K$-alignment, he also takes the next turn.\\ 
+The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead to have most complete diagonals/lines/columns with the same symbol, players have to build, with their symbol, diagonals/lines/columns of size $K$ (denoted as $K$-alignment) with the same symbol. Plus, they can use the fact that two alignments can share (at most) one symbol.\\
 
 Thus, the goal is to have more points than the opponent at the point where it is not possible for any of the players to build more $K$-alignments. The game is made more challenging with a budget time limit of 1 minute.\\
 
-You'll find below some common scoring examples with a $10 \times 10$ grid and $K = 5$.
+Below are some common scoring examples with a $10 \times 10$ grid and $K = 5$.
 
 \begin{figure}
 \begin{center}
