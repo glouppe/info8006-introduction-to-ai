@@ -142,13 +142,14 @@ Bottom corner $\rightarrow$ both cheat\\
 \end{center}
 Let us consider a sequential variant of the prisoner's dilemma. A quick reminder would be to tell that two prisoners can cooperate or snitch each other, without knowing in advance the other's move.
 
-Here, the two players have the choice to put a coin (cooperate) or not (cheat) during $N$ trials. Each player seeks to collect the most number of coins. A negative value can be seen as a debt. Also, there is a probability $p$ for a player to make a mistake, i.e. pick the non chosen move.
+Here, the two players have the choice to simultaneously put a coin (cooperate) or not (cheat) during $N$ trials. Each player seeks to collect the most number of coins. Also, there are respectively  probabilities $p_1$ and $p_2$  for the first and the second player to have their actions reversed.
 
 Let's start with $N = 10$.
 
 \begin{itemize}
 	\item Draw the game tree using probability $p$. Which search algorithm should you use in which case ?
-	\item Try with $p = 0,0.25,0.5,0.75$, using . What can you tell ? If you feel that $N$ is too small to see something, feel free to increase it. If $N$ is too large, use your computer to simulate.  
+	\item Try with $\{0,0.25,0.5,0.75,1\}^2$, using (expecti)minimax. What can you tell ? If you feel that $N$ is too small to see something, feel free to increase it. If $N$ is too large, use your computer to simulate. 
+    \item What can describe $p_1$ and $p_2$ ?
 \end{itemize}
 
 
