@@ -1,19 +1,38 @@
-#All you need should be in this library, do not use another one
-import numpy
+import numpy as np
+# XXX: Do no use anything else that Numpy and/or the standard Python library.
 
+class Agent:
+    def __init__(self, player, k):
+        """
+        Arguments:
+        ----------
+        - `player`: the symbol of the player played by the agent
+                    (either 'X' or 'O').
+        - `k`: the size of an alignment.
+        """
+		self.player = player
+        self.k = k
 
-def class Solver(object):
+	def move(grid):
+        """
+        Parameters:
+        -----------
+        - `grid`: a 2D Numpy array of integers, where grid[i,j] is
+            - 0 if the cell is empty
+            - 1 if the cell contains 'X'
+            - 2 if the cell contains 'O'
 
-	#x : your symbol, either "1" or "2"
-	#g : game engine
-	def __init__(self,x,g):
-		self.x = x
-		self.g = g
+        Return:
+        -------
+        - (x, y): the position the agent draws a symbol.
 
-	#m : a 2D integer numpy matrix which each cell is either 0,1 or 2
-	#return the next move in a tuple (a,b) for which your own symbol 'x' will be placed, i.e. after this function call, m[a-1,b-1] = x if m[a-1,b-1] is valid and was = 0 before
-	#(otherwise your turn will be skipped, beware !) 
-	def solve(m):
-		#Your magic code here
-		return (1,1)
+        Note:
+        -----
+        In case the returned value violates the game constraints (the position
+        is out of range or already contains a symbol), the agent will miss its
+        turn.
+        """
+		# XXX your code goes here
+        return x, y
 
+    # XXX you are free to add other methods, if necessary to implement `move`.

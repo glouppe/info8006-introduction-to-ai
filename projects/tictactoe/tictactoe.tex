@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,BCOR12mm, headexclude, footexclude, twoside, openright]{scrartcl} 
+\documentclass[12pt,a4paper,BCOR12mm, headexclude, footexclude, twoside, openright]{scrartcl}
 \usepackage[scaled]{helvet}
 \usepackage[british]{babel}
 \usepackage[utf8]{inputenc}
@@ -84,17 +84,17 @@
 
 %--------------------------------------------
 
-\section{Pratical Informations}
+\section{Pratical Information}
 \begin{itemize}
-	\item Individual project ;
-    \item Deadline : 30th of November ;
-    \item Deliverable 1 : A python file with a class named "Solver" which can be initialised with \emph{Solver(X,k)} and with the following method : $solve(M)$, where $M$ is a NumPy matrix of integers, $X$ your symbol (either 1 or 2), which return a tuple (A,B) with A and B strictly positive natural numbers ;
+	\item Individual project
+    \item Deadline: November 30
+    \item Deliverable 1: A Python implementation of the \texttt{Agent} class, as defined in the  \texttt{agent.py} template.
     \begin{itemize}
-    	\item \danger If your tuple violates the game constraints, you simply miss the turn ;
-        \item \danger Execution time of $solve(M)$ is limited !
+    	\item \danger If the proposed agent action violates the game constraints, the agent misses the turn.
+        \item \danger The execution time of  the \texttt{move(grid)} method will be limited.
     \end{itemize}
-    \item Deliverable 2 : A report of max 3 pages which describes your work. Appendix with some statistics are more than welcome;
-    \item Upload your deliverables (pattern : \emph{name}\_tictactoe.\{ pdf|py \}) at the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}
+    \item Deliverable 2: A report of 3 pages (max.) which describes your work. Appendices with some statistics accepted.
+    \item Upload your deliverables (pattern : \emph{name}\_tictactoe.\{ pdf|py \}) on the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}.
 
 \end{itemize}
 \newpage
@@ -133,15 +133,15 @@
 \end{tikzpicture}
 \end{center}
 
-This is a classical tic tac toe grid. You'll notice that the grid can be really large. Plus, it is not necessarily a square.
+This is a classical tic tac toe grid. Notice that the grid can be really large, and not necessarily square.
 
-Usually, we denote 'X' and 'O' for each player token, but in this project we'll go for $1$ and $2$ ($0$ is empty).\\
+Usually, we denote 'X' and 'O' for each player token, but in this project we will go for $1$ and $2$ ($0$ is empty).\\
 
-The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead to have most complete diagonals/lines/columns with the same symbol, players have to build, with their symbol, diagonals/lines/columns of size $K$ (denoted as $K$-alignment) with the same symbol. Plus, they can use the fact that two alignments can share (at most) one symbol.\\
+The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead of filling entire diagonals/rows/columns with the same symbol, players have to build diagonal/row/column alignments of size $k$ (denoted as a $k$-alignment) with the same symbol. Players can use the fact that two alignments can share (at most) one symbol.\\
 
-Thus, the goal is to have more points than the opponent at the point where it is not possible for any of the players to build more $K$-alignments. The game is made more challenging with a budget time limit of 1 minute.\\
+The goal of the game is to have more points than the opponent until it is not possible for any of the players to build more $k$-alignments. The game is made more challenging with a time budget of 1 minute.\\
 
-Below are some common scoring examples with a $10 \times 10$ grid and $K = 5$.
+Below are some common scoring examples with a $10 \times 10$ grid and $k = 5$.
 
 \begin{figure}
 \begin{center}
