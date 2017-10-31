@@ -10,6 +10,12 @@ Lecture 5: Probabilistic reasoning I
 
 ---
 
+# Limitations  of problem-solving and logical agents
+
+XXX
+
+---
+
 class: middle, center
 
 # Quantifying uncertainty
@@ -18,9 +24,18 @@ class: middle, center
 
 # Inference in Ghostbusters
 
+.center[
+<video controls preload="auto" height="480" width="640">
+  <source src="./figures/lec5/gb-noprob.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
 # Uncertainty
+
+probabilistic statements
 
 ---
 
@@ -82,9 +97,18 @@ class: middle, center
 
 # Frequentism vs. Bayesianism
 
+pg 491
+
 ---
 
 # Ghostbusters, revisited
+
+.center[
+<video controls preload="auto" height="480" width="640">
+  <source src="./figures/lec5/gb-prob.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
