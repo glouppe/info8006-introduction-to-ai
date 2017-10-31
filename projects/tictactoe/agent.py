@@ -10,17 +10,14 @@ class Agent:
                     (either 'X' or 'O').
         - `k`: the size of an alignment.
         """
-		self.player = player
+        self.player = player
         self.k = k
 
-	def move(grid):
+    def move(self,game_engine):
         """
         Parameters:
         -----------
-        - `grid`: a 2D Numpy array of integers, where grid[i,j] is
-            - 0 if the cell is empty
-            - 1 if the cell contains 'X'
-            - 2 if the cell contains 'O'
+        - `game_engine`: the game engine in a given state (see tictactoe.py for class specs)
 
         Return:
         -------
@@ -32,7 +29,7 @@ class Agent:
         is out of range or already contains a symbol), the agent will miss its
         turn.
         """
-		# XXX your code goes here
+        # XXX your code goes here
         return x, y
 
     # XXX you are free to add other methods, if necessary to implement `move`.
