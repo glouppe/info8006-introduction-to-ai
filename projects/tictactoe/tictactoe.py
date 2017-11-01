@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 # XXX: Do not modify anything.
 
 """
@@ -38,15 +39,37 @@ class Tictactoe(object):
         If `action` is valid, replace the empty cell self.M[i,j] by x and update the current state (scoring and alignments)
     """
     def step(self, action):
+        x,i,j = action
         if not self.checkAction(action):
             self.currentX = 3 - self.currentX
             return
         self.M[i,j] = x
-        i = self.updateScore(action)
-        self.totalScores[self.currentX-1] += i
-        if i == 0:
+        s = self.updateScore(action)
+        if s == 0:
                 self.currentX = 3 - self.currentX
+    """
+        Check the end of the game (No new possible alignment for any player)
+    """ 
+    def terminalState(self):
+        currentX = self.currentX
+        otherX = 3 - currentX 
+
         
+        env2 = deepcopy(self)
+        env3 = deepcopy(self)
+        
+        #Test for first player
+        for i in range(self.n):
+                for j in range(self.m):
+                        if env2.M[i][j] == 0:
+                                env2.currentX = currentX
+                                env2.step((currentX,i,j))           
+                        if env3.M[i][j] == 0:
+                                env3.currentX = otherX
+                                env3.step((otherX,i,j))
+
+        return self.totalScores == env2.totalScores and self.totalScores == env3.totalScores 
+     
     """
         Arguments:
         ----------
@@ -86,15 +109,16 @@ class Tictactoe(object):
         Arguments:
         ----------
         - `action = (x,i,j)` : a triplet of integers
+        - `update` : boolean
         
-        Returns number of new alignments made with the symbol `x` at cell (`i`,`j`) and adjacents cells
+        Returns number of new alignments made with the symbol `x` at cell (`i`,`j`) and adjacents cells. 
+        If `update`, update the number of alignments for the current player
     """
     def updateScore(self,action):
         x,i,j = action
         k = self.k
         intervals = [[(i-k+1,j-k+1),(i+k-1,j+k-1)],[(i-k+1,j),(i+k-1,j)],[(i,j-k+1),(i,j+k-1)],[(i+k-1,j-k+1),(i-k+1,j+k-1)]]
         s = 0
-        print intervals
         for interval in intervals:
                 iStart,jStart = interval[0]
                 iEnd,jEnd = interval[1]
@@ -104,13 +128,15 @@ class Tictactoe(object):
                 while iTemp != iEnd or jTemp != jEnd:
                     if self.checkCoordinates(iTemp,jTemp):
                         alignIdx.append((iTemp,jTemp))
-                        align.append(self.M[iTemp,jTemp])
+                        if iTemp == i and jTemp == j:
+                                align.append(x)
+                        else:
+                                align.append(self.M[iTemp,jTemp])
                     iTemp += 1 if iTemp < iEnd else (-1 if iTemp > iEnd else 0)
                     jTemp += 1 if jTemp < jEnd else (-1 if jTemp > jEnd else 0)
                 if self.checkCoordinates(iEnd,jEnd):
                     alignIdx.append((iEnd,jEnd))
                     align.append(self.M[iEnd,jEnd])
-                print alignIdx
                 iBegin = 0
                 iEnd = k
                 len_align = len(align)
@@ -119,11 +145,15 @@ class Tictactoe(object):
                     align2 = np.asarray(align[iBegin:iEnd]) == x
                     if np.all(align2) and self.checkAlignment(alignIdx2,x):
                         self.alignments[x-1].append(alignIdx2)
+                        self.totalScores[x-1] += 1
                         s += 1
                     iBegin += 1
                     iEnd += 1
         
         return s
+        
+        
+        
     """
         Renders the board
     """                  
@@ -148,10 +178,7 @@ class Tictactoe(object):
     """
         Returns the current state (grid,current symbol, total score (of) and alignments (made by) the two players 
     """        
-    def current_state(self):
+    def currentState(self):
         return (self.M,self.currentX,self.totalScores,self.alignments)
 
 
-                print "current score is " + " ".join(map(str,env.current_state()[2]))
-                print "Alignments for current player : "
-                print env.alignments[env.currentX - 1]

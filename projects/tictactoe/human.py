@@ -36,7 +36,7 @@ class Human:
             try:
                 a = raw_input()
                 (x,y) = tuple(a.split(" "))
-                if game_engine.checkAction((self.player,x,y)):
+                if game_engine.checkAction((self.player,int(x),int(y))):
                     return int(x),int(y)
                 else:
                     print "Your coordinates are not valid, please enter your coordinates (line then column) separated by a space :"
