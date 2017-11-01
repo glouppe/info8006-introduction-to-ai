@@ -9,7 +9,7 @@ import threading
 
 # XXX: Do not modify anything.
 
-TIMEOUT = 5.0
+TIMEOUT = 60.0
 
 """
     Main program 
