@@ -218,6 +218,8 @@ $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\
 
 pg 491
 
+
+
 ---
 
 # Ghostbusters, revisited
