@@ -6,6 +6,7 @@ from tictactoe import Tictactoe
 from copy import deepcopy
 import thread
 import threading
+import time
 
 # XXX: Do not modify anything.
 
@@ -38,16 +39,19 @@ Arguments:
         - Random selection of the first player.
         """
 
-def f_with_timeout(f,*args):    
+def f_with_timeout(f,*args):
+    
     timer = threading.Timer(TIMEOUT, thread.interrupt_main)
     out = None
+    t = time.time()
     try:
         timer.start()
         out = f(*args)
     except KeyboardInterrupt:
         pass
+    t = time.time() - t
     timer.cancel()
-    return out
+    return (t,out)
 
 def extractAgent(module_name,player,k):
     mod = __import__(module_name)
@@ -98,23 +102,30 @@ def play(args):
                 return -1           
         env = Tictactoe(n,m,k)
         p = [p1,p2]
-        
+        t = [0,0]
+        nact = [0,0]
         while not env.terminalState():
                 _,currentPlayer,_,_ = env.currentState()
-                act = f_with_timeout(p[currentPlayer - 1].move,deepcopy(env)) 
+                tX,act = f_with_timeout(p[currentPlayer - 1].move,deepcopy(env)) 
                 print act
                 if act is not None:
                         i,j = act
                         env.step((currentPlayer,i,j))
                 else:
                         env.step((currentPlayer,-1,-1))
+                t[currentPlayer-1] += tX
+                nact[currentPlayer-1] += 1
         env.render()
-        return (np.argmax(env.currentState()[2])+1, env.currentState()[2])
+        currState = env.currentState()
+        return (nact,t,np.argmax(currState[2])+1, currState)
 
 if __name__=="__main__":
         res = play(sys.argv)
         if res != -1:
-                winner,score = res  
+                nact,t,winner,state = res  
+                score = state[2]
                 print "Winner is player " + str(winner)
-                print "Score : " + "/".join(map(str,score))
+                print "Score per player: " + "/".join(map(str,score))
+                print "Number of moves per player : " + "/".join(map(str,nact))
+                print "Play time per player : " + "/".join(map(str,t))
         
