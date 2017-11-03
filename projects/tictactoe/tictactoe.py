@@ -193,17 +193,18 @@ class Tictactoe(object):
 
         return s
 
-    def render(self):
+    def render(self, show_indices=True):
         """
             Renders the board
         """
 
-        a = (' ___' * self.m)
-        c = []
+        hor_offset = '   ' if show_indices else ''
+        hor_indices = hor_offset + ''.join([' ' + str(i).rjust(2) + ' ' for i in range(self.m)])
+        a = hor_offset + (' ___' * self.m)
 
-        c = []
+        c = [hor_indices] if show_indices else []
         for i in range(self.n):
-            b = []
+            b = [str(i).rjust(2)] if show_indices else []
             for j in range(self.m):
                 b.append('|')
                 b.append("X" if self.M[i][j] == 1 else (
