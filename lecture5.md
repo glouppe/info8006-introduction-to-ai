@@ -30,6 +30,12 @@ Lecture 5: Probabilistic reasoning I
 
 ---
 
+class: middle, center
+
+# Quantifying uncertainty
+
+---
+
 # Inference in Ghostbusters
 
 .center.width-40[![](figures/lec5/gb-grid.png)]
@@ -56,12 +62,6 @@ Lecture 5: Probabilistic reasoning I
 <span class="Q">[Q]</span> Could we use a logical agent for this game?
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-class: middle, center
-
-# Quantifying uncertainty
 
 ---
 
@@ -514,6 +514,20 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 ---
 
+# Naive Bayes
+
+- More generally, from the product rule, we have:
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
+- *Assuming* pairwise conditional independence between the effects given the cause, it comes:
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
+- The probabilistic model is called a **naive Bayes** model.
+    - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
+    - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
+
+.center.width-80[![](figures/lec5/naive.png)]
+
+---
+
 # The Bayes' rule
 
 .grid[
@@ -554,18 +568,6 @@ Let $S$=stiff neck and $M$=meningitis.
 
 ---
 
-# Naive Bayes
-
-- From the product rule, we have:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
-- *Assuming* pairwise conditional independence between the effects given the cause, it comes:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
-- The probabilistic model is called a **naive Bayes** model.
-    - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
-    - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
-
----
-
 # Ghostbusters, revisited
 
 - Let assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings:
@@ -594,7 +596,13 @@ Let $S$=stiff neck and $M$=meningitis.
 
 # Frequentism vs. Bayesianism
 
-pg 491
+What do probability values represent?
+- The objectivist **frequentist** view is that probabilities are real aspects of the universe.
+    - i.e., propensities of objects to behave in certain ways.
+    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
+- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs.
+    - i.e., probabilities do not have external physical significance.
+    - This is the interpretation of probabilities that we will use!
 
 ---
 
