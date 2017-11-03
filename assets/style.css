@@ -92,13 +92,8 @@ table {
     border-spacing: 0;
     border: 1px solid #e2e2e2;
     font-size: .8em;
-    margin: 0;
+    margin: auto;
     padding: 0;
-    width: 100%;
-}
-
-.table-short table {
-    width: auto;
 }
 
 thead {

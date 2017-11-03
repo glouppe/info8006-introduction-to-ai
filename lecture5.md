@@ -112,7 +112,7 @@ class: middle, center
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(Odd=true) = P(1)+P(3)+P(5) = \frac{1}{2}$.
     - When clear from the context, we will denote $P(X=x\_i)$ as $P(x_i)$.
-- In practice, we will use a random variable to represent some aspect of the world about which we (may) have uncertainty.
+- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
     - $R$: Is it raining?
     - $T$: Is it hot or cold?
     - $L$: Where is the ghost?
@@ -156,14 +156,12 @@ $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\
 
 - Example $P(T,W)$:
 
-.center[
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
 | $hot$ | $sun$ | $0.4$ |
 | $hot$ | $rain$ | $0.1$ |
 | $cold$ | $sun$ | $0.2$ |
 | $cold$ | $rain$ | $0.3$ |
-]
 
 ---
 
@@ -171,7 +169,7 @@ $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\
 
 - An **event** is a set $E$ of outcomes.
     - $P(E) = \sum_{(x_1, ..., x_n) \in E} P(x_1, ..., x_n)$
-- From a joint distribution, the probability of any event can be calculated.
+- From a joint distribution, the probability of *any event* can be calculated.
     - Probability that it is hot and sunny?
     - Probability that it is hot?
     - Probability that it is hot or sunny?
@@ -182,11 +180,94 @@ $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\
 
 # Marginal distributions
 
+- The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
+- Intuitively, marginal distributions are sub-tables which eliminate variables.
+
+.center.grid[
+.col-1-3[
+$P(T,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $hot$ | $sun$ | $0.4$ |
+| $hot$ | $rain$ | $0.1$ |
+| $cold$ | $sun$ | $0.2$ |
+| $cold$ | $rain$ | $0.3$ |
+]
+.col-1-3[
+$P(T)$
+
+| $T$ | $P$ |
+| --- | --- |
+| $hot$ | $0.5$ |
+| $cold$ | $0.5$ |
+
+$P(t) = \sum_w P(t, w)$
+]
+.col-1-3[
+$P(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $sun$ | $0.6$ |
+| $rain$ | $0.4$ |
+
+$P(w) = \sum_t P(t, w)$
+]
+]
+
+<span class="Q">[Q]</span> To what events are marginal probabilities associated?
+
 ---
 
 # Conditional probability
 
-- mention prior probability
+- **Prior** or unconditional probabilities of propositions correspond to the initial belief,
+prior to arrival of any (new) evidence.
+    - e.g., $P(W=sun) = 0.6$.
+- **Posterior** or conditional probabilities correspond to the *updated* belief, given some evidence.
+    - e.g, $P(W=sun|T=cold) = 0.4$
+- Formally,
+$$P(a|b) = \frac{P(a,b)}{P(b)}$$
+
+---
+
+# Conditional distributions
+
+- Conditional distributions are probability distributions over some variables, given **fixed** values for others.
+
+.center.grid[
+.col-1-3[
+$P(T,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $hot$ | $sun$ | $0.4$ |
+| $hot$ | $rain$ | $0.1$ |
+| $cold$ | $sun$ | $0.2$ |
+| $cold$ | $rain$ | $0.3$ |
+]
+.col-1-3[
+$P(W|T=hot)$
+
+| $T$ | $P$ |
+| --- | --- |
+| $sun$ | $0.8$ |
+| $rain$ | $0.2$ |
+]
+.col-1-3[
+$P(W|T=cold)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $sun$ | $0.4$ |
+| $rain$ | $0.6$ |
+]
+]
+
+<span class="Q">[Q]</span> To what events are conditional probabilities associated?
+
+<span class="Q">[Q]</span> Do they originate from the same sample and probability space?
 
 ---
 
@@ -214,14 +295,6 @@ $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\
 
 ---
 
-# Frequentism vs. Bayesianism
-
-pg 491
-
-
-
----
-
 # Ghostbusters, revisited
 
 .center[
@@ -230,6 +303,32 @@ pg 491
 </video>]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Probability for continuous variables
+
+.center.width-50[![](figures/lec5/uniform.png)]
+
+- Express distribution as a parameterized function of value:
+    - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
+- Here, $P$ is a **density** that integrates to $1$.
+- That is, $P(X=20.5) = 0.125$ really means
+$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
+
+---
+
+# Gaussian density
+
+.center.width-70[![](figures/lec5/gaussian.png)]
+
+$$P(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-(x-\mu)^2 / 2\sigma^2)$$
+
+---
+
+# Frequentism vs. Bayesianism
+
+pg 491
 
 ---
 
