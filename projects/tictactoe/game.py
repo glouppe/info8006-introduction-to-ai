@@ -148,15 +148,16 @@ def play(args):
             env.step((currentPlayer, -1, -1))
         t[currentPlayer - 1] += tX
         nact[currentPlayer - 1] += 1
-    env.render()
     currState = env.currentState()
-    return (nact, t, currState)
+    return (nact, t, env)
 
 
 if __name__ == "__main__":
     res = play(sys.argv)
     if res != -1:
-        nact, t, state = res
+        nact, t, env = res
+        env.render()
+        state = env.currentState()
         score = state[2]
         winner = np.argmax(state[2]) + 1 if state[2][0] != state[2][1] else -1
         if winner != -1:
