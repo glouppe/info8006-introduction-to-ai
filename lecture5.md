@@ -87,8 +87,7 @@ class: middle, center
 - *Subjective* or *Bayesian* **probabilities** relate propositions to one's own state of knowledge.
     - e.g., $P(\text{ghost in } [3,2]) = 0.02$
 - These are **not** claims of a "probabilistic tendency" in the current situation (but might be learned from past experience of similar situations).
-- Probabilities of propositions change with new evidence:
-    - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
+
 
 ---
 
@@ -117,6 +116,26 @@ class: middle, center
     - $T$: Is it hot or cold?
     - $L$: Where is the ghost?
     - ...
+
+---
+
+# Probability for continuous variables
+
+.center.width-50[![](figures/lec5/uniform.png)]
+
+- Express distribution as a parameterized function of value:
+    - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
+- Here, $P$ is a **density** that integrates to $1$.
+- That is, $P(X=20.5) = 0.125$ really means
+$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
+
+---
+
+# Gaussian density
+
+.center.width-70[![](figures/lec5/gaussian.png)]
+
+$$P(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-(x-\mu)^2 / 2\sigma^2)$$
 
 ---
 
@@ -222,13 +241,14 @@ $P(w) = \sum_t P(t, w)$
 
 # Conditional probability
 
-- **Prior** or unconditional probabilities of propositions correspond to the initial belief,
-prior to arrival of any (new) evidence.
+- **Prior** or unconditional probabilities of an event correspond to some initial belief,
+prior to arrival of any evidence.
     - e.g., $P(W=sun) = 0.6$.
-- **Posterior** or conditional probabilities correspond to the *updated* belief, given some evidence.
-    - e.g, $P(W=sun|T=cold) = 0.4$
+    - e.g., $P(\text{ghost in } [3,2]) = 0.02$
+- **Posterior** or conditional probabilities correspond to the probability of an event, given some observed evidence.
 - Formally,
 $$P(a|b) = \frac{P(a,b)}{P(b)}$$
+    - e.g., $P(W=sun|T=cold) = \frac{P(W=sun,T=cold)}{P(T=cold)} = \frac{0.2}{0.2 + 0.3} = 0.4$
 
 ---
 
@@ -271,7 +291,59 @@ $P(W|T=cold)$
 
 ---
 
+# Normalization trick
+
+
+.center.grid[
+.col-1-3[
+$P(T,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $hot$ | $sun$ | $0.4$ |
+| $hot$ | $rain$ | $0.1$ |
+| $cold$ | $sun$ | $0.2$ |
+| $cold$ | $rain$ | $0.3$ |
+]
+.col-1-3[
+$\rightarrow P(c,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $cold$ | $sun$ | $0.2$ |
+| $cold$ | $rain$ | $0.3$ |
+
+*Select* the joint probabilities matching the evidence $c$.
+
+]
+.col-1-3[
+$\rightarrow P(W|T=cold)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $sun$ | $0.4$ |
+| $rain$ | $0.6$ |
+
+*Normalize* the selection (make it sum to $1$).
+
+]
+]
+
+<span class="Q">[Q]</span> Why does this work? Sum of selection is $P(evidence)$!
+
+---
+
 # Probabilistic inference
+
+- **Probabilistic inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
+- We generally compute conditional probabilities.
+    - e.g., $P(\text{on time} | \text{no reported accidents}) = 0.9$
+    - These represent the agent's *beliefs* given the evidence.
+- Probabilities change with new evidence:
+    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{5AM}) = 0.95$
+    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{rain}) = 0.8$
+    - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
+    - Observing new evidence causes *beliefs to be updated*.
 
 ---
 
@@ -303,26 +375,6 @@ $P(W|T=cold)$
 </video>]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-# Probability for continuous variables
-
-.center.width-50[![](figures/lec5/uniform.png)]
-
-- Express distribution as a parameterized function of value:
-    - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
-- Here, $P$ is a **density** that integrates to $1$.
-- That is, $P(X=20.5) = 0.125$ really means
-$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
-
----
-
-# Gaussian density
-
-.center.width-70[![](figures/lec5/gaussian.png)]
-
-$$P(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-(x-\mu)^2 / 2\sigma^2)$$
 
 ---
 
