@@ -111,7 +111,7 @@ class: middle, center
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(Odd=true) = P(1)+P(3)+P(5) = \frac{1}{2}$.
     - When clear from the context, we will denote $P(X=x\_i)$ as $P(x_i)$.
-- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
+- In practice, we will use random variables to *represent aspects of the world* about which we (may) have uncertainty.
     - $R$: Is it raining?
     - $T$: Is it hot or cold?
     - $L$: Where is the ghost?
@@ -123,9 +123,10 @@ class: middle, center
 
 .center.width-50[![](figures/lec5/uniform.png)]
 
-- Express distribution as a parameterized function of value:
+- Express distribution as a *parameterized function of value*:
     - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
 - Here, $P$ is a **density** that integrates to $1$.
+    - The density probability function is often rather denoted as $f(x)$ or $p(x)$.
 - That is, $P(X=20.5) = 0.125$ really means
 $$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
 
@@ -317,7 +318,7 @@ $\rightarrow P(c,W)$
 
 ]
 .col-1-3[
-$\rightarrow P(W|T=cold)$
+$\rightarrow P(W|c)$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -333,7 +334,7 @@ $\rightarrow P(W|T=cold)$
 
 ---
 
-# Probabilistic inference
+# Probabilistic inference (1)
 
 - **Probabilistic inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
 - We generally compute conditional probabilities.
@@ -345,25 +346,238 @@ $\rightarrow P(W|T=cold)$
     - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
     - Observing new evidence causes *beliefs to be updated*.
 
+.center.width-20[![](figures/lec5/inference-cartoon.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Probabilistic inference (2)
+
+- General case:
+    - *Evidence* variables: $E_1, ..., E_k = e_1, ..., e_k$
+    - *Query* variables: $Q$
+    - *Hidden* variables: $H_1, ..., H_r$
+    - $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
+- We want to compute **$P(Q|e_1, ..., e_k)$**.
+
 ---
 
 # Inference by enumeration
+
+1. *Select* the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
+2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables.
+$$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k)$$
+3. *Normalize*.
+$$Z = \sum_q P(Q=q,e_1,...,e_k)$$
+$$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
+
+---
+
+# Example
+
+.grid[
+.col-1-2[
+
+- $P(W)$?
+- $P(W|winter)$?
+- $P(W|winter,hot)$?
+
+]
+.center.col-1-2[
+
+| $S$ | $T$ | $W$ | $P$ |
+| --- | --- | --- | --- |
+| $summer$ | $hot$ | $sun$ | $0.3$ |
+| $summer$ | $hot$ | $rain$ | $0.05$ |
+| $summer$ | $cold$ | $sun$ | $0.1$ |
+| $summer$ | $cold$ | $rain$ | $0.05$ |
+| $winter$ | $hot$ | $sun$ | $0.1$ |
+| $winter$ | $hot$ | $rain$ | $0.05$ |
+| $winter$ | $cold$ | $sun$ | $0.15$ |
+| $winter$ | $cold$ | $rain$ | $0.2$ |
+
+]
+]
+
+---
+
+# Complexity
+
+- Inference by enumeration can be used to answer probabilistic queries for *discrete variables* (i.e., with a finite number of values).
+- However, enumeration **does not scale** well!
+    - Assume a domain described by $n$ variables taking at most $d$ values.
+    - Space complexity: $O(d^n)$
+    - Time complexity: $O(d^n)$
+- Can we reduce the size of the representation of the joint distribution?
 
 ---
 
 # The product rule
 
+$$P(b)P(a|b) = P(a,b)$$
+
+Example:
+
+.center.grid[
+.col-1-3[
+$P(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $sun$ | $0.8$ |
+| $rain$ | $0.2$ |
+]
+.col-1-3[
+$P(D|W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $wet$ | $sun$ | $0.1$ |
+| $dry$ | $sun$ | $0.9$ |
+| $wet$ | $rain$ | $0.7$ |
+| $dry$ | $rain$ | $0.3$ |
+
+]
+.col-1-3[
+$P(D,W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $wet$ | $sun$ | ? |
+| $dry$ | $sun$ | ? |
+| $wet$ | $rain$ | ? |
+| $dry$ | $rain$ | ? |
+
+]
+]
+
 ---
 
 # The chain rule
+
+More generally, any joint distribution can always be written as an incremental *product of conditional distributions*.
+
+$$P(x\_1,x\_2,x\_3) = P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2)$$
+$$P(x\_1,...,x\_n) = \prod\_i P(x\_i | x\_1, ..., x\_{i-1}) $$
+
+<span class="Q">[Q]</span> Why is this always true?
+
+---
+
+# Independence
+
+$A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
+- $P(a|b) = P(a)$, or
+- $P(b|a) = P(b)$, or
+- $P(a,b) = P(a)P(b)$
+
+---
+
+# Independence example
+
+.center.width-30[![](figures/lec5/independence.png)]
+
+$P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather})$ $ = P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})$
+
+- The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $weather$ and boolean values otherwise).
+- For $n$ independent coin flips, the joint distribution can be fully *factored* and represented as the product of $n$ 1-entry tables.
+    - **$2^n \to n$**
+- In practice, absolute independence is rare. What to do?
+
+---
+
+# Conditional independence (1)
+
+$A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$, $b \in D_B$ and $c \in D_C$,
+- $P(a|b,c) = P(a|c)$, or
+- $P(b|a,c) = P(b|c)$, or
+- $P(a,b|c) = P(a|c)P(b|c)$
+
+---
+
+# Conditional independence (2)
+
+- Using the chain rule, the join distribution can be factored as a product of conditional distributions.
+- Each conditional distribution may potentially be *simplified by conditional independence*.
+- Conditional independence assertions can allow probabilistic models to **scale up**.
+
+---
+
+# Conditional independence example
+
+$P(\text{toothache}, \text{catch}, \text{cavity})$
+$= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})$
+$= P(\text{toothache}|\text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})$
+
+In this case, the representation of the joint distribution reduces to $2+2+1$ independent numbers (instead of $2^n-1$).
 
 ---
 
 # The Bayes' rule
 
+.grid[
+.col-2-3[
+
+- The product rule defines two ways to factor the joint distribution of two random variables.
+    - $P(a,b) = P(a|b)P(b) = P(b|a)P(a)$
+- Therefore,
+**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}$$**
+- Why is this helpful?
+    - Let us build one conditional from its reverse.
+    - Often one conditional is tricky, but the other is simple.
+    - This equation is the *foundation of many AI systems*.
+]
+.col-1-3[
+.circle[![](figures/lec5/thomas.gif)]
+]
+]
+
 ---
 
 # Inference with Bayes' rule
+
+Example: diagnostic probability from causal probability.
+
+$$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
+
+- $P(\text{effect}|\text{cause})$ quantifies the relationship in the *causal direction*.
+- $P(\text{cause}|\text{effect})$ describes the *diagnostic direction*.
+
+Let $S$=stiff neck and $M$=meningitis.
+- Given
+    - $P(s|m) = 0.7$
+    - $P(m) = 1/50000$
+    - $P(s) = 0.01$
+- It comes:
+    - $P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014$
+
+---
+
+# Naive Bayes
+
+- From the product rule, we have:
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
+- *Assuming* pairwise conditional independence between the effects given the cause, it comes:
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
+- The probabilistic model is called a **naive Bayes** model.
+    - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
+    - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
+
+---
+
+# Ghostbusters, revisited
+
+- Let assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings:
+    - We define a **prior distribution** $P(G)$ over ghost locations.
+        - Assume it is uniform.
+    - We assume a sensor *reading model* $P(R\_{i,j} |G)$.
+        - That is, we know what the sensors do.
+        - $R_{i,j}$ = reading color measured at $[i,j]$
+        - e.g., $P(R_{1,1}=yellow|G=[1,1])=0.1$
+- We can calculate the **posterior distribution** $P(G|R_{i,j})$ using Bayes' rule:
+    - $P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}$
+- For the next reading, this posterior distribution becomes the prior distribution over ghost locations.
 
 ---
 
