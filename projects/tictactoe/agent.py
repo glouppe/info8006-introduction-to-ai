@@ -1,4 +1,5 @@
 # import numpy as np
+# from tictactoe import *
 # XXX: Do no use anything else that Numpy and/or the standard Python library.
 
 
