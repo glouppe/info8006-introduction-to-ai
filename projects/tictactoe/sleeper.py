@@ -2,6 +2,7 @@ import numpy as np
 # XXX: This class is designed to allow you to test your AI. Don't modify it.
 from time import sleep
 
+
 class Sleeper:
     def __init__(self, player, k):
         """
@@ -14,11 +15,12 @@ class Sleeper:
         self.player = player
         self.k = k
 
-    def move(self,game_engine):
+    def move(self, game_engine):
         """
         Parameters:
         -----------
-        - `game_engine`: the game engine in a given state (see tictactoe.py for class specs)
+        - `game_engine`: the game engine in a given state
+                         (see tictactoe.py)
 
         Return:
         -------
@@ -27,8 +29,4 @@ class Sleeper:
         Returns a random valid move
         """
         while True:
-                sleep(1)
-                
-                        
-        
-
+            sleep(1)
