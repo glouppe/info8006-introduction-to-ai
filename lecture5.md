@@ -81,7 +81,8 @@ class: middle, center
 
 # Probability
 
-- Probabilistic assertions **summarize** effects of
+- Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
+- Probabilities **summarize** effects of
     - *laziness* (failure to enumerate all world states)
     - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
 - *Subjective* or *Bayesian* **probabilities** relate propositions to one's own state of knowledge.
@@ -405,7 +406,7 @@ $$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
 # Complexity
 
 - Inference by enumeration can be used to answer probabilistic queries for *discrete variables* (i.e., with a finite number of values).
-- However, enumeration **does not scale** well!
+- However, enumeration **does not scale**!
     - Assume a domain described by $n$ variables taking at most $d$ values.
     - Space complexity: $O(d^n)$
     - Time complexity: $O(d^n)$
@@ -472,6 +473,8 @@ $A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
 - $P(b|a) = P(b)$, or
 - $P(a,b) = P(a)P(b)$
 
+Independence is also written as $A \perp B$.
+
 ---
 
 # Independence example
@@ -494,6 +497,8 @@ $A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$
 - $P(b|a,c) = P(b|c)$, or
 - $P(a,b|c) = P(a|c)P(b|c)$
 
+Conditional independence is also written as $A \perp B | C$.
+
 ---
 
 # Conditional independence (2)
@@ -505,6 +510,11 @@ $A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$
 ---
 
 # Conditional independence example
+
+- Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
+- $\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
+
+Therefore, we can write:
 
 $P(\text{toothache}, \text{catch}, \text{cavity})$
 $= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})$
@@ -520,7 +530,7 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
 - *Assuming* pairwise conditional independence between the effects given the cause, it comes:
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
-- The probabilistic model is called a **naive Bayes** model.
+- This probabilistic model is called a **naive Bayes** model.
     - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
     - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
 
@@ -577,6 +587,7 @@ Let $S$=stiff neck and $M$=meningitis.
         - That is, we know what the sensors do.
         - $R_{i,j}$ = reading color measured at $[i,j]$
         - e.g., $P(R_{1,1}=yellow|G=[1,1])=0.1$
+        - Two readings are conditionally independent, given the ghost position.
 - We can calculate the **posterior distribution** $P(G|R_{i,j})$ using Bayes' rule:
     - $P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}$
 - For the next reading, this posterior distribution becomes the prior distribution over ghost locations.
@@ -612,4 +623,79 @@ class: middle, center
 
 ---
 
+# Representing knowledge
+
+- The joint probability distribution can answer any question about the domain.
+- However, its representation can be come **intractably large** as the number of variable grows.
+- *Independence* and *conditional independence* reduce the number of probabilities that need to be specified in order to define the full joint distribution.
+- These relationships can be represented explicitly in the form of a **Bayesian network**.
+
+---
+
+# Bayesian networks
+
+A **Bayesian network** is a *directed graph* in which:
+- Each *node* corresponds to a *random variable*.
+    - Can be observed or unobserved.
+    - Can be discrete or continuous.
+- Each *edge* indicate *direct influence* between variables.
+    - Formally, edges encode conditional independence.
+    - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
+    - The graph has no directed cycle (i.e., the graph is a DAG).
+- Each node $X_i$ has a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+    - In the simplest case, conditional distributions are represented as conditional probability table (CTP).
+
+---
+
+# Example (1)
+
+The topology of the network encodes conditional independence assertions:
+
+.center.width-60[![](figures/lec5/bn1.png)]
+
+- $\text{Weather}$ is independent of the other variables.
+- $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
+
+---
+
+# Example (2a)
+
+I am at work, neighbor John calls to say my alarm is ringing, but neighbor
+Mary does not call. Sometimes it's set off by minor earthquakes.
+Is there a burglar?
+
+- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
+- Network topology reflects "causal" knowledge:
+    - A burglar can set the alarm off
+    - An earthquake can set the alaram off
+    - The alarm can cause Mary to call
+    - The alarm can cause John to call
+
+---
+
+# Example (2b)
+
+.center.width-80[![](figures/lec5/burglary.png)]
+
+---
+
+# Compactness
+
+- A CPT for boolean $X_i$ with $k$ boolean parents has $2^k$ rows for the combinations of parent values.
+- Each row requires one number $p$ for $X_i = true$.
+    - The number of $X_i=false$ is just $1-p$.
+- If each variable has no more than $k$ parents, the complete network requires $O(n \times 2^k)$ numbers.
+    - i.e., grows **linearly with $n$**, vs. $O(2^n)$ for the full joint distribution.
+- For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
+
+---
+
+# Global semantics
+
+---
+
 # Summary
+
+- Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
+- **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
+- ...
