@@ -148,7 +148,6 @@ def play(args):
             env.step((currentPlayer, -1, -1))
         t[currentPlayer - 1] += tX
         nact[currentPlayer - 1] += 1
-    currState = env.currentState()
     return (nact, t, env)
 
 
