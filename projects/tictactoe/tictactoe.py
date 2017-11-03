@@ -14,41 +14,39 @@ from copy import deepcopy
 
 
 class Tictactoe(object):
-    """
-        Arguments:
-        ----------
-        - `n`: the number of lines of the grid
-        - `m`: the number of columns of the grid
-        - `k`: the size of an alignment.
-    """
 
     def __init__(self, n, m, k):
+        """
+            Arguments:
+            ----------
+            - `n`: the number of lines of the grid
+            - `m`: the number of columns of the grid
+            - `k`: the size of an alignment.
+        """
         self.n = n
         self.m = m
         self.k = k
         self.reset()
 
-    """
-        Resets the environment to an empty grid of size n*m
-        and a random initial symbol (player)
-    """
-
     def reset(self):
+        """
+            Resets the environment to an empty grid of size n*m
+            and a random initial symbol (player)
+        """
         self.currentX = np.random.randint(1, 3)
         self.M = np.zeros((self.n, self.m))
         self.totalScores = [0, 0]
         self.alignments = [[], []]
 
-    """
-        Arguments:
-        ----------
-        - `action = (x,i,j)` : a triplet of integers
-
-        If `action` is valid, replace the empty cell self.M[i,j] by x
-        and update the current state (scoring and alignments)
-    """
-
     def step(self, action):
+        """
+            Arguments:
+            ----------
+            - `action = (x,i,j)` : a triplet of integers
+
+            If `action` is valid, replace the empty cell self.M[i,j] by x
+            and update the current state (scoring and alignments)
+        """
         x, i, j = action
         if not self.checkAction(action):
             self.currentX = 3 - self.currentX
@@ -57,11 +55,14 @@ class Tictactoe(object):
         s = self.updateScore(action)
         if s == 0:
             self.currentX = 3 - self.currentX
-    """
-        Check the end of the game (No new possible alignment for any player)
-    """
 
     def terminalState(self):
+        """
+            Check the end of the game, which holds if :
+            - The grid is full
+            or
+            - There is no new possible alignment
+        """
         currentX = self.currentX
         otherX = 3 - currentX
 
@@ -80,61 +81,57 @@ class Tictactoe(object):
         return (self.totalScores == env2.totalScores
                 and self.totalScores == env3.totalScores)
 
-    """
-        Arguments:
-        ----------
-        - `align` : a list of pair of integers
-        - 'x' : a symbol
-
-        Returns True if len(`align`) == k
-        and does not share more than one symbol
-        with another existing alignment
-    """
-
     def checkAlignment(self, align, x):
+        """
+            Arguments:
+            ----------
+            - `align` : a list of pair of integers
+            - 'x' : a symbol
+
+            Returns True if len(`align`) == k
+            and does not share more than one symbol
+            with another existing alignment
+        """
         if len(align) != self.k:
             return False
         return len(list(filter(lambda x: len(x.intersection(align))
                                > 1, self.alignments[x - 1]))) == 0
 
-    """
-        Arguments:
-        ----------
-        - `i` : a list of pair of integers
-        - 'j' : a symbol
-
-        Returns true if `i` and `j` are valid coordinates in current grid
-    """
-
     def checkCoordinates(self, i, j):
+        """
+            Arguments:
+            ----------
+            - `i` : a list of pair of integers
+            - 'j' : a symbol
+
+            Returns true if `i` and `j` are valid coordinates in current grid
+        """
         return i >= 0 and i < self.n and j >= 0 and j < self.m
 
-    """
-        Arguments:
-        ----------
-        - `action = (x,i,j)` : a triplet of integers
-
-        Returns true if :
-        - `i` and `j` are valid coordinates in current grid
-        - `x` is the current symbol in the game
-        - the cell at (`i`,`j`) in the grid is available (= 0)
-    """
-
     def checkAction(self, action):
+        """
+            Arguments:
+            ----------
+            - `action = (x,i,j)` : a triplet of integers
+
+            Returns true if :
+            - `i` and `j` are valid coordinates in current grid
+            - `x` is the current symbol in the game
+            - the cell at (`i`,`j`) in the grid is available (= 0)
+        """
         x, i, j = action
         return self.checkCoordinates(
             i, j) and self.currentX == x and self.M[i, j] == 0
 
-    """
-        Arguments:
-        ----------
-        - `action = (x,i,j)` : a triplet of integers
-
-        Returns number of new alignments made with the symbol `x`
-        at cell (`i`,`j`) and adjacents cells.
-    """
-
     def updateScore(self, action):
+        """
+            Arguments:
+            ----------
+            - `action = (x,i,j)` : a triplet of integers
+
+            Returns number of new alignments made with the symbol `x`
+            at cell (`i`,`j`) and adjacents cells.
+        """
         x, i, j = action
         k = self.k
         intervals = [[(i -
@@ -196,11 +193,10 @@ class Tictactoe(object):
 
         return s
 
-    """
-        Renders the board
-    """
-
     def render(self):
+        """
+            Renders the board
+        """
 
         a = (' ___' * self.m)
         c = []
@@ -218,13 +214,12 @@ class Tictactoe(object):
         c.append(a)
         print('\n'.join(tuple(c)))
 
-    """
-        Returns the current state :
-            - Current state of the grid
-            - Current symbol (player)
-            - Total score for the two players
-            - Lists of cells involved in a alignment
-    """
-
     def currentState(self):
+        """
+            Returns the current state :
+                - Current state of the grid
+                - Current symbol (player)
+                - Total score for the two players
+                - Lists of cells involved in a alignment
+        """
         return (self.M, self.currentX, self.totalScores, self.alignments)
