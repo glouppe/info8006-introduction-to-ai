@@ -31,7 +31,7 @@ class Human:
             print (
                     "Enter your line, a space, and your column coordinates :")
             try:
-                a = raw_input()
+                a = input()
                 (x, y) = tuple(a.split(" "))
                 if game_engine.checkAction((self.player, int(x), int(y))):
                     return int(x), int(y)
@@ -40,4 +40,4 @@ class Human:
                         "Your coordinates are not valid.")
             except Exception as e:
                 print (
-                    "Something went wrong : " + e)
+                    "Something went wrong : " + str(e))
