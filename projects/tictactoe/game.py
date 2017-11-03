@@ -1,10 +1,9 @@
 import numpy as np
 import sys
 from human import Human
-from importlib import import_module
 from tictactoe import Tictactoe
 from copy import deepcopy
-import thread
+import _thread
 import threading
 import time
 
@@ -26,7 +25,7 @@ Arguments:
     
 """
 def help():
-        print """
+        print ("""
 Main program 
 Play tic tac toe. Players are either AIs or humans.
 Arguments:
@@ -37,11 +36,11 @@ Arguments:
 - p2 : (str) Player, 'h' for human and 'c_`class`' for computer
         - `class` is the name of your python file. The name of the class inside this file has to be `Class`
         - Random selection of the first player.
-        """
+        """)
 
 def f_with_timeout(f,*args):
     
-    timer = threading.Timer(TIMEOUT, thread.interrupt_main)
+    timer = threading.Timer(TIMEOUT, _thread.interrupt_main)
     out = None
     t = time.time()
     try:
@@ -107,7 +106,6 @@ def play(args):
         while not env.terminalState():
                 _,currentPlayer,_,_ = env.currentState()
                 tX,act = f_with_timeout(p[currentPlayer - 1].move,deepcopy(env)) 
-                print act
                 if act is not None:
                         i,j = act
                         env.step((currentPlayer,i,j))
@@ -124,8 +122,8 @@ if __name__=="__main__":
         if res != -1:
                 nact,t,winner,state = res  
                 score = state[2]
-                print "Winner is player " + str(winner)
-                print "Score per player: " + "/".join(map(str,score))
-                print "Number of moves per player : " + "/".join(map(str,nact))
-                print "Play time per player : " + "/".join(map(str,t))
+                print ("Winner is player " + str(winner))
+                print ("Score per player: " + "/".join(map(str,score)))
+                print ("Number of moves per player : " + "/".join(map(str,nact)))
+                print ("Play time per player : " + "/".join(map(str,t)))
         

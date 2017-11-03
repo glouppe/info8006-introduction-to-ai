@@ -1,6 +1,7 @@
 import numpy as np
 # XXX: This class is designed to allow you to test your AI. Don't modify it.
 
+
 class Random:
     def __init__(self, player, k):
         """
@@ -13,11 +14,12 @@ class Random:
         self.player = player
         self.k = k
 
-    def move(self,game_engine):
+    def move(self, game_engine):
         """
         Parameters:
         -----------
-        - `game_engine`: the game engine in a given state (see tictactoe.py for class specs)
+        - `game_engine`: the game engine in a given state
+                         (see tictactoe.py)
 
         Return:
         -------
@@ -27,7 +29,3 @@ class Random:
         """
         lst = np.argwhere(game_engine.M == 0)
         return tuple(lst[np.random.randint(lst.shape[0])])
-                
-                        
-        
-

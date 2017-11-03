@@ -1,5 +1,5 @@
-import numpy as np
 # XXX: This class is designed to allow you to test your AI. Don't modify it.
+
 
 class Human:
     def __init__(self, player, k):
@@ -13,35 +13,31 @@ class Human:
         self.player = player
         self.k = k
 
-    def move(self,game_engine):
+    def move(self, game_engine):
         """
         Parameters:
         -----------
-        - `game_engine`: the game engine in a given state (see tictactoe.py for class specs)
+        - `game_engine`: the game engine in a given state
+                         (see tictactoe.py)
 
         Return:
         -------
         - (x, y): the position the agent draws a symbol.
 
-        Note:
-        -----
-        In case the returned value violates the game constraints (the position
-        is out of range or already contains a symbol), the agent will miss its
-        turn.
         """
-        
+
         while True:
             game_engine.render()
-            print "Enter your coordinates (line then column) separated by a space :"
+            print (
+                    "Enter your line, a space, and your column coordinates :")
             try:
                 a = raw_input()
-                (x,y) = tuple(a.split(" "))
-                if game_engine.checkAction((self.player,int(x),int(y))):
-                    return int(x),int(y)
+                (x, y) = tuple(a.split(" "))
+                if game_engine.checkAction((self.player, int(x), int(y))):
+                    return int(x), int(y)
                 else:
-                    print "Your coordinates are not valid, please enter your coordinates (line then column) separated by a space :"
-            except:
-                print "Something went wrong, please enter your coordinates (line then column) separated by a space :"
-                
-                        
-
+                    print (
+                        "Your coordinates are not valid.")
+            except Exception as e:
+                print (
+                    "Something went wrong : " + e)

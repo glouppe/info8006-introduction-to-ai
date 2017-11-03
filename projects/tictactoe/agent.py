@@ -1,5 +1,6 @@
-import numpy as np
+# import numpy as np
 # XXX: Do no use anything else that Numpy and/or the standard Python library.
+
 
 class Agent:
     def __init__(self, player, k):
@@ -13,11 +14,12 @@ class Agent:
         self.player = player
         self.k = k
 
-    def move(self,game_engine):
+    def move(self, game_engine):
         """
         Parameters:
         -----------
-        - `game_engine`: the game engine in a given state (see tictactoe.py for class specs)
+        - `game_engine`: the game engine in a given state
+                         (see tictactoe.py)
 
         Return:
         -------
@@ -30,6 +32,8 @@ class Agent:
         turn.
         """
         # XXX your code goes here
+        x = 0
+        y = 0
         return x, y
 
     # XXX you are free to add other methods, if necessary to implement `move`.
