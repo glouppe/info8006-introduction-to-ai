@@ -87,11 +87,11 @@
 \section{Pratical Information}
 \begin{itemize}
 	\item Individual project.
-    \item Deadline: November 30.
+    \item Deadline: November 23.
     \item Deliverable 1: A Python implementation of the \texttt{Agent} class, as defined in the  \texttt{agent.py} template.
     \begin{itemize}
     	\item \danger If the proposed agent action violates the game constraints, the agent misses its turn.
-        \item \danger The execution time of the \texttt{move(grid)} method will be limited.
+        \item \danger The execution the \texttt{move(grid)} method is subject to a time limit.
     \end{itemize}
     \item Deliverable 2: A report of 3 pages (max.) which describes your work. Appendices with some statistics accepted.
     \item Upload your deliverables (\texttt{agent.py} and \texttt{report.pdf}) on the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}.
@@ -133,13 +133,13 @@
 \end{tikzpicture}
 \end{center}
 
-This is a classical tic tac toe grid. Notice that the grid can be really large, and not necessarily square.
+This is a classical tic tac toe grid. The grid can be really large, and not necessarily square.
 
-Usually, we denote 'X' and 'O' for each player token, but in this project we will go for $1$ and $2$ ($0$ is empty).\\
+Usually, we denote 'X' and 'O' for each player token, but in this project we denote them as $1$ and $2$ ($0$ is empty).\\
 
-The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead of filling entire diagonals/rows/columns with the same symbol, players have to build diagonal/row/column alignments of size $k$ (denoted as a $k$-alignment) with the same symbol. Players can use the fact that two alignments can share (at most) one symbol.\\
+The rules\footnote{For a quick reminder : https://en.wikipedia.org/wiki/Tic-tac-toe} remain the same, except the following. Instead of filling entire diagonals/rows/columns with the same symbol, players have to build diagonal/row/column alignments of size $k$ (denoted as a $k$-alignment). The score of a player is the number of diagonal/row/column alignments of size $k$, given that two alignments can share (at most) 1 cell.\\
 
-The goal of the game is to have more points than the opponent until it is not possible for any of the players to build more $k$-alignments. The game is made more challenging with a time budget of 1 minute.\\
+The goal of the game is to have more points than the opponent until it is not possible for any of the players to build more $k$-alignments. The game is made more challenging with a time budget of 1 minute. Plus, if a player hit an alignment, he also grabs the next turn.\\
 
 Below are some common scoring examples with a $10 \times 10$ grid and $k = 5$.
 
@@ -360,24 +360,5 @@ Below are some common scoring examples with a $10 \times 10$ grid and $k = 5$.
 \end{figure}
 
 
-%\begin{description}
-%	\item[empty] ist der Seitenstil, bei dem Kopf- und Fusszeile vollständig 	leer bleiben.\marginpar[\textit{Randnotiz links}]
-%	{\textit{Randnotiz rechts}}
-%    \item[plain] ist der Seitenstil, bei dem keinerlei Kolumnentitel verwendet wird.
-%    \item[headings] ist der Seitenstil für automatische Kolumnentitel.
-%    \item[myheadings] ist der Seitenstil für manuelle Kolumnentitel.
-%\end{description}
 
-
-
-%$\mathsf{({m}^{3}/s)}$
-%-------------------------------
-%\begin{figure}
-%	\setcapindent{-1em}
-%    \fbox{\parbox{.95\linewidth}{
-%    	\centering\KOMAScript}}
-%	\caption{Beispiel mit teilweise hängendem Einzug ab der zweiten Zeile}
-%\end{figure}
-
-%Guten Morgen\footnote{irgend ein text\label{refnote}}\multiplefootnoteseparator\footnote{es geht noch weiter}Blabla\footref{refnote}
 \end{document}
