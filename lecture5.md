@@ -528,7 +528,7 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 - More generally, from the product rule, we have:
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
-- *Assuming* pairwise conditional independence between the effects given the cause, it comes:
+- Assuming *pairwise conditional independence* between the effects given the cause, it comes:
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
 - This probabilistic model is called a **naive Bayes** model.
     - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
@@ -638,11 +638,10 @@ A **Bayesian network** is a *directed graph* in which:
 - Each *node* corresponds to a *random variable*.
     - Can be observed or unobserved.
     - Can be discrete or continuous.
-- Each *edge* indicate *direct influence* between variables.
-    - Formally, edges encode conditional independence.
+- Each *edge* indicate "direct influence" between variables.
     - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
     - The graph has no directed cycle (i.e., the graph is a DAG).
-- Each node $X_i$ has a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+- Each node $X_i$ is annotated with a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
     - In the simplest case, conditional distributions are represented as conditional probability table (CTP).
 
 ---
@@ -660,6 +659,8 @@ The topology of the network encodes conditional independence assertions:
 
 # Example (2a)
 
+.center.width-30[![](figures/lec5/alarm.png)]
+
 I am at work, neighbor John calls to say my alarm is ringing, but neighbor
 Mary does not call. Sometimes it's set off by minor earthquakes.
 Is there a burglar?
@@ -671,11 +672,66 @@ Is there a burglar?
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
 # Example (2b)
 
 .center.width-80[![](figures/lec5/burglary.png)]
+
+---
+
+# Probabilities in BNs (1)
+
+A Bayesian network *implicitly* **encodes** the full joint distribution as the product of the local distributions:
+
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+
+For example:
+
+$P(j, m, a, \lnot b, \lnot e)$<br>
+$= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)$<br>
+$= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998$<br>
+$\approx 0.00063$
+
+---
+
+# Probabilities in BNs (2)
+
+- Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
+- By the *chain rule*:
+    - $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$
+- Assume **conditional independencies** of $X\_i$ and its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
+    - $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$
+- Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+
+---
+
+# Constructing Bayesian Networks
+
+BNs are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
+
+This suggests the following methodology for *building* Bayesian networks:
+
+1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
+2. For $i=1$ to $n$:
+    - Add $X\_i$ to the network.
+    - Select a minimal set of parents from $X\_1, ..., X\_n$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    - For each parent, insert a link from the parent to $X\_i$.
+    - Write down the CPT.
+
+---
+
+# Examples
+
+.center.width-100[
+![](figures/lec5/bn2.png)
+
+These BNs are alternatives to Example 2b.
+]
+
+<span class="Q">[Q]</span> What do you think of these BNs?
 
 ---
 
@@ -687,10 +743,33 @@ Is there a burglar?
 - If each variable has no more than $k$ parents, the complete network requires $O(n \times 2^k)$ numbers.
     - i.e., grows **linearly with $n$**, vs. $O(2^n)$ for the full joint distribution.
 - For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
+- Compactness depends on the *node ordering*.
+    - Compare the three networks representing the same joint distribution.
 
 ---
 
-# Global semantics
+# Compact conditional distributions
+
+XXX
+
+---
+
+# Causality?
+
+- When the network reflects the true causal patterns:
+    - Often more compact (nodes have fewer parents).
+    - Often easier to think about.
+    - Often easier to elicit from experts.
+- But, Bayesian networks **need not be causal**.
+    - Sometimes no causal network exists over the domain (e.g., if variables are missing).
+    - Edges then reflect *correlation*, not causation.
+- What do the edges really mean then?
+    - Topology *may* happen to encode causal structure.
+    - Topology **really** encodes conditional independence.
+
+.center.width-40[![](figures/lec5/causality.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
