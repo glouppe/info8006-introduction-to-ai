@@ -6,6 +6,7 @@ from copy import deepcopy
 import _thread
 import threading
 import time
+import logging
 
 # XXX: Do not modify anything.
 
@@ -59,7 +60,10 @@ def f_with_timeout(f, *args):
     t = time.time()
     try:
         timer.start()
-        out = f(*args)
+        try:
+            out = f(*args)
+        except BaseException as e:
+            logging.exception("Something awful happened!")
     except KeyboardInterrupt:
         pass
     t = time.time() - t
@@ -139,15 +143,19 @@ def play(args):
     t = [0, 0]
     nact = [0, 0]
     while not env.terminalState():
+        env.render()
         _, currentPlayer, _, _ = env.currentState()
         tX, act = f_with_timeout(p[currentPlayer - 1].move, deepcopy(env))
         if act is not None:
             i, j = act
             env.step((currentPlayer, i, j))
         else:
-            env.step((currentPlayer, -1, -1))
+            lst = np.argwhere(env.M == 0)
+            move = tuple(lst[np.random.randint(lst.shape[0])])
+            env.step((currentPlayer, move[0], move[1]))
         t[currentPlayer - 1] += tX
         nact[currentPlayer - 1] += 1
+    env.render()
     return (nact, t, env)
 
 

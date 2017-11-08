@@ -34,6 +34,7 @@ class Tictactoe(object):
             and a random initial symbol (player)
         """
         self.currentX = np.random.randint(1, 3)
+        self.actions = []
         self.M = np.zeros((self.n, self.m))
         self.totalScores = [0, 0]
         self.alignments = [[], []]
@@ -55,6 +56,27 @@ class Tictactoe(object):
         s = self.updateScore(action)
         if s == 0:
             self.currentX = 3 - self.currentX
+        self.actions.append(action)
+
+    def unstep(self, max_unsteps=1):
+        """
+            Arguments:
+            ----------
+            - `max_unsteps` : number
+
+            Cancel until `max_unsteps` consecutive
+            last actions already performed in the game
+        """
+        k = max_unsteps
+        while k > 0 and self.actions != []:
+            x, i, j = self.actions.pop()
+            self.currentX = x
+            self.M[i, j] = 0
+            aligns = [x for x in self.alignments[x - 1] if (i, j) not in x]
+            nbaligns = len([x for x in self.alignments[x - 1] if (i, j) in x])
+            self.totalScores[x - 1] -= nbaligns
+            self.alignments[x - 1] = aligns
+            k -= 1
 
     def terminalState(self):
         """
@@ -193,17 +215,24 @@ class Tictactoe(object):
 
         return s
 
-    def render(self):
-        """
-            Renders the board
+    def render(self, show_indices=True):
+        """ 
+            Arguments:
+            ----------
+            - `show_indices` : boolean
+            
+            Renders the board with indices if `show_indices` is true
+            Credits : CorentinJ
         """
 
-        a = (' ___' * self.m)
-        c = []
+        hor_offset = '   ' if show_indices else ''
+        hor_indices = hor_offset + \
+            ''.join([' ' + str(i).rjust(2) + ' ' for i in range(self.m)])
+        a = hor_offset + (' ___' * self.m)
 
-        c = []
+        c = [hor_indices] if show_indices else []
         for i in range(self.n):
-            b = []
+            b = [str(i).rjust(2)] if show_indices else []
             for j in range(self.m):
                 b.append('|')
                 b.append("X" if self.M[i][j] == 1 else (
