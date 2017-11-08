@@ -6,6 +6,30 @@ Lecture 5: Probabilistic reasoning I
 
 ---
 
+# Announcement
+
+.grid[
+.col-2-3[
+## Research seminar
+
+"What does the Revolution in Artificial Intelligence Mean for Particle Physics?",
+
+Prof. Kyle Cranmer, New York University.
+
+## When/Where?
+- Friday December 1, 2017
+- 3:00 PM
+- Room R7 / B28
+]
+.col-1-3[
+.circle[![](figures/lec5/cranmer.jpeg)]
+]
+]
+
+Not mandatory, but you are welcome to attend!
+
+---
+
 # Today
 
 .grid[
@@ -17,7 +41,9 @@ Lecture 5: Probabilistic reasoning I
     - Product rule, Chain rule, Bayes' rule
     - Inference
 - *Bayesian networks*:
-    - X, Y , Z
+    - Representing uncertain knowledge
+    - Semantics
+    - Construction
 ]
 .col-1-2[
 ![](figures/lec5/proba-cartoon.png)
@@ -40,13 +66,13 @@ class: middle, center
 
 .center.width-40[![](figures/lec5/gb-grid.png)]
 
-- A ghost is in the grid somewhere.
+- A ghost is *hidden* in the grid somewhere.
 - Sensor readings tell how close a square is to the ghost.
     - On the ghost: red
     - 1 or 2 away: orange
-    - 3 or 4 away: yellow
-    - 5+ away" green
-- Sensors are *noisy*, but we know $P(Color|Distance)$.
+    - 3 away: yellow
+    - 4+ away green
+- Sensors are **noisy**, but we know $P(Color|Distance)$.
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -70,10 +96,10 @@ class: middle, center
 - General situation:
     - *Observed variables* (evidence): agent knows certain things about the state of the world (e.g., sensor readings).
     - *Unobserved variables*: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
-    - *Model*: agent knows or believes something about how the known variables relate to the unknown variables.
+    - (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
 - How to handle uncertainty?
     - A purely logical approach either:
-        - risks falsehood (because of ignorance about the world or laziness in the model)
+        - risks falsehood (because of ignorance about the world or laziness in the model), or
         - leads to conclusions that are too weak for decision making.
     - **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
 
@@ -85,7 +111,7 @@ class: middle, center
 - Probabilities **summarize** effects of
     - *laziness* (failure to enumerate all world states)
     - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
-- *Subjective* or *Bayesian* **probabilities** relate propositions to one's own state of knowledge.
+- *Bayesian* (subjective) **probabilities** relate propositions to one's own state of knowledge.
     - e.g., $P(\text{ghost in } [3,2]) = 0.02$
 - These are **not** claims of a "probabilistic tendency" in the current situation (but might be learned from past experience of similar situations).
 
@@ -106,44 +132,36 @@ class: middle, center
 
 # Random variables
 
-- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain.
+- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its *outcomes*.
     - e.g., $Odd(1) = true$ and $D_{Odd} = \\{ true, false \\}$.
 - $P$ induces a **probability distribution** for any random variable $X$.
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(Odd=true) = P(1)+P(3)+P(5) = \frac{1}{2}$.
     - When clear from the context, we will denote $P(X=x\_i)$ as $P(x_i)$.
+- For discrete variables, the probability distribution can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
 - In practice, we will use random variables to *represent aspects of the world* about which we (may) have uncertainty.
     - $R$: Is it raining?
     - $T$: Is it hot or cold?
     - $L$: Where is the ghost?
-    - ...
 
 ---
 
 # Probability for continuous variables
 
-.center.width-50[![](figures/lec5/uniform.png)]
+.center.width-40[![](figures/lec5/uniform.png)]
 
-- Express distribution as a *parameterized function of value*:
-    - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
-- Here, $P$ is a **density** that integrates to $1$.
-    - The density probability function is often rather denoted as $f(x)$ or $p(x)$.
+- For continuous variables, the probability distribution can be described by a *probability density function*.
+    - That is, the distribution is decribed by a *parameterized function of value*:
+        - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
+    - a density *integrates* to $1$.
 - That is, $P(X=20.5) = 0.125$ really means
 $$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
 
 ---
 
-# Gaussian density
-
-.center.width-70[![](figures/lec5/gaussian.png)]
-
-$$P(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-(x-\mu)^2 / 2\sigma^2)$$
-
----
-
 # Probability distributions
 
-- Intuitively, one can think of the *probability distribution* of a random variable as a **table** that associates a probability value to each *outcome* (assignment) of the variable.
+- Intuitively, one can think of the *probability distribution* of a random variable as a **table** that associates a probability value to each *outcome* of the variable.
 - By construction, probability values are *normalized* (i.e., sum to $1$).
 - This table can be infinite!
 
@@ -171,7 +189,7 @@ $P(W)$
 # Joint distributions
 
 - A **joint probability distribution** over a set of random variables $X_1, ..., X_n$ specifies
-the probability of each outcome.
+the probability of each (combined) outcome.
 
 $$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
 
@@ -252,6 +270,11 @@ prior to arrival of any evidence.
 $$P(a|b) = \frac{P(a,b)}{P(b)}$$
     - e.g., $P(W=sun|T=cold) = \frac{P(W=sun,T=cold)}{P(T=cold)} = \frac{0.2}{0.2 + 0.3} = 0.4$
 
+???
+
+Draw the Venn diagram of
+p(a), p(b), p(a,b) and explain p(a|b).
+
 ---
 
 # Conditional distributions
@@ -289,7 +312,7 @@ $P(W|T=cold)$
 
 <span class="Q">[Q]</span> To what events are conditional probabilities associated?
 
-<span class="Q">[Q]</span> Do they originate from the same sample and probability space?
+<span class="Q">[Q]</span> Is a conditional distribution defined on the same sample and probability space than the joint?
 
 ---
 
@@ -331,7 +354,7 @@ $\rightarrow P(W|c)$
 ]
 ]
 
-<span class="Q">[Q]</span> Why does this work? Sum of selection is $P(evidence)$!
+<span class="Q">[Q]</span> Why does this work?
 
 ---
 
@@ -590,7 +613,7 @@ Let $S$=stiff neck and $M$=meningitis.
         - Two readings are conditionally independent, given the ghost position.
 - We can calculate the **posterior distribution** $P(G|R_{i,j})$ using Bayes' rule:
     - $P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}$
-- For the next reading, this posterior distribution becomes the prior distribution over ghost locations.
+- For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
 
 ---
 
@@ -613,7 +636,7 @@ What do probability values represent?
     - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
 - The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs.
     - i.e., probabilities do not have external physical significance.
-    - This is the interpretation of probabilities that we will use!
+    - *This is the interpretation of probabilities that we will use!*
 
 ---
 
@@ -638,7 +661,7 @@ A **Bayesian network** is a *directed graph* in which:
 - Each *node* corresponds to a *random variable*.
     - Can be observed or unobserved.
     - Can be discrete or continuous.
-- Each *edge* indicate "direct influence" between variables.
+- Each *edge* indicates "direct influence" between variables.
     - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
     - The graph has no directed cycle (i.e., the graph is a DAG).
 - Each node $X_i$ is annotated with a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
@@ -655,6 +678,8 @@ The topology of the network encodes conditional independence assertions:
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
+<span class="Q">[Q]</span> What is the BN for $n$ independent coin flips?
+
 ---
 
 # Example (2a)
@@ -666,7 +691,7 @@ Mary does not call. Sometimes it's set off by minor earthquakes.
 Is there a burglar?
 
 - Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
-- Network topology reflects "causal" knowledge:
+- Network topology from "causal" knowledge:
     - A burglar can set the alarm off
     - An earthquake can set the alaram off
     - The alarm can cause Mary to call
@@ -702,9 +727,17 @@ $\approx 0.00063$
 - Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
 - By the *chain rule*:
     - $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$
-- Assume **conditional independencies** of $X\_i$ and its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
+- Assume **conditional independencies** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
     - $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$
 - Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+
+---
+
+# Local semantics
+
+.center.width-70[![](figures/lec5/nondescendants.png)]
+
+A node $X$ is conditionally independent ot its non-descendants (the $Z_{ij}$) given its parents (the $U_i'$).
 
 ---
 
@@ -733,6 +766,17 @@ These BNs are alternatives to Example 2b.
 
 <span class="Q">[Q]</span> What do you think of these BNs?
 
+???
+
+For the left network:
+
+- P (J|M ) = P (J)? No
+- P (A|J, M ) = P (A|J)? P (A|J, M ) = P (A)? No
+- P (B|A, J, M ) = P (B|A)? Yes
+- P (B|A, J, M ) = P (B)? No
+- P (E|B, A, J, M ) = P (E|A)? No
+- P (E|B, A, J, M ) = P (E|A, B)? Yes
+
 ---
 
 # Compactness
@@ -745,12 +789,6 @@ These BNs are alternatives to Example 2b.
 - For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
 - Compactness depends on the *node ordering*.
     - Compare the three networks representing the same joint distribution.
-
----
-
-# Compact conditional distributions
-
-XXX
 
 ---
 
@@ -777,4 +815,6 @@ XXX
 
 - Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
 - **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
-- ...
+- Bayesian networks are DAGs whose nodes correspond to random variables; each node has a conditional distribution for the node, given its parents.
+- A Bayesian Network specifies a full joint distribution.
+    - They are often **exponentially** smaller than an explicitly enumerated joint distribution.
