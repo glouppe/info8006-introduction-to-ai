@@ -1,5 +1,6 @@
 import numpy as np
 from copy import deepcopy
+import time
 # XXX: Do not modify anything.
 
 """
@@ -98,13 +99,20 @@ class Tictactoe(object):
         len_lst = self.nb_zeros
         # Test for first player
         k = 0
+        totalScores1 = self.totalScores[0]
+        totalScores2 = self.totalScores[1]
         while k < len_lst:
             i = lst[k][0]
             j = lst[k][1]
             self.currentX = 1
             self.step((1,i,j))
+            
             k += 1
-        totalScores1 = self.totalScores[0]
+            if self.totalScores[0] != totalScores1:
+                self.unstep(max_unsteps=k)
+                self.currentX = currentX
+                return False
+        
         self.unstep(max_unsteps=len_lst)
         #Test for second player
         k = 0
@@ -113,13 +121,17 @@ class Tictactoe(object):
             j = lst[k][1]
             self.currentX = 2
             self.step((2,i,j))
+            
             k += 1
-        totalScores2 = self.totalScores[1]
+            if self.totalScores[1] != totalScores2:
+                self.unstep(max_unsteps=k)
+                self.currentX = currentX
+                return False
+        
         self.unstep(max_unsteps=len_lst)
         
         self.currentX = currentX
-        return (self.totalScores[0] == totalScores1
-                and self.totalScores[1] == totalScores2)
+        return True
 
     def checkAlignment(self, align, x):
         """
@@ -172,6 +184,7 @@ class Tictactoe(object):
             Returns number of new alignments made with the symbol `x`
             at cell (`i`,`j`) and adjacents cells.
         """
+        t = time.time()
         x, i, j = action
         k = self.k
         intervals = [[(i -
@@ -230,7 +243,6 @@ class Tictactoe(object):
                     s += 1
                 iBegin += 1
                 iEnd += 1
-
         return s
 
     def render(self, show_indices=True):
