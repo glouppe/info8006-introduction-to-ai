@@ -157,6 +157,10 @@ class: middle, center
 - That is, $P(X=20.5) = 0.125$ really means
 $$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
 
+???
+
+R: explanation was not clear.
+
 ---
 
 # Probability distributions
@@ -274,6 +278,9 @@ $$P(a|b) = \frac{P(a,b)}{P(b)}$$
 
 Draw the Venn diagram of
 p(a), p(b), p(a,b) and explain p(a|b).
+^ add that plot
+
+(A and B are boolean rvs defined on Omega)
 
 ---
 
@@ -643,6 +650,10 @@ What do probability values represent?
 class: middle, center
 
 # Probabilistic reasoning
+
+???
+
+R: revise a bit the flow of the presentation so that all concepts are introduced in a logical manner.
 
 ---
 
