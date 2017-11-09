@@ -1,5 +1,6 @@
 import numpy as np
 from copy import deepcopy
+import time
 # XXX: Do not modify anything.
 
 """
@@ -34,9 +35,11 @@ class Tictactoe(object):
             and a random initial symbol (player)
         """
         self.currentX = np.random.randint(1, 3)
+        self.actions = []
         self.M = np.zeros((self.n, self.m))
         self.totalScores = [0, 0]
         self.alignments = [[], []]
+        self.nb_zeros = self.n*self.m
 
     def step(self, action):
         """
@@ -55,6 +58,29 @@ class Tictactoe(object):
         s = self.updateScore(action)
         if s == 0:
             self.currentX = 3 - self.currentX
+        self.actions.append(action)
+        self.nb_zeros -= 1
+
+    def unstep(self, max_unsteps=1):
+        """
+            Arguments:
+            ----------
+            - `max_unsteps` : number
+
+            Cancel until `max_unsteps` consecutive
+            last actions already performed in the game
+        """
+        k = max_unsteps
+        while k > 0 and self.actions != []:
+            x, i, j = self.actions.pop()
+            self.currentX = x
+            self.M[i, j] = 0
+            aligns = [x for x in self.alignments[x - 1] if (i, j) not in x]
+            nbaligns = len([x for x in self.alignments[x - 1] if (i, j) in x])
+            self.totalScores[x - 1] -= nbaligns
+            self.alignments[x - 1] = aligns
+            self.nb_zeros += 1
+            k -= 1
 
     def terminalState(self):
         """
@@ -63,23 +89,49 @@ class Tictactoe(object):
             or
             - There is no new possible alignment
         """
+        if self.nb_zeros == 0:
+            return True
+
         currentX = self.currentX
         otherX = 3 - currentX
 
-        env2 = deepcopy(self)
-        env3 = deepcopy(self)
-
+        lst = np.argwhere(self.M == 0)
+        len_lst = self.nb_zeros
         # Test for first player
-        for i in range(self.n):
-            for j in range(self.m):
-                if env2.M[i][j] == 0:
-                    env2.currentX = currentX
-                    env2.step((currentX, i, j))
-                if env3.M[i][j] == 0:
-                    env3.currentX = otherX
-                    env3.step((otherX, i, j))
-        return (self.totalScores == env2.totalScores
-                and self.totalScores == env3.totalScores)
+        k = 0
+        totalScores1 = self.totalScores[0]
+        totalScores2 = self.totalScores[1]
+        while k < len_lst:
+            i = lst[k][0]
+            j = lst[k][1]
+            self.currentX = 1
+            self.step((1,i,j))
+            
+            k += 1
+            if self.totalScores[0] != totalScores1:
+                self.unstep(max_unsteps=k)
+                self.currentX = currentX
+                return False
+        
+        self.unstep(max_unsteps=len_lst)
+        #Test for second player
+        k = 0
+        while k < len_lst:
+            i = lst[k][0]
+            j = lst[k][1]
+            self.currentX = 2
+            self.step((2,i,j))
+            
+            k += 1
+            if self.totalScores[1] != totalScores2:
+                self.unstep(max_unsteps=k)
+                self.currentX = currentX
+                return False
+        
+        self.unstep(max_unsteps=len_lst)
+        
+        self.currentX = currentX
+        return True
 
     def checkAlignment(self, align, x):
         """
@@ -132,6 +184,7 @@ class Tictactoe(object):
             Returns number of new alignments made with the symbol `x`
             at cell (`i`,`j`) and adjacents cells.
         """
+        t = time.time()
         x, i, j = action
         k = self.k
         intervals = [[(i -
@@ -190,20 +243,26 @@ class Tictactoe(object):
                     s += 1
                 iBegin += 1
                 iEnd += 1
-
         return s
 
-    def render(self):
-        """
-            Renders the board
+    def render(self, show_indices=True):
+        """ 
+            Arguments:
+            ----------
+            - `show_indices` : boolean
+            
+            Renders the board with indices if `show_indices` is true
+            Credits : CorentinJ
         """
 
-        a = (' ___' * self.m)
-        c = []
+        hor_offset = '   ' if show_indices else ''
+        hor_indices = hor_offset + \
+            ''.join([' ' + str(i).rjust(2) + ' ' for i in range(self.m)])
+        a = hor_offset + (' ___' * self.m)
 
-        c = []
+        c = [hor_indices] if show_indices else []
         for i in range(self.n):
-            b = []
+            b = [str(i).rjust(2)] if show_indices else []
             for j in range(self.m):
                 b.append('|')
                 b.append("X" if self.M[i][j] == 1 else (
