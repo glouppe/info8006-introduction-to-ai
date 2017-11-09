@@ -9,7 +9,7 @@ class Agent:
         Arguments:
         ----------
         - `player`: the symbol of the player played by the agent
-                    (either 'X' or 'O').
+                    (either 1 or 2).
         - `k`: the size of an alignment.
         """
         self.player = player

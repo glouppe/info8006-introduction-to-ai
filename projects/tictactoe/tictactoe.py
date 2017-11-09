@@ -38,6 +38,7 @@ class Tictactoe(object):
         self.M = np.zeros((self.n, self.m))
         self.totalScores = [0, 0]
         self.alignments = [[], []]
+        self.nb_zeros = self.n*self.m
 
     def step(self, action):
         """
@@ -57,6 +58,7 @@ class Tictactoe(object):
         if s == 0:
             self.currentX = 3 - self.currentX
         self.actions.append(action)
+        self.nb_zeros -= 1
 
     def unstep(self, max_unsteps=1):
         """
@@ -76,6 +78,7 @@ class Tictactoe(object):
             nbaligns = len([x for x in self.alignments[x - 1] if (i, j) in x])
             self.totalScores[x - 1] -= nbaligns
             self.alignments[x - 1] = aligns
+            self.nb_zeros += 1
             k -= 1
 
     def terminalState(self):
@@ -85,23 +88,38 @@ class Tictactoe(object):
             or
             - There is no new possible alignment
         """
+        if self.nb_zeros == 0:
+            return True
+
         currentX = self.currentX
         otherX = 3 - currentX
 
-        env2 = deepcopy(self)
-        env3 = deepcopy(self)
-
+        lst = np.argwhere(self.M == 0)
+        len_lst = self.nb_zeros
         # Test for first player
-        for i in range(self.n):
-            for j in range(self.m):
-                if env2.M[i][j] == 0:
-                    env2.currentX = currentX
-                    env2.step((currentX, i, j))
-                if env3.M[i][j] == 0:
-                    env3.currentX = otherX
-                    env3.step((otherX, i, j))
-        return (self.totalScores == env2.totalScores
-                and self.totalScores == env3.totalScores)
+        k = 0
+        while k < len_lst:
+            i = lst[k][0]
+            j = lst[k][1]
+            self.currentX = 1
+            self.step((1,i,j))
+            k += 1
+        totalScores1 = self.totalScores[0]
+        self.unstep(max_unsteps=len_lst)
+        #Test for second player
+        k = 0
+        while k < len_lst:
+            i = lst[k][0]
+            j = lst[k][1]
+            self.currentX = 2
+            self.step((2,i,j))
+            k += 1
+        totalScores2 = self.totalScores[1]
+        self.unstep(max_unsteps=len_lst)
+        
+        self.currentX = currentX
+        return (self.totalScores[0] == totalScores1
+                and self.totalScores[1] == totalScores2)
 
     def checkAlignment(self, align, x):
         """
