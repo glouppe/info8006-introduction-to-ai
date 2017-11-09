@@ -400,7 +400,7 @@ $\rightarrow P(W|c)$
 2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables.
 $$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k)$$
 3. *Normalize*.
-$$Z = \sum_q P(Q=q,e_1,...,e_k)$$
+$$Z = \sum_q P(q,e_1,...,e_k)$$
 $$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
 
 ---
