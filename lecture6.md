@@ -8,11 +8,12 @@ Lecture 6: Probabilistic reasoning II
 
 # Today
 
-- *Inference in Bayesian networks*:
+- *Exact inference*:
     - Inference by enumeration
     - Inference by variable elimination
     - Complexity of exact inference
-    - Approximate inference by stochastic simulation
+- *Approximate inference*:
+    - Stochastic simulation
     - Rejection sampling
     - Importance sampling
     - MCMC
@@ -23,7 +24,7 @@ Lecture 6: Probabilistic reasoning II
 
 class: middle, center
 
-# Inference in Bayesian networks
+# Exact inference
 
 ---
 
@@ -89,11 +90,12 @@ Enumeration is **inefficient**: there are repeated computations!
 
 # Inference by variable elimination
 
-The **variable elimination** (VE) algorithm carries out summations right-to-left and *stores intermediate results* (called **factors**) to avoid recomputations.
+- The **variable elimination** (VE) algorithm carries out summations right-to-left and *stores intermediate results* (called **factors**) to avoid recomputations.
+- The algorithm interleaves:
+    - Joining sub-tables
+    - Eliminating hidden variables
 
-The algorithm interleaves:
-- Joining sub-tables
-- Eliminating hidden variables
+<hr>
 
 Example:
 
@@ -130,6 +132,8 @@ The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a ne
 *Summing out*, or **eliminating**, a variable from a sum of products of factors:
 - move any constant factor outside the summation;
 - add up submatrices of pointwise product of remaining factors.
+Variable elimination
+<hr>
 
 Example (eliminate $E$):
 
@@ -142,11 +146,11 @@ $= f_4(A) f_5(A) f_6'(A,B)$
 # Variable elimination algorithm
 
 Idea:
-- *Incrementally* build the list of factors from the Bayesian network.
-- *Eliminate* hidden variables when they are made.
+- *Incrementally* build a list of factors from the nodes in the network.
+- *Eliminate* hidden variables when encountered.
 - *Join* all remaining factors and normalize.
 
-Formally:
+<hr>
 
 .center.width-100[![](figures/lec6/inference-ve.png)]
 
@@ -154,19 +158,61 @@ Formally:
 
 # Irrelevant variables
 
+- Consider the query $P(JohnCalls|Burglar=true)$.
+    - $P(J|b) = \alpha P(b) \sum_e P(e) \sum_a P(a|b,e) P(J|a) \sum_m P(m|a)$
+- $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
+- In other words, $P(J|b)$ remains unchanged if we remove $M$ from the network.
+- **Theorem**: $H$ is irrelevant for $P(Q|E=e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$
 
+---
+
+# Elimination ordering
+
+XXX: redraw
+.center.width-50[![](figures/lec6/ve-ordering.png)]
+
+- Consider the query $P(X\_n|y\_1,...,y\_n)$.
+- Work through the two elimination orderings:
+    - $Z, X\_1, ..., X\_{n-1}$
+    - $X\_1, ..., X\_{n-1}, Z$
+- What is the size of the maximum factor generated for each of the orderings?
+- Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
 
 ---
 
 # Complexity of exact inference
 
+- The computational and space complexity of variable elimination is determined by **the largest factor**.
+- The elimination *ordering* can greatly affect the size of the largest factor.
+- Does there always exist an ordering that only results in small factors? **No!**
+
 ---
 
-# Inference by stochastic simulation
+# Worst case complexity?
+
+XXX: reduction to 3SAT, hence NP-complete
 
 ---
 
-# Approximate inference by MCMC
+class: middle, center
+
+# Approximate inference
+
+---
+
+# Ancestral sampling
+
+---
+
+# Rejection sampling
+
+---
+
+# Importance sampling
+
+---
+
+# MCMC
 
 ---
 
