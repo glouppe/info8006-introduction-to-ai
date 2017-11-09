@@ -9,7 +9,13 @@ Lecture 6: Probabilistic reasoning II
 # Today
 
 - *Inference in Bayesian networks*:
-    - X, Y, Z
+    - Inference by enumeration
+    - Inference by variable elimination
+    - Complexity of exact inference
+    - Approximate inference by stochastic simulation
+    - Rejection sampling
+    - Importance sampling
+    - MCMC
 - *Probabilistic reasoning over time*:
     - X, Y, Z
 
@@ -73,28 +79,82 @@ Recursive depth-first enumeration: **$O(n)$** space, **$O(d^n)$** time
 
 # Evaluation tree
 
-.center.width-100[![](figures/lec6/enumeration-tree.png)]
+.center.width-90[![](figures/lec6/enumeration-tree.png)]
 
 Enumeration is **inefficient**: there are repeated computations!
-- e.g., it computes $P(j|a)P(m|a)$ for both values $e$ and $\lnot e$.
+- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
+- These can be avoided by storing intermediate results!
 
 ---
 
 # Inference by variable elimination
 
+The **variable elimination** (VE) algorithm carries out summations right-to-left and *stores intermediate results* (called **factors**) to avoid recomputations.
+
+The algorithm interleaves:
+- Joining sub-tables
+- Eliminating hidden variables
+
+Example:
+
+$P(B|j,m)$<br>
+$= \alpha  P(B) \sum_e P(e) \sum_a P(a|B,e)P(j|a)P(m|a)$<br>
+$= \alpha  f_1(B) \sum_e f_2(E) \sum_a f_3(A,B,E) f_4(A) f_5(A)$<br>
+$= \alpha  f_1(B) \sum_e f_2(E) f_6(B,E)$ (eliminate $A$)<br>
+$= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br>
+
 ---
 
-# Basic operations
+# VE: factors
+
+- Each **factor $f_i$** is a matrix indexed by the values of its argument variables. E.g.:
+
+.center.width-90[![](figures/lec6/ve-factors.png)]
+
+- Factors are initialized with the CPTs annotating the nodes of the Bayesian network, conditioned on the evidence.
+
+---
+
+# VE: join
+
+The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a new factor $f$.
+- The variables of $f$ are the *union* of the variables in $f_1$ and $f_2$.
+- The elements of $f$ are given by the product of the corresponding elements in $f_1$ and $f_2$.
+
+.center.width-100[![](figures/lec6/ve-product.png)]
+
+---
+
+# VE: elimination
+
+*Summing out*, or **eliminating**, a variable from a sum of products of factors:
+- move any constant factor outside the summation;
+- add up submatrices of pointwise product of remaining factors.
+
+Example (eliminate $E$):
+
+$\sum_e f_2(E) f_3(A,B,E) f_4(A) f_5(A)$<br>
+$= f_4(A) f_5(A) \sum_e f_2(E) f_3(A,B,E)$<br>
+$= f_4(A) f_5(A) f_6'(A,B)$
 
 ---
 
 # Variable elimination algorithm
+
+Idea:
+- *Incrementally* build the list of factors from the Bayesian network.
+- *Eliminate* hidden variables when they are made.
+- *Join* all remaining factors and normalize.
+
+Formally:
 
 .center.width-100[![](figures/lec6/inference-ve.png)]
 
 ---
 
 # Irrelevant variables
+
+
 
 ---
 
