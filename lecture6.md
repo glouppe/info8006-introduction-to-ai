@@ -17,7 +17,7 @@ Lecture 6: Probabilistic reasoning II
     - Stochastic simulation
     - Rejection sampling
     - Importance sampling
-    - MCMC
+    - Gibbs sampling
 
 ---
 
@@ -322,7 +322,7 @@ class: middle, center
 # Approximate inference
 
 - Exact inference is **intractable** for most probabilistic models of practical interest.
-    - e.g., involving many variables, undirected cycles, etc.
+    - e.g., involving many variables, continuous and discrete, undirected cycles, etc.
 - Solution: abandon exact inference and develop  **approximate** but *faster* inference algorithms.
 - Main families of approximate inference algorithms:
     - *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
@@ -334,21 +334,176 @@ class: middle, center
 
 # Sampling from a distribution
 
+.center.width-50[![](figures/lec6/sampling.png)]
+
+- How to sample from the distribution of a *discrete* variable $X$?
+    - Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
+    - Assume sampling from $U[0,1]$ is possible.
+        - e.g., as enabled by a standard `rand()` function.
+    - Divide the $[0,1]$ interval into $d$ regions, with region $i$ having size $P(x_i)$.
+    - Sample $u \sim U[0,1]$ and return the value associated to the region in which $u$ falls.
+- The same algorithm extends to *continuous* variables, assuming access to the **inverse distribution function** $F^{-1}$.
+    - for $p \in [0,1]$, $F^{-1}(p) = x$ such that $F(x)=p$, where $F$ is the CDF.
+    - $F^{-1}$ is known analytically for most canonical distributions (e.g., Gaussian).
+
+<span class="Q">[Q]</span> How to extend to arbitrary multivariate distributions?
+
 ---
 
 # Ancestral sampling
+
+Sampling from a Bayesian network, *without observed evidence*:
+- Sample each variable in turn, in topological order.
+- The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
+
+<hr>
+
+.center.width-100[![](figures/lec6/ancestral-sampling.png)]
+
+---
+
+# Example (1)
+
+.center.width-90[![](figures/lec6/as1.png)]
+
+---
+
+# Example (2)
+
+.center.width-90[![](figures/lec6/as2.png)]
+
+---
+
+# Example (3)
+
+.center.width-90[![](figures/lec6/as3.png)]
+
+---
+
+# Example (4)
+
+.center.width-90[![](figures/lec6/as4.png)]
+
+---
+
+# Example (5)
+
+.center.width-90[![](figures/lec6/as5.png)]
+
+---
+
+# Example (6)
+
+.center.width-90[![](figures/lec6/as6.png)]
+
+---
+
+# Example (7)
+
+.center.width-90[![](figures/lec6/as7.png)]
+
+---
+
+# Analysis of ancestral sampling
+
+The probability that ancestral sampling generates a particular event is
+$$S\_{PS}(x\_1, ..., x\_n) = \prod\_i P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
+i.e., the Bayesian network's joint probability.
+Let the number of samples of an event be $N\_{PS}(x\_1, ..., x\_n)$. We
+define our probability estimate as $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
+Then:<br>
+$\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n)$<br>
+$= \lim\_{N \to \infty} N\_{PS}(x\_1, ..., x\_n) / N$<br>
+$= S\_{PS}(x\_1, ..., x\_n)$<br>
+$= P(x\_1, ..., x\_n)$
+
+That is, the sampling procedure is **consistent**: $P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$.
+
 
 ---
 
 # Rejection sampling
 
+Using ancestral sampling, an estimate $\hat{P}(X|E=e)$ can be formed from the samples *agreeing with the evidence*.
+
+<hr>
+
+.center.width-100[![](figures/lec6/rejection-sampling.png)]
+
+<span class="Q">[Q]</span> Can we use a similar idea to sample continuous variables for which $P$ is known but $F^{-1}$ isn't?
+
 ---
 
-# Importance sampling
+# Analysis of rejection sampling
+
+$\hat{P}(X|E=e) = \alpha N\_{PS}(X,e)$<br>
+$= N\_{PS}(X,e) / N\_{PS}(e)$<br>
+$\approx P(X,e) / P(e)$<br>
+$= P(X|e)$
+
+Therefore, rejection sampling returns **consistent** posterior estimates.
+
+Problem:
+- hopelessly expensive if $P(e)$ is small.
+- $P(e)$ usually drops off exponentially with the number of evidence variables.
 
 ---
 
-# MCMC
+# Likelihood weighting
+
+Fix evidence variables, sample only non-evidence variables and weight each sample by the likelihood it accords to the evidence.
+
+<hr>
+
+.center.width-100[![](figures/lec6/importance-sampling.png)]
+
+---
+
+# Example (1)
+
+.center.width-100[![](figures/lec6/lw1.png)]
+
+---
+
+# Example (2)
+
+.center.width-100[![](figures/lec6/lw2.png)]
+
+---
+
+# Example (3)
+
+.center.width-100[![](figures/lec6/lw3.png)]
+
+---
+
+# Example (4)
+
+.center.width-100[![](figures/lec6/lw4.png)]
+
+---
+
+# Example (5)
+
+.center.width-100[![](figures/lec6/lw5.png)]
+
+---
+
+# Analysis of likelihood weighting
+
+XXX
+
+---
+
+# Gibbs sampling
+
+.center.width-100[![](figures/lec6/gibbs-sampling.png)]
+
+---
+
+class: center, middle
+
+# (Demo)
 
 ---
 
