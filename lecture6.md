@@ -443,7 +443,9 @@ $= P(X|e)$
 
 Therefore, rejection sampling returns **consistent** posterior estimates.
 
-Problem:
+The standard deviation of the error in each probability is $O(1/\sqrt{n})$.
+
+**Problem**: many samples are rejected!
 - hopelessly expensive if $P(e)$ is small.
 - $P(e)$ usually drops off exponentially with the number of evidence variables.
 
