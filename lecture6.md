@@ -187,6 +187,9 @@ R: prepare that
 - The computational and space complexity of variable elimination is determined by **the largest factor**.
 - The elimination *ordering* can greatly affect the size of the largest factor.
 - Does there always exist an ordering that only results in small factors? **No!**
+- *Singly connected networks* (polytrees):
+    - Any two nodes are connected by at most one (undirected path).
+    - Time and space complexity of variable elimination are $O(nd^k)$.
 
 ---
 
@@ -299,15 +302,37 @@ The **probit distribution** uses integral of Gaussian:
 
 ---
 
-# Inference
+# Variable elimination
 
-- Inference in Hybrid Bayesian networks can be conducted similarly as in the discrete case, but replacing summations by integrations.
+- Variable elimination in Hybrid Bayesian networks can be conducted similarly as in the discrete case,
+  by replacing **summations with integrations**.
+- Exact inference remains possible *under some assumptions* (e.g., linear Gaussian models).
+    - in which case exact analytical computations can be derived.
+- However, this often **does not scale** to arbitrary continuous distributions.
+    - e.g., numerical approximations of integrals amount to discretize continuous variables.
 
 ---
 
 class: middle, center
 
 # Approximate inference
+
+---
+
+# Approximate inference
+
+- Exact inference is **intractable** for most probabilistic models of practical interest.
+    - e.g., involving many variables, undirected cycles, etc.
+- Solution: abandon exact inference and develop  **approximate** but *faster* inference algorithms.
+- Main families of approximate inference algorithms:
+    - *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
+        - This is the family of methods we will consider.
+    - *Variational methods*: formulate inference as an optimization problem.
+    - *(Loopy) belief propagation* methods: formulate inference as a message-passing algorithm.
+
+---
+
+# Sampling from a distribution
 
 ---
 
@@ -324,24 +349,6 @@ class: middle, center
 ---
 
 # MCMC
-
----
-
-class: middle, center
-
-# Probabilistic reasoning over time
-
----
-
-# Markov models
-
----
-
-# Hidden Markov models
-
----
-
-# Particle filters
 
 ---
 
