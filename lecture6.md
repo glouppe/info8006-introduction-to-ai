@@ -8,17 +8,16 @@ Lecture 6: Probabilistic reasoning II
 
 # Today
 
-- *Exact inference*:
+- *Exact inference*
     - Inference by enumeration
     - Inference by variable elimination
     - Complexity of exact inference
-- *Approximate inference*:
+- *Bayesian networks with continuous variables*
+- *Approximate inference*
     - Stochastic simulation
     - Rejection sampling
     - Importance sampling
     - MCMC
-- *Probabilistic reasoning over time*:
-    - X, Y, Z
 
 ---
 
@@ -156,7 +155,7 @@ Idea:
 
 ---
 
-# Irrelevant variables
+# Relevance
 
 - Consider the query $P(JohnCalls|Burglar=true)$.
     - $P(J|b) = \alpha P(b) \sum_e P(e) \sum_a P(a|b,e) P(J|a) \sum_m P(m|a)$
@@ -168,7 +167,6 @@ Idea:
 
 # Elimination ordering
 
-XXX: redraw
 .center.width-50[![](figures/lec6/ve-ordering.png)]
 
 - Consider the query $P(X\_n|y\_1,...,y\_n)$.
@@ -177,6 +175,10 @@ XXX: redraw
     - $X\_1, ..., X\_{n-1}, Z$
 - What is the size of the maximum factor generated for each of the orderings?
 - Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
+
+???
+
+R: prepare that
 
 ---
 
@@ -188,9 +190,118 @@ XXX: redraw
 
 ---
 
+class: smaller
+
 # Worst case complexity?
 
-XXX: reduction to 3SAT, hence NP-complete
+.center.width-70[![](figures/lec6/3sat.png)]
+
+3SAT is a special case of inference:
+- CSP: $(u\_1 \lor u\_2 \lor u\_3) \wedge (\lnot u\_1 \lor \lnot u\_2 \lor u\_3) \wedge (u\_2 \lor \lnot u\_3 \lor u\_4)$
+- $P(U\_i=0)=P(U\_i=1)=0.5$
+- $C\_1 = U\_1 \lor U\_2 \lor U\_3$; $C\_2 = \lnot U\_1 \lor \lnot  U\_2 \lor U\_3$; $C\_3 = U\_2 \lor \lnot  U\_3 \lor U\_4$
+- $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
+- $Y = D\_2 \wedge C\_3$
+
+If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
+By reduction, inference in Bayesian networks is therefore **NP-hard**.
+- There is no known efficient probabilistic inference algorithm in general.
+
+---
+
+class: middle, center
+
+# Bayesian networks with continuous variables
+
+---
+
+# Continuous variables
+
+- For continuous variables, the probability distribution can be described by a probability **density** function.
+    - That is, the distribution is described by a *parameterized function* of its value:
+        - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
+    - a density *integrates* to $1$ and is non-negative everywhere.
+- The absolute likelihood that a continuous variable $X$ takes value $x$ is $0$.
+  Rather, the density can be interpreted as providing a *relative* likelihood.
+- E.g., $P(X=20.5) = 0.125$ really means
+$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
+
+.center.width-40[![](figures/lec5/uniform.png)]
+
+---
+
+# Gaussian distribution
+
+.center.width-60[![](figures/lec6/gaussian.png)]
+
+$$P(x)=\mathcal{N}(\mu,\sigma)(x)=\frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(x-\mu)^2}{2\sigma^2})$$
+
+- $\mu$ and $\sigma$ are *parameters* of the distribution.
+- The *multivariate* Gaussian distribution generalizes to $n \geq 1$ random variables.
+
+---
+
+# Hybrid Bayesian networks
+
+.center.width-40[![](figures/lec6/continuous-net.png)]
+
+- What if we have both *discrete* (e.g., $\text{subsidy}$ and $\text{buys}$) and *continuous*
+variables (e.g., $\text{harvest}$ and $\text{cost}$) in a same network?
+- Options:
+    - *discretization*: transform continuous variables into discrete variables.
+        - issues: possibly large errors, large CPTs.
+    - define the conditional distribution with a **finitely parameterized** canonical distribution.
+        - e.g., assume it is a gaussian distribution.
+    - use a non-parametric representation.
+
+---
+
+# Continuous child variables
+
+- We need to specify a *conditional density* function for each continuous child variable
+given continuous parents, for each possible assignment to discrete parents.
+    - e.g., we need to specify both $P(c|h,s)$ and $P(c|h,\lnot s)$
+- Common choice: the **linear Gaussian model** (LG):
+    - $P(c|h,s) = \mathcal{N}(a\_th+b\_t, \sigma_t^2)(c)$
+    - $P(c|h,\lnot s) = \mathcal{N}(a\_tf+b\_f, \sigma_f^2)(c)$
+
+.center.width-90[![](figures/lec6/joint-density.png)]
+
+---
+
+# Conditional Gaussian network
+
+- The joint distribution of an all-continuous network with LG distributions
+is a multivariate Gaussian.
+- The joint distribution of a network with discrete+LG continuous variables is
+a **conditional Gaussian network**.
+    - i.e., a multivariate Gaussian over all continuous variables for each combination of the discrete variable values.
+
+---
+
+# Discrete child variables, with continuous parents
+
+- We need to specify a *conditional distribution* for each discrete child variable,
+given continuous parents.
+- It is often reasonable to assume that the probability values of the discrete outcomes are almost piece-wise constant but *vary smoothly in intermediate regions*.
+- E.g., $P(b|c)$ could be a "soft" threshold:
+
+.grid[
+.col-1-3[
+.center.width-50[![](figures/lec6/probit.png)]
+]
+.col-2-3[
+The **probit distribution** uses integral of Gaussian:
+- $\Phi(x) = \int\_{-\infty}^x \mathcal(N)(0,1)(x) dx$
+- $P(b|c) = \Phi((-c+\mu) / \sigma)$
+]
+]
+
+---
+
+# Inference
+
+- Inference in Hybrid Bayesian networks can be conducted similarly as in the discrete case, but replacing summations by integrations.
 
 ---
 
@@ -235,3 +346,9 @@ class: middle, center
 ---
 
 # Summary
+
+---
+
+# References
+
+- Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.

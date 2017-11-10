@@ -146,23 +146,6 @@ class: middle, center
 
 ---
 
-# Probability for continuous variables
-
-.center.width-40[![](figures/lec5/uniform.png)]
-
-- For continuous variables, the probability distribution can be described by a *probability density function*.
-    - That is, the distribution is decribed by a *parameterized function of value*:
-        - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
-    - a density *integrates* to $1$.
-- That is, $P(X=20.5) = 0.125$ really means
-$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
-
-???
-
-R: explanation was not clear.
-
----
-
 # Probability distributions
 
 - Intuitively, one can think of the *probability distribution* of a random variable as a **table** that associates a probability value to each *outcome* of the variable.
