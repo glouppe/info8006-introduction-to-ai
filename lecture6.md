@@ -16,7 +16,7 @@ Lecture 6: Probabilistic reasoning II
 - *Approximate inference*
     - Stochastic simulation
     - Rejection sampling
-    - Importance sampling
+    - Likelihood weighting
     - Gibbs sampling
 
 ---
@@ -407,7 +407,7 @@ Sampling from a Bayesian network, *without observed evidence*:
 # Analysis of ancestral sampling
 
 - The probability that ancestral sampling generates a particular event is
-$$S\_{PS}(x\_1, ..., x\_n) = \prod\_i P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
+$$S\_{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
 i.e., the Bayesian network's joint probability.
 - Let the number of samples of an event be $N\_{PS}(x\_1, ..., x\_n)$. We
 define the **probability estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
@@ -417,12 +417,11 @@ $\quad \quad \quad \quad \quad \quad \quad \quad \quad= S\_{PS}(x\_1, ..., x\_n)
 $\quad \quad \quad \quad \quad \quad \quad \quad \quad= P(x\_1, ..., x\_n)$
 - That is, the sampling procedure is *consistent*: $P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$.
 
-
 ---
 
 # Rejection sampling
 
-Using ancestral sampling, an estimate $\hat{P}(X|E=e)$ can be formed from the samples *agreeing with the evidence*.
+Using ancestral sampling, an estimate $\hat{P}(x|e)$ can be formed from the samples *agreeing with the evidence*.
 
 <hr>
 
@@ -434,26 +433,28 @@ Using ancestral sampling, an estimate $\hat{P}(X|E=e)$ can be formed from the sa
 
 # Analysis of rejection sampling
 
-- Let consider the **probability estimate** $\hat{P}(X|e)$ formed by rejection sampling:<br><br>
-$\hat{P}(X|e) = \alpha N\_{PS}(X,e)$<br>
-$= N\_{PS}(X,e) / N\_{PS}(e)$<br>
-$\approx P(X,e) / P(e)$<br>
-$= P(X|e)$
+- Let consider the posterior **probability estimate** $\hat{P}(x|e)$ formed by rejection sampling:<br><br>
+$\hat{P}(x|e) = \alpha N\_{PS}(x,e)$<br>
+$= N\_{PS}(x,e) / N\_{PS}(e)$<br>
+$\approx P(x,e) / P(e)$<br>
+$= P(x|e)$
 - Therefore, rejection sampling returns *consistent* posterior estimates.
 - The standard deviation of the error in each probability is $O(1/\sqrt{n})$.
 - **Problem**: many samples are rejected!
-    - hopelessly expensive if $P(e)$ is small.
-    - $P(e)$ usually drops off exponentially with the number of evidence variables.
+    - Hopelessly expensive if $P(e)$ is small.
+    - Evidence is not exploited when sampling.
 
 ---
 
 # Likelihood weighting
 
-Fix evidence variables, sample only non-evidence variables and weight each sample by the likelihood it accords to the evidence.
+Idea: *fix evidence* variables, sample the rest.
+- Problem: the resulting sampling distribution is not consisent.
+- Solution: **weight** by probability of evidence given parents.
 
 <hr>
 
-.center.width-100[![](figures/lec6/importance-sampling.png)]
+.center.width-80[![](figures/lec6/importance-sampling.png)]
 
 ---
 
@@ -487,9 +488,64 @@ Fix evidence variables, sample only non-evidence variables and weight each sampl
 
 ---
 
-# Analysis of likelihood weighting
+class: smaller
 
-XXX
+# Analysis of likelihood weighting (1)
+
+- The sampling probability for an event with likelihood weighting is
+$$S\_{WS}(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)),$$
+where the product is over the non-evidence variables.
+- The weight for a given sample $z,e$ is
+$$w(z,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
+where the product is over the evidence variables.
+- The weighted sampling probability is
+<br><br>
+$S\_{WS}(z,e) w(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i))$<br>
+$\quad \quad \quad \quad \quad \quad \quad= P(z,e).$
+
+---
+
+class: smaller
+
+# Analysis of likelihood weighting (2)
+
+- The estimated posterior probability is computed as follows:
+<br><br>
+$\hat{P}(x|e) = \alpha \sum\_y N\_{WS}(x,y,e) w(x,y,e)$<br>
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\approx \alpha' \sum\_y S\_{WS}(x,y,e) w(x,y,e)$<br>
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' \sum\_y P(x,y,e)$<br>
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
+- Hence likelihood weighting returns *consistent* estimates.
+- Performance **still degrades** with many evidence variables.
+    - A few samples have nearly all the total weight.
+
+<span class="Q">[Q]</span> What should be the normalization constants $\alpha$ and $\alpha'$ to obtain correct results?
+
+---
+
+# Likelihood weighting
+
+- Likelihood weighting is *good*:
+    - The evidence is taken into account to generate a sample.
+    - More of the samples will reflect the state of the world suggested by the evidence.
+- Likelihood weighting **does not solve all problems**:
+    - The evidence influences the choice of downstream variables, but not upstream ones.
+- We would like to consider evidence when we sample *every variable*.
+
+---
+
+# Gibbs sampling
+
+- *Procedure*:
+    - Keep track of a full instance $x\_1, ..., x\_n$. Start with an arbitrary instance consistent with the evidence.
+    - Sample one variable at a time, conditioned on all the rest.
+        - Keep the evidence fixed.
+    - Keep repeating this for a long time.
+- *Property*:
+    - The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
+- *Rationale*:
+    - Both upstream and downstream variables condition on evidence.
+    - In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
 
 ---
 
@@ -499,13 +555,56 @@ XXX
 
 ---
 
+# Example
+
+.grid[
+.col-1-4[
+1) Fix the evidence
+]
+.col-1-4[![](figures/lec6/gibbs-init.png)]
+.col-1-4[
+2) Randomly initialize the other variables
+]
+.col-1-4[![](figures/lec6/gibbs-init2.png)]
+]
+
+3) Repeat
+- Choose a non-evidence variable $X$
+- Resample $X$ from $P(X|\text{all other variables})$
+
+.center.width-100[![](figures/lec6/gibbs-process.png)]
+
+---
+
+# Further reading on Gibbs sampling
+
+- Gibbs sampling produces samples from the query distribution $P(X|e)$ in the limit of re-sampling infinitely often.
+- Gibbs sampling is a special case of a more general methods called
+**Markov chain Monte Carlo** (MCMC) methods.
+    - *Metropolis-Hastings* is one of the more famous MCMC methods.
+        - In fact, Gibbs sampling is a special case of Metropolis-Hastings.
+- You may read about *Monte Carlo* methods: they are just sampling.
+
+---
+
 class: center, middle
 
-# (Demo)
+# (demo)
+
+XXX
 
 ---
 
 # Summary
+
+- *Exact inference* by variable elimination .
+    - NP-hard on general graphs, but polynomial on polytrees.
+    - space = time, very sensitive to topology.
+- *Approximate inference* gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
+    - LW does poorly when there is lots of evidence.
+    - LW and GS generally insensitive to topology.
+    - Convergence can be slow with probabilities close to 1 or 0.
+    - Can handle aribtrary combinations of discrete and continuous variables.
 
 ---
 

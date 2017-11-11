@@ -614,6 +614,8 @@ Let $S$=stiff neck and $M$=meningitis.
   <source src="./figures/lec5/gb-prob.mp4" type="video/mp4">
 </video>]
 
+<span class="Q">[Q]</span> What if we had chosen a different prior?
+
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
