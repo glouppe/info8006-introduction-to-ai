@@ -406,18 +406,16 @@ Sampling from a Bayesian network, *without observed evidence*:
 
 # Analysis of ancestral sampling
 
-The probability that ancestral sampling generates a particular event is
+- The probability that ancestral sampling generates a particular event is
 $$S\_{PS}(x\_1, ..., x\_n) = \prod\_i P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
 i.e., the Bayesian network's joint probability.
-Let the number of samples of an event be $N\_{PS}(x\_1, ..., x\_n)$. We
-define our probability estimate as $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
-Then:<br>
-$\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n)$<br>
-$= \lim\_{N \to \infty} N\_{PS}(x\_1, ..., x\_n) / N$<br>
-$= S\_{PS}(x\_1, ..., x\_n)$<br>
-$= P(x\_1, ..., x\_n)$
-
-That is, the sampling procedure is **consistent**: $P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$.
+- Let the number of samples of an event be $N\_{PS}(x\_1, ..., x\_n)$. We
+define the **probability estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
+- Then:<br>
+$\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) = \lim\_{N \to \infty} N\_{PS}(x\_1, ..., x\_n) / N$<br>
+$\quad \quad \quad \quad \quad \quad \quad \quad \quad= S\_{PS}(x\_1, ..., x\_n)$<br>
+$\quad \quad \quad \quad \quad \quad \quad \quad \quad= P(x\_1, ..., x\_n)$
+- That is, the sampling procedure is *consistent*: $P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$.
 
 
 ---
@@ -436,18 +434,16 @@ Using ancestral sampling, an estimate $\hat{P}(X|E=e)$ can be formed from the sa
 
 # Analysis of rejection sampling
 
-$\hat{P}(X|E=e) = \alpha N\_{PS}(X,e)$<br>
+- Let consider the **probability estimate** $\hat{P}(X|e)$ formed by rejection sampling:<br><br>
+$\hat{P}(X|e) = \alpha N\_{PS}(X,e)$<br>
 $= N\_{PS}(X,e) / N\_{PS}(e)$<br>
 $\approx P(X,e) / P(e)$<br>
 $= P(X|e)$
-
-Therefore, rejection sampling returns **consistent** posterior estimates.
-
-The standard deviation of the error in each probability is $O(1/\sqrt{n})$.
-
-**Problem**: many samples are rejected!
-- hopelessly expensive if $P(e)$ is small.
-- $P(e)$ usually drops off exponentially with the number of evidence variables.
+- Therefore, rejection sampling returns *consistent* posterior estimates.
+- The standard deviation of the error in each probability is $O(1/\sqrt{n})$.
+- **Problem**: many samples are rejected!
+    - hopelessly expensive if $P(e)$ is small.
+    - $P(e)$ usually drops off exponentially with the number of evidence variables.
 
 ---
 
