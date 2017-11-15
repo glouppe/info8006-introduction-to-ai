@@ -143,7 +143,6 @@ def play(args):
     t = [0, 0]
     nact = [0, 0]
     while not env.terminalState():
-        env.render()
         _, currentPlayer, _, _ = env.currentState()
         tX, act = f_with_timeout(p[currentPlayer - 1].move, deepcopy(env))
         if act is not None:
@@ -155,7 +154,6 @@ def play(args):
             env.step((currentPlayer, move[0], move[1]))
         t[currentPlayer - 1] += tX
         nact[currentPlayer - 1] += 1
-    env.render()
     return (nact, t, env)
 
 
