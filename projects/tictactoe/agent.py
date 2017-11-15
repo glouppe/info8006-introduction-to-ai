@@ -14,7 +14,7 @@ class Agent:
         """
         self.player = player
         self.k = k
-        self.timeout=timeout
+        self.timeout = timeout
 
     def move(self, game_engine):
         """

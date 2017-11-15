@@ -29,7 +29,7 @@ Arguments:
 
 
 def help():
-    print ("""
+    print("""
 Main program
 Play tic tac toe. Players are either AIs or humans.
 Arguments:
@@ -121,7 +121,7 @@ def play(args):
         p1 = args[4]
         if p1[0] != "h":
             name = p1.split("_")[1]
-            p1 = extractAgent(name, 1, k)
+            p1 = extractAgent(name, 1, k, TIMEOUT)
         else:
             p1 = Human(1, k)
     except BaseException:
@@ -132,7 +132,7 @@ def play(args):
         p2 = args[5]
         if p2[0] != "h":
             name = p2.split("_")[1]
-            p2 = extractAgent(name, 2, k)
+            p2 = extractAgent(name, 2, k, TIMEOUT)
         else:
             p2 = Human(2, k)
     except BaseException:
@@ -168,9 +168,9 @@ if __name__ == "__main__":
         score = state[2]
         winner = np.argmax(state[2]) + 1 if state[2][0] != state[2][1] else -1
         if winner != -1:
-            print ("Winner is player " + str(winner))
+            print("Winner is player " + str(winner))
         else:
-            print ("There is a tie")
-        print ("Score per player: " + "/".join(map(str, score)))
-        print ("Number of moves per player : " + "/".join(map(str, nact)))
-        print ("Play time per player : " + "/".join(map(str, t)))
+            print("There is a tie")
+        print("Score per player: " + "/".join(map(str, score)))
+        print("Number of moves per player : " + "/".join(map(str, nact)))
+        print("Play time per player : " + "/".join(map(str, t)))

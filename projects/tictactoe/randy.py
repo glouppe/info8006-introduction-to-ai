@@ -13,7 +13,7 @@ class Randy:
         """
         self.player = player
         self.k = k
-        self.timeout=timeout
+        self.timeout = timeout
 
     def move(self, game_engine):
         """
