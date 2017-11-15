@@ -36,7 +36,7 @@ class: middle, center
     - *Most likely explanation*: $\arg \max_q P(Q=q|E=e)$
         - Do you need to necessarily know $P(Q=q|E=e)$ to answer this?
     - *Optimal decisions*: take the decision that maximizes the expected utility of the outcomes.
-        - requires $P(outcome|action,evidence)$
+        - requires to $P(outcome|action,evidence)$ for weighting the corresponding utility.
     - *Value of information*: which evidence to seek next?
 
 ---
@@ -45,7 +45,7 @@ class: middle, center
 
 Start from the joint distribution $P(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
 1. *Select* the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
-2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables $P(Q,e\_1,...,e\_k)$.
+2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence values $P(Q,e\_1,...,e\_k)$.
 3. *Normalize* by $Z = P(e_1,...,e_k) = \sum_q P(q,e_1,...,e_k)$.
 
 ---
@@ -83,7 +83,7 @@ Recursive depth-first enumeration: **$O(n)$** space, **$O(d^n)$** time
 
 Enumeration is **inefficient**: there are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
-- These can be avoided by storing intermediate results!
+- These can be avoided by *storing intermediate results*.
 
 ---
 
@@ -94,7 +94,7 @@ Enumeration is **inefficient**: there are repeated computations!
     - Joining sub-tables
     - Eliminating hidden variables
 
-<hr>
+<!-- <hr>
 
 Example:
 
@@ -102,7 +102,7 @@ $P(B|j,m)$<br>
 $= \alpha  P(B) \sum_e P(e) \sum_a P(a|B,e)P(j|a)P(m|a)$<br>
 $= \alpha  f_1(B) \sum_e f_2(E) \sum_a f_3(A,B,E) f_4(A) f_5(A)$<br>
 $= \alpha  f_1(B) \sum_e f_2(E) f_6(B,E)$ (eliminate $A$)<br>
-$= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br>
+$= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br> -->
 
 ---
 
@@ -119,6 +119,7 @@ $= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br>
 # VE: join
 
 The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a new factor $f$.
+- Exactly like a **database join**!
 - The variables of $f$ are the *union* of the variables in $f_1$ and $f_2$.
 - The elements of $f$ are given by the product of the corresponding elements in $f_1$ and $f_2$.
 
@@ -131,7 +132,7 @@ The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a ne
 *Summing out*, or **eliminating**, a variable from a sum of products of factors:
 - move any constant factor outside the summation;
 - add up submatrices of pointwise product of remaining factors.
-Variable elimination
+
 <hr>
 
 Example (eliminate $E$):
@@ -144,14 +145,23 @@ $= f_4(A) f_5(A) f_6'(A,B)$
 
 # Variable elimination algorithm
 
-Idea:
-- *Incrementally* build a list of factors from the nodes in the network.
-- *Eliminate* hidden variables when encountered.
-- *Join* all remaining factors and normalize.
+Query: $P(Q|e_1, ..., e_n)$.
 
-<hr>
+Algorithm:
+- Start with initial factors:
+    - Local CPTs (but instantiated by evidence).
+- While there are still hidden variables (not Q nor evidence):
+    - Pick a hidden variable $H$
+        - The elimination ordering is a design parameter.
+    - Join all factors mentioning $H$
+    - Eliminate (sum out) $H$
+- Join all remaining factors and normalize.
 
-.center.width-100[![](figures/lec6/inference-ve.png)]
+---
+
+# Example
+
+.center[(blackboard example)]
 
 ---
 
@@ -189,7 +199,7 @@ R: prepare that
 - Does there always exist an ordering that only results in small factors? **No!**
 - *Singly connected networks* (polytrees):
     - Any two nodes are connected by at most one (undirected path).
-    - Time and space complexity of variable elimination are $O(nd^k)$.
+    - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
 
 ---
 
@@ -221,15 +231,16 @@ class: middle, center
 # Continuous variables
 
 - For continuous variables, the probability distribution can be described by a probability **density** function.
-    - That is, the distribution is described by a *parameterized function* of its value:
+    - That is, the distribution is described by a *continuous function* of its value:
         - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
     - a density *integrates* to $1$ and is non-negative everywhere.
 - The absolute likelihood that a continuous variable $X$ takes value $x$ is $0$.
-  Rather, the density can be interpreted as providing a *relative* likelihood.
+- The (integral of the) density provides the probability of falling within a particular range of values.
 - E.g., $P(X=20.5) = 0.125$ really means
-$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
+$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$.
 
 .center.width-40[![](figures/lec5/uniform.png)]
+
 
 ---
 
@@ -252,7 +263,7 @@ $$P(x)=\mathcal{N}(\mu,\sigma)(x)=\frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(x-\
 variables (e.g., $\text{harvest}$ and $\text{cost}$) in a same network?
 - Options:
     - *discretization*: transform continuous variables into discrete variables.
-        - issues: possibly large errors, large CPTs.
+        - issues: possibly large errors due to precision loss, large CPTs.
     - define the conditional distribution with a **finitely parameterized** canonical distribution.
         - e.g., assume it is a gaussian distribution.
     - use a non-parametric representation.
@@ -295,7 +306,7 @@ given continuous parents.
 ]
 .col-2-3[
 The **probit distribution** uses integral of Gaussian:
-- $\Phi(x) = \int\_{-\infty}^x \mathcal(N)(0,1)(x) dx$
+- $\Phi(x) = \int\_{-\infty}^x \mathcal{N}(0,1)(x) dx$
 - $P(b|c) = \Phi((-c+\mu) / \sigma)$
 ]
 ]
@@ -342,18 +353,22 @@ class: middle, center
         - e.g., as enabled by a standard `rand()` function.
     - Divide the $[0,1]$ interval into $d$ regions, with region $i$ having size $P(x_i)$.
     - Sample $u \sim U[0,1]$ and return the value associated to the region in which $u$ falls.
-- The same algorithm extends to *continuous* variables, assuming access to the **inverse distribution function** $F^{-1}$.
+- The same algorithm extends to *continuous* variables, assuming access to the **inverse cumulative distribution function** $F^{-1}$.
     - for $p \in [0,1]$, $F^{-1}(p) = x$ such that $F(x)=p$, where $F$ is the CDF.
     - $F^{-1}$ is known analytically for most canonical distributions (e.g., Gaussian).
 
 <span class="Q">[Q]</span> How to extend to arbitrary multivariate distributions?
+
+???
+
+Draw the situation for the continuous case.
 
 ---
 
 # Ancestral sampling
 
 Sampling from a Bayesian network, *without observed evidence*:
-- Sample each variable in turn, in topological order.
+- Sample each variable in turn, **in topological order**.
 - The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
 
 <hr>
@@ -429,12 +444,16 @@ Using ancestral sampling, an estimate $\hat{P}(x|e)$ can be formed from the samp
 
 <span class="Q">[Q]</span> Can we use a similar idea to sample continuous variables for which $P$ is known but $F^{-1}$ isn't?
 
+???
+
+Explain general rejection sampling.
+
 ---
 
 # Analysis of rejection sampling
 
 - Let consider the posterior **probability estimate** $\hat{P}(x|e)$ formed by rejection sampling:<br><br>
-$\hat{P}(x|e) = \alpha N\_{PS}(x,e)$<br>
+$\hat{P}(x|e) = \alpha N\_{PS}(x,e)$ (by definition of the algorithm)<br>
 $= N\_{PS}(x,e) / N\_{PS}(e)$<br>
 $\approx P(x,e) / P(e)$<br>
 $= P(x|e)$
@@ -521,6 +540,11 @@ $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
 
 <span class="Q">[Q]</span> What should be the normalization constants $\alpha$ and $\alpha'$ to obtain correct results?
 
+???
+
+- $\alpha = 1 / \sum w$
+- $\alpha' = 1 / (N \sum w)$
+
 ---
 
 # Likelihood weighting
@@ -552,6 +576,10 @@ $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
 # Gibbs sampling
 
 .center.width-100[![](figures/lec6/gibbs-sampling.png)]
+
+Note that we need to derive $P(Z\_i|mb(Z\_i))$:
+- $mb(Z\_i)$ is the **Markov blanket** of $Z\_i$.
+- i.e., the set of  $Z\_i$'s parents, children and children's parents.
 
 ---
 
@@ -589,22 +617,22 @@ $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
 
 class: center, middle
 
-# (demo)
-
-XXX
+# (Gibbs sampling demo)
 
 ---
 
 # Summary
 
-- *Exact inference* by variable elimination .
+- **Exact inference** by variable elimination .
     - NP-hard on general graphs, but polynomial on polytrees.
     - space = time, very sensitive to topology.
-- *Approximate inference* gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
+- **Approximate inference** gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
     - LW does poorly when there is lots of evidence.
     - LW and GS generally insensitive to topology.
     - Convergence can be slow with probabilities close to 1 or 0.
-    - Can handle aribtrary combinations of discrete and continuous variables.
+    - Can handle arbitrary combinations of discrete and continuous variables.
+- Want to know more about sampling?
+    - Follow [MATH2022 Large sample analysis: theory and practice](https://www.programmes.uliege.be/cocoon/en/cours/MATH2022-1.html).
 
 ---
 

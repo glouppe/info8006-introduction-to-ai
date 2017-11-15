@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 5: Probabilistic reasoning I
 
+???
+
+R: double check consistency of notations (p, P, bold P, etc)
+
 ---
 
 # Announcement
