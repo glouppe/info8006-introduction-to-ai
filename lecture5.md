@@ -146,19 +146,6 @@ class: middle, center
 
 ---
 
-# Probability for continuous variables
-
-.center.width-40[![](figures/lec5/uniform.png)]
-
-- For continuous variables, the probability distribution can be described by a *probability density function*.
-    - That is, the distribution is decribed by a *parameterized function of value*:
-        - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
-    - a density *integrates* to $1$.
-- That is, $P(X=20.5) = 0.125$ really means
-$$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$$
-
----
-
 # Probability distributions
 
 - Intuitively, one can think of the *probability distribution* of a random variable as a **table** that associates a probability value to each *outcome* of the variable.
@@ -274,6 +261,9 @@ $$P(a|b) = \frac{P(a,b)}{P(b)}$$
 
 Draw the Venn diagram of
 p(a), p(b), p(a,b) and explain p(a|b).
+^ add that plot
+
+(A and B are boolean rvs defined on Omega)
 
 ---
 
@@ -393,7 +383,7 @@ $\rightarrow P(W|c)$
 2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables.
 $$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k)$$
 3. *Normalize*.
-$$Z = \sum_q P(Q=q,e_1,...,e_k)$$
+$$Z = \sum_q P(q,e_1,...,e_k)$$
 $$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
 
 ---
@@ -624,6 +614,8 @@ Let $S$=stiff neck and $M$=meningitis.
   <source src="./figures/lec5/gb-prob.mp4" type="video/mp4">
 </video>]
 
+<span class="Q">[Q]</span> What if we had chosen a different prior?
+
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
@@ -643,6 +635,10 @@ What do probability values represent?
 class: middle, center
 
 # Probabilistic reasoning
+
+???
+
+R: revise a bit the flow of the presentation so that all concepts are introduced in a logical manner.
 
 ---
 

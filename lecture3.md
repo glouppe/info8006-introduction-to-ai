@@ -572,6 +572,10 @@ Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* a
     - See Chapters 16, 17 and 21 or INFO8003 Optimal decision making for complex problems.
     - What if the world is unknown?
 
+???
+
+R: Have an additional lecture before this one, on MDPs?
+
 ---
 
 # References
