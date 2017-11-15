@@ -3,16 +3,17 @@ import numpy as np
 
 
 class Randy:
-    def __init__(self, player, k):
+    def __init__(self, player, k, timeout=60):
         """
         Arguments:
         ----------
         - `player`: the symbol of the player played by the agent
-                    (either 'X' or 'O').
+                    (either 1 or 2).
         - `k`: the size of an alignment.
         """
         self.player = player
         self.k = k
+        self.timeout = timeout
 
     def move(self, game_engine):
         """

@@ -4,7 +4,7 @@
 
 
 class Agent:
-    def __init__(self, player, k):
+    def __init__(self, player, k, timeout=60):
         """
         Arguments:
         ----------
@@ -14,6 +14,7 @@ class Agent:
         """
         self.player = player
         self.k = k
+        self.timeout = timeout
 
     def move(self, game_engine):
         """

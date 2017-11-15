@@ -1,6 +1,4 @@
 import numpy as np
-from copy import deepcopy
-import time
 # XXX: Do not modify anything.
 
 """
@@ -39,7 +37,7 @@ class Tictactoe(object):
         self.M = np.zeros((self.n, self.m))
         self.totalScores = [0, 0]
         self.alignments = [[], []]
-        self.nb_zeros = self.n*self.m
+        self.nb_zeros = self.n * self.m
 
     def step(self, action):
         """
@@ -93,7 +91,6 @@ class Tictactoe(object):
             return True
 
         currentX = self.currentX
-        otherX = 3 - currentX
 
         lst = np.argwhere(self.M == 0)
         len_lst = self.nb_zeros
@@ -105,31 +102,31 @@ class Tictactoe(object):
             i = lst[k][0]
             j = lst[k][1]
             self.currentX = 1
-            self.step((1,i,j))
-            
+            self.step((1, i, j))
+
             k += 1
             if self.totalScores[0] != totalScores1:
                 self.unstep(max_unsteps=k)
                 self.currentX = currentX
                 return False
-        
+
         self.unstep(max_unsteps=len_lst)
-        #Test for second player
+        # Test for second player
         k = 0
         while k < len_lst:
             i = lst[k][0]
             j = lst[k][1]
             self.currentX = 2
-            self.step((2,i,j))
-            
+            self.step((2, i, j))
+
             k += 1
             if self.totalScores[1] != totalScores2:
                 self.unstep(max_unsteps=k)
                 self.currentX = currentX
                 return False
-        
+
         self.unstep(max_unsteps=len_lst)
-        
+
         self.currentX = currentX
         return True
 
@@ -146,8 +143,10 @@ class Tictactoe(object):
         """
         if len(align) != self.k:
             return False
-        return len(list(filter(lambda x: len(x.intersection(align))
-                               > 1, self.alignments[x - 1]))) == 0
+        for a in self.alignments[x - 1]:
+            if len(a.intersection(align)) > 1:
+                return False
+        return True
 
     def checkCoordinates(self, i, j):
         """
@@ -169,7 +168,7 @@ class Tictactoe(object):
             Returns true if :
             - `i` and `j` are valid coordinates in current grid
             - `x` is the current symbol in the game
-            - the cell at (`i`,`j`) in the grid is available (= 0)
+            - the cell at (`i`,`j`) in the grid is available (== 0)
         """
         x, i, j = action
         return self.checkCoordinates(
@@ -184,7 +183,6 @@ class Tictactoe(object):
             Returns number of new alignments made with the symbol `x`
             at cell (`i`,`j`) and adjacents cells.
         """
-        t = time.time()
         x, i, j = action
         k = self.k
         intervals = [[(i -
@@ -246,11 +244,11 @@ class Tictactoe(object):
         return s
 
     def render(self, show_indices=True):
-        """ 
+        """
             Arguments:
             ----------
             - `show_indices` : boolean
-            
+
             Renders the board with indices if `show_indices` is true
             Credits : CorentinJ
         """
