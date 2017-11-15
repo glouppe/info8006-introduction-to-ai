@@ -12,9 +12,9 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Lecture 2: Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)
 - [Lecture 3: Games](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)
 - [Lecture 4: Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)
-- [Lecture 5: Probabilistic reasoning I](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)
-- [Lecture 6: Probabilistic reasoning II](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
-- Lecture 7: Probabilistic reasoning over time
+- [Lecture 5: Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)
+- [Lecture 6: Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
+- Lecture 7: Reasoning over time
 - Lecture 8: Learning
 - Lecture 9: Communication
 - Lecture 10: Perception

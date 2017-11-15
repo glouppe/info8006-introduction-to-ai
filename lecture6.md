@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 6: Probabilistic reasoning II
+Lecture 6: Inference in Bayesian networks
 
 ---
 

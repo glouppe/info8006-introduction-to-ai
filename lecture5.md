@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 5: Probabilistic reasoning I
+Lecture 5: Representing uncertain knowledge
 
 ???
 
