@@ -146,8 +146,10 @@ class Tictactoe(object):
         """
         if len(align) != self.k:
             return False
-        return len(list(filter(lambda x: len(x.intersection(align))
-                               > 1, self.alignments[x - 1]))) == 0
+        for a in self.alignments[x - 1]:
+                if len(a.intersection(align)) > 1:
+                        return False
+        return True
 
     def checkCoordinates(self, i, j):
         """
@@ -169,7 +171,7 @@ class Tictactoe(object):
             Returns true if :
             - `i` and `j` are valid coordinates in current grid
             - `x` is the current symbol in the game
-            - the cell at (`i`,`j`) in the grid is available (= 0)
+            - the cell at (`i`,`j`) in the grid is available (== 0)
         """
         x, i, j = action
         return self.checkCoordinates(
