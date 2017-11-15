@@ -10,7 +10,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md)
 - [Lecture 1: Foundations](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)
 - [Lecture 2: Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)
-- [Lecture 3: Games](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)
+- [Lecture 3: Adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)
 - [Lecture 4: Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)
 - [Lecture 5: Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)
 - [Lecture 6: Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
