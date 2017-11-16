@@ -56,16 +56,34 @@ class: middle, center
 .center.width-70[![](figures/lec7/markov-process-generic.png)]
 
 - A Markov process can be described as a *growable* Bayesian network, unrolled through time, with a specified restricted structure between time steps.
+    - i.e., we can use Bayesian network reasoning when truncating the sequence.
 - Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is:
     $$P(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = P(\mathbf{X}\_{0}) \prod\_{i=1}^t P(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) P(\mathbf{E}\_{i}|\mathbf{X}\_{i}) $$
 
 ---
 
-# Example of Markov chain: Weather
+# Example: Weather
+
+.center.width-80[![](figures/lec7/weather-bn.png)]
+.grid[
+.col-2-3[
+- $P(Umbrella\_t | Rain\_t)$?
+- $P(Rain\_t | Umbrella\_{0:t-1})$?
+]
+.col-1-3.center[
+![](figures/lec7/weather-transition.png)
+Transition model $P(Rain\_t | Rain\_{t-1})$
+]
+]
 
 ---
 
 # Inference tasks
+
+- *Filtering*:
+- *Prediction*:
+- *Smoothing*:
+- *Most likely explanation*:
 
 ---
 
