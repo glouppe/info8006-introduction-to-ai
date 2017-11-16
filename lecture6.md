@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 6: Inference in Bayesian networks
 
+???
+
+R: took 2h30 to cover everything
+
 ---
 
 # Today
@@ -220,6 +224,10 @@ If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
 By reduction, inference in Bayesian networks is therefore **NP-hard**.
 - There is no known efficient probabilistic inference algorithm in general.
 
+???
+
+R: rehearse this slide
+
 ---
 
 class: middle, center
@@ -240,6 +248,10 @@ class: middle, center
 $\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$.
 
 .center.width-40[![](figures/lec5/uniform.png)]
+
+???
+
+R: rehearse this slide
 
 
 ---
@@ -463,6 +475,10 @@ $= P(x|e)$
     - Hopelessly expensive if $P(e)$ is small.
     - Evidence is not exploited when sampling.
 
+???
+
+R: improve the description of how probability estimates are built.
+
 ---
 
 # Likelihood weighting
@@ -521,6 +537,10 @@ where the product is over the evidence variables.
 <br><br>
 $S\_{WS}(z,e) w(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i))$<br>
 $\quad \quad \quad \quad \quad \quad \quad= P(z,e).$
+
+???
+
+R: improve the description of how probability estimates are built.
 
 ---
 
@@ -617,7 +637,7 @@ Note that we need to derive $P(Z\_i|mb(Z\_i))$:
 
 class: center, middle
 
-# (Gibbs sampling demo)
+(Gibbs sampling demo)
 
 ---
 
