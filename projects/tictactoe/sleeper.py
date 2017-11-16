@@ -1,4 +1,3 @@
-import numpy as np
 # XXX: This class is designed to allow you to test your AI. Don't modify it.
 from time import sleep
 

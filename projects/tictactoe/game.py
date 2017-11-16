@@ -62,7 +62,7 @@ def f_with_timeout(f, *args):
         timer.start()
         try:
             out = f(*args)
-        except BaseException as e:
+        except BaseException:
             logging.exception("Something awful happened!")
     except KeyboardInterrupt:
         pass

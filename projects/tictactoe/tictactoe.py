@@ -73,8 +73,8 @@ class Tictactoe(object):
             x, i, j = self.actions.pop()
             self.currentX = x
             self.M[i, j] = 0
-            aligns = [x for x in self.alignments[x - 1] if (i, j) not in x]
-            nbaligns = len([x for x in self.alignments[x - 1] if (i, j) in x])
+            aligns = [y for y in self.alignments[x - 1] if (i, j) not in y]
+            nbaligns = len([y for y in self.alignments[x - 1] if (i, j) in y])
             self.totalScores[x - 1] -= nbaligns
             self.alignments[x - 1] = aligns
             self.nb_zeros += 1
