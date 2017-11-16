@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 3: Games
+Lecture 3: Adversarial search
 
 ---
 
