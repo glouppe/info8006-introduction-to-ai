@@ -17,7 +17,9 @@ Lecture 7: Reasoning over time
         - Most likely explanation
     - Hidden Markov models
     - Applications
-- *Particle filtering*
+- *Filtering*
+    - Kalman filter
+    - Particle filters
 
 ---
 
@@ -162,10 +164,10 @@ $$P(\mathbf{X}\_\infty) = P(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty}
 
 # Example
 
-.grid[
-.col-2-3[
-.width-50[![](figures/lec7/stationary.png)]
+.width-50.center[![](figures/lec7/stationary.png)]
 
+.grid[
+.col-3-4[
 $P(\mathbf{X}\_\infty = sun) = P(\mathbf{X}\_{\infty+1} = sun)$<br>
 $\quad = P(\mathbf{X}\_{\infty+1}=sun | \mathbf{X}\_{\infty}=sun) P(\mathbf{X}\_{\infty}=sun)$<br> $\quad\quad + P(\mathbf{X}\_{\infty+1}=sun | \mathbf{X}\_{\infty}=rain) P(\mathbf{X}\_{\infty}=rain)$<br>
 $\quad = 0.9 P(\mathbf{X}\_{\infty}=sun) + 0.3 P(\mathbf{X}\_{\infty}=rain)$
@@ -177,13 +179,16 @@ $P(\mathbf{X}\_\infty = sun) = \frac{3}{4}$<br>
 $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 
 ]
-.col-1-3[
+.col-1-4[
+
+.center[
 | $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
 | --- | --- | --- |
 | $sun$ | $sun$ | 0.9 |
 | $sun$ | $rain$ | 0.1 |
 | $rain$ | $sun$ | 0.3 |
 | $rain$ | $rain$ | 0.7 |
+]
 
 <br><br><br>
 
@@ -198,7 +203,7 @@ $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 
 # Observation
 
-.center.width-70[![](figures/lec7/observation.png)]
+.center.width-60[![](figures/lec7/observation.png)]
 
 <br>
 
@@ -211,7 +216,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \math
 
 # Filtering (1)
 
-- A useful filtering algorithm equipping an agent should maintain a current *belief state* estimate and update it as new evidences are collected.
+- An agent should maintain a current *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and update it as new evidences $\mathbf{e}\_{t+1}$ are collected.
     - Rather than going back over the entire history of percepts for each update.
 - **Recursive estimation**: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
     - Project the current state belief forward from $t$ to $t+1$
@@ -341,19 +346,19 @@ $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 
 class: middle, center
 
-# Particle filtering
+# Filters
 
 ---
 
-# Filtering / Monitoring
+# Filtering
 
 ---
 
-# Robot localization
+# Kalman filters
 
 ---
 
-# Inference
+# Particle filters
 
 ---
 
