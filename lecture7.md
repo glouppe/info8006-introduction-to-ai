@@ -55,7 +55,7 @@ class: middle, center
 .center.width-70[![](figures/lec7/markov-process-generic.png)]
 
 - A Markov process can be described as a *growable* Bayesian network, unrolled through time, with a specified restricted structure between time steps.
-    - i.e., we can use Bayesian network reasoning when truncating the sequence.
+    - i.e., we can use standard Bayesian network reasoning when truncating the sequence.
 - Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is:
     $$P(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = P(\mathbf{X}\_{0}) \prod\_{i=1}^t P(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) P(\mathbf{E}\_{i}|\mathbf{X}\_{i}) $$
 
@@ -74,6 +74,34 @@ class: middle, center
 ![](figures/lec7/weather-transition.png)
 Transition model $P(Rain\\\_t | Rain\\\_{t-1})$]]
 <span class="Q">[Q]</span> How else can you represent the transition model?
+
+---
+
+# Inference tasks
+
+- *Filtering*: $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current state (its **belief state**), so that rational decisions can be made.
+- *Prediction*: $P(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
+    - Computing the posterior distribution over future states.
+    - Used for evaluation of possible action sequences.
+- *Smoothing*: $P(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
+    - Computing the posterior distribution over past states.
+    - Used for building better estimates, since it incorporates more evidence.
+    - Essential for learning.    
+- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
+    - Decoding with a noisy channel, speech recognition, etc.
+
+---
+
+# Prediction
+
+.center.width-100[![](figures/lec7/prediction.png)]
+
+<br>
+
+- Intuitively, the current *belief state* $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ get *pushed* through the transition model.
+$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
+- As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
 
 ---
 
@@ -156,41 +184,14 @@ $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 
 ---
 
-# Inference tasks
-
-- *Filtering*: $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current state (its **belief state**), so that rational decisions can be made.
-- *Prediction*: $P(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
-    - Computing the posterior distribution over future states.
-    - Used for evaluation of possible action sequences.
-- *Smoothing*: $P(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
-    - Computing the posterior distribution over past states.
-    - Used for building better estimates, since it incorporates more evidence.
-    - Essential for learning.    
-- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
-    - Decoding with a noisy channel, speech recognition, etc.
-
----
-
-# Prediction
-
-.center.width-100[![](figures/lec7/prediction.png)]
-
-<br>
-
-- As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
-- Intuitively, the current *belief state* $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ get *pushed* through the transition model.
-$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
-
----
-
 # Observation
 
 .center.width-70[![](figures/lec7/observation.png)]
 
 <br>
 
-- However, as we get observations, beliefs get *reweighted*, and uncertainty "decreases".
+- What if we collect new observations?
+- Beliefs get *reweighted*, and uncertainty "decreases".
 
 $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
 
@@ -198,7 +199,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \math
 
 # Filtering (1)
 
-- A useful filtering algorithm should maintain a current *belief state* estimate and update it as new evidences are collected.
+- A useful filtering algorithm equipping an agent should maintain a current *belief state* estimate and update it as new evidences are collected.
     - Rather than going back over the entire history of percepts for each update.
 - **Recursive estimation**: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
     - Project the current state belief forward from $t$ to $t+1$
@@ -249,7 +250,6 @@ The first and last factors are given by the model. The second factor is obtained
 
 $\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} )$.
 
-
 ---
 
 # Forward-backward algorithm
@@ -257,7 +257,7 @@ $\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} )$
 .center.width-100[![](figures/lec7/forward-backward.png)]
 
 Complexity:
-- Smoothing for a particular time step $k$ takes $O(t)$.
+- Smoothing for a particular time step $k$ takes: $O(t)$
 - Smoothing a whole sequence, naively: $O(t^2)$
 - Smoothing a whole sequence, by caching messages:  $O(t)$
 
