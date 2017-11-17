@@ -68,54 +68,164 @@ class: middle, center
 .grid[
 .col-2-3[
 - $P(Umbrella\_t | Rain\_t)$?
-- $P(Rain\_t | Umbrella\_{0:t-1})$?
+- $P(Rain\\\_t | Umbrella\\\_{0:t-1})$?
 ]
 .col-1-3.center[
 ![](figures/lec7/weather-transition.png)
-Transition model $P(Rain\_t | Rain\_{t-1})$
-]
-]
-
----
-
-# Inference tasks
-
-- *Filtering*:
-- *Prediction*:
-- *Smoothing*:
-- *Most likely explanation*:
-
----
-
-# Filtering and prediction
+Transition model $P(Rain\\\_t | Rain\\\_{t-1})$]]
+<span class="Q">[Q]</span> How else can you represent the transition model?
 
 ---
 
 # Ghostbusters: Basic dynamics
 
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/gb-basics.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
 # Ghostbusters: Circular dynamics
 
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/gb-circular.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
 ---
 
-# Ghostbusters: Whirlpool dynamics
+# Ghostbusters: Whirlpool
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/gb-whirlpool.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
 # Stationary distributions
 
+- What if $t \to \infty$?
+- For most chains, the influence of the initial distribution gets less and less over time.
+- Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
+- It satisfies:
+$$P(\mathbf{X}\_\infty) = P(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} P(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty) $$
+
 ---
 
 # Example
+
+.grid[
+.col-2-3[
+.width-50[![](figures/lec7/stationary.png)]
+
+$P(\mathbf{X}\_\infty = sun) = P(\mathbf{X}\_{\infty+1} = sun)$<br>
+$\quad = P(\mathbf{X}\_{\infty+1}=sun | \mathbf{X}\_{\infty}=sun) P(\mathbf{X}\_{\infty}=sun)$<br> $\quad\quad + P(\mathbf{X}\_{\infty+1}=sun | \mathbf{X}\_{\infty}=rain) P(\mathbf{X}\_{\infty}=rain)$<br>
+$\quad = 0.9 P(\mathbf{X}\_{\infty}=sun) + 0.3 P(\mathbf{X}\_{\infty}=rain)$
+
+Therefore, $P(\mathbf{X}\_\infty = sun) = 3 P(\mathbf{X}\_\infty = rain)$
+
+Which implies that:<br>
+$P(\mathbf{X}\_\infty = sun) = \frac{3}{4}$<br>
+$P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
+
+]
+.col-1-3[
+| $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
+| --- | --- | --- |
+| $sun$ | $sun$ | 0.9 |
+| $sun$ | $rain$ | 0.1 |
+| $rain$ | $sun$ | 0.3 |
+| $rain$ | $rain$ | 0.7 |
+
+<br><br><br>
+
+![](figures/lec7/stationary-cartoon.png)
+
+]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Inference tasks
+
+- *Filtering*: $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current state (its **belief state**), so that rational decisions can be made.
+- *Prediction*: $P(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
+    - Computing the posterior distribution over future states.
+    - Used for evaluation of possible action sequences.
+- *Smoothing*: $P(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
+    - Computing the posterior distribution over past states.
+    - Used for building better estimates, since it incorporates more evidence.
+    - Essential for learning.    
+- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
+    - Decoding with a noisy channel, speech recognition, etc.
+
+---
+
+# Filtering and prediction (1)
+
+- A useful filtering algorithm should maintain a current belief state estimate and update it as new evidences are collected.
+    - Rather than going back over the entire history of percepts for each update.
+- **Recursive estimation**: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
+    - Project the current state belief forward from $t$ to $t+1$
+    - Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+
+<hr>
+
+$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \quad $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $
+
+The first and second terms are given by the model. The third is obtained recursively.
+
+---
+
+# Filtering and prediction (2)
+
+- We can think of $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
+- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
+
+<br><br><br><br><br><br><br><br>
+
+<span class="Q">[Q]</span> Time and space complexity, wrt $t$?
+
+<span class="Q">[Q]</span> What if time passes but we don't collect evidence?
+
+---
+
+# Example
+
+.center.width-80[![](figures/lec7/filtering.png)]
 
 ---
 
 # Smoothing
 
+.center.width-70[![](figures/lec7/markov-process-generic.png)]
+
+
+
 ---
 
-# Finding the most likely explanation
+# Example
+
+.center.width-80[![](figures/lec7/smoothing.png)]
+
+---
+
+# Most likely explanation
 
 ---
 

@@ -8,6 +8,8 @@ Lecture 11: Philosophical foundations and future of AI
 
 https://www.rtbf.be/lapremiere/article/detail_si-nous-ne-faisons-rien-l-intelligence-artificielle-nous-ecrabouillera-dans-30-ans?id=9726697&utm_source=lapremiere&utm_campaign=social_share&utm_medium=fb_share
 
+https://www.frenchweb.fr/douze-mythes-de-lintelligence-artificielle/304885?utm_content=buffer19ad8&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+
 ---
 
 # Where to go next
