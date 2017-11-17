@@ -9,7 +9,6 @@ Lecture 7: Reasoning over time
 # Today
 
 - Markov models
-- Hidden Karkov models
 - Filtering
 
 ---
@@ -69,6 +68,7 @@ class: middle, center
 .col-2-3[
 - $P(Umbrella\_t | Rain\_t)$?
 - $P(Rain\\\_t | Umbrella\\\_{0:t-1})$?
+- $P(Rain\\\_{t+2} | Rain\\\_{t})$?
 ]
 .col-1-3.center[
 ![](figures/lec7/weather-transition.png)
@@ -172,9 +172,33 @@ $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 
 ---
 
-# Filtering and prediction (1)
+# Prediction
 
-- A useful filtering algorithm should maintain a current belief state estimate and update it as new evidences are collected.
+.center.width-100[![](figures/lec7/prediction.png)]
+
+<br>
+
+- As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
+- Intuitively, the current *belief state* $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ get *pushed* through the transition model.
+$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
+
+---
+
+# Observation
+
+.center.width-70[![](figures/lec7/observation.png)]
+
+<br>
+
+- However, as we get observations, beliefs get *reweighted*, and uncertainty "decreases".
+
+$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+
+---
+
+# Filtering (1)
+
+- A useful filtering algorithm should maintain a current *belief state* estimate and update it as new evidences are collected.
     - Rather than going back over the entire history of percepts for each update.
 - **Recursive estimation**: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
     - Project the current state belief forward from $t$ to $t+1$
@@ -192,15 +216,11 @@ The first and second terms are given by the model. The third is obtained recursi
 
 ---
 
-# Filtering and prediction (2)
+# Filtering (2)
 
 - We can think of $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
 - Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
 - The complexity of a forward update is constant (in time and space) with $t$.
-
-<br><br><br><br><br><br><br><br><br>
-
-<span class="Q">[Q]</span> What if time passes but we don't collect evidence?
 
 ---
 
@@ -238,9 +258,8 @@ $\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} )$
 
 Complexity:
 - Smoothing for a particular time step $k$ takes $O(t)$.
-- What if we want to smooth the whole sequence?
-    - Naively: $O(t^2)$
-    - Caching messages: $O(t)$.
+- Smoothing a whole sequence, naively: $O(t^2)$
+- Smoothing a whole sequence, by caching messages:  $O(t)$
 
 ---
 
@@ -252,30 +271,32 @@ Complexity:
 
 # Most likely explanation
 
-- The most likely sequence  **is not** the sequence of most likely states!
-
+- The most likely sequence  **is not** the sequence of individual most likely states!
+- The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
+<br><br>
+$\max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( P(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )$
+- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced by:
+<br><br>
+$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t})$<br><br>
+i.e., $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
+- The update has its sum replaced by max, giving the **Viterbi algorithm**:
+<br><br>
+$\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{1:t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$
 
 ---
 
-class: middle, center
+# Example
+
+.center.width-100[![](figures/lec7/viterbi.png)]
+
+---
 
 # Hidden Markov models
 
 ---
 
-# Pacman with sonar
-
----
-
-# Hidden Markov models
-
----
-
-# Example: HMM Weather
-
----
-
-# Example: Ghostbusters HMM
+# Pacman
 
 ---
 
