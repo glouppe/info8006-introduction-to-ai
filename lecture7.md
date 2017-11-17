@@ -8,8 +8,20 @@ Lecture 7: Reasoning over time
 
 # Today
 
-- Markov models
-- Filtering
+- *Markov models*
+    - Markov processes
+    - Inference tasks
+        - Prediction
+        - Filtering
+        - Smoothing
+        - Most likely explanation
+    - Hidden Markov models
+    - Applications
+- *Particle filtering*
+
+---
+
+# Pacman
 
 ---
 
@@ -35,10 +47,10 @@ class: middle, center
 
 ---
 
-# Markov models
+# Markov processes
 
 - **Markov assumption**: $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
-    - Processes that satisfy this assumption are called **Markov processes**.
+    - Processes that satisfy this assumption are called **Markov processes** or **Markov chains**.
 - *First-order* Markov processes: $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = P(\mathbf{X}\_t | \mathbf{X}\_{t-1})$.
     - i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 - *Second-order* Markov processes: $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = P(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1})$.
@@ -223,6 +235,10 @@ The first and second terms are given by the model. The third is obtained recursi
 - Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
 - The complexity of a forward update is constant (in time and space) with $t$.
 
+<br><br><br><br><br><br><br><br>
+
+<span class="Q">[Q]</span> What is the explicit form of the normalization constant $\alpha$?
+
 ---
 
 # Example
@@ -271,7 +287,7 @@ Complexity:
 
 # Most likely explanation
 
-- The most likely sequence  **is not** the sequence of individual most likely states!
+- The most likely sequence  **is not** the sequence of most likely states!
 - The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
 <br><br>
 $\max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1})$<br>
@@ -288,21 +304,44 @@ $\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\m
 
 # Example
 
-.center.width-100[![](figures/lec7/viterbi.png)]
+.center.width-90[![](figures/lec7/viterbi.png)]
+
+<span class="Q">[Q]</span> How do you retrieve the path, in addition to its likelihood?
 
 ---
 
 # Hidden Markov models
 
+- So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
+- A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
+    - i.e., $\mathbf{X}\_t = X\_t$, with domain $\\\{1, ..., S\\\}$.
+- This restricted structure allows for a simple *matrix implementation* of the inference algorithms.
+
 ---
 
-# Pacman
+# Simplified matrix algorithms
+
+- The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ *transition matrix* $\mathbf{T}$, where $\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i)$.
+- The sensor model $P(E\_t | X\_t)$ is defined, for convenience, as an  $S \times S$ *sensor matrix*
+$\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose other entries are 0.
+- If we use column vectors to represent forward and backward messages, then we have:
+$$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
+$$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
+- Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
+
+---
+
+# Localization
+
+---
+
+# Pacman, revisited
 
 ---
 
 class: middle, center
 
-# Filtering
+# Particle filtering
 
 ---
 
