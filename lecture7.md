@@ -196,10 +196,9 @@ The first and second terms are given by the model. The third is obtained recursi
 
 - We can think of $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
 - Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
+- The complexity of a forward update is constant (in time and space) with $t$.
 
-<br><br><br><br><br><br><br><br>
-
-<span class="Q">[Q]</span> Time and space complexity, wrt $t$?
+<br><br><br><br><br><br><br><br><br>
 
 <span class="Q">[Q]</span> What if time passes but we don't collect evidence?
 
@@ -213,9 +212,35 @@ The first and second terms are given by the model. The third is obtained recursi
 
 # Smoothing
 
-.center.width-70[![](figures/lec7/markov-process-generic.png)]
+Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$. Then:
+
+$P(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = P(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t})$<br>
+$\quad = \alpha P(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k})$<br>
+$\quad = \alpha P(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$<br>
+$\quad = \alpha\, \mathbf{f}\_{1:k} \mathbf{b}\_{k+1:t}$
+
+The **backward** message $\mathbf{b}\_{k+1:t}$ can be computed using backwards recursion:
+
+$P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) = \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) P(\mathbf{x}\_{k+1} | \mathbf{X}\_k) $<br>
+$\quad = \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) P(\mathbf{x}\_{k+1} | \mathbf{X}\_k) $<br>
+$\quad = \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) P(\mathbf{x}\_{k+1} | \mathbf{X}\_k)$
+
+The first and last factors are given by the model. The second factor is obtained recursively. Therefore,
+
+$\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} )$.
 
 
+---
+
+# Forward-backward algorithm
+
+.center.width-100[![](figures/lec7/forward-backward.png)]
+
+Complexity:
+- Smoothing for a particular time step $k$ takes $O(t)$.
+- What if we want to smooth the whole sequence?
+    - Naively: $O(t^2)$
+    - Caching messages: $O(t)$.
 
 ---
 
@@ -226,6 +251,9 @@ The first and second terms are given by the model. The third is obtained recursi
 ---
 
 # Most likely explanation
+
+- The most likely sequence  **is not** the sequence of most likely states!
+
 
 ---
 
