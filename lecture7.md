@@ -16,14 +16,21 @@ Lecture 7: Reasoning over time
         - Smoothing
         - Most likely explanation
     - Hidden Markov models
-    - Applications
 - *Filtering*
     - Kalman filter
+    - Dynamic Bayesian networks
     - Particle filters
 
 ---
 
-# Pacman
+# Pacman sonar
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/pacman-no-beliefs.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -42,8 +49,8 @@ class: middle, center
     - Medical monitoring.
 - Therefore, we need to introduce **time** (or *space*) in our model.
 - Consider the world as a *discrete* series of *time slices*, each of which contains a set of random variables.
-    - $\mathbf{X}\_t$ denotes the set of state variables at time $t$.
-    - $\mathbf{E}\_t$ denotes the set of observable evidence variables at time $t$.
+    - $\mathbf{X}\_t$ denotes the set of **unobservable** state variables at time $t$.
+    - $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
 - We specify a **transition model** $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ that defines the probability distribution over the latest state variables, given the previous values.
 - Similarly, we define a **sensor model** $P(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$.
 
@@ -113,7 +120,7 @@ Transition model $P(Rain\\\_t | Rain\\\_{t-1})$]]
 
 <br>
 
-- Intuitively, the current *belief state* $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ get *pushed* through the transition model.
+- To predict the future, the current *belief state* $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ get *pushed* through the transition model.
 $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
 - As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
 
@@ -154,7 +161,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}
 
 # Stationary distributions
 
-- What if $t \to \infty$?
+What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets less and less over time.
 - Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
 - It satisfies:
@@ -336,11 +343,30 @@ $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 
 ---
 
-# Localization
+# Applications
+
+HMMs can be applied in many fields where the goal is to recover a data sequence that is not immediately observable, but other data data that depend on the sequence are.
+
+- Computational finance
+- **Speech recognition**
+- Speech synthesis
+- Part-of-speech tagging
+- Machine translation
+- Handwriting recognition
+- Time series analysis
+- Activity recognition
+- ...
 
 ---
 
-# Pacman, revisited
+# Pacman sonar, revisited
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -355,6 +381,14 @@ class: middle, center
 ---
 
 # Kalman filters
+
+---
+
+# Dynamic Bayesian networks
+
+---
+
+# Exact inference in DBNs
 
 ---
 
