@@ -378,6 +378,8 @@ class: middle, center
 
 # Filtering
 
+continuous states
+
 ---
 
 # Kalman filters
@@ -385,6 +387,9 @@ class: middle, center
 ---
 
 # Dynamic Bayesian networks
+
+relation to HMMs
+relation to KF
 
 ---
 
