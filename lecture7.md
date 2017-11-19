@@ -23,12 +23,14 @@ Lecture 7: Reasoning over time
 
 ---
 
-# Pacman sonar
+# Pacman revenge
 
 .center[
 <video controls preload="auto" height="400" width="640">
   <source src="./figures/lec7/pacman-no-beliefs.mp4" type="video/mp4">
 </video>]
+
+<span class="Q">[Q]</span> How to make good use of the sonar readings?
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -56,7 +58,7 @@ class: middle, center
 
 ---
 
-# Markov processes
+# Markov processes (1)
 
 - **Markov assumption**: $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
     - Processes that satisfy this assumption are called **Markov processes** or **Markov chains**.
@@ -64,7 +66,12 @@ class: middle, center
     - i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 - *Second-order* Markov processes: $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = P(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1})$.
 
-.center.width-50[![](figures/lec7/markov-process.png)]
+<br><br>
+.center.width-100[![](figures/lec7/markov-process.png)]
+
+---
+
+# Markov processes (2)
 
 - Additionally, we make a **sensor Markov assumption**: $P(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = P(\mathbf{E}\_t | \mathbf{X}\_{t})$
 - *Stationary* process: the transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
@@ -210,7 +217,7 @@ $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 
 # Observation
 
-.center.width-60[![](figures/lec7/observation.png)]
+.center.width-70[![](figures/lec7/observation.png)]
 
 <br>
 
@@ -359,7 +366,7 @@ HMMs can be applied in many fields where the goal is to recover a data sequence 
 
 ---
 
-# Pacman sonar, revisited
+# Pacman, revisited
 
 .center[
 <video controls preload="auto" height="400" width="640">
@@ -376,20 +383,139 @@ class: middle, center
 
 ---
 
-# Filtering
+# Continuous state variables
 
-continuous states
+- From noisy observations collected over time, we want to estimate **continuous** state variables, e.g.
+    - position $\mathbf{X}\_t$,
+    - velocity $\mathbf{\dot{X}}\_t$.
+- Applications:
+    - tracking
+    - robots
+    - guidance
+    - planet motion
+    - financial time series
+    - ...
+
+<br><br><br>
+
+<span class="Q">[Q]</span> How can we model this system to make filtering efficient and accurate?
 
 ---
 
 # Kalman filters
 
+.center.width-50[![](figures/lec7/kalman-network.png)]
+
+A **Kalman filter** assumes:
+- Gaussian prior
+- Linear Gaussian transition model
+- Linear Gaussian sensor model
+
+---
+
+# Updating Gaussian distributions
+
+- *Prediction step*:
+    - If $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then
+$$P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t}) = \int\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
+is Gaussian.
+- *Update step*:
+    - If $P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1})$ is linear Gaussian, then
+$$P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+is also Gaussian.
+- Hence, for a Kalman filter, $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
+- General (nonlinear, non-Gaussian) process: the description of the posterior grows **unboundedly** as $t \to \infty$.
+
+---
+
+# 1D example
+
+- Gaussian random walk on $X$-axis:
+    - Gaussian prior with variance $\sigma_0^2$.
+    - The transition model adds random perturbations of constant variance $\sigma\_x^2$.
+    - The sensor model yields measurements with Gaussian noise with variance $\sigma\_z^2$.
+- Then the update equations given a new evidence $z\_{t+1}$ are:
+    - $\mu\_{t+1} = \frac{(\sigma\_t^2 + \sigma\_x^2) z\_{t+1} + \sigma\_z^2 \mu_t }{\sigma\_t^2 + \sigma\_x^2 + \sigma\_z^2}$
+    - $\sigma\_{t+1}^2 = \frac{(\sigma_t^2 + \sigma\_x^2) \sigma\_z^2}{\sigma\_t^2 + \sigma\_x^2 + \sigma\_z^2}$
+
+.center.width-40[![](figures/lec7/1d-kalman.png)]
+
+???
+
+Add intuition pg 587
+
+---
+
+# General Kalman update
+
+- Transition and sensor models:
+    - $P(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{F}\mathbf{x}\_t, \mathbf{\Sigma}\_x)(\mathbf{x}\_{t+1})$
+    - $P(\mathbf{z}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{H}\mathbf{x}\_t, \mathbf{\Sigma}\_z)(\mathbf{z}\_{t})$
+- $\mathbf{F}$ and $\mathbf{\Sigma}\_x$  are matrices describing the linear transition model and transition noise covariance.
+- $\mathbf{H}$ and $\mathbf{\Sigma}\_z$ are the corresponding matrices for the sensor model.
+- The filter computes the following update:
+    - $\mu\_{t+1} = \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{z}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t)$
+    - $\mathbf{\Sigma}\_{t+1} = (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)$
+        - where $\mathbf{K}\_{t+1} = (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_z)^{-1}$ is the *Kalman gain matrix*.
+- Note that $\mathbf{\Sigma}\_t$ and $\mathbf{K}\_t$ are independent of the evidence. Therefore, they can be computed offline.
+
+???
+
+Add intuition pg 588
+
+---
+
+# 2D tracking: filtering
+
+.center.width-80[![](figures/lec7/kf-filtering.png)]
+
+---
+
+# 2D tracking: smoothing
+
+.center.width-80[![](figures/lec7/kf-smoothing.png)]
+
+---
+
+# Apollo Guidance Computer
+
+.grid[
+.col-3-4[
+- The **onboard guidance software** of Saturn-V used a *Kalman filter*.
+- Goal: merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+]
+.col-1-4[
+![](figures/lec7/agc.jpg)]
+]
+.center.width-50[![](figures/lec7/kf-agc.png)]
+
+.footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
+
+---
+
+# Limitations
+
+- The Kalman filter cannot be applied if the transition model is **non-linear**.
+- The *Extended Kalman Filter* models transition as locally linear around $\mathbf{x}\_t = \mu\_t$.
+    - Still fails if the system is locally unsmooth.
+
+.grid[
+.col-1-2[![](figures/lec7/kf-bird1.png)]
+.col-1-2[![](figures/lec7/kf-bird2.png)]
+]
+
 ---
 
 # Dynamic Bayesian networks
 
-relation to HMMs
-relation to KF
+
+---
+
+# DBNs vs HMMs
+
+---
+
+# DBNs vs Kalman filters
 
 ---
 
@@ -397,7 +523,7 @@ relation to KF
 
 ---
 
-# Particle filters
+# Particle filtering
 
 ---
 

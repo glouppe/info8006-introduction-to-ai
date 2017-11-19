@@ -16,9 +16,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Lecture 6: Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
 - Lecture 7: Reasoning over time
 - Lecture 8: Learning
-- Lecture 9: Communication
-- Lecture 10: Perception
-- Lecture 11: Artificial General Intelligence and beyond
+- Lecture 9: Communication and perception
+- Lecture 10: Artificial General Intelligence and beyond
 
 ## Exercise sessions
 
