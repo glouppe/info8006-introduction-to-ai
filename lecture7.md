@@ -366,17 +366,6 @@ HMMs can be applied in many fields where the goal is to recover a data sequence 
 
 ---
 
-# Pacman, revisited
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
-</video>]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
 class: middle, center
 
 # Filters
@@ -481,8 +470,9 @@ Add intuition pg 588
 
 .grid[
 .col-3-4[
+- The Kalman filter put man on the Moon!
 - The **onboard guidance software** of Saturn-V used a *Kalman filter*.
-- Goal: merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+- Used to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
 ]
 .col-1-4[
 ![](figures/lec7/agc.jpg)]
@@ -496,34 +486,108 @@ Add intuition pg 588
 # Limitations
 
 - The Kalman filter cannot be applied if the transition model is **non-linear**.
-- The *Extended Kalman Filter* models transition as locally linear around $\mathbf{x}\_t = \mu\_t$.
+- The *Extended Kalman Filter* models transitions as locally linear around $\mathbf{x}\_t = \mu\_t$.
     - Still fails if the system is locally unsmooth.
 
-.grid[
-.col-1-2[![](figures/lec7/kf-bird1.png)]
-.col-1-2[![](figures/lec7/kf-bird2.png)]
-]
+.center.width-80[![](figures/lec7/kf-birds.png)]
 
 ---
 
 # Dynamic Bayesian networks
 
+- A **dynamic Bayesian network** (DBN) is a Bayesian network that represents a temporal probability model.
+- Each slice of a DBN can have any number of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
+- Nodes can be arbitrarily connected
+    - to nodes from the same slice
+    - to nodes from previous slices
+- The Markov assumption **need not** to be satisfied.
+
+.center.width-80[![](figures/lec7/dbn-examples.png)]
 
 ---
 
 # DBNs vs HMMs
 
+- Every HMM is a single-variable DBN.
+- Every discrete DBN can be transformed into an HMM.
+    - Group state (resp. evidence) variables into a single variable whose values are all possible tuples of values of the individual state variables.
+- By decomposing a system state into its constituent variables, DBNs can take advantage of the **sparseness** of the temporal probability model.
+    - $20$ boolean state variables, each of which has $3$ parents in the preceding slice.
+    - The DBN transition model counts $20 \times 2^3 = 160$ probabilities.  
+    - The corresponding HMM has $2^20$ state values and therefore $2^40$ probabilities in the transition matrix!
+
+.center.width-60[![](figures/lec7/dbn-vs-hmm.png)]
+
 ---
 
 # DBNs vs Kalman filters
+
+- Every Kalman filter model is a DBN.
+- Few DBNs are Kalman filter models.
+    - The real world requires non-Gaussian posteriors.
+    - DBNs can model **arbitrary distributions**.
 
 ---
 
 # Exact inference in DBNs
 
+.center.width-80[![](figures/lec7/dbn-unrolling.png)]
+
+- Straightforward method for exact inference: **unroll** the network through time and run any exact algorithm.
+    - e.g., variable elimination.
+- Problem: inference cost for each update grows with $t$.
+- *Rollup filtering*: add slice $t+1$, sum out slice $t$ using variable elimination.
+    - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
+    - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
+
+<span class="Q">[Q]</span> Compare rollup filtering to forward-backward in Markov processes.
+
+---
+
+# Likelihood weighting for DBNs
+
+- If exact inference is intractable, then let's use instead *approximate inference*. What about likelihood weighting?
+- Generated LW samples **pay no attention** to the evidence!
+    - The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
+    - Therefore, the number of required samples for inference grows exponentially with $t$.
+
+.center.width-50[![](figures/lec7/dbn-lw.png)]
+
 ---
 
 # Particle filtering
+
+- Basic idea: ensure that the population of samples, called **particles**, tracks the high-likelihood regions of the
+state space.
+    - Throw away samples that have very low weight, according to the evidence.
+    - Replicate those that have high weight.
+- Scale to high-dimensional state spaces ($> 10^5$).
+- Can be shown to be *consistent*.
+
+<hr>
+
+.center.width-100[![](figures/lec7/pf-algorithm.png)]
+
+---
+
+# Update cycle
+
+.center.width-100[![](figures/lec7/pf-example.png)]
+
+---
+
+# Robot localization
+
+---
+
+# Pacman, revisited
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
+</video>]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 

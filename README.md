@@ -14,7 +14,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Lecture 4: Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)
 - [Lecture 5: Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)
 - [Lecture 6: Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
-- Lecture 7: Reasoning over time
+- [Lecture 7: Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)
 - Lecture 8: Learning
 - Lecture 9: Communication and perception
 - Lecture 10: Artificial General Intelligence and beyond
