@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #XXX : Do not use or modify. See submission_test.sh
 

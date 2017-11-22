@@ -34,7 +34,7 @@ class Tictactoe(object):
         """
         self.currentX = np.random.randint(1, 3)
         self.actions = []
-        self.M = np.zeros((self.n, self.m))
+        self.M = np.zeros((self.n, self.m), dtype=np.int8)
         self.totalScores = [0, 0]
         self.alignments = [[], []]
         self.nb_zeros = self.n * self.m
