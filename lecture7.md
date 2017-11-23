@@ -257,6 +257,11 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(
 
 The first and second terms are given by the model. The third is obtained recursively.
 
+???
+
+R: emphasize the general principle of prediction+observation.
+This will be repeated over and over.
+
 ---
 
 # Filtering (2)
@@ -388,6 +393,10 @@ $\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose 
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
+
+???
+
+R: is the evidence binary?
 
 ---
 
