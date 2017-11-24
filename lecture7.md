@@ -8,6 +8,8 @@ Lecture 7: Reasoning over time
 
 # Today
 
+.grid[
+.col-1-2[
 - *Markov models*
     - Markov processes
     - Inference tasks
@@ -20,6 +22,13 @@ Lecture 7: Reasoning over time
     - Kalman filter
     - Dynamic Bayesian networks
     - Particle filters
+]
+.col-1-2[
+![](figures/lec7/outline-cartoon.png)
+]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
@@ -42,7 +51,7 @@ class: middle, center
 
 ---
 
-# Reasoning over time or space
+# Reasoning over time
 
 - Often, we want to **reason about a sequence** of observations.
     - Speech recognition
@@ -61,7 +70,7 @@ class: middle, center
 # Markov processes (1)
 
 - **Markov assumption**: $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
-    - Processes that satisfy this assumption are called **Markov processes** or **Markov chains**.
+    - Processes that satisfy this assumption are called **Markov processes**.
 - *First-order* Markov processes: $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = P(\mathbf{X}\_t | \mathbf{X}\_{t-1})$.
     - i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 - *Second-order* Markov processes: $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = P(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1})$.
@@ -82,10 +91,12 @@ class: middle, center
 
 .center.width-70[![](figures/lec7/markov-process-generic.png)]
 
-- A Markov process can be described as a *growable* Bayesian network, unrolled through time, with a specified restricted structure between time steps.
+- A Markov process can be described as a *growable* Bayesian network, unrolled infinitely through time, with a specified **restricted structure** between time steps.
     - i.e., we can use standard Bayesian network reasoning when truncating the sequence.
 - Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is:
     $$P(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = P(\mathbf{X}\_{0}) \prod\_{i=1}^t P(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) P(\mathbf{E}\_{i}|\mathbf{X}\_{i}) $$
+
+<span class="Q">[Q]</span> Why is this true? Don't the variables $\mathbf{X}\_{t+1:\infty}$ and $\mathbf{E}\_{t+1:\infty}$ also characterize the joint distribution of the former?
 
 ---
 
@@ -108,7 +119,7 @@ Transition model $P(Rain\\\_t | Rain\\\_{t-1})$]]
 # Inference tasks
 
 - *Filtering*: $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current state (its **belief state**), so that rational decisions can be made.
+    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
 - *Prediction*: $P(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
     - Computing the posterior distribution over future states.
     - Used for evaluation of possible action sequences.
@@ -169,7 +180,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}
 # Stationary distributions
 
 What if $t \to \infty$?
-- For most chains, the influence of the initial distribution gets less and less over time.
+- For most chains, the influence of the initial distribution gets lesser and lesser over time.
 - Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
 - It satisfies:
 $$P(\mathbf{X}\_\infty) = P(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} P(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty) $$
@@ -246,6 +257,11 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(
 
 The first and second terms are given by the model. The third is obtained recursively.
 
+???
+
+R: emphasize the general principle of prediction+observation.
+This will be repeated over and over.
+
 ---
 
 # Filtering (2)
@@ -263,6 +279,28 @@ The first and second terms are given by the model. The third is obtained recursi
 # Example
 
 .center.width-80[![](figures/lec7/filtering.png)]
+
+<br>
+
+.grid[
+.col-1-4[]
+.col-1-4[
+
+| $R\_{t-1}$ | $P(R\_t)$ |
+| ---------- | --------- |
+| $true$ | $0.7$ |
+| $false$ | $0.3$ |
+
+]
+.col-1-4[
+
+| $R\_{t}$ | $P(U\_t)$ |
+| ---------- | --------- |
+| $true$ | $0.9$ |
+| $false$ | $0.2$ |
+
+]
+]
 
 ---
 
@@ -293,8 +331,7 @@ $\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} )$
 
 Complexity:
 - Smoothing for a particular time step $k$ takes: $O(t)$
-- Smoothing a whole sequence, naively: $O(t^2)$
-- Smoothing a whole sequence, by caching messages:  $O(t)$
+- Smoothing a whole sequence (because of caching):  $O(t)$
 
 ---
 
@@ -336,6 +373,15 @@ $\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\m
     - i.e., $\mathbf{X}\_t = X\_t$, with domain $\\\{1, ..., S\\\}$.
 - This restricted structure allows for a simple *matrix implementation* of the inference algorithms.
 
+<hr>
+
+Note on terminology:
+- Some authors instead divide Markov models into two classes, depending on the observability of the system state:
+    - Observable system state: Markov chains
+    - Partially-observable system state: Hidden Markov models.
+- We follow here the terminology of the textbook.
+
+
 ---
 
 # Simplified matrix algorithms
@@ -348,11 +394,15 @@ $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
 
+???
+
+R: is the evidence binary?
+
 ---
 
 # Applications
 
-HMMs can be applied in many fields where the goal is to recover a data sequence that is not immediately observable, but other data data that depend on the sequence are.
+HMMs are used in many fields where the goal is to recover a data sequence that is not immediately observable, but other data data that depend on the sequence are.
 
 - Computational finance
 - **Speech recognition**
@@ -377,6 +427,7 @@ class: middle, center
 - From noisy observations collected over time, we want to estimate **continuous** state variables, e.g.
     - position $\mathbf{X}\_t$,
     - velocity $\mathbf{\dot{X}}\_t$.
+- We still assume *discrete* time steps.
 - Applications:
     - tracking
     - robots
@@ -385,7 +436,7 @@ class: middle, center
     - financial time series
     - ...
 
-<br><br><br>
+<br><br>
 
 <span class="Q">[Q]</span> How can we model this system to make filtering efficient and accurate?
 
@@ -431,7 +482,13 @@ is also Gaussian.
 
 ???
 
-Add intuition pg 587
+We can interpret
+the calculation for the new mean $\mu\_{t+1}$ as simply a weighted mean of the new observation
+$z\_{t+1}$ and the old mean $\mu\_t$ .
+- If the observation is unreliable, then $\sigma\_z^2$ is large and we pay more
+attention to the old mean;
+- if the old mean is unreliable ($\sigma\_t^2$ is large) or the process is highly
+unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
 
 ---
 
@@ -450,7 +507,17 @@ Add intuition pg 587
 
 ???
 
-Add intuition pg 588
+These equations intuitively make sense.
+
+Consider
+the update for the mean state estimate $\mu\_{t+1}$.
+- The term  $\mathbf{F}\mathbf{\mu}\_t$ is the predicted state at $t + 1$,
+- so
+$\mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ is the predicted observation.
+- Therefore, the term $\mathbf{z}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
+the predicted observation.
+- This is multiplied by $ \mathbf{K}\_{t+1}$ to correct the predicted state; hence,
+$ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation relative to the prediction.
 
 ---
 
@@ -470,9 +537,9 @@ Add intuition pg 588
 
 .grid[
 .col-3-4[
-- The Kalman filter put man on the Moon!
-- The **onboard guidance software** of Saturn-V used a *Kalman filter*.
-- Used to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+- The Kalman filter put man on the Moon, **literally**!
+- The onboard guidance software of Saturn-V used a *Kalman filter*.
+    - Used to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
 ]
 .col-1-4[
 ![](figures/lec7/agc.jpg)]
@@ -496,13 +563,14 @@ Add intuition pg 588
 # Dynamic Bayesian networks
 
 - A **dynamic Bayesian network** (DBN) is a Bayesian network that represents a temporal probability model.
+    - Over infinitely many time steps.
 - Each slice of a DBN can have any number of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
 - Nodes can be arbitrarily connected
     - to nodes from the same slice
     - to nodes from previous slices
 - The Markov assumption **need not** to be satisfied.
 
-.center.width-80[![](figures/lec7/dbn-examples.png)]
+.center.width-70[![](figures/lec7/dbn-examples.png)]
 
 ---
 
@@ -514,7 +582,7 @@ Add intuition pg 588
 - By decomposing a system state into its constituent variables, DBNs can take advantage of the **sparseness** of the temporal probability model.
     - $20$ boolean state variables, each of which has $3$ parents in the preceding slice.
     - The DBN transition model counts $20 \times 2^3 = 160$ probabilities.  
-    - The corresponding HMM has $2^20$ state values and therefore $2^40$ probabilities in the transition matrix!
+    - The corresponding HMM has $2^{20}$ state values and therefore $2^{40}$ probabilities in the transition matrix!
 
 .center.width-60[![](figures/lec7/dbn-vs-hmm.png)]
 
@@ -557,16 +625,18 @@ Add intuition pg 588
 
 # Particle filtering
 
-- Basic idea: ensure that the population of samples, called **particles**, tracks the high-likelihood regions of the
+- Basic idea:
+    - Maintain a *finite* population of samples, called **particles**.
+    - Ensure the particles track the high-likelihood regions of the
 state space.
-    - Throw away samples that have very low weight, according to the evidence.
+    - Throw away samples that have very low weight, **according to the evidence**.
     - Replicate those that have high weight.
-- Scale to high-dimensional state spaces ($> 10^5$).
+- Scale to high-dimensional state spaces ($n > 10^5$).
 - Can be shown to be *consistent*.
 
 <hr>
 
-.center.width-100[![](figures/lec7/pf-algorithm.png)]
+.center.width-90[![](figures/lec7/pf-algorithm.png)]
 
 ---
 
@@ -576,7 +646,24 @@ state space.
 
 ---
 
+# Performance
+
+Approximation error of particle filtering remains bounded over time.
+- At least *empirically*.
+- Theoretical analysis is difficult.
+
+.center.width-70[![](figures/lec7/pf-performance.png)]
+
+---
+
+class: center
+
 # Robot localization
+
+
+.center.width-70[![](figures/lec7/pf-demo.png)]
+
+Run demo.
 
 ---
 
@@ -593,6 +680,14 @@ state space.
 
 # Summary
 
----
-
-# References
+- Temporal models use state and sensor variables replicated over time.
+- *Markov assumptions* and *stationarity assumption*. So we only need:
+    - transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$
+    - sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$
+- Inference tasks include filtering, prediction, smoothing and most likely sequence.
+    - All can be done recursively with constant cost per time step.
+- HMMs have a signel discrete state variable.
+- Kalman filters allow $n$ *continuous* state variables, assume a linear Gaussian model.
+- DBNs generalize HMMs and Kalman filters.
+    - Exact inference is usually **intractable**.
+    - Particle filtering is a good approximate filtering algorithm for DBNs.
