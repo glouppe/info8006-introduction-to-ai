@@ -5,7 +5,23 @@ from game import Agent
 
 class Agentghost(Agent):
     def __init__(self, index=0):
+        """
+        Arguments:
+        ----------
+        - `index`: index of your agent. Leave it to 0, it has been put
+                   only for game engine compliancy
+        """
         pass
 
     def getAction(self, state):
+        """
+        Parameters:
+        -----------
+        - `state`: the game engine in a given state
+                         (see pacman.py)
+
+        Return:
+        -------
+        - A legal move defined in Directions module.
+        """
         return Directions.STOP
