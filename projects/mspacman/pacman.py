@@ -487,6 +487,7 @@ class GhostRules:
     canKill = staticmethod(canKill)
 
     def placeGhost(state, ghostState):
+  
         ghostState.configuration = ghostState.start
     placeGhost = staticmethod(placeGhost)
 
@@ -711,7 +712,7 @@ def readCommand(argv):
     noKeyboard = options.gameToReplay is None and (
         options.textGraphics or options.quietGraphics)
     pacmanType = loadAgentCustom(options.pacman, noKeyboard)
-    agentOpts = parseAgentArgs(options.agentArgs)
+    agentOpts = parseAgentArgs(index=0,time_eater=SCARED_TIME)
     if options.numTraining > 0:
         args['numTraining'] = options.numTraining
         if 'numTraining' not in agentOpts:
