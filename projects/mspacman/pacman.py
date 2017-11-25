@@ -712,12 +712,12 @@ def readCommand(argv):
     noKeyboard = options.gameToReplay is None and (
         options.textGraphics or options.quietGraphics)
     pacmanType = loadAgentCustom(options.pacman, noKeyboard)
-    agentOpts = parseAgentArgs(index=0,time_eater=SCARED_TIME)
+    agentOpts = parseAgentArgs(options.agentArgs)
     if options.numTraining > 0:
         args['numTraining'] = options.numTraining
         if 'numTraining' not in agentOpts:
             agentOpts['numTraining'] = options.numTraining
-    pacman = pacmanType(**agentOpts)  # Instantiate Pacman with agentArgs
+    pacman = pacmanType(index=0,time_eater=SCARED_TIME)  # Instantiate Pacman with agentArgs
     args['pacman'] = pacman
 
     # Don't display training games
