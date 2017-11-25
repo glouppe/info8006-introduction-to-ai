@@ -12,6 +12,14 @@ https://www.frenchweb.fr/douze-mythes-de-lintelligence-artificielle/304885?utm_c
 
 ---
 
+Lecun slide
+
+Module 1: modèle du monde, des conséquences d'actions <= still difficult
+Module 2: fonction objectif, module de motivation
+Module 3: determine la séquence d'actions à prendre (en utilisant 1 et 2)
+
+---
+
 # Where to go next
 
 - Introduction to machine learning

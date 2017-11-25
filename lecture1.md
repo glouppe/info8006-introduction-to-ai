@@ -630,16 +630,6 @@ Agent programs can be designed and implemented in many ways:
 
 # Table-driven agents
 
-```python
-def TableDrivenAgentProgram(table):
-    percepts = []
-    def program(percept):
-        percepts.append(percept)
-        action = table[percepts]
-        return action
-    return program
-```
-
 - A *table-driven agent* determines its next action with a table that contains the appropriate action for every possible percept sequence.
 - **Design issue:** one needs to anticipate all sequence of percepts and how the agent should respond.
 - **Technical issue:** the lookup table will contain $\sum_{t=1}^T |\mathcal{P}|^t$ entries.
@@ -649,7 +639,7 @@ def TableDrivenAgentProgram(table):
 
 # Simple reflex agents
 
-.center[![](figures/lec1/simple-reflex-agent.png)]
+.center.width-70[![](figures/lec1/simple-reflex-agent.png)]
 
 - *Simple reflex agents* select actions on the basis of the current percept,
   ignoring the rest of the percept history.
@@ -659,16 +649,6 @@ def TableDrivenAgentProgram(table):
 ---
 
 # Simple reflex agents
-
-```python
-def SimpleReflexAgentProgram(rules, interpret_input):
-    def program(percept):
-        state = interpret_input(percept)
-        rule = rule_match(state, rules)
-        action = rule.action
-        return action
-    return program
-```
 
 - Rules provide a way to *compress* the function table.
     - Example (autonomous car): If a car in front of you slow down, you should break.
@@ -682,7 +662,7 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 
 # Model-based reflex agents
 
-.center[![](figures/lec1/model-based-reflex-agent.png)]
+.center.width-70[![](figures/lec1/model-based-reflex-agent.png)]
 
 - *Model-based agents* handle partial observability of the environment by
   keeping track of the part of the world they cannot see now.
@@ -693,27 +673,9 @@ def SimpleReflexAgentProgram(rules, interpret_input):
 
 ---
 
-# Model-based reflex agents
-
-```python
-def ModelBasedReflexAgentProgram(rules, update_state, model):
-    def program(percept):
-        program.state = update_state(program.state,     
-                                     program.action,
-                                     percept,
-                                     model)
-        rule = rule_match(program.state, rules)
-        action = rule.action
-        return action
-    program.state = program.action = None
-    return program
-```
-
----
-
 # Goal-based agents
 
-.center[![](figures/lec1/goal-based-agent.png)]
+.center.width-70[![](figures/lec1/goal-based-agent.png)]
 
 - Principle: i) generate possible sequences of actions, ii) predict the
   resulting states and  iii) assess **goals** in each.
@@ -729,7 +691,7 @@ class: smaller
 
 # Utility-based agents
 
-.center[![](figures/lec1/utility-based-agent.png)]
+.center.width-50[![](figures/lec1/utility-based-agent.png)]
 
 - *Goals* are often not enough to generate high-quality behavior.
     - Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
@@ -742,7 +704,7 @@ class: smaller
 
 # Learning agents
 
-.center[![](figures/lec1/learning-agent.png)]
+.center.width-70[![](figures/lec1/learning-agent.png)]
 
 - *Learning agents* are capable of **self-improvement**. They can become more
   competent than their initial knowledge alone might allow.
