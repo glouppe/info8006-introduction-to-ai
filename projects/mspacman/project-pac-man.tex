@@ -113,11 +113,11 @@
 
 \section{Pac-Man Game}
 
-The games consists in eating all seeds while avoiding ghosts in a fully observable maze. Game ends when eitehr Pacman has eaten all the seeds (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single seed. 
+The games consists in eating all food dots while avoiding ghosts in a fully observable maze. Game ends when eitehr Pacman has eaten all the food dots (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single food dot. 
 
 \subsection{Step 1 : Search}
 
-Pacman is let alone in a maze with an arbitrarily distribution of seeds over the map. The goal is to eat them all while minimizing a score based on the time spent to eat the seeds.\\
+Pacman is let alone in a maze with an arbitrarily distribution of food dots over the map. The goal is to eat them all while minimizing a score based on the time spent to eat the food dots.\\
 
 You are encouraged to try several algorithms as described in the \emph{Search} lecture. Remember there is an implicit time limit, as the game engine does not wait your computation to go on.
 
@@ -128,7 +128,7 @@ Complete the \texttt{Agentsearch} class template to address this step. More deta
 	\begin{center}
 	
 	\includegraphics[scale=0.5]{pacmazefull.png}
-    \caption{Pac man and seeds in a maze}
+    \caption{Pac man and food dots in a maze}
     \end{center}
 \end{figure}
 
@@ -138,7 +138,7 @@ Complete the \texttt{Agentsearch} class template to address this step. More deta
 
 \subsection{Step 2 : Search + Ghosts}
 
-Ghosts (one or more) are added to the maze. Pacman has to avoid them while collecting all the seeds. If Pacman collides with a ghost, the game ends there with a negative score. The ghosts agents will behave using one of the following patterns, known by Pacman in game (except the last one) :
+Ghosts (one or more) are added to the maze. Pacman has to avoid them while collecting all the food dots. If Pacman collides with a ghost, the game ends there with a negative score. All ghosts agents will behave using one of the following patterns, known by Pacman in game (except the last one) :
 
 \begin{itemize}
 	\item Pattern 1 : Counterclockwise left (see Figure \ref{counterclockwise} for more details) 
@@ -163,7 +163,7 @@ Ghosts (one or more) are added to the maze. Pacman has to avoid them while colle
 
 
 
-Big seeds are also added. When Pacman eats one of those, he has the ability to eat the ghosts also for a fixed amount of time. An eaten ghost repop anywhere in the map, also after a fixed amount of time. These parameters will be provided to the Agentghost class, which you'll have to complete to address this step. More details can be found on the source code for completion.\\
+Big food dots are also added. When Pacman eats one, he has the ability to eat the ghosts for a fixed amount of time, which will be provided to the Agentghost class. An eaten ghost "repops" immediately in its initial position.\\
 
 Like in the previous step, you are encouraged to compare several approaches, seen in this course or even from other sources. In the latter case, you'll have to explain carefully the principles behind the chosen approaches.
 
