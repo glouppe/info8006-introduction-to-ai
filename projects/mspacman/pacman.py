@@ -487,6 +487,7 @@ class GhostRules:
     canKill = staticmethod(canKill)
 
     def placeGhost(state, ghostState):
+  
         ghostState.configuration = ghostState.start
     placeGhost = staticmethod(placeGhost)
 
@@ -716,7 +717,7 @@ def readCommand(argv):
         args['numTraining'] = options.numTraining
         if 'numTraining' not in agentOpts:
             agentOpts['numTraining'] = options.numTraining
-    pacman = pacmanType(**agentOpts)  # Instantiate Pacman with agentArgs
+    pacman = pacmanType(index=0,time_eater=SCARED_TIME)  # Instantiate Pacman with agentArgs
     args['pacman'] = pacman
 
     # Don't display training games

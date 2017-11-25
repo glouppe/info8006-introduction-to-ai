@@ -4,12 +4,14 @@ from game import Agent
 
 
 class Agentsearch(Agent):
-    def __init__(self, index=0):
+    def __init__(self, index=0, time_eater=40):
         """
         Arguments:
         ----------
         - `index`: index of your agent. Leave it to 0, it has been put
                    only for game engine compliancy
+        - `time_eater`: Amount of time pac man remains in `eater`
+                        state when eating a big food dot
         """
         pass
 
