@@ -141,7 +141,10 @@ Complete the \texttt{Agentsearch} class template to address this step. More deta
 Ghosts (one or more) are added to the maze. Pacman has to avoid them while collecting all the food dots. If Pacman collides with a ghost, the game ends there with a negative score. All ghosts agents will behave using one of the following patterns, known by Pacman in game (except the last one) :
 
 \begin{itemize}
-	\item Pattern 1 : Counterclockwise left (see Figure \ref{counterclockwise} for more details) 
+	\item Pattern 1 : Counterclockwise left (see Figure \ref{counterclockwise} for more details)
+    	\begin{itemize}
+        	\item A small perturbation of 10\% is applied to avoid ghosts to be trapped forever
+        \end{itemize}
     \item Pattern 2 : Always move greedily towards Pacman
     \item Pattern 3 : Semi-random pattern defined below.
     \begin{itemize}
@@ -165,6 +168,6 @@ Ghosts (one or more) are added to the maze. Pacman has to avoid them while colle
 
 Big food dots are also added. When Pacman eats one, he has the ability to eat the ghosts for a fixed amount of time, which will be provided to the Agentghost class. An eaten ghost "repops" immediately in its initial position.\\
 
-Like in the previous step, you are encouraged to compare several approaches, seen in this course or even from other sources. In the latter case, you'll have to explain carefully the principles behind the chosen approaches.
+Like in the previous step, you are encouraged to compare several approaches described in lectures or even coming from other sources. In the latter case, you'll have to explain carefully the principles behind the chosen approaches.
 
 \end{document}
