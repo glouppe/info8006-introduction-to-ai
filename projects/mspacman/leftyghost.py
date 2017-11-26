@@ -11,7 +11,7 @@ class Leftyghost(GhostAgent):
         legalActions = state.getLegalActions(self.index)
         dist = util.Counter()
         for a in legalActions:
-            dist[a] = 0.05
+            dist[a] = 0
         left = Directions.WEST
         if left in legalActions:
             dist[left] = 1
