@@ -74,6 +74,7 @@
 \title{Project : Pac Man \\}
 \subtitle{\textsc{\texttt{Thanks to Berkeley University}}\\\horrule{2pt}\\[0.5cm]}
 \author{\bfseries{Samy Aittahar}\vspace{-2ex}}
+\date{}
 
 \maketitle
 
@@ -84,17 +85,16 @@
 
 \section{Pratical Information}
 \begin{itemize}
-	
+
     \item Deadline: December 22.
     \item You must work in groups of 2 students.
     \item Deliverable 1: A Python implementation of the classes \texttt{Agentsearch} and \texttt{Agentghost}, as defined in the  \texttt{agentsearch.py} and \texttt{agentghost.py} templates. See source code for more details
     \begin{itemize}
     	\item \danger If your agent's action violates the game constraints, it will be ignored,
         \item Free to use any library, as long as it does not hurt your code organization and clarity, and you are able to explain the principles behind it.
-        \item The name of your agent classes should be \texttt{Agentsearch\emph{numstudent1}\emph{numstudent2}} and \texttt{Agentghost\emph{numstudent1}\emph{numstudent2}} where \emph{numstudent1} and \emph{numstudent2} are your student IDs without the "s". Name of your main agent class file should be respectively \texttt{agentsearch\emph{numstudent1}\emph{numstudent2}.py} and \texttt{agentghost\emph{numstudent1}\emph{numstudent2}.py}. 
-        
+        \item The name of your agent classes should be \texttt{Agentsearch\emph{numstudent1}\emph{numstudent2}} and \texttt{Agentghost\emph{numstudent1}\emph{numstudent2}} where \emph{numstudent1} and \emph{numstudent2} are your student IDs without the "s". Name of your main agent class file should be respectively \texttt{agentsearch\emph{numstudent1}\emph{numstudent2}.py} and \texttt{agentghost\emph{numstudent1}\emph{numstudent2}.py}.
     \end{itemize}
-    \item Deliverable 2: A report of 7 pages max. in which should appear, for each stage of the project :
+    \item Deliverable 2: A report of 7 pages max. in which should appear, for each stage of the project:
     	\begin{itemize}
         	\item The approaches you have considered to implement your agents.
             \item Their limitations for the current and the next stage of the project.
@@ -103,7 +103,7 @@
         \end{itemize}
     \item Upload your deliverables (\texttt{agent.py} and \texttt{report.pdf}) as a tar.gz archive on the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}.
 
-	\item You will be evaluated on the following criterions : 
+	\item You will be evaluated on the following criterions :
     \begin{itemize}
 		\item Score + computation time of your agents.
         \item Organization and clarity of your code.
@@ -113,7 +113,7 @@
 
 \section{Pac-Man Game}
 
-The games consists in eating all food dots while avoiding ghosts in a fully observable maze. Game ends when eitehr Pacman has eaten all the food dots (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single food dot. 
+The games consists in eating all food dots while avoiding ghosts in a fully observable maze. Game ends when eitehr Pacman has eaten all the food dots (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single food dot.
 
 \subsection{Step 1 : Search}
 
@@ -126,7 +126,7 @@ Complete the \texttt{Agentsearch} class template to address this step. More deta
 \begin{figure}
 	\label{fullmaze}
 	\begin{center}
-	
+
 	\includegraphics[scale=0.5]{pacmazefull.png}
     \caption{Pac man and food dots in a maze}
     \end{center}
@@ -148,7 +148,7 @@ Ghosts (one or more) are added to the maze. Pacman has to avoid them while colle
     \item Pattern 2 : Always move greedily towards Pacman
     \item Pattern 3 : Semi-random pattern defined below.
     \begin{itemize}
-    	\item Pattern 2 : 50\% 
+    	\item Pattern 2 : 50\%
         \item Pattern 1 : 25\%
         \item Random : 25\%
     \end{itemize}
@@ -158,7 +158,7 @@ Ghosts (one or more) are added to the maze. Pacman has to avoid them while colle
 \begin{figure}
 	\label{counterclockwise}
 	\begin{center}
-	
+
 	\includegraphics[scale=1]{ghostclockwiseleft.png}
     \caption{Counterclockwise left. Ghost try first to go left and if it is not possible, analyze moves in a counterclockwise order until a legal move is found}
     \end{center}

@@ -25,7 +25,5 @@ class Agentsearch(Agent):
         Return:
         -------
         - A legal move defined in Directions module.
-
-
         """
         return Directions.STOP
