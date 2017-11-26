@@ -227,7 +227,7 @@ $\,\,\,\,+ r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)$
 
 .center.width-70[![](figures/lec8/lg.png)]
 
-- Assume a **parameterized*** *linear Gaussian model* with one continuous parent $X$ and one continuous child $Y$.
+- Assume a **parameterized** *linear Gaussian model* with one continuous parent $X$ and one continuous child $Y$.
 - To learn the conditional distribution $P(Y|X)$, we maximize
 $$P(y|x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y-(\theta\_1 x + \theta\_2))^2}{2\sigma^2})$$
 w.r.t. $\theta\_1$ and $\theta\_2$ over the data $\mathbf{d}$.

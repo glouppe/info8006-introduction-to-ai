@@ -4,13 +4,10 @@ from ghostAgents import GhostAgent
 
 
 class Leftyghost(GhostAgent):
-    "A ghost that prefers to rush Pacman, or flee when scared."
-
     def __init__(self, index):
         self.index = index
 
     def getDistribution(self, state):
-        # Read variables from state
         legalActions = state.getLegalActions(self.index)
         dist = util.Counter()
         for a in legalActions:
