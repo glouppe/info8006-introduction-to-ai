@@ -4,7 +4,7 @@ from game import Agent
 
 
 class Agentsearch(Agent):
-    def __init__(self, index=0, time_eater=40):
+    def __init__(self, index=0, time_eater=40, g_pattern=-1):
         """
         Arguments:
         ----------
@@ -12,6 +12,8 @@ class Agentsearch(Agent):
                    only for game engine compliancy
         - `time_eater`: Amount of time pac man remains in `eater`
                         state when eating a big food dot
+        - `g_pattern`: Ghosts' pattern in-game. See agentghost.py.
+                       Not useful in this class, value does not matter
         """
         pass
 
@@ -20,7 +22,7 @@ class Agentsearch(Agent):
         Parameters:
         -----------
         - `state`: the game engine in a given state
-                         (see pacman.py)
+                   (see GameState class in pacman.py)
 
         Return:
         -------

@@ -1,4 +1,4 @@
-# pacman.py
+0# pacman.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
@@ -717,7 +717,12 @@ def readCommand(argv):
         args['numTraining'] = options.numTraining
         if 'numTraining' not in agentOpts:
             agentOpts['numTraining'] = options.numTraining
-    pacman = pacmanType(index=0,time_eater=SCARED_TIME)  # Instantiate Pacman with agentArgs
+    gpatterndict = dict()
+    gpatterndict["randyghost"] = -1
+    gpatterndict["leftyghost"] = 0
+    gpatterndict["greedyghost"] = 1
+    gpatterndict["rpickyghost"] = 2
+    pacman = pacmanType(index=0,time_eater=SCARED_TIME,g_pattern=gpatterndict[options.ghost])
     args['pacman'] = pacman
 
     # Don't display training games
