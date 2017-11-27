@@ -718,10 +718,10 @@ def readCommand(argv):
         if 'numTraining' not in agentOpts:
             agentOpts['numTraining'] = options.numTraining
     gpatterndict = dict()
-    gpatterndict["randyghost"] = -1
     gpatterndict["leftyghost"] = 0
     gpatterndict["greedyghost"] = 1
-    gpatterndict["rpickyghost"] = 2
+    gpatterndict["randyghost"] = 2
+    gpatterndict["rpickyghost"] = 3
     pacman = pacmanType(index=0,time_eater=SCARED_TIME,g_pattern=gpatterndict[options.ghost])
     args['pacman'] = pacman
 

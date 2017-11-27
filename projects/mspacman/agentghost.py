@@ -13,10 +13,10 @@ class Agentghost(Agent):
         - `time_eater`: Amount of time pac man remains in `eater`
                         state when eating a big food dot
         - `g_pattern`: Ghosts' pattern in-game :
-                       -1 - randyghost
                        0 - leftyghost
                        1 - greedyghost
-                       2 - rpickyghost
+                       2 - randyghost
+                       3 - rpickyghost
         """
         pass
 
