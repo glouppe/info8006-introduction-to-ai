@@ -21,11 +21,11 @@ class Agentsearch(Agent):
         """
         Parameters:
         -----------
-        - `state`: the game engine in a given state
-                   (see GameState class in pacman.py)
+        - `state`: the current game state as defined pacman.GameState.
+                   (you are free to use the full GameState interface.)
 
         Return:
         -------
-        - A legal move defined in Directions module.
+        - A legal move as defined game.Directions.
         """
         return Directions.STOP
