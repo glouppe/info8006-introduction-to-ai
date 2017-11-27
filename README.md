@@ -26,3 +26,5 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Session 3](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_3/ass_3.pdf)
 - [Session 4](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_4/ass_4.pdf)
 - [Session 5](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_5/ass_5.pdf)
+
+Sessions 3-5 are taken from [CS188 (Berkeley)](http://ai.berkeley.edu/section_handouts.html).

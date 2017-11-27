@@ -487,7 +487,7 @@ class GhostRules:
     canKill = staticmethod(canKill)
 
     def placeGhost(state, ghostState):
-  
+
         ghostState.configuration = ghostState.start
     placeGhost = staticmethod(placeGhost)
 
