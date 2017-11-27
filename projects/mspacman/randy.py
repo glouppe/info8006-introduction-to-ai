@@ -4,7 +4,7 @@ import random
 
 
 class Randy(Agent):
-    def __init__(self, index=0, time_eater=40):
+    def __init__(self, index=0, time_eater=40, g_pattern=-1):
         """
         Arguments:
         ----------

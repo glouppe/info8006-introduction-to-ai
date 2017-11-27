@@ -14,7 +14,7 @@ class Human(Agent):
     SOUTH_KEY = 's'
     STOP_KEY = 'q'
 
-    def __init__(self, index=0, time_eater=40):
+    def __init__(self, index=0, time_eater=40, g_pattern=-1):
 
         self.lastMove = Directions.STOP
         self.index = index
