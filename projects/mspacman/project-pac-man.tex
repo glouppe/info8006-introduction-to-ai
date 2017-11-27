@@ -71,15 +71,14 @@
 }
 
 \subject{\vspace{-1.0ex} \horrule{2pt}\\[0.15cm] {\textsc{\texttt{Introduction to AI}}}}
-\title{Project : Pac Man \\}
+\title{Project: Pac Man \\}
 \subtitle{\textsc{\texttt{Thanks to Berkeley University}}\\\horrule{2pt}\\[0.5cm]}
-\author{\bfseries{Samy Aittahar}\vspace{-2ex}}
+\author{\bfseries{Samy Aittahar}}
 \date{}
 
 \maketitle
 
-%\begin{abstract}
-%\end{abstract}
+\vspace{-1.5cm}
 
 %--------------------------------------------
 
@@ -87,12 +86,12 @@
 \begin{itemize}
 
     \item Deadline: December 22.
-    \item You must work in groups of 2 students.
-    \item Deliverable 1: A Python implementation of the classes \texttt{Agentsearch} and \texttt{Agentghost}, as defined in the  \texttt{agentsearch.py} and \texttt{agentghost.py} templates. See source code for more details
+    \item You must work in {\bf groups of 2 students}.
+    \item Deliverable 1: A Python implementation of the classes \texttt{Agentsearch} and \texttt{Agentghost}, as defined in the  \texttt{agentsearch.py} and \texttt{agentghost.py} templates. See source code for more details.
     \begin{itemize}
-    	\item \danger If your agent's action violates the game constraints, it will be ignored,
-        \item Free to use any library, as long as it does not hurt your code organization and clarity, and you are able to explain the principles behind it.
-        \item The name of your agent classes should be \texttt{Agentsearch\emph{numstudent1}\emph{numstudent2}} and \texttt{Agentghost\emph{numstudent1}\emph{numstudent2}} where \emph{numstudent1} and \emph{numstudent2} are your student IDs without the "s". Name of your main agent class file should be respectively \texttt{agentsearch\emph{numstudent1}\emph{numstudent2}.py} and \texttt{agentghost\emph{numstudent1}\emph{numstudent2}.py}.
+    	\item \danger If your agent's action violates the game constraints, it will be ignored.
+        \item You are free to use any library, as long as it does not hurt your code organization and clarity, and you are able to explain the principles behind it.
+        \item The name of your agent classes should be \texttt{Agentsearch\emph{numstudent1}\emph{numstudent2}} and \texttt{Agentghost\emph{numstudent1}\emph{numstudent2}} where \emph{numstudent1} and \emph{numstudent2} are your student IDs without the "s". The names of your main agent class file should be respectively \texttt{agentsearch\emph{numstudent1}\emph{numstudent2}.py} and \texttt{agentghost\emph{numstudent1}\emph{numstudent2}.py}.
     \end{itemize}
     \item Deliverable 2: A report of 7 pages max. in which should appear, for each stage of the project:
     	\begin{itemize}
@@ -101,11 +100,11 @@
             \item Comparisons with some naive approaches.
             \item Briefly but clearly discuss about better strategies than your current work. "We could use X" is not enough, you need to explain the benefits (and drawbacks) of the claimed "better" approaches.
         \end{itemize}
-    \item Upload your deliverables (\texttt{agent.py} and \texttt{report.pdf}) as a tar.gz archive on the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}.
+    \item Upload your deliverables as a tar.gz archive on the \href{http://submit.montefiore.ulg.ac.be/student/viewprojects/INFO8006}{Montefiore submission platform}.
 
-	\item You will be evaluated on the following criterions :
+	\item You will be evaluated on the following criteria:
     \begin{itemize}
-		\item Score + computation time of your agents.
+		\item Score and computation time of your agents.
         \item Organization and clarity of your code.
         \item Quality of your report.
 	\end{itemize}
@@ -113,7 +112,7 @@
 
 \section{Pac-Man Game}
 
-The games consists in eating all food dots while avoiding ghosts in a fully observable maze. Game ends when eitehr Pacman has eaten all the food dots (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single food dot.
+The games consists in eating all food dots while avoiding ghosts in a fully observable maze. The game ends when either Pacman has eaten all the food dots (winning game) or has been hit by a ghost (game over). Figure \ref{fullmaze} shows an example of a Pacman maze with a single food dot.
 
 \subsection{Step 1 : Search}
 
@@ -121,7 +120,7 @@ Pacman is let alone in a maze with an arbitrarily distribution of food dots over
 
 You are encouraged to try several algorithms as described in the \emph{Search} lecture. Remember there is an implicit time limit, as the game engine does not wait your computation to go on.
 
-Complete the \texttt{Agentsearch} class template to address this step. More details can be found on the source code for completion.
+Implement the \texttt{Agentsearch} class template to address this step. More details can be found in the source code.
 
 \begin{figure}
 	\label{fullmaze}
@@ -138,21 +137,18 @@ Complete the \texttt{Agentsearch} class template to address this step. More deta
 
 \subsection{Step 2 : Search + Ghosts}
 
-Ghosts (one or more) are added to the maze. Pacman has to avoid them while collecting all the food dots. If Pacman collides with a ghost, the game ends there with a negative score. All ghosts agents will behave using one of the following patterns, known by Pacman in game (except the last one) :
+Ghosts (one or more) are added to the maze. Pacman must avoid them while collecting the food dots. If Pacman collides with a ghost, the game ends there with a negative score. All ghost agents will behave using one of the following policies:
 
 \begin{itemize}
-	\item Pattern 1 : Counterclockwise left (see Figure \ref{counterclockwise} for more details)
-    	\begin{itemize}
-        	\item A small perturbation of 10\% is applied to avoid ghosts to be trapped forever
-        \end{itemize}
-    \item Pattern 2 : Always move greedily towards Pacman
-    \item Pattern 3 : Semi-random pattern defined below.
+	\item Pattern 1:  Counterclockwise left (see Figure \ref{counterclockwise} for more details)
+    \item Pattern 2: Always move greedily towards Pacman
+    \item Pattern 3: Semi-random pattern defined below.
     \begin{itemize}
-    	\item Pattern 2 : 50\%
-        \item Pattern 1 : 25\%
-        \item Random : 25\%
+    	\item Pattern 2: 50\%
+        \item Pattern 1: 25\%
+        \item Random: 25\%
     \end{itemize}
-    \item Pattern 4 (unknown by Pacman) : either pattern 1, 2 or 3.
+    \item Pattern 4: either pattern 1, 2 or 3, but which of those policies is unknown to Pacman.
 \end{itemize}
 
 \begin{figure}
@@ -164,10 +160,11 @@ Ghosts (one or more) are added to the maze. Pacman has to avoid them while colle
     \end{center}
 \end{figure}
 
-
-
-Big food dots are also added. When Pacman eats one, he has the ability to eat the ghosts for a fixed amount of time, which will be provided to the Agentghost class. An eaten ghost "repops" immediately in its initial position.\\
+Capsules are also added to the game. When Pacman eats a capsule, he gains the ability to eat the ghosts for a fixed amount of time, which will be provided to the Agentghost class. An eaten ghost reappears immediately in its initial position.\\
 
 Like in the previous step, you are encouraged to compare several approaches described in lectures or even coming from other sources. In the latter case, you'll have to explain carefully the principles behind the chosen approaches.
+
+Implement the \texttt{Agentghost} class template to address this step. More details can be found in the source code.
+
 
 \end{document}
