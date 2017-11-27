@@ -6,6 +6,7 @@ import random
 
 
 class Randyghost(GhostAgent):
+    """Implement policy 2."""
 
     def __init__(self,index,p_greedy=0.5, p_lefty=0.25):
         self.lst_patterns = []
@@ -27,4 +28,3 @@ class Randyghost(GhostAgent):
             lst_proba.append(pr)
         dist = random.choices(lst_dist, lst_proba, k=1)[0]
         return dist
-        

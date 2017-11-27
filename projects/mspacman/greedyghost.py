@@ -5,7 +5,7 @@ from ghostAgents import GhostAgent
 
 
 class Greedyghost(GhostAgent):
-    "A ghost that prefers to rush Pacman, or flee when scared."
+    """Implement policy 1."""
 
     def __init__(self, index, prob_attack=1, prob_scaredFlee=1):
         self.index = index

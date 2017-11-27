@@ -6,6 +6,8 @@ from ghostAgents import GhostAgent
 
 
 class Rpickyghost(GhostAgent):
+    """Implement policy 3."""
+
     def __init__(self, index, p_greedy=0.33, p_lefty=0.33, p_randy=0.33):
         if index > 1:
             f = open("tempnumghost.tmp")

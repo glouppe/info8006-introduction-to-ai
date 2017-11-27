@@ -4,6 +4,8 @@ from ghostAgents import GhostAgent
 
 
 class Leftyghost(GhostAgent):
+    """Implement policy 0."""
+
     def __init__(self, index):
         self.index = index
 

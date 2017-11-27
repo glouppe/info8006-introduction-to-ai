@@ -137,18 +137,21 @@ Implement the \texttt{Agentsearch} class template to address this step. More det
 
 \subsection{Step 2 : Search + Ghosts}
 
-Ghosts (one or more) are added to the maze. Pacman must avoid them while collecting the food dots. If Pacman collides with a ghost, the game ends there with a negative score. All ghost agents will behave using one of the following policies:
+Ghosts (one or more) are added to the maze. Pacman must avoid them while
+collecting the food dots. If Pacman collides with a ghost, the game ends there
+with a negative score. All ghost agents will behave using one of the following
+policies:
 
 \begin{itemize}
-	\item Pattern 1:  Counterclockwise left (see Figure \ref{counterclockwise} for more details)
-    \item Pattern 2: Always move greedily towards Pacman
-    \item Pattern 3: Semi-random pattern defined below.
+	\item Pattern 0: Counterclockwise left (see Figure \ref{counterclockwise} for more details).
+    \item Pattern 1: Always move greedily towards Pacman or flee greedily from Pacman in eater mode.
+    \item Pattern 2: Semi-random pattern. The next action is taken using the following strategy:
     \begin{itemize}
-    	\item Pattern 2: 50\%
-        \item Pattern 1: 25\%
-        \item Random: 25\%
+    	\item Follow pattern 1 with 50\% probability.
+        \item Follow pattern 0 with 25\% probability.
+        \item Pick a random valid move with 25\% probabiliy.
     \end{itemize}
-    \item Pattern 4: either pattern 1, 2 or 3, but which of those policies is unknown to Pacman.
+    \item Pattern 3: either pattern 0, 1 or 2, but which of those policies is used by the ghost is unknown to Pacman.
 \end{itemize}
 
 \begin{figure}
