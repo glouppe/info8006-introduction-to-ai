@@ -10,6 +10,8 @@ https://www.rtbf.be/lapremiere/article/detail_si-nous-ne-faisons-rien-l-intellig
 
 https://www.frenchweb.fr/douze-mythes-de-lintelligence-artificielle/304885?utm_content=buffer19ad8&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
 
+https://arxiv.org/pdf/1711.08378.pdf
+
 ---
 
 Lecun slide
