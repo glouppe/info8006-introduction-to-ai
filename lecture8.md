@@ -330,7 +330,7 @@ How to find $h^\* \in \mathcal{H}$?
 # Feature vectors
 
 - Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ *attribute* or *feature* values.
-- If the data is not originally expressed a real-valued vectors, then it needs to be prepared and transformed to this format.
+- If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
 
 .center.width-60[![](figures/lec8/features.png)]
 
@@ -342,43 +342,117 @@ How to find $h^\* \in \mathcal{H}$?
 
 # Brains (simplified)
 
-.center.width-70[![](figures/lec8/neuron-true.png)]
+.center.width-80[![](figures/lec8/perceptron_neuron.png)]
 
 - $10^{11}$ neurons of $>20$ types, $10^{14}$ synapses.
-- Information (e.g., memories) are (presumably) stored in synapses.
-- Signals are noisy "spike trains" of electrical potential.
+- Information are (*presumably*) stored in synapses.
+- Signals are noisy spike trains of electrical potential.
+
+.footnote[Credits: Sebastian Raschka, [Single-Layer Neural Networks and Gradient Descent](http://sebastianraschka.com/Articles/2015_singlelayer_neurons.html)]
 
 ---
 
-# Linear classifiers
+# Linear classifiers (1)
+
+.center.width-70[![](figures/lec8/perceptron_schematic.png)]
 
 - Taking loose inspiration from neuroscience, we may consider an **overly** simplified *model* of neuron (McCulloch and Pitts, 1943).
+- The linear classifier model is a squashed linear function of its inputs.
+
+.footnote[Credits: Sebastian Raschka, [Single-Layer Neural Networks and Gradient Descent](http://sebastianraschka.com/Articles/2015_singlelayer_neurons.html)]
+
+---
+
+# Linear classifiers (2)
+
+- Assume $Y$ takes binary values in $\\\{-1,1\\\}$.
 - The linear classifier model is a squashed linear function of its inputs:
-$$h(\mathbf{x}; \mathbf{w}, b) = sign(\sum w\_j x\_j + b)$$
+$$h(\mathbf{x}; \mathbf{w}) = sign(w\_0 + \sum\_{j=1}^p w\_j x\_j)$$
     - Inputs are *feature values* $x\_j$;
     - Each feature has a *weight* $w\_j$;
-    - $b$ is a bias term;
-    - Feature and weight values are *linearly combined* as $\sum w\_j x\_j + b = \mathbf{w}^T \mathbf{x} + b$;
+    - $w\_0$ is the *intercept*;
+    - Feature and weight values are *linearly combined* as $w\_0 + \sum w\_j x\_j$
+        - Assuming a constant dummy input feature $x\_0=1$, we write $\mathbf{w}^T\mathbf{x}$;
     - This sum is squashed through an *activation function*. E.g.,
         - if positive, output $+1$,
         - if negative, output $-1$.
-- The family $\mathcal{H}$ of hypothesis is induced from the set of possible parameters values ($\mathbf{w}$ and $b$), $\mathbb{R}^{p+1}$.
 
 ---
 
 # Binary decision rules
 
+.center.width-30[![](figures/lec8/linear-classifier.png)]
+
+- Intuitively, predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$.
+- Learning boils down to figuring out a good weight vector from the training set.
+- The family $\mathcal{H}$ of hypothesis is induced from the set of possible parameters values $\mathbf{w}$, that is $\mathbb{R}^{p+1}$.
+
+<span class="Q">[Q]</span> $\mathcal{H}$ is huge! How do we find a good hypothesis?
+
+???
+
+The dot product tells you what amount of one vector goes in the direction of another.
+
 ---
 
-# Perceptron
+# Learning: Binary Perceptron
+
+.grid[
+.col-1-2[
+- Start with $\mathbf{w}=0$.
+- For each training example:
+    - Classify with current $\mathbf{w}$.
+    - If the prediction is correct, then do nothing.
+    - If the prediction is incorrect, then update parameters.
+
+]
+.col-1-2[![](figures/lec8/perceptron-cartoon.png)]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-# Multiclass decision rules
+# Learning: Binary Perceptron
+
+.center.width-30[![](figures/lec8/perceptron-update.png)]
+
+- Start with $\mathbf{w}=0$.
+- For each training example $(\mathbf{x},y)$:
+    - Classify with current weights: $\hat{y} = sign(\mathbf{w}^T \mathbf{x})$
+    - If $y=\hat{y}$, do nothing.
+    - Otherwise, update parameters: $\mathbf{w} = \mathbf{w} + y\mathbf{x}$
+
+---
+
+# Multiclass perceptron
+
+.center.width-30[![](figures/lec8/multiclass.png)]
+
+- If we have more than $C>2$ classes, then
+    - Define a weight vector $\mathbf{x}\_c$ for each class $c$.
+    - The activation for class $c$ is $\mathbf{w}\_c^T \mathbf{x}$.
+- Learning:
+    - Start with $\mathbf{w}\_c=0$ for all $c$.
+    For each training example $(\mathbf{x},y)$:
+        - Classify with current weights: $\hat{y} = \arg \max\_{c}\, \mathbf{w}\_c^T \mathbf{x}$
+        - If $y=\hat{y}$, do nothing.
+        - Otherwise, update parameters:
+            - $\mathbf{w}\_y = \mathbf{w}\_y + \mathbf{x}$ (raise score of right answer)
+            - $\mathbf{w}\_{\hat{y}} = \mathbf{w}\_{\hat{y}} + \mathbf{x}$ (lower score of wrong answer).
+
 
 ---
 
 # Properties of perceptrons
+
+.center.width-60[![](figures/lec8/separability.png)]
+.caption[Separable vs. Non-separable]
+
+- (Novikoff, 1962): If the training set is *linearly separable*, the perceptron will
+eventually **converge** (binary case).
+- Assume the training set is *linearly separable*. Let $S$ be a sequence of labeled examples consistent with a linear threshold function ${\mathbf{w}^\*}^T \mathbf{x}$, where $\mathbf{w}^\*$ is a unit-length vector. The number of mistakes $M$ on $S$ made by the Perceptron is at most $\frac{1}{\gamma^2}$, where $\gamma$ is the $L\_2$ *margin* of ${\mathbf{w}^\*}$ on $S$:
+    $$\gamma = \min\_{\mathbf{x} \in S} \frac{|{\mathbf{w}^\*}^T \mathbf{x}|}{||\mathbf{x}||}.$$
 
 ---
 
