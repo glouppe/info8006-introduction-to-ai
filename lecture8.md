@@ -28,7 +28,7 @@ Lecture 8: Learning
     - Adversarial search, for known and fully observable games.
     - Constraint satisfaction problems, by exploiting a known structure of the states.
     - Logical inference, using well-specified facts and inference rules.
-    - Reasoning about uncertain knowledge, as represented using domain-motivated graphs.
+    - Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
 - Enough to implement complex and rational behaviors, *in some situations*.
 - But is that **intelligence**? Aren't we missing a critical component?
 
@@ -74,6 +74,15 @@ Lecture 8: Learning
 
 .center.width-100[![](figures/lec8/learning-agent.png)]
 
+???
+
+- *Performance element*:
+    - The current system for selecting actions.
+- The *critic* observes the world and passes information to the *learning element*.
+    - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
+- The *problem generator* identifies certain areas of behavior in need of improvement and suggest experiments.
+
+
 ---
 
 # Learning element
@@ -115,7 +124,7 @@ class: middle, center,
     - $\mathbf{d}$ is the observed data.
 - Given the data so far, each hypothesis has a posterior probability $$P(h\_i|\mathbf{d}) = \alpha P(\mathbf{d}|h\_i) P(h\_i)$$ where $P(\mathbf{d}|h\_i)$ is called the *likelihood*.
 - Predictions use a likelihood-weighted average over the hypotheses:
-$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = P(X|h\_i) P(h\_i | \mathbf{d})$$
+$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i P(X|h\_i) P(h\_i | \mathbf{d})$$
 - No need to pick one best-guess hypothesis!
 
 ---
@@ -434,8 +443,8 @@ The dot product tells you what amount of one vector goes in the direction of ano
 
 .center.width-30[![](figures/lec8/multiclass.png)]
 
-- If we have more than $C>2$ classes, then
-    - Define a weight vector $\mathbf{x}\_c$ for each class $c$.
+- If we have more than $2$ classes, then
+    - Define a weight vector $\mathbf{w}\_c$ for each class $c$.
     - The activation for class $c$ is $\mathbf{w}\_c^T \mathbf{x}$.
 - Learning:
     - Start with $\mathbf{w}\_c=0$ for all $c$.
@@ -555,8 +564,8 @@ After two training episodes, the Perceptron agents plays. No more Minimax!
 
 .center.width-70[![](figures/lec8/dl-hierarchy.png)]
 
-- Effectively, training a *deep neural network* amounts to learn the parameters of a hierarchical representation of the data tailored for the target task.
-- The high-level features to extract are not-preprogrammed! *Concepts* are learned by the network itself.
+- Effectively, training a *deep neural network* amounts to learn the parameters of a hierarchical representation of the data, tailored for the target task.
+- The high-level features are not-preprogrammed! *Concepts* are learned by the network itself.
 
 .footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
 
@@ -567,7 +576,7 @@ After two training episodes, the Perceptron agents plays. No more Minimax!
 .center.width-70[![](figures/lec8/folding.png)]
 
 - The compositional assumption used in deep learning allows **exponential gains** in the number of required training examples.
-- $O(2^k)$ regions can be defined from $O(k)$ examples, as along as one introduces dependencies between disconnected regions.
+- $O(2^k)$ regions can be defined from $O(k)$ examples, as long as one introduces dependencies between disconnected regions.
 
 ---
 
@@ -597,6 +606,32 @@ class: middle, center
     - how the world works;
     - how rewards are computed.
 - RL might be considered to encompass all of AI: an agent is placed in an unknown environment and must learn to behave successfully therein.
+
+---
+
+# Playing Pinball
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+---
+
+# Playing Seaquest
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/5WXVJ1A0k6Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+---
+
+# Playing Enduro
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/6kO4eZWeKOM?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+<span class="Q">[Q]</span> What about the real world, for which there is no simulator?
 
 ---
 
@@ -642,7 +677,7 @@ class: middle, center
 
 # How do we do that?
 
-We have no clue!
+We have no clue! (mostly)
 
 ---
 
