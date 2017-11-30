@@ -540,6 +540,10 @@ After two training episodes, the Perceptron agents plays. No more Minimax!
 - **No guarantee** that the learned hypothesis correctly extends the checkerboard pattern in squares that do not contain training examples.
 - In general, to distinguish $O(k)$ regions, traditional supervised learning methods require $O(k)$ examples.
 
+???
+
+R: improve the flow a bit, the motivation (this and the next slides)
+
 ---
 
 # Compositional assumption
