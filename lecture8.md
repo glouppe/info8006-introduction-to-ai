@@ -331,6 +331,10 @@ where $P(\mathbf{d}\_\text{test}|h)$ = $\prod\_{(\mathbf{x}, y) \in \mathbf{d}\_
     - Maximum likelihood estimation if $P(h)$ is uniform.
 - **Issue**: in practice, we often only have a *finite* test set!
 
+???
+
+R: be clearer, we want to be good in generalization, not on one specific test set.
+
 ---
 
 class: middle, center
