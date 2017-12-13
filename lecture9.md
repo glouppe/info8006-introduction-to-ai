@@ -8,6 +8,12 @@ Lecture 9: Communication
 
 # Today
 
+- A guided tour of NIPS 2017
+- Natural language processing
+    - Parsing
+    - Semantics
+- Machine translation
+
 ---
 
 class: center, middle
