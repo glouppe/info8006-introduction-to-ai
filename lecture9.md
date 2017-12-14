@@ -4,6 +4,11 @@ class: middle, center, title-slide
 
 Lecture 9: Communication
 
+???
+
+R: add speech recognition after translation, with hmm and nnets
+R: emergent communication
+
 ---
 
 # Today
@@ -72,6 +77,11 @@ class: middle, center
 
 .center[Reverse-Engineering Intelligence Using Probabilistic Programs]
 
+???
+
+- Near 28:00
+- Near 40:00
+
 ---
 
 # Highlights
@@ -92,6 +102,10 @@ class: middle, center
 
 .center[AlphaZero]
 
+???
+
+- before 27:00
+
 ---
 
 # Highlights
@@ -101,6 +115,11 @@ class: middle, center
 ]
 
 .center[The Trouble with Bias]
+
+???
+
+- 15:22
+- 18:20
 
 ---
 
@@ -140,6 +159,7 @@ class: middle, center
 - Hierarchical reinforcement learning
 - Probabilistic programming
 - Meta-learning
+- Leveraging simulation
 - Bayesian deep learning
 - Dealing with data bias
 - Optimal transport
@@ -190,6 +210,11 @@ class: center, middle
     - $VP \rightarrow Verb [0.7] | VP \, NP [0.3]$
 - Let $\xi\_0$ be a language suitable for communication between agents exploring the Wumpus world.
 
+
+???
+
+R: dont assume they know what is a grammar.
+
 ---
 
 # Lexicon of $\xi\_0$
@@ -236,6 +261,10 @@ Grammar = compact list of allowable sentences.
     - Imagine a state-action space where actions correspond to production rules.
     - Use A* to search the space efficiently until the string has been compressed to a single item $S$.
 
+???
+
+R: baby step them into the decision process, show backtracking, etc -> analogous to a maze exploration
+
 ---
 
 class: center, middle
@@ -262,7 +291,7 @@ class: center, middle
 
 - A PCFG has many rules, with a probability for each rule.
 - **Learning** the grammar might be better than a knowledge engineering approach.
-- If we are given a corpus of correctly parses sentences, the rules and their probability can be estimated directly from this data.
+- If we are given a corpus of correctly parsed sentences, the rules and their probability can be estimated directly from this data.
     - E.g., count nodes $S$ and nodes $\[S \[NP ...\]\[VP ...\]\]$ over all trees to estimate the probability of $S \rightarrow  NP \, VP$.
 - If we dont have labeled sentences, then we have to learn both the rules and their probability.
     - This is more complicated, but several algorithms exist:
@@ -280,6 +309,11 @@ class: center, middle
 - The rules obey the principle of **compositional semantics**:
     - The semantics of a phrase is a function of the semantics of the subphrases.
 - In general, semantics can be properly defined with *first-order logic*, where nodes are either associated to a logical term, a logical sentence or a predicate.
+
+
+???
+
+R: better explain the first-order logic relation
 
 ---
 
@@ -319,6 +353,10 @@ class: center, middle
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
+???
+
+R: review
+
 ---
 
 # Modern chatbots
@@ -329,6 +367,10 @@ class: center, middle
 ]
 
 .center[Siri, Google Assistant, Alexa, etc]
+
+???
+
+R: review
 
 ---
 
@@ -343,6 +385,10 @@ class: center, middle
     - How to make efficient? [Fast translation search]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: review
 
 ---
 
@@ -359,6 +405,10 @@ class: center, middle
 .center.width-100[![](figures/lec9/history.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: review
 
 ---
 
@@ -387,6 +437,10 @@ $$f^\* = \arg\max\_f P(f|e) = \arg\max\_f P(e|f)P(f)$$
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
+???
+
+R: take the time to understand the model in details.
+
 ---
 
 # Levels of transfer
@@ -408,7 +462,7 @@ $$f^\* = \arg\max\_f P(f|e) = \arg\max\_f P(e|f)P(f)$$
 # Unsupervised machine translation (1)
 
 - The latest approaches (e.g., arXiv:1711.00043) do not even need to have a bilingual corpus!
-- Machine translation can be learned in a **fully unsupervised** way.
+- Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
 
 .center.width-100[![](figures/lec9/umt1.png)]
 

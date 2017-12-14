@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 7: Reasoning over time
 
+???
+
+R: add EM!! crucially missing
+
 ---
 
 # Today
