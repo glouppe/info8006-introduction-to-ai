@@ -7,6 +7,7 @@ Lecture 9: Communication
 ???
 
 R: add speech recognition after translation, with hmm and nnets
+R: explain limitations of dividing by tasks -> hence nn
 R: emergent communication
 
 ---
