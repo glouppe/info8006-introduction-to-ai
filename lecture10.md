@@ -92,7 +92,14 @@ class: smaller
 
 # Artificial general intelligence
 
-XXX
+- **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
+- No clear definition, but there is an agreement that AGI is required to do the following:
+    - *reason*, use strategy, solve puzzle and make judgments under uncertainty;
+    - *represent knowledge*, including commonsense knowledge;
+    - *plan*;
+    - *learn*;
+    - *communicate* in natural language;
+    - integrate all these skills towards *common goals*. 
 
 ---
 
@@ -107,10 +114,12 @@ Irving John Good (1965):
 
 ---
 
-# When computers get smarter than we are
+# Superintelligence
 
 .center[
 <iframe width="640" height="420" src="https://www.youtube.com/embed/MnT1xgZgkpk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+What happens when our computers get smarter than we are? Nick Bostrom
 ]
 
 ---
@@ -120,8 +129,8 @@ Irving John Good (1965):
 Several working **hypothesis**:
 - *Supervised learning*: "It works, just scale up!"
 - *Unsupervised learning*: "It will work, if we only scale up!"
-- *Brain simulation*: "This will work one day, right?"
 - *AIXI*: "Guys, I can write down optimal AI."
+- *Brain simulation*: "This will work one day, right?"
 - *Artificial life*: "Let just do what Nature did."
 
 Or maybe something else?
@@ -131,6 +140,15 @@ Or maybe something else?
 class: middle, center
 
 # AIXI
+
+---
+
+---
+
+
+class: middle, center
+
+# Brain simulation
 
 ---
 
@@ -154,10 +172,12 @@ class: middle, center
 
 ---
 
-# Don't fear intelligent machines
+# A note of optimism
 
 .center[
 <iframe width="640" height="420" src="https://www.youtube.com/embed/NP8xt8o4_5Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Don't fear intelligent machines, work with them. Garry Kasparov
 ]
 
 ---
