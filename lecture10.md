@@ -246,6 +246,10 @@ class: middle, center
 - How do you simulate the environment to feed into senses?
 - Various **ethical dilemmas**.
 
+.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
+
+
+
 ---
 
 # Mind upload
