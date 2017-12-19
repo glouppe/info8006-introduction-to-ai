@@ -15,6 +15,8 @@ http://machineintelligence.org/universal-ai.pdf
 
 .center.width-100[![](figures/lec10/ai-in-news.png)]
 
+.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
+
 ---
 
 # ... to popular media
@@ -101,11 +103,11 @@ class: smaller
 
 - **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
 - No clear definition, but there is an agreement that AGI is required to do the following:
-    - *reason*, use strategy, solve puzzle and make judgments under uncertainty;
-    - *represent knowledge*, including commonsense knowledge;
-    - *plan*;
-    - *learn*;
-    - *communicate* in natural language;
+    - *reason*, use strategy, solve puzzle and make judgments under uncertainty,
+    - *represent knowledge*, including commonsense knowledge,
+    - *plan*,
+    - *learn*,
+    - *communicate* in natural language,
     - integrate all these skills towards *common goals*.
 
 ---
@@ -189,7 +191,7 @@ $$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
 
 ---
 
-# Optimal action
+# Optimal actions
 
 .center.width-100[![](figures/lec10/optimal-action.png)]
 
@@ -203,7 +205,7 @@ rigorously shown by [Hut05] to be optimal in many different senses of the word.
 
 ---
 
-# Intractability
+# Incomputability
 
 .center.width-100[![](figures/lec10/aixi-action.png)]
 
@@ -230,8 +232,9 @@ class: middle, center
 
 - A hypothesis for AGI is **whole brain simulation**.
     - A low-level brain model is built by scanning and mapping a biological brain in detail and copying its state into a computer system.
-    - The simulation is *so faithful* that it will behave in essentially the same way as the original.
-- Ongoing initiatives: BRAIN, Blue Brain Project, Human Brain Project, NeuraLink, etc.
+    - The simulation is *so faithful* that it would behave in the same way as the original.
+    - Therefore, the computer-run model would be as intelligent.
+- Initiatives: Blue Brain Project, Human Brain Project, NeuraLink, etc.
 
 ---
 
@@ -262,9 +265,79 @@ class: middle, center
 
 ---
 
-???
+# How did intelligence arise in Nature?
 
-https://en.wikipedia.org/wiki/Artificial_life
+.center.width-100[![](figures/lec10/tree.gif)]
+
+---
+
+# Artificial life
+
+- **Artificial life** is the study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
+- One of its goals is to *synthesize* life in order to understand its origins, development and organization.
+- There are three main kinds of artificial life, named after their approaches:
+    - Software approaches (soft)
+    - Hardware approaches (hard)
+    - Biochemistry approaches (wet)
+- Artificial life is related to AI since synthesizing complex life forms would, **hypothetically**, induce intelligence.
+- The field of AI has traditionally used a top down approach. Artificial life generally works from the bottom up.
+
+---
+
+# Evolution for AGI
+
+- Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
+- This algorithm gave rise to AGI.
+    - e.g., it induced humans.
+- Can we **simulate** the *evolutionary process* to reproduce life and intelligence?
+- Note that we can work at a high level of abstraction.
+    - We don't have to simulate physics or chemistry to simulate evolution.
+    - We can also bootstrap the system with agents that are better than random.
+
+---
+
+# Evolutionary algorithms
+
+- Start with a *random population* of **creatures**.
+- Each creature is *tested for their ability* to perform a given task.
+    - e.g., swim in a simulated environment.
+    - e.g., stay alive as long as possible (without starving or being killed).
+- The **most successful survive**.
+- Their virtual genes containing coded instructions for their growth are copied, combined and mutated to *make offspring* for a new population.
+- The new creatures are tested again, some of which may be improvements on their parents.
+- As this cycle of variation and selection continues, creatures with more and more successful behaviors may **emerge**.
+
+---
+
+class: center, middle
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/CQVjS-PT_c4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+---
+
+class: center, middle
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/bBt0imn77Zg?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+---
+
+# Environments for AGI?
+
+- For the emergence of intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit*.
+    - attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...
+
+.center.width-60[![](figures/lec10/envs.png)]
+
+- **Multi-agent** environments are certainly better because of:
+    - *Variety*: the environment is parameterized by its agent  population. The optimal strategy must be derived dynamically.
+    - *Natural curriculum*: the difficulty of the environment is determined by the skill of the other agents.
+
+.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
+
 
 ---
 
@@ -284,4 +357,45 @@ Don't fear intelligent machines, work with them. Garry Kasparov
 
 ---
 
+# Summary
+
+- Lecture 1: Foundations
+- Lecture 2: Solving problems by searching
+- Lecture 3: Adversarial search
+- Lecture 4: Constraint satisfaction problems
+- Lecture 5: Representing uncertain knowledge
+- Lecture 6: Inference in Bayesian networks
+- Lecture 7: Reasoning over time
+- Lecture 8: Learning
+- Lecture 9: Communication
+- Lecture 10: Artificial General Intelligence
+
+---
+
 # Going further
+
+- ELEN0062: Introduction to Machine Learning
+- INFO8004: Advanced Machine Learning
+- INFOXXXX: Deep Learning (Spring 2019)
+- INFO8003: Optimal decision making for complex problems
+- INFO0948: Introduction to Intelligent robotics
+- INFO0049: Knowledge representation
+- ELEN0016: Computer vision
+
+---
+
+class: center, middle
+
+.center.width-70[![](figures/lec10/gameover.png)]
+
+Thanks for following Introduction to AI!
+
+---
+
+# Readings
+
+- Bostrom, Nick. Superintelligence. Dunod, 2017.
+- Legg, Shane, and Marcus Hutter. "Universal intelligence: A definition of machine intelligence." Minds and Machines 17.4 (2007): 391-444.
+- Hutter, Marcus. "One decade of universal artificial intelligence." Theoretical foundations of artificial general intelligence (2012): 67-88.
+- Sims, Karl. "Evolving 3D morphology and behavior by competition." Artificial life 1.4 (1994): 353-372.
+- Kasparov, Garry. Deep Thinking: Where Machine Intelligence Ends and Human Creativity Begins, 2017.
