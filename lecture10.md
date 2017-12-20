@@ -103,23 +103,30 @@ class: smaller
 
 - **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
 - No clear definition, but there is an agreement that AGI is required to do the following:
-    - *reason*, use strategy, solve puzzle and make judgments under uncertainty,
+    - *reason*, use strategy, solve puzzle,
+    - make judgments *under uncertainty*,
     - *represent knowledge*, including commonsense knowledge,
     - *plan*,
     - *learn*,
     - *communicate* in natural language,
     - integrate all these skills towards *common goals*.
+- This is similar to our definition of **thinking rationally**, but applied broadly to any set of tasks.
 
 ---
 
 # Singularity
 
-Irving John Good (1965):
+.center.circle.width-20[![](figures/lec10/good.jpg)]
 
+Irving John Good (1965):
 - Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
 - Since the design of machines is one of these intellectual activities, an ultraintelligent machine could *design even better machines*.
 - There would then unquestionably be an **'intelligence explosion'**, and the intelligence of man would be left far behind.
 - Thus the first ultraintelligent machine is the *last invention* that man need ever make, provided that the machine is docile enough to tell us how to keep it under control.
+
+???
+
+Good worked as a cryptologist with Alan Turing.
 
 ---
 
@@ -170,20 +177,16 @@ $$\Upsilon(\pi) := \sum\_{\mu \in E} 2^{-K(\mu)} V^{\pi}\_\mu$$
 
 $$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
 
-- $\pi^{AIXI}$ is a **perfect** theoretical agent.
-- It always picks the action which has the greatest expected reward.
-- For every environment $\mu \in E$, the agent must:
-    - Take into account how likely it is that it is facing $\mu$ given the interaction history so far, and the prior probability of $\mu$.
-    - Consider all possible future interactions that might occur.
-    - Evaluate how likely they are.
-    - Then select the action that maximizes the expected future reward.
+.center[
+$\pi^{AIXI}$ is a **perfect** theoretical agent.
+]
 
 ---
 
 # System identification
 
 - Which Turing machine is the agent in? If it knew, it could plan perfectly.
-- Let's use the *Bayes rule* to update the agent beliefs given its experience so far.
+- Use the *Bayes rule* to update the agent beliefs given its experience so far.
 
 .center.width-100[![](figures/lec10/tm.png)]
 
@@ -191,7 +194,18 @@ $$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
 
 ---
 
-# Optimal actions
+# Acting optimally (1)
+
+- The agent always picks the action which has the greatest expected reward.
+- For every environment $\mu \in E$, the agent must:
+    - Take into account how likely it is that it is facing $\mu$ given the interaction history so far, and the prior probability of $\mu$.
+    - Consider all possible future interactions that might occur, assuming optimal future actions.
+    - Evaluate how likely they are.
+    - Then select the action that maximizes the expected future reward.
+
+---
+
+# Acting optimally (2)
 
 .center.width-100[![](figures/lec10/optimal-action.png)]
 
@@ -199,7 +213,8 @@ $$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
 
 ???
 
-The equation embodies in one line the major ideas of Bayes, Ockham, Epicurus,
+- The best action a_t is the best action to some x_t, plus one more step.
+- The equation embodies in one line the major ideas of Bayes, Ockham, Epicurus,
 Turing, von Neumann, Bellman, Kolmogorov, and Solomonoff. The AIXI agent is
 rigorously shown by [Hut05] to be optimal in many different senses of the word.
 
@@ -210,6 +225,10 @@ rigorously shown by [Hut05] to be optimal in many different senses of the word.
 .center.width-100[![](figures/lec10/aixi-action.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
+
+???
+
+- The
 
 ---
 
@@ -288,13 +307,23 @@ class: middle, center
 
 ---
 
+class: middle, center
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/dySwrhMQdX4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+The line between life and not-life. Martin Hanczyc
+]
+
+---
+
 # Evolution for AGI
 
 - Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
 - This algorithm gave rise to AGI.
     - e.g., it induced humans.
 - Can we **simulate** the *evolutionary process* to reproduce life and intelligence?
-- Note that we can work at a high level of abstraction.
+- Note that using software simulation, we can work at a high level of abstraction.
     - We don't have to simulate physics or chemistry to simulate evolution.
     - We can also bootstrap the system with agents that are better than random.
 
@@ -331,7 +360,7 @@ class: center, middle
 
 # Environments for AGI?
 
-- For the emergence of intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit*.
+- For the emergence of generally intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit*.
     - attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...
 
 .center.width-60[![](figures/lec10/envs.png)]
