@@ -28,6 +28,10 @@ class: middle, center
 ![](figures/lec1/smith.jpg)
 ]
 
+???
+
+R: terminator only -> instead think of AI as a smart washing machine 
+
 ---
 
 # What is AI?
