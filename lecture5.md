@@ -750,7 +750,7 @@ This suggests the following methodology for *building* Bayesian networks:
 1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
 2. For $i=1$ to $n$:
     - Add $X\_i$ to the network.
-    - Select a minimal set of parents from $X\_1, ..., X\_n$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    - Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
     - For each parent, insert a link from the parent to $X\_i$.
     - Write down the CPT.
 
