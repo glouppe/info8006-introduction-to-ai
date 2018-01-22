@@ -457,7 +457,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
         - If $y=\hat{y}$, do nothing.
         - Otherwise, update parameters:
             - $\mathbf{w}\_y = \mathbf{w}\_y + \mathbf{x}$ (raise score of right answer)
-            - $\mathbf{w}\_{\hat{y}} = \mathbf{w}\_{\hat{y}} + \mathbf{x}$ (lower score of wrong answer).
+            - $\mathbf{w}\_{\hat{y}} = \mathbf{w}\_{\hat{y}} - \mathbf{x}$ (lower score of wrong answer).
 
 ---
 
