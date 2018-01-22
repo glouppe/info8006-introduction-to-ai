@@ -289,7 +289,7 @@ given continuous parents, for each possible assignment to discrete parents.
     - e.g., we need to specify both $P(c|h,s)$ and $P(c|h,\lnot s)$
 - Common choice: the **linear Gaussian model** (LG):
     - $P(c|h,s) = \mathcal{N}(a\_th+b\_t, \sigma_t^2)(c)$
-    - $P(c|h,\lnot s) = \mathcal{N}(a\_tf+b\_f, \sigma_f^2)(c)$
+    - $P(c|h,\lnot s) = \mathcal{N}(a\_fh+b\_f, \sigma_f^2)(c)$
 
 .center.width-90[![](figures/lec6/joint-density.png)]
 
