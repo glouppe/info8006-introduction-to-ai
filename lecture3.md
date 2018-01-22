@@ -51,7 +51,7 @@ R: add subtitles
 
 # Formal definition
 
-A **game** is formally defined as kind of search problem with the following components:
+A **game** is formally defined as a kind of search problem with the following components:
 - The *initial state* $s_0$ of the game.
 - A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
 - A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.

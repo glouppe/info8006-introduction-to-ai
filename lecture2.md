@@ -43,7 +43,7 @@ Reflex agents:
 
 Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
-R: rework what is illustrated in the figures.
+R: rework the figures including ghosts, where considering how the world would be is necessary.
 
 ---
 
@@ -295,6 +295,10 @@ class: smaller
     - When all the descendants of a node have been visited, the node can be removed from memory.
 
 .center.width-50[![](figures/lec2/dfs-properties.png)]
+
+???
+
+R: double check the time complexity
 
 ---
 

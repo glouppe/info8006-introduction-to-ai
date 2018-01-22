@@ -739,6 +739,10 @@ $\approx 0.00063$
 
 A node $X$ is conditionally independent ot its non-descendants (the $Z_{ij}$) given its parents (the $U_i'$).
 
+???
+
+R: add global semantics with MB
+
 ---
 
 # Constructing Bayesian Networks
