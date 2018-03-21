@@ -7,6 +7,8 @@ Lecture 1: Foundations
 ???
 
 R: code examples are not really helpful
+R: project: Pacman only
+R: make them read a research paper (new exercise for them) + write a 2-page report on it
 
 ---
 
@@ -30,7 +32,7 @@ class: middle, center
 
 ???
 
-R: terminator only -> instead think of AI as a smart washing machine 
+R: terminator only -> instead think of AI as a smart washing machine
 
 ---
 
