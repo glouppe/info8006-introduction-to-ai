@@ -7,30 +7,8 @@ Lecture 5: Representing uncertain knowledge
 ???
 
 R: double check consistency of notations (p, P, bold P, etc)
-
----
-
-# Announcement
-
-.grid[
-.col-2-3[
-## Research seminar
-
-"What does the Revolution in Artificial Intelligence Mean for Particle Physics?",
-
-Prof. Kyle Cranmer, New York University.
-
-## When/Where?
-- Friday December 1, 2017
-- 3:00 PM
-- Room R7 / B28
-]
-.col-1-3[
-.circle[![](figures/lec5/cranmer.jpeg)]
-]
-]
-
-Not mandatory, but you are welcome to attend!
+R: insist on the formalism of bayesian networks. have precise definitions
+R: make sure they know what is a latent variable model
 
 ---
 
