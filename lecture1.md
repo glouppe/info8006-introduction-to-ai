@@ -10,6 +10,9 @@ R: code examples are not really helpful
 R: project: Pacman only
 R: make them read a research paper (new exercise for them) + write a 2-page report on it
 
+R: add lecture on MDP
+R: decision theory? game theory?
+
 ---
 
 class: middle, center

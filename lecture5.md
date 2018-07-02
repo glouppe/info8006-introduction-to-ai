@@ -6,6 +6,7 @@ Lecture 5: Representing uncertain knowledge
 
 ???
 
+R: make sure to introduce the purpose of probability for inference under uncertainty
 R: double check consistency of notations (p, P, bold P, etc)
 R: insist on the formalism of bayesian networks. have precise definitions
 R: make sure they know what is a latent variable model
