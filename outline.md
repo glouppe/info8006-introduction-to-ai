@@ -15,7 +15,9 @@ Prof. Gilles Louppe<br>
 Contact:
 
 - Prof. Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
-- Teaching assistants: Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
+- Teaching assistants:
+    - Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be))
+    - Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
 
 ---
 
@@ -90,17 +92,17 @@ class: middle
 
 ---
 
-# 3. Games
-
--   Games, optimal decisions, stochastic game, ... *(Chapter 5)*
--   *Extra:* Deep Blue, AlphaGo
-
----
-
-# 4. Constraint satisfaction problems
+# 3. Constraint satisfaction problems
 
 - CSPs, backtracking, local search, ... *(Chapter 6)*
 - Logical inference as a CSP
+
+---
+
+# 4. Games
+
+-   Games, optimal decisions, stochastic game, ... *(Chapter 5)*
+-   *Extra:* Deep Blue, AlphaGo
 
 ---
 
