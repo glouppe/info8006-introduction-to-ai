@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 1: Foundations
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
 R: code examples are not really helpful
@@ -46,21 +50,21 @@ R: terminator only -> instead think of AI as a smart washing machine
 Artificial intelligence is the science of making machines or programs that:
 
 .grid.grid-half[
-.col-1-2[
+.kol-1-2[
 .center[Think like people]
 ![](figures/lec1/ai-think-people.png)
 ]
-.col-1-2[
+.kol-1-2[
 .center[Think rationally]
 ![](figures/lec1/ai-think-rationally.png)
 ]
 ]
 .grid.grid-half[
-.col-1-2[
+.kol-1-2[
 .center[Act like people]
 ![](figures/lec1/ai-act-people.png)
 ]
-.col-1-2[
+.kol-1-2[
 .center[Act rationally]
 ![](figures/lec1/ai-act-rationally.png)
 ]
@@ -79,10 +83,10 @@ questions, cannot tell whether the written responses come from a person or from
 a computer.
 
 .grid[
-.col-2-3[
+.kol-2-3[
 ![The Turing test](figures/lec1/turing-test.jpg)
 ]
-.col-1-3.center[
+.kol-1-3.center[
 .circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
 .caption[*Can machines think?* (Alan Turing, 1950).]
 ]
@@ -125,7 +129,7 @@ so exactly like pigeons that they can fool even other pigeons.]
 # Thinking humanly
 
 .grid[
-.col-1-2[
+.kol-1-2[
 ## Cognitive science
 
 - Study of the *human mind* and its processes. The goal of cognitive science
@@ -136,7 +140,7 @@ so exactly like pigeons that they can fool even other pigeons.]
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 ]
-.col-1-2[
+.kol-1-2[
 ![ACT-R](figures/lec1/soar.jpg)
 .caption[The modern SOAR cognitive architecture, as a descendant of the Logic Theorist (Alan Newell, Herbert Simon, 1956).]
 ]
@@ -147,7 +151,7 @@ mistakes, learning rates, etc).
 # Limitations of cognition for AI
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
 linguistic input alone.
@@ -156,7 +160,7 @@ linguistic input alone.
 - (Controversial) Therefore, humans must be *biologically pre-wired*
 with **innate knowledge** for representing language.
 ]
-.col-1-3.center[
+.kol-1-3.center[
 .circle[![Noam Chomsky](figures/lec1/chomsky.png)]
 .caption[*How do we know what we know?* (Noam Chomsky, 1980).]
 ]
@@ -310,21 +314,21 @@ class: smaller
 # Games
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/NJarxpYyoFI?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Deep Blue]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/V1eYniJ0Rnk?&loop=1&start=25" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Playing Atari games]
 ]
 ]
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/g-dKXOlsf98?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Alpha Go]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/naBLXWb60gQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Starcraft]
 ]
@@ -335,11 +339,11 @@ class: smaller
 # Natural language
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/Nu-nlQqFCKg?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Speech translation and synthesis]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/heVE_me5VaQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Question answering systems]
 ]
@@ -350,21 +354,21 @@ class: smaller
 # Vision
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/cm2VlEGNz5A?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Semantic segmentation]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/8BFzu9m52sc?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Generating image descriptions]
 ]
 ]
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/pW6nZXeWlGM?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Pose estimation]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/IvmLEq9piJ4?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Detecting skin cancer]
 ]
@@ -375,21 +379,21 @@ class: smaller
 # Robotics
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/-96BEoXJMs0?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Automous cars]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/NFNEOooEQX4?&loop=1&start=80" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Playing soccer]
 ]
 ]
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/gn4nRCC9TwQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Learning to walk]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/gy5g33S0Gzo?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Folding laundry]
 ]
@@ -400,11 +404,11 @@ class: smaller
 # Logic
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 ![](figures/lec1/isaplanner.png)
 .caption[Automated Theorem Prover]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 ![](figures/lec1/thecuriosity.jpg)
 .caption[Formal software verification]
 ]
@@ -419,21 +423,21 @@ Mention https://arxiv.org/pdf/1706.02515.pdf
 # Decision making
 
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/BNHR6IQJGZs?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Search engines]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/AuwayMjvuT0?&loop=1&start=35" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Fraud detection]
 ]
 ]
 .grid[
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/S4RL6prqtGQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Recommendation systems]
 ]
-.col-1-2.center[
+.kol-1-2.center[
 <iframe width="280" height="200" src="https://www.youtube.com/embed/_QndP_PCRSw?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
 .caption[Sorting packages (routing, planning)]
 ]

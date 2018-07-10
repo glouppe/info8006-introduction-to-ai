@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 2: Solving problems by searching
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ---
 
 # Today
@@ -29,10 +33,10 @@ Reflex agents:
 - Consider only **how the world is now**.
 
 .grid[
-.col-1-2[
+.kol-1-2[
 ![](figures/lec2/pacman-reflex.png)
 ]
-.col-1-2[
+.kol-1-2[
 ![](figures/lec2/pacman-reflex2.png)
 ]
 ]
@@ -59,10 +63,10 @@ Problem-solving agents:
 - Consider **how to world would be**.
 
 .grid[
-.col-1-2[
+.kol-1-2[
 ![](figures/lec2/pacman-goal.png)
 ]
-.col-1-2[
+.kol-1-2[
 ![](figures/lec2/pacman-goal2.png)
 ]
 ]
@@ -166,14 +170,14 @@ The process of removing details from a representation is called abstraction.
         - Transition: update location and possibly a dot boolean
         - Goal test: dots all false
 
-.stretch[![](figures/lec2/pacman-world.png)]
+.width-100[![](figures/lec2/pacman-world.png)]
 
 ---
 
 # State space size
 
 .grid[
-.col-1-2[
+.kol-1-2[
 - *World state*:
     - Agent positions: 120
     - Found count: 30
@@ -185,8 +189,8 @@ The process of removing details from a representation is called abstraction.
     - States for eat-all-dots?
         - $120 \times 2^{30}$
 ]
-.col-1-2[
-![](figures/lec2/pacman-size.png)
+.kol-1-2[
+.width-100[![](figures/lec2/pacman-size.png)]
 ]
 ]
 
@@ -351,12 +355,12 @@ R: dont we also need to store all nodes above?
 
 
 .grid[
-.col-2-3[
+.kol-2-3[
 <span class="Q">[Q]</span> What are the properties of iterative deepening?
 
 <span class="Q">[Q]</span> Isn't this process wastefully redundant?
 ]
-.col-1-4[
+.kol-1-4[
 ![](figures/lec2/id-properties.png)
 ]
 ]
@@ -476,11 +480,11 @@ class: smaller
 # Shakey the Robot
 
 .grid[
-.col-1-2[
+.kol-1-2[
 - A\* was first proposed in **1968** to improve robot planning.
 - Goal was to navigate through a room with obstacles.
 ]
-.col-1-2.width-80[
+.kol-1-2.width-80[
 ![](figures/lec2/shakey.jpg)
 ]
 ]
@@ -526,7 +530,7 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 # Optimality of A* (tree search)
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - *Assumptions*:
     - $A$ is an optimal goal node
     - $B$ is a suboptimal goal node
@@ -534,7 +538,7 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 - *Claim*:
     - $A$ will exit the fringe before $B$
 ]
-.col-1-3[
+.kol-1-3[
 ![](figures/lec2/astar-proof1.png)
 ]
 ]
@@ -544,7 +548,7 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 # Optimality of A* (tree search)
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - Assume $B$ is on the fringe.
 - Some ancestor $n$ of $A$ is on the fringe too.
 - *Claim*: $n$ will be expanded before $B$.
@@ -560,7 +564,7 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 - All ancestors of $A$ expand before $B$, including $A$. Thefore **A* is optimal**.
 
 ]
-.col-1-3[
+.kol-1-3[
 ![](figures/lec2/astar-proof2.png)
 ]
 ]
@@ -576,10 +580,10 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 ![](figures/lec2/contours-ucs.png)
 ![](figures/lec2/contours-as.png)]
 .grid[
-.col-1-2[
+.kol-1-2[
 For UCS ($h(n)=0$ for all $n$), bands are circular around the start.
 ]
-.col-1-2[
+.kol-1-2[
 For A* with accurate heuristics, bands stretch towards the goal.
 ]
 ]
@@ -589,24 +593,24 @@ For A* with accurate heuristics, bands stretch towards the goal.
 # Comparison
 
 .grid[
-.col-1-3[
+.kol-1-3[
 ![](figures/lec2/cmp-greedy.jpg)
 ]
-.col-1-3[
+.kol-1-3[
 ![](figures/lec2/cmp-ucs.jpg)
 ]
-.col-1-3[
+.kol-1-3[
 ![](figures/lec2/cmp-as.jpg)
 ]
 ]
 .center.grid[
-.col-1-3[
+.kol-1-3[
 Greedy search
 ]
-.col-1-3[
+.kol-1-3[
 UCS
 ]
-.col-1-3[
+.kol-1-3[
 A*
 ]
 ]

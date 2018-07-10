@@ -2,20 +2,34 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2017
+Fall 2018
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
 
 ---
 
-# Organization
+# Logistics
 
-## Logistics
-- Prof. Gilles Louppe ([g.louppe@ulg.ac.be](mailto:g.louppe@ulg.ac.be))
-- Teaching assistant: Samy Aittahar ([saittahar@ulg.ac.be](mailto:saittahar@ulg.ac.be))
+Contact:
 
-.pull-right[![Textbook](./figures/textbook.png)]
-## Textbook
-Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.
-(*Strongly recommended*)
+- Prof. Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
+- Teaching assistants: Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
+
+---
+
+# Textbook
+
+.center.width-30[![](./figures/textbook.png)]
+
+Stuart Russel, Peter Norvig. .italic["Artificial Intelligence: A Modern Approach"], Third Edition, Global Edition.
+
+This book is **strongly recommended**.
+
+---
+
+# Slides
 
 Slides are partially adapted from:
 - [CS188 Introduction to AI](http://ai.berkeley.edu/lecture_slides.html) (UC Berkeley)
@@ -57,7 +71,7 @@ Slides are partially adapted from:
 
 ---
 
-class: middle, center
+class: middle
 
 # Outline
 
@@ -90,28 +104,32 @@ class: middle, center
 
 ---
 
-# 5. Probabilistic reasoning I
+# 5. Representing uncertain knowledge
 
 -   Quantifying Uncertainty *(Chapter 13)*
+
+---
+
+# 6. Inference in Bayesian networks
+
 -   Probabilistic reasoning *(Chapter 14)*
 
 ---
 
-# 6. Probabilistic reasoning II
+# 7. Reasoning over time
 
 -   Probabilistic reasoning over time *(Chapter 15)*
--   Learning probabilistic models *(Chapter 20)*
 
 ---
 
-# 7. Making decisions
+# 8. Making decisions
 
 -   Making simple decisions *(Chapter 16)*
--   Mentions of 17? 21?
+-   Making complex decisions *(Chapter 17)*
 
 ---
 
-# 8. Learning
+# 9. Learning
 
 -   Discussion on the need for learning
 -   Overview of various learning paradigms *(Chapters 18, 19, 20, 21)*
@@ -119,19 +137,11 @@ class: middle, center
 
 ---
 
-# 9. Communication
+# 10. Communication
 
 -   Natural language processing *(Chapter 22)*.
 -   Natural language for communication *(Chapter 23)*.
 -   *Extra:* Q&A systems
-
----
-
-# 10. Perception
-
--   Computer vision *(Chapter 24)*
--   Attention mechanisms *(Research)*
--   *Extra:* Autonomous vehicles
 
 ---
 
@@ -148,7 +158,7 @@ Philosophical foundations and future of AI
 
 ---
 
-class: middle, center
+class: middle
 
 # Projects
 
