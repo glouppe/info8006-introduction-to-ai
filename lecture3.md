@@ -4,10 +4,6 @@ class: middle, center, title-slide
 
 Lecture 3: Constraint satisfaction problems
 
-???
-
-R: Have an additional lecture before this one, on MDPs?
-
 ---
 
 # Today
