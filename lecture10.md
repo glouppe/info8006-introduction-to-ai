@@ -6,8 +6,9 @@ Lecture 9: Communication
 
 ???
 
-R: add speech recognition after translation, with hmm and nnets
+R: add speech recognition after translation, with hmm and nnets as a comparison
 R: explain limitations of dividing by tasks -> hence nn
+R: check KC tuto on NLP
 R: emergent communication
 
 ---

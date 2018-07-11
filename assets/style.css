@@ -59,9 +59,8 @@ body {
 }
 
 .remark-slide-content h2 {
-    color: #d11a01;
-    font-size: 1.5em;
-    font-weight: normal;
+    font-size: 1.1em;
+    font-weight: bold;
     margin: 0 0 .5em 0;
 }
 
