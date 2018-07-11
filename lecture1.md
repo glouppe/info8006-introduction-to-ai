@@ -21,19 +21,19 @@ class: middle
 
 ---
 
-# AI $\neq$ Science fiction
+class: middle, center
 
-.gallery[
-![](figures/lec1/r2d2.jpg)
-![](figures/lec1/terminator.jpg)
+.width-70[![](figures/lec1/terminator.png)]
 
-![](figures/lec1/exmachina.jpg)
-![](figures/lec1/smith.jpg)
-]
+"With artificial intelligence we are summoning the demon" -- Elon Musk
 
-???
+---
 
-R: terminator only -> instead think of AI as a smart washing machine
+class: middle, center
+
+.width-60[![](figures/lec1/washing-machine.png)]
+
+"We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab.
 
 ---
 
@@ -41,48 +41,51 @@ R: terminator only -> instead think of AI as a smart washing machine
 
 --
 
+count: false
+
 Artificial intelligence is the science of making machines or programs that:
-
-.grid.grid-half[
-.kol-1-2[
+.center.grid[
+.kol-1-4[]
+.kol-1-4[
 .center[Think like people]
-![](figures/lec1/ai-think-people.png)
+.width-100[![](figures/lec1/ai-think-people.png)]
 ]
-.kol-1-2[
+.kol-1-4[
 .center[Think rationally]
-![](figures/lec1/ai-think-rationally.png)
+.width-100[![](figures/lec1/ai-think-rationally.png)]
 ]
 ]
-.grid.grid-half[
-.kol-1-2[
+.grid[
+.kol-1-4[]
+.kol-1-4[
 .center[Act like people]
-![](figures/lec1/ai-act-people.png)
+.width-100[![](figures/lec1/ai-act-people.png)]
 ]
-.kol-1-2[
+.kol-1-4[
 .center[Act rationally]
-![](figures/lec1/ai-act-rationally.png)
+.width-100[![](figures/lec1/ai-act-rationally.png)]
 ]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Acting humanly
 
-## The Turing test (the Imitation Game)
+## The Turing test
 
-A computer passes the test if a human operator, after posing some written
+A computer passes the **Turing test** (also known as the Imitation Game) if a human operator, after posing some written
 questions, cannot tell whether the written responses come from a person or from
 a computer.
 
 .grid[
 .kol-2-3[
-![The Turing test](figures/lec1/turing-test.jpg)
+.width-100[![The Turing test](figures/lec1/turing-test.jpg)]
 ]
 .kol-1-3.center[
-.circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
-.caption[*Can machines think?* (Alan Turing, 1950).]
+.width-100.circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
+.caption[Can machines think?<br> (Alan Turing, 1950)]
 ]
 ]
 
@@ -92,7 +95,7 @@ a computer.
 
 ---
 
-# Abilities for passing the test
+class: middle
 
 An agent would not pass the Turing test without the following **requirements**:
 
@@ -108,41 +111,45 @@ today.
 
 ---
 
-# Limitations of the Turing test
+class: middle
 
-- Tends to focus on *human-like errors*, *linguistic tricks*, etc.
-- It seems more important to study the **principles** underlying intelligence
-  than to replicate an exemplar.
+## Limitations of the Turing test
 
-.center[![](figures/lec1/cargo-plane.jpg)]
-.caption[Aeronautics is not defined as the field of making machines that fly
+The Turing test tends to focus on *human-like errors*, *linguistic tricks*, etc.
+
+However, it seems more important to study the **principles** underlying intelligence than to replicate an exemplar.
+
+<br>
+.center.width-70[![](figures/lec1/cargo-plane.jpg)]
+.caption[Aeronautics is not defined as the field of making machines<br> that fly
 so exactly like pigeons that they can fool even other pigeons.]
 
 ---
 
 # Thinking humanly
 
-.grid[
-.kol-1-2[
-## Cognitive science
 
-- Study of the *human mind* and its processes. The goal of cognitive science
+**Cognitive science** is the study of the *human mind* and its processes. The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
 
-- A *cognitive architecture* usually follows human-like reasoning and can be used to
+A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
-]
-.kol-1-2[
-![ACT-R](figures/lec1/soar.jpg)
-.caption[The modern SOAR cognitive architecture, as a descendant of the Logic Theorist (Alan Newell, Herbert Simon, 1956).]
-]
-]
 
 ---
 
-# Limitations of cognition for AI
+class: middle, center
+
+.width-80[![ACT-R](figures/lec1/soar.jpg)]
+
+The modern SOAR cognitive architecture, as a descendant of the Logic Theorist<br>(Alan Newell, Herbert Simon, 1956).
+
+---
+
+class: middle
+
+## Limitations of cognition for AI
 
 .grid[
 .kol-2-3[
@@ -155,12 +162,12 @@ linguistic input alone.
 with **innate knowledge** for representing language.
 ]
 .kol-1-3.center[
-.circle[![Noam Chomsky](figures/lec1/chomsky.png)]
-.caption[*How do we know what we know?* (Noam Chomsky, 1980).]
+.circle.width-100[![Noam Chomsky](figures/lec1/chomsky.png)]
+.caption[How do we know what we know? (Noam Chomsky, 1980).]
 ]
 ]
 
-This suggests that it may not be possible to implement a fully functioning
+Therefore, it may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
@@ -179,7 +186,9 @@ formally **provable** from inputs and prior knowledge.
 Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
 
-- Studied in depth in *Knowledge representation* (Prof. Pascal Gribomont).
+---
+
+class: middle
 
 ```prolog
 /* Example of automated reasoning in Prolog */
@@ -190,9 +199,13 @@ human(socrate).
 yes.
 ```
 
+xxx: more elaborate example
+
 ---
 
-# Limitations of logical inference
+class: middle
+
+## Limitations of logical inference
 
 - Representation of *informal* knowledge is difficult.
 - Hard to define provable *plausible* reasoning.
@@ -208,15 +221,16 @@ yes.
 
 # Acting rationally
 
-- A **rational agent** acts so as to achieve the best (expected) outcome.
-    - Correct logical inference is just one of several possible mechanisms for achieving this goal.
-    - Perfect rationality cannot be achieved due to computational limitations!
-      The amount of reasoning is adjusted according to available resources and importance of the result.
-    - The brain is good at making rational decisions but not perfect either.
-- Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-- Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
-    - The standard of rationality is general and mathematically well defined.
-- In this course, we will study general principles of rational agents and the components for constructing them.
+A **rational agent** acts so as to achieve the best (expected) outcome.
+- Correct logical inference is just one of several possible mechanisms for achieving this goal.
+- Perfect rationality cannot be achieved due to computational limitations!
+  The amount of reasoning is adjusted according to available resources and importance of the result.
+- The brain is good at making rational decisions but not perfect either.
+
+Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
+
+Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
+The standard of rationality is general and mathematically well defined.
 
 ---
 
@@ -227,7 +241,7 @@ class: middle
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -242,8 +256,6 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 - *Control theory:* homeostatic systems, stability, simple optimal agent designs.
 
 ---
-
-class: smaller
 
 # A short history of AI
 
@@ -267,9 +279,7 @@ class: middle, center
 
 ---
 
-class: smaller
-
-# A short history of AI
+class: middle
 
 ## 1970-1990: Knowledge-based approaches
 - 1969: Neural network research almost disappears after Minsky and Paper's paper.
@@ -439,11 +449,9 @@ Mention https://arxiv.org/pdf/1706.02515.pdf
 
 ---
 
-class: middle, center
+class: middle
 
 # Intelligent agents
-
-(Chapter 2)
 
 ---
 
@@ -742,6 +750,13 @@ class: smaller
 - The **agent program** effectively implements the agent function. Their designs are dictated by the task environment.
 - *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
 - All agents can improve their performance through **learning**.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 

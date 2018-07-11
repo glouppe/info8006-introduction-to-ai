@@ -30,9 +30,9 @@ Feel free to contact any of us for help!
 
 # Slides
 
-Slides are:
-- available online at [https://github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
-- available in HTML and in PDFs.
+Slides
+- are available at [https://github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
+- are available in HTML and in PDFs.
 - will be posted online the day before the lesson.
 - will be slightly different from previous years.
 
@@ -106,7 +106,7 @@ class: middle
 
 ## Programming project
 
-Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing level of difficulty:
+Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty:
 - Eat as much dots as possible
 - Eat as much dots as possible, while not getting killed by ghosts (deterministic)
 - Eat as much dots as possible, while not getting killed by ghosts (stochastic)
@@ -122,6 +122,12 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 - Programming project (30%)
 
 Projects are **mandatory** for presenting the exam.
+
+---
+
+# Going further
+
+xxx
 
 ---
 
