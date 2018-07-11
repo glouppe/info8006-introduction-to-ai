@@ -27,3 +27,7 @@ TBD.
 ## Projects
 
 TBD.
+
+## Archives
+
+- [2017-2018](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2017)
