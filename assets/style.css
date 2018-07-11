@@ -103,6 +103,10 @@ strong {
     color: #1a7082;
 }
 
+.remark-code {
+    font-size: 0.8em;
+}
+
 ul > li, ol > li {
      margin: 0.6em 0;
 }
@@ -161,16 +165,6 @@ td {
 .pull-right {
     float: right;
     margin-left: 1em;
-}
-
-.gallery {
-    display: block;
-    text-align: center;
-}
-
-.gallery img {
-    width: 200px;
-    height: auto;
 }
 
 .caption {

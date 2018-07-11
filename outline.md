@@ -127,7 +127,16 @@ Projects are **mandatory** for presenting the exam.
 
 # Going further
 
-xxx
+This course is meant as an introduction to the many other courses available at ULiège and related to AI, including:
+
+- ELEN0062: Introduction to Machine Learning
+- INFO8004: Advanced Machine Learning
+- INFOXXXX: Deep Learning (Spring 2019)
+- INFO8003: Optimal decision making for complex problems
+- INFO0948: Introduction to Intelligent Robotics
+- INFO0049: Knowledge representation
+- ELEN0016: Computer vision
+- DROI8031: Introduction to the law of robots
 
 ---
 
