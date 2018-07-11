@@ -4,38 +4,36 @@ class: middle, center, title-slide
 
 Lecture 1: Foundations
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
-R: code examples are not really helpful
-R: project: Pacman only
-R: make them read a research paper (new exercise for them) + write a 2-page report on it
+R: go over the Intelligent agents part.
+R: regenerate the agent diagrams
 
-R: add lecture on MDP
-R: decision theory? game theory?
+---
+
+class: middle
+
+# Introduction
 
 ---
 
 class: middle, center
 
-# Introduction
+.width-70[![](figures/lec1/terminator.png)]
 
-(Chapter 1)
+"With artificial intelligence we are summoning the demon" -- Elon Musk
 
 ---
 
-# AI $\neq$ Science fiction
+class: middle, center
 
-.gallery[
-![](figures/lec1/r2d2.jpg)
-![](figures/lec1/terminator.jpg)
+.width-60[![](figures/lec1/washing-machine.png)]
 
-![](figures/lec1/exmachina.jpg)
-![](figures/lec1/smith.jpg)
-]
-
-???
-
-R: terminator only -> instead think of AI as a smart washing machine
+"We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab.
 
 ---
 
@@ -43,48 +41,51 @@ R: terminator only -> instead think of AI as a smart washing machine
 
 --
 
+count: false
+
 Artificial intelligence is the science of making machines or programs that:
-
-.grid.grid-half[
-.col-1-2[
+.center.grid[
+.kol-1-4[]
+.kol-1-4[
 .center[Think like people]
-![](figures/lec1/ai-think-people.png)
+.width-100[![](figures/lec1/ai-think-people.png)]
 ]
-.col-1-2[
+.kol-1-4[
 .center[Think rationally]
-![](figures/lec1/ai-think-rationally.png)
+.width-100[![](figures/lec1/ai-think-rationally.png)]
 ]
 ]
-.grid.grid-half[
-.col-1-2[
+.grid[
+.kol-1-4[]
+.kol-1-4[
 .center[Act like people]
-![](figures/lec1/ai-act-people.png)
+.width-100[![](figures/lec1/ai-act-people.png)]
 ]
-.col-1-2[
+.kol-1-4[
 .center[Act rationally]
-![](figures/lec1/ai-act-rationally.png)
+.width-100[![](figures/lec1/ai-act-rationally.png)]
 ]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Acting humanly
 
-## The Turing test (the Imitation Game)
+## The Turing test
 
-A computer passes the test if a human operator, after posing some written
+A computer passes the **Turing test** (also known as the Imitation Game) if a human operator, after posing some written
 questions, cannot tell whether the written responses come from a person or from
 a computer.
 
 .grid[
-.col-2-3[
-![The Turing test](figures/lec1/turing-test.jpg)
+.kol-2-3[
+.width-100[![The Turing test](figures/lec1/turing-test.jpg)]
 ]
-.col-1-3.center[
-.circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
-.caption[*Can machines think?* (Alan Turing, 1950).]
+.kol-1-3.center[
+.width-100.circle[![Alan Turing](figures/lec1/alan-turing.jpg)]
+.caption[Can machines think?<br> (Alan Turing, 1950)]
 ]
 ]
 
@@ -94,7 +95,7 @@ a computer.
 
 ---
 
-# Abilities for passing the test
+class: middle
 
 An agent would not pass the Turing test without the following **requirements**:
 
@@ -110,44 +111,48 @@ today.
 
 ---
 
-# Limitations of the Turing test
+class: middle
 
-- Tends to focus on *human-like errors*, *linguistic tricks*, etc.
-- It seems more important to study the **principles** underlying intelligence
-  than to replicate an exemplar.
+## Limitations of the Turing test
 
-.center[![](figures/lec1/cargo-plane.jpg)]
-.caption[Aeronautics is not defined as the field of making machines that fly
+The Turing test tends to focus on *human-like errors*, *linguistic tricks*, etc.
+
+However, it seems more important to study the **principles** underlying intelligence than to replicate an exemplar.
+
+<br>
+.center.width-70[![](figures/lec1/cargo-plane.jpg)]
+.caption[Aeronautics is not defined as the field of making machines<br> that fly
 so exactly like pigeons that they can fool even other pigeons.]
 
 ---
 
 # Thinking humanly
 
-.grid[
-.col-1-2[
-## Cognitive science
 
-- Study of the *human mind* and its processes. The goal of cognitive science
+**Cognitive science** is the study of the *human mind* and its processes. The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
 
-- A *cognitive architecture* usually follows human-like reasoning and can be used to
+A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
-]
-.col-1-2[
-![ACT-R](figures/lec1/soar.jpg)
-.caption[The modern SOAR cognitive architecture, as a descendant of the Logic Theorist (Alan Newell, Herbert Simon, 1956).]
-]
-]
 
 ---
 
-# Limitations of cognition for AI
+class: middle, center
+
+.width-80[![ACT-R](figures/lec1/soar.jpg)]
+
+The modern SOAR cognitive architecture, as a descendant of the Logic Theorist<br>(Alan Newell, Herbert Simon, 1956).
+
+---
+
+class: middle
+
+## Limitations of cognition for AI
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
 linguistic input alone.
@@ -156,13 +161,13 @@ linguistic input alone.
 - (Controversial) Therefore, humans must be *biologically pre-wired*
 with **innate knowledge** for representing language.
 ]
-.col-1-3.center[
-.circle[![Noam Chomsky](figures/lec1/chomsky.png)]
-.caption[*How do we know what we know?* (Noam Chomsky, 1980).]
+.kol-1-3.center[
+.circle.width-100[![Noam Chomsky](figures/lec1/chomsky.png)]
+.caption[How do we know what we know? (Noam Chomsky, 1980)]
 ]
 ]
 
-This suggests that it may not be possible to implement a fully functioning
+Therefore, it may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
@@ -181,20 +186,92 @@ formally **provable** from inputs and prior knowledge.
 Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
 
-- Studied in depth in *Knowledge representation* (Prof. Pascal Gribomont).
+---
+
+class: middle
+
+## The Zebra puzzle
+
+.grid[
+.kol-1-2[
+- There are five houses.
+- The English man lives in the red house.
+- The Swede has a dog.
+- The Dane drinks tea.
+- The green house is immediately to the left of the white house.
+- They drink coffee in the green house.
+- The man who smokes Pall Mall has birds.
+- In the yellow house they smoke Dunhill.
+- In the middle house they drink milk.
+]
+.kol-1-2[
+- The Norwegian lives in the first house.
+- The man who smokes Blend lives in the house next to the house with cats.
+- In a house next to the house where they have a horse, they smoke Dunhill.
+- The man who smokes Blue Master drinks beer.
+- The German smokes Prince.
+- The Norwegian lives next to the blue house.
+- They drink water in a house next to the house where they smoke Blend.
+]
+]
+
+---
+
+class: middle, center
+
+Who owns the zebra?
+
+---
+
+class: middle
 
 ```prolog
-/* Example of automated reasoning in Prolog */
-mortal(X) :- human(X).
-human(socrate).
+select([A|As],S):- select(A,S,S1),select(As,S1).
+select([],_).
 
-?- mortal(socrate).
-yes.
+next_to(A,B,C):- left_of(A,B,C) ; left_of(B,A,C).
+left_of(A,B,C):- append(_,[A,B|_],C).
+
+zebra(Owns, HS):-  % color,nation,pet,drink,smokes
+      HS =    [ h(_,norwegian,_,_,_), _,  h(_,_,_,milk,_), _, _],
+      select( [ h(red,englishman,_,_,_),  h(_,swede,dog,_,_),
+                h(_,dane,_,tea,_),        h(_,german,_,_,prince) ], HS),
+      select( [ h(_,_,birds,_,pallmall),  h(yellow,_,_,_,dunhill),
+                h(_,_,_,beer,bluemaster) ],                         HS),
+      left_of(  h(green,_,_,coffee,_),    h(white,_,_,_,_),         HS),
+      next_to(  h(_,_,_,_,dunhill),       h(_,_,horse,_,_),         HS),
+      next_to(  h(_,_,_,_,blend),         h(_,_,cats, _,_),         HS),
+      next_to(  h(_,_,_,_,blend),         h(_,_,_,water,_),         HS),
+      next_to(  h(_,norwegian,_,_,_),     h(blue,_,_,_,_),          HS),
+      member(   h(_,Owns,zebra,_,_), HS).
+
+:- ?- time(( zebra(Who, HS), maplist(writeln,HS), nl, write(Who), nl, nl, fail
+             ; write('No more solutions.') )).
 ```
 
 ---
 
-# Limitations of logical inference
+class: middle
+
+Output =
+```prolog
+h(yellow,norwegian, cats,  water, dunhill)
+h(blue,  dane,      horse, tea,   blend)
+h(red,   englishman,birds, milk,  pallmall)
+h(green, german,    zebra, coffee,prince)
+h(white, swede,     dog,   beer,  bluemaster)
+
+german
+
+No more solutions.
+% 5,959 inferences, 0.000 CPU in 0.060 seconds (0% CPU, Infinite Lips)
+```
+
+---
+
+class: middle
+
+## Limitations of logical inference
 
 - Representation of *informal* knowledge is difficult.
 - Hard to define provable *plausible* reasoning.
@@ -210,15 +287,16 @@ yes.
 
 # Acting rationally
 
-- A **rational agent** acts so as to achieve the best (expected) outcome.
-    - Correct logical inference is just one of several possible mechanisms for achieving this goal.
-    - Perfect rationality cannot be achieved due to computational limitations!
-      The amount of reasoning is adjusted according to available resources and importance of the result.
-    - The brain is good at making rational decisions but not perfect either.
-- Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-- Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
-    - The standard of rationality is general and mathematically well defined.
-- In this course, we will study general principles of rational agents and the components for constructing them.
+A **rational agent** acts so as to achieve the best (expected) outcome.
+- Correct logical inference is just one of several possible mechanisms for achieving this goal.
+- Perfect rationality cannot be achieved due to computational limitations!
+  The amount of reasoning is adjusted according to available resources and importance of the result.
+- The brain is good at making rational decisions but not perfect either.
+
+Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
+
+Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
+The standard of rationality is general and mathematically well defined.
 
 ---
 
@@ -229,7 +307,7 @@ class: middle
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -244,8 +322,6 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 - *Control theory:* homeostatic systems, stability, simple optimal agent designs.
 
 ---
-
-class: smaller
 
 # A short history of AI
 
@@ -263,15 +339,13 @@ Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 
 ---
 
-class: middle, center
+class: middle, center, black-slide
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/aygSMgK3BEM" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/aygSMgK3BEM" frameborder="0" allowfullscreen></iframe>
 
 ---
 
-class: smaller
-
-# A short history of AI
+class: middle
 
 ## 1970-1990: Knowledge-based approaches
 - 1969: Neural network research almost disappears after Minsky and Paper's paper.
@@ -307,151 +381,127 @@ class: smaller
 
 ---
 
-# Games
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/NJarxpYyoFI?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Deep Blue]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/V1eYniJ0Rnk?&loop=1&start=25" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Playing Atari games]
-]
-]
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/g-dKXOlsf98?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Alpha Go]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/naBLXWb60gQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Starcraft]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/V1eYniJ0Rnk" frameborder="0" allowfullscreen></iframe>
+
+Playing Atari games
 
 ---
 
-# Natural language
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/Nu-nlQqFCKg?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Speech translation and synthesis]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/heVE_me5VaQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Question answering systems]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/g-dKXOlsf98" frameborder="0" allowfullscreen></iframe>
+
+Beat the best human Go players
 
 ---
 
-# Vision
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/cm2VlEGNz5A?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Semantic segmentation]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/8BFzu9m52sc?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Generating image descriptions]
-]
-]
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/pW6nZXeWlGM?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Pose estimation]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/IvmLEq9piJ4?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Detecting skin cancer]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/eHipy_j29Xw" frameborder="0" allowfullscreen></iframe>
+
+Beat teams of human players at real-time strategy games (Dota 2)
 
 ---
 
-# Robotics
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/-96BEoXJMs0?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Automous cars]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/NFNEOooEQX4?&loop=1&start=80" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Playing soccer]
-]
-]
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/gn4nRCC9TwQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Learning to walk]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/gy5g33S0Gzo?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Folding laundry]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
+
+Speech translation and synthesis
 
 ---
 
-# Logic
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-![](figures/lec1/isaplanner.png)
-.caption[Automated Theorem Prover]
-]
-.col-1-2.center[
-![](figures/lec1/thecuriosity.jpg)
-.caption[Formal software verification]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/qWl9idsCuLQ" frameborder="0" allowfullscreen></iframe>
 
-???
-
-Mention https://arxiv.org/pdf/1706.02515.pdf
+Semantic segmentation
 
 ---
 
-# Decision making
+class: middle, center, black-slide
 
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/BNHR6IQJGZs?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Search engines]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/AuwayMjvuT0?&loop=1&start=35" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Fraud detection]
-]
-]
-.grid[
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/S4RL6prqtGQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Recommendation systems]
-]
-.col-1-2.center[
-<iframe width="280" height="200" src="https://www.youtube.com/embed/_QndP_PCRSw?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
-.caption[Sorting packages (routing, planning)]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/8BFzu9m52sc" frameborder="0" allowfullscreen></iframe>
+
+Generating image descriptions
 
 ---
 
-class: middle, center
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
+
+Detecting skin cancer
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
+
+Learning to walk
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gy5g33S0Gzo" frameborder="0" allowfullscreen></iframe>
+
+Folding laundry
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
+
+Playing soccer
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/-96BEoXJMs0" frameborder="0" allowfullscreen></iframe>
+
+Driving a car
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/hYZM5l0G28I" frameborder="0" allowfullscreen></iframe>
+
+Learning to sort waste (Norman Marlier, ULiège, 2018)
+
+---
+
+count: false
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/MsuS0gaSHJ0" frameborder="0" allowfullscreen></iframe>
+
+Learning to sort waste (Norman Marlier, ULiège, 2018)
+
+---
+
+class: middle
 
 # Intelligent agents
-
-(Chapter 2)
 
 ---
 
 # Agents and environments
 
-.center[![](figures/lec1/agent-environment.png)]
+<br><br>
+.width-80.center[![](figures/lec1/agent-environment.png)]
+
+---
+
+class: middle
+
+## Agents
 
 - An **agent** is an entity that *perceives* its environment through sensors and
   take *actions* through actuators.
@@ -464,16 +514,20 @@ class: middle, center
 
 ---
 
-# Vacuum-cleaner world
+class: middle
+
+## Vacuum-cleaner world
 
 .center[![](figures/lec1/vacuum2-environment.png)]
 
-- *Percepts:* location and content, e.g. $[A, Dirty]$
-- *Actions:* $Left, Right, Suck, NoOp$
+- Percepts: location and content, e.g. $[A, Dirty]$
+- Actions: $Left, Right, Suck, NoOp$
 
 ---
 
-# A vacuum-cleaner agent
+class: middle
+
+## A vacuum-cleaner agent
 
 Partial tabulation of a simple vacuum-cleaner agent function:
 
@@ -489,43 +543,18 @@ Partial tabulation of a simple vacuum-cleaner agent function:
 
 ---
 
-# A vacuum-cleaner agent
+class: middle
 
-An implementation of the agent function:
+## The optimal vacuum-cleaner?
 
-```python
-def program(percept):
-    location, status = percept
-    if status == "dirty":
-        return "suck"
-    elif location == "A":
-        return "right"
-    elif location == "B":
-        return "left"
-```
+What is the **right** agent function?
 
-The agent in its environment:
+How to formulate the *goal* of the vacuum-cleaner agent?
+- 1 point per square cleaned up at time $t$?
+- 1 point per clean square per time step, minus one per move?
+- penalize for $>k$ dirty squares?
 
-```python
-environment = Environment()
-agent = Agent(program)
-
-while True:
-    percept = environment.percept()
-    action = agent.program(percept)
-    environment.execute(action)
-```
-
----
-
-# The optimal vacuum-cleaner?
-
-- What is the *right* agent function?
-  How to formulate the goal of the vacuum-cleaner agent?
-    - 1 point per square cleaned up at time $t$?
-    - 1 point per clean square per time step, minus one per move?
-    - penalize for $>k$ dirty squares?
-- Can it be implemented in a *small* agent program?
+Can it be implemented in a *small* agent program?
 
 ---
 
@@ -539,11 +568,11 @@ while True:
 
 .center[![](figures/lec1/rational-agent-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Rational agents
+class: middle
 
 - Rationality $\neq$ omniscience    
     - percepts may not supply all relevant information.
@@ -569,7 +598,7 @@ These characteristics are summarized as the **task environment**.
 
 ---
 
-# Performance, environment, actuators, sensors
+class: middle
 
 ## Example 2: an Internet shopping agent
 - *performance measure*: price, quality, appropriateness, efficiency
@@ -578,8 +607,6 @@ These characteristics are summarized as the **task environment**.
 - *sensors*: web pages (text, graphics, scripts)
 
 ---
-
-class: smaller
 
 # Environment types
 
@@ -596,11 +623,11 @@ class: smaller
 - *Single agent* vs. **multi-agent**
     - Whether the environment include several agents that may interact which each other.
 - *Known* vs **unknown**
-    - Reflects the agent's (or its designer's) state of knowledge of the "law of physics" of the environment.
+    - Reflects the agent's state of knowledge of the "law of physics" of the environment.
 
 ---
 
-# Examples of environments
+class: middle
 
 Are the following task environments fully observable? deterministic? episodic?
 static? discrete? single agents? Known?
@@ -620,7 +647,7 @@ static? discrete? single agents? Known?
 
 # Agent programs
 
-The job of AI is to design an *agent program* that implements the agent
+The job of AI is to design an **agent program** that implements the agent
 function. This program will run on an *architecture*, that is a computing device
 with physical sensors and actuators.
 
@@ -648,17 +675,18 @@ Agent programs can be designed and implemented in many ways:
 
 # Simple reflex agents
 
-.center.width-70[![](figures/lec1/simple-reflex-agent.png)]
+<br>
+.center.width-80[![](figures/lec1/simple-reflex-agent.png)]
 
+
+
+---
+
+class: middle
 - *Simple reflex agents* select actions on the basis of the current percept,
   ignoring the rest of the percept history.
 - They implement **condition-action rules** that match the
   current percept to an action.
-
----
-
-# Simple reflex agents
-
 - Rules provide a way to *compress* the function table.
     - Example (autonomous car): If a car in front of you slow down, you should break.
       The color and model of the car, the music on the radio or the weather are all irrelevant.
@@ -671,7 +699,12 @@ Agent programs can be designed and implemented in many ways:
 
 # Model-based reflex agents
 
-.center.width-70[![](figures/lec1/model-based-reflex-agent.png)]
+<br><br><br>
+.center.width-100[![](figures/lec1/model-based-reflex-agent.png)]
+
+---
+
+class: middle
 
 - *Model-based agents* handle partial observability of the environment by
   keeping track of the part of the world they cannot see now.
@@ -684,7 +717,12 @@ Agent programs can be designed and implemented in many ways:
 
 # Goal-based agents
 
-.center.width-70[![](figures/lec1/goal-based-agent.png)]
+<br>
+.center.width-100[![](figures/lec1/goal-based-agent.png)]
+
+---
+
+class: middle
 
 - Principle: i) generate possible sequences of actions, ii) predict the
   resulting states and  iii) assess **goals** in each.
@@ -700,7 +738,12 @@ class: smaller
 
 # Utility-based agents
 
-.center.width-50[![](figures/lec1/utility-based-agent.png)]
+<br>
+.center.width-90[![](figures/lec1/utility-based-agent.png)]
+
+---
+
+class: middle
 
 - *Goals* are often not enough to generate high-quality behavior.
     - Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
@@ -713,7 +756,12 @@ class: smaller
 
 # Learning agents
 
-.center.width-70[![](figures/lec1/learning-agent.png)]
+<br><br>
+.center.width-90[![](figures/lec1/learning-agent.png)]
+
+---
+
+class: middle
 
 - *Learning agents* are capable of **self-improvement**. They can become more
   competent than their initial knowledge alone might allow.
@@ -724,7 +772,9 @@ class: smaller
 
 ---
 
-# A learning autonomous car
+class: middle
+
+## A learning autonomous car
 
 - *Performance element*:
     - The current system for selecting actions and driving.
@@ -744,6 +794,13 @@ class: smaller
 - The **agent program** effectively implements the agent function. Their designs are dictated by the task environment.
 - *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
 - All agents can improve their performance through **learning**.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 

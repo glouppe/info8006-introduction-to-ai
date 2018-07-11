@@ -2,24 +2,69 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2017
+Fall 2018
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
 
 ---
 
-# Organization
+# Logistics
 
-## Logistics
-- Prof. Gilles Louppe ([g.louppe@ulg.ac.be](mailto:g.louppe@ulg.ac.be))
-- Teaching assistant: Samy Aittahar ([saittahar@ulg.ac.be](mailto:saittahar@ulg.ac.be))
+This course is given by:
+- Theory: Prof. Gilles Louppe [[g.louppe@uliege.be](mailto:g.louppe@uliege.be)]
+- Exercises: Antoine Wehenkel [[antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)]
+- Projects: Samy Aittahar [[saittahar@uliege.be](mailto:saittahar@uliege.be)]
 
-.pull-right[![Textbook](./figures/textbook.png)]
-## Textbook
-Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.
-(*Strongly recommended*)
+Feel free to contact any of us for help!
 
-Slides are partially adapted from:
-- [CS188 Introduction to AI](http://ai.berkeley.edu/lecture_slides.html) (UC Berkeley)
-- [CS430 Introduction to AI](http://web.engr.oregonstate.edu/~tgd/classes/430/) (Oregon State University)
+<br>
+.center[
+.circle[![](figures/outline/gilles.jpg)] &nbsp;
+.circle[![](figures/outline/antoine.jpg)] &nbsp;
+.circle[![](figures/outline/samy.png)]
+]
+
+---
+
+# Slides
+
+Slides
+- are available at [https://github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
+- are available in HTML and in PDFs.
+- will be posted online the day before the lesson.
+- will be slightly different from previous years.
+
+Some lessons are partially adapted from [[CS188] Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html), by Dan Klein and Pieter Abbeel from UC Berkeley.
+
+---
+
+# Textbook
+
+.center.width-30[![](./figures/outline/textbook.png)]
+
+The core content of this course is based on the following textbook:
+
+> .italic[Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.]
+
+This textbook is **strongly recommended**, although not required.
+
+---
+
+# Philosophy
+
+## Thorough and detailed
+- Understand the landscape of artificial intelligence.
+- Be able to write from scratch, debug and run (some) AI algorithms.
+
+## Well established algorithms and state-of-the-art
+- Well-established algorithms for building intelligent agents.
+- Introduction to materials new from research ($\leq$ 5 years old).
+- Understand some of the open questions and challenges in the field.
+
+## Practical
+- Fun and challenging course project.
 
 ---
 
@@ -30,142 +75,72 @@ Slides are partially adapted from:
 
 ---
 
-# Evaluation
-
-- Oral exam (50%)
-- Programming project 1 (15%)
-- Programming project 2 (35%)
-
----
-
-# Philosophy
-
-## Thorough and detailed
-
-- Understand the landscape of artificial intelligence.
-- Be able to write from scratch, debug and run (some) AI algorithms.
-
-## Well established algorithms and state-of-the-art
-
-- Well-established algorithms for building intelligent agents.
-- Introduction to materials new from research ($\leq$ 5 years old).
-- Understand some of the open questions and challenges in the field.
-
-## Practical
-
-- Fun and challenging course project.
-
----
-
-class: middle, center
-
 # Outline
 
----
-
-# 1. Foundations
-
--   The foundations, history and state-of-the-art *(Chapter 1)*
--   Intelligent agents: modeling a rational behavior in a complex environment *(Chapter 2)*
-
----
-
-# 2. Solving problems by searching
-
--   Basic search methods *(Chapter 3)*
-
----
-
-# 3. Games
-
--   Games, optimal decisions, stochastic game, ... *(Chapter 5)*
--   *Extra:* Deep Blue, AlphaGo
-
----
-
-# 4. Constraint satisfaction problems
-
-- CSPs, backtracking, local search, ... *(Chapter 6)*
-- Logical inference as a CSP
-
----
-
-# 5. Probabilistic reasoning I
-
--   Quantifying Uncertainty *(Chapter 13)*
--   Probabilistic reasoning *(Chapter 14)*
-
----
-
-# 6. Probabilistic reasoning II
-
--   Probabilistic reasoning over time *(Chapter 15)*
--   Learning probabilistic models *(Chapter 20)*
-
----
-
-# 7. Making decisions
-
--   Making simple decisions *(Chapter 16)*
--   Mentions of 17? 21?
-
----
-
-# 8. Learning
-
--   Discussion on the need for learning
--   Overview of various learning paradigms *(Chapters 18, 19, 20, 21)*
--   *Extra:* Deep learning as a promising path towards AI (Bengio)
-
----
-
-# 9. Communication
-
--   Natural language processing *(Chapter 22)*.
--   Natural language for communication *(Chapter 23)*.
--   *Extra:* Q&A systems
-
----
-
-# 10. Perception
-
--   Computer vision *(Chapter 24)*
--   Attention mechanisms *(Research)*
--   *Extra:* Autonomous vehicles
-
----
-
-# 11. Artificial General Intelligence and beyond
-
-Artificial General Intelligence
--   Recursive self-improvement, meta learning *(Research)*
--   AIXI *(Research)*
-
-Philosophical foundations and future of AI
--   Philosophical foundations *(Chapter 26)*
--   Future of AI, open challenges, safety *(Chapter 27)*
--   *Extra:*  Probably approximately correct theory
-
----
-
-class: middle, center
-
-# Projects
+- Lecture 1: Foundations
+- Lecture 2: Solving problems by searching
+- Lecture 3: Constraint satisfaction problems
+- Lecture 4: Adversarial search
+- Lecture 5: Representing uncertain knowledge
+- Lecture 6: Inference in Bayesian networks
+- Lecture 7: Reasoning over time
+- Lecture 8: Making decisions
+- Lecture 9: Learning
+- Lecture 10: Communication
+- Lecture 11: Artificial General Intelligence and beyond
 
 ---
 
 # Projects
 
-.grid[
-.col-2-3[
-- Programming project 1 (15%):
-    - Implement a simple agent for *tic-tac-toe* (3x3 and larger grids)
-- Programming project 2 (35%):
-    - Implement an intelligent **Pacman** agent
-    - Increasing levels of intelligence
-]
-.col-1-3[
-![](figures/outline/morpion.jpg)
-![](figures/outline/pacman.png)
-]
-]
+## Reading assignment
+
+Read, summarize and criticize a major scientific paper in Artificial Intelligence.
+(Paper to be announced later.)
+
+.center.width-40[![](figures/outline/alphago-paper.png)]
+
+---
+
+class: middle
+
+## Programming project
+
+Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty:
+- Eat as much dots as possible
+- Eat as much dots as possible, while not getting killed by ghosts (deterministic)
+- Eat as much dots as possible, while not getting killed by ghosts (stochastic)
+
+.center.width-30[![](figures/outline/pacman.png)]
+
+---
+
+# Evaluation
+
+- Oral exam (60%)
+- Reading assignment (10%)
+- Programming project (30%)
+
+Projects are **mandatory** for presenting the exam.
+
+---
+
+# Going further
+
+This course is meant as an introduction to the many other courses available at ULiège and related to AI, including:
+
+- ELEN0062: Introduction to Machine Learning
+- INFO8004: Advanced Machine Learning
+- INFOXXXX: Deep Learning (Spring 2019)
+- INFO8003: Optimal decision making for complex problems
+- INFO0948: Introduction to Intelligent Robotics
+- INFO0049: Knowledge representation
+- ELEN0016: Computer vision
+- DROI8031: Introduction to the law of robots
+
+---
+
+class: end-slide, center
+count: false
+
+Let's start!

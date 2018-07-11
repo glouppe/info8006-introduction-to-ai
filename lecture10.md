@@ -2,433 +2,482 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 10: Artificial General Intelligence
+Lecture 9: Communication
 
 ???
 
-https://futureoflife.org/wp-content/uploads/2017/01/Jurgen-Schmidhuber.pdf?x56934
-http://machineintelligence.org/universal-ai.pdf
+R: add speech recognition after translation, with hmm and nnets as a comparison
+R: explain limitations of dividing by tasks -> hence nn
+R: check KC tuto on NLP
+R: emergent communication
 
 ---
 
-# From technological breakthroughs...
-
-.center.width-100[![](figures/lec10/ai-in-news.png)]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-# ... to popular media
-
-.grid[
-.col-1-4[![](figures/lec10/news1.png)]
-.col-1-4[![](figures/lec10/news2.png)]
-.col-1-4[![](figures/lec10/news6.png)]
-.col-1-4[![](figures/lec10/news8.png)]
-]
-.grid[
-.col-1-4[![](figures/lec10/news5.png)]
-.col-1-4[![](figures/lec10/news3.png)]
-.col-1-4[![](figures/lec10/news7.png)]
-.col-1-4[![](figures/lec10/news4.png)]
-]
-.grid[
-.col-1-4[![](figures/lec10/news11.png)]
-.col-1-4[![](figures/lec10/news9.png)]
-.col-1-4[![](figures/lec10/news10.png)]
-.col-1-4[![](figures/lec10/news12.png)]
-]
-
----
-
-# Artificial narrow intelligence
-
-- Artificial intelligence today is still very **narrow**.
-    - Modern AI systems often reach super-human level performance.
-    - ... but only at *very specific problems*!
-    - They **do not generalize** to the real world nor to arbitrary tasks.
-
----
-
-# AlphaGo
-
-**Convenient** properties of AlphaGo:
-- *Deterministic* (no noise in the game).
-- *Fully observed* (each player has complete information)
-- *Discrete action space* (finite number of actions possible)
-- *Perfect simulator* (the effect of any action is known exactly)
-- *Short episodes* (200 actions per game)
-- *Clear and fast evaluation* (as stated by Go rules)
-- *Huge dataset available* (games)
-
-.center.width-40[![](figures/lec10/go.png)]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-class: smaller
-
-# Picking challenge
-
-.center.width-100[![](figures/lec10/picking.png)]
-
-.center[Can we run AlphaGo on a robot for the Amazon Picking Challenge?]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-class: smaller
-
-
-# Picking challenge
-
-.center.width-100[![](figures/lec10/picking.png)]
-
-- *Deterministic*: OK
-- *Fully observed*: **OKish**
-- *Discrete action space*: OK
-- *Perfect simulator*: **TROUBLE**
-- *Short episodes*: **challenge**
-- *Clear and fast evaluation*: not good
-- *Huge dataset available*: **challenge**
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-# Artificial general intelligence
-
-- **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
-- No clear definition, but there is an agreement that AGI is required to do the following:
-    - *reason*, use strategy, solve puzzle,
-    - make judgments *under uncertainty*,
-    - *represent knowledge*, including commonsense knowledge,
-    - *plan*,
-    - *learn*,
-    - *communicate* in natural language,
-    - integrate all these skills towards *common goals*.
-- This is similar to our definition of **thinking rationally**, but applied broadly to any set of tasks.
-
----
-
-# Singularity
-
-.center.circle.width-20[![](figures/lec10/good.jpg)]
-
-Irving John Good (1965):
-- Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
-- Since the design of machines is one of these intellectual activities, an ultraintelligent machine could *design even better machines*.
-- There would then unquestionably be an **'intelligence explosion'**, and the intelligence of man would be left far behind.
-- Thus the first ultraintelligent machine is the *last invention* that man need ever make, provided that the machine is docile enough to tell us how to keep it under control.
-
-???
-
-Good worked as a cryptologist with Alan Turing.
-
----
-
-# Superintelligence
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/MnT1xgZgkpk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-What happens when our computers get smarter than we are? Nick Bostrom
-]
-
----
-
-# How to build AGI?
-
-Several working **hypothesis**:
-- *Supervised learning*: "It works, just scale up!"
-- *Unsupervised learning*: "It will work, if we only scale up!"
-- *AIXI*: "Guys, I can write down an equation for optimal AI."
-- *Brain simulation*: "This will work one day, right?"
-- *Artificial life*: "Let just do what Nature did."
-
-Or maybe something else?
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-class: middle, center
-
-# AIXI
-
----
-
-# Start with an equation
-
-$$\Upsilon(\pi) := \sum\_{\mu \in E} 2^{-K(\mu)} V^{\pi}\_\mu$$
-
-- $\Upsilon(\pi)$ *formally* defines the **universal intelligence** of an agent $\pi$.
-- $\mu$ is the environment of the agent and $E$ is the set of all computable reward bounded environments.
-- $V^{\pi}\_\mu = \mathbb{E}\[ \sum\_{i=1}^\infty R\_i \]$ is the expected sum of future rewards when the agent $\pi$ interacts with environment $\mu$.
-- $K(.)$ is the Kolmogorov complexity, such that $2^{-K(\mu)}$ weights the agent's performance in each environment, inversely proportional to its complexity.
-    - Intuitively, $K(\mu)$ measures the complexity of the shortest Universal Turing Machine program that describes the environment $\mu$.
-
----
-
-# AIXI
-
-$$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
-
-.center[
-$\pi^{AIXI}$ is a **perfect** theoretical agent.
-]
-
----
-
-# System identification
-
-- Which Turing machine is the agent in? If it knew, it could plan perfectly.
-- Use the *Bayes rule* to update the agent beliefs given its experience so far.
-
-.center.width-100[![](figures/lec10/tm.png)]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
----
-
-# Acting optimally (1)
-
-- The agent always picks the action which has the greatest expected reward.
-- For every environment $\mu \in E$, the agent must:
-    - Take into account how likely it is that it is facing $\mu$ given the interaction history so far, and the prior probability of $\mu$.
-    - Consider all possible future interactions that might occur, assuming optimal future actions.
-    - Evaluate how likely they are.
-    - Then select the action that maximizes the expected future reward.
-
----
-
-# Acting optimally (2)
-
-.center.width-100[![](figures/lec10/optimal-action.png)]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
-???
-
-- The best action a_t is the best action to some x_t, plus one more step.
-- The equation embodies in one line the major ideas of Bayes, Ockham, Epicurus,
-Turing, von Neumann, Bellman, Kolmogorov, and Solomonoff. The AIXI agent is
-rigorously shown by [Hut05] to be optimal in many different senses of the word.
-
----
-
-# Incomputability
-
-.center.width-100[![](figures/lec10/aixi-action.png)]
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
-???
-
-- The
-
----
-
-# Monte Carlo approximation
-
-.center.width-100[![](figures/lec10/mc-aixi.png)]
-
----
-
-
-class: middle, center
-
-# Brain simulation
-
----
-
-# Whole brain emulation
-
-.center.width-50[![](figures/lec10/brain.jpg)]
-
-- A hypothesis for AGI is **whole brain simulation**.
-    - A low-level brain model is built by scanning and mapping a biological brain in detail and copying its state into a computer system.
-    - The simulation is *so faithful* that it would behave in the same way as the original.
-    - Therefore, the computer-run model would be as intelligent.
-- Initiatives: Blue Brain Project, Human Brain Project, NeuraLink, etc.
-
----
-
-# Obstacles
-
-- How to *measure* a complete brain state?
-- At what level of abstraction?
-- How to model the dynamics?
-- How do you simulate the environment to feed into senses?
-- Various **ethical dilemmas**.
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
-
-
----
-
-# Mind upload
-
-- **Hypothetically**, whole brain emulation would enable *mind upload*.
-    - The mental state of a particular brain substrate could be scanned and copied into a computer.
-    - The computer could then run a simulation of the brain's information processing, such that it responds in the same way as the original brain.
-- That is, simulation would be indistinguishable from reality.
-
-.center.width-70[![](figures/lec10/simulation.png)]
-
----
-
-class: middle, center
-
-# Artificial life
-
----
-
-# How did intelligence arise in Nature?
-
-.center.width-100[![](figures/lec10/tree.gif)]
-
----
-
-# Artificial life
-
-- **Artificial life** is the study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
-- One of its goals is to *synthesize* life in order to understand its origins, development and organization.
-- There are three main kinds of artificial life, named after their approaches:
-    - Software approaches (soft)
-    - Hardware approaches (hard)
-    - Biochemistry approaches (wet)
-- Artificial life is related to AI since synthesizing complex life forms would, **hypothetically**, induce intelligence.
-- The field of AI has traditionally used a top down approach. Artificial life generally works from the bottom up.
-
----
-
-class: middle, center
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/dySwrhMQdX4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-The line between life and not-life. Martin Hanczyc
-]
-
----
-
-# Evolution for AGI
-
-- Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
-- This algorithm gave rise to AGI.
-    - e.g., it induced humans.
-- Can we **simulate** the *evolutionary process* to reproduce life and intelligence?
-- Note that using software simulation, we can work at a high level of abstraction.
-    - We don't have to simulate physics or chemistry to simulate evolution.
-    - We can also bootstrap the system with agents that are better than random.
-
----
-
-# Evolutionary algorithms
-
-- Start with a *random population* of **creatures**.
-- Each creature is *tested for their ability* to perform a given task.
-    - e.g., swim in a simulated environment.
-    - e.g., stay alive as long as possible (without starving or being killed).
-- The **most successful survive**.
-- Their virtual genes containing coded instructions for their growth are copied, combined and mutated to *make offspring* for a new population.
-- The new creatures are tested again, some of which may be improvements on their parents.
-- As this cycle of variation and selection continues, creatures with more and more successful behaviors may **emerge**.
+# Today
+
+- A guided tour of NIPS 2017
+- Natural language processing
+    - Parsing
+    - Semantics
+- Machine translation
 
 ---
 
 class: center, middle
 
+# NIPS 2017
+
+---
+
+class: middle, center
+
+.width-100[![](figures/lec9/lb.jpg)]
+
+---
+
+# NIPS?
+
+- Research conference and workshops on *Neural Information Processing Systems* (NIPS).
+- **\#1 conference** on machine learning, artificial intelligence and computational neuroscience.
+- Pre-proceedings available for [download](http://papers.nips.cc/book/advances-in-neural-information-processing-systems-30-2017).
+
+.center.width-50[![](figures/lec9/poster.png)]
+
+---
+
+# Stats
+
+.center.width-80[![](figures/lec9/stats.png)]
+
+---
+
+# Highlights
+
 .center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/CQVjS-PT_c4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/YJnddoa8sHk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Deep Learning: Practice and Trends]
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/LvmjbXZyoP0?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Geometric Deep Learning on Graphs and Manifold]
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/iXp-wc0QV8w?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Reverse-Engineering Intelligence Using Probabilistic Programs]
+
+???
+
+- Near 28:00
+- Near 40:00
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/po9z_tMuEwE?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Deep Learning for Robotics]
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/A3ekFcZ3KNw?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[AlphaZero]
+
+???
+
+- before 27:00
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/fMym_BKWQzk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[The Trouble with Bias]
+
+???
+
+- 15:22
+- 18:20
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/9saauSBgmcQ?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Bayesian Deep Learning and Deep Bayesian Learning]
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/NHTGY8VCinY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Deep Probabilistic Modelling with Gaussian Processes]
+
+---
+
+# Highlights
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/rhNxt0VccsE?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+]
+
+.center[Learning to Run competition]
+
+---
+
+# Topics to watch out for
+
+- Generative adversarial networks
+- Hierarchical reinforcement learning
+- Probabilistic programming
+- Meta-learning
+- Leveraging simulation
+- Bayesian deep learning
+- Dealing with data bias
+- Optimal transport
+- Emergent communication
+
+---
+
+# Academia vs Private labs
+
+- NIPS remains an *academic* research conference.
+- But there is an increasing presence of **strong private research labs**.
+    - Google Brain, Google DeepMind, NVidia, Facebook, IBM, Intel, Microsoft, etc.
+    - All are aggressively hiring!
+
+.center[
+<iframe width="640" height="320" src="https://www.youtube.com/embed/J5p3XVTXb0o?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 ]
 
 ---
 
 class: center, middle
 
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/bBt0imn77Zg?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
+# Natural language processing
 
 ---
 
-# Environments for AGI?
+# Natural Language Processing
 
-- For the emergence of generally intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit*.
-    - attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...
+.center.width-70[![](figures/lec9/dog.png)]
 
-.center.width-60[![](figures/lec10/envs.png)]
+- Fundamental goal:
+    - Analyze and process human language, broadly, robustly, accurately, ...
+- End systems that we want to build:
+    - **Ambitious**: speech recognition, machine translation, information extraction, dialog interfaces, question answering, etc.
+    - *Modest*: spelling correction, text categorization, etc.
 
-- **Multi-agent** environments are certainly better because of:
-    - *Variety*: the environment is parameterized by its agent  population. The optimal strategy must be derived dynamically.
-    - *Natural curriculum*: the difficulty of the environment is determined by the skill of the other agents.
-
-.footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
-
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-class: middle, center
+# Probabilistic context-free grammar
 
-# Conclusions
+- A **grammar** is a collection of rules that defines a *language* as a set of allowable strings of words.
+- Probabilistic context-free grammars are grammars such that:
+    - production rules do not depend on context (context-free);
+    - a probability is assigned to every string (probabilistic).
+- Example:
+    - $VP \rightarrow Verb [0.7] | VP \, NP [0.3]$
+- Let $\xi\_0$ be a language suitable for communication between agents exploring the Wumpus world.
 
----
 
-# A note of optimism
+???
 
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/NP8xt8o4_5Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Don't fear intelligent machines, work with them. Garry Kasparov
-]
-
----
-
-# Summary
-
-- Lecture 1: Foundations
-- Lecture 2: Solving problems by searching
-- Lecture 3: Adversarial search
-- Lecture 4: Constraint satisfaction problems
-- Lecture 5: Representing uncertain knowledge
-- Lecture 6: Inference in Bayesian networks
-- Lecture 7: Reasoning over time
-- Lecture 8: Learning
-- Lecture 9: Communication
-- Lecture 10: Artificial General Intelligence
+R: dont assume they know what is a grammar.
 
 ---
 
-# Going further
+# Lexicon of $\xi\_0$
 
-- ELEN0062: Introduction to Machine Learning
-- INFO8004: Advanced Machine Learning
-- INFOXXXX: Deep Learning (Spring 2019)
-- INFO8003: Optimal decision making for complex problems
-- INFO0948: Introduction to Intelligent robotics
-- INFO0049: Knowledge representation
-- ELEN0016: Computer vision
+.center.width-80[![](figures/lec9/lexicon.png)]
+
+???
+
+Lexicon = list of allowable words.
+
+---
+
+# Grammar of $\xi\_0$
+
+.center.width-80[![](figures/lec9/grammar.png)]
+
+---
+
+- Unfortunately, this grammar **overgenerates**:
+    - It generates sentences that are not grammatical (in English).
+    - e.g., "Me go Boston" or "I smell pits wumpus John"
+- It also **undergenerates**:
+    - Many English sentences are rejected.
+    - e.g., "I think the wumpus is smelly."
+
+???
+
+Grammar = compact list of allowable sentences.
+
+---
+
+# Parse tree
+
+.center.width-80[![](figures/lec9/parse-tree.png)]
+
+---
+
+# Syntactic analysis
+
+.center.width-80[![](figures/lec9/parsing.png)]
+
+- **Parsing** is the process of analyzing a string of words to uncover its phrase structure.
+- This process can be carried out efficiently using the CYK algorithm:
+    - Imagine a state-action space where actions correspond to production rules.
+    - Use A* to search the space efficiently until the string has been compressed to a single item $S$.
+
+???
+
+R: baby step them into the decision process, show backtracking, etc -> analogous to a maze exploration
 
 ---
 
 class: center, middle
 
-.center.width-70[![](figures/lec10/gameover.png)]
-
-Thanks for following Introduction to AI!
+[(demo)](http://tomato.banatao.berkeley.edu:8080/parser/parser.html)
 
 ---
 
-# Readings
+# Ambiguity
 
-- Bostrom, Nick. Superintelligence. Dunod, 2017.
-- Legg, Shane, and Marcus Hutter. "Universal intelligence: A definition of machine intelligence." Minds and Machines 17.4 (2007): 391-444.
-- Hutter, Marcus. "One decade of universal artificial intelligence." Theoretical foundations of artificial general intelligence (2012): 67-88.
-- Sims, Karl. "Evolving 3D morphology and behavior by competition." Artificial life 1.4 (1994): 353-372.
-- Kasparov, Garry. Deep Thinking: Where Machine Intelligence Ends and Human Creativity Begins, 2017.
+- There may be several distinct parse trees for a given sentence.
+- E.g., the sentence "Fall leaves fall and spring leaves spring." admit 4 parse trees:
+
+.center.width-80[![](figures/lec9/ambiguity.png)]
+
+- With A*:
+    - Define the cost of a state as the inverse of its probability as defined by the rules applied so far.
+    - Estimate the remaining distance using machine learning.
+    - With very high probability, the procedure yields the most probable tree.
+
+---
+
+# Learning PCFGs
+
+- A PCFG has many rules, with a probability for each rule.
+- **Learning** the grammar might be better than a knowledge engineering approach.
+- If we are given a corpus of correctly parsed sentences, the rules and their probability can be estimated directly from this data.
+    - E.g., count nodes $S$ and nodes $\[S \[NP ...\]\[VP ...\]\]$ over all trees to estimate the probability of $S \rightarrow  NP \, VP$.
+- If we dont have labeled sentences, then we have to learn both the rules and their probability.
+    - This is more complicated, but several algorithms exist:
+        - Assume (or cross-validate) a number of categories $X, Y, Z, ...$.
+        - Assume the grammar includes every possible rule $X \rightarrow Y Z$ or $X \rightarrow word$.
+        - Use an expectation-minimization algorithm estimate the probabilities.
+
+---
+
+# Semantic interpretation
+
+.center.width-80[![](figures/lec9/semantic1.png)]
+
+- Semantics can be added to each rule of a grammar.
+- The rules obey the principle of **compositional semantics**:
+    - The semantics of a phrase is a function of the semantics of the subphrases.
+- In general, semantics can be properly defined with *first-order logic*, where nodes are either associated to a logical term, a logical sentence or a predicate.
+
+
+???
+
+R: better explain the first-order logic relation
+
+---
+
+.center.width-80[![](figures/lec9/semantic2.png)]
+
+---
+
+# Real language
+
+- A real language like English is difficult to map to a grammar and to a semantics, because of the following reasons:
+    - Long-distance dependencies
+    - Ambiguities (lexical, syntax, semantic)
+    - Metonymies (figure of speech)
+    - Metaphors
+- Recovering the most probable intended *meaning* is called **disambiguation**. To do disambiguation properly, we need to combine:
+    - The *world model*: the likelihood that a proposition occurs in the world.
+    - The *mental model*: the likelihood that the speaker forms the intention of communicating some fact to the hearer.
+    - The *language model*: the likelihood that a certain string of words will be chosen.
+    - The *acoustic model*: the likelihood that a certain sequence of sounds will be generated.
+- Combining perfectly all these pieces together remains an **open problem**!
+
+---
+
+# Eliza
+
+.grid[
+.col-2-3[
+- *Eliza* is one of the earliest instances of a **chatterbot** (Weizenbaum, 1964).
+- Led to a long line of chatterbots.
+- How does it work?
+    - Trivial NLP: string match and substitution.
+    - Trivial knowledge: tiny script / response database.
+    - Example: matching "I remember \_\_\_" results in "Do you often think of \_\_\_?"
+]
+.col-1-3[![](figures/lec9/eliza.png)]
+]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: review
+
+---
+
+# Modern chatbots
+
+.grid[
+.col-1-2[![](figures/lec9/siri.jpg)]
+.col-1-2[![](figures/lec9/assistant.jpg)]
+]
+
+.center[Siri, Google Assistant, Alexa, etc]
+
+???
+
+R: review
+
+---
+
+# Machine translation
+
+.center.width-80[![](figures/lec9/translation.png)]
+
+- Translate text from one language to another, while *preserving the intended meaning*.
+- Recombines fragments of example translations.
+- Challenges:
+    - What fragments? [Learning to translate]
+    - How to make efficient? [Fast translation search]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: review
+
+---
+
+# Issue of dictionary lookups
+
+.center.width-80[![](figures/lec9/lookups.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# History
+
+.center.width-100[![](figures/lec9/history.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: review
+
+---
+
+# Data-driven machine translation
+
+.center.width-100[![](figures/lec9/data-driven-mt.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Statistical machine translation
+
+To translate a sentence in English ($e$) into French ($f$), we seek the strings of words $f^\*$ that maximizes
+
+$$f^\* = \arg\max\_f P(f|e) = \arg\max\_f P(e|f)P(f)$$
+
+- $P(f)$ is the *language model*
+- $P(e|f)$ is the *translation model* (from French to English)
+
+---
+
+# HMM translation model
+
+.center.width-100[![](figures/lec9/hmm-mt.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+R: take the time to understand the model in details.
+
+---
+
+# Levels of transfer
+
+.center.width-100[![](figures/lec9/levels.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Neural translation
+
+- Modern machine translation systems are all based on neural networks.
+
+.center.width-80[![](figures/lec9/rnn.png)]
+
+---
+
+# Unsupervised machine translation (1)
+
+- The latest approaches (e.g., arXiv:1711.00043) do not even need to have a bilingual corpus!
+- Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
+
+.center.width-100[![](figures/lec9/umt1.png)]
+
+---
+
+# Unsupervised machine translation (2)
+
+.center.width-100[![](figures/lec9/umt2.png)]
+
+---
+
+# References
+
+- Vogel, S. et al. "HMM-based word alignment in statistical translation.", 1996.
+- Bahdanau, Dzmitry, Kyunghyun Cho, and Yoshua Bengio. "Neural machine translation by jointly learning to align and translate." arXiv preprint arXiv:1409.0473 (2014).
+- Lample, Guillaume, Ludovic Denoyer, and Marc'Aurelio Ranzato. "Unsupervised Machine Translation Using Monolingual Corpora Only." arXiv preprint arXiv:1711.00043 (2017).

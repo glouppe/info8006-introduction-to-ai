@@ -1,31 +1,29 @@
 # INFO8006 - Introduction to Artificial Intelligence
 
-Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2017.
+Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2018.
 
-- Instructor: Gilles Louppe ([g.louppe@ulg.ac.be](mailto:g.louppe@ulg.ac.be))
-- Assistant: Samy Aittahar ([saittahar@ulg.ac.be](mailto:saittahar@ulg.ac.be))
+- Instructor: Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
+- Teaching assistants: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)), Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
 
 ## Slides
 
-- [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md)
-- [Lecture 1: Foundations](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)
-- [Lecture 2: Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)
-- [Lecture 3: Adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)
-- [Lecture 4: Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)
-- [Lecture 5: Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)
-- [Lecture 6: Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)
-- [Lecture 7: Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)
-- [Lecture 8: Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf)
-- [Lecture 9: Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)
-- [Lecture 10: Artificial General Intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md), [PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)
+- [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/outline.pdf)]
+- Lecture 1: [Foundations](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)]
+- Lecture 2: Solving problems by searching [PDF]
+- Lecture 3: Constraint satisfaction problems [PDF]
+- Lecture 4: Adversarial search [PDF]
+- Lecture 5: Representing uncertain knowledge [PDF]
+- Lecture 6: Inference in Bayesian networks [PDF]
+- Lecture 7: Reasoning over time [PDF]
+- Lecture 8: Making decisions [PDF]
+- Lecture 9: Learning [PDF]
+- Lecture 10: Communication [PDF]
+- Lecture 11: Artificial General Intelligence and beyond [PDF]
 
 ## Exercise sessions
 
-- [Session 1](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_1/ass_1.pdf)
-- [Session 2](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_2/ass_2.pdf)
-- [Session 3](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_3/ass_3.pdf)
-- [Session 4](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_4/ass_4.pdf)
-- [Session 5](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_5/ass_5.pdf)
-- [Session 6](https://glouppe.github.io/info8006-introduction-to-ai/exercises/ass_6/ass_6.pdf)
+TBD.
 
-Sessions 3-6 are taken from [CS188 (Berkeley)](http://ai.berkeley.edu/section_handouts.html).
+## Projects
+
+TBD.

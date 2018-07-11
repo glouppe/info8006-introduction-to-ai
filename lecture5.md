@@ -10,6 +10,7 @@ R: make sure to introduce the purpose of probability for inference under uncerta
 R: double check consistency of notations (p, P, bold P, etc)
 R: insist on the formalism of bayesian networks. have precise definitions
 R: make sure they know what is a latent variable model
+R: develop on causality?
 
 ---
 
