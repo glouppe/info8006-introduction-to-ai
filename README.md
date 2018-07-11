@@ -26,4 +26,4 @@ TBD.
 
 ## Projects
 
-TBD
+TBD.
