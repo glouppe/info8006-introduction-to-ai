@@ -7,7 +7,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ## Slides
 
-- [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md)
+- [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/outline.pdf)]
 - Lecture 1: Foundations [PDF]
 - Lecture 2: Solving problems by searching [PDF]
 - Lecture 3: Constraint satisfaction problems [PDF]

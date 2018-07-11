@@ -11,16 +11,13 @@ Prof. Gilles Louppe<br>
 ???
 
 R: code examples are not really helpful
-R: project: Pacman only
-R: make them read a research paper (new exercise for them) + write a 2-page report on it
+R: add demos from Liège
 
 ---
 
-class: middle, center
+class: middle
 
 # Introduction
-
-(Chapter 1)
 
 ---
 
