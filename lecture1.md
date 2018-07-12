@@ -10,8 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: go over the Intelligent agents part.
-R: regenerate the agent diagrams
+R: go over the Intelligent agents part, formalize a bit more.
 
 ---
 
@@ -495,7 +494,7 @@ class: middle
 # Agents and environments
 
 <br><br>
-.width-80.center[![](figures/lec1/agent-environment.png)]
+.width-80.center[![](figures/lec1/agent-environment.svg)]
 
 ---
 
@@ -518,7 +517,7 @@ class: middle
 
 ## Vacuum-cleaner world
 
-.center[![](figures/lec1/vacuum2-environment.png)]
+.width-60.center[![](figures/lec1/vacuum2-environment.svg)]
 
 - Percepts: location and content, e.g. $[A, Dirty]$
 - Actions: $Left, Right, Suck, NoOp$
@@ -675,8 +674,8 @@ Agent programs can be designed and implemented in many ways:
 
 # Simple reflex agents
 
-<br>
-.center.width-80[![](figures/lec1/simple-reflex-agent.png)]
+<br><br>
+.center.width-80[![](figures/lec1/simple-reflex-agent.svg)]
 
 
 
@@ -699,8 +698,8 @@ class: middle
 
 # Model-based reflex agents
 
-<br><br><br>
-.center.width-100[![](figures/lec1/model-based-reflex-agent.png)]
+<br><br>
+.center.width-80[![](figures/lec1/model-based-reflex-agent.svg)]
 
 ---
 
@@ -717,8 +716,8 @@ class: middle
 
 # Goal-based agents
 
-<br>
-.center.width-100[![](figures/lec1/goal-based-agent.png)]
+<br><br>
+.center.width-80[![](figures/lec1/goal-based-agent.svg)]
 
 ---
 
@@ -734,12 +733,10 @@ class: middle
 
 ---
 
-class: smaller
-
 # Utility-based agents
 
-<br>
-.center.width-90[![](figures/lec1/utility-based-agent.png)]
+<br><br>
+.center.width-80[![](figures/lec1/utility-based-agent.svg)]
 
 ---
 
@@ -757,7 +754,7 @@ class: middle
 # Learning agents
 
 <br><br>
-.center.width-90[![](figures/lec1/learning-agent.png)]
+.center.width-80[![](figures/lec1/learning-agent.svg)]
 
 ---
 

@@ -24,24 +24,30 @@ Prof. Gilles Louppe<br>
 
 ---
 
+class: middle
+
+# Planning agents
+
+---
+
 # Reflex agents
 
-Reflex agents:
-- Select actions on the basis of the current percept.
-- May have a model of the world current state.
-- Do not consider the future consequences of their actions.
-- Consider only **how the world is now**.
+Reflex agents
+- select actions on the basis of the current percept;
+- may have a model of the world current state;
+- do not consider the future consequences of their actions;
+- consider only **how the world is now**.
 
 .grid[
 .kol-1-2[
-![](figures/lec2/pacman-reflex.png)
+.width-100[![](figures/lec2/pacman-reflex.png)]
 ]
 .kol-1-2[
-![](figures/lec2/pacman-reflex2.png)
+.width-100[![](figures/lec2/pacman-reflex2.png)]
 ]
 ]
 
-<span class="Q">[Q]</span> Can a reflex agent be rational?
+.footnote[.Q[[Q]] Can a reflex agent be rational?]
 
 ???
 
@@ -700,6 +706,13 @@ class: center
     - *complete* and *optimal*
 - Admissible heuristics can be derived from exact solutions of relaxed problems or *learned* from training examples.
 - *Graph search* can be exponentially more efficient than tree search.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 
