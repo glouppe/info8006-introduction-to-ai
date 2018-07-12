@@ -38,6 +38,8 @@ Reflex agents
 - do not consider the future consequences of their actions;
 - consider only **how the world is now**.
 
+.Q[[Q]] Can a reflex agent be rational?
+
 .grid[
 .kol-1-2[
 .width-100[![](figures/lec2/pacman-reflex.png)]
@@ -46,8 +48,6 @@ Reflex agents
 .width-100[![](figures/lec2/pacman-reflex2.png)]
 ]
 ]
-
-.footnote[.Q[[Q]] Can a reflex agent be rational?]
 
 ???
 
@@ -70,20 +70,33 @@ Problem-solving agents:
 
 .grid[
 .kol-1-2[
-![](figures/lec2/pacman-goal.png)
+.width-100[![](figures/lec2/pacman-goal.png)]
 ]
 .kol-1-2[
-![](figures/lec2/pacman-goal2.png)
+.width-100[![](figures/lec2/pacman-goal2.png)]
 ]
 ]
 
 ---
 
-.stretch[![](figures/lec2/problem-solving-agent.png)]
+class: middle
 
-Offline vs. Online solving:
-- This is *offline* problem solving. The solution is executed "eyes closed", ignoring the percepts.
+.width-100[![](figures/lec2/problem-solving-agent.png)]
+
+---
+
+class: middle
+
+## Offline vs. Online solving
+
+- Problem-solving agents are *offline*. The solution is executed "eyes closed", ignoring the percepts.
 - *Online* problem solving involves acting without complete knowledge.
+
+---
+
+class: middle
+
+# Search problems
 
 ---
 
@@ -99,6 +112,8 @@ A **search problem** consists of the following components:
 
 ---
 
+class: middle
+
 - Together, the initial state, the actions and the transition model define the **state space** of the problem, i.e. the set of all states reachable from the initial state by any sequence of action.
     - The state space forms a directed graph:
         - nodes = states
@@ -112,6 +127,8 @@ A **search problem** consists of the following components:
   - We may also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
 
 ---
+
+class: middle
 
 A **solution** to a problem is an action sequence that leads from the initial state to a goal state.
 - A solution quality is measured by the path cost function.
@@ -131,11 +148,12 @@ See 4.3 and 4.4 for more details.
 
 ---
 
-# Search problems are models
+class: middle
 
-.stretch[![](figures/lec2/search-problems-models.png)]
+.width-100[![](figures/lec2/search-problems-models.png)]
+.center[Search problems are **models**.]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
@@ -147,15 +165,17 @@ The process of removing details from a representation is called abstraction.
 
 # Example: Traveling in Romania
 
-.center[![](figures/lec2/romania.png)]
+<br>
+.center.width-100[![](figures/lec2/romania.svg)]
+
+---
+
+class: middle
 
 - Initial state = the city we start in.
     - $s_0 = \text{in}(\text{Arad})$
 - Actions = Going from the current city to the cities that are directly connected to it.
     - $\text{actions}(s_0) = \\{ \text{go}(\text{Sibiu}), \text{go}(\text{Timisoara}), \text{go}(\text{Zerind}) \\}$
-
----
-
 - Transition model = The city we arrive in after driving to it.
     - $\text{result}(\text{in}(Arad), \text{go}(Zerind)) = \text{in}(Zerind)$
 - Goal test: whether we are in Bucharest.
@@ -216,7 +236,7 @@ The set of possible acceptable sequences starting at the initial state form a **
 
 # Tree search algorithms
 
-.stretch[![](figures/lec2/tree-search.png)]
+.width-100[![](figures/lec2/tree-search.png)]
 
 Important ideas:
 - *Fringe* (or *frontier*) of partial plans under consideration
@@ -227,9 +247,9 @@ Important ideas:
 
 ---
 
-# Tree search example
+class: middle
 
-.center[![](figures/lec2/search-map.png)]
+.center.width-90[![](figures/lec2/search-map.svg)]
 
 ---
 
@@ -248,22 +268,21 @@ Strategies:
 
 # Depth-first search
 
-.stretch[![](figures/lec2/dfs-cartoon.png)]
+<br><br>
+.width-100[![](figures/lec2/dfs-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Depth-first search
+class: middle
 
 - *Strategy*: expand the deepest node in the fringe.
 - *Implementation*: fringe is a **LIFO stack**.
 
-.center[![](figures/lec2/dfs-progress.png)]
+.width-80.center[![](figures/lec2/dfs-progress.svg)]
 
 ---
-
-class: smaller
 
 # Properties of search strategies
 
@@ -280,8 +299,6 @@ class: smaller
 
 <span class="Q">[Q]</span> Number of nodes in a tree?
 
-.center.width-50[![](figures/lec2/search-properties.png)]
-
 ???
 
 - Number of nodes = $\frac{b^{d+1}-1}{b-1}$
@@ -289,7 +306,11 @@ class: smaller
 
 ---
 
-class: smaller
+class: middle
+
+.center.width-80[![](figures/lec2/search-properties.png)]
+
+---
 
 # Properties of DFS
 
@@ -304,32 +325,35 @@ class: smaller
     - Only store siblings on path to root, therefore $O(bm)$.
     - When all the descendants of a node have been visited, the node can be removed from memory.
 
-.center.width-50[![](figures/lec2/dfs-properties.png)]
-
 ???
 
 R: double check the time complexity
 
 ---
 
-# Breadth-first search
+class: middle
 
-.stretch[![](figures/lec2/bfs-cartoon.png)]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.center.width-80[![](figures/lec2/dfs-properties.png)]
 
 ---
 
 # Breadth-first search
+
+<br><br>
+.width-100[![](figures/lec2/bfs-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
 
 - *Strategy*: expand the shallowest node in the fringe.
 - *Implementation*: fringe is a **FIFO queue**.
 
-.center[![](figures/lec2/bfs-progress.png)]
+.width-80.center[![](figures/lec2/bfs-progress.svg)]
 
 ---
-
-class: smaller
 
 # Properties of BFS
 
@@ -343,11 +367,15 @@ class: smaller
 - *Space complexity*:
     - The number of nodes to maintain in memory is the size of the fringe, which will be the largest at the last tier. That is $O(b^d)$
 
-.center.width-50[![](figures/lec2/bfs-properties.png)]
-
 ???
 
 R: dont we also need to store all nodes above?
+
+---
+
+class: middle
+
+.center.width-80[![](figures/lec2/bfs-properties.png)]
 
 ---
 
@@ -359,36 +387,29 @@ R: dont we also need to store all nodes above?
     - If no solution, run DFS with depth limit 3.
     - ...
 
-
-.grid[
-.kol-2-3[
 <span class="Q">[Q]</span> What are the properties of iterative deepening?
 
 <span class="Q">[Q]</span> Isn't this process wastefully redundant?
-]
-.kol-1-4[
-![](figures/lec2/id-properties.png)
-]
-]
+
+.center.width-40[![](figures/lec2/id-properties.png)]
 
 ---
 
 # Uniform-cost search
 
-.stretch[![](figures/lec2/ucs-cartoon.png)]
+<br><br>
+.width-100[![](figures/lec2/ucs-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Uniform-cost search
+class: middle
 
 - *Strategy*: expand the cheapest node in the fringe.
 - *Implementation*: fringe is a **priority queue**, using the cumulative cost $g(n)$ from the initial state to node $n$ as priority.
 
 ---
-
-class: smaller
 
 # Properties of UCS
 
@@ -403,7 +424,11 @@ class: smaller
 - *Space complexity*:
      - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
 
-.center.width-40[![](figures/lec2/ucs-properties.png)]
+---
+
+class: middle
+
+.center.width-70[![](figures/lec2/ucs-properties.png)]
 
 ---
 
@@ -412,7 +437,7 @@ class: smaller
 One of the **issues of UCS** is that it explores the state space in *every direction*,
 without exploiting information about the (plausible) location of the goal node.
 
-.center.width-50[![](figures/lec2/ucs-issues.png)]
+.center.width-70[![](figures/lec2/ucs-issues.png)]
 
 **Informed** search strategies aim to solve this problem by expanding nodes in
 the fringe in decreasing order of *desirability*.
@@ -429,6 +454,7 @@ A **heuristic** (or evaluation) function $h(n)$ is:
     - $h(n) = 0$ for a goal state.
 - is designed for a *particular* search problem.
 
+<br>
 .center.width-70[![](figures/lec2/heuristic-pacman.png)]
 
 
@@ -436,28 +462,27 @@ A **heuristic** (or evaluation) function $h(n)$ is:
 
 # Greedy search
 
-.stretch[![](figures/lec2/gs-cartoon.png)]
+<br>
+.width-100[![](figures/lec2/gs-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Greedy search
+class: middle
 
 - *Strategy*: expand the node $n$ in the fringe for which $h(n)$ is the lowest.
 - *Implementation*: fringe is a **priority queue**, using $h(n)$ as priority.
 
 ---
 
-# Greedy search example
+class: middle, center
+
+.width-80[![](figures/lec2/gs-progress.svg)]
 
 $h(n)$ = straight line distance to Bucharest.
 
-.center.width-70[![](figures/lec2/gs-progress.png)]
-
 ---
-
-class: smaller
 
 # Properties of greedy search
 
@@ -470,16 +495,23 @@ class: smaller
 - *Space complexity*:
     - $O(b^m)$, unless we have a good heuristic function.
 
-.center.width-70[![](figures/lec2/gs-properties.png)]
-.caption[At best, greedy search takes you straight to the goal. At worst, it is like a badly-guided BFS.]
+---
+
+class: middle
+
+.center.width-90[![](figures/lec2/gs-properties.png)]
+
+.center[At best, greedy search takes you straight to the goal.<br>
+At worst, it is like a badly-guided BFS.]
 
 ---
 
 # A*
 
-.stretch[![](figures/lec2/as-cartoon.png)]
+<br><br>
+.width-100[![](figures/lec2/as-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -490,8 +522,8 @@ class: smaller
 - A\* was first proposed in **1968** to improve robot planning.
 - Goal was to navigate through a room with obstacles.
 ]
-.kol-1-2.width-80[
-![](figures/lec2/shakey.jpg)
+.kol-1-2[
+.center.width-80[![](figures/lec2/shakey.jpg)]
 ]
 ]
 
@@ -506,15 +538,15 @@ class: smaller
 
 ---
 
-# A* example
+class: middle
 
-.center.width-70[![](figures/lec2/as-progress1.png)]
+.center.width-80[![](figures/lec2/as-progress1.png)]
 
 ---
 
-# A* example
+class: middle
 
-.center.width-70[![](figures/lec2/as-progress2.png)]
+.center.width-80[![](figures/lec2/as-progress2.png)]
 
 <span class="Q">[Q]</span> Why doesn't A* stop at step (e), since Bucharest is in the fringe?
 
@@ -524,7 +556,9 @@ class: smaller
 
 A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)$ is the true cost to a nearest goal.
 
-.center.width-70[![](figures/lec2/admissible.png)]
+
+<br><br>
+.center.width-80[![](figures/lec2/admissible.png)]
 .caption[The Manhattan distance is admissible]
 
 ???
@@ -537,43 +571,49 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 
 .grid[
 .kol-2-3[
-- *Assumptions*:
-    - $A$ is an optimal goal node
-    - $B$ is a suboptimal goal node
-    - $h$ is admissible
-- *Claim*:
-    - $A$ will exit the fringe before $B$
+## Assumptions
+- $A$ is an optimal goal node
+- $B$ is a suboptimal goal node
+- $h$ is admissible
+
+## Claim
+$A$ will exit the fringe before $B$.
 ]
 .kol-1-3[
-![](figures/lec2/astar-proof1.png)
+.width-100[![](figures/lec2/astar-proof1.png)]
 ]
 ]
 
 ---
 
-# Optimality of A* (tree search)
+class: middle
 
 .grid[
 .kol-2-3[
-- Assume $B$ is on the fringe.
-- Some ancestor $n$ of $A$ is on the fringe too.
-- *Claim*: $n$ will be expanded before $B$.
-    - $f(n) \leq f(A)$
-        - $f(n) = g(n) + h(n)$ (by definition)
-        - $f(n) \leq g(A)$ (admissibility of $h$)
-        - $f(A) = g(A) + h(A) = g(A)$ ($h=0$ at a goal)
-    - $f(A) < f(B)$
-        - $g(A) < g(B)$ ($B$ is suboptimal)
-        - $f(A) < f(B)$ ($h=0$ at a goal)
-    - $n$ expands before $B$
-        - since $f(n) \leq f(A) < f(B)$
-- All ancestors of $A$ expand before $B$, including $A$. Thefore **A* is optimal**.
+## Claim
 
+$n$ will be expanded before $B$.
+
+## Proof
+
+Assume $B$ is on the fringe.
+Some ancestor $n$ of $A$ is on the fringe too.
+
+- $f(n) \leq f(A)$
+    - $f(n) = g(n) + h(n)$ (by definition)
+    - $f(n) \leq g(A)$ (admissibility of $h$)
+    - $f(A) = g(A) + h(A) = g(A)$ ($h=0$ at a goal)
+- $f(A) < f(B)$
+    - $g(A) < g(B)$ ($B$ is suboptimal)
+    - $f(A) < f(B)$ ($h=0$ at a goal)
+- $n$ expands before $B$
+    - since $f(n) \leq f(A) < f(B)$
 ]
 .kol-1-3[
-![](figures/lec2/astar-proof2.png)
+.width-100[![](figures/lec2/astar-proof2.png)]
 ]
 ]
+All ancestors of $A$ expand before $B$, including $A$. Therefore **A* is optimal**.
 
 ---
 
@@ -598,15 +638,17 @@ For A* with accurate heuristics, bands stretch towards the goal.
 
 # Comparison
 
+<br><br><br>
+
 .grid[
 .kol-1-3[
-![](figures/lec2/cmp-greedy.jpg)
+.width-100[![](figures/lec2/cmp-greedy.jpg)]
 ]
 .kol-1-3[
-![](figures/lec2/cmp-ucs.jpg)
+.width-100[![](figures/lec2/cmp-ucs.jpg)]
 ]
 .kol-1-3[
-![](figures/lec2/cmp-as.jpg)
+.width-100[![](figures/lec2/cmp-as.jpg)]
 ]
 ]
 .center.grid[
@@ -621,7 +663,7 @@ A*
 ]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
@@ -631,9 +673,12 @@ A\* finds the shortest path.
 
 # Creating admissible heuristics
 
-- Most of the work in solving hard search problems optimally is in finding admissible heuristics.
-- Admissible heuristics can be derived from the exact solutions to *relaxed problems*, where new actions are available.
-.center.width-70[![](figures/lec2/admissible-relax.png)]
+Most of the work in solving hard search problems optimally is in finding admissible heuristics.
+
+Admissible heuristics can be derived from the exact solutions to *relaxed problems*, where new actions are available.
+
+<br><br>
+.center.width-80[![](figures/lec2/admissible-relax.png)]
 
 ---
 
@@ -654,20 +699,22 @@ A\* finds the shortest path.
 
 ---
 
-# Redundant paths
+# Graph search
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one!
 
-.stretch[![](figures/lec2/redundant.png)]
+<br><br>
+
+.width-100[![](figures/lec2/redundant.png)]
 
 ---
 
-# Graph search
+class: middle
 
 Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
 This amounts to grow a tree directly on the state-space graph.
 
-.stretch[![](figures/lec2/graph-search.png)]
+.width-100[![](figures/lec2/graph-search.png)]
 
 <span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
 
@@ -686,11 +733,11 @@ This amounts to grow a tree directly on the state-space graph.
 
 ---
 
-class: center
-
-# Super Mario: A* in action
+class: center, middle, black-slide
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
+
+A* in action
 
 ---
 
