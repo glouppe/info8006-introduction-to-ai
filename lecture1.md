@@ -485,6 +485,18 @@ Learning to sort waste (Norman Marlier, ULiège, 2018)
 
 ---
 
+# What is missing?
+
+Intelligence is not just about **pattern recognition**, which is something most of these works are based on.
+
+It is about *modeling the world*:
+- explaining and understanding what we see;
+- imagining things we could see but haven't yet;
+- problem solving and planning actions to make these things real;
+- building new models as we learn more about the world.
+
+---
+
 class: middle
 
 # Intelligent agents
