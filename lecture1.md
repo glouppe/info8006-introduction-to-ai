@@ -46,22 +46,22 @@ Artificial intelligence is the science of making machines or programs that:
 .center.grid[
 .kol-1-4[]
 .kol-1-4[
-.center[Think like people]
+.caption[Think like people]
 .width-100[![](figures/lec1/ai-think-people.png)]
 ]
 .kol-1-4[
-.center[Think rationally]
+.caption[Think rationally]
 .width-100[![](figures/lec1/ai-think-rationally.png)]
 ]
 ]
 .grid[
 .kol-1-4[]
 .kol-1-4[
-.center[Act like people]
+.caption[Act like people]
 .width-100[![](figures/lec1/ai-act-people.png)]
 ]
 .kol-1-4[
-.center[Act rationally]
+.caption[Act rationally]
 .width-100[![](figures/lec1/ai-act-rationally.png)]
 ]
 ]
@@ -142,7 +142,7 @@ class: middle, center
 
 .width-80[![ACT-R](figures/lec1/soar.jpg)]
 
-The modern SOAR cognitive architecture, as a descendant of the Logic Theorist<br>(Alan Newell, Herbert Simon, 1956).
+.caption[The modern SOAR cognitive architecture, as a descendant of the Logic Theorist<br>(Alan Newell, Herbert Simon, 1956).]
 
 ---
 

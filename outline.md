@@ -30,11 +30,11 @@ Feel free to contact any of us for help!
 
 # Slides
 
-Slides
-- are available at [https://github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
-- are available in HTML and in PDFs.
-- will be posted online the day before the lesson.
-- will be slightly different from previous years.
+Slides:
+- Available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
+- In HTML and in PDFs.
+- Posted online the day before the lesson.
+- Slightly different from previous years.
 
 Some lessons are partially adapted from [[CS188] Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html), by Dan Klein and Pieter Abbeel from UC Berkeley.
 
@@ -131,7 +131,7 @@ This course is meant as an introduction to the many other courses available at U
 
 - ELEN0062: Introduction to Machine Learning
 - INFO8004: Advanced Machine Learning
-- INFOXXXX: Deep Learning (Spring 2019)
+- INFO8010: Deep Learning 
 - INFO8003: Optimal decision making for complex problems
 - INFO0948: Introduction to Intelligent Robotics
 - INFO0049: Knowledge representation
