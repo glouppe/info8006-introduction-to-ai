@@ -18,14 +18,14 @@ import random
 import string
 import time
 import types
-import tkinter as Tkinter
+import tkinter
 import io
 from time import sleep
 
 from PIL import Image, ImageDraw
 
 d_o_e = None # set this in begin graphics
-d_w = Tkinter._tkinter.DONT_WAIT
+d_w = tkinter._tkinter.DONT_WAIT
 
 def formatColor(r, g, b):
         return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
@@ -62,6 +62,14 @@ class GraphicsUtils:
         self._canvas_tsize = 12
         self._canvas_tserifs = 0
 
+        # We bind to key-down and key-up events.
+
+        self._keysdown = {}
+        self._keyswaiting = {}
+        # This holds an unprocessed key release.  We delay key releases by up to
+        # one call to keys_pressed() to get round a problem with auto repeat.
+        self._got_release = None
+
     
 
     def sleep(self, secs):
@@ -73,6 +81,7 @@ class GraphicsUtils:
             self._root_window.mainloop()
 
     def begin_graphics(self, width=640, height=480, color=formatColor(0, 0, 0), title=None):
+
         # Check for duplicate call
         if self._root_window is not None:
             # Lose the window.
@@ -85,7 +94,7 @@ class GraphicsUtils:
         self._bg_color = color
 
         # Create the root window
-        self._root_window = Tkinter.Tk()
+        self._root_window = tkinter.Tk()
         self.d_o_e = self._root_window.dooneevent
         self._root_window.overrideredirect(1)
         self._root_window.protocol('WM_DELETE_WINDOW', self._destroy_window)
@@ -94,7 +103,7 @@ class GraphicsUtils:
 
         # Create the canvas object
         try:
-            self._canvas = Tkinter.Canvas(self._root_window,
+            self._canvas = tkinter.Canvas(self._root_window,
                 width=width,
                 height=height,
                 bd=0.0,
@@ -102,7 +111,7 @@ class GraphicsUtils:
                 highlightbackground='#000000',
                 highlightcolor='#000000',
                 highlightthickness=0)
-            self._canvas.pack(fill=Tkinter.BOTH, expand=1)
+            self._canvas.pack(fill=tkinter.BOTH, expand=1)
             self.draw_background()
             self._canvas.update()
         except:
@@ -113,6 +122,8 @@ class GraphicsUtils:
             self._canvas_tfonts = ['times new roman', 'lucida console']
         else:
             self._canvas_tfonts = ['times', 'lucidasans-24']
+
+        
 
 
     def draw_background(self):
@@ -230,6 +241,7 @@ class GraphicsUtils:
             coord_list[i + 1] = coord_list[i + 1] + y
         return coord_list
 
+
     def move_to(self, object, x, y=None):
         if y is None:
             try: x, y = x
@@ -278,4 +290,7 @@ class GraphicsUtils:
                         x='0.c'))
         psfile.close()
 
+
     
+
+      

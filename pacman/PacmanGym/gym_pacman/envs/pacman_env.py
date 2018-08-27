@@ -115,6 +115,7 @@ class PacmanEnv(gym.Env):
         if (pacmanagent is None):
             pacmanagent = GreedyAgent()
         self.pacman = pacmanagent
+        self.pacman.displutils = self.display.graphicsUtils
 
         self.rules = ClassicGameRules(timeout)
         self.rules.quiet = False
