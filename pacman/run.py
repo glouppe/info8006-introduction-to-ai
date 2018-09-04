@@ -36,6 +36,8 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(usageStr)
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
+    parser.add_argument('--timeout', help='Timeout for getAction method',
+                        type=int, default=60)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a PMAgent class',

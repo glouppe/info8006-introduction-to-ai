@@ -16,7 +16,8 @@ from gym.utils import seeding
 
 import json
 import os
-
+from multiprocessing import Process,Queue
+from copy import deepcopy
 
 DEFAULT_GHOST_TYPE = 'DirectionalGhost'
 
@@ -39,6 +40,11 @@ print("------------------")
 for k in layout_params:
     print(k,":",layout_params[k])
 print("------------------")
+
+
+
+def get_action_timeout_call(agent,queue,state):
+    queue.put(agent.getAction(state))
 
 class PacmanEnv(gym.Env):
     layouts = [
@@ -105,6 +111,7 @@ class PacmanEnv(gym.Env):
         self.step_counter = 0
         self.cum_reward = 0
         self.done = False
+        self.timeout = timeout
 
         self.setObservationSpace()
 
@@ -153,6 +160,10 @@ class PacmanEnv(gym.Env):
             'step_counter': [[0]],
         }
 
+        
+        self.previous_pacman_action = "Stop"
+        
+
         return self._get_image()
 
     def step(self):
@@ -176,9 +187,20 @@ class PacmanEnv(gym.Env):
                 }]
             }
 
-
+        """
+        queue = Queue()
+        proc = Process(target=get_action_timeout_call, args=(self.pacman,queue,deepcopy(self.game.state)))
+        proc.start()
+        try:
+            pacman_action = queue.get(timeout=self.timeout)
+            proc.join()
+        except:
+            pacman_action = self.previous_pacman_action
+            proc.terminate()
+            
+        """
         pacman_action = self.pacman.getAction(self.game.state)
-
+        
         legal_actions = self.game.state.getLegalPacmanActions()
         illegal_action = False
         if pacman_action not in legal_actions:
@@ -216,6 +238,7 @@ class PacmanEnv(gym.Env):
             'ghost_positions': [self.ghostLocations],
             'ghost_in_frame': [self.ghostInFrame],
         }
+        self.previous_pacman_action = pacman_action
 
         if self.step_counter >= MAX_EP_LENGTH:
             done = True

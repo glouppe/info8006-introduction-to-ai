@@ -1,4 +1,3 @@
-# XXX: Complete this class for Project Part I
 import argparse
 from PacmanGym.gym_pacman.envs.game import Agent
 from PacmanGym.gym_pacman.envs.pacman import Directions
@@ -23,6 +22,7 @@ class PacmanAgent(Agent):
     def getAction(self, state):
         """
         Given a pacman game state, returns a legal move. Called on-game.
+        !!! Constrained computational time (see `args.timeout` parameter)
 
         Parameters:
         -----------
@@ -43,7 +43,8 @@ class PacmanAgent(Agent):
 
     def registerInitialState(self, state):
         """
-        Given a pacman game state, returns a legal move.
+        Procedure called before the game
+        with the initial game state `state`.
         !!! Not called in the online setting (See instructions).
 
         Parameters:
