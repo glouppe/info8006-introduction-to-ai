@@ -3,7 +3,15 @@
 Credits: [UC Berkeley](http://ai.berkeley.edu/project_overview.html)
          [OpenAI Interface](https://github.com/sohamghosh121/PacmanGym)
 
+## Generalities
+
+Display the command-line help section
+
+
 ## How to launch the game (Part 1/3)
+```bash
+python run.py -h
+```
 
 Launches a game with a random agent in default map mediumClassic:
 ```bash
