@@ -14,8 +14,9 @@ Launches a game with your Pacman agent class, named PMAgent located in `youragen
 ```bash
 python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
+ - e.g., python run.py --layout originalClassic --agentfile human.py launches the keyboard agent, allowing the user to directly play the game.
 
-Same configuration as above but without the possibility of computation at game initialization.
+Same configuration as above, but skip the call to `registerInitialState` method.  
 ```bash
 python run.py --layout mediumClassic --agentfile youragentmodule.py --onlyonline
 ```
