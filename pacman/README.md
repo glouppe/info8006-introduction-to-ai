@@ -3,7 +3,8 @@
 Credits: [UC Berkeley](http://ai.berkeley.edu/project_overview.html)
          [OpenAI Interface](https://github.com/sohamghosh121/PacmanGym)
 
-## Generalities
+## Installation
+
 
 All the instructions below have been tested under Linux and should work for MacOS.
 
@@ -22,11 +23,6 @@ Dependencies
 pip install -U gym numpy stopit argparse
 ```
 
-Display the command-line help section
-```bash
-python run.py -h
-```
-
 Install and use pycodestyle to check PEP8 compliance of Python scripts
 ```bash
 pip install -U pycodestyle
@@ -41,15 +37,23 @@ autopep8 --in-place --aggressive --aggressive <yourscript>.py
 
 /!\ Check your file again with pycodestyle
 
-## How to launch the game (Part 1/3)
+## Usage
 
+### General
+
+Display the command-line help section
+```bash
+python run.py -h
+```
+
+### Search (1/3)
 
 Launches a game with a random agent in default map mediumClassic:
 ```bash
 python run.py
 ```
 
-Launches a game with your Pacman agent class, named PMAgent located in `youragentmodule.py`, and with the maze originalClassic (see layout folder).
+Launches a game with your Pacman agent class, named PacmanAgent located in `youragentmodule.py`, and with the maze originalClassic (see layout folder).
 ```bash
 python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
@@ -64,6 +68,8 @@ python run.py --layout mediumClassic --agentfile youragentmodule.py --onlyonline
 See the help section of the command line for more information about the parameters.
 
 ## Scoring
+
+### Search (1/3)
 
 The score function is computed as follows:
 
