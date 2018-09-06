@@ -1,4 +1,3 @@
-from PIL import Image
 import sys
 from PacmanGym.gym_pacman.envs import PacmanEnv
 import time
@@ -60,8 +59,8 @@ if __name__ == '__main__':
     env.seed(args.seed)
     done = False
 
-    env.reset(layout=args.layout, max_ghosts=0, pacmanagent=agent(args))
-
+    env.reset(layout=args.layout, max_ghosts=0, pacmanagent=agent(args), timeout=args.timeout)
+ 
     while not done:
         s_, r, done, info = env.step()
         env.render()

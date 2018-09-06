@@ -16,7 +16,7 @@ from gym.utils import seeding
 
 import json
 import os
-from multiprocessing import Process,Queue
+import stopit
 from copy import deepcopy
 
 DEFAULT_GHOST_TYPE = 'DirectionalGhost'
@@ -189,7 +189,7 @@ class PacmanEnv(gym.Env):
 
         """
         queue = Queue()
-        proc = Process(target=get_action_timeout_call, args=(self.pacman,queue,deepcopy(self.game.state)))
+        proc = Process(target=get_action_timeout_call, args=(self.pacman,queue,self.game.state))
         proc.start()
         try:
             pacman_action = queue.get(timeout=self.timeout)
@@ -199,20 +199,27 @@ class PacmanEnv(gym.Env):
             proc.terminate()
             
         """
-        pacman_action = self.pacman.getAction(self.game.state)
+        with stopit.ThreadingTimeout(self.timeout) as to_ctx_mgr:
+            assert to_ctx_mgr.state == to_ctx_mgr.EXECUTING
+            pacman_action = self.pacman.getAction(self.game.state)
+
+        if to_ctx_mgr.state == to_ctx_mgr.TIMED_OUT:
+            print("Timed out !")
+            pacman_action = self.previous_pacman_action
         
         legal_actions = self.game.state.getLegalPacmanActions()
         illegal_action = False
         if pacman_action not in legal_actions:
             self.illegal_move_counter += 1
             illegal_action = True
-            pacman_action = 'Stop' # Stop is always legal
+            pacman_action = "STOP" # Stop is always legal
+
+
 
         reward = self.game.step(pacman_action)
         self.cum_reward += reward
         # reward shaping for illegal actions
-        if illegal_action:
-            reward -= 10
+        
 
         done = self.game.state.isWin() or self.game.state.isLose()
 
