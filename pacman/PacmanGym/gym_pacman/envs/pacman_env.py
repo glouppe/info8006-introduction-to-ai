@@ -32,15 +32,16 @@ MAX_EP_LENGTH = np.inf
 
 import os
 fdir = '/'.join(os.path.split(__file__)[:-1])
-print(fdir)
+#print(fdir)
 layout_params = json.load(open(fdir + '/../../layout_params.json'))
 
+"""
 print("Layout parameters")
 print("------------------")
 for k in layout_params:
     print(k,":",layout_params[k])
 print("------------------")
-
+"""
 
 
 def get_action_timeout_call(agent,queue,state):
