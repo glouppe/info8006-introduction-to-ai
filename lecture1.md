@@ -135,16 +135,18 @@ so exactly like pigeons that they can fool even other pigeons.]
 
 # Thinking humanly
 
+## Cognitive science
 
-**Cognitive science** is the study of the *human mind* and its processes. The goal of cognitive science
+Study of the *human mind* and its processes.
+- Grew out of human psychology.
+- It includes language, problem-sovling, decision-making and perception.
+- The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
-
-A *cognitive architecture* usually follows human-like reasoning and can be used to
+- A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 
-.center.width-60[![](figures/lec1/brain.png)]
 
 ---
 
@@ -158,7 +160,20 @@ class: middle, center
 
 class: middle
 
-## Limitations of cognition for AI
+## Neuroscience
+
+Study of the anatomy and physiology of neural tissue.
+- Grew out of clinical neurology and neurobiology.
+- Neurobiology is concerned with the the anatomy and physiology of the brain, from major structures down to neurons and molecules.
+- Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
+
+.center.width-50[![](figures/lec1/brain.png)]
+
+---
+
+class: middle
+
+## Limitations of cognition and neuroscience for AI
 
 .grid[
 .kol-2-3[
