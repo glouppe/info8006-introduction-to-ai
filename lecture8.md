@@ -8,6 +8,7 @@ Lecture 8: Making decisions
 
 R: quick intro to RL
 R: relation between RL and Control (see ben recht tuto at icml)
+https://courses.cs.washington.edu/courses/cse473/14sp/slides/8-MDPs.pdf
 
 ---
 

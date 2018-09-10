@@ -14,6 +14,14 @@ R: go over the Intelligent agents part, formalize a bit more.
 
 ---
 
+# Today
+
+- Course outline
+- Introduction to Artificial Intelligence
+- Intelligent agents
+
+---
+
 class: middle
 
 # Introduction
@@ -74,7 +82,7 @@ Artificial intelligence is the science of making machines or programs that:
 
 ## The Turing test
 
-A computer passes the **Turing test** (also known as the Imitation Game) if a human operator, after posing some written
+A computer passes the **Turing test** (aka the Imitation Game) if a human operator, after posing some written
 questions, cannot tell whether the written responses come from a person or from
 a computer.
 
@@ -136,13 +144,15 @@ A *cognitive architecture* usually follows human-like reasoning and can be used 
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 
+.center.width-60[![](figures/lec1/brain.png)]
+
 ---
 
 class: middle, center
 
 .width-80[![ACT-R](figures/lec1/soar.jpg)]
 
-.caption[The modern SOAR cognitive architecture, as a descendant of the Logic Theorist<br>(Alan Newell, Herbert Simon, 1956).]
+.caption[The modern SOAR cognitive architecture.]
 
 ---
 
@@ -166,7 +176,7 @@ with **innate knowledge** for representing language.
 ]
 ]
 
-Therefore, it may not be possible to implement a fully functioning
+It may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
@@ -275,7 +285,7 @@ class: middle
 - Representation of *informal* knowledge is difficult.
 - Hard to define provable *plausible* reasoning.
 - *Combinatorial explosion* (in time and space).
-- Logical inference is part of intelligence. It does not cover everything:
+- Logical inference is only a part of intelligence. It does not cover everything:
     - e.g., might be no provably correct thing to do, but still something must be done;
     - e.g., reflex actions can be more successful than slower carefully deliberated ones.
 
@@ -326,7 +336,7 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 
 ## 1940-1950: Early days
 - 1943: McCulloch and Pitts: Boolean circuit model of the brain.
-- 1950: Turing's "Computing machinery and intelligence:.
+- 1950: Turing's "Computing machinery and intelligence".
 
 ## 1950-1970: Excitement and expectations
 - 1950s: Early AI programs, including Samuel's checkers program,
@@ -347,7 +357,7 @@ class: middle, center, black-slide
 class: middle
 
 ## 1970-1990: Knowledge-based approaches
-- 1969: Neural network research almost disappears after Minsky and Paper's paper.
+- 1969: Neural network research almost disappears after Minsky and Papert's book.
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
 - 1988-1993: Expert systems industry busts  (AI winter).
@@ -531,8 +541,8 @@ class: middle
 
 .width-60.center[![](figures/lec1/vacuum2-environment.svg)]
 
-- Percepts: location and content, e.g. $[A, Dirty]$
-- Actions: $Left, Right, Suck, NoOp$
+- Percepts: location and content, e.g. $[A, \text{Dirty}]$
+- Actions: $\text{Left}, \text{Right}, \text{Suck}, \text{NoOp}$
 
 ---
 
@@ -544,12 +554,12 @@ Partial tabulation of a simple vacuum-cleaner agent function:
 
 | Percept sequence | Action |
 | ---------------- | ------ |
-| $[A, Clean]$     | $Right$ |
-| $[A, Dirty]$     | $Suck$ |
-| $[B, Clean]$     | $Left$ |
-| $[A, Dirty]$     | $Suck$ |
-| $[A, Clean], [A, Clean]$     | $Right$ |
-| $[A, Clean], [A, Dirty]$     | $Suck$ |
+| $[A, \text{Clean}]$     | $\text{Right}$ |
+| $[A, \text{Dirty}]$     | $\text{Suck}$ |
+| $[B, \text{Clean}]$     | $\text{Left}$ |
+| $[A, \text{Dirty}]$     | $\text{Suck}$ |
+| $[A, \text{Clean}], [A, \text{Clean}]$     | $\text{Right}$ |
+| $[A, \text{Clean}], [A, \text{Dirty}]$     | $\text{Suck}$ |
 | (...) | (...) |
 
 ---
@@ -662,7 +672,7 @@ The job of AI is to design an **agent program** that implements the agent
 function. This program will run on an *architecture*, that is a computing device
 with physical sensors and actuators.
 
-$$agent = program + architecture$$
+$$\text{agent} = \text{program} + \text{architecture}$$
 
 ## Implementation
 
@@ -677,10 +687,13 @@ Agent programs can be designed and implemented in many ways:
 
 # Table-driven agents
 
-- A *table-driven agent* determines its next action with a table that contains the appropriate action for every possible percept sequence.
+A *table-driven agent* determines its next action with a lookup table that contains the appropriate action for every possible percept sequence.
+
+## Issues
+
 - **Design issue:** one needs to anticipate all sequence of percepts and how the agent should respond.
 - **Technical issue:** the lookup table will contain $\sum_{t=1}^T |\mathcal{P}|^t$ entries.
-    - Example (autonomous car): using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
+- Example (autonomous car): using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
 
 ---
 
@@ -735,13 +748,15 @@ class: middle
 
 class: middle
 
-- Principle: i) generate possible sequences of actions, ii) predict the
-  resulting states and  iii) assess **goals** in each.
-    - Example (autonomous car): Has the car arrived to destination?
+- Principle:
+    1. generate possible sequences of actions
+    2. predict the resulting states
+    3. assess **goals** in each.
 - A *goal-based agent* chooses an action that will achieve the goal.
     - More general than rules. Goals are rarely explicit in condition-action rules.
     - Finding action sequences that achieve goals is difficult.
       *Search* and *planning* are two strategies.
+- Example (autonomous car): Has the car arrived to destination?
 
 ---
 

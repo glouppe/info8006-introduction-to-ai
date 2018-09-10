@@ -12,7 +12,9 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-- Agents that plan ahead
+.grid[
+.kol-1-2[
+- Planning agents
 - **Search problems**
 - *Uninformed* search methods
     - Depth-first search
@@ -21,6 +23,14 @@ Prof. Gilles Louppe<br>
 - *Informed* search methods
     - A*
     - Heuristics
+]
+.kol-1-2[
+.center.width-100[![](figures/lec2/planning-agent.png)]
+
+]
+]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -38,8 +48,6 @@ Reflex agents
 - do not consider the future consequences of their actions;
 - consider only **how the world is now**.
 
-.Q[[Q]] Can a reflex agent be rational?
-
 .grid[
 .kol-1-2[
 .width-100[![](figures/lec2/pacman-reflex.png)]
@@ -48,6 +56,9 @@ Reflex agents
 .width-100[![](figures/lec2/pacman-reflex2.png)]
 ]
 ]
+.caption[A simple reflex agent moves to a dot if there is one in its neighborhood. ]
+
+.Q[[Q]] Can a reflex agent be rational?
 
 ???
 
@@ -62,11 +73,11 @@ R: rework the figures including ghosts, where considering how the world would be
 Assumptions:
 - *Observable*, *deterministic* (and *known*) environment.
 
-Problem-solving agents:
-- Take decisions based on (hypothesized) consequences of actions.
-- Must have a model of how the world evolves in response to actions.
-- Formulate a goal.
-- Consider **how to world would be**.
+Problem-solving agents
+- take decisions based on (hypothesized) consequences of actions;
+- must have a model of how the world evolves in response to actions;
+- formulate a goal, explicitly;
+- consider **how to world would be**.
 
 .grid[
 .kol-1-2[
@@ -76,6 +87,7 @@ Problem-solving agents:
 .width-100[![](figures/lec2/pacman-goal2.png)]
 ]
 ]
+.caption[A planning agent looks for sequences of actions to eat all the dots.]
 
 ---
 
@@ -167,6 +179,8 @@ The process of removing details from a representation is called abstraction.
 
 <br>
 .center.width-100[![](figures/lec2/romania.svg)]
+
+.caption[How to go from Arad to Bucharest?]
 
 ---
 
@@ -387,11 +401,18 @@ class: middle
     - If no solution, run DFS with depth limit 3.
     - ...
 
+.grid[
+.kol-1-2[
 <span class="Q">[Q]</span> What are the properties of iterative deepening?
 
 <span class="Q">[Q]</span> Isn't this process wastefully redundant?
+]
+.kol-1-2[
+.center.width-100[![](figures/lec2/id-properties.png)]
+]
+]
 
-.center.width-40[![](figures/lec2/id-properties.png)]
+
 
 ---
 
@@ -515,7 +536,9 @@ At worst, it is like a badly-guided BFS.]
 
 ---
 
-# Shakey the Robot
+class: middle
+
+## Shakey the Robot
 
 .grid[
 .kol-1-2[
@@ -529,7 +552,9 @@ At worst, it is like a badly-guided BFS.]
 
 ---
 
-# A*
+class: middle
+
+## A*
 
 - Uniform-cost orders by path cost, or *backward cost* $g(n)$
 - Greedy orders by goal proximity, or *forward cost* $h(n)$

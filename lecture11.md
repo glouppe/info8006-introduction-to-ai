@@ -8,6 +8,7 @@ Lecture 10: Artificial General Intelligence
 
 https://futureoflife.org/wp-content/uploads/2017/01/Jurgen-Schmidhuber.pdf?x56934
 http://machineintelligence.org/universal-ai.pdf
+https://en.wikipedia.org/wiki/Open_Letter_on_Artificial_Intelligence
 
 ---
 
