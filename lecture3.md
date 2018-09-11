@@ -376,7 +376,9 @@ class: middle
 
 ---
 
-# Tree-structured CSPs
+class: middle
+
+## Tree-structured CSPs
 
 .center.width-90[![](figures/lec3/tree-csp-trans.png)]
 
@@ -395,7 +397,9 @@ Run the algorithm on the blackboard.
 
 ---
 
-# Nearly tree-structured CSPs
+class: middle
+
+## Nearly tree-structured CSPs
 
 - *Conditioning*:  instantiate a variable, prune its neighbors' domains.
 - *Cutset conditioning*:
@@ -413,9 +417,38 @@ class: middle
 
 ---
 
-# The logicist approach
+# The logicist tradition
 
-xxx
+.grid[
+.kol-2-3[
+- The rational thinking approach to artificial intelligence is concerned with the study of *irrefutable
+reasoning processes*. It ensures that all actions performed by an agent are
+formally **provable** from inputs and prior knowledge.
+
+- The Greek philosopher Aristotle was one of the first to attempt to formalize rational thinking.
+His *syllogisms* provided a pattern for argument structures that always yield correct conclusion when given correct premises.
+.italic[
+All men are mortal. <br>
+Socrates is a man.<br>
+Therefore, Socrates is mortal.
+]
+]
+.kol-1-3[
+.width-100.circle[![](figures/lec3/aristotle.jpg)]
+.caption[(Aristotle, 384-322 BC)]
+]
+]
+
+---
+
+class: middle
+
+- Logicians of the 19th century developed a precise notation for statements about all kinds of objects in the world and relationships among them.
+
+- By 1965, programs existed that could, in principle, solve any solvable problem described in logical notation.
+
+- The logicist tradition within AI hopes to build on such programs to create intelligent systems.
+
 
 ---
 
@@ -445,7 +478,7 @@ class: smaller
     - *Glitter* if gold is in the same square;
         - Gold is picked up by reflex, and cannot be dropped.
     - You *bump* if you walk into a wall.
-    - The agent program receives the percept $[Stench, Breeze, Glitter, Bump]$.
+    - The agent program receives the percept $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{Bump}]$.
 
 ---
 
@@ -468,9 +501,9 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 .center.width-100[![](figures/lec3/wumpus-exploration1.png)]
 
-(a) Percept = $[None, None, None, None]$
+(a) Percept = $[\text{None}, \text{None}, \text{None}, \text{None}]$
 
-(b) Percept = $[None, Breeze, None, None]$
+(b) Percept = $[\text{None}, \text{Breeze}, \text{None}, \text{None}]$
 
 ---
 
@@ -478,9 +511,9 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 .center.width-100[![](figures/lec3/wumpus-exploration2.png)]
 
-(a) Percept = $[Stench, None, None, None]$
+(a) Percept = $[\text{Stench}, \text{None}, \text{None}, \text{None}]$
 
-(b) Percept = $[Stench, Breeze, Glitter, None]$
+(b) Percept = $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{None}]$
 
 ---
 
@@ -488,7 +521,7 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 - Most useful in non-episodic, partially observable environments.
 - **Logic (knowledge-based) agents** combine:
-    - A *knowledge base* ($KB$): a list of facts that are known to the agent.
+    - A *knowledge base* ($\text{KB}$): a list of facts that are known to the agent.
     - Current *percepts*.
 - Hidden aspects of the current state are **inferred** using rules of inference.
 - **Logic** provides a good formal language for both   
@@ -499,7 +532,9 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 ---
 
-# Propositional logic: Syntax
+# Propositional logic
+
+## Syntax
 
 The **syntax** of propositional logic defines allowable *sentences*.
 
@@ -507,7 +542,9 @@ The **syntax** of propositional logic defines allowable *sentences*.
 
 ---
 
-# Propositional logic: Semantics
+class: middle
+
+## Semantics
 
 - In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
     - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
@@ -556,11 +593,11 @@ Examples:
 
 ---
 
-# Wumpus models (1)
+# Wumpus models
 
 .center.width-30[![](figures/lec3/wumpus-simple.png)]
 
-- Let consider possible models for $KB$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Let consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
 - Situation after:
     - detecting nothing in $[1,1]$,
     - moving right, breeze in $[2,1]$.
@@ -573,32 +610,32 @@ Examples:
 
 ---
 
-# Wumpus models (2)
+class: middle
 
 .center.width-60[![](figures/lec3/wumpus-kb.png)]
 
 - All 8 possible models in the reduced Wumpus world.
-- The knowledge base $KB$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
+- The knowledge base $\text{KB}$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
 
 ---
 
-# Entailments (1)
+# Entailments
 
 .center.width-60[![](figures/lec3/wumpus-entailment.png)]
 
-- $\alpha_1$ = "$[1,2]$ is safe". Does $KB$ entails $\alpha_1$?
-- $KB \vDash \alpha_1$ since $M(KB)  \subseteq M(\alpha_1)$.
-    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $KB$ is true.
+- $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
+- $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
+    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $\text{KB}$ is true.
 - Entailment can be used to carry out **logical inference**.
 
 ---
 
-# Entailments (2)
+class: middle
 
 .center.width-60[![](figures/lec3/wumpus-noentailment.png)]
 
-- $\alpha_2$ = "$[2,2]$ is safe". Does $KB$ entails $\alpha_2$?
-- $KB \nvDash \alpha_2$ since $M(KB)  \nsubseteq M(\alpha_2)$.
+- $\alpha_2$ = "$[2,2]$ is safe". Does $\text{KB}$ entails $\alpha_2$?
+- $\text{KB} \nvDash \alpha_2$ since $M(\text{KB})  \nsubseteq M(\alpha_2)$.
 - We **cannot** conclude whether $[2,2]$ is safe (it may or may not).
 
 ---
@@ -619,7 +656,10 @@ $$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatis
 
 # Limitations
 
-xxx
+- Representation of *informal* knowledge is difficult.
+- Hard to define provable *plausible* reasoning.
+- **Combinatorial explosion** (in time and space).
+- Logical inference is only a part of intelligence.
 
 ---
 
@@ -646,4 +686,5 @@ The end.
 
 # References
 
-XXX
+- Newell, A., & Simon, H. (1956). The logic theory machine--A complex information processing system. IRE Transactions on information theory, 2(3), 61-79.
+- McCarthy, J. (1960). Programs with common sense (pp. 300-307). RLE and MIT computation center.

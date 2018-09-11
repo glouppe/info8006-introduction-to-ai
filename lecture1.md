@@ -168,6 +168,7 @@ Study of the anatomy and physiology of neural tissue.
 - Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
 
 .center.width-50[![](figures/lec1/brain.png)]
+.caption[Can we build a computer model of the brain?]
 
 ---
 
