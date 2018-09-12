@@ -100,6 +100,7 @@ class GraphicsUtils:
         self._root_window.protocol('WM_DELETE_WINDOW', self._destroy_window)
         # self._root_window.title(title or 'Graphics Window')
         self._root_window.resizable(0, 0)
+        
 
         # Create the canvas object
         try:
@@ -123,7 +124,7 @@ class GraphicsUtils:
         else:
             self._canvas_tfonts = ['times', 'lucidasans-24']
 
-        
+        self._root_window.withdraw()
 
 
     def draw_background(self):

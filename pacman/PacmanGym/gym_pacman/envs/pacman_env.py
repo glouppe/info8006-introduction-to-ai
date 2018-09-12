@@ -19,6 +19,8 @@ import os
 import stopit
 from copy import deepcopy
 
+
+from PIL import Image
 DEFAULT_GHOST_TYPE = 'DirectionalGhost'
 
 MAX_GHOSTS = 5
@@ -160,11 +162,9 @@ class PacmanEnv(gym.Env):
             'ghost_in_frame': [self.ghostInFrame],
             'step_counter': [[0]],
         }
-
-        
+  
         self.previous_pacman_action = "Stop"
         
-
         return self._get_image()
 
     def step(self):
@@ -266,19 +266,15 @@ class PacmanEnv(gym.Env):
     # just change the get image function
     def _get_image(self):
         # get x, y
+
         image = self.display.image
 
         w, h = image.size
         DEFAULT_GRID_SIZE_X, DEFAULT_GRID_SIZE_Y = w / float(self.layout.width), h / float(self.layout.height)
 
-        extent = [
-            DEFAULT_GRID_SIZE_X *  (self.location[0] - 1),
-            DEFAULT_GRID_SIZE_Y *  (self.layout.height - (self.location[1] + 2.2)),
-            DEFAULT_GRID_SIZE_X *  (self.location[0] + 2),
-            DEFAULT_GRID_SIZE_Y *  (self.layout.height - (self.location[1] - 1.2))]
-        extent = tuple([int(e) for e in extent])
-        self.image_sz = (84,84)
-        image = image.crop(extent).resize(self.image_sz)
+
+        self.image_sz = (w//2,h//2)
+        image = image.resize(self.image_sz, Image.BICUBIC)
         return np.array(image)
 
     def render(self, mode='human'):
