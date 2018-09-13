@@ -35,6 +35,8 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(usageStr)
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
+    parser.add_argument('--nghosts', help='Number of ghosts', 
+                        type=int, default=0)
     parser.add_argument('--timeout', help='Timeout for getAction method',
                         type=int, default=60)
     parser.add_argument(
@@ -45,6 +47,11 @@ if __name__ == '__main__':
         '--layout',
         help='Maze layout (from layout folder)',
         default="mediumClassic")
+    parser.add_argument(
+        '--enable-search-before-game',
+        help="Enable the call to the registerInitialState\
+              method of the agent",
+        action="store_true")
 
     argv2 = list(sys.argv)
     sys.argv = [x for x in sys.argv if x != "-h" and x != "--help"]
@@ -59,7 +66,7 @@ if __name__ == '__main__':
     env.seed(args.seed)
     done = False
 
-    env.reset(layout=args.layout, max_ghosts=0, pacmanagent=agent(args), timeout=args.timeout)
+    env.reset(layout=args.layout, max_ghosts=args.nghosts, pacmanagent=agent(args), timeout=args.timeout, reginitstate=args.enable_search_before_game)
  
     while not done:
         s_, r, done, info = env.step()
