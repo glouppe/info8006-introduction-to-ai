@@ -82,7 +82,7 @@ The score function is computed as follows:
 
 ## Introduction 
 
-![alt text](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman/pacman_game.png "Pacman maze")
+![Pacman maze example](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacman_game.png "Pacman maze")
 
 In this classical Pacman game, the player navigates Pacman through a maze filled of food dots. The goal is to collect them all in a minimum amount of time (Part 1/3). Ghosts, which are Pacman's enemies, may also be part of the game. In this configuration, Pacman needs to avoid them while collecting all the food dots (Part 2/3). To help him, Pacman may have access to capsules in the maze, giving him the ability to beat Ghosts, resetting them in their initial positions, in a short amount of time. The game ends if either Pacman have collected all the dots (winning end) or Pacman collides with one of the Ghosts (losing end). Cherry on the cake, some walls on the game may have a particular characteristic. Indeed, they can randomly be crossed or not over time (Part 3/3).
 
