@@ -68,9 +68,9 @@ python run.py --layout originalClassic --agentfile youragentmodule.py
 python run.py --layout originalClassic --agentfile humanagent.py
 ```
 
-- Same configuration as above, but skip the call to `registerInitialState` method.
+- Same configuration as above, but enable the call to `registerInitialState` method.
 ```bash
-python run.py --layout mediumClassic --agentfile youragentmodule.py --onlyonline
+python run.py --layout mediumClassic --agentfile youragentmodule.py --registerinitialstate
 ```
 
 

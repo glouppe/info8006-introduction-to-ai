@@ -48,7 +48,7 @@ if __name__ == '__main__':
         help='Maze layout (from layout folder)',
         default="mediumClassic")
     parser.add_argument(
-        '--enable-search-before-game',
+        '--registerinitialstate',
         help="Enable the call to the registerInitialState\
               method of the agent",
         action="store_true")
