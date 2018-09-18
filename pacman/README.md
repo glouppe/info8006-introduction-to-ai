@@ -46,6 +46,12 @@ autopep8 --in-place --aggressive --aggressive <yourscript>.py
 python run.py -h
 ```
 
+  - Interactive game
+```bash
+python run.py --agentfile humanagent.py
+```
+:warning: While it works directly on Linux, root privileges are needed for keyboard access in MacOS. Not tested for Windows.
+
 ## Search (1/3)
 
  - Launches a game with a random agent in default map mediumClassic:
