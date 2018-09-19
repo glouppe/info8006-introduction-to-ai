@@ -354,6 +354,11 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 - 1943: McCulloch and Pitts: Boolean circuit model of the brain.
 - 1950: Turing's "Computing machinery and intelligence".
 
+
+---
+
+class: middle
+
 ## 1950-1970: Excitement and expectations
 - 1950s: Early AI programs, including Samuel's checkers program,
 Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
@@ -361,6 +366,8 @@ Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 - 1958: Rosenblatt invents the perceptron.
 - 1965: Robinson's complete algorithm for logical reasoning.
 - 1966-1974: AI discovers computational complexity.
+
+.center.width-70[![](figures/lec1/dartmouth.jpg)]
 
 ---
 
@@ -377,6 +384,10 @@ class: middle
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
 - 1988-1993: Expert systems industry busts  (AI winter).
+
+---
+
+class: middle
 
 ## 1990-Present: Statistical approaches
 - 1985-1995: The return of neural networks.
