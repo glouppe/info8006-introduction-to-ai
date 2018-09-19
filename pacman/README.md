@@ -6,7 +6,7 @@ In this classical Pacman game, the player navigates Pacman through a maze filled
 
 The project is split into three parts. Your task is to design an intelligent agent for each part of the project. See sections below for installation, usage and project instructions. 
 
-#Table Of Contents
+# Table Of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
