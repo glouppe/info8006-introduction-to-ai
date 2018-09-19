@@ -138,15 +138,17 @@ so exactly like pigeons that they can fool even other pigeons.]
 ## Cognitive science
 
 Study of the *human mind* and its processes.
-- Grew out of human psychology.
-- It includes language, problem-sovling, decision-making and perception.
 - The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
+- It includes language, problem-sovling, decision-making and perception.
 - A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 
+???
+
+Grew out of psychology.
 
 ---
 
@@ -156,6 +158,12 @@ class: middle, center
 
 .caption[The modern SOAR cognitive architecture.]
 
+???
+
+The SOAR architecture is both:
+- a theory of cognition
+- a computational implementation of that theory
+
 ---
 
 class: middle
@@ -163,12 +171,15 @@ class: middle
 ## Neuroscience
 
 Study of the anatomy and physiology of neural tissue.
-- Grew out of clinical neurology and neurobiology.
 - Neurobiology is concerned with the the anatomy and physiology of the brain, from major structures down to neurons and molecules.
 - Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
 
 .center.width-50[![](figures/lec1/brain.png)]
 .caption[Can we build a computer model of the brain?]
+
+???
+
+Grew out of clinical neurology and neurobiology.
 
 ---
 
@@ -318,6 +329,10 @@ A **rational agent** acts so as to achieve the best (expected) outcome.
   The amount of reasoning is adjusted according to available resources and importance of the result.
 - The brain is good at making rational decisions but not perfect either.
 
+---
+
+class: middle
+
 Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
 
 Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
@@ -429,7 +444,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/g-dKXOlsf98" frameborder="0" allowfullscreen></iframe>
 
-Beat the best human Go players
+Beat the best human Go players (2016)
 
 ---
 
@@ -437,7 +452,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/eHipy_j29Xw" frameborder="0" allowfullscreen></iframe>
 
-Beat teams of human players at real-time strategy games (Dota 2)
+Beat teams of human players at real-time strategy games (Dota 2) (2018)
 
 ---
 
@@ -445,7 +460,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
 
-Speech translation and synthesis
+Speech translation and synthesis (2012)
 
 ---
 
@@ -453,7 +468,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/qWl9idsCuLQ" frameborder="0" allowfullscreen></iframe>
 
-Semantic segmentation
+Semantic segmentation (2017)
 
 ---
 
@@ -461,7 +476,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/8BFzu9m52sc" frameborder="0" allowfullscreen></iframe>
 
-Generating image descriptions
+Generating image descriptions (2015)
 
 ---
 
@@ -469,7 +484,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
 
-Detecting skin cancer
+Detecting skin cancer (2017)
 
 ---
 
@@ -477,7 +492,13 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
 
-Learning to walk
+Learning to walk (2017)
+
+???
+
+Single algorithm for learning! Nothing is hardcoded.
+
+Similar to a baby learning to walk.
 
 ---
 
@@ -485,7 +506,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gy5g33S0Gzo" frameborder="0" allowfullscreen></iframe>
 
-Folding laundry
+Folding laundry (2010)
 
 ---
 
@@ -493,7 +514,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
 
-Playing soccer
+Playing soccer (2018)
 
 ---
 
@@ -501,7 +522,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/-96BEoXJMs0" frameborder="0" allowfullscreen></iframe>
 
-Driving a car
+Driving a car (2016)
 
 ---
 
