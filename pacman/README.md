@@ -6,6 +6,8 @@ In this classical Pacman game, the player navigates Pacman through a maze filled
 
 The project is split into three parts. Your task is to design an intelligent agent for each part of the project. See sections below for installation, usage and project instructions. 
 
+#Table Of Contents
+
 - [Installation](#installation)
 - [Usage](#usage)
 - [Score function](#score-function)
@@ -22,7 +24,7 @@ The project is split into three parts. Your task is to design an intelligent age
 # Installation
 
 
-All the instructions below have been tested under Linux and MacOS.
+All the instructions below  have been tested under Linux and MacOS.
 
  - See [Anaconda webpage](https://conda.io/docs/user-guide/install/index.html) for instructions to install Anaconda/Miniconda (recommended).
 
@@ -110,9 +112,9 @@ Design an intelligent agent, based on the A* algorithm described in [Lecture 2](
 
 Implement the following algorithms using this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py) :
 
-	- Depth-First Search (DFS) ,
-	- Breadth-First Search (BFS) ,
-	- Uniform Cost Search (UCS).
+ - Depth-First Search (DFS) ,
+ - Breadth-First Search (BFS) ,
+ - Uniform Cost Search (UCS).
 
 Run these algorithms and your intelligent agent against the maze layouts located in this [folder](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman/PacmanGym/layouts) in the *offline setting*. For each run, display the performance in terms of  [final score](#score-function) and total computation time. This is the second part of your report.
 
@@ -133,11 +135,11 @@ Coming soon
 
 Coming soon
 
-## Computation time budget
+## Computation Time Budget
 
 The computation time of the agent is limited on-game. More specifically, the method ```get_action``` of the agent prematurely terminates when the computation time transgress the given `timeout` parameter (fixed to 60 seconds during evaluation process). This configuration is referred as the *online setting*. On the other side, when the option ``` --enable-search-before-game ``` is specified, the method ``` register_initial_state ``` is called before the game starts, enabling computation without any computation time limit. This configuration is referred as the *offline setting*. Both configurations are considered during evaluation process.
 
-## Illegal moves
+## Illegal Moves
 
 You need to ensure that your agent always returns a legal move. If it is not the case, the game engine ignores it and repeat the previous move as long as it remains legal. Otherwise, it just keep getting stuck in the same location.
 
@@ -145,16 +147,16 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, both methods ```get_action``` and ``` register_initial_state ``` gets respectively the current and the initial state of the game. Useful methods of the state are specified below : 
 
-	- ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
-	- ```s.generateSuccessor(agentIndex, m)``` : Returns the successor state given the current state ```s``` and the move ```m```. See the [```Directions```](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/PacmanGym/gym_pacman/envs/game.py) class.
-	- ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
-	- ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
-	- ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
-	- ```s.getWalls()``` : Returns a boolean matrix which gives the position of all walls.
-	- ```s.getGhostPositions()``` : Returns the position of all ghosts in the maze.
-	- ```s.getCapsules()``` : Returns a list of positions of the remaining capsules in the maze.
-	- ```s.isWin()``` : Returns True if the state is in a *winning end*.
-	- ```s.isLose()``` : Returns True if the state is in a *losing end*.
+ - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
+ - ```s.generateSuccessor(agentIndex, m)``` : Returns the successor state given the current state ```s``` and the move ```m```. See the [```Directions```](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/PacmanGym/gym_pacman/envs/game.py) class.
+ - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
+ - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
+ - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
+ - ```s.getWalls()``` : Returns a boolean matrix which gives the position of all walls.
+ - ```s.getGhostPositions()``` : Returns the position of all ghosts in the maze.
+ - ```s.getCapsules()``` : Returns a list of positions of the remaining capsules in the maze.
+ - ```s.isWin()``` : Returns True if the state is in a *winning end*.
+ - ```s.isLose()``` : Returns True if the state is in a *losing end*.
 
 ## Evaluation 
 
