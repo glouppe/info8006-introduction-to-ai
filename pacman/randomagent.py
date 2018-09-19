@@ -19,9 +19,8 @@ class PacmanAgent(Agent):
         self.prob_dir["North"] = EastProb
         self.prob_dir["East"] = NorthProb
         self._rng = np.random.RandomState(args.seed)
-        
 
-    def getAction(self, state):
+    def get_action(self, state):
         """
         Given a pacman game state, returns a legal move. Called on-game.
         !!! Constrained computational time (see `args.timeout` parameter)
@@ -44,7 +43,7 @@ class PacmanAgent(Agent):
         # Returns a randomly chosen move according to probability distribution
         return a[0]
 
-    def registerInitialState(self, state):
+    def register_initial_state(self, state):
         """
         Procedure called before the game
         with the initial game state `state`.

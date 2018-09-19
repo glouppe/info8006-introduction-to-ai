@@ -29,7 +29,7 @@ class PacmanAgent(Agent):
         lis.start()
         pass
 
-    def getAction(self, state):
+    def get_action(self, state):
         """
         Given a pacman game state, returns a legal move. Called on-game.
         !!! Constrained computational time (see `args.timeout` parameter)
@@ -43,7 +43,7 @@ class PacmanAgent(Agent):
         - A legal move as defined in game.Directions.
         """
         legal = state.getLegalActions(0)
-        move = self._getMove(legal)
+        move = self._get_move(legal)
 
         if move == Directions.STOP:
             # Try to move in the same direction as before
@@ -56,7 +56,7 @@ class PacmanAgent(Agent):
         self.lastMove = move
         return move
 
-    def _getMove(self, legal):
+    def _get_move(self, legal):
         """
         Translate the last pressed key to a move among the legal ones
 
@@ -84,7 +84,7 @@ class PacmanAgent(Agent):
         self.lastMove = move
         return move
 
-    def registerInitialState(self, state):
+    def register_initial_state(self, state):
         """
         Procedure called before the game
         with the initial game state `state`.

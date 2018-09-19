@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(usageStr)
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
-    parser.add_argument('--nghosts', help='Number of ghosts', 
+    parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
     parser.add_argument('--timeout', help='Timeout for getAction method',
                         type=int, default=60)
@@ -65,9 +65,18 @@ if __name__ == '__main__':
     env = PacmanEnv()
     env.seed(args.seed)
     done = False
+    agt = agent(args)
+    s = env.reset(
+        layout=args.layout,
+        max_ghosts=args.nghosts,
+        pacmanagent=agt,
+        timeout=args.timeout)
 
-    env.reset(layout=args.layout, max_ghosts=args.nghosts, pacmanagent=agent(args), timeout=args.timeout, reginitstate=args.enable_search_before_game)
- 
+    # Computation may be done before game if `registerinitialstate` has been
+    # specified in command line
+    if (args.registerinitialstate):
+        agt.register_initial_state(s)
+
     while not done:
         s_, r, done, info = env.step()
         env.render()
