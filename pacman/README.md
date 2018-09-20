@@ -27,7 +27,7 @@ The project is split into three parts. Your task is to design an intelligent age
 # Installation
 
 
-All the instructions below  have been tested under Linux and MacOS.
+All the instructions below have been tested under Linux and MacOS.
 
  - See [Anaconda webpage](https://conda.io/docs/user-guide/install/index.html) for instructions to install Anaconda/Miniconda (recommended).
 
@@ -104,7 +104,7 @@ For each part of the project, you need to provide the following deliverables :
 	- The source code of your intelligent agent. Complete this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py) to do so. If you have written separate modules, provide them in a subfolder.
 	- A report in PDF format of 4 pages max.
 
-Submit your deliverables as an archive in the [Montefiore Submission Platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+The whole project must be done in groups of 2 students (same groups across all parts). Submit your deliverables as an archive in the [Montefiore Submission Platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
 ## Search Agent (Part 1/3)
 
