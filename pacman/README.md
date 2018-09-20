@@ -44,8 +44,6 @@ From now, it is assumed that <env_name> is activated.
 pip install -U gym numpy stopit argparse pillow
 ```
 
-:warning: Check your file again with pycodestyle.
-
 # Usage
 
 
