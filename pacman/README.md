@@ -61,6 +61,15 @@ pip install -U numpy stopit
 python run.py -h
 ``` 
 
+ - Interactive game.
+```bash
+python run.py
+```
+
+ - Silent game.
+```bash
+python run.py --silentdisplay
+```
 
  - Launches a game with a random agent in default map mediumClassic:
 ```bash
@@ -71,10 +80,7 @@ python run.py
 ```bash
 python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
- - Launches a game with the human agent. Interactive game.
-```bash
-python run.py --layout originalClassic --agentfile humanagent.py
-```
+
 
 - Same configuration as above, but enable the call to `registerInitialState` method.
 ```bash

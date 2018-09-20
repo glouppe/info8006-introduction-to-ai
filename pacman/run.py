@@ -43,7 +43,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--agentfile',
         help='Python file containing a PMAgent class',
-        default="randomagent.py")
+        default="humanagent.py")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder)',
@@ -54,8 +54,8 @@ if __name__ == '__main__':
               method of the agent",
         action="store_true")
     parser.add_argument(
-        '--graphicsdisplay',
-        help="Enable the graphical display of the game",
+        '--silentdisplay',
+        help="Disable the graphical display of the game",
         action="store_true")
 
     argv2 = list(sys.argv)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     parser = agent.arg_parser(parser)
     args = parser.parse_args()
     agent = agent(args)
-    runGame(args.layout,agent,[], args.graphicsdisplay,timeout=args.timeout, ris=args.registerinitialstate)
+    runGame(args.layout,agent,[], not args.silentdisplay,timeout=args.timeout, ris=args.registerinitialstate)
     """
     env = PacmanEnv()
     env.seed(args.seed)
