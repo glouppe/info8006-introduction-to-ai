@@ -27,14 +27,22 @@ The project is split into three parts. Your task is to design an intelligent age
 # Installation
 
 
-All the instructions below have been tested under Linux and MacOS.
+All the instructions below have been tested under Windows, Linux and MacOS.
 
  - See [Anaconda webpage](https://conda.io/docs/user-guide/install/index.html) for instructions to install Anaconda/Miniconda (recommended).
 
- - Create your own Anaconda environment and activate it.
+ - Open the Anaconda prompt (Windows) or a Terminal (Linux/MacOS)
+
+ - (Linux/MacOS) Create your own Anaconda environment and activate it.
 ```bash
 conda create -n <env_name> python=3.6
 source activate <env_name>
+```
+
+ - (Windows) Create your own Anaconda environment and activate it.
+```bash
+conda create -n <env_name> python=3.6
+activate <env_name>
 ```
 
 From now, it is assumed that <env_name> is activated. 
@@ -53,6 +61,7 @@ pip install -U gym numpy stopit argparse pillow
 python run.py -h
 ```
 
+:warning: In Windows, you may have an OSError about Ghostscript. If this occurs, follow the instructions [there](https://pypi.org/project/ghostscript/). 
 
 
  - Launches a game with a random agent in default map mediumClassic:
