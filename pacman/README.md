@@ -44,18 +44,6 @@ From now, it is assumed that <env_name> is activated.
 pip install -U gym numpy stopit argparse pillow
 ```
 
- - Install and use pycodestyle to check PEP8 compliance of Python scripts.
-```bash
-pip install -U pycodestyle
-pycodestyle <yourscript>.py
-```
-
- - Install and use autopep8 to rewrite Python scripts into PEP8 format.
-```bash
-pip install -U autopep8
-autopep8 --in-place --aggressive --aggressive <yourscript>.py
-```
-
 :warning: Check your file again with pycodestyle.
 
 # Usage
