@@ -148,7 +148,6 @@ class PacmanEnv(gym.Env):
         if (pacmanagent is None):
             pacmanagent = GreedyAgent()
         self.pacman = pacmanagent
-        self.pacman.displutils = self.display.graphicsUtils
 
         self.rules = ClassicGameRules(timeout)
         self.rules.quiet = False
@@ -159,32 +158,11 @@ class PacmanEnv(gym.Env):
         self.game.init()
 
         self.display.initialize(self.game.state.data)
-        self.display.updateView()
-
-        self.location = self.game.state.data.agentStates[0].getPosition()
-        self.ghostLocations = [a.getPosition()
-                               for a in self.game.state.data.agentStates[1:]]
-        self.ghostInFrame = any([np.sum(np.abs(
-            np.array(g) - np.array(self.location))) <= 2 for g in self.ghostLocations])
-
-        self.location_history = [self.location]
-        self.orientation = PACMAN_DIRECTIONS.index(
-            self.game.state.data.agentStates[0].getDirection())
-        self.orientation_history = [self.orientation]
-        self.illegal_move_counter = 0
+        
 
         self.cum_reward = 0
 
-        self.initial_info = {
-            'past_loc': [self.location_history[-1]],
-            'curr_loc': [self.location_history[-1]],
-            'past_orientation': [[self.orientation_history[-1]]],
-            'curr_orientation': [[self.orientation_history[-1]]],
-            'illegal_move_counter': [self.illegal_move_counter],
-            'ghost_positions': [self.ghostLocations],
-            'ghost_in_frame': [self.ghostInFrame],
-            'step_counter': [[0]],
-        }
+        
 
         self.previous_pacman_action = "Stop"
 
