@@ -1,7 +1,6 @@
 import argparse
 from PacmanGym.gym_pacman.envs.game import Agent
 from PacmanGym.gym_pacman.envs.pacman import Directions
-from pynput import keyboard
 
 
 class PacmanAgent(Agent):
@@ -23,11 +22,6 @@ class PacmanAgent(Agent):
         """
         self.lastMove = Directions.STOP
         self.pressedKey = None
-        lis = keyboard.Listener(
-            on_press=self._on_press,
-            on_release=self._on_release)
-        lis.start()
-        pass
 
     def get_action(self, state):
         """
@@ -105,14 +99,14 @@ class PacmanAgent(Agent):
         """
         return parser
 
-    def _on_press(self, key):
+    def _on_press(self, key, mod):
         try:
-            self.pressedKey = key.char
-        except AttributeError:
+            self.pressedKey = chr(key)
+        except Exception:
             pass
 
-    def _on_release(self, key):
+    def _on_release(self, key, mod):
         try:
             self.pressedKey = self.lastMove
-        except AttributeError:
+        except Exception:
             pass

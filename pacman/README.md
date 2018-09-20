@@ -82,7 +82,6 @@ python run.py --layout originalClassic --agentfile youragentmodule.py
 ```bash
 python run.py --layout originalClassic --agentfile humanagent.py
 ```
-:warning: While it works directly on Linux, root privileges are needed for keyboard access in MacOS. Not tested for Windows.
 
 - Same configuration as above, but enable the call to `registerInitialState` method.
 ```bash
@@ -96,7 +95,7 @@ See the help section of the command line for more information about the paramete
 
 The score function is computed as follows:
 
-`score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if losing end) + (500 if winning end)`.
+`score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
 
 # Instructions
 
@@ -140,7 +139,7 @@ Coming soon
 
 ## Computation Time Budget
 
-The computation time of the agent is limited on-game. More specifically, the method ```get_action``` of the agent prematurely terminates when the computation time transgress the given `timeout` parameter (fixed to 60 seconds during evaluation process). This configuration is referred as the *online setting*. On the other side, when the option ``` --enable-search-before-game ``` is specified, the method ``` register_initial_state ``` is called before the game starts, enabling computation without any computation time limit. This configuration is referred as the *offline setting*. Both configurations are considered during evaluation process.
+The computation time of the agent is limited on-game. More specifically, the method ```get_action``` of the agent prematurely terminates when the computation time transgress the given `timeout` parameter (fixed to 60 seconds during evaluation process). This configuration is referred as the *online setting*. On the other side, when the option ``` --enable-search-before-game ``` is specified, the method ``` register_initial_state ``` is called before the game starts, enabling computation without any computation time limit. This configuration is referred as the *offline setting*. Note that even in the latter configuration, the whole game needs to be solved by your intelligent agent within a reasonable amount of time.
 
 ## Illegal Moves
 

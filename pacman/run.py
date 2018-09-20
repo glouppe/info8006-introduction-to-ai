@@ -72,6 +72,16 @@ if __name__ == '__main__':
         pacmanagent=agt,
         timeout=args.timeout)
 
+    env.render()
+    # Ugly patch for keyboard agent.
+    # Solve root issue of keyboard handling.
+    try:
+        env.viewer.window.on_key_press = agt._on_press
+        env.viewer.window.on_key_release = agt._on_release
+    except BaseException:
+        pass
+    # exit()
+
     # Computation may be done before game if `registerinitialstate` has been
     # specified in command line
     if (args.registerinitialstate):
