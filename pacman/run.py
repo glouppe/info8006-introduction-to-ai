@@ -51,7 +51,7 @@ if __name__ == '__main__':
         default="humanagent.py")
     parser.add_argument(
         '--ghostagent',
-        help='Ghost agent available in ghostAgents',
+        help='Ghost agent available in ghostAgents module',
         choices=["lefty", "greedy", "randy"], default="greedy")
     parser.add_argument(
         '--layout',
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         default="mediumClassic")
     parser.add_argument(
         '--registerinitialstate',
-        help="Enable the call to the registerInitialState\
+        help="Enable the call to the register_initial_state\
               method of the agent",
         action="store_true")
     parser.add_argument(
