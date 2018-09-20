@@ -43,7 +43,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
     parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
-    parser.add_argument('--timeout', help='Timeout for getAction method',
+    parser.add_argument('--timeout', help='Timeout for get_action method',
                         type=int, default=60)
     parser.add_argument(
         '--agentfile',
