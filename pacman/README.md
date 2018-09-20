@@ -41,7 +41,7 @@ From now, it is assumed that <env_name> is activated.
 
  - Install dependencies.
 ```bash
-pip install -U gym numpy stopit argparse pynput pillow
+pip install -U gym numpy stopit argparse pillow
 ```
 
  - Install and use pycodestyle to check PEP8 compliance of Python scripts.
