@@ -52,7 +52,7 @@ From now, it is assumed that <env_name> is activated.
 pip install -U gym numpy stopit argparse pillow
 ```
 
- - (Windows) Install [ghostscript](https://pypi.org/project/ghostscript/).
+ - (Windows) Install [ghostscript](https://pypi.org/project/ghostscript/) and update the PATH environment variable.
 
 # Usage
 
