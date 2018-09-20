@@ -1,7 +1,7 @@
 import argparse
-from PacmanGym.gym_pacman.envs.game import Agent
-from PacmanGym.gym_pacman.envs.pacman import Directions
-
+from pacman_module.game import Agent
+from pacman_module.pacman import Directions
+from pacman_module.graphicsUtils import keys_waiting,keys_pressed
 
 class PacmanAgent(Agent):
     """
@@ -21,7 +21,7 @@ class PacmanAgent(Agent):
                   and command-line parser built by `arg_parser`
         """
         self.lastMove = Directions.STOP
-        self.pressedKey = None
+        self.keys = []
 
     def get_action(self, state):
         """
@@ -36,6 +36,11 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in game.Directions.
         """
+        
+        keys = keys_waiting() + keys_pressed()
+        if keys != []:
+            self.keys = keys
+
         legal = state.getLegalActions(0)
         move = self._get_move(legal)
 
@@ -51,32 +56,13 @@ class PacmanAgent(Agent):
         return move
 
     def _get_move(self, legal):
-        """
-        Translate the last pressed key to a move among the legal ones
-
-        Parameters:
-        -----------
-        - `legal`: a list of legal moves in the current game state
-
-
-        Return:
-        -------
-        - A legal move as defined in game.Directions.
-        """
-
         move = Directions.STOP
-        if self.pressedKey == self.WEST_KEY and Directions.WEST in legal:
-            move = Directions.WEST
-        elif self.pressedKey == self.EAST_KEY and Directions.EAST in legal:
-            move = Directions.EAST
-        elif self.pressedKey == self.NORTH_KEY and Directions.NORTH in legal:
-            move = Directions.NORTH
-        elif self.pressedKey == self.SOUTH_KEY and Directions.SOUTH in legal:
-            move = Directions.SOUTH
-        elif self.pressedKey == self.lastMove and self.lastMove in legal:
-            move = self.lastMove
-        self.lastMove = move
+        if   (self.WEST_KEY in self.keys or 'Left' in self.keys) and Directions.WEST in legal:  move = Directions.WEST
+        if   (self.EAST_KEY in self.keys or 'Right' in self.keys) and Directions.EAST in legal: move = Directions.EAST
+        if   (self.NORTH_KEY in self.keys or 'Up' in self.keys) and Directions.NORTH in legal:   move = Directions.NORTH
+        if   (self.SOUTH_KEY in self.keys or 'Down' in self.keys) and Directions.SOUTH in legal: move = Directions.SOUTH
         return move
+
 
     def register_initial_state(self, state):
         """

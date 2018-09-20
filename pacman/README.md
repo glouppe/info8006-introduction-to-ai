@@ -49,10 +49,8 @@ From now, it is assumed that <env_name> is activated.
 
  - Install dependencies.
 ```bash
-pip install -U gym numpy stopit argparse pillow
+pip install -U numpy stopit
 ```
-
- - (Windows) Install [ghostscript](https://pypi.org/project/ghostscript/) and include the path ``` C:\Program Files\gs\gsxx\bin ``` (``` xx ``` is the version of ghostscript you have installed) to the PATH environment variable.
 
 # Usage
 
@@ -61,9 +59,7 @@ pip install -U gym numpy stopit argparse pillow
  - Display the command-line help section
 ```bash
 python run.py -h
-```
-
-:warning: In Windows, you may have an OSError about Ghostscript. If this occurs, follow the instructions [there](https://pypi.org/project/ghostscript/). 
+``` 
 
 
  - Launches a game with a random agent in default map mediumClassic:

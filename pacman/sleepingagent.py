@@ -1,6 +1,6 @@
 import argparse
-from PacmanGym.gym_pacman.envs.game import Agent
-from PacmanGym.gym_pacman.envs.pacman import Directions
+from pacman_module.game import Agent
+from pacman_module.pacman import Directions
 import time
 
 

@@ -1,5 +1,6 @@
 import sys
-from PacmanGym.gym_pacman.envs import PacmanEnv
+from pacman_module.pacman import runGame
+#from PacmanGym.gym_pacman.envs import PacmanEnv
 import time
 from argparse import ArgumentParser
 import imp
@@ -52,6 +53,10 @@ if __name__ == '__main__':
         help="Enable the call to the registerInitialState\
               method of the agent",
         action="store_true")
+    parser.add_argument(
+        '--graphicsdisplay',
+        help="Enable the graphical display of the game",
+        action="store_true")
 
     argv2 = list(sys.argv)
     sys.argv = [x for x in sys.argv if x != "-h" and x != "--help"]
@@ -62,6 +67,9 @@ if __name__ == '__main__':
 
     parser = agent.arg_parser(parser)
     args = parser.parse_args()
+    agent = agent(args)
+    runGame(args.layout,agent,[], args.graphicsdisplay,timeout=args.timeout, ris=args.registerinitialstate)
+    """
     env = PacmanEnv()
     env.seed(args.seed)
     done = False
@@ -72,6 +80,8 @@ if __name__ == '__main__':
         pacmanagent=agt,
         timeout=args.timeout)
 
+
+    
     env.render()
     # Ugly patch for keyboard agent.
     # Solve root issue of keyboard handling.
@@ -91,3 +101,4 @@ if __name__ == '__main__':
         s_, r, done, info = env.step()
         env.render()
     env.close()
+    """
