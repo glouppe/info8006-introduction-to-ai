@@ -82,36 +82,4 @@ if __name__ == '__main__':
         gagts = [gagt(i + 1) for i in range(args.nghosts)]
     runGame(args.layout, agent, gagts, not args.silentdisplay,
             timeout=args.timeout, ris=args.registerinitialstate)
-    """
-    env = PacmanEnv()
-    env.seed(args.seed)
-    done = False
-    agt = agent(args)
-    s = env.reset(
-        layout=args.layout,
-        max_ghosts=args.nghosts,
-        pacmanagent=agt,
-        timeout=args.timeout)
 
-
-
-    env.render()
-    # Ugly patch for keyboard agent.
-    # Solve root issue of keyboard handling.
-    try:
-        env.viewer.window.on_key_press = agt._on_press
-        env.viewer.window.on_key_release = agt._on_release
-    except BaseException:
-        pass
-    # exit()
-
-    # Computation may be done before game if `registerinitialstate` has been
-    # specified in command line
-    if (args.registerinitialstate):
-        agt.register_initial_state(s)
-
-    while not done:
-        s_, r, done, info = env.step()
-        env.render()
-    env.close()
-    """
