@@ -1,10 +1,10 @@
 import sys
 from pacman_module.pacman import runGame
-#from PacmanGym.gym_pacman.envs import PacmanEnv
 import time
 from argparse import ArgumentParser
 import imp
 import os
+from pacman_module.ghostAgents import *
 
 
 def load_agent_from_file(filepath):
@@ -23,6 +23,11 @@ def load_agent_from_file(filepath):
 
     return class_mod
 
+
+ghosts = dict()
+ghosts["greedy"] = GreedyGhost
+ghosts["randy"] = RandyGhost
+ghosts["lefty"] = LeftyGhost
 
 if __name__ == '__main__':
 
@@ -44,6 +49,10 @@ if __name__ == '__main__':
         '--agentfile',
         help='Python file containing a PMAgent class',
         default="humanagent.py")
+    parser.add_argument(
+        '--ghostagent',
+        help='Ghost agent available in ghostAgents',
+        choices=["lefty", "greedy", "randy"], default="greedy")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder)',
@@ -68,7 +77,11 @@ if __name__ == '__main__':
     parser = agent.arg_parser(parser)
     args = parser.parse_args()
     agent = agent(args)
-    runGame(args.layout,agent,[], not args.silentdisplay,timeout=args.timeout, ris=args.registerinitialstate)
+    gagt = ghosts[args.ghostagent]
+    if (args.nghosts > 0):
+        gagts = [gagt(i + 1) for i in range(args.nghosts)]
+    runGame(args.layout, agent, gagts, not args.silentdisplay,
+            timeout=args.timeout, ris=args.registerinitialstate)
     """
     env = PacmanEnv()
     env.seed(args.seed)
@@ -81,7 +94,7 @@ if __name__ == '__main__':
         timeout=args.timeout)
 
 
-    
+
     env.render()
     # Ugly patch for keyboard agent.
     # Solve root issue of keyboard handling.

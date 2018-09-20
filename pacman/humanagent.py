@@ -1,7 +1,8 @@
 import argparse
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
-from pacman_module.graphicsUtils import keys_waiting,keys_pressed
+from pacman_module.graphicsUtils import keys_waiting, keys_pressed
+
 
 class PacmanAgent(Agent):
     """
@@ -36,7 +37,7 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in game.Directions.
         """
-        
+
         keys = keys_waiting() + keys_pressed()
         if keys != []:
             self.keys = keys
@@ -57,12 +58,19 @@ class PacmanAgent(Agent):
 
     def _get_move(self, legal):
         move = Directions.STOP
-        if   (self.WEST_KEY in self.keys or 'Left' in self.keys) and Directions.WEST in legal:  move = Directions.WEST
-        if   (self.EAST_KEY in self.keys or 'Right' in self.keys) and Directions.EAST in legal: move = Directions.EAST
-        if   (self.NORTH_KEY in self.keys or 'Up' in self.keys) and Directions.NORTH in legal:   move = Directions.NORTH
-        if   (self.SOUTH_KEY in self.keys or 'Down' in self.keys) and Directions.SOUTH in legal: move = Directions.SOUTH
+        if ((self.WEST_KEY in self.keys or 'Left' in self.keys)
+           and Directions.WEST in legal):
+            move = Directions.WEST
+        if ((self.EAST_KEY in self.keys or 'Right' in self.keys)
+           and Directions.EAST in legal):
+            move = Directions.EAST
+        if ((self.NORTH_KEY in self.keys or 'Up' in self.keys)
+           and Directions.NORTH in legal):
+            move = Directions.NORTH
+        if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys)
+           and Directions.SOUTH in legal):
+            move = Directions.SOUTH
         return move
-
 
     def register_initial_state(self, state):
         """
