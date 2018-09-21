@@ -185,4 +185,3 @@ These criterions are all importants. We particularly value well written reports 
 # Credits
 
 Credits: [UC Berkeley](http://ai.berkeley.edu/project_overview.html)
-         [OpenAI Interface](https://github.com/sohamghosh121/PacmanGym)

@@ -80,6 +80,7 @@ if __name__ == '__main__':
     gagt = ghosts[args.ghostagent]
     if (args.nghosts > 0):
         gagts = [gagt(i + 1) for i in range(args.nghosts)]
+    else: gagts = []
     runGame(args.layout, agent, gagts, not args.silentdisplay,
             timeout=args.timeout, ris=args.registerinitialstate)
 
