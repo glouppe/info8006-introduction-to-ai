@@ -18,8 +18,8 @@ The project is split into three parts. Your task is to design an intelligent age
   * [Search Agent (Part 1/3)](#search-agent--part-1-3-)
   * [Search Agent Against Ghosts (Part 2/3)](#search-agent-against-ghosts--part-2-3-)
   * [Search Agent Against Ghosts With Blinking Walls (Part 3/3)](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
-  * [Computation time budget](#computation-time-budget)
-  * [Illegal moves](#illegal-moves)
+  * [Computation Node Budget](#computation-node-budget)
+  * [Illegal Moves](#illegal-moves)
   * [Helpers](#helpers)
   * [Evaluation](#evaluation)
 - [Credits](#credits)
@@ -82,10 +82,6 @@ python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
 
 
-- Same configuration as above, but enable the call to `registerInitialState` method.
-```bash
-python run.py --layout mediumClassic --agentfile youragentmodule.py --registerinitialstate
-```
 
 
 See the help section of the command line for more information about the parameters.
@@ -109,7 +105,7 @@ The whole project must be done in groups of 2 students (same groups across all p
 
 In this part, only food dots are included in mazes. Formalize this game configuration as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md). This is the first part of your report.
 
-Design an intelligent agent, based on the A* algorithm described in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md). Your implementation needs to take into account both *online setting* and *offline setting*, as described [there](#computation-time-budget). You need to justify the design of your heuristic, and to ensure its admissibility in the A* algorithm. This is the second part of your report.
+Design an intelligent agent, based on the A* algorithm described in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md). Your implementation needs to take into account both *online setting* and *offline setting*, as described [there](#computation-node-budget). You need to justify the design of your heuristic, and to ensure its admissibility in the A* algorithm. This is the second part of your report.
 
 Implement the following algorithms using this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py) :
 
@@ -117,9 +113,9 @@ Implement the following algorithms using this [class template](https://github.co
  - Breadth-First Search (BFS) ,
  - Uniform Cost Search (UCS).
 
-Run these algorithms and your intelligent agent against the maze layouts located in this [folder](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman/PacmanGym/layouts) in the *offline setting*. For each run, display the performance in terms of  [final score](#score-function) and total computation time. This is the second part of your report.
+Run these algorithms and your intelligent agent against the maze layouts located in this [folder](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman/PacmanGym/layouts) in the *offline setting*. For each run, display the performance in terms of  [final score](#score-function) and number of expanded nodes. This is the third part of your report.
 
-Run your intelligent agent in the *online setting* in the same maze layouts. For each run, display the performance in terms of [final score](#score-function), and compare them to the performance of your intelligent agent in the *offline setting*. This is the third part of your report.
+Run your intelligent agent in the *online setting* in the same maze layouts. For each run, display the performance in terms of [final score](#score-function), and compare them to the performance of your intelligent agent in the *offline setting*. This is the last part of your report.
 
 Finally, conclude your report by a discussion over the performance and the limits of your agent, and possible improvements of your approach. 
 
@@ -136,9 +132,9 @@ Coming soon
 
 Coming soon
 
-## Computation Time Budget
+## Computation Node Budget
 
-The computation time of the agent is limited on-game. More specifically, the method ```get_action``` of the agent prematurely terminates when the computation time transgress the given `timeout` parameter (fixed to 60 seconds during evaluation process). This configuration is referred as the *online setting*. On the other side, when the option ``` --enable-search-before-game ``` is specified, the method ``` register_initial_state ``` is called before the game starts, enabling computation without any computation time limit. This configuration is referred as the *offline setting*. Note that even in the latter configuration, the whole game needs to be solved by your intelligent agent within a reasonable amount of time.
+The computation budget of the agent is expressed in terms of number of node expansions. We refer to an *offline* setting when this number is unlimited, and to an *online* setting when this number is limited. The method ```get_action``` is interrupted when its number of expansions is higher than the fixed computation budget. During evaluation process, the following budgets are considered for the *online* setting : *TBD*.
 
 ## Illegal Moves
 
@@ -146,10 +142,11 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 ## Helpers 
 
-Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, both methods ```get_action``` and ``` register_initial_state ``` gets respectively the current and the initial state of the game. Useful methods of the state are specified below : 
+Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, the method ```get_action``` gets the current state ``` s ``` at each turn of the game. Useful methods of the state are specified below : 
 
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
  - ```s.generateSuccessor(agentIndex, m)``` : Returns the successor state given the current state ```s``` and the move ```m```. See the [```Directions```](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/PacmanGym/gym_pacman/envs/game.py) class.
+	* *Must* be called for any node expansion. 
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
