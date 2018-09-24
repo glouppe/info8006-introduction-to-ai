@@ -665,13 +665,19 @@ class Game:
             action = None
             self.mute(agentIndex)
             pacmodule.pacman.GameState.resetNodeExpansionCounter()
-            if expout <= 0:
+            violated = False
+            if expout == 0:
                 action = agent.get_action(observation)
             else:
                 #TODO : node expansion control through getSuccessors
                 action = agent.get_action(observation)
+                if pacmodule.pacman.GameState.countExpanded > expout:
+                    violated = True
             if action not in self.state.getLegalActions(agentIndex):
                 print("Illegal move !")
+                action = previous_action
+            elif violated:
+                print("Node expansion budget violated !")
                 action = previous_action
             self.unmute()
             # Execute the action
