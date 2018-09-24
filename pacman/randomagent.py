@@ -43,19 +43,6 @@ class PacmanAgent(Agent):
         # Returns a randomly chosen move according to probability distribution
         return a[0]
 
-    def register_initial_state(self, state):
-        """
-        Procedure called before the game
-        with the initial game state `state`.
-        !!! Not called in the online setting (See instructions).
-
-        Parameters:
-        -----------
-        - `state`: the current game state. See class pacman.GameState.
-
-        """
-        return
-
     def arg_parser(parser):
         """
         Return a command line parser based on the arguments needed both

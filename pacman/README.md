@@ -135,6 +135,7 @@ Coming soon
 ## Computation Node Budget
 
 The computation budget of the agent is expressed in terms of number of node expansions. We refer to an *offline* setting when this number is unlimited, and to an *online* setting when this number is limited. The method ```get_action``` is interrupted when its number of expansions is higher than the fixed computation budget. During evaluation process, the following budgets are considered for the *online* setting : *TBD*.
+:warning: Do not alter in any way the node budget control during the ```get_action``` call. This is checked and your project won't be graded if this is detected. 
 
 ## Illegal Moves
 
@@ -145,8 +146,8 @@ You need to ensure that your agent always returns a legal move. If it is not the
 Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, the method ```get_action``` gets the current state ``` s ``` at each turn of the game. Useful methods of the state are specified below : 
 
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
- - ```s.generateSuccessor(agentIndex, m)``` : Returns the successor state given the current state ```s``` and the move ```m```. See the [```Directions```](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/PacmanGym/gym_pacman/envs/game.py) class.
-	* *Must* be called for any node expansion. 
+ - ```s.generatePacmanSuccessors()``` : Returns the successor states given the current state ```s``` for the pacman agent.
+	* *Must* be called for any node expansion, otherwise your project won't be graded. 
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.

@@ -29,18 +29,6 @@ class PacmanAgent(Agent):
         """
         return Directions.STOP
 
-    def register_initial_state(self, state):
-        """
-        Procedure called before the game
-        with the initial game state `state`.
-        !!! Not called in the online setting (See instructions).
-
-        Parameters:
-        -----------
-        - `state`: the current game state. See class pacman.GameState.
-
-        """
-        return
 
     @staticmethod
     def arg_parser(parser):
