@@ -1,7 +1,7 @@
-# XXX: Complete this class for Project Part I
+# XXX: Complete this class for all parts of the project
 import argparse
-from PacmanGym.gym_pacman.envs.game import Agent
-from PacmanGym.gym_pacman.envs.pacman import Directions
+from pacman_module.game import Agent
+from pacman_module.pacman import Directions
 
 
 class PacmanAgent(Agent):
@@ -14,7 +14,7 @@ class PacmanAgent(Agent):
         """
         pass
 
-    def getAction(self, state):
+    def get_action(self, state):
         """
         Given a pacman game state, returns a legal move. Called on-game.
         !!! Constrained computational time (see `args.timeout` parameter)
@@ -29,7 +29,7 @@ class PacmanAgent(Agent):
         """
         return Directions.STOP
 
-    def registerInitialState(self, state):
+    def register_initial_state(self, state):
         """
         Procedure called before the game
         with the initial game state `state`.

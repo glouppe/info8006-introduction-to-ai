@@ -1,7 +1,7 @@
 import argparse
-from PacmanGym.gym_pacman.envs.game import Agent
-from PacmanGym.gym_pacman.envs.pacman import Directions
-from pynput import keyboard
+from pacman_module.game import Agent
+from pacman_module.pacman import Directions
+from pacman_module.graphicsUtils import keys_waiting, keys_pressed
 
 
 class PacmanAgent(Agent):
@@ -22,14 +22,9 @@ class PacmanAgent(Agent):
                   and command-line parser built by `arg_parser`
         """
         self.lastMove = Directions.STOP
-        self.pressedKey = None
-        lis = keyboard.Listener(
-            on_press=self._on_press,
-            on_release=self._on_release)
-        lis.start()
-        pass
+        self.keys = []
 
-    def getAction(self, state):
+    def get_action(self, state):
         """
         Given a pacman game state, returns a legal move. Called on-game.
         !!! Constrained computational time (see `args.timeout` parameter)
@@ -42,8 +37,13 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in game.Directions.
         """
+
+        keys = keys_waiting() + keys_pressed()
+        if keys != []:
+            self.keys = keys
+
         legal = state.getLegalActions(0)
-        move = self._getMove(legal)
+        move = self._get_move(legal)
 
         if move == Directions.STOP:
             # Try to move in the same direction as before
@@ -56,35 +56,23 @@ class PacmanAgent(Agent):
         self.lastMove = move
         return move
 
-    def _getMove(self, legal):
-        """
-        Translate the last pressed key to a move among the legal ones
-
-        Parameters:
-        -----------
-        - `legal`: a list of legal moves in the current game state
-
-
-        Return:
-        -------
-        - A legal move as defined in game.Directions.
-        """
-
+    def _get_move(self, legal):
         move = Directions.STOP
-        if self.pressedKey == self.WEST_KEY and Directions.WEST in legal:
+        if ((self.WEST_KEY in self.keys or 'Left' in self.keys)
+           and Directions.WEST in legal):
             move = Directions.WEST
-        elif self.pressedKey == self.EAST_KEY and Directions.EAST in legal:
+        if ((self.EAST_KEY in self.keys or 'Right' in self.keys)
+           and Directions.EAST in legal):
             move = Directions.EAST
-        elif self.pressedKey == self.NORTH_KEY and Directions.NORTH in legal:
+        if ((self.NORTH_KEY in self.keys or 'Up' in self.keys)
+           and Directions.NORTH in legal):
             move = Directions.NORTH
-        elif self.pressedKey == self.SOUTH_KEY and Directions.SOUTH in legal:
+        if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys)
+           and Directions.SOUTH in legal):
             move = Directions.SOUTH
-        elif self.pressedKey == self.lastMove and self.lastMove in legal:
-            move = self.lastMove
-        self.lastMove = move
         return move
 
-    def registerInitialState(self, state):
+    def register_initial_state(self, state):
         """
         Procedure called before the game
         with the initial game state `state`.
@@ -105,14 +93,14 @@ class PacmanAgent(Agent):
         """
         return parser
 
-    def _on_press(self, key):
+    def _on_press(self, key, mod):
         try:
-            self.pressedKey = key.char
-        except AttributeError:
+            self.pressedKey = chr(key)
+        except Exception:
             pass
 
-    def _on_release(self, key):
+    def _on_release(self, key, mod):
         try:
             self.pressedKey = self.lastMove
-        except AttributeError:
+        except Exception:
             pass
