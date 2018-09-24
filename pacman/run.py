@@ -6,6 +6,11 @@ import imp
 import os
 from pacman_module.ghostAgents import *
 
+def restricted_float(x):
+    x = float(x)
+    if x < 0.1 or x > 1.0:
+        raise argparse.ArgumentTypeError("%r not in range [0.1, 1.0]"%(x,))
+    return x
 
 def load_agent_from_file(filepath):
     class_mod = None
@@ -44,7 +49,7 @@ if __name__ == '__main__':
     parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
     parser.add_argument('--timeout', help='Timeout for get_action method',
-                        type=int, default=60)
+                        type=int, default=10)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a PMAgent class',
