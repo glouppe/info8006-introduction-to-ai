@@ -81,6 +81,11 @@ python run.py
 python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
 
+ - Same configuration as above but in *online setting* with a limit of 100 node expansions per call to ` get_action `.
+```bash
+python run.py --layout originalClassic --agentfile youragentmodule.py --expout 100
+```
+
 
 
 
