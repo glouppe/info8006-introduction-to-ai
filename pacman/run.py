@@ -8,17 +8,20 @@ from pacman_module.ghostAgents import *
 import numpy as np
 import sys
 
+
 def restricted_float(x):
     x = float(x)
     if x < 0.1 or x > 1.0:
-        raise ArgumentTypeError("%r not in range [0.1, 1.0]"%(x,))
+        raise ArgumentTypeError("%r not in range [0.1, 1.0]" % (x,))
     return x
+
 
 def positive_integer(x):
     x = int(x)
     if x < 0:
-        raise ArgumentTypeError("%r is not >= 0"%(x,))
+        raise ArgumentTypeError("%r is not >= 0" % (x,))
     return x
+
 
 def load_agent_from_file(filepath):
     class_mod = None
@@ -75,22 +78,16 @@ if __name__ == '__main__':
         help="Disable the graphical display of the game",
         action="store_true")
 
-    argv2 = list(sys.argv)
-    sys.argv = [x for x in sys.argv if x != "-h" and x != "--help"]
-    args, _ = parser.parse_known_args()
-    sys.argv = argv2
-
-    agent = load_agent_from_file(args.agentfile)
-
-    parser = agent.arg_parser(parser)
     args = parser.parse_args()
-    agent = agent(args)
+    agent = load_agent_from_file(args.agentfile)(args)
+
     gagt = ghosts[args.ghostagent]
     if (args.nghosts > 0):
         gagts = [gagt(i + 1) for i in range(args.nghosts)]
-    else: gagts = []
-    total_score, total_computation_time, total_expanded_nodes = runGame(args.layout, agent, gagts, not args.silentdisplay,
-            expout=args.expout)
-    print ("Total score : " + str(total_score))
-    print ("Total computation time (seconds) : " + str(total_computation_time))
-    print ("Total expanded nodes : " + str(total_expanded_nodes))
+    else:
+        gagts = []
+    total_score, total_computation_time, total_expanded_nodes = runGame(
+        args.layout, agent, gagts, not args.silentdisplay, expout=args.expout)
+    print("Total score : " + str(total_score))
+    print("Total computation time (seconds) : " + str(total_computation_time))
+    print("Total expanded nodes : " + str(total_expanded_nodes))

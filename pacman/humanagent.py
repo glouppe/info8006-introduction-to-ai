@@ -18,8 +18,7 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace. Built from both main command-line parser
-                  and command-line parser built by `arg_parser`
+        - `args`: Namespace of arguments from command-line prompt`
         """
         self.lastMove = Directions.STOP
         self.keys = []
@@ -59,26 +58,18 @@ class PacmanAgent(Agent):
     def _get_move(self, legal):
         move = Directions.STOP
         if ((self.WEST_KEY in self.keys or 'Left' in self.keys)
-           and Directions.WEST in legal):
+                and Directions.WEST in legal):
             move = Directions.WEST
         if ((self.EAST_KEY in self.keys or 'Right' in self.keys)
-           and Directions.EAST in legal):
+                and Directions.EAST in legal):
             move = Directions.EAST
         if ((self.NORTH_KEY in self.keys or 'Up' in self.keys)
-           and Directions.NORTH in legal):
+                and Directions.NORTH in legal):
             move = Directions.NORTH
         if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys)
-           and Directions.SOUTH in legal):
+                and Directions.SOUTH in legal):
             move = Directions.SOUTH
         return move
-
-    @staticmethod
-    def arg_parser(parser):
-        """
-        Return a command line parser based on the arguments needed both
-        from this agent and the command line. See python module `argparse`.
-        """
-        return parser
 
     def _on_press(self, key, mod):
         try:

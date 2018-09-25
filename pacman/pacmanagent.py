@@ -9,10 +9,9 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace. Built from both main command-line parser
-                  and command-line parser built by `arg_parser`
+        - `args`: Namespace of arguments from command-line prompt`
         """
-        pass
+        self.args = args
 
     def get_action(self, state):
         """
@@ -28,12 +27,3 @@ class PacmanAgent(Agent):
         - A legal move as defined in game.Directions.
         """
         return Directions.STOP
-
-
-    @staticmethod
-    def arg_parser(parser):
-        """
-        Return a command line parser based on the arguments needed both
-        from this agent and the command line. See python module `argparse`.
-        """
-        return parser

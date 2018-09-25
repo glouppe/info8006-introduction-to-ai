@@ -9,11 +9,10 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace. Built from both main command-line parser
-                  and command-line parser built by `arg_parser`
+        - `args`: Namespace of arguments from command-line prompt`
         """
         self.prob_dir = dict()
-        WestProb, SouthProb, EastProb, NorthProb = args.dirprob
+        WestProb, SouthProb, EastProb, NorthProb = [.25, .25, .25, .25]
         self.prob_dir["West"] = WestProb
         self.prob_dir["South"] = SouthProb
         self.prob_dir["North"] = EastProb
@@ -42,15 +41,3 @@ class PacmanAgent(Agent):
         a = self._rng.choice(legals, 1, replace=False, p=probs)
         # Returns a randomly chosen move according to probability distribution
         return a[0]
-
-    def arg_parser(parser):
-        """
-        Return a command line parser based on the arguments needed both
-        from this agent and the command line. See python module `argparse`.
-        """
-        parser.add_argument('--dirprob',
-                            help='West/South/East/North probabilities',
-                            type=float,
-                            nargs=4, default=[.25, .25, .25, .25],
-                            metavar=('WProb', 'SProb', 'EProb', 'NProb'))
-        return parser
