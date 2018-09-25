@@ -1,15 +1,23 @@
 import sys
 from pacman_module.pacman import runGame
 import time
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentTypeError
 import imp
 import os
 from pacman_module.ghostAgents import *
+import numpy as np
+import sys
 
 def restricted_float(x):
     x = float(x)
     if x < 0.1 or x > 1.0:
-        raise argparse.ArgumentTypeError("%r not in range [0.1, 1.0]"%(x,))
+        raise ArgumentTypeError("%r not in range [0.1, 1.0]"%(x,))
+    return x
+
+def positive_integer(x):
+    x = int(x)
+    if x < 0:
+        raise ArgumentTypeError("%r is not >= 0"%(x,))
     return x
 
 def load_agent_from_file(filepath):
@@ -48,8 +56,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
     parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
-    parser.add_argument('--timeout', help='Timeout for get_action method',
-                        type=int, default=10)
+    parser.add_argument('--expout', help='Timeout for get_action method',
+                        type=positive_integer, default=0)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a PMAgent class',
@@ -62,11 +70,6 @@ if __name__ == '__main__':
         '--layout',
         help='Maze layout (from layout folder)',
         default="mediumClassic")
-    parser.add_argument(
-        '--registerinitialstate',
-        help="Enable the call to the register_initial_state\
-              method of the agent",
-        action="store_true")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game",
@@ -87,5 +90,5 @@ if __name__ == '__main__':
         gagts = [gagt(i + 1) for i in range(args.nghosts)]
     else: gagts = []
     runGame(args.layout, agent, gagts, not args.silentdisplay,
-            timeout=args.timeout, ris=args.registerinitialstate)
+            expout=args.expout)
 

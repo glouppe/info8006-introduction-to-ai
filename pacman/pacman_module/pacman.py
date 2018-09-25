@@ -52,6 +52,7 @@ import types
 import time
 import random
 import os
+import numpy as np
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
@@ -78,8 +79,13 @@ class GameState:
     ####################################################
 
     # static variable keeps track of which states have had getLegalActions
-    # called
     explored = set()
+    # static variable keeps track of number of calls of 
+    # /!\ XXX: Do NOT modify this variable during get_action call. 
+    # /!\ Otherwise, your project won't be graded
+    countExpanded=0
+    def resetNodeExpansionCounter():
+        GameState.countExpanded=0
 
     def getAndResetExplored():
         tmp = GameState.explored.copy()
@@ -142,6 +148,13 @@ class GameState:
         Generates the successor state after the specified pacman move
         """
         return self.generateSuccessor(0, action)
+
+    def generatePacmanSuccessors(self):
+        """
+        Generates the successor state after the specified pacman move
+        """
+        GameState.countExpanded += 1
+        return [self.generateSuccessor(0, action) for action in self.getLegalPacmanActions() if action != Directions.STOP]
 
     def getPacmanState(self):
         """
@@ -822,14 +835,13 @@ def runGame(
         pacman,
         ghosts,
         displayGraphics,
-        timeout=30,
-        ris=False):
+        expout=np.inf):
     display = graphicsDisplay.PacmanGraphics(
         1.0, frameTime=0.1) if displayGraphics else textDisplay.NullGraphics()
     import __main__
     __main__.__dict__['_display'] = display
     lay = layout.getLayout(layout_name)
 
-    rules = ClassicGameRules(timeout)
+    rules = ClassicGameRules(expout)
     game = rules.newGame(lay, pacman, ghosts, display, False, False)
-    game.run(ris)
+    game.run()

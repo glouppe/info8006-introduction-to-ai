@@ -26,6 +26,7 @@ import os
 import traceback
 import sys
 import stopit
+import pacman_module as pacmodule
 
 #######################
 # Parts worth reading #
@@ -641,27 +642,17 @@ class Game:
         sys.stdout = OLD_STDOUT
         sys.stderr = OLD_STDERR
 
-    def run(self, register_initial_state=False):
+    def run(self):
         """
         Main control loop for game play.
         """
         self.display.initialize(self.state.data)
         self.numMoves = 0
 
-        # self.display.initialize(self.state.makeObservation(1).data)
-        # inform learning agents of the game start
-        for i in range(len(self.agents)):
-            agent = self.agents[i]
-            if register_initial_state:
-                self.mute(i)
-                agent.register_initial_state(self.state.deepCopy())
-                # TODO: could this exceed the total time
-                self.unmute()
-
         agentIndex = self.startingIndex
         numAgents = len(self.agents)
         previous_action = Directions.STOP
-        timeout = int(self.rules.getMoveTimeout(agentIndex))
+        expout = int(self.rules.getMoveTimeout(agentIndex))
         while not self.gameOver:
             # Fetch the next agent
             agent = self.agents[agentIndex]
@@ -673,18 +664,22 @@ class Game:
             # Solicit an action
             action = None
             self.mute(agentIndex)
-
-            with stopit.ThreadingTimeout(timeout) as to_ctx_mgr:
-                assert to_ctx_mgr.state == to_ctx_mgr.EXECUTING
+            pacmodule.pacman.GameState.resetNodeExpansionCounter()
+            violated = False
+            if expout == 0:
                 action = agent.get_action(observation)
-            if to_ctx_mgr.state == to_ctx_mgr.TIMED_OUT:
-                print("Timed out !")
-                action = previous_action
+            else:
+                #TODO : node expansion control through getSuccessors
+                action = agent.get_action(observation)
+                if pacmodule.pacman.GameState.countExpanded > expout:
+                    violated = True
             if action not in self.state.getLegalActions(agentIndex):
                 print("Illegal move !")
                 action = previous_action
+            elif violated:
+                print("Node expansion budget violated !")
+                action = previous_action
             self.unmute()
-
             # Execute the action
             self.moveHistory.append((agentIndex, action))
             previous_action = action
