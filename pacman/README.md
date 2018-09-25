@@ -101,8 +101,8 @@ The score function is computed as follows:
 
 For each part of the project, you need to provide the following deliverables :
 
-	- The source code of your intelligent agent. Complete this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py) to do so. If you have written separate modules, provide them in a subfolder.
-	- A report in PDF format of 4 pages max.
+ - The source code of your intelligent agent. Complete this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py) to do so. If you have written separate modules, provide them in a subfolder.
+ - A report in PDF format of 4 pages max.
 
 The whole project must be done in group of 2 students (same group across all parts). Submit your deliverables as an archive in the [Montefiore Submission Platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
