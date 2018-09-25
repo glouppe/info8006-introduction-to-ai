@@ -686,6 +686,9 @@ class Game:
             elif violated:
                 print("Node expansion budget violated !")
                 action = previous_action
+
+            if action not in self.state.getLegalActions(agentIndex):
+                action = Directions.STOP
             self.unmute()
             # Execute the action
             self.moveHistory.append((agentIndex, action))
