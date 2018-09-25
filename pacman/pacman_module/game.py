@@ -653,6 +653,10 @@ class Game:
         numAgents = len(self.agents)
         previous_action = Directions.STOP
         expout = int(self.rules.getMoveTimeout(agentIndex))
+        totalComputationTime = 0
+        totalExpandedNodes = 0
+        if (expout > 0):
+            pacmodule.pacman.GameState.setMaximumExpanded(expout)
         while not self.gameOver:
             # Fetch the next agent
             agent = self.agents[agentIndex]
@@ -666,6 +670,7 @@ class Game:
             self.mute(agentIndex)
             pacmodule.pacman.GameState.resetNodeExpansionCounter()
             violated = False
+            t = time.time()
             if expout == 0:
                 action = agent.get_action(observation)
             else:
@@ -673,6 +678,8 @@ class Game:
                 action = agent.get_action(observation)
                 if pacmodule.pacman.GameState.countExpanded > expout:
                     violated = True
+            totalComputationTime += (time.time() - t)
+            totalExpandedNodes += pacmodule.pacman.GameState.countExpanded
             if action not in self.state.getLegalActions(agentIndex):
                 print("Illegal move !")
                 action = previous_action
@@ -701,17 +708,7 @@ class Game:
             if _BOINC_ENABLED:
                 boinc.set_fraction_done(self.getProgress())
 
-        # inform a learning agent of the game result
-        for agentIndex, agent in enumerate(self.agents):
-            if "final" in dir(agent):
-                try:
-                    self.mute(agentIndex)
-                    agent.final(self.state)
-                    self.unmute()
-                except Exception as data:
-                    if not self.catchExceptions:
-                        raise
-                    self._agentCrash(agentIndex)
-                    self.unmute()
-                    return
+        totalScore = self.state.getScore()
+
         self.display.finish()
+        return totalScore,totalComputationTime,totalExpandedNodes

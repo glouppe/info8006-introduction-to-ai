@@ -49,7 +49,7 @@ From now, it is assumed that <env_name> is activated.
 
  - Install dependencies.
 ```bash
-pip install -U numpy stopit
+pip install -U numpy
 ```
 
 # Usage
@@ -76,7 +76,7 @@ python run.py --silentdisplay
 python run.py
 ```
 
- - Launches a game with your Pacman agent class, named PacmanAgent located in `youragentmodule.py`, and with the maze originalClassic (see layout folder).
+ - Launches a game with your Pacman agent class, named PacmanAgent located in `youragentmodule.py`, and with the maze `originalClassic` (see layout folder).
 ```bash
 python run.py --layout originalClassic --agentfile youragentmodule.py
 ```
@@ -117,7 +117,7 @@ You are asked to implement the following an agent based on each of these search 
 Each agent should be implemented in a different python file (DfsAgent.py, BfsAgent.py, UcsAgent.py, AStarAgent.py) using this [class template](https://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacmanagent.py). Be careful, the A* implementation should take into account both *online setting* (possible early stopping of the search) and *offline setting*, as described [there](#computation-time-budget).
 
 
-Your report should be organised into 4 parts. First you should formalize this game configuration as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md). Secondly, you should run your agents against the maze layouts located in this [folder](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman/PacmanGym/layouts) in the *offline setting*. For each run, display the performance in terms of  [final score](#score-function) and total computation time. Then, you should run ONLY your A* agent in the *online setting* in the same maze layouts. For each run, display the performance in terms of [final score](#score-function), and compare them to the performance of your A* agent in the *offline setting*. Finally, conclude your report by a discussion over the performance and the limits of your agent, and possible improvements of your approach.
+Your report should be organised into 4 parts. First you should formalize this game configuration as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md). Secondly, you should run your agents against the maze layouts located in this [folder](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman/PacmanGym/layouts) in the *offline setting*. For each run, display the performance in terms of  [final score](#score-function), total computation time and total number of expanded nodes. Then, you should run ONLY your A* agent in the *online setting* in the same maze layouts. For each run, display the performance in terms of [final score](#score-function), and compare them to the performance of your A* agent in the *offline setting*. Finally, conclude your report by a discussion over the performance and the limits of your agent, and possible improvements of your approach.
 
 ## Search Agent Against Ghosts (Part 2/3)
 
@@ -129,7 +129,7 @@ Coming soon
 
 ## Computation Node Budget
 
-The computation budget of the agent is expressed in terms of number of node expansions. We refer to an *offline* setting when this number is unlimited, and to an *online* setting when this number is limited. The method ```get_action``` is interrupted when its number of expansions is higher than the fixed computation budget. During evaluation process, the following budgets are considered for the *online* setting : *TBD*.
+The computation budget of the agent is expressed in terms of number of node expansions. We refer to an *offline* setting when this number is unlimited, and to an *online* setting when this number is limited. When the number of expansions in ```get_action``` exceeds the fixed computation budget, the expansion of any node is not allowed anymore (see [there](#helpers)) . During evaluation process, the following budgets are considered for the *online* setting : *TBD*.
 :warning: Do not alter in any way the node budget control during the ```get_action``` call. This is checked and your project won't be graded if this is detected.
 
 ## Illegal Moves
@@ -141,8 +141,9 @@ You need to ensure that your agent always returns a legal move. If it is not the
 Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, the method ```get_action``` gets the current state ``` s ``` at each turn of the game. Useful methods of the state are specified below :
 
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
- - ```s.generatePacmanSuccessors()``` : Returns the successor states given the current state ```s``` for the pacman agent.
+ - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
 	* *Must* be called for any node expansion, otherwise your project won't be graded.
+	* In the *online setting*, when the number of expansions exceeds the computation budget, ```None``` is always returned.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
