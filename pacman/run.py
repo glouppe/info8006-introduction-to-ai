@@ -70,7 +70,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder)',
-        default="mediumClassic")
+        default="tinyMaze")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game",
