@@ -52,7 +52,7 @@ From now, it is assumed that `pacman` is activated.
 
 Dependencies should be installed through `conda`:
 ```bash
-conda install numpy XXXXXXXX
+conda install numpy
 ```
 
 ### Usage
