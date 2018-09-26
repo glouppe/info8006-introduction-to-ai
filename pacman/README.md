@@ -13,16 +13,16 @@ The goal of this programming project is to implement intelligent agents for the 
 ## Table of contents
 
 - [Installation](#installation)
-    * Setup
-    * Install
+    * [Setup](#setup)
+    * [Usage](#usage)
 - [Instructions](#instructions)
     * [Part 1: Search agent](#search-agent--part-1-3-)
     * [Part 2: Minimax agent](#search-agent-against-ghosts--part-2-3-)
     * [Part 3: MDP agent](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
 - [FAQ](#helpers)
-    * Score
-    * API
-    * Illegal moves
+    * [Score](#score)
+    * [API](#api)
+    * [Illegal moves](#illegal-moves)
 - [Evaluation](#evaluation)
 - [Credits](#credits)
 
@@ -146,7 +146,7 @@ Useful methods of the state are specified below:
 
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
  - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
-	* This method **must** be called for any node expansion, otherwise your project will not be graded.
+	* This method **must** be called for any node expansion.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
@@ -158,7 +158,7 @@ Useful methods of the state are specified below:
 
 ### Illegal moves
 
-You need to ensure that your agent always returns a legal move. If it is not the case, the game engine ignores it and repeat the previous move as long as it remains legal. Otherwise, it just keep getting stuck in the same location.
+You need to ensure that your agent always returns a legal move. If it is not the case, the previous move is repeated if it is still legal. Otherwise, it remains in in the same location.
 
 ---
 
@@ -166,6 +166,7 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The evaluation of your deliverables is based on the following criteria:
 
+- Performance of your intelligent agent, given metrics described [there](#search-agent--part-1-3-).
 - Clarity of your report
 	* Avoid long and vague sentences and be straight to the point.
 	* Illustrate with examples.

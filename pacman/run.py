@@ -59,8 +59,6 @@ if __name__ == '__main__':
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
     parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
-    parser.add_argument('--expout', help='Timeout for get_action method',
-                        type=positive_integer, default=0)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a PMAgent class',
@@ -87,7 +85,7 @@ if __name__ == '__main__':
     else:
         gagts = []
     total_score, total_computation_time, total_expanded_nodes = runGame(
-        args.layout, agent, gagts, not args.silentdisplay, expout=args.expout)
+        args.layout, agent, gagts, not args.silentdisplay, expout=0)
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
     print("Total expanded nodes : " + str(total_expanded_nodes))

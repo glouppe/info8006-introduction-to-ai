@@ -15,12 +15,11 @@ class PacmanAgent(Agent):
 
     def get_action(self, state):
         """
-        Given a pacman game state, returns a legal move. Called on-game.
-        !!! Constrained computational time (see `args.timeout` parameter)
+        Given a pacman game state, returns a legal move.
 
         Parameters:
         -----------
-        - `state`: the current game state. See class pacman.GameState.
+        - `state`: the current game state. See FAQ and class pacman.GameState.
 
         Return:
         -------
