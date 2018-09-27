@@ -25,7 +25,6 @@ import time
 import os
 import traceback
 import sys
-import stopit
 import pacman_module as pacmodule
 
 #######################
