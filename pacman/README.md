@@ -171,13 +171,12 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The evaluation of your deliverables is based on the following criteria:
 
-- Performance of your intelligent agent, given metrics described [there](#search-agent--part-1-3-).
-- Clarity of your report
+- Performance of your intelligent agent (as evaluated by its final score, its total computation time and its total number of expanded nodes).
+- Quality and clarity of your report.
 	* Avoid long and vague sentences and be straight to the point.
-	* Illustrate with examples.
 	* Follow the structure mentioned in the instructions.
 
-- Clarity and structure of the source code
+- Quality, clarity and structure of the source code.
 	* Avoid single-file long code source, and prefers to use a multiple-files modular architecture.
 	* Name your variables-attributes-classes according to their usage.
     * Comment your code so that explanations are concise and clear enough to allow the reader to understand the semantics in a quick look.
