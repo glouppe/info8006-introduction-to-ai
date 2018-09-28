@@ -93,7 +93,7 @@ For each part of the project, you must provide the following deliverables:
 - The source code of your Pacman agent(s).  
 - A report in PDF format of 4 pages (at most).
 
-The three parts of project must be carried out in groups of 2 students (with the same group across all parts).
+The three parts of the project must be carried out in groups of 2 students (with the same group across all parts).
 
 You deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
