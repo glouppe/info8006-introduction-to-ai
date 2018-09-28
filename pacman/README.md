@@ -140,8 +140,8 @@ We ask you to implement an agent that maximizes this function.
 
 ### API
 
-You must implement your agent as `PacmanAgent` agent, following the template of `pacmanagent.py`.
-The core of your algorithm should be implemented or called within the `get_action` method. This method methods receives the current state `s` of the game and should return the action to take.
+You must implement your agent as a `PacmanAgent` class, following the template of `pacmanagent.py`.
+The core of your algorithm should be implemented or called within the `get_action` method. This method method receives the current state `s` of the game and should return the action to take.
 
 Useful methods of the state are specified below:
 
