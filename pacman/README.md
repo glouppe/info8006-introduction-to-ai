@@ -74,9 +74,9 @@ python run.py  --agentfile randomagent.py
 python run.py --silentdisplay
 ```
 
-`--layout`: Start the game with a user-specifed layout for the maze (see the `/layouts/` folder):
+`--layout`: Start the game with a user-specifed layout for the maze (see the `/pacman_module/layouts/` folder):
 ```bash
-python run.py --layout originalClassic
+python run.py --layout mediumCorners
 ```
 
 `-h`: For further details, check the command-line help section:
@@ -114,7 +114,7 @@ Each agent should be implemented as a `PacmanAgent` class. Each should be specif
 
 Your report should be organized into 3 parts:
 1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
-2. You should run your agents against the 3 maze layouts located the  `/layouts/` folder.
+2. You should run your agents against the 3 maze layouts located the  `/pacman_module/layouts/` folder.
   For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect its search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
 
@@ -141,13 +141,13 @@ We ask you to implement an agent that maximizes this function.
 ### API
 
 You must implement your agent as a `PacmanAgent` class, following the template of `pacmanagent.py`.
-The core of your algorithm should be implemented or called within the `get_action` method. This method method receives the current state `s` of the game and should return the action to take.
+The core of your algorithm should be implemented or called within the `get_action` method. This method  receives the current state `s` of the game and should return the action to take.
 
 Useful methods of the state are specified below:
 
+- ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
+   * This method **must** be called for any node expansion.
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
- - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
-	* This method **must** be called for any node expansion.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
@@ -157,7 +157,9 @@ Useful methods of the state are specified below:
  - ```s.isWin()``` : Returns True if the state is in a *winning end*.
  - ```s.isLose()``` : Returns True if the state is in a *losing end*.
 
- Implementation examples are provided in `humanagent.py` and `randomagent.py`.
+Implementation examples are provided in `humanagent.py` and `randomagent.py`.
+
+You are also free to use any data structure defined in `pacman_module.util` (e.g., `Stack`, `Queue`, `PriorityQueue`, etc).  
 
 ### Illegal moves
 

@@ -9,7 +9,7 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace of arguments from command-line prompt`
+        - `args`: Namespace of arguments from command-line prompt.
         """
         self.prob_dir = {}
         WestProb, SouthProb, EastProb, NorthProb = [.25, .25, .25, .25]
