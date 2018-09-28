@@ -99,7 +99,7 @@ You deliverables must be submitted as an archive on the [Montefiore submission p
 
 ### Part 1: Search agent
 
-This part is due on **October 28, 2018 at 23:59**.
+This part is due on **October 26, 2018 at 23:59**. This is a **hard** deadline.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
