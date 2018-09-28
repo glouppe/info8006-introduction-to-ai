@@ -1,4 +1,5 @@
-import argparse
+import random
+
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 from pacman_module.graphicsUtils import keys_waiting, keys_pressed
@@ -18,7 +19,7 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace of arguments from command-line prompt`
+        - `args`: Namespace of arguments from command-line prompt.
         """
         self.lastMove = Directions.STOP
         self.keys = []
@@ -27,13 +28,14 @@ class PacmanAgent(Agent):
         """
         Given a pacman game state, returns a legal move.
 
-        Parameters:
-        -----------
-        - `state`: the current game state. See FAQ and class pacman.GameState.
+        Arguments:
+        ----------
+        - `state`: the current game state. See FAQ and class
+                   `pacman.GameState`.
 
         Return:
         -------
-        - A legal move as defined in game.Directions.
+        - A legal move as defined in `game.Directions`.
         """
 
         keys = keys_waiting() + keys_pressed()
@@ -56,17 +58,17 @@ class PacmanAgent(Agent):
 
     def _get_move(self, legal):
         move = Directions.STOP
-        if ((self.WEST_KEY in self.keys or 'Left' in self.keys)
-                and Directions.WEST in legal):
+        if ((self.WEST_KEY in self.keys or 'Left' in self.keys) and
+                Directions.WEST in legal):
             move = Directions.WEST
-        if ((self.EAST_KEY in self.keys or 'Right' in self.keys)
-                and Directions.EAST in legal):
+        if ((self.EAST_KEY in self.keys or 'Right' in self.keys) and
+                Directions.EAST in legal):
             move = Directions.EAST
-        if ((self.NORTH_KEY in self.keys or 'Up' in self.keys)
-                and Directions.NORTH in legal):
+        if ((self.NORTH_KEY in self.keys or 'Up' in self.keys) and
+                Directions.NORTH in legal):
             move = Directions.NORTH
-        if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys)
-                and Directions.SOUTH in legal):
+        if ((self.SOUTH_KEY in self.keys or 'Down' in self.keys) and
+                Directions.SOUTH in legal):
             move = Directions.SOUTH
         return move
 

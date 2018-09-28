@@ -20,7 +20,7 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Part 2: Minimax agent](#search-agent-against-ghosts--part-2-3-)
     * [Part 3: MDP agent](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
 - [FAQ](#helpers)
-    * [Score](#score)
+    * [Game score](#score)
     * [API](#api)
     * [Illegal moves](#illegal-moves)
 - [Evaluation](#evaluation)
@@ -57,7 +57,7 @@ conda install numpy
 
 ### Usage
 
-Start the game with a Pacman agent controlled by the keyboad (keys `j`, `l`, `i`, `k`):
+Start the game with a Pacman agent controlled by the keyboard (keys `j`, `l`, `i`, `k` or arrow keys):
 ```bash
 python run.py
 ```
@@ -90,10 +90,10 @@ python run.py -h
 
 For each part of the project, you must provide the following deliverables:
 
-- The source code of your intelligent agent(s).  
-- A report in PDF format of 4 pages max.
+- The source code of your Pacman agent(s).  
+- A report in PDF format of 4 pages (at most).
 
-The whole project must be carried out in groups of 2 students (with the same group across all parts).
+The three parts of project must be carried out in groups of 2 students (with the same group across all parts).
 
 You deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
@@ -101,7 +101,7 @@ You deliverables must be submitted as an archive on the [Montefiore submission p
 
 This part is due on **October 28, 2018 at 23:59**.
 
-In this first part of the project, only food dots are included in the maze. No ghost is present.
+In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
 You are asked to implement an agent based on each of these search algorithms:
@@ -130,7 +130,7 @@ TBD.
 
 ## FAQ
 
-### Score
+### Game score
 
 The score function of the game is computed as follows:
 
@@ -140,7 +140,8 @@ We ask you to implement an agent that maximizes this function.
 
 ### API
 
-Implementation examples are provided [there](https://github.com/glouppe/info8006-introduction-to-ai/tree/pacman_project/pacman). In particular, the method ```get_action``` of the `PacmanAgent` class gets the current state ``` s ``` at each turn of the game.
+You must implement your agent as `PacmanAgent` agent, following the template of `pacmanagent.py`.
+The core of your algorithm should be implemented or called within the `get_action` method. This method methods receives the current state `s` of the game and should return the action to take.
 
 Useful methods of the state are specified below:
 
@@ -156,9 +157,11 @@ Useful methods of the state are specified below:
  - ```s.isWin()``` : Returns True if the state is in a *winning end*.
  - ```s.isLose()``` : Returns True if the state is in a *losing end*.
 
+ Implementation examples are provided in `humanagent.py` and `randomagent.py`.
+
 ### Illegal moves
 
-You need to ensure that your agent always returns a legal move. If it is not the case, the previous move is repeated if it is still legal. Otherwise, it remains in in the same location.
+You need to ensure that your agent always returns a legal move. If it is not the case, the previous move is repeated if it is still legal. Otherwise, it remains in the same location.
 
 ---
 
@@ -178,8 +181,6 @@ The evaluation of your deliverables is based on the following criteria:
     * Comment your code so that explanations are concise and clear enough to allow the reader to understand the semantics in a quick look.
 	* Your source code must be [PEP8](https://www.python.org/dev/peps/pep-0008/) compatible.
         - You can check this using `pycodestyle`.
-
-These criteria are all important.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
 

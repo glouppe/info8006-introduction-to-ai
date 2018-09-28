@@ -1,12 +1,9 @@
-import sys
-from pacman_module.pacman import runGame
-import time
-from argparse import ArgumentParser, ArgumentTypeError
 import imp
 import os
-from pacman_module.ghostAgents import *
-import numpy as np
-import sys
+from argparse import ArgumentParser, ArgumentTypeError
+
+from pacman_module.pacman import runGame
+from pacman_module.ghostAgents import GreedyGhost, RandyGhost, LeftyGhost
 
 
 def restricted_float(x):
@@ -40,40 +37,38 @@ def load_agent_from_file(filepath):
     return class_mod
 
 
-ghosts = dict()
+ghosts = {}
 ghosts["greedy"] = GreedyGhost
 ghosts["randy"] = RandyGhost
 ghosts["lefty"] = LeftyGhost
 
 if __name__ == '__main__':
+    usage = """
+    USAGE:      python run.py <game_options> <agent_options>
+    EXAMPLES:   (1) python run.py
+                    - plays a game with the random agent
+                      in mediumClassic maze
+    """
 
-    usageStr = """
-            USAGE:      python run.py <game_options> <agent_options>
-            EXAMPLES:   (1) python run.py
-                            - plays a game with the random agent
-                              in mediumClassic maze
-
-            """
-
-    parser = ArgumentParser(usageStr)
+    parser = ArgumentParser(usage)
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
     parser.add_argument('--nghosts', help='Number of ghosts',
                         type=int, default=0)
     parser.add_argument(
         '--agentfile',
-        help='Python file containing a PMAgent class',
+        help='Python file containing a `PacmanAgent` class.',
         default="humanagent.py")
     parser.add_argument(
         '--ghostagent',
-        help='Ghost agent available in ghostAgents module',
+        help='Ghost agent available in the `ghostAgents` module.',
         choices=["lefty", "greedy", "randy"], default="greedy")
     parser.add_argument(
         '--layout',
-        help='Maze layout (from layout folder)',
+        help='Maze layout (from layout folder).',
         default="tinyMaze")
     parser.add_argument(
         '--silentdisplay',
-        help="Disable the graphical display of the game",
+        help="Disable the graphical display of the game.",
         action="store_true")
 
     args = parser.parse_args()
@@ -86,6 +81,7 @@ if __name__ == '__main__':
         gagts = []
     total_score, total_computation_time, total_expanded_nodes = runGame(
         args.layout, agent, gagts, not args.silentdisplay, expout=0)
+
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
     print("Total expanded nodes : " + str(total_expanded_nodes))

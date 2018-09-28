@@ -1,5 +1,5 @@
-# XXX: Complete this class for all parts of the project
-import argparse
+# Complete this class for all parts of the project
+
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 
@@ -9,7 +9,7 @@ class PacmanAgent(Agent):
         """
         Arguments:
         ----------
-        - `args`: Namespace of arguments from command-line prompt`
+        - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
 
@@ -17,12 +17,13 @@ class PacmanAgent(Agent):
         """
         Given a pacman game state, returns a legal move.
 
-        Parameters:
-        -----------
-        - `state`: the current game state. See FAQ and class pacman.GameState.
+        Arguments:
+        ----------
+        - `state`: the current game state. See FAQ and class
+                   `pacman.GameState`.
 
         Return:
         -------
-        - A legal move as defined in game.Directions.
+        - A legal move as defined in `game.Directions`.
         """
         return Directions.STOP

@@ -1,7 +1,7 @@
-import argparse
+import numpy as np
+
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
-import numpy as np
 
 
 class PacmanAgent(Agent):
@@ -11,7 +11,7 @@ class PacmanAgent(Agent):
         ----------
         - `args`: Namespace of arguments from command-line prompt`
         """
-        self.prob_dir = dict()
+        self.prob_dir = {}
         WestProb, SouthProb, EastProb, NorthProb = [.25, .25, .25, .25]
         self.prob_dir["West"] = WestProb
         self.prob_dir["South"] = SouthProb
@@ -23,20 +23,22 @@ class PacmanAgent(Agent):
         """
         Given a pacman game state, returns a legal move.
 
-        Parameters:
-        -----------
-        - `state`: the current game state. See FAQ and class pacman.GameState.
+        Arguments:
+        ----------
+        - `state`: the current game state. See FAQ and class
+                   `pacman.GameState`.
 
         Return:
         -------
-        - A legal move as defined in game.Directions.
+        - A legal move as defined in `game.Directions`.
         """
         legals = state.getLegalPacmanActions()
+
         if Directions.STOP in legals:
             legals.remove(Directions.STOP)
-        # Get probability for each legal move
+
         probs = [self.prob_dir[x] for x in legals]
         probs = [x / sum(probs) for x in probs]
         a = self._rng.choice(legals, 1, replace=False, p=probs)
-        # Returns a randomly chosen move according to probability distribution
+
         return a[0]
