@@ -74,7 +74,7 @@ A **game** is formally defined as a kind of search problem with the following co
     - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
 - We will call our two players **MAX** and *MIN*. **MAX** moves first.
 
-.center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
+.center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -82,7 +82,7 @@ A **game** is formally defined as a kind of search problem with the following co
 
 # Game tree
 
-.width-100[![](figures/lec3/tictactoe.png)]
+.width-100[![](figures/lec4/tictactoe.png)]
 
 ---
 
@@ -96,7 +96,7 @@ A **game** is formally defined as a kind of search problem with the following co
 - *Strict competition*.
     - If one wins, the other loses, and vice-versa.
 
-.center.width-40[![](figures/lec3/zero-sum-cartoon.png)]
+.center.width-40[![](figures/lec4/zero-sum-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -116,7 +116,7 @@ A **game** is formally defined as a kind of search problem with the following co
     - ...
 ]
 .col-1-3[
-![](figures/lec3/adversarial-search-cartoon.png)
+![](figures/lec4/adversarial-search-cartoon.png)
 ]
 ]
 
@@ -131,7 +131,7 @@ A **game** is formally defined as a kind of search problem with the following co
 
 The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an optimal adversary (MIN).
 
-.center.width-100[![](figures/lec3/minimax.png)]
+.center.width-100[![](figures/lec4/minimax.png)]
 
 The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
 - Assuming that MIN is an optimal adversary maximizes the *worst-case outcome* for MAX.
@@ -141,7 +141,7 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 # Minimax example
 
-.width-100[![](figures/lec3/minimax-example.png)]
+.width-100[![](figures/lec4/minimax-example.png)]
 
 ---
 
@@ -173,9 +173,9 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 # Pruning
 
-.center.width-80[![](figures/lec3/minimax-incomplete-tree.png)]
+.center.width-80[![](figures/lec4/minimax-incomplete-tree.png)]
 
-.width-100[![](figures/lec3/minimax-incomplete-formula.png)]
+.width-100[![](figures/lec4/minimax-incomplete-formula.png)]
 
 Therefore, it is possible to compute the **correct** minimax decision *without looking at every node* in the tree.
 
@@ -183,7 +183,7 @@ Therefore, it is possible to compute the **correct** minimax decision *without l
 
 # Pruning
 
-.center.width-80[![](figures/lec3/minimax-incomplete-stepbystep.png)]
+.center.width-80[![](figures/lec4/minimax-incomplete-stepbystep.png)]
 
 ---
 
@@ -198,13 +198,13 @@ We want to compute $v = \text{minimax}(n)$.
 - If $v$ becomes lower than $\alpha$, then **MAX will avoid it**.
 - Therefore, we can *stop iterating* over the remaining $n$'s other children.
 
-.center.width-30[![](figures/lec3/alpha-beta.png)]
+.center.width-30[![](figures/lec4/alpha-beta.png)]
 
 ---
 
 # $\alpha$-$\beta$  search
 
-.width-90[![](figures/lec3/alpha-beta-impl.png)]
+.width-90[![](figures/lec4/alpha-beta-impl.png)]
 
 ???
 
@@ -226,7 +226,7 @@ R: be explicit about what alpha and beta correspond to
 
 # Game tree size
 
-.center.width-30[![](figures/lec3/chess.jpg)]
+.center.width-30[![](figures/lec4/chess.jpg)]
 
 Chess:
 - $b \approx 35$ (approximate average branching factor)
@@ -245,7 +245,7 @@ Finding the exact solution is completely **infeasible**.
     - Replace the $\text{utility}(s)$ function with a heuristic **evaluation function** $\text{eval}(s)$ that estimates the state utility.
     - Replace the terminal test by a **cutoff test** that decides when to stop expanding a state.
 
-.center.width-100[![](figures/lec3/hminimax.png)]
+.center.width-100[![](figures/lec4/hminimax.png)]
 
 <span class="Q">[Q]</span> Can $\alpha-\beta$ search  be adapted to implement H-Minimax?
 
@@ -270,7 +270,7 @@ Replace the if-statements with the terminal test with if-statements with the cut
 
 # Quiescence
 
-.center.width-70[![](figures/lec3/chess-eval.png)]
+.center.width-70[![](figures/lec4/chess-eval.png)]
 
 - These states only differ in the position of the rook at lower right.
 - However, Black has advantage in (a), but not in (b).
@@ -292,7 +292,7 @@ Replace the if-statements with the terminal test with if-statements with the cut
 
 .center[
 <video controls preload="auto" height="480" width="640">
-  <source src="./figures/lec3/depth2.mp4" type="video/mp4">
+  <source src="./figures/lec4/depth2.mp4" type="video/mp4">
 </video>
 
 Cutoff at depth 2, evaluation = the closer to the dot, the better.]
@@ -303,7 +303,7 @@ Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
 .center[
 <video controls preload="auto" height="480" width="640">
-  <source src="figures/lec3/depth10.mp4" type="video/mp4">
+  <source src="figures/lec4/depth10.mp4" type="video/mp4">
 </video>
 
 Cutoff at depth 10, evaluation = the closer to the dot, the better.]
@@ -320,7 +320,7 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
     - unpredictable opponents: ghosts respond randomly;
     - actions may fail: when moving a robot, wheels might slip.
 
-.center.width-40[![](figures/lec3/random-opponent-cartoon.png)]
+.center.width-40[![](figures/lec4/random-opponent-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -331,7 +331,7 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 - In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
 - This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
 
-.center.width-30[![](figures/lec3/random-player.png)]
+.center.width-30[![](figures/lec4/random-player.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -339,7 +339,7 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
 # Stochastic game tree
 
-.center.width-80[![](figures/lec3/stochastic-game-tree.png)]
+.center.width-80[![](figures/lec4/stochastic-game-tree.png)]
 
 <span class="Q">[Q]</span> What is the best move?
 
@@ -356,7 +356,7 @@ The best move cannot be determined anymore, because it depends on chance.
     - i.e., the average over all possible outcomes of the chance nodes.
     - $\text{minimax}$ values correspond instead to the worst-case outcome.
 
-.center.width-100[![](figures/lec3/expectiminimax.png)]
+.center.width-100[![](figures/lec4/expectiminimax.png)]
 
 <span class="Q">[Q]</span> Does taking the rational move mean the agent will be successful?
 
@@ -370,7 +370,7 @@ be approximated by stopping the recursion early and using an evaluation function
     - It is not enough for the evaluation function to just be order-preserving.
 - If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
 
-.center.width-70[![](figures/lec3/chance-order-preserving.png)]
+.center.width-70[![](figures/lec4/chance-order-preserving.png)]
 .caption[An order-preserving transformation on leaf values changes the best move.]
 
 ---
@@ -394,7 +394,7 @@ be approximated by stopping the recursion early and using an evaluation function
 
 Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
 
-.center.width-70[![](figures/lec3/mcts.png)]
+.center.width-70[![](figures/lec4/mcts.png)]
 
 <span class="Q">[Q]</span> How to determine the expansion order?
 
@@ -413,7 +413,7 @@ R: make it clearer that the policy of expansion is important.
     - Each player maximizes its own component.
     - May give rise to cooperation and competition dynamically
 
-.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+.center.width-70[![](figures/lec4/multi-agent-tree.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -434,7 +434,7 @@ What if our assumptions are incorrect?]
 
 .center[
 <video controls preload="auto" height="400" width="300">
-  <source src="figures/lec3/minimax-vs-adversarial.mp4" type="video/mp4">
+  <source src="figures/lec4/minimax-vs-adversarial.mp4" type="video/mp4">
 </video>
 
 Minimax Pacman vs. Adversarial ghost]
@@ -447,7 +447,7 @@ Minimax Pacman vs. Adversarial ghost]
 
 .center[
 <video controls preload="auto" height="400" width="300">
-  <source src="figures/lec3/minimax-vs-random.mp4" type="video/mp4">
+  <source src="figures/lec4/minimax-vs-random.mp4" type="video/mp4">
 </video>
 
 Minimax Pacman vs. Random ghost]
@@ -460,7 +460,7 @@ Minimax Pacman vs. Random ghost]
 
 .center[
 <video controls preload="auto" height="400" width="300">
-  <source src="figures/lec3/expectimax-vs-random.mp4" type="video/mp4">
+  <source src="figures/lec4/expectimax-vs-random.mp4" type="video/mp4">
 </video>
 
 Expectiminimax Pacman vs. Random ghost]
@@ -473,7 +473,7 @@ Expectiminimax Pacman vs. Random ghost]
 
 .center[
 <video controls preload="auto" height="400" width="300">
-  <source src="figures/lec3/expectimax-vs-adversarial.mp4" type="video/mp4">
+  <source src="figures/lec4/expectimax-vs-adversarial.mp4" type="video/mp4">
 </video>
 
 Expectiminimax Pacman vs. Adversarial ghost]
@@ -501,7 +501,7 @@ Expectiminimax Pacman vs. Adversarial ghost]
 
 ---
 
-.center.width-70[![](figures/lec3/checkers-proof.png)]
+.center.width-70[![](figures/lec4/checkers-proof.png)]
 
 .footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
 
@@ -518,7 +518,7 @@ Expectiminimax Pacman vs. Adversarial ghost]
 - Modern programs are better, if less historic.
 - Chess remains *unsolved* due to the complexity of the game.
 
-.center.width-50[![](figures/lec3/deep-blue.jpg)]
+.center.width-50[![](figures/lec4/deep-blue.jpg)]
 
 ---
 
@@ -553,7 +553,7 @@ class: center
 
 Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
 
-.center.width-50[![](figures/lec3/alphago-zero.png)]
+.center.width-50[![](figures/lec4/alphago-zero.png)]
 
 ---
 

@@ -13,9 +13,9 @@ Prof. Gilles Louppe<br>
 # Logistics
 
 This course is given by:
-- Theory: Prof. Gilles Louppe [[g.louppe@uliege.be](mailto:g.louppe@uliege.be)]
-- Exercises: Antoine Wehenkel [[antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)]
-- Projects: Samy Aittahar [[saittahar@uliege.be](mailto:saittahar@uliege.be)]
+- Theory: Prof. Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
+- Exercises: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be))
+- Projects: Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
 
 Feel free to contact any of us for help!
 
@@ -28,11 +28,18 @@ Feel free to contact any of us for help!
 
 ---
 
-# Slides
+# Lectures
+
+- Theoretical lectures
+- Exercise sessions
+
+---
+
+# Materials
 
 Slides are available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
 - In HTML and in PDFs.
-- Posted online the day before the lesson.
+- Posted online the day before the lesson (hopefully).
 - Slightly different from previous years.
 
 Some lessons are partially adapted from "[Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html)" (CS188), from UC Berkeley.
@@ -66,13 +73,6 @@ This textbook is **strongly recommended**, although not required.
 
 ## Practical
 - Fun and challenging course project.
-
----
-
-# Lectures
-
-- Theoretical lectures
-- Exercise sessions
 
 ---
 
@@ -118,7 +118,7 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 # Evaluation
 
-- Oral exam (60%)
+- Exam (60%)
 - Reading assignment (10%)
 - Programming project (30%)
 

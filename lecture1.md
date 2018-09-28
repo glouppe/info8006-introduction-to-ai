@@ -135,16 +135,20 @@ so exactly like pigeons that they can fool even other pigeons.]
 
 # Thinking humanly
 
+## Cognitive science
 
-**Cognitive science** is the study of the *human mind* and its processes. The goal of cognitive science
+Study of the *human mind* and its processes.
+- The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
-
-A *cognitive architecture* usually follows human-like reasoning and can be used to
+- It includes language, problem-sovling, decision-making and perception.
+- A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
 
-.center.width-60[![](figures/lec1/brain.png)]
+???
+
+Grew out of psychology.
 
 ---
 
@@ -154,11 +158,34 @@ class: middle, center
 
 .caption[The modern SOAR cognitive architecture.]
 
+???
+
+The SOAR architecture is both:
+- a theory of cognition
+- a computational implementation of that theory
+
 ---
 
 class: middle
 
-## Limitations of cognition for AI
+## Neuroscience
+
+Study of the anatomy and physiology of neural tissue.
+- Neurobiology is concerned with the the anatomy and physiology of the brain, from major structures down to neurons and molecules.
+- Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
+
+.center.width-50[![](figures/lec1/brain.png)]
+.caption[Can we build a computer model of the brain?]
+
+???
+
+Grew out of clinical neurology and neurobiology.
+
+---
+
+class: middle
+
+## Limitations of cognition and neuroscience for AI
 
 .grid[
 .kol-2-3[
@@ -302,6 +329,10 @@ A **rational agent** acts so as to achieve the best (expected) outcome.
   The amount of reasoning is adjusted according to available resources and importance of the result.
 - The brain is good at making rational decisions but not perfect either.
 
+---
+
+class: middle
+
 Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
 
 Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
@@ -338,6 +369,11 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 - 1943: McCulloch and Pitts: Boolean circuit model of the brain.
 - 1950: Turing's "Computing machinery and intelligence".
 
+
+---
+
+class: middle
+
 ## 1950-1970: Excitement and expectations
 - 1950s: Early AI programs, including Samuel's checkers program,
 Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
@@ -345,6 +381,8 @@ Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 - 1958: Rosenblatt invents the perceptron.
 - 1965: Robinson's complete algorithm for logical reasoning.
 - 1966-1974: AI discovers computational complexity.
+
+.center.width-70[![](figures/lec1/dartmouth.jpg)]
 
 ---
 
@@ -361,6 +399,10 @@ class: middle
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
 - 1988-1993: Expert systems industry busts  (AI winter).
+
+---
+
+class: middle
 
 ## 1990-Present: Statistical approaches
 - 1985-1995: The return of neural networks.
@@ -402,7 +444,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/g-dKXOlsf98" frameborder="0" allowfullscreen></iframe>
 
-Beat the best human Go players
+Beat the best human Go players (2016)
 
 ---
 
@@ -410,7 +452,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/eHipy_j29Xw" frameborder="0" allowfullscreen></iframe>
 
-Beat teams of human players at real-time strategy games (Dota 2)
+Beat teams of human players at real-time strategy games (Dota 2) (2018)
 
 ---
 
@@ -418,7 +460,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
 
-Speech translation and synthesis
+Speech translation and synthesis (2012)
 
 ---
 
@@ -426,7 +468,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/qWl9idsCuLQ" frameborder="0" allowfullscreen></iframe>
 
-Semantic segmentation
+Semantic segmentation (2017)
 
 ---
 
@@ -434,7 +476,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/8BFzu9m52sc" frameborder="0" allowfullscreen></iframe>
 
-Generating image descriptions
+Generating image descriptions (2015)
 
 ---
 
@@ -442,7 +484,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
 
-Detecting skin cancer
+Detecting skin cancer (2017)
 
 ---
 
@@ -450,7 +492,13 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
 
-Learning to walk
+Learning to walk (2017)
+
+???
+
+Single algorithm for learning! Nothing is hardcoded.
+
+Similar to a baby learning to walk.
 
 ---
 
@@ -458,7 +506,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gy5g33S0Gzo" frameborder="0" allowfullscreen></iframe>
 
-Folding laundry
+Folding laundry (2010)
 
 ---
 
@@ -466,7 +514,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
 
-Playing soccer
+Playing soccer (2018)
 
 ---
 
@@ -474,7 +522,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/-96BEoXJMs0" frameborder="0" allowfullscreen></iframe>
 
-Driving a car
+Driving a car (2016)
 
 ---
 

@@ -16,13 +16,13 @@ Lecture 3: Constraint satisfaction problems
     - Propositional logic for reasoning about the world.
     - ... and its connection with CSPs.
 
-.center.width-50[![](figures/lec4/map-cartoon.png)]
+.center.width-50[![](figures/lec3/map-cartoon.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-class: middle, center
+class: middle
 
 # Constraint satisfaction problems
 
@@ -30,19 +30,27 @@ class: middle, center
 
 # Motivation
 
-- In *standard search problems*:
-    - States are evaluated by domain-specific heuristics.
-    - States are tested by a domain-specific function to determine if the goal is achieved.
-    - From the point of view of the search algorithms however, **states are atomic**.
-        - A state is a black box.
-- Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the *efficiency of the search*.
-- **Constraint satisfaction problem** algorithms *take advantage of this structure* and use *general-purpose* heuristics to solve complex problems.
-    - CSPs are specialized to a family of search sub-problems.
-- Main idea: eliminate large portions of the search space all at once, by identifying combinations of variable/value that violate constraints.
+In standard search problems:
+- States are evaluated by domain-specific heuristics.
+- States are tested by a domain-specific function to determine if the goal is achieved.
+- From the point of view of the search algorithms however, **states are atomic**.
+
+Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the **efficiency of the search**.
+
+.center.width-80[![](figures/lec3/atomic-factored-structured.svg)]
+
 
 ---
 
 # Constraint satisfaction problems
+
+- **Constraint satisfaction problem**  algorithms take advantage of factored state representations and use *general-purpose* heuristics to solve complex problems.
+- CSPs are specialized to a family of search sub-problems.
+- Main idea: eliminate large portions of the search space all at once, by identifying combinations of variable/value that violate constraints.
+
+---
+
+class: middle
 
 Formally, a **constraint satisfaction problem** (CSP) consists of three components $X$, $D$ and $C$:
 
@@ -54,27 +62,28 @@ Formally, a **constraint satisfaction problem** (CSP) consists of three componen
 
 # Example: Map coloring
 
-.center.width-80[![](figures/lec4/map-coloring.png)]
+<br><br>
+.center.width-70[![](figures/lec3/map-coloring.png)]
 
 ---
 
-# Example: Map coloring
+class: middle
 
-.center.width-30[![](figures/lec4/map-coloring.png)]
+.center.width-30[![](figures/lec3/map-coloring.png)]
 
-- Variables: $X = \\{ WA, NT, Q, NSW, V, SA, T \\}$
-- Domains: $D_i = \\{ red, green, blue \\}$ for each variable.
-- Constraints: $C = \\{ SA \neq WA, SA \neq NT, SA\neq Q, ... \\}$
-    - Implicit: $WA \neq NT$
-    - Explicit: $(WA, NT) \in \\{ \\{red, green\\}, \\{red, blue\\}, ... \\}$
+- Variables: $X = \\{ \text{WA}, \text{NT}, \text{Q}, \text{NSW}, \text{V}, \text{SA}, \text{T} \\}$
+- Domains: $D_i = \\{ \text{red}, \text{green}, \text{blue} \\}$ for each variable.
+- Constraints: $C = \\{ \text{SA} \neq \text{WA}, \text{SA} \neq \text{NT}, \text{SA} \neq \text{Q}, ... \\}$
+    - Implicit: $\text{WA} \neq \text{NT}$
+    - Explicit: $(\text{WA}, \text{NT}) \in \\{ \\{\text{red}, \text{green}\\}, \\{\text{red}, \text{blue}\\}, ... \\}$
 - Solutions are **assignments** of values to the variables such that constraints are all satisfied.
-    - e.g., $\\{ WA=red, NT=green, Q=red, SA=blue,$ $\quad\quad NSW=green, V=red, T=green \\}$
+    - e.g., $\\{ \text{WA}=\text{red}, \text{NT}=\text{green}, \text{Q}=\text{red}, \text{SA}=\text{blue},$ $\quad\quad \text{NSW}=\text{green}, \text{V}=\text{red}, \text{T}=\text{green} \\}$
 
 ---
 
 # Constraint graph
 
-.center.width-50[![](figures/lec4/csp-graph.png)]
+.center.width-50[![](figures/lec3/csp-graph.png)]
 
 - *Nodes* = variables of the problems
 - *Edges* = constraints in the problem involving the variables associated to the end nodes.
@@ -85,7 +94,7 @@ Formally, a **constraint satisfaction problem** (CSP) consists of three componen
 
 # Example: Cryptarithmetic
 
-.center.width-60[![](figures/lec4/cryptarithmetic.png)]
+.center.width-60[![](figures/lec3/cryptarithmetic.png)]
 
 - Variables: $\\{ T, W, O, F, U, R, C_1, C_2, C_3\\}$
 - Domains: $D_i = \\{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
@@ -99,7 +108,7 @@ Formally, a **constraint satisfaction problem** (CSP) consists of three componen
 
 # Example: Sudoku
 
-.center.width-30[![](figures/lec4/sudoku.png)]
+.center.width-30[![](figures/lec3/sudoku.png)]
 
 - Variables: each (open) square
 - Domains: $D_i = \\{ 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
@@ -111,11 +120,11 @@ Formally, a **constraint satisfaction problem** (CSP) consists of three componen
 
 # Example: The Waltz algorithm
 
-.center.width-40[![](figures/lec4/waltz.png)]
+.center.width-40[![](figures/lec3/waltz.png)]
 
 The Waltz algorithm is a procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
 
-.pull-right.width-70[![](figures/lec4/waltz-inter.png)]
+.pull-right.width-70[![](figures/lec3/waltz-inter.png)]
 CSP formulation:
 - Each intersection is a variable.
 - Adjacent intersections impose constraints on each other.
@@ -142,12 +151,12 @@ CSP formulation:
 
 ---
 
-# Variations on the CSP formalism
+class: middle
 
 - *Varieties of constraints*:
     - Unary constraint involve a single variable.
-        - Equivalent to reducing the domain, e.g. $SA \neq green$.
-    - Binary constraints involve pairs of variables, e.g. $SA \neq WA$.
+        - Equivalent to reducing the domain, e.g. $\text{SA} \neq \text{green}$.
+    - Binary constraints involve pairs of variables, e.g. $\text{SA} \neq \text{WA}$.
     - Higher-order constraints involve 3 or more variables.
 - *Preferences* (*soft constraints*)
     - e.g., red is better than green.
@@ -160,7 +169,7 @@ CSP formulation:
 # Real-world examples
 
 .grid[
-.col-1-2[
+.kol-1-2[
 - Assignment problems
     - e.g., who teaches what class
 - Timetabling problems
@@ -172,8 +181,8 @@ CSP formulation:
 - Circuit layout
 - ... and many more
 ]
-.col-1-2[
-![](figures/lec4/assignments.png)
+.kol-1-2[
+.width-100[![](figures/lec3/assignments.png)]
 ]
 ]
 
@@ -184,7 +193,7 @@ Notice that many real-world problems involve real-valued variables.
 
 ---
 
-class: middle, center
+class: middle
 
 # Solving CSPs
 
@@ -204,7 +213,7 @@ class: middle, center
 
 # Search methods
 
-.center.width-50[![](figures/lec4/csp-graph.png)]
+.center.width-50[![](figures/lec3/csp-graph.png)]
 
 - What would BFS or DFS do? What problems does naive search have?
 - For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
@@ -223,7 +232,7 @@ Simulate the execution on blackboard. Highlight two issues:
 - Backtracking search is the basic uninformed algorithm for solving CSPs.
 - Idea 1: **One variable at a time**:
     - The naive application of search algorithms ignore a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
-        - $WA=red$ then $NT=green$ is the same as $NT=green$ then $WA=red$.
+        - $\text{WA}=\text{red}$ then $\text{NT}=\text{green}$ is the same as $\text{NT}=\text{green}$ then $\text{WA}=\text{red}$.
     - One only needs to consider assignments to a single variable at each step.
         - $b=d$ and there are $d^n$ leaves.
 - Idea 2: **Check constraints as you go**:
@@ -232,20 +241,20 @@ Simulate the execution on blackboard. Highlight two issues:
 
 ---
 
-# Backtracking example
+class: middle
 
-.center.width-80[![](figures/lec4/backtracking-example.png)]
+.center.width-80[![](figures/lec3/backtracking-example.png)]
 
 ---
 
-# Backtracking search
+class: middle
 
-.center.width-100[![](figures/lec4/backtracking.png)]
+.center.width-100[![](figures/lec3/backtracking.png)]
+
+???
 
 - Backtracking = DFS + variable-ordering + fail-on-violation
 - What are the choice points?
-
-???
 
 Choice points:
 - Ordering the variables
@@ -266,23 +275,27 @@ Choice points:
 
 ---
 
-# Variable ordering
+class: middle
+
+## Variable ordering
 
 - **Minimum remaining values**:
 Choose the variable *with the fewest legal values left* in its domain.
 - Also known as the *fail-first* heuristic.
     - Detecting failures quickly is equivalent to pruning large parts of the search tree.
 
-.center.width-100[![](figures/lec4/ordering-mrv.png)]
+.center.width-100[![](figures/lec3/ordering-mrv.png)]
 
 ---
 
-# Value ordering
+class: middle
+
+## Value ordering
 
 - **Least constraining value**: Given a choice of variable, choose the *least constraining value*.
 - i.e., the value that rules out the fewest values in the remaining variables.
 
-.center.width-100[![](figures/lec4/ordering-lcv.png)]
+.center.width-100[![](figures/lec3/ordering-lcv.png)]
 
 <span class="Q">[Q]</span> Why should variable selection be fail-first but value selection be fail-last?
 
@@ -294,40 +307,46 @@ We are seeking only one solution. Therefore:
 
 ---
 
-# Filtering: Forward checking
+class: middle
+
+## Filtering: Forward checking
 
 - Keep *track of remaining legal values* for unassigned variables.
     - Whenever a variable $X$ is assigned, and for each unassigned variable $Y$ that is connected to $X$ by a constraint, delete from $Y$'s domain any value that is inconsistent.
 - *Terminate search* when any variable has no legal value left.
 
-.center.width-100[![](figures/lec4/forward-checking.png)]
+.center.width-100[![](figures/lec3/forward-checking.png)]
 
 ---
 
-# Filtering: Constraint propagation
+class: middle
+
+## Filtering: Constraint propagation
 
 Forward checking propagates information assigned to unassigned variables, but does not provide early deteciton for all failures:
 
-.center.width-100[![](figures/lec4/forward-checking-inc.png)]
+.center.width-100[![](figures/lec3/forward-checking-inc.png)]
 
 - $NT$ and $SA$ cannot both be blue!
 - **Constraint propagation** repeatedly enforces constraints locally.
 
 ---
 
-# Arc consistency
+class: middle
+
+## Arc consistency
 
 - An arc $X \to Y$ is **consistent** if and only if for every value $x$ in the domain of $X$ there is some value $y$ in the domain of $Y$ that satisfies the associated binary constraint.
 - Forward checking $\Leftrightarrow$ enforcing consistency of arcs pointing to each new assignment.
 - This principle can be generalized to enforce consistency for **all** arcs.
 
-.center.width-100[![](figures/lec4/arc-consistency.png)]
+.center.width-100[![](figures/lec3/arc-consistency.png)]
 
 ---
 
-# Arc consistency algorithm
+class: middle
 
-.center.width-100[![](figures/lec4/ac3.png)]
+.center.width-100[![](figures/lec3/ac3.png)]
 
 <span class="Q">[Q]</span> When in backtracking shall this procedure be called?
 
@@ -338,9 +357,9 @@ Forward checking propagates information assigned to unassigned variables, but do
 
 ---
 
-# Structure (1)
+# Structure
 
-.center.width-50[![](figures/lec4/csp-graph.png)]
+.center.width-50[![](figures/lec3/csp-graph.png)]
 
 - Tasmania and mainland are **independent subproblems**.
     - Any solution for the mainland combined with any solution for Tasmania yields a solution for the whole map.
@@ -348,7 +367,7 @@ Forward checking propagates information assigned to unassigned variables, but do
 
 ---
 
-# Structure (2)
+class: middle
 
 - Time complexity: Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
     - E.g., $n=80$, $d=2$, $c=20$.
@@ -357,9 +376,11 @@ Forward checking propagates information assigned to unassigned variables, but do
 
 ---
 
-# Tree-structured CSPs
+class: middle
 
-.center.width-90[![](figures/lec4/tree-csp-trans.png)]
+## Tree-structured CSPs
+
+.center.width-90[![](figures/lec3/tree-csp-trans.png)]
 
 - Algorithm for tree-structured CSPs:
     - Order: choose a root variable, order variables so that parents precede children (topological sort).
@@ -376,7 +397,9 @@ Run the algorithm on the blackboard.
 
 ---
 
-# Nearly tree-structured CSPs
+class: middle
+
+## Nearly tree-structured CSPs
 
 - *Conditioning*:  instantiate a variable, prune its neighbors' domains.
 - *Cutset conditioning*:
@@ -384,19 +407,54 @@ Run the algorithm on the blackboard.
     - Solve the residual CSPs (tree-structured).
     - If the residual CSP has a solution, return it together with the assignment for $S$.
 
-.center.width-70[![](figures/lec4/cutset.png)]
+.center.width-70[![](figures/lec3/cutset.png)]
 
 ---
 
-class: middle, center
+class: middle
 
 # Logical agents
 
 ---
 
+# The logicist tradition
+
+.grid[
+.kol-2-3[
+- The rational thinking approach to artificial intelligence is concerned with the study of *irrefutable
+reasoning processes*. It ensures that all actions performed by an agent are
+formally **provable** from inputs and prior knowledge.
+
+- The Greek philosopher Aristotle was one of the first to attempt to formalize rational thinking.
+His *syllogisms* provided a pattern for argument structures that always yield correct conclusion when given correct premises.
+.italic[
+All men are mortal. <br>
+Socrates is a man.<br>
+Therefore, Socrates is mortal.
+]
+]
+.kol-1-3[
+.width-100.circle[![](figures/lec3/aristotle.jpg)]
+.caption[(Aristotle, 384-322 BC)]
+]
+]
+
+---
+
+class: middle
+
+- Logicians of the 19th century developed a precise notation for statements about all kinds of objects in the world and relationships among them.
+
+- By 1965, programs existed that could, in principle, solve any solvable problem described in logical notation.
+
+- The logicist tradition within AI hopes to build on such programs to create intelligent systems.
+
+
+---
+
 # The Wumpus world
 
-.center.width-70[![](figures/lec4/wumpus-world.png)]
+.center.width-70[![](figures/lec3/wumpus-world.png)]
 
 ---
 
@@ -420,7 +478,7 @@ class: smaller
     - *Glitter* if gold is in the same square;
         - Gold is picked up by reflex, and cannot be dropped.
     - You *bump* if you walk into a wall.
-    - The agent program receives the percept $[Stench, Breeze, Glitter, Bump]$.
+    - The agent program receives the percept $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{Bump}]$.
 
 ---
 
@@ -441,21 +499,21 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 # Exploring the Wumpus world (1)
 
-.center.width-100[![](figures/lec4/wumpus-exploration1.png)]
+.center.width-100[![](figures/lec3/wumpus-exploration1.png)]
 
-(a) Percept = $[None, None, None, None]$
+(a) Percept = $[\text{None}, \text{None}, \text{None}, \text{None}]$
 
-(b) Percept = $[None, Breeze, None, None]$
+(b) Percept = $[\text{None}, \text{Breeze}, \text{None}, \text{None}]$
 
 ---
 
 # Exploring the Wumpus world (2)
 
-.center.width-100[![](figures/lec4/wumpus-exploration2.png)]
+.center.width-100[![](figures/lec3/wumpus-exploration2.png)]
 
-(a) Percept = $[Stench, None, None, None]$
+(a) Percept = $[\text{Stench}, \text{None}, \text{None}, \text{None}]$
 
-(b) Percept = $[Stench, Breeze, Glitter, None]$
+(b) Percept = $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{None}]$
 
 ---
 
@@ -463,26 +521,30 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 - Most useful in non-episodic, partially observable environments.
 - **Logic (knowledge-based) agents** combine:
-    - A *knowledge base* ($KB$): a list of facts that are known to the agent.
+    - A *knowledge base* ($\text{KB}$): a list of facts that are known to the agent.
     - Current *percepts*.
 - Hidden aspects of the current state are **inferred** using rules of inference.
 - **Logic** provides a good formal language for both   
     - Facts encoded as *axioms*.
     - Rules of *inference*.
 
-.center.width-80[![](figures/lec4/kb-agent.png)]
+.center.width-80[![](figures/lec3/kb-agent.png)]
 
 ---
 
-# Propositional logic: Syntax
+# Propositional logic
+
+## Syntax
 
 The **syntax** of propositional logic defines allowable *sentences*.
 
-.center.width-80[![](figures/lec4/syntax.png)]
+.center.width-80[![](figures/lec3/syntax.png)]
 
 ---
 
-# Propositional logic: Semantics
+class: middle
+
+## Semantics
 
 - In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
     - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
@@ -500,7 +562,7 @@ The **syntax** of propositional logic defines allowable *sentences*.
 # Wumpus world sentences
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - Let $P_{i,j}$ be true if there is a pit in $[i,j]$.
 - Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
 
@@ -515,7 +577,7 @@ Examples:
     - $R\\\_5: B\\\_{2,1}.$
 
 ]
-.col-1-3[![](figures/lec4/wumpus-world.png)]
+.kol-1-3[.width-100[![](figures/lec3/wumpus-world.png)]]
 ]
 
 ---
@@ -531,11 +593,11 @@ Examples:
 
 ---
 
-# Wumpus models (1)
+# Wumpus models
 
-.center.width-30[![](figures/lec4/wumpus-simple.png)]
+.center.width-30[![](figures/lec3/wumpus-simple.png)]
 
-- Let consider possible models for $KB$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Let consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
 - Situation after:
     - detecting nothing in $[1,1]$,
     - moving right, breeze in $[2,1]$.
@@ -548,32 +610,32 @@ Examples:
 
 ---
 
-# Wumpus models (2)
+class: middle
 
-.center.width-60[![](figures/lec4/wumpus-kb.png)]
+.center.width-60[![](figures/lec3/wumpus-kb.png)]
 
 - All 8 possible models in the reduced Wumpus world.
-- The knowledge base $KB$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
+- The knowledge base $\text{KB}$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
 
 ---
 
-# Entailments (1)
+# Entailments
 
-.center.width-60[![](figures/lec4/wumpus-entailment.png)]
+.center.width-60[![](figures/lec3/wumpus-entailment.png)]
 
-- $\alpha_1$ = "$[1,2]$ is safe". Does $KB$ entails $\alpha_1$?
-- $KB \vDash \alpha_1$ since $M(KB)  \subseteq M(\alpha_1)$.
-    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $KB$ is true.
+- $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
+- $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
+    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $\text{KB}$ is true.
 - Entailment can be used to carry out **logical inference**.
 
 ---
 
-# Entailments (2)
+class: middle
 
-.center.width-60[![](figures/lec4/wumpus-noentailment.png)]
+.center.width-60[![](figures/lec3/wumpus-noentailment.png)]
 
-- $\alpha_2$ = "$[2,2]$ is safe". Does $KB$ entails $\alpha_2$?
-- $KB \nvDash \alpha_2$ since $M(KB)  \nsubseteq M(\alpha_2)$.
+- $\alpha_2$ = "$[2,2]$ is safe". Does $\text{KB}$ entails $\alpha_2$?
+- $\text{KB} \nvDash \alpha_2$ since $M(\text{KB})  \nsubseteq M(\alpha_2)$.
 - We **cannot** conclude whether $[2,2]$ is safe (it may or may not).
 
 ---
@@ -590,6 +652,14 @@ $$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatis
     - But remains NP-complete.
     - See also SAT solvers, tailored for this specific problem.
 
+---
+
+# Limitations
+
+- Representation of *informal* knowledge is difficult.
+- Hard to define provable *plausible* reasoning.
+- **Combinatorial explosion** (in time and space).
+- Logical inference is only a part of intelligence.
 
 ---
 
@@ -604,3 +674,17 @@ $$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatis
     - Logical inference can be used as tool to reason about the world.
         - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
         - This in turn can be cast as a CSP.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
+
+---
+
+# References
+
+- Newell, A., & Simon, H. (1956). The logic theory machine--A complex information processing system. IRE Transactions on information theory, 2(3), 61-79.
+- McCarthy, J. (1960). Programs with common sense (pp. 300-307). RLE and MIT computation center.
