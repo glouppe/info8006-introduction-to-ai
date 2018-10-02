@@ -46,8 +46,8 @@ if __name__ == '__main__':
     usage = """
     USAGE:      python run.py <game_options> <agent_options>
     EXAMPLES:   (1) python run.py
-                    - plays a game with the random agent
-                      in mediumClassic maze
+                    - plays a game with the human agent
+                      in small maze
     """
 
     parser = ArgumentParser(usage)
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
-        default="tinyMaze")
+        default="small")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
