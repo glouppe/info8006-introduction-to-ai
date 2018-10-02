@@ -1,7 +1,7 @@
 # Pacman
 
 <p align="center">
-<img src="http://github.com/glouppe/info8006-introduction-to-ai/blob/master/pacman/pacman_game.png" width="50%" />
+<img src="pacman_game.png" width="50%" />
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
