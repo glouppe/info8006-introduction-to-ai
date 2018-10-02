@@ -3,7 +3,7 @@ import os
 from argparse import ArgumentParser, ArgumentTypeError
 
 from pacman_module.pacman import runGame
-from pacman_module.ghostAgents import GreedyGhost, RandyGhost, LeftyGhost
+from pacman_module.ghostAgents import GreedyGhost, AstaryGhost, LeftyGhost
 
 
 def restricted_float(x):

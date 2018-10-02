@@ -143,7 +143,8 @@ class AstaryGhost(GhostAgent):
         openset = np.full((state.data.layout.width,state.data.layout.height), False)
         openset[initpos] = True
         while not fringe.isEmpty():
-            curNode,actions,closed = fringe.pop()
+            _,node = fringe.pop()
+            curNode,actions,closed = node
             if curNode.getGhostPosition(self.index) == goal:
                 return actions[0],fscore,gscore#reconstruct_path(cameFrom, curpos)
             closed = np.copy(closed)
