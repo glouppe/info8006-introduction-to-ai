@@ -102,7 +102,7 @@ class: middle
 ## Offline vs. Online solving
 
 - Problem-solving agents are *offline*. The solution is executed "eyes closed", ignoring the percepts.
-- *Online* problem solving involves acting without complete knowledge.
+- *Online* problem solving involves acting without complete knowledge. In this case, the sequence of actions might be recomputed at each step.
 
 ---
 
@@ -126,14 +126,13 @@ A **search problem** consists of the following components:
 
 class: middle
 
+.center[![](figures/lec2/pacman-space.png)]
+
 - Together, the initial state, the actions and the transition model define the **state space** of the problem, i.e. the set of all states reachable from the initial state by any sequence of action.
     - The state space forms a directed graph:
         - nodes = states
         - links = actions
     - A *path* is a sequence of states connected by actions.
-
-.center[![](figures/lec2/pacman-space.png)]
-
 - A *goal test* which determines whether the solution of the problem is achieved in state $s$.
 - A *path cost* that assigns a numeric value to each path.
   - We may also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
