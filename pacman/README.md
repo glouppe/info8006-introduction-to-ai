@@ -1,7 +1,7 @@
 # Pacman
 
 <p align="center">
-<img src="http://github.com/glouppe/info8006-introduction-to-ai/blob/pacman_project/pacman/pacman_game.png" width="50%" />
+<img src="http://github.com/glouppe/info8006-introduction-to-ai/blob/master/pacman/pacman_game.png" width="50%" />
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
@@ -76,7 +76,7 @@ python run.py --silentdisplay
 
 `--layout`: Start the game with a user-specifed layout for the maze (see the `/pacman_module/layouts/` folder):
 ```bash
-python run.py --layout mediumCorners
+python run.py --layout medium
 ```
 
 `-h`: For further details, check the command-line help section:
@@ -158,8 +158,6 @@ Useful methods of the state are specified below:
  - ```s.isLose()``` : Returns True if the state is in a *losing end*.
 
 Implementation examples are provided in `humanagent.py` and `randomagent.py`.
-
-You are also free to use any data structure defined in `pacman_module.util` (e.g., `Stack`, `Queue`, `PriorityQueue`, etc).  
 
 ### Illegal moves
 
