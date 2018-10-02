@@ -153,7 +153,7 @@ among all solutions.
 - With partial observability, the agent needs to keep in which states it might be in.
     - Percepts narrow down the set of possible states.
 - If stochastic, the agent will need to consider what to do for each contingency that its percepts may reveal.
-    - Percepts reveal which the outcomes has actually occured.
+    - Percepts reveal which the outcomes has actually occurred.
 
 See 4.3 and 4.4 for more details.
 
@@ -643,7 +643,7 @@ All ancestors of $A$ expand before $B$, including $A$. Therefore **A* is optimal
 
 # A* contours
 
-- $f$-costs are non-decreasing along any path.
+- Assume $f$-costs are non-decreasing along any path.
 - We can define **contour levels** $t$ in the state space, that include all nodes $n$ for which $f(n) \leq t$.
 
 .center[
@@ -660,9 +660,7 @@ For A* with accurate heuristics, bands stretch towards the goal.
 
 ---
 
-# Comparison
-
-<br><br><br>
+class: middle
 
 .grid[
 .kol-1-3[
