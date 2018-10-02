@@ -32,7 +32,7 @@ The goal of this programming project is to implement intelligent agents for the 
 
 The instructions below have been tested under Windows, Linux and MacOS.
 
-We recommend to install a Python environment using the Anaconda distribution. Further instructions can be found on the [Anaconda user guide](https://conda.io/docs/user-guide/install/index.html). Once installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
+We recommend to install a Python (3) environment using the Anaconda distribution. Further instructions can be found on the [Anaconda user guide](https://conda.io/docs/user-guide/install/index.html). Once installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
 
 ### Setup
 
@@ -136,7 +136,9 @@ The score function of the game is computed as follows:
 
 `score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
 
-We ask you to implement an agent that maximizes this function.
+We ask you to implement an agent that wins the game while maximizing its function.
+
+Note that you should ask yourself if this score function satisfies all the properties of the search algorithms you will implement. If not, you are free to modify it as long the optimal solutions remain the same.
 
 ### API
 
@@ -146,10 +148,10 @@ The core of your algorithm should be implemented or called within the `get_actio
 Useful methods of the state are specified below:
 
 - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
-   * This method **must** be called for any node expansion.
+    * This method **must** be called for any node expansion.
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
- - ```s.getScore()``` : Returns the total score of a state, computed from the function described in [final score](#score-function).
+ - ```s.getScore()``` : Returns the total score of a state (as defined above).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
  - ```s.getWalls()``` : Returns a boolean matrix which gives the position of all walls.
  - ```s.getGhostPositions()``` : Returns the position of all ghosts in the maze.
@@ -169,7 +171,7 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The evaluation of your deliverables is based on the following criteria:
 
-- Performance of your intelligent agent (as evaluated by its final score, its total computation time and its total number of expanded nodes).
+- Performance of your intelligent agent (as evaluated by its final score, its total computation time and its total number of expanded nodes). Note that your agents might be evaluated on mazes that are not included within the `/pacman_module/layouts/` folder.
 - Quality and clarity of your report.
 	* Avoid long and vague sentences and be straight to the point.
 	* Follow the structure mentioned in the instructions.
@@ -178,8 +180,7 @@ The evaluation of your deliverables is based on the following criteria:
 	* Avoid single-file long code source, and prefers to use a multiple-files modular architecture.
 	* Name your variables-attributes-classes according to their usage.
     * Comment your code so that explanations are concise and clear enough to allow the reader to understand the semantics in a quick look.
-	* Your source code must be [PEP8](https://www.python.org/dev/peps/pep-0008/) compatible.
-        - You can check this using `pycodestyle`.
+	* Your source code must be Python 3 and [PEP8](https://www.python.org/dev/peps/pep-0008/) compatible.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
 
