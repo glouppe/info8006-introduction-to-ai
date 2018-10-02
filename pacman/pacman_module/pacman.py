@@ -161,6 +161,17 @@ class GameState:
         GameState.countExpanded += 1
         return [(self.generateSuccessor(0, action),action) for action in self.getLegalPacmanActions() if action != Directions.STOP]
 
+    def generateGhostSuccessors(self,index):
+        """
+        Generates the successor state after the specified pacman move
+        """
+        
+        if (GameState.countExpanded >= GameState.maximumExpanded or index == 0):
+            return None
+        GameState.countExpanded += 1
+        
+        return [(self.generateSuccessor(index, action),action) for action in self.getLegalActions(index) if action != Directions.STOP]
+
     def getPacmanState(self):
         """
         Returns an AgentState object for pacman (in game.py)

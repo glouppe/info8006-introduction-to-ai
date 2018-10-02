@@ -18,6 +18,7 @@ from .game import Actions
 from .game import Directions
 import random
 from .util import manhattanDistance
+from .util import PriorityQueue
 from . import util
 import numpy as np
 
@@ -112,28 +113,91 @@ class GreedyGhost(GhostAgent):
         return dist
 
 
-class RandyGhost(GhostAgent):
-    """A ghost that is a probabilistic mixture
-       of Lefty(25%), Randy(25%) and Greedy(50%)."""
+class AstaryGhost(GhostAgent):
+    """A ghost that computes shortest path to pacman"""
 
-    def __init__(self, index, prob_greedy=0.5, prob_lefty=0.25):
+    def __init__(self, index):
         self.index = index
-        self.prob_greedy = prob_greedy
-        self.prob_lefty = prob_lefty
-        self.leftyghost = LeftyGhost(index)
-        self.greedyghost = GreedyGhost(index)
+        self.fscore = None
+        self.gscore = None
+        self.wasScared = False
+        self.corners = None
+        self.gghost = GreedyGhost(index)
+        
+
+    def _astarsearch(self, state, fscore_in, gscore_in, goal):
+        fringe = PriorityQueue()
+        closed = np.full((state.data.layout.width,state.data.layout.height), False)
+        initpos = tuple(map(lambda x : int(x), state.getGhostPosition(self.index)))
+        if gscore_in is not None:
+            gscore = gscore_in
+        else:
+            gscore = np.full((state.data.layout.width,state.data.layout.height), np.inf)
+            gscore[initpos] = 0
+        if fscore_in is not None:  
+            fscore = fscore_in
+        else:
+            fscore = np.full((state.data.layout.width,state.data.layout.height), np.inf) 
+            fscore[initpos] = manhattanDistance(goal,initpos)
+        fringe.push((state,[],closed), fscore[initpos])
+        openset = np.full((state.data.layout.width,state.data.layout.height), False)
+        openset[initpos] = True
+        while not fringe.isEmpty():
+            curNode,actions,closed = fringe.pop()
+            if curNode.getGhostPosition(self.index) == goal:
+                return actions[0],fscore,gscore#reconstruct_path(cameFrom, curpos)
+            closed = np.copy(closed)
+            ghostpos = tuple(map(lambda x : int(x), curNode.getGhostPosition(self.index)))
+            closed[ghostpos] = True
+            openset[ghostpos] = False
+            succs = [(curNode.generateSuccessor(self.index, action),action) for action in curNode.getLegalActions(self.index)]
+            
+            for succNode in succs:
+                action = succNode[1]
+                succNode = succNode[0]
+                
+                succghostpos = tuple(map(lambda x : int(x), succNode.getGhostPosition(self.index)))
+                #print(-succNode.getScore())
+                tentative_gscore = gscore[succghostpos] + 1 #+ counter[succpos] ##-succNode.getScore() + counter[succpos] #+ 
+                #print(tentative_gscore)
+                tentative_fscore = tentative_gscore + manhattanDistance(goal,succghostpos)
+                
+                
+                if closed[succghostpos]:
+                    if tentative_fscore <= fscore[succghostpos]: 
+                        closed[succghostpos] = False 
+                    else:
+                        continue
+                
+                
+                
+                if not openset[succghostpos]:
+                    openset[succghostpos] = True
+                elif tentative_gscore >= gscore[succghostpos]:
+                    continue
+                
+                gscore[succghostpos] = tentative_gscore
+                fscore[succghostpos] = tentative_fscore
+                fringe.push((succNode, actions + [action], closed),fscore[succghostpos])
+        return actions[0],fscore,gscore
 
     def getDistribution(self, state):
-        dist_randy = util.Counter()
-        for a in state.getLegalActions(self.index):
-            dist_randy[a] = 1.0
-        dist_randy.normalize()
-        dist_greedy = self.greedyghost.getDistribution(state)
-        dist_greedy.normalize()
-        dist_lefty = self.leftyghost.getDistribution(state)
-        dist_lefty.normalize()
-        dist = np.random.choice([dist_greedy, dist_lefty, dist_randy], p=[
-                                self.prob_greedy,
-                                self.prob_lefty,
-                                1 - (self.prob_greedy + self.prob_lefty)])
+        if self.corners is None:
+            self.corners = [(1,1),(1,state.data.layout.height),(state.data.layout.width,1),(state.data.layout.width,state.data.layout.height)]
+        ghostState = state.getGhostState(self.index)
+        isScared = ghostState.scaredTimer > 0
+        dist = util.Counter()
+        legalActions = state.getLegalActions(self.index)
+        for a in legalActions:
+            dist[a] = 0
+        goal = state.getPacmanPosition() if not isScared else self.corners[np.argmax(list(map(lambda pos : manhattanDistance(pos,state.getGhostPosition(self.index)),self.corners)))]
+        if not isScared: 
+            a,self.fscore,self.gscore = self._astarsearch(state,self.fscore,self.gscore, goal)
+            dist[a] = 1
+        else:
+            dist = self.gghost.getDistribution(state)
+            #print(goal)
+            #a,self.fscore,self.gscore = self._astarsearch(state,None,None, goal)
+        
+        self.wasScared = isScared
         return dist

@@ -39,7 +39,7 @@ def load_agent_from_file(filepath):
 
 ghosts = {}
 ghosts["greedy"] = GreedyGhost
-ghosts["randy"] = RandyGhost
+ghosts["astary"] = AstaryGhost
 ghosts["lefty"] = LeftyGhost
 
 if __name__ == '__main__':
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["lefty", "greedy", "randy"], default="greedy")
+        choices=["lefty", "greedy", "astary"], default="greedy")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
