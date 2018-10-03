@@ -147,8 +147,10 @@ The core of your algorithm should be implemented or called within the `get_actio
 
 Useful methods of the state are specified below:
 
-- ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
-    * This method **must** be called for any node expansion.
+ - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
+    * This method **must** be called for any node expansion for pacman agent.
+ - ```s.generateGhostSuccessors(agentIndex)``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the agent indexed by ```agentIndex>0```.
+    * This method **must** be called for any node expansion for ghost agent.
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state (as defined above).
