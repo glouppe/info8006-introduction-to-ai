@@ -56,7 +56,7 @@ Reflex agents
 .width-100[![](figures/lec2/pacman-reflex2.png)]
 ]
 ]
-.caption[A simple reflex agent moves to a dot if there is one in its neighborhood. ]
+.caption[For example, a simple reflex agent moves to a dot if there is one in its neighborhood.<br>No planning is involved to take this decision. ]
 
 .Q[[Q]] Can a reflex agent be rational?
 
@@ -64,7 +64,7 @@ Reflex agents
 
 Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
-R: rework the figures including ghosts, where considering how the world would be is necessary.
+In the figure, the sequence of actions is clearly suboptimal.
 
 ---
 
@@ -308,6 +308,7 @@ class: middle
 - Time and complexity are measured in terms of
     - $b$: maximum branching factor of the search tree
     - $d$: depth of the least-cost solution
+        * the depth of $s$ is defined as the number of actions from the initial state to $s$.
     - $m$: maximum length of any path in the state space (may be $\infty$)
 
 <span class="Q">[Q]</span> Number of nodes in a tree?
@@ -315,7 +316,6 @@ class: middle
 ???
 
 - Number of nodes = $\frac{b^{d+1}-1}{b-1}$
-- R: double check that we count depth as the number of actions
 
 ---
 
@@ -337,10 +337,6 @@ class: middle
 - *Space complexity*:
     - Only store siblings on path to root, therefore $O(bm)$.
     - When all the descendants of a node have been visited, the node can be removed from memory.
-
-???
-
-R: double check the time complexity
 
 ---
 
@@ -379,10 +375,6 @@ class: middle
     - If the solution is a depth $d$, then the total number of nodes generated before finding this node is $b+b^2+b^3+...+b^d = O(b^d)$
 - *Space complexity*:
     - The number of nodes to maintain in memory is the size of the fringe, which will be the largest at the last tier. That is $O(b^d)$
-
-???
-
-R: dont we also need to store all nodes above?
 
 ---
 
@@ -434,7 +426,7 @@ class: middle
 # Properties of UCS
 
 - *Completeness*:
-    - Yes, if step cost $\geq \epsilon > 0$.
+    - Yes, if step cost are all such that $c(s,a,s') \geq \epsilon > 0$.
 - *Optimality*:
     - Yes, sinces UCS expands nodes in order of their optimal path cost.
 - *Time complexity*:
@@ -466,6 +458,15 @@ the fringe in decreasing order of *desirability*.
 
 ---
 
+# Greedy search
+
+<br>
+.width-100[![](figures/lec2/gs-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
 # Heuristics
 
 A **heuristic** (or evaluation) function $h(n)$ is:
@@ -477,19 +478,11 @@ A **heuristic** (or evaluation) function $h(n)$ is:
 <br>
 .center.width-70[![](figures/lec2/heuristic-pacman.png)]
 
-
----
-
-# Greedy search
-
-<br>
-.width-100[![](figures/lec2/gs-cartoon.png)]
-
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
 ---
 
 class: middle
+
+## Greedy search
 
 - *Strategy*: expand the node $n$ in the fringe for which $h(n)$ is the lowest.
 - *Implementation*: fringe is a **priority queue**, using $h(n)$ as priority.
@@ -753,6 +746,23 @@ This amounts to grow a tree directly on the state-space graph.
     - initial state, actions, transition model, goal test, path cost?
 - *Good heuristic*?
 
+???
+
+- performance measure = score, the further right, the better; coins; killed enemies, ...
+- environment: the Mario world
+- actuators: left, right, up, down, jump, speed
+- sensors: the screen
+
+- type of environment: partially observable, deterministic, episodic, dynamic, discrete/continuous, multi-agent, known
+
+- search problem:
+    * state = Mario's position (x, y), map, score, time
+    * initial state = start of the game
+    * transition model = given by the game engine (assume we know that!)
+    * goal test = have we reached the flag?
+    * path cost = shortest path, the better; malus if killed, bonus if coin and killed enemies
+
+
 ---
 
 class: center, middle, black-slide
@@ -760,6 +770,10 @@ class: center, middle, black-slide
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
 
 A* in action
+
+???
+
+Comment on the actions taken at any frame (right, jump, speed) shown in red.
 
 ---
 
