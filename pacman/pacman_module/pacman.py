@@ -198,7 +198,7 @@ class GameState:
         return self.data.agentStates[agentIndex].getPosition()
 
     def getGhostPositions(self):
-        return [s.getPosition() for s in self.getGhostStates()]
+        return [tuple(map(int,s.getPosition())) for s in self.getGhostStates()]
 
     def getNumAgents(self):
         return len(self.data.agentStates)
