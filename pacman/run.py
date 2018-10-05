@@ -72,6 +72,10 @@ if __name__ == '__main__':
         action="store_true")
 
     args = parser.parse_args()
+
+    if (args.agentfile == "humanagent.py" and args.silentdisplay):
+        print("Human agent cannot play without graphical display")
+        exit()
     agent = load_agent_from_file(args.agentfile)(args)
 
     gagt = ghosts[args.ghostagent]
