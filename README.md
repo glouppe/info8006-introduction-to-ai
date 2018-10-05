@@ -23,7 +23,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ## Exercise sessions
 
-- Session 1 (October 4): Python tutorial
+- Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
 - Session 2 (October 11): Solving problems by searching
 - Session 3 (October 18): Constraint satisfaction problems
 - Session 4 (October 25): Games and adversarial search
