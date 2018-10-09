@@ -4,7 +4,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - Instructor: Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
 - Teaching assistants: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)), Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
-- Classroom: B28/R3
+- When: Fall 2018, Thursday 8:30AM. 
+- Classroom: [I1/Amphi.Zoologie](https://www.campus.uliege.be/cms/c_5119454/fr/amphi-zoologie)
 
 ## Slides
 
