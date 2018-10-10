@@ -3,7 +3,7 @@ import os
 from argparse import ArgumentParser, ArgumentTypeError
 
 from pacman_module.pacman import runGame
-from pacman_module.ghostAgents import GreedyGhost, RandyGhost, LeftyGhost
+from pacman_module.ghostAgents import GreedyGhost, SmartyGhost, DumbyGhost
 
 
 def restricted_float(x):
@@ -39,8 +39,8 @@ def load_agent_from_file(filepath):
 
 ghosts = {}
 ghosts["greedy"] = GreedyGhost
-ghosts["randy"] = RandyGhost
-ghosts["lefty"] = LeftyGhost
+ghosts["smarty"] = SmartyGhost
+ghosts["dumby"] = DumbyGhost
 
 if __name__ == '__main__':
     usage = """
@@ -52,8 +52,6 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(usage)
     parser.add_argument('--seed', help='RNG seed', type=int, default=1)
-    parser.add_argument('--nghosts', help='Number of ghosts',
-                        type=int, default=0)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a `PacmanAgent` class.',
@@ -61,7 +59,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["lefty", "greedy", "randy"], default="greedy")
+        choices=["dumby", "greedy", "smarty"], default="greedy")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
@@ -79,8 +77,9 @@ if __name__ == '__main__':
     agent = load_agent_from_file(args.agentfile)(args)
 
     gagt = ghosts[args.ghostagent]
-    if (args.nghosts > 0):
-        gagts = [gagt(i + 1) for i in range(args.nghosts)]
+    nghosts = 1
+    if (nghosts > 0):
+        gagts = [gagt(i + 1) for i in range(nghosts)]
     else:
         gagts = []
     total_score, total_computation_time, total_expanded_nodes = runGame(
