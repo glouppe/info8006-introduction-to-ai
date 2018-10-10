@@ -4,7 +4,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - Instructor: Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
 - Teaching assistants: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)), Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
-- Classroom: B28/R3
+- When: Fall 2018, Thursday 8:30AM. 
+- Classroom: [I1/Amphi.Zoologie](https://www.campus.uliege.be/cms/c_5119454/fr/amphi-zoologie)
 
 ## Slides
 
@@ -23,8 +24,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ## Exercise sessions
 
-- Session 1 (October 4): Python tutorial
-- Session 2 (October 11): Solving problems by searching
+- Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
+- Session 2 (October 11): Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP1.pdf)]
 - Session 3 (October 18): Constraint satisfaction problems
 - Session 4 (October 25): Games and adversarial search
 - Session 5 (November 8): Representing uncertain knowledge
@@ -38,8 +39,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 ### Pacman programming project
 
 - Pacman Part 1/3: Search agent. Due on October 26.
-- Pacman Part 2/3: Minimax agent. Due on November 11.
-- Pacman Part 3/3: MDP agent. Due on December 21.
+- Pacman Part 2/3: Minimax agent.
+- Pacman Part 3/3: MDP agent.
 
 Further instructions can be found in the [`/pacman/`](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman) folder.
 

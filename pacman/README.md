@@ -116,7 +116,7 @@ Your report should be organized into 3 parts:
 1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
 2. You should run your agents against the 3 maze layouts located the  `/pacman_module/layouts/` folder.
   For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
-3. Discuss the performance and limitations of your agents, with respect its search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
+3. Discuss the performance and limitations of your agents, with respect to its search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
 
 ## Part 2: Minimax agent
 
@@ -136,9 +136,9 @@ The score function of the game is computed as follows:
 
 `score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
 
-We ask you to implement an agent that wins the game while maximizing its function.
+We ask you to implement an agent that wins the game while maximizing its score.
 
-Note that you should ask yourself if this score function satisfies all the properties of the search algorithms you will implement. If not, you are free to modify it as long the optimal solutions remain the same.
+Note that you should ask yourself if this score function satisfies all the properties of the search algorithms you will implement. If not, you are free to modify it as long as the optimal solutions remain the same.
 
 ### API
 
