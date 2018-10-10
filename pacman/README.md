@@ -79,6 +79,16 @@ python run.py --silentdisplay
 python run.py --layout medium
 ```
 
+`--nghosts`: Start the game with a user-specifed maximum number of ghosts in the maze:
+```bash
+python run.py --nghosts 1
+```
+
+`--ghostagent`: Start the game with a user-specifed ghost pattern:
+```bash
+python run.py --ghostagent greedy
+```
+
 `-h`: For further details, check the command-line help section:
 ```bash
 python run.py -h
@@ -90,7 +100,7 @@ python run.py -h
 
 For each part of the project, you must provide the following deliverables:
 
-- The source code of your Pacman agent(s).  
+- The source code of your Pacman agent(s).
 - A report in PDF format of 4 pages (at most).
 
 The three parts of the project must be carried out in groups of 2 students (with the same group across all parts).
@@ -120,7 +130,27 @@ Your report should be organized into 3 parts:
 
 ## Part 2: Minimax agent
 
-TBD.
+This part is due on **November 16, 2018 at 23:59**. This is a **hard** deadline.
+
+In this second part, on the top of food dots, one ghost is in the maze. The ghost follows one of the following patterns (see this [module](https://glouppe.github.io/info8006-introduction-to-ai/pacman/pacman_module/ghostAgents.py)) : 
+ - Rotate on itself in a counterclockwise fashion until it can go on its left (LeftyGhost).
+ - Select the next closer position to Pacman (GreedyGhost).
+ - Select the next position which leads to the shortest path towards Pacman (AstaryGhost).
+
+Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)) for eating all the dots as quickly as possible while avoiding ghosts.
+
+You are asked to implement an agent based on each of these adversarial search algorithms:
+ - Minimax.
+ - Minimax with alpha-beta pruning.
+ - Custom minimax with alpha-beta pruning (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)).
+
+Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`minimax.py`, `alphabeta.py`, `alphabetaprime.py`), following the template of `pacmanagent.py`.
+
+Your report should be organized into 3 parts:
+1. You must formalize the game as an adversarial search problem, as seen in [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md).
+2. You should run your agents against the 3 maze layouts with filename ending by `_adv` located the  `/pacman_module/layouts/` folder.
+  For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
+3. Discuss the performance and limitations of your agents, with respect its adversarial search algorithm and the impact of your custom adversarial search algorithm on the maze layouts. Comment on possible improvements.
 
 ## Part 3: MDP agent
 
