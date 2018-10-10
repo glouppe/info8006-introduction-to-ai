@@ -6,6 +6,41 @@ Lecture 3: Constraint satisfaction problems
 
 ---
 
+class: black-slide, center, middle
+
+.center.width-100[![](figures/lec3/pacman-thinking.png)]
+
+.caption[Hmmm, let me think...]
+
+---
+
+count: false
+class: black-slide, center, middle
+
+.center.width-100[![](figures/lec3/pacman-thinking.png)]
+
+.caption[(...)]
+
+---
+
+count: false
+class: black-slide, center, middle
+
+.center.width-100[![](figures/lec3/pacman-thinking.png)]
+
+.caption[(5 minutes later)]
+
+---
+
+count: false
+class: black-slide, center, middle
+
+.center.width-100[![](figures/lec3/pacman-thinking2.png)]
+
+.caption[Solution found! [Can we do better?]]
+
+---
+
 # Today
 
 - *Constraint satisfaction problems*:
@@ -60,9 +95,10 @@ Formally, a **constraint satisfaction problem** (CSP) consists of three componen
 
 ---
 
-# Example: Map coloring
+class: middle
 
-<br><br>
+## Example: Map coloring
+
 .center.width-70[![](figures/lec3/map-coloring.png)]
 
 ---
@@ -81,7 +117,7 @@ class: middle
 
 ---
 
-# Constraint graph
+# Constraint (hyper)graph
 
 .center.width-50[![](figures/lec3/csp-graph.png)]
 
@@ -92,7 +128,9 @@ class: middle
 
 ---
 
-# Example: Cryptarithmetic
+class: middle
+
+## Example: Cryptarithmetic
 
 .center.width-60[![](figures/lec3/cryptarithmetic.png)]
 
@@ -106,7 +144,9 @@ class: middle
 
 ---
 
-# Example: Sudoku
+class: middle
+
+## Example: Sudoku
 
 .center.width-30[![](figures/lec3/sudoku.png)]
 
@@ -118,7 +158,9 @@ class: middle
     - 9-way $\text{alldiff}$ for each region
 ---
 
-# Example: The Waltz algorithm
+class: middle
+
+## Example: The Waltz algorithm
 
 .center.width-40[![](figures/lec3/waltz.png)]
 
@@ -193,6 +235,27 @@ Notice that many real-world problems involve real-valued variables.
 
 ---
 
+# Constraint programming
+
+.grid[
+.kol-2-3[
+<br>
+.caption[Constraint Programming represents one of the closest approaches computer science has yet made to the Holy Grail of programming: the user states the problem, the computer solves it.
+<br>(Eugene Freuder)]
+]
+.kol-1-3[.center.circle.width-100[![](figures/lec3/eugene-freuder.jpg)]]
+]
+
+Constraint programming is a programming paradigm in which the user specifies the program as a CSP. The resolution of the problem is left to the computer.
+
+Examples:
+- Prolog
+- ECLiPSe
+
+
+
+---
+
 class: middle
 
 # Solving CSPs
@@ -203,21 +266,23 @@ class: middle
 
 - CSPs can be cast as standard search problems.
     - For which we have solvers, including DFS, BFS or A*.
-- States are partial assignments:
-    - The *initial state* is the empty assignment $\\{ \\}$.
-    - *Actions*: assign a value to an unassigned variable.
-    - *Goal test*: the current assignment is complete and satisfies all constraints.
-- This algorithm is the same for all CSPs!
+- States are *partial assignments*:
+    - The initial state is the empty assignment $\\{ \\}$.
+    - Actions: assign a value to an unassigned variable.
+    - Goal test: the current assignment is complete and satisfies all constraints.
+- This algorithm is **the same** for all CSPs!
 
 ---
 
-# Search methods
+class: middle
 
 .center.width-50[![](figures/lec3/csp-graph.png)]
 
-- What would BFS or DFS do? What problems does naive search have?
-- For $n$ variables of domain size $d$, $b=(n-l)d$ at depth $l$.
-    - We generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
+What would BFS or DFS do? What problems does naive search have?
+
+For $n$ variables of domain size $d$:
+- $b=(n-l)d$ at depth $l$;
+- we generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
 
 ???
 
@@ -303,7 +368,7 @@ class: middle
 
 We are seeking only one solution. Therefore:
 - fail-first variable selection to prune large portions of the tree
-- fail-fast value selection to look for the most likely value
+- fail-last value selection to look for the most likely value
 
 ---
 
@@ -323,7 +388,7 @@ class: middle
 
 ## Filtering: Constraint propagation
 
-Forward checking propagates information assigned to unassigned variables, but does not provide early deteciton for all failures:
+Forward checking propagates information assigned to unassigned variables, but does not provide early detection for all failures:
 
 .center.width-100[![](figures/lec3/forward-checking-inc.png)]
 
@@ -458,9 +523,9 @@ class: middle
 
 ---
 
-class: smaller
+class: smaller, middle
 
-# PEAS description
+## PEAS description
 
 - *Performance measure*:
     - +1000 for climbing out of the cave with gold;
@@ -482,13 +547,16 @@ class: smaller
 
 ---
 
-# Wumpus world characterization
+class: middle
+
+## Wumpus world characterization
 
 - *Deterministic*: Yes, outcomes are exactly specified.
 - *Static*: Yes, Wumpus and pits dot not move.
 - *Discrete*: Yes.
-- *Single-agent*: Yes, Wumpus is essential a natural feature.
+- *Single-agent*: Yes, Wumpus is essentially a part of the environment.
 - **Fully observable**: No, only *local* perception.
+    - This is our first example of partial observability.
 - **Episodic**: No, what was observed before is very useful.
 
 The agent need to maintain a model of the world and to update this model upon percepts.
@@ -497,7 +565,9 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 ---
 
-# Exploring the Wumpus world (1)
+class: middle
+
+## Exploring the Wumpus world (1)
 
 .center.width-100[![](figures/lec3/wumpus-exploration1.png)]
 
@@ -507,7 +577,9 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 
 ---
 
-# Exploring the Wumpus world (2)
+class: middle
+
+## Exploring the Wumpus world (2)
 
 .center.width-100[![](figures/lec3/wumpus-exploration2.png)]
 
@@ -537,8 +609,13 @@ We will use **logical reasoning** to overcome the initial ignorance of the agent
 ## Syntax
 
 The **syntax** of propositional logic defines allowable *sentences*.
+The syntax of propositional logic is formally defined by the following *grammar*:
 
 .center.width-80[![](figures/lec3/syntax.png)]
+
+???
+
+Show an example, e.g. $(P \& Q) \Rightarrow R$
 
 ---
 
@@ -547,7 +624,7 @@ class: middle
 ## Semantics
 
 - In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
-    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=false, P_2=true, P_3=true\\}$.
+    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=False, P_2=True, P_3=True\\}$.
 - The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
     - The truth value of a proposition symbol is specified in $m$.
     - $\lnot P$ is true iff $P$ is false;
@@ -567,12 +644,13 @@ class: middle
 - Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
 
 Examples:
-- There is not pit in $[1,1]$:
+- There is no pit in $[1,1]$:
     - $R\\\_1: \lnot P\\\_{1,1}.$
 - Pits cause breezes in adjacent squares:
     - $R\\\_2: B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1}).$
     - $R\\\_3: B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1}).$
-- Breeze percept for the first two squares:
+    - These are true in all wumpus worlds.
+- Breeze percept for the first two squares, for the specific world we consider:
     - $R\\\_4: \lnot B\\\_{1,1}.$
     - $R\\\_5: B\\\_{2,1}.$
 
@@ -598,9 +676,9 @@ Examples:
 .center.width-30[![](figures/lec3/wumpus-simple.png)]
 
 - Let consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
-- Situation after:
+- We consider the situation after:
     - detecting nothing in $[1,1]$,
-    - moving right, breeze in $[2,1]$.
+    - moving right, sensing breeze in $[2,1]$.
 
 <span class="Q">[Q]</span> How many models are there?
 
@@ -644,13 +722,16 @@ class: middle
 
 $$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatisfiable}$$
 
-- $\alpha$ is unsatisfiable iff $M(\alpha) = \\{ \\}$.
-    - i.e., there is no assignment of truth values such that $\alpha$ is true.
+- A sentence $\gamma$ is unsatisfiable iff $M(\gamma) = \\{ \\}$.
+    - i.e., there is no assignment of truth values such that $\gamma$ is true.
 - Proving $\alpha \vDash \beta$ by checking the unsatisfiability of $\alpha \wedge \lnot \beta$ corresponds to the proof technique of reductio ad absurdum.
-- Checking the satisfiability of a sentence $\alpha$ can be cast as CSP!
-    - More efficient than enumerating all models.
-    - But remains NP-complete.
-    - See also SAT solvers, tailored for this specific problem.
+- Checking the satisfiability of a sentence $\gamma$ can be cast as CSP!
+    - More efficient than enumerating all models, but remains NP-complete.
+    - Alternatively, propositional satisfiability (SAT) solvers can be used instead of CSPs. These are tailored for this specific problem. Many of them are variants of backtracking.
+
+???
+
+SAT into CSPs: http://www.cs.toronto.edu/~fbacchus/csc2512/Lectures/2012Readings/Walsh_SATvCSP.pdf
 
 ---
 
