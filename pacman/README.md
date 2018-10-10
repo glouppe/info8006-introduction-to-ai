@@ -136,9 +136,9 @@ The score function of the game is computed as follows:
 
 `score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
 
-We ask you to implement an agent that wins the game while maximizing its function.
+We ask you to implement an agent that wins the game while maximizing its score.
 
-Note that you should ask yourself if this score function satisfies all the properties of the search algorithms you will implement. If not, you are free to modify it as long the optimal solutions remain the same.
+Note that you should ask yourself if this score function satisfies all the properties of the search algorithms you will implement. If not, you are free to modify it as long as the optimal solutions remain the same.
 
 ### API
 
