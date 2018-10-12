@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 3: Constraint satisfaction problems
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ---
 
 class: black-slide, center, middle
