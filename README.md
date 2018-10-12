@@ -4,7 +4,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - Instructor: Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
 - Teaching assistants: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be)), Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
-- When: Fall 2018, Thursday 8:30AM. 
+- When: Fall 2018, Thursday 8:30AM.
 - Classroom: [I1/Amphi.Zoologie](https://www.campus.uliege.be/cms/c_5119454/fr/amphi-zoologie)
 
 ## Slides
@@ -13,7 +13,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 1 (September 20): [Foundations](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)]
 - Lecture 2 (October 4): [Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)]
 - Lecture 3 (October 11): [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)]
-- Lecture 4 (October 18): Games and adversarial search [PDF]
+- Lecture 4 (October 18): [Games and adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)]
 - Lecture 5 (October 25): Representing uncertain knowledge [PDF]
 - Lecture 6 (November 8): Inference in Bayesian networks [PDF]
 - Lecture 7 (November 15): Reasoning over time [PDF]
