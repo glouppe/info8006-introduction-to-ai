@@ -46,8 +46,25 @@ Further instructions can be found in the [`/pacman/`](https://github.com/glouppe
 
 ### Reading assignment
 
-TBD.
+Your task is to read and summarize a major scientific paper in the field of Artificial Intelligence.
 
+> Paper: "Mastering the game of Go with deep neural networks and tree search"<br>
+> David Silver et al, 2016. [[PDF](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf)]
+
+You should produce a report that summarizes the problem that is tackled by the paper and explains why it is challenging or important. The report should outline the main contributions and results with respect to the problem that is addressed. It should also include a critical discussion of the advantages and shortcomings of the paper.
+
+The reading assignment includes the main text (pages 1-6), as well as the methods section (pages 7-9).
+
+Constraints:
+- English
+- 2 pages
+- Formatted using the LaTeX template [`template-report-reading-assignment.tex`](https://glouppe.github.io/info8006-introduction-to-ai/ttemplate-report-reading-assignment.tex)
+
+Your report should be submitted  by **December 14, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.
+
+#### Overleaf
+
+For those not familiar with LaTeX, you can easily write your report using Overleaf. For example by making a copy of [the following project](https://www.overleaf.com/read/vhysfvnjbffv).
 
 ## Archives
 
