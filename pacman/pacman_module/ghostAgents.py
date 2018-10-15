@@ -96,11 +96,11 @@ class GreedyGhost(GhostAgent):
         else:
             bestScore = min(distancesToPacman)
             bestProb = self.prob_attack
-        bestActions = [
+        bestActions = [[
             action for action,
             distance in zip(
                 legalActions,
-                distancesToPacman) if distance == bestScore]
+                distancesToPacman) if distance == bestScore][0]]
 
         # Construct distribution
         dist = util.Counter()
@@ -109,6 +109,7 @@ class GreedyGhost(GhostAgent):
         for a in legalActions:
             dist[a] += (1 - bestProb) / len(legalActions)
         dist.normalize()
+        
         return dist
 
 
