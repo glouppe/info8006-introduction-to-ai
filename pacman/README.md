@@ -128,7 +128,6 @@ Your report should be organized into 3 parts:
 This part is due on **November 23, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
-
 The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
  - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
  - `greedy`: Select the next position that is the closest to Pacman.
@@ -140,15 +139,15 @@ Your task is to design an intelligent agent based on adversarial search algorith
 You are asked to implement an agent based on each of these adversarial search algorithms:
  - Minimax.
  - Minimax with alpha-beta pruning.
- - H-minimax with alpha-beta pruning.
+ - H-Minimax.
 
-Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`minimax.py`, `alphabeta.py`, `halphabeta.py`), following the template of `pacmanagent.py`.
+Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`minimax.py`, `alphabeta.py`, `hminimax.py`), following the template of `pacmanagent.py`. Your implementation of Minimax (with or without alpha-beta pruning) should be able to solve the smaller map `small_adv`. It is not required to be able to solve the larger maps. On the other hand, your implementation of H-Minimax should solve all maps within reasonable time, with a sufficient level of optimality.
 
 Your report should be organized into 3 parts:
 1. You must formalize the game as an adversarial search problem, as seen in [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md).
 2. You should run your agents against the 3 maze layouts with a filename ending by `_adv` located in the  `/pacman_module/layouts/` folder.
   For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
-3. Discuss the performance and limitations of your agents, with respect its adversarial search algorithm and the impact of your custom evaluation functions on the maze layouts. Comment on possible improvements.
+3. Discuss the performance and limitations of your agents, with respect its search algorithm. Evaluate the impact of your custom evaluation and cutoff functions on the maze layouts. Comment on possible improvements.
 
 ### Part 3: MDP agent
 
