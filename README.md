@@ -38,7 +38,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ### Pacman programming project
 
-- Pacman Part 1/3: Search agent. Due on October 26.
+- Pacman Part 1/3: [Search agent](./tree/master/pacman#part-1-search-agent). Due on October 26.
 - Pacman Part 2/3: Minimax agent.
 - Pacman Part 3/3: MDP agent.
 
