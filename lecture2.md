@@ -436,6 +436,10 @@ class: middle
 - *Space complexity*:
      - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
 
+???
+
+R: explain why positive step cost is required for completeness.
+
 ---
 
 class: middle

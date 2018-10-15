@@ -2,29 +2,38 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 4: Adversarial search
+Lecture 4: Games and Adversarial search
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
+---
+
+class: center, black-slide, middle
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
 
 ---
 
 # Today
 
-- How to act rationally in a *multi-agent environment*?
-    - How to anticipate and respond to the arbitrary behavior of other agents?
-- **Games** as a case study.
-- *Adversarial search* (Minimax, $\alpha-\beta$ pruning, H-Minimax, Expectiminimax).
+- How to act rationally in a *multi-agent* environment?
+- How to anticipate and respond to the **arbitrary behavior** of other agents?
+- Adversarial search
+    - Minimax
+    - $\alpha-\beta$ pruning
+    - H-Minimax
+    - Expectiminimax
+    - Monte Carlo Tree Search
+- Modeling assumptions
 - State-of-the-art agents.
 
 ---
 
-class: center
+class: middle
 
-# Ignore the Blonde
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
-
-???
-
-R: add subtitles
+# Minimax
 
 ---
 
@@ -32,7 +41,7 @@ R: add subtitles
 
 - A **game** is a multi-agent environment where agents may have either *conflicting* or *common* interests.
 - Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
-    - Therefore the solution to a game is a *strategy* specifying a move for every possible opponent reply.
+    - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
     - This is different from search where a solution is a *fixed* sequence.
 - Time **limits**.
     - Branching factor is often very large.
@@ -40,7 +49,9 @@ R: add subtitles
 
 ---
 
-# Types of games
+class: middle
+
+## Types of games
 
 - **Deterministic** or *stochastic*?
 - **Perfect** or *imperfect* information?
@@ -49,7 +60,9 @@ R: add subtitles
 
 ---
 
-# Formal definition
+class: middle
+
+## Formal definition
 
 A **game** is formally defined as a kind of search problem with the following components:
 - The *initial state* $s_0$ of the game.
@@ -59,6 +72,8 @@ A **game** is formally defined as a kind of search problem with the following co
 - A *terminal test* which determines whether the game is over.
 
 ---
+
+class: middle
 
 - A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
     - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
@@ -105,7 +120,7 @@ A **game** is formally defined as a kind of search problem with the following co
 # Adversarial search
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - In a search problem, the optimal solution is a sequence of actions leading to a goal state.
     - i.e., a terminal state where MAX wins.
 - In a game, the opponent (MIN) may react *arbitrarily* to a move.
@@ -115,7 +130,7 @@ A **game** is formally defined as a kind of search problem with the following co
     - its moves in the states resulting from every possible response by MIN in those states,
     - ...
 ]
-.col-1-3[
+.kol-1-3.width-100[
 ![](figures/lec4/adversarial-search-cartoon.png)
 ]
 ]
@@ -134,18 +149,20 @@ The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for 
 .center.width-100[![](figures/lec4/minimax.png)]
 
 The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
-- Assuming that MIN is an optimal adversary maximizes the *worst-case outcome* for MAX.
+- Assuming that MIN is an optimal adversary that maximizes the *worst-case outcome* for MAX.
 - This is equivalent to not making an assumption about the strength of the opponent.
 
 ---
 
-# Minimax example
+class: middle
 
 .width-100[![](figures/lec4/minimax-example.png)]
 
 ---
 
-# Properties of Minimax
+class: middle
+
+## Properties of Minimax
 
 - *Completeness*:
     - Yes, if tree is finite.
@@ -158,7 +175,9 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 ---
 
-# Minimax efficiency
+class: middle
+
+## Minimax efficiency
 
 - Assume $\text{minimax}(s)$ is implemented using its recursive definition.
 - How *efficient* is minimax?
@@ -173,7 +192,7 @@ The **optimal** next move (for MAX) is to take the action that maximizes the min
 
 # Pruning
 
-.center.width-80[![](figures/lec4/minimax-incomplete-tree.png)]
+.center.width-70[![](figures/lec4/minimax-incomplete-tree.png)]
 
 .width-100[![](figures/lec4/minimax-incomplete-formula.png)]
 
@@ -181,24 +200,35 @@ Therefore, it is possible to compute the **correct** minimax decision *without l
 
 ---
 
-# Pruning
+class: middle
 
 .center.width-80[![](figures/lec4/minimax-incomplete-stepbystep.png)]
 
 ---
 
-class: smaller
+class: middle
 
-# $\alpha$-$\beta$  pruning
-
-We want to compute $v = \text{minimax}(n)$.
+.grid[
+.kol-2-3[
+We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 - We loop over $n$'s children.
 - The minimax values are being computed one at a time and $v$ is updated iteratively.
-- Let $\alpha$ be the best value that MAX can get, at any choice point along the current path from root.
-- If $v$ becomes lower than $\alpha$, then **MAX will avoid it**.
+- Let $\alpha$ be the best value (i.e., the highest) at any choice point along the path for MAX.
+- If $v$ becomes lower than $\alpha$, then **$n$ will never be reached** in actual play.
 - Therefore, we can *stop iterating* over the remaining $n$'s other children.
+]
+.kol-1-3[.center.width-100[![](figures/lec4/alpha-beta.png)]]
+]
 
-.center.width-30[![](figures/lec4/alpha-beta.png)]
+---
+
+class: middle
+
+Similarly, $\beta$ is defined as the best value (i.e., lowest) at any choice point along the path for MIN. We can halt the expansion of a MAX node as soon as $v$ becomes larger than $\beta$.
+
+## $\alpha$-$\beta$ pruning
+- Updates the values of $\alpha$ and $\beta$ as the path is expanded.
+- Prune the remaining branches (i.e., terminate the recursive calls) as soon as the value of the current node is known to be worse than the current $\alpha$ or $\beta$ value for MAX or MIN, respectively.
 
 ---
 
@@ -206,13 +236,11 @@ We want to compute $v = \text{minimax}(n)$.
 
 .width-90[![](figures/lec4/alpha-beta-impl.png)]
 
-???
-
-R: be explicit about what alpha and beta correspond to
-
 ---
 
-# Properties of $\alpha$-$\beta$ search
+class: middle
+
+## Properties of $\alpha$-$\beta$ search
 
 - Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
 - *Time complexity*:
@@ -290,25 +318,48 @@ Replace the if-statements with the terminal test with if-statements with the cut
 
 ---
 
-.center[
-<video controls preload="auto" height="480" width="640">
-  <source src="./figures/lec4/depth2.mp4" type="video/mp4">
-</video>
+class: middle, black-slide
 
-Cutoff at depth 2, evaluation = the closer to the dot, the better.]
+.center[<video controls preload="auto" height="480" width="640">
+  <source src="./figures/lec4/depth2.mp4" type="video/mp4">
+</video>]
+
+.caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-.center[
-<video controls preload="auto" height="480" width="640">
-  <source src="figures/lec4/depth10.mp4" type="video/mp4">
-</video>
+class: middle, black-slide
 
-Cutoff at depth 10, evaluation = the closer to the dot, the better.]
+.center[<video controls preload="auto" height="480" width="640">
+  <source src="figures/lec4/depth10.mp4" type="video/mp4">
+</video>]
+
+.caption[Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+# Multi-agent utilities
+
+- What if the game is not zero-sum, or has *multiple players*?
+- Generalization of Minimax:
+    - Terminal states are labeled with utility **tuples** (1 value per player).
+    - Intermediate states are also labeled with utility tuples.
+    - Each player maximizes its own component.
+    - May give rise to cooperation and competition dynamically
+
+.center.width-70[![](figures/lec4/multi-agent-tree.png)]
+
+.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+---
+
+class: middle
+
+# Stochastic games
 
 ---
 
@@ -326,7 +377,7 @@ Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
 ---
 
-# Stochastic games
+class: middle
 
 - In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
 - This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
@@ -375,51 +426,70 @@ be approximated by stopping the recursion early and using an evaluation function
 
 ---
 
-# Monte Carlo simulation
+# Monte Carlo Tree Search
+
+## Random playout evaluation
 
 - To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
-    - The sequence of random moves is called a *random playout*.
+- The sequence of random moves is called a *random playout*.
 - Use the proportion of wins as the state evaluation.
-- This strategy does not require domain knowledge!
+- This strategy does **not require domain knowledge**!
     - The game engine is all that is needed.
 
 ---
 
-# Monte Carlo tree search
+class: middle
 
-1. *Selection*: start from root, select successive child nodes down to a leaf $\ell$.
-2. *Expansion*: unless $\ell$ is a terminal state, create one or more child nodes and choose a node $c$ among them.
-3. *Simulation*: play a random playout from $c$.
-4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $c$ to the root.
+## Monte Carlo Tree Search
 
+The focus of MCTS is the analysis of the most promising moves, as incrementally evaluated with random playouts.
+
+Each node $v$ in the current search tree maintains  two values:
+- the number of wins $Q(v,p)$ of player $p$ for all playouts that passed through $v$;
+- the number $N(v)$ of times it has been visited.
+
+---
+
+class: middle
+
+The algorithm searches the game tree as follows:
+1. *Selection*: start from root, select successive child nodes down to a node $v$ that is not fully expanded or to a leaf $v$ of the current search tree.
+2. *Expansion*: unless $v$ is a terminal state, create a new child node $v'$.
+3. *Simulation*: play a random playout from $v'$.
+4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $v'$ to the root.
 Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
 
-.center.width-70[![](figures/lec4/mcts.png)]
+---
 
-<span class="Q">[Q]</span> How to determine the expansion order?
+class: middle
 
-???
+.center.width-100[![](figures/lec4/mcts1b.png)]
 
-R: make it clearer that the policy of expansion is important.
+.caption[Black is about to move. Which action should it take?]
 
 ---
 
-# Multi-agent utilities
+class: middle
 
-- What if the game is not zero-sum, or has *multiple players*?
-- Generalization of Minimax:
-    - Terminal states are labeled with utility **tuples** (1 value per player).
-    - Intermediate states are also labeled with utility tuples.
-    - Each player maximizes its own component.
-    - May give rise to cooperation and competition dynamically
+## Exploration and exploitation
 
-.center.width-70[![](figures/lec4/multi-agent-tree.png)]
+Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+At a node $v$ during the selection step, the UCB1 policy picks the child node $v'$ of $v$ that maximizes
+$$\frac{Q(v',p)}{N(v')} + c \sqrt{\frac{2 \log N(v)}{N(v')}}.$$
+- The first term  encourages the *exploitation* of higher-reward nodes.
+- The second term encourages the **exploration** of less-visited nodes.
+- The constant $c>0$ controls the trade-off between exploitation and exploration.
 
 ---
+
+class: middle
 
 # Modeling assumptions
+
+---
+
+class: middle
 
 .center[
 ![](figures/lec2/search-problems-models.png)
@@ -430,76 +500,89 @@ What if our assumptions are incorrect?]
 
 ---
 
-# Assumptions vs. reality (1)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/minimax-vs-adversarial.mp4" type="video/mp4">
-</video>
+</video>]
 
-Minimax Pacman vs. Adversarial ghost]
+.caption[Minimax Pacman vs. Adversarial ghost]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-# Assumptions vs. reality (2)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/minimax-vs-random.mp4" type="video/mp4">
-</video>
+</video>]
 
-Minimax Pacman vs. Random ghost]
+.caption[Minimax Pacman vs. Random ghost]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-# Assumptions vs. reality (3)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/expectimax-vs-random.mp4" type="video/mp4">
-</video>
+</video>]
 
-Expectiminimax Pacman vs. Random ghost]
+.caption[Expectiminimax Pacman vs. Random ghost]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
-# Assumptions vs. reality (4)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/expectimax-vs-adversarial.mp4" type="video/mp4">
-</video>
+</video>]
 
-Expectiminimax Pacman vs. Adversarial ghost]
+.caption[Expectiminimax Pacman vs. Adversarial ghost]
 
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
 ---
 
+class: middle
+
 # State-of-the-art game programs
 
-## Checkers
+---
 
-- 1951 (Christopher Strachey): first computer player .
-- 1994 (Jonathan Schaeffer et al.): first computer champion. *Chinook* ended 40-year-reign of human champion Marion Tinsley.
-    - Library of opening moves from grandmasters;
-    - A deep search algorithm;
-    - A good move evaluation function;
-        - Based on a linear model.
-    - A database for all positions with eight pieces or fewer.
-- 2007 (Jonathan Schaeffer et al.): Checkers is **solved**.
-    - A weak solution is computationally proven.
-        - The number of involved calculations was $10^{14}$, over a period of 18 years.
-    - The best an optimal player can achieve against Chinook is a draw.
+class: smaller
+
+# Checkers
+
+## 1951
+
+First computer player by Christopher Strachey.
+
+## 1994
+
+The computer program *Chinook* ends the 40-year-reign of human champion Marion Tinsley.
+- Library of opening moves from grandmasters;
+- A deep search algorithm;
+- A good move evaluation function (based on a linear model);
+- A database for all positions with eight pieces or fewer.
+
+## 2007
+Checkers is **solved**. A weak solution is computationally proven.
+- The number of involved calculations was $10^{14}$, over a period of 18 years.
+- The best an optimal player can achieve against Chinook is a draw.
 
 ---
+
+class: middle
 
 .center.width-70[![](figures/lec4/checkers-proof.png)]
 
@@ -507,53 +590,65 @@ Expectiminimax Pacman vs. Adversarial ghost]
 
 ---
 
-# State-of-the-art game programs
+# Chess
 
-## Chess
+## 1997
+*Deep Blue* defeats human champion Gary Kasparov.
+- $200000000$ position evulations per second.
+- **Very sophisticated** evaluation function.
+- Undisclosed methods for extending some lines of search up to 40 plies.
 
-- 1997: *Deep Blue* defeats human champion Gary Kasparov.
-    - $200000000$ position evulations per second.
-    - Very sophisticated evaluation function.
-    - Undisclosed methods for extending some lines of search up to 40 plies.
-- Modern programs are better, if less historic.
-- Chess remains *unsolved* due to the complexity of the game.
+Modern programs (e.g., Stockfish) are better, if less historic.
+Chess remains *unsolved* due to the complexity of the game.
 
 .center.width-50[![](figures/lec4/deep-blue.jpg)]
 
 ---
 
-# State-of-the-art game programs
+# Go
 
-## Go
-
+For long, Go was considered as the Holy Grail of AI due to the size of its game tree.
 - On a 19x19, the number of legal positions is $\pm 2 \times 10^{170}$.
 - This results in **$\pm 10^{800}$ games**, considering a length of $400$ or less.
-- 2010-2014: Using *Monte Carlo tree search* and *machine learning*, computer players reach low dan levels.
-- 2015-2017 (Google Deepmind): *AlphaGo*
-    - 2015: AlphaGo beat Fan Hui, the European Go Champion.
-    - 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
-    - 2017: AlphaGo beat Ke Jie, 1st world human player.
-- AlphaGo combines *Monte Carlo tree search* and *deep learning* with extensive training, both from human and computer play.
 
-???
-
-R: define value and policy networks and how they relate to MCTS.
+<br>
+.center.width-50[![](figures/lec4/go.jpg)]
 
 ---
 
-class: center
+class: middle
 
-# AlphaGo
+## 2010-2014
+Using *Monte Carlo tree search* and *machine learning*, computer players reach low dan levels.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
+## 2015-2017
+Google Deepmind invents AlphaGo.
+
+- 2015: AlphaGo beat Fan Hui, the European Go Champion.
+- 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
+- 2017: AlphaGo beat Ke Jie, 1st world human player.
+
+AlphaGo combines Monte Carlo tree search and **deep learning** with extensive training, both from human and computer play.
 
 ---
 
-# AlphaGo Zero
+class: middle, black-slide, center
 
-Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
+<iframe width="640" height="400" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
 
-.center.width-50[![](figures/lec4/alphago-zero.png)]
+.caption[Press coverage for the victory of AlphaGo against Lee Sedol.]
+
+---
+
+class: middle
+
+## 2017
+
+AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
+
+.center.width-70[![](figures/lec4/alphagozero-training.gif)]
+
+.footnote[Credits: [AlphaGo Zero: Learning from scratch](https://deepmind.com/blog/alphago-zero-learning-scratch/)]
 
 ---
 
@@ -566,19 +661,20 @@ Oct 18, 2017 (**yersterday**): AlphaGo Zero combines *Monte Carlo tree search* a
     - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
     - Approximations can be achieved with heuristics, reducing computing times.
     - Minimax can be adapted to stochastic games.
-    - Minimax can be adapter to games with more than 2 players.
+    - Minimax can be adapted to games with more than 2 players.
 - Optimal behavior is **relative** and depends on the assumptions we make about the world.
-- Going further?
-    - See Chapters 16, 17 and 21 or INFO8003 Optimal decision making for complex problems.
-    - What if the world is unknown?
 
-???
+---
 
-R: Have an additional lecture before this one, on MDPs?
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 
 # References
 
+- Browne, Cameron B., et al. "A survey of monte carlo tree search methods." IEEE Transactions on Computational Intelligence and AI in games 4.1 (2012): 1-43.
 - Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.
 - Silver, David, et al. "Mastering the game of Go with deep neural networks and tree search." Nature 529.7587 (2016): 484-489.

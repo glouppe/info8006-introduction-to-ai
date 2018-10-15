@@ -123,7 +123,7 @@ Your report should be organized into 3 parts:
   For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect to its search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
 
-## Part 2: Minimax agent
+### Part 2: Minimax agent
 
 This part is due on **November 23, 2018 at 23:59**. This is a **hard** deadline.
 
@@ -150,7 +150,7 @@ Your report should be organized into 3 parts:
   For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect its adversarial search algorithm and the impact of your custom evaluation functions on the maze layouts. Comment on possible improvements.
 
-## Part 3: MDP agent
+### Part 3: MDP agent
 
 TBD.
 
