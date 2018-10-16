@@ -128,11 +128,11 @@ Your report should be organized into 3 parts:
 This part is due on **November 23, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
+
 The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
  - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
  - `greedy`: Select the next position that is the closest to Pacman.
  - `smarty`: Select the next position which leads to the shortest path towards Pacman.
-
 
 Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)) for eating all the dots as quickly as possible while avoiding the ghost.
 
@@ -141,13 +141,15 @@ You are asked to implement an agent based on each of these adversarial search al
  - Minimax with alpha-beta pruning.
  - H-Minimax.
 
-Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`minimax.py`, `alphabeta.py`, `hminimax.py`), following the template of `pacmanagent.py`. Your implementation of Minimax (with or without alpha-beta pruning) should be able to solve the smaller map `small_adv`. It is not required to be able to solve the larger maps. On the other hand, your implementation of H-Minimax should solve all maps within reasonable time, with a sufficient level of optimality.
+Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`minimax.py`, `alphabeta.py` and `hminimax.py`), following the template of `pacmanagent.py`.
+
+Your implementation of Minimax (with or without alpha-beta pruning) should be able to solve the smaller map `small_adv` against all kinds of ghosts. It is not required to be able to solve the larger maps (`medium_adv` and `large_adv`). On the other hand, your implementation of H-Minimax should solve all maps against all ghosts, within reasonable time and with a sufficient level of optimality.
 
 Your report should be organized into 3 parts:
 1. You must formalize the game as an adversarial search problem, as seen in [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md).
-2. You should run your agents against the 3 maze layouts with a filename ending by `_adv` located in the  `/pacman_module/layouts/` folder.
-  For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
-3. Discuss the performance and limitations of your agents, with respect to their search algorithm. Evaluate the impact of your custom evaluation and cutoff functions on the maze layouts. Comment on possible improvements.
+2. You should run your 3 Pacman agents on the `small_adv` maze layout against all 3 ghost agents.
+  For each ghost agent, report as a bar plot the performance of your 3 Pacman agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
+3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the maze layout (`small_adv`, `medium_adv` and `large_adv`) and the ghost agent. Evaluate the impact of your custom evaluation and cutoff functions. Comment on possible improvements.
 
 ### Part 3: MDP agent
 
