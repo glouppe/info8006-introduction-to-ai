@@ -42,7 +42,7 @@ class: middle
 - A **game** is a multi-agent environment where agents may have either *conflicting* or *common* interests.
 - Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
     - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
-    - This is different from search where a solution is a *fixed* sequence.
+    - This is different from search where a solution is a *fixed sequence*.
 - Time **limits**.
     - Branching factor is often very large.
     - Unlikely to find goal with standard search algorithms, we need to *approximate*.
@@ -139,6 +139,9 @@ class: middle
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
+???
+
+Analogy with chess, checkers or belotte.
 
 ---
 
@@ -217,7 +220,7 @@ We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 - If $v$ becomes lower than $\alpha$, then **$n$ will never be reached** in actual play.
 - Therefore, we can *stop iterating* over the remaining $n$'s other children.
 ]
-.kol-1-3[.center.width-100[![](figures/lec4/alpha-beta.png)]]
+.kol-1-3[<br><br>.center.width-100[![](figures/lec4/alpha-beta.png)]]
 ]
 
 ---
@@ -287,7 +290,7 @@ Replace the if-statements with the terminal test with if-statements with the cut
 
 # Evaluation functions
 
-- An evaluation function returns an **estimate** of the expected utility of the game from a given position.
+- An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
 - The computation *must be short* (that is the whole point to search faster).
 - Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
     - The evaluation values may be different from the true minimax values, as long as order is preserved.
@@ -354,6 +357,10 @@ class: middle, black-slide
 .center.width-70[![](figures/lec4/multi-agent-tree.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+
+???
+
+Hence explain the origin of zero-sum games.
 
 ---
 
@@ -444,19 +451,20 @@ class: middle
 
 The focus of MCTS is the analysis of the most promising moves, as incrementally evaluated with random playouts.
 
-Each node $v$ in the current search tree maintains  two values:
-- the number of wins $Q(v,p)$ of player $p$ for all playouts that passed through $v$;
-- the number $N(v)$ of times it has been visited.
+Each node $n$ in the current search tree maintains  two values:
+- the number of wins $Q(n,p)$ of player $p$ for all playouts that passed through $n$;
+- the number $N(n)$ of times it has been visited.
 
 ---
 
 class: middle
 
 The algorithm searches the game tree as follows:
-1. *Selection*: start from root, select successive child nodes down to a node $v$ that is not fully expanded or to a leaf $v$ of the current search tree.
-2. *Expansion*: unless $v$ is a terminal state, create a new child node $v'$.
-3. *Simulation*: play a random playout from $v'$.
-4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $v'$ to the root.
+1. *Selection*: start from root, select successive child nodes down to a node $n$ that is not fully expanded.
+2. *Expansion*: unless $n$ is a terminal state, create a new child node $n'$.
+3. *Simulation*: play a random playout from $n'$.
+4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $n'$ to the root.
+
 Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
 
 ---
@@ -475,8 +483,8 @@ class: middle
 
 Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
 
-At a node $v$ during the selection step, the UCB1 policy picks the child node $v'$ of $v$ that maximizes
-$$\frac{Q(v',p)}{N(v')} + c \sqrt{\frac{2 \log N(v)}{N(v')}}.$$
+At a node $n$ during the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
+$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}}.$$
 - The first term  encourages the *exploitation* of higher-reward nodes.
 - The second term encourages the **exploration** of less-visited nodes.
 - The constant $c>0$ controls the trade-off between exploitation and exploration.
