@@ -147,8 +147,8 @@ Your implementation of Minimax (with or without alpha-beta pruning) should be ab
 
 Your report should be organized into 3 parts:
 1. You must formalize the game as an adversarial search problem, as seen in [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md).
-2. You should run your 3 agents on the `small_adv` maze layout against all 3 ghost agents.
-  For each layout, report as a bar plot the performance of your 3 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
+2. You should run your 3 Pacman agents on the `small_adv` maze layout against all 3 ghost agents.
+  For each ghost agent, report as a bar plot the performance of your 3 Pacman agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the maze layout (`small_adv`, `medium_adv` and `large_adv`) and the ghost agent. Evaluate the impact of your custom evaluation and cutoff functions. Comment on possible improvements.
 
 ### Part 3: MDP agent
