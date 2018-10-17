@@ -39,7 +39,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 ### Pacman programming project
 
 - Pacman Part 1/3: [Search agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-1-search-agent). Due on October 26.
-- Pacman Part 2/3: Minimax agent.
+- Pacman Part 2/3: [Minimax agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-2-minimax-agent).
 - Pacman Part 3/3: MDP agent.
 
 Further instructions can be found in the [`/pacman/`](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman) folder.
