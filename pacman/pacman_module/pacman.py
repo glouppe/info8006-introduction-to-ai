@@ -79,8 +79,8 @@ class GameState:
 
     # static variable keeps track of which states have had getLegalActions
     explored = set()
-    # static variable keeps track of number of calls of 
-    # /!\ XXX: Do NOT modify this variable during get_action call. 
+    # static variable keeps track of number of calls of
+    # /!\ XXX: Do NOT modify this variable during get_action call.
     # /!\ Otherwise, your project won't be graded
     countExpanded=0
     maximumExpanded = np.inf
@@ -154,12 +154,23 @@ class GameState:
 
     def generatePacmanSuccessors(self):
         """
-        Generates the successor state after the specified pacman move
+        Returns a list of pairs of successor states and moves given the current state s for the pacman agent.
         """
         if (GameState.countExpanded >= GameState.maximumExpanded):
             return None
         GameState.countExpanded += 1
         return [(self.generateSuccessor(0, action),action) for action in self.getLegalPacmanActions() if action != Directions.STOP]
+
+    def generateGhostSuccessors(self,index):
+        """
+         Returns a list of pairs of successor states and moves given the current state s for the ghost agent (>0).
+        """
+
+        if (GameState.countExpanded >= GameState.maximumExpanded or index == 0):
+            return None
+        GameState.countExpanded += 1
+
+        return [(self.generateSuccessor(index, action),action) for action in self.getLegalActions(index) if action != Directions.STOP]
 
     def getPacmanState(self):
         """
@@ -187,7 +198,7 @@ class GameState:
         return self.data.agentStates[agentIndex].getPosition()
 
     def getGhostPositions(self):
-        return [s.getPosition() for s in self.getGhostStates()]
+        return [tuple(map(int,s.getPosition())) for s in self.getGhostStates()]
 
     def getNumAgents(self):
         return len(self.data.agentStates)
