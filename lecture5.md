@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 5: Representing uncertain knowledge
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
 R: make sure to introduce the purpose of probability for inference under uncertainty
@@ -17,7 +21,7 @@ R: develop on causality?
 # Today
 
 .grid[
-.col-1-2[
+.kol-1-2[
 - *Probability*:
     - Random variables
     - Joint and marginal distributions
@@ -29,40 +33,44 @@ R: develop on causality?
     - Semantics
     - Construction
 ]
-.col-1-2[
-![](figures/lec5/proba-cartoon.png)
+.kol-1-2[
+.width-100[![](figures/lec5/proba-cartoon.png)]
 ]
 ]
 
-**You will need these concepts a lot! (Now and in future courses)**
+**You will need these concepts a lot!** (Now and in future courses)
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-class: middle, center
+class: middle
 
 # Quantifying uncertainty
 
 ---
 
-# Inference in Ghostbusters
+# Ghostbusters
 
-.center.width-40[![](figures/lec5/gb-grid.png)]
+.grid[
+.kol-1-2[
+A ghost is *hidden* in the grid somewhere.
+Sensor readings tell how close a square is to the ghost.
+- On the ghost: red
+- 1 or 2 away: orange
+- 3 away: yellow
+- 4+ away green
 
-- A ghost is *hidden* in the grid somewhere.
-- Sensor readings tell how close a square is to the ghost.
-    - On the ghost: red
-    - 1 or 2 away: orange
-    - 3 away: yellow
-    - 4+ away green
-- Sensors are **noisy**, but we know $P(Color|Distance)$.
+Sensors are **noisy**, but we know the probability $P(\text{color}|\text{distance})$ for all colors and all distances.
+]
+.kol-1-2[.width-100[![](figures/lec5/gb-grid.png)]]
+]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Inference in Ghostbusters
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
@@ -71,58 +79,60 @@ class: middle, center
 
 <span class="Q">[Q]</span> Could we use a logical agent for this game?
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Uncertainty
 
-- General situation:
-    - *Observed variables* (evidence): agent knows certain things about the state of the world (e.g., sensor readings).
-    - *Unobserved variables*: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
-    - (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
-- How to handle uncertainty?
-    - A purely logical approach either:
-        - risks falsehood (because of ignorance about the world or laziness in the model), or
-        - leads to conclusions that are too weak for decision making.
-    - **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
+General situation:
+- *Observed variables* (evidence): agent knows certain things about the state of the world (e.g., sensor readings).
+- *Unobserved variables*: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
+- (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
+
+How to handle uncertainty?
+- A purely logical approach either:
+    - risks falsehood (because of ignorance about the world or laziness in the model), or
+    - leads to conclusions that are too weak for decision making.
+- **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
 
 ---
 
 # Probability
 
 - Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
-- Probabilities **summarize** effects of
+- Probability values **summarize** effects of
     - *laziness* (failure to enumerate all world states)
     - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
-- *Bayesian* (subjective) **probabilities** relate propositions to one's own state of knowledge.
-    - e.g., $P(\text{ghost in } [3,2]) = 0.02$
+- (Bayesian subjective) Probabilities relate propositions to one's own state of knowledge (or lack thereof).
+    - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
 - These are **not** claims of a "probabilistic tendency" in the current situation (but might be learned from past experience of similar situations).
-
 
 ---
 
-# Probability basics
+# Kolmogorov's probability theory
 
-- Begin with a set $\Omega$, the *sample space*.
-    - e.g., 6 possible rolls of a die.
-    - $\omega \in \Omega$ is a *sample point*, *possible world* or *atomic event*.
-- A **probability space** is a sample space with an assignment $P(\omega)$ for every $\omega \in \Omega$ such that:
-    - $0 \leq P(\omega) \leq 1$
-    - $\sum_{\omega} P(\omega) = 1$
-    - e.g., $P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$
+Begin with a set $\Omega$, the *sample space*.
+- e.g., 6 possible rolls of a die.
+- $\omega \in \Omega$ is a *sample point*, *possible world* or *atomic event*.
+
+A **probability space** is a sample space with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
+- $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$ (1st axiom)
+- $P(\Omega) = 1$ (2nd axiom)
+- $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples (3rd axiom)
+
+## Example
+$$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 
 ---
 
 # Random variables
 
 - A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its *outcomes*.
-    - e.g., $Odd(1) = true$ and $D_{Odd} = \\{ true, false \\}$.
+    - e.g., $Odd: \mathbb{R} \to \\{ \text{true}, \text{false} \\}$ such that $Odd(\omega) = (\omega \% 2 = 1)$.
 - $P$ induces a **probability distribution** for any random variable $X$.
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
-    - e.g., $P(Odd=true) = P(1)+P(3)+P(5) = \frac{1}{2}$.
-    - When clear from the context, we will denote $P(X=x\_i)$ as $P(x_i)$.
-- For discrete variables, the probability distribution can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
+    - e.g., $P(Odd=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
 - In practice, we will use random variables to *represent aspects of the world* about which we (may) have uncertainty.
     - $R$: Is it raining?
     - $T$: Is it hot or cold?
@@ -132,99 +142,112 @@ class: middle, center
 
 # Probability distributions
 
-- Intuitively, one can think of the *probability distribution* of a random variable as a **table** that associates a probability value to each *outcome* of the variable.
+For discrete variables, the probability distribution can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
+- One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
+    - This table can be infinite!
 - By construction, probability values are *normalized* (i.e., sum to $1$).
-- This table can be infinite!
 
 .grid[
-.center.col-1-2[
+.center.kol-1-2[
 $P(W)$
 
 | $W$ | $P$ |
 | --- | --- |
-| $sun$ | $0.6$ |
-| $rain$ | $0.1$ |
-| $fog$ | $0.3$ |
-| $meteor$ | $0.0$ |
+| $\text{sun}$ | $0.6$ |
+| $\text{rain}$ | $0.1$ |
+| $\text{fog}$ | $0.3$ |
+| $\text{meteor}$ | $0.0$ |
 
 ]
-.col-1-2[
-![](figures/lec5/pw.png)
-]
+.kol-1-2[.width-100[![](figures/lec5/pw.png)]]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+# Notations
+
+- Random variables are written in upper roman letters: $X$, $Y$, etc.
+- Realizations of a random variable are written in corresponding lower case letters.
+   E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
+- The probability value of the realization $x$ is written as $P(X=x)$.
+- When clear from context, this will be abbreviated as $P(x)$.
+- The probability distribution of the random variable $X$ is denoted as $P(X)$.
 
 ---
 
 # Joint distributions
 
-- A **joint probability distribution** over a set of random variables $X_1, ..., X_n$ specifies
-the probability of each (combined) outcome.
+ A **joint probability distribution** over a set of random variables $X_1, ..., X_n$ specifies
+the probability of each (combined) outcome:
 
-$$P(x\_1, ..., x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
+$$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
 
-- Example $P(T,W)$:
+## Example $P(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
-| $hot$ | $sun$ | $0.4$ |
-| $hot$ | $rain$ | $0.1$ |
-| $cold$ | $sun$ | $0.2$ |
-| $cold$ | $rain$ | $0.3$ |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 
 ---
 
 # Events
 
-- An **event** is a set $E$ of outcomes.
-    - $P(E) = \sum_{(x_1, ..., x_n) \in E} P(x_1, ..., x_n)$
-- From a joint distribution, the probability of *any event* can be calculated.
-    - Probability that it is hot and sunny?
-    - Probability that it is hot?
-    - Probability that it is hot or sunny?
-- Interesting events often correspond to *partial assignments*.
-    - e.g., $P(T=hot)$
+An **event** is a set $E$ of outcomes.
+- $P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n)$
+
+From a joint distribution, the probability of *any event* can be calculated.
+- Probability that it is hot and sunny?
+- Probability that it is hot?
+- Probability that it is hot or sunny?
+
+Interesting events often correspond to *partial assignments*.
+- e.g., $P(T=\text{hot})$
 
 ---
 
 # Marginal distributions
 
-- The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
-- Intuitively, marginal distributions are sub-tables which eliminate variables.
+The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
 
 .center.grid[
-.col-1-3[
+.kol-1-3[
 $P(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
-| $hot$ | $sun$ | $0.4$ |
-| $hot$ | $rain$ | $0.1$ |
-| $cold$ | $sun$ | $0.2$ |
-| $cold$ | $rain$ | $0.3$ |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
-.col-1-3[
+.kol-1-3[
 $P(T)$
 
 | $T$ | $P$ |
 | --- | --- |
-| $hot$ | $0.5$ |
-| $cold$ | $0.5$ |
+| $\text{hot}$ | $0.5$ |
+| $\text{cold}$ | $0.5$ |
 
 $P(t) = \sum_w P(t, w)$
 ]
-.col-1-3[
+.kol-1-3[
 $P(W)$
 
 | $W$ | $P$ |
 | --- | --- |
-| $sun$ | $0.6$ |
-| $rain$ | $0.4$ |
+| $\text{sun}$ | $0.6$ |
+| $\text{rain}$ | $0.4$ |
 
 $P(w) = \sum_t P(t, w)$
 ]
 ]
+
+Intuitively, marginal distributions are sub-tables which eliminate variables.
 
 <span class="Q">[Q]</span> To what events are marginal probabilities associated?
 
@@ -232,14 +255,13 @@ $P(w) = \sum_t P(t, w)$
 
 # Conditional probability
 
-- **Prior** or unconditional probabilities of an event correspond to some initial belief,
+**Prior** or unconditional probabilities of an event correspond to some initial belief,
 prior to arrival of any evidence.
-    - e.g., $P(W=sun) = 0.6$.
-    - e.g., $P(\text{ghost in } [3,2]) = 0.02$
-- **Posterior** or conditional probabilities correspond to the probability of an event, given some observed evidence.
-- Formally,
-$$P(a|b) = \frac{P(a,b)}{P(b)}$$
-    - e.g., $P(W=sun|T=cold) = \frac{P(W=sun,T=cold)}{P(T=cold)} = \frac{0.2}{0.2 + 0.3} = 0.4$
+- e.g., $P(W=\text{sun}) = 0.6$.
+
+**Posterior** or conditional probabilities correspond to the probability of an event, given some observed evidence.
+Formally,
+$$P(A=a|B=b) = \frac{P(A=a,B=b)}{P(B=b)}.$$
 
 ???
 
@@ -251,36 +273,44 @@ p(a), p(b), p(a,b) and explain p(a|b).
 
 ---
 
+class: middle
+
+## Example
+
+$$P(W=\text{sun}|T=\text{cold}) = \frac{P(W=\text{sun},T=\text{cold})}{P(T=\text{cold})} = \frac{0.2}{0.2 + 0.3} = 0.4$$
+
+---
+
 # Conditional distributions
 
-- Conditional distributions are probability distributions over some variables, given **fixed** values for others.
+ Conditional distributions are probability distributions over some variables, given **fixed** values for others.
 
 .center.grid[
-.col-1-3[
+.kol-1-3[
 $P(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
-| $hot$ | $sun$ | $0.4$ |
-| $hot$ | $rain$ | $0.1$ |
-| $cold$ | $sun$ | $0.2$ |
-| $cold$ | $rain$ | $0.3$ |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
-.col-1-3[
-$P(W|T=hot)$
+.kol-1-3[
+$P(W|T=\text{hot})$
 
 | $T$ | $P$ |
 | --- | --- |
-| $sun$ | $0.8$ |
-| $rain$ | $0.2$ |
+| $\text{sun}$ | $0.8$ |
+| $\text{rain}$ | $0.2$ |
 ]
-.col-1-3[
-$P(W|T=cold)$
+.kol-1-3[
+$P(W|T=\text{cold})$
 
 | $W$ | $P$ |
 | --- | --- |
-| $sun$ | $0.4$ |
-| $rain$ | $0.6$ |
+| $\text{sun}$ | $0.4$ |
+| $\text{rain}$ | $0.6$ |
 ]
 ]
 
@@ -290,38 +320,39 @@ $P(W|T=cold)$
 
 ---
 
-# Normalization trick
+class: middle
 
+## Normalization trick
 
 .center.grid[
-.col-1-3[
+.kol-1-3[
 $P(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
-| $hot$ | $sun$ | $0.4$ |
-| $hot$ | $rain$ | $0.1$ |
-| $cold$ | $sun$ | $0.2$ |
-| $cold$ | $rain$ | $0.3$ |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
-.col-1-3[
-$\rightarrow P(c,W)$
+.kol-1-3[
+$\rightarrow P(T=\text{cold},W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
-| $cold$ | $sun$ | $0.2$ |
-| $cold$ | $rain$ | $0.3$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 
-*Select* the joint probabilities matching the evidence $c$.
+*Select* the joint probabilities matching the evidence $T=\text{cold}$.
 
 ]
-.col-1-3[
-$\rightarrow P(W|c)$
+.kol-1-3[
+$\rightarrow P(W|T=\text{cold})$
 
 | $W$ | $P$ |
 | --- | --- |
-| $sun$ | $0.4$ |
-| $rain$ | $0.6$ |
+| $\text{sun}$ | $0.4$ |
+| $\text{rain}$ | $0.6$ |
 
 *Normalize* the selection (make it sum to $1$).
 
@@ -332,9 +363,10 @@ $\rightarrow P(W|c)$
 
 ---
 
-# Probabilistic inference (1)
+# Probabilistic inference
 
-- **Probabilistic inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
+**Probabilistic inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
+
 - We generally compute conditional probabilities.
     - e.g., $P(\text{on time} | \text{no reported accidents}) = 0.9$
     - These represent the agent's *beliefs* given the evidence.
@@ -346,23 +378,25 @@ $\rightarrow P(W|c)$
 
 .center.width-20[![](figures/lec5/inference-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Probabilistic inference (2)
+class: middle
 
-- General case:
-    - *Evidence* variables: $E_1, ..., E_k = e_1, ..., e_k$
-    - *Query* variables: $Q$
-    - *Hidden* variables: $H_1, ..., H_r$
-    - $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
-- We want to compute **$P(Q|e_1, ..., e_k)$**.
+## General case
+- *Evidence* variables: $E_1, ..., E_k = e_1, ..., e_k$
+- *Query* variables: $Q$
+- *Hidden* variables: $H_1, ..., H_r$
+- $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
+
+**Inference** is the problem of computing **$P(Q|e_1, ..., e_k)$**.
 
 ---
 
 # Inference by enumeration
 
+Procedure:
 1. *Select* the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
 2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables.
 $$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k)$$
@@ -372,35 +406,39 @@ $$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
 
 ---
 
-# Example
+class: middle
+
+## Example
 
 .grid[
-.col-1-2[
+.kol-1-2[
 
 - $P(W)$?
-- $P(W|winter)$?
-- $P(W|winter,hot)$?
+- $P(W|\text{winter})$?
+- $P(W|\text{winter},\text{hot})$?
 
 ]
-.center.col-1-2[
+.center.kol-1-2[
 
 | $S$ | $T$ | $W$ | $P$ |
 | --- | --- | --- | --- |
-| $summer$ | $hot$ | $sun$ | $0.3$ |
-| $summer$ | $hot$ | $rain$ | $0.05$ |
-| $summer$ | $cold$ | $sun$ | $0.1$ |
-| $summer$ | $cold$ | $rain$ | $0.05$ |
-| $winter$ | $hot$ | $sun$ | $0.1$ |
-| $winter$ | $hot$ | $rain$ | $0.05$ |
-| $winter$ | $cold$ | $sun$ | $0.15$ |
-| $winter$ | $cold$ | $rain$ | $0.2$ |
+| $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
+| $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{sun}$ | $0.1$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{sun}$ | $0.1$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{sun}$ | $0.15$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{rain}$ | $0.2$ |
 
 ]
 ]
 
 ---
 
-# Complexity
+class: middle
+
+## Complexity
 
 - Inference by enumeration can be used to answer probabilistic queries for *discrete variables* (i.e., with a finite number of values).
 - However, enumeration **does not scale**!
@@ -415,37 +453,37 @@ $$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
 
 $$P(b)P(a|b) = P(a,b)$$
 
-Example:
+## Example
 
 .center.grid[
-.col-1-3[
+.kol-1-3[
 $P(W)$
 
 | $W$ | $P$ |
 | --- | --- |
-| $sun$ | $0.8$ |
-| $rain$ | $0.2$ |
+| $\text{sun}$ | $0.8$ |
+| $\text{rain}$ | $0.2$ |
 ]
-.col-1-3[
+.kol-1-3[
 $P(D|W)$
 
 | $D$ | $W$ | $P$ |
 | --- | --- | --- |
-| $wet$ | $sun$ | $0.1$ |
-| $dry$ | $sun$ | $0.9$ |
-| $wet$ | $rain$ | $0.7$ |
-| $dry$ | $rain$ | $0.3$ |
+| $\text{wet}$ | $\text{sun}$ | $0.1$ |
+| $\text{dry}$ | $\text{sun}$ | $0.9$ |
+| $\text{wet}$ | $\text{rain}$ | $0.7$ |
+| $\text{dry}$ | $\text{rain}$ | $0.3$ |
 
 ]
-.col-1-3[
+.kol-1-3[
 $P(D,W)$
 
 | $D$ | $W$ | $P$ |
 | --- | --- | --- |
-| $wet$ | $sun$ | ? |
-| $dry$ | $sun$ | ? |
-| $wet$ | $rain$ | ? |
-| $dry$ | $rain$ | ? |
+| $\text{wet}$ | $\text{sun}$ | ? |
+| $\text{dry}$ | $\text{sun}$ | ? |
+| $\text{wet}$ | $\text{rain}$ | ? |
+| $\text{dry}$ | $\text{rain}$ | ? |
 
 ]
 ]
@@ -454,7 +492,7 @@ $P(D,W)$
 
 # The chain rule
 
-More generally, any joint distribution can always be written as an incremental *product of conditional distributions*.
+More generally, any joint distribution can always be written as an incremental product of conditional distributions:
 
 $$P(x\_1,x\_2,x\_3) = P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2)$$
 $$P(x\_1,...,x\_n) = \prod\_i P(x\_i | x\_1, ..., x\_{i-1}) $$
@@ -474,7 +512,9 @@ Independence is also written as $A \perp B$.
 
 ---
 
-# Independence example
+class: middle
+
+## Example
 
 .center.width-30[![](figures/lec5/independence.png)]
 
@@ -487,7 +527,7 @@ $P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather})$ $ = P(\text{t
 
 ---
 
-# Conditional independence (1)
+# Conditional independence
 
 $A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$, $b \in D_B$ and $c \in D_C$,
 - $P(a|b,c) = P(a|c)$, or
@@ -498,15 +538,17 @@ Conditional independence is also written as $A \perp B | C$.
 
 ---
 
-# Conditional independence (2)
+class: middle
 
 - Using the chain rule, the join distribution can be factored as a product of conditional distributions.
 - Each conditional distribution may potentially be *simplified by conditional independence*.
-- Conditional independence assertions can allow probabilistic models to **scale up**.
+- Conditional independence assertions allow probabilistic models to **scale up**.
 
 ---
 
-# Conditional independence example
+class: middle
+
+## Example
 
 - Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
 - $\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
@@ -521,7 +563,9 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 ---
 
-# Naive Bayes
+class: middle
+
+## Naive Bayes
 
 - More generally, from the product rule, we have:
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
@@ -531,6 +575,8 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
     - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
     - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
 
+???
+
 .center.width-80[![](figures/lec5/naive.png)]
 
 ---
@@ -538,25 +584,30 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 # The Bayes' rule
 
 .grid[
-.col-2-3[
+.kol-2-3[
 
-- The product rule defines two ways to factor the joint distribution of two random variables.
-    - $P(a,b) = P(a|b)P(b) = P(b|a)P(a)$
-- Therefore,
-**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}$$**
-- Why is this helpful?
-    - Let us build one conditional from its reverse.
-    - Often one conditional is tricky, but the other is simple.
-    - This equation is the *foundation of many AI systems*.
+The product rule defines two ways to factor the joint distribution of two random variables.
+    $$P(a,b) = P(a|b)P(b) = P(b|a)P(a)$$
+Therefore,
+**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}.$$**
 ]
-.col-1-3[
-.circle[![](figures/lec5/thomas.gif)]
+.kol-1-3[
+.circle.width-100[![](figures/lec5/thomas.gif)]
 ]
 ]
+
+Why is this helpful?
+- Let us build one conditional from its reverse.
+- Often one conditional is tricky, but the other is simple.
+- This equation is the *foundation of many AI systems*.
 
 ---
 
-# Inference with Bayes' rule
+class: middle
+
+## Inference with Bayes' rule
+
+**xxx switch or add to the religious example?**
 
 Example: diagnostic probability from causal probability.
 
@@ -577,21 +628,26 @@ Let $S$=stiff neck and $M$=meningitis.
 
 # Ghostbusters, revisited
 
-- Let assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings:
-    - We define a **prior distribution** $P(G)$ over ghost locations.
-        - Assume it is uniform.
-    - We assume a sensor *reading model* $P(R\_{i,j} |G)$.
-        - That is, we know what the sensors do.
-        - $R_{i,j}$ = reading color measured at $[i,j]$
-        - e.g., $P(R_{1,1}=yellow|G=[1,1])=0.1$
-        - Two readings are conditionally independent, given the ghost position.
-- We can calculate the **posterior distribution** $P(G|R_{i,j})$ using Bayes' rule:
-    - $P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}$
+- Let assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
+- We define a **prior distribution** $P(G)$ over ghost locations.
+    - Assume it is uniform.
+- We assume a sensor *reading model* $P(R\_{i,j} |G)$.
+    - That is, we know what the sensors do.
+    - $R_{i,j}$ = reading color measured at $[i,j]$
+        - e.g., $P(R_{1,1}=\text{yellow}|G=[1,1])=0.1$
+    - Two readings are conditionally independent, given the ghost position.
+
+---
+
+class: middle
+
+- We can calculate the **posterior distribution** $P(G|R\_{i,j})$ using Bayes' rule:
+$$P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}.$$
 - For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
 
 ---
 
-# Ghostbusters, revisited
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
@@ -600,11 +656,13 @@ Let $S$=stiff neck and $M$=meningitis.
 
 <span class="Q">[Q]</span> What if we had chosen a different prior?
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Frequentism vs. Bayesianism
+
+**xxx expand on semantics**
 
 What do probability values represent?
 - The objectivist **frequentist** view is that probabilities are real aspects of the universe.
@@ -616,7 +674,7 @@ What do probability values represent?
 
 ---
 
-class: middle, center
+class: middle
 
 # Probabilistic reasoning
 
@@ -649,7 +707,9 @@ A **Bayesian network** is a *directed graph* in which:
 
 ---
 
-# Example (1)
+class: middle
+
+## Example 1
 
 The topology of the network encodes conditional independence assertions:
 
@@ -662,7 +722,9 @@ The topology of the network encodes conditional independence assertions:
 
 ---
 
-# Example (2a)
+class: middle
+
+## Example 2
 
 .center.width-30[![](figures/lec5/alarm.png)]
 
@@ -677,17 +739,25 @@ Is there a burglar?
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Example (2b)
+class: middle
 
-.center.width-80[![](figures/lec5/burglary.png)]
+## Example 3 (Naive Bayes)
+
+xxx
 
 ---
 
-# Probabilities in BNs (1)
+class: middle
+
+.center.width-90[![](figures/lec5/burglary.png)]
+
+---
+
+# Probabilities in BNs
 
 A Bayesian network *implicitly* **encodes** the full joint distribution as the product of the local distributions:
 
@@ -702,9 +772,9 @@ $\approx 0.00063$
 
 ---
 
-# Probabilities in BNs (2)
+class: middle
 
-- Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
+Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
 - By the *chain rule*:
     - $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$
 - Assume **conditional independencies** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
@@ -719,9 +789,9 @@ $\approx 0.00063$
 
 A node $X$ is conditionally independent ot its non-descendants (the $Z_{ij}$) given its parents (the $U_i'$).
 
-???
+---
 
-R: add global semantics with MB
+*xxx* add global semantics with MB
 
 ---
 
@@ -740,12 +810,14 @@ This suggests the following methodology for *building* Bayesian networks:
 
 ---
 
-# Examples
+class: middle
+
+## Examples
 
 .center.width-100[
 ![](figures/lec5/bn2.png)
 
-These BNs are alternatives to Example 2b.
+These BNs are alternatives to Example 2.
 ]
 
 <span class="Q">[Q]</span> What do you think of these BNs?
@@ -791,7 +863,7 @@ For the left network:
 
 .center.width-40[![](figures/lec5/causality.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -802,3 +874,16 @@ For the left network:
 - Bayesian networks are DAGs whose nodes correspond to random variables; each node has a conditional distribution for the node, given its parents.
 - A Bayesian Network specifies a full joint distribution.
     - They are often **exponentially** smaller than an explicitly enumerated joint distribution.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
+
+---
+
+# References
+
+xxx
