@@ -26,7 +26,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
 - Session 2 (October 11): Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP1.pdf)]
-- Session 3 (October 18): Constraint satisfaction problems
+- Session 3 (October 18): Constraint satisfaction problems [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP2.pdf)]
 - Session 4 (October 25): Games and adversarial search
 - Session 5 (November 8): Representing uncertain knowledge
 - Session 6 (November 15): Inference in bayesian networks
@@ -39,8 +39,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 ### Pacman programming project
 
 - Pacman Part 1/3: [Search agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-1-search-agent). Due on October 26.
-- Pacman Part 2/3: Minimax agent.
-- Pacman Part 3/3: MDP agent.
+- Pacman Part 2/3: [Minimax agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-2-minimax-agent). Due on November 23.
+- Pacman Part 3/3: MDP agent (deadline to be determined).
 
 Further instructions can be found in the [`/pacman/`](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman) folder.
 

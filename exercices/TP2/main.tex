@@ -1,0 +1,159 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage{vmargin}
+
+\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
+%------------------------------Packages généraux------------------------------
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage{scrextend}
+\usepackage{hyperref}
+
+%-------------------------Mathématiques------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{eucal}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%-----------------------Codes et algorithmes--------------------------
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{clrscode3e}
+
+%------------------------------Graphics------------------------------
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+%\usepackage{slashbox}
+%------------------------------Syntaxe------------------------------
+
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+
+\def\refmark#1{\hbox{$^{\ref{#1}}$}}
+\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
+\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
+
+%------------------------------Inclure code MatLab------------------------------
+
+\usepackage{listings}
+\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
+\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
+
+%------------------Sub-sections--------%
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\makeatletter
+% on fixe le langage utilisé
+\lstset{language=matlab}
+\edef\Motscle{emph={\lst@keywords}}
+\expandafter\lstset\expandafter{%
+  \Motscle}
+\makeatother
+
+
+\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
+
+\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
+basicstyle=\styleC,
+keywordstyle=\ttfamily,
+commentstyle=\color{Ggris}\styleD, % commentaire en gris
+numberstyle=\tiny\color{red},
+numbers=left,
+numbersep=10pt,
+lineskip=0.7pt,
+showstringspaces=false}
+%  % inclure le fichier source
+\newcommand{\FSource}[1]{%
+\lstinputlisting[texcl=true]{#1}
+}
+
+\usepackage[section]{placeins}
+
+\let\cleardoublepage\clearpage
+
+\usepackage{hyperref}
+               
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+%------------------------------Début du document------------------------------
+\begin{document}
+%------------------------------Page de garde------------------------------
+
+  % \frontmatter
+  %\tableofcontents
+   \newpage
+   \setcounter{page}{1}
+   %%%%%%%%% TP 1 %%%%%%%%%%%
+   \section{Constraint satisfaction problems (18/10/2018)}
+   \subsection{Objectives}
+   At the end of this exercise session you should be able to:
+   \begin{itemize}
+       \item Define a search problem as constraint satisfaction problem (CSP).
+       \item Draw the constraint graph of a CSP.
+       \item Define what is backtracking, and to be able to use it.
+       \item Define and apply variable and value ordering.
+       \item Understand the syntax and the semantic of propositional logic.
+       \item Check the entailment of two propositions.
+       \item Show how a SAT problem can be cast into a CSP.
+       
+   \end{itemize}
+   \subsection{Exercises}
+   \subsubsection{8 Queens}
+   "\textit{The eight queens puzzle is the problem of placing eight chess queens on an $8\times8$ chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal. The eight queens puzzle is an example of the more general n queens problem of placing n non-attacking queens on an $n\times n$ chessboard, for which solutions exist for all natural numbers n with the exception of n=2 and n=3.}"\footnote{\url{https://en.wikipedia.org/wiki/Eight\_queens\_puzzle}}
+   Consider the case where the chess board size $n = 4$. Answer the following questions:
+   \begin{itemize}
+       \item Define the problem as a CSP (implicit constraint are allowed).
+       \item Draw the graph of constraints from your CSP formulation.
+       \item Use backtracking search to find a solution.
+   \end{itemize}
+    % \subsubsection{Arc Consistency}
+    % Use the AC-3 algorithm to show that arc consistency can detect the inconsistency of the partial assignment {WA=green, V =red} for the problem shown in Figure 6.1.
+    \subsubsection{Propositional logic}
+     If he studies well, he will pass the exam. If he does not like the course, he will not study well. He passed the exam. Therefore he
+    liked the course.
+    Is the conclusion really a logical consequence of the facts?
+ \begin{itemize}
+     \item Represent each sentence by a propositional logic formula.
+     \item Give the models of each formula.
+     \item Does the last sentence follow logically from the four first?
+     \item Answer the previous question through the CSP formulation of the corresponding SAT problem.
+ \end{itemize}
+   \subsection{Supplementary materials}
+   \url{https://www.codeproject.com/Articles/34403/Sudoku-as-a-CSP}\\
+   \url{http://ai.berkeley.edu/sections/section_2_mA5IBOWiF6cw3yoIh65hXTiBY6mPiD.pdf}
+\end{document}
