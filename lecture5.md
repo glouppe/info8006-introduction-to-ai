@@ -10,9 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: make sure to introduce the purpose of probability for inference under uncertainty
-
-R: insist on the formalism of bayesian networks. have precise definitions
 R: make sure they know what is a latent variable model
 R: develop on causality?
 
@@ -603,6 +600,13 @@ class: middle
 
 ---
 
+class: middle, center, red-slide
+count: false
+
+The next slide is .bold[super] important.
+
+---
+
 # The Bayes' rule
 
 .grid[
@@ -706,10 +710,6 @@ What do probability values represent?
 class: middle
 
 # Probabilistic reasoning
-
-???
-
-R: revise a bit the flow of the presentation so that all concepts are introduced in a logical manner.
 
 ---
 

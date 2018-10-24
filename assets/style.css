@@ -253,3 +253,9 @@ td {
     color: white;
     border-top: solid 0px;
 }
+
+.red-slide {
+    background-color: red;
+    color: white;
+    border-top: solid 0px;
+}
