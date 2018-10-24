@@ -104,7 +104,7 @@ showstringspaces=false}
 \let\cleardoublepage\clearpage
 
 \usepackage{hyperref}
-               
+
  \hypersetup{
     colorlinks = true,
     linkcolor=black,
@@ -154,8 +154,8 @@ Decide on a compact representation of a game state for storage in a transpositio
     \item Will that be enough for the three minutes of search allocated for one move?
     \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a 3,2GHz machine and that it takes 20 operations to do one lookup on the transposition table.
     %\item Now suppose the transposition table is stored on disk. About how many evaluations could you do in the time it takes to do one disk seek with standard disk hardware?
-\end{enumerate}   
-   
+\end{enumerate}
+
    \subsubsection{Quizz ($\approx$ 15 min)}
    \begin{enumerate}
        \item In a fully observable, turn-taking, zero-sum game between two perfectly rational players, it does not help the first player to know what strategy the second player is using that is, what move the second player will make, given the first player’s move.
@@ -163,11 +163,11 @@ Decide on a compact representation of a game state for storage in a transpositio
        %\item What is the meaning of Q in the formula: $\frac{Q(n', p)}{N(n')} + c\sqrt{\frac{2\log N(n)}{N(n'}}$
        %\item What is the meaning of N in the formula: $\frac{Q(n', p)}{N(n')} + c\sqrt{\frac{2\log N(n)}{N(n'}}$
        \item What is encouraged by each term of the sum in the formula: $\frac{Q(n', p)}{N(n')} + c\sqrt{\frac{2\log N(n)}{N(n'}}$
-       \item Which heuristic is good (see image below)?
+       \item Which heuristic is correct (see image below)?
    \end{enumerate}
    \begin{figure}[H]
        \centering
-       \includegraphics[width=1.\textwidth]{figures/trees.png}
+       \includegraphics[width=1.\textwidth]{figures/trees.pdf}
        \caption{Two possible heuristics}
        \label{fig:my_label}
    \end{figure}
