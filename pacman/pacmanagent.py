@@ -26,4 +26,10 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in `game.Directions`.
         """
+        nom = state.generatePacmanSuccessors()
+        i=0
+        while i < len(nom):
+           print(nom[i][0])
+           nom[i][0]
+           i=i+1
         return Directions.STOP
