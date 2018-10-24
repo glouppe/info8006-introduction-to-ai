@@ -47,6 +47,10 @@ class: middle
     - Branching factor is often very large.
     - Unlikely to find goal with standard search algorithms, we need to *approximate*.
 
+???
+
+A game is a mathematical model of strategic interaction between rational decision makers.
+
 ---
 
 class: middle
@@ -55,7 +59,7 @@ class: middle
 
 - **Deterministic** or *stochastic*?
 - **Perfect** or *imperfect* information?
-- **One**, *two or more* players?
+- **Two** or *more* players?
 
 
 ---
@@ -91,7 +95,7 @@ class: middle
 
 .center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -113,7 +117,7 @@ class: middle
 
 .center.width-40[![](figures/lec4/zero-sum-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -137,7 +141,7 @@ class: middle
 
 <span class="Q">[Q]</span> What is an optimal strategy (or perfect play)? How do we find it?
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
@@ -329,7 +333,7 @@ class: middle, black-slide
 
 .caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -341,7 +345,7 @@ class: middle, black-slide
 
 .caption[Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -356,7 +360,7 @@ class: middle, black-slide
 
 .center.width-70[![](figures/lec4/multi-agent-tree.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
@@ -380,7 +384,7 @@ class: middle
 
 .center.width-40[![](figures/lec4/random-opponent-cartoon.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -391,7 +395,7 @@ class: middle
 
 .center.width-30[![](figures/lec4/random-player.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -504,7 +508,7 @@ class: middle
 
 What if our assumptions are incorrect?]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -517,7 +521,7 @@ class: middle, black-slide
 
 .caption[Minimax Pacman vs. Adversarial ghost]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -530,7 +534,7 @@ class: middle, black-slide
 
 .caption[Minimax Pacman vs. Random ghost]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -543,7 +547,7 @@ class: middle, black-slide
 
 .caption[Expectiminimax Pacman vs. Random ghost]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -557,7 +561,7 @@ class: middle, black-slide
 .caption[Expectiminimax Pacman vs. Adversarial ghost]
 
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
