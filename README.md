@@ -27,7 +27,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
 - Session 2 (October 11): Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP1.pdf)]
 - Session 3 (October 18): Constraint satisfaction problems [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP2.pdf)]
-- Session 4 (October 25): Games and adversarial search
+- Session 4 (October 25): Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP3.pdf)]
 - Session 5 (November 8): Representing uncertain knowledge
 - Session 6 (November 15): Inference in bayesian networks
 - Session 7 (November 22): Reasoning over time
