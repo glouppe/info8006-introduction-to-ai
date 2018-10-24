@@ -11,7 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: make sure to introduce the purpose of probability for inference under uncertainty
-R: double check consistency of notations (p, P, bold P, etc)
+
 R: insist on the formalism of bayesian networks. have precise definitions
 R: make sure they know what is a latent variable model
 R: develop on causality?
@@ -534,7 +534,7 @@ class: middle
 
 ## Example 1
 
-.center.width-40[![](figures/lec5/independence.png)]
+.center.width-50[![](figures/lec5/weather-independence.svg)]
 
 $P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather})$ $ = P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})$
 
@@ -574,7 +574,7 @@ class: middle
 
 class: middle
 
-## Example
+## Example 1
 
 - Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
 - $\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
@@ -591,7 +591,7 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 class: middle
 
-## Naive Bayes
+## Example 2 (Naive Bayes)
 
 - More generally, from the product rule, we have:
     - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$
@@ -600,10 +600,6 @@ class: middle
 - This probabilistic model is called a **naive Bayes** model.
     - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
     - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
-
-???
-
-.center.width-80[![](figures/lec5/naive.png)]
 
 ---
 
@@ -746,7 +742,7 @@ class: middle
 
 The topology of the network encodes conditional independence assertions:
 
-.center.width-60[![](figures/lec5/bn1.png)]
+.center.width-60[![](figures/lec5/dentist-network.svg)]
 
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
@@ -757,7 +753,17 @@ The topology of the network encodes conditional independence assertions:
 
 class: middle
 
-## Example 2
+## Example 2 (Naive Bayes)
+
+In a Naive Bayes model, we assume pairwise conditional independence between the effects given the cause:
+
+.center.width-60[![](figures/lec5/naive.png)]
+
+---
+
+class: middle
+
+## Example 3
 
 .center.width-30[![](figures/lec5/alarm.png)]
 
@@ -778,26 +784,17 @@ Is there a burglar?
 
 class: middle
 
-## Example 3 (Naive Bayes)
-
-xxx
+.center.width-90[![](figures/lec5/burglary2.svg)]
 
 ---
 
-class: middle
+# Semantics
 
-.center.width-90[![](figures/lec5/burglary.png)]
-
----
-
-# Probabilities in BNs
-
-A Bayesian network *implicitly* **encodes** the full joint distribution as the product of the local distributions:
+A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
 
 $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
 
-For example:
-
+## Example
 $P(j, m, a, \lnot b, \lnot e)$<br>
 $= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)$<br>
 $= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998$<br>
@@ -808,29 +805,32 @@ $\approx 0.00063$
 class: middle
 
 Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
-- By the *chain rule*:
-    - $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$
+- By the *chain rule*, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
 - Assume **conditional independencies** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
-    - $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$
+$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
 - Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
 
 ---
 
 # Local semantics
 
-.center.width-70[![](figures/lec5/nondescendants.png)]
+.center.width-60[![](figures/lec5/nondescendants.svg)]
 
-A node $X$ is conditionally independent ot its non-descendants (the $Z_{ij}$) given its parents (the $U_i'$).
-
----
-
-*xxx* add global semantics with MB
+A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
 
 ---
 
-# Constructing Bayesian Networks
+# Global semantics
 
-BNs are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
+.center.width-60[![](figures/lec5/markov-blanket.svg)]
+
+A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
+
+---
+
+# Construction
+
+Bayesian networks are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
 
 This suggests the following methodology for *building* Bayesian networks:
 
@@ -848,9 +848,9 @@ class: middle
 ## Examples
 
 .center.width-100[
-![](figures/lec5/bn2.png)
+![](figures/lec5/burglary-mess.svg)
 
-These BNs are alternatives to Example 2.
+These networks are alternatives to Example 3.
 ]
 
 <span class="Q">[Q]</span> What do you think of these BNs?
@@ -914,9 +914,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-xxx
