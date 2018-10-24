@@ -34,11 +34,11 @@ R: develop on causality?
     - Construction
 ]
 .kol-1-2[
-.width-100[![](figures/lec5/proba-cartoon.png)]
+.width-90[![](figures/lec5/proba-cartoon.png)]
 ]
 ]
 
-**You will need these concepts a lot!** (Now and in future courses)
+**Do not overlook this lecture!**<br> You will need these concepts a lot. (Now and in future courses)
 
 .footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -112,16 +112,26 @@ How to handle uncertainty?
 
 # Kolmogorov's probability theory
 
-Begin with a set $\Omega$, the *sample space*.
-- e.g., 6 possible rolls of a die.
-- $\omega \in \Omega$ is a *sample point*, *possible world* or *atomic event*.
+Begin with a set $\Omega$, the **sample space**.
 
-A **probability space** is a sample space with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
-- $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$ (1st axiom)
-- $P(\Omega) = 1$ (2nd axiom)
-- $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples (3rd axiom)
+$\omega \in \Omega$ is a *sample point*, possible world or atomic event.
+
+A **probability space** is a sample space equipped with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
+- 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$.
+- 2nd axiom: $P(\Omega) = 1$.
+- 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples.
+
+where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
+
+---
+
+class: middle
 
 ## Example
+
+- $\Omega$ = the 6 possible rolls of a die.
+- $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding than an outcome of the die.
+- Assignment $P$ for a fair die:
 $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 
 ---
@@ -129,7 +139,7 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 # Random variables
 
 - A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its *outcomes*.
-    - e.g., $Odd: \mathbb{R} \to \\{ \text{true}, \text{false} \\}$ such that $Odd(\omega) = (\omega \% 2 = 1)$.
+    - e.g., $Odd: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $Odd(\omega) = (\omega \% 2 = 1)$.
 - $P$ induces a **probability distribution** for any random variable $X$.
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(Odd=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
@@ -142,9 +152,10 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 
 # Probability distributions
 
-For discrete variables, the probability distribution can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
-- One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
-    - This table can be infinite!
+For discrete variables, the **probability distribution** can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
+
+One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
+- This table can be infinite!
 - By construction, probability values are *normalized* (i.e., sum to $1$).
 
 .grid[
@@ -173,7 +184,7 @@ $P(W)$
    E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
 - The probability value of the realization $x$ is written as $P(X=x)$.
 - When clear from context, this will be abbreviated as $P(x)$.
-- The probability distribution of the random variable $X$ is denoted as $P(X)$.
+- The probability distribution of the random variable $X$ is denoted as $P(X)$. This corresponds e.g. to a full probability table (and not to a single scalar value!).
 
 ---
 
@@ -365,7 +376,7 @@ $\rightarrow P(W|T=\text{cold})$
 
 # Probabilistic inference
 
-**Probabilistic inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
+Probabilistic **inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
 
 - We generally compute conditional probabilities.
     - e.g., $P(\text{on time} | \text{no reported accidents}) = 0.9$
@@ -397,12 +408,15 @@ class: middle
 # Inference by enumeration
 
 Procedure:
-1. *Select* the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
-2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence variables.
-$$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k)$$
-3. *Normalize*.
-$$Z = \sum_q P(q,e_1,...,e_k)$$
-$$P(Q|e_1, ..., e_k) = \frac{1}{Z} P(Q,e_1,...,e_k)$$
+1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
+2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
+$$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
+3. Normalize:
+<br>
+$$\begin{aligned}
+Z &= \sum_q P(q,e_1,...,e_k) \\\\
+P(Q|e_1, ..., e_k) &= \frac{1}{Z} P(Q,e_1,...,e_k)
+\end{aligned}$$
 
 ---
 
@@ -494,8 +508,12 @@ $P(D,W)$
 
 More generally, any joint distribution can always be written as an incremental product of conditional distributions:
 
-$$P(x\_1,x\_2,x\_3) = P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2)$$
-$$P(x\_1,...,x\_n) = \prod\_i P(x\_i | x\_1, ..., x\_{i-1}) $$
+$$
+\begin{aligned}
+P(x\_1,x\_2,x\_3) &= P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2) \\\\
+P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})
+\end{aligned}
+$$
 
 <span class="Q">[Q]</span> Why is this always true?
 
@@ -514,16 +532,24 @@ Independence is also written as $A \perp B$.
 
 class: middle
 
-## Example
+## Example 1
 
-.center.width-30[![](figures/lec5/independence.png)]
+.center.width-40[![](figures/lec5/independence.png)]
 
 $P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather})$ $ = P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})$
 
-- The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $weather$ and boolean values otherwise).
-- For $n$ independent coin flips, the joint distribution can be fully *factored* and represented as the product of $n$ 1-entry tables.
-    - **$2^n \to n$**
-- In practice, absolute independence is rare. What to do?
+The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
+
+---
+
+class: middle
+
+## Example 2
+
+For $n$ independent coin flips, the joint distribution can be fully **factored** and represented as the product of $n$ 1-entry tables.
+- **$2^n \to n$**
+
+<span class="Q">[Q]</span> In practice, absolute independence is rare. What can we do?
 
 ---
 
@@ -568,9 +594,9 @@ class: middle
 ## Naive Bayes
 
 - More generally, from the product rule, we have:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|cause) P(\text{cause})$
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$
 - Assuming *pairwise conditional independence* between the effects given the cause, it comes:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|cause) $
+    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|\text{cause}) $
 - This probabilistic model is called a **naive Bayes** model.
     - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
     - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
@@ -596,20 +622,28 @@ Therefore,
 ]
 ]
 
-Why is this helpful?
-- Let us build one conditional from its reverse.
-- Often one conditional is tricky, but the other is simple.
-- This equation is the *foundation of many AI systems*.
+- $P(a)$ is the prior belief on $a$.
+- $P(b)$ is the probability of the evidence $b$.
+- $P(a|b)$ is the posterior belief on $a$, given the evidence $b$.
+- $P(b|a)$ is the conditional probability of $b$ given $a$. Depending on the context, this term is called the likelihood.
 
 ---
 
 class: middle
 
-## Inference with Bayes' rule
+$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}$$
 
-**xxx switch or add to the religious example?**
+Why is this helpful?
+- The Bayes rule let us build one conditional from its reverse.
+- Often one conditional is tricky, but the other is simple.
 
-Example: diagnostic probability from causal probability.
+This equation is the **foundation of many AI systems**.
+
+---
+
+class: middle
+
+## Example: diagnostic probability from causal probability.
 
 $$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
 
@@ -617,12 +651,13 @@ $$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cau
 - $P(\text{cause}|\text{effect})$ describes the *diagnostic direction*.
 
 Let $S$=stiff neck and $M$=meningitis.
-- Given
-    - $P(s|m) = 0.7$
-    - $P(m) = 1/50000$
-    - $P(s) = 0.01$
-- It comes:
-    - $P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014$
+Given
+- $P(s|m) = 0.7$
+- $P(m) = 1/50000$
+- $P(s) = 0.01,$
+
+it comes
+- $P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$
 
 ---
 
@@ -662,13 +697,11 @@ class: middle, black-slide
 
 # Frequentism vs. Bayesianism
 
-**xxx expand on semantics**
-
 What do probability values represent?
 - The objectivist **frequentist** view is that probabilities are real aspects of the universe.
     - i.e., propensities of objects to behave in certain ways.
     - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
-- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs.
+- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
     - i.e., probabilities do not have external physical significance.
     - *This is the interpretation of probabilities that we will use!*
 
