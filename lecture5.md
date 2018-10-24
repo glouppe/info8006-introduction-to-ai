@@ -618,7 +618,7 @@ Therefore,
 **$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}.$$**
 ]
 .kol-1-3[
-.circle.width-100[![](figures/lec5/thomas.gif)]
+.circle.width-100[![](figures/lec5/thomas.png)]
 ]
 ]
 
@@ -716,7 +716,7 @@ class: middle
 # Representing knowledge
 
 - The joint probability distribution can answer any question about the domain.
-- However, its representation can be come **intractably large** as the number of variable grows.
+- However, its representation can become **intractably large** as the number of variable grows.
 - *Independence* and *conditional independence* reduce the number of probabilities that need to be specified in order to define the full joint distribution.
 - These relationships can be represented explicitly in the form of a **Bayesian network**.
 
@@ -765,7 +765,7 @@ class: middle
 
 ## Example 3
 
-.center.width-30[![](figures/lec5/alarm.png)]
+.center.width-40[![](figures/lec5/alarm.png)]
 
 I am at work, neighbor John calls to say my alarm is ringing, but neighbor
 Mary does not call. Sometimes it's set off by minor earthquakes.
@@ -889,14 +889,58 @@ For the left network:
     - Often easier to elicit from experts.
 - But, Bayesian networks **need not be causal**.
     - Sometimes no causal network exists over the domain (e.g., if variables are missing).
-    - Edges then reflect *correlation*, not causation.
+    - Edges reflect **correlation**, not causation.
 - What do the edges really mean then?
     - Topology *may* happen to encode causal structure.
-    - Topology **really** encodes conditional independence.
+    - **Topology really encodes conditional independence.**
 
-.center.width-40[![](figures/lec5/causality.png)]
+.center.width-50[![](figures/lec5/causality.png)]
 
 .footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle, center
+
+.center.circle.width-30[![](figures/lec5/pearl.jpg)]
+.caption[Judeas Pearl]
+
+Correlation does not imply causation.
+
+Causes cannot be expressed in the language of probability theory.
+
+
+
+---
+
+class: middle
+
+Philosophers have tried to define causation in terms of probability: $X$ causes $Y$ if $X$ raises the probability of $Y$.
+
+However, the inequality
+$$P(Y|X) > P(Y)$$
+fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X$ over $Y$.
+- Instead, the expression means that if we observe $X$, then the probability of $Y$ increases.
+- But this increase may come about for other reasons!
+
+---
+
+class: middle
+
+The correct formulation should read
+$$P(Y|do(X=x)) > P(Y),$$
+where $do(X=x)$ stands for an external intervention where $X$ is set to the value $x$ instead of being observed.
+
+---
+
+class: middle
+
+## Observing vs. intervening
+
+- The reading in barometer is useful to predict rain.
+$$P(\text{rain}|\text{Barometer}=\text{high}) > P(\text{rain}|\text{Barometer}=\text{low})$$
+- But hacking a barometer will not cause rain!
+$$P(\text{rain}|\text{Barometer hacked to high}) = P(\text{rain}|\text{Barometer hacked to low})$$
 
 ---
 
