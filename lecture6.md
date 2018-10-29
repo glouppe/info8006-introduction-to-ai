@@ -4,86 +4,162 @@ class: middle, center, title-slide
 
 Lecture 6: Inference in Bayesian networks
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
 R: took 2h30 to cover everything
+R: slide on MCMC
+R: cartoons from cs188 18 and 19
+R: re draw the figures for continuous variables (see DL lectures style)
+R: theoretical results of approximate algorithms?
 
 ---
 
 # Today
 
-- *Exact inference*
+.grid[
+.kol-1-2[
+- Exact inference
     - Inference by enumeration
     - Inference by variable elimination
     - Complexity of exact inference
-- *Bayesian networks with continuous variables*
-- *Approximate inference*
-    - Stochastic simulation
+- Continuous variables
+- Approximate inference
+    - Ancestral sampling
     - Rejection sampling
     - Likelihood weighting
     - Gibbs sampling
+]
+.kol-1-2[
+<br><br>
+.width-100[![](figures/lec6/bn-cartoon.png)]
+]
+]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-class: middle, center
+# Bayesian networks
+
+.grid[
+.kol-2-3[
+A Bayesian network is a *directed acyclic graph* in which:
+- Each node corresponds to a *random variable*.
+- Each node $X_i$ is annotated with a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+
+A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
+    $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+]
+.kol-1-3.center[.width-100[![](figures/lec6/bn-cartoon2.png)]
+
+<br>
+
+.width-70[![](figures/lec6/bn-cartoon3.png)]]
+]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-3-4[.center.width-100[![](figures/lec5/burglary2.svg)]]
+.kol-1-4[.center.width-100[![](figures/lec5/alarm.png)]]
+]
+
+<br>
+$$
+\begin{aligned}
+P(b,\lnot e, a, \lnot j, m) &= P(b)P(\lnot e)P(a|b, \lnot e)P(\lnot j|a)P(m, a) \\\\
+&= 0.001 \times 0.998 \times 0.94 \times 0.1 \times 0.7
+\end{aligned}$$
+
+
+---
+
+class: middle
 
 # Exact inference
 
 ---
 
-# Inference tasks
+# Inference
 
-- Inference: **computing a desired probability** from a joint probability distribution.
-- Examples:
-    - *Simple queries*: $P(X\_i|E=e)$
-    - *Conjunctive queries*: $P(X\_i,X\_j|E=e)=P(X\_i|E=e)P(X\_j|X\_i,E=e)$
-    - *Most likely explanation*: $\arg \max_q P(Q=q|E=e)$
-        - Do you need to necessarily know $P(Q=q|E=e)$ to answer this?
-    - *Optimal decisions*: take the decision that maximizes the expected utility of the outcomes.
-        - requires to $P(outcome|action,evidence)$ for weighting the corresponding utility.
-    - *Value of information*: which evidence to seek next?
+Inference is concerned with the problem **computing a desired probability** from a joint probability distribution:
+
+.grid[
+.kol-1-3.center[Simple queries:]
+.kol-2-3[$P(X\_i|e)$]
+]
+.grid[
+.kol-1-3.center[Conjunctive queries:]
+.kol-2-3[$P(X\_i,X\_j|e)=P(X\_i|e)P(X\_j|X\_i,e)$]
+]
+.grid[
+.kol-1-3.center[Most likely explanation:]
+.kol-2-3[$\arg \max_q P(q|e)$]
+]
+.grid[
+.kol-1-3.center[Optimal decisions:]
+.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
+]
+
+.center.width-30[![](figures/lec6/query-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Inference by enumeration
 
 Start from the joint distribution $P(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
-1. *Select* the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
-2. *Marginalize* out the hidden variables to obtain the joint of the query and the evidence values $P(Q,e\_1,...,e\_k)$.
-3. *Normalize* by $Z = P(e_1,...,e_k) = \sum_q P(q,e_1,...,e_k)$.
+
+1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
+2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
+$$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
+3. Normalize:
+<br>
+$$\begin{aligned}
+Z &= \sum_q P(q,e_1,...,e_k) \\\\
+P(Q|e_1, ..., e_k) &= \frac{1}{Z} P(Q,e_1,...,e_k)
+\end{aligned}$$
 
 ---
 
-# Inference by enumeration in BNs
+class: middle
 
-Consider the burglary network and the query $P(B|j,m)$:
+- Consider the alarm network and the query $P(B|j,m)$:<br><br>
+$\begin{aligned}
+P(B|j,m) &\propto \sum\_e \sum\_a P(B,j,m,e,a)
+\end{aligned}$
+- Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
+$\begin{aligned}
+P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a) \\\\
+&\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
+\end{aligned}$
 
-.pull-right[![](figures/lec6/bn-burglar.png)]
+???
 
-$P(B|j,m)$<br>
-$= P(B,j,m) / P(j,m)$<br>
-$= \alpha P(B,j,m)$<br>
-$= \alpha \sum_e \sum_a P(B,j,m,e,a)$
-
-Rewrite full joint entries using product of CPT entries:
-
-$P(B|j,m)$<br>
-$= \alpha \sum_e \sum_a P(B)P(e)P(a|B,e)P(j|a)P(m|a)$
-$= \alpha  P(B) \sum_e P(e) \sum_a P(a|B,e)P(j|a)P(m|a)$
-
-Recursive depth-first enumeration: **$O(n)$** space, **$O(d^n)$** time
+be more explicit about $\alpha$
 
 ---
 
-# Enumeration algorithm
+class: middle
 
 .center.width-100[![](figures/lec6/inference-enumeration.png)]
 
 ---
 
-# Evaluation tree
+class: middle
 
-.center.width-90[![](figures/lec6/enumeration-tree.png)]
+## Evaluation tree
+
+.center.width-80[![](figures/lec6/enumeration-tree.png)]
 
 Enumeration is **inefficient**: there are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
@@ -91,12 +167,26 @@ Enumeration is **inefficient**: there are repeated computations!
 
 ---
 
+class: middle
+
+.center.width-80[![](figures/lec6/enumeration.png)]
+
+Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
 # Inference by variable elimination
 
-- The **variable elimination** (VE) algorithm carries out summations right-to-left and *stores intermediate results* (called **factors**) to avoid recomputations.
-- The algorithm interleaves:
-    - Joining sub-tables
-    - Eliminating hidden variables
+The **variable elimination** (VE) algorithm carries out summations right-to-left and *stores intermediate results* (called **factors**) to avoid recomputations.
+The algorithm interleaves:
+- Joining sub-tables
+- Eliminating hidden variables
+
+.center.width-80[![](figures/lec6/elimination.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 <!-- <hr>
 
@@ -110,7 +200,9 @@ $= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br> -->
 
 ---
 
-# VE: factors
+class: middle
+
+## Factors
 
 - Each **factor $f_i$** is a matrix indexed by the values of its argument variables. E.g.:
 
@@ -120,7 +212,9 @@ $= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br> -->
 
 ---
 
-# VE: join
+class: middle
+
+## Join
 
 The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a new factor $f$.
 - Exactly like a **database join**!
@@ -131,7 +225,9 @@ The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a ne
 
 ---
 
-# VE: elimination
+class: middle
+
+## Elimination
 
 *Summing out*, or **eliminating**, a variable from a sum of products of factors:
 - move any constant factor outside the summation;
@@ -141,53 +237,51 @@ The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a ne
 
 Example (eliminate $E$):
 
-$\sum_e f_2(E) f_3(A,B,E) f_4(A) f_5(A)$<br>
-$= f_4(A) f_5(A) \sum_e f_2(E) f_3(A,B,E)$<br>
-$= f_4(A) f_5(A) f_6'(A,B)$
+$\begin{aligned}
+&\sum\_e f\_2(E) f\_3(A,B,E) f\_4(A) f\_5(A) \\\\
+&= f\_4(A) f\_5(A) \sum\_e f\_2(E) f\_3(A,B,E) \\\\
+&= f\_4(A) f\_5(A) f\_6'(A,B)
+\end{aligned}$
 
 ---
 
-# Variable elimination algorithm
+class: middle
 
-Query: $P(Q|e_1, ..., e_n)$.
-
-Algorithm:
-- Start with initial factors:
-    - Local CPTs (but instantiated by evidence).
-- While there are still hidden variables (not Q nor evidence):
-    - Pick a hidden variable $H$
-        - The elimination ordering is a design parameter.
-    - Join all factors mentioning $H$
-    - Eliminate (sum out) $H$
-- Join all remaining factors and normalize.
+.width-100[![](figures/lec6/ve-algorithm.png)]
 
 ---
 
-# Example
+class: middle
 
-.center[(blackboard example)]
+## Example
+
+(blackboard example)
 
 ---
 
 # Relevance
 
-- Consider the query $P(JohnCalls|Burglar=true)$.
-    - $P(J|b) = \alpha P(b) \sum_e P(e) \sum_a P(a|b,e) P(J|a) \sum_m P(m|a)$
+Consider the query $P(J|b)$:
+$$P(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) P(J|a) \sum\_m P(m|a)$$
 - $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
 - In other words, $P(J|b)$ remains unchanged if we remove $M$ from the network.
-- **Theorem**: $H$ is irrelevant for $P(Q|E=e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$
+
+## Theorem
+
+$H$ is irrelevant for $P(Q|E=e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
 ---
 
-# Elimination ordering
+# Complexity
 
 .center.width-50[![](figures/lec6/ve-ordering.png)]
 
-- Consider the query $P(X\_n|y\_1,...,y\_n)$.
-- Work through the two elimination orderings:
-    - $Z, X\_1, ..., X\_{n-1}$
-    - $X\_1, ..., X\_{n-1}, Z$
-- What is the size of the maximum factor generated for each of the orderings?
+Consider the query $P(X\_n|y\_1,...,y\_n)$.
+Work through the two elimination orderings:
+- $Z, X\_1, ..., X\_{n-1}$
+- $X\_1, ..., X\_{n-1}, Z$
+
+What is the size of the maximum factor generated for each of the orderings?
 - Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
 
 ???
@@ -196,7 +290,7 @@ R: prepare that
 
 ---
 
-# Complexity of exact inference
+class: middle
 
 - The computational and space complexity of variable elimination is determined by **the largest factor**.
 - The elimination *ordering* can greatly affect the size of the largest factor.
@@ -207,11 +301,9 @@ R: prepare that
 
 ---
 
-class: smaller
+# Worst-case complexity?
 
-# Worst case complexity?
-
-.center.width-70[![](figures/lec6/3sat.png)]
+.center.width-80[![](figures/lec6/3sat.png)]
 
 3SAT is a special case of inference:
 - CSP: $(u\_1 \lor u\_2 \lor u\_3) \wedge (\lnot u\_1 \lor \lnot u\_2 \lor u\_3) \wedge (u\_2 \lor \lnot u\_3 \lor u\_4)$
@@ -219,6 +311,10 @@ class: smaller
 - $C\_1 = U\_1 \lor U\_2 \lor U\_3$; $C\_2 = \lnot U\_1 \lor \lnot  U\_2 \lor U\_3$; $C\_3 = U\_2 \lor \lnot  U\_3 \lor U\_4$
 - $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
 - $Y = D\_2 \wedge C\_3$
+
+---
+
+class: middle
 
 If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
 By reduction, inference in Bayesian networks is therefore **NP-hard**.
@@ -230,9 +326,14 @@ R: rehearse this slide
 
 ---
 
-class: middle, center
+class: middle
 
-# Bayesian networks with continuous variables
+# Continuous variables
+
+---
+
+connection of continuous variables with Kolmogorov axioms
+https://www.ge.infn.it/~zanghi/FS/BasicProb1.pdf slide 46
 
 ---
 
@@ -313,10 +414,10 @@ given continuous parents.
 - E.g., $P(b|c)$ could be a "soft" threshold:
 
 .grid[
-.col-1-3[
+.kol-1-3[
 .center.width-50[![](figures/lec6/probit.png)]
 ]
-.col-2-3[
+.kol-2-3[
 The **probit distribution** uses integral of Gaussian:
 - $\Phi(x) = \int\_{-\infty}^x \mathcal{N}(0,1)(x) dx$
 - $P(b|c) = \Phi((-c+\mu) / \sigma)$
@@ -336,9 +437,9 @@ The **probit distribution** uses integral of Gaussian:
 
 ---
 
-class: middle, center
+class: middle
 
-# Approximate inference
+# Monte Carlo methods
 
 ---
 
@@ -389,49 +490,57 @@ Sampling from a Bayesian network, *without observed evidence*:
 
 ---
 
-# Example (1)
+class: middle
 
 .center.width-90[![](figures/lec6/as1.png)]
 
 ---
 
-# Example (2)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as2.png)]
 
 ---
 
-# Example (3)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as3.png)]
 
 ---
 
-# Example (4)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as4.png)]
 
 ---
 
-# Example (5)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as5.png)]
 
 ---
 
-# Example (6)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as6.png)]
 
 ---
 
-# Example (7)
+class: middle
+count: false
 
 .center.width-90[![](figures/lec6/as7.png)]
 
 ---
 
-# Analysis of ancestral sampling
+class: middle
+
+## Analysis
 
 - The probability that ancestral sampling generates a particular event is
 $$S\_{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
@@ -462,7 +571,9 @@ Explain general rejection sampling.
 
 ---
 
-# Analysis of rejection sampling
+class: middle
+
+## Analysis
 
 - Let consider the posterior **probability estimate** $\hat{P}(x|e)$ formed by rejection sampling:<br><br>
 $\hat{P}(x|e) = \alpha N\_{PS}(x,e)$ (by definition of the algorithm)<br>
@@ -493,39 +604,43 @@ Idea: *fix evidence* variables, sample the rest.
 
 ---
 
-# Example (1)
+class: middle
 
 .center.width-100[![](figures/lec6/lw1.png)]
 
 ---
 
-# Example (2)
+class: middle
+count: false
 
 .center.width-100[![](figures/lec6/lw2.png)]
 
 ---
 
-# Example (3)
+class: middle
+count: false
 
 .center.width-100[![](figures/lec6/lw3.png)]
 
 ---
 
-# Example (4)
+class: middle
+count: false
 
 .center.width-100[![](figures/lec6/lw4.png)]
 
 ---
 
-# Example (5)
+class: middle
+count: false
 
 .center.width-100[![](figures/lec6/lw5.png)]
 
 ---
 
-class: smaller
+class: middle
 
-# Analysis of likelihood weighting (1)
+## Analysis
 
 - The sampling probability for an event with likelihood weighting is
 $$S\_{WS}(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)),$$
@@ -544,9 +659,7 @@ R: improve the description of how probability estimates are built.
 
 ---
 
-class: smaller
-
-# Analysis of likelihood weighting (2)
+class: middle
 
 - The estimated posterior probability is computed as follows:
 <br><br>
@@ -606,14 +719,14 @@ Note that we need to derive $P(Z\_i|mb(Z\_i))$:
 # Example
 
 .grid[
-.col-1-4[
+.kol-1-4[
 1) Fix the evidence
 ]
-.col-1-4[![](figures/lec6/gibbs-init.png)]
-.col-1-4[
+.kol-1-4.width-100[![](figures/lec6/gibbs-init.png)]
+.kol-1-4[
 2) Randomly initialize the other variables
 ]
-.col-1-4[![](figures/lec6/gibbs-init2.png)]
+.kol-1-4.width-100[![](figures/lec6/gibbs-init2.png)]
 ]
 
 3) Repeat
@@ -653,6 +766,13 @@ class: center, middle
     - Can handle arbitrary combinations of discrete and continuous variables.
 - Want to know more about sampling?
     - Follow [MATH2022 Large sample analysis: theory and practice](https://www.programmes.uliege.be/cocoon/en/cours/MATH2022-1.html).
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 

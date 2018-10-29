@@ -10,8 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: make sure they know what is a latent variable model
-R: develop on causality?
+R: https://kuleshov.github.io/cs228-notes/representation/directed/
 
 ---
 
@@ -19,13 +18,13 @@ R: develop on causality?
 
 .grid[
 .kol-1-2[
-- *Probability*:
+- Probability:
     - Random variables
     - Joint and marginal distributions
     - Conditional distributions
     - Product rule, Chain rule, Bayes' rule
     - Inference
-- *Bayesian networks*:
+- Bayesian networks:
     - Representing uncertain knowledge
     - Semantics
     - Construction
@@ -192,7 +191,9 @@ the probability of each (combined) outcome:
 
 $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
 
-## Example $P(T,W)$
+## Example
+
+.center[$P(T,W)$]
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -404,7 +405,8 @@ class: middle
 
 # Inference by enumeration
 
-Procedure:
+Start from the joint distribution $P(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+
 1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
 2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
 $$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
