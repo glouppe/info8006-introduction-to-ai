@@ -257,6 +257,10 @@ class: middle
 
 (blackboard example)
 
+???
+
+Prepare this!!
+
 ---
 
 # Relevance
@@ -292,10 +296,10 @@ R: prepare that
 
 class: middle
 
-- The computational and space complexity of variable elimination is determined by **the largest factor**.
+The computational and space complexity of variable elimination is determined by **the largest factor**.
 - The elimination *ordering* can greatly affect the size of the largest factor.
 - Does there always exist an ordering that only results in small factors? **No!**
-- *Singly connected networks* (polytrees):
+- Singly connected networks (polytrees):
     - Any two nodes are connected by at most one (undirected path).
     - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
 
@@ -332,106 +336,132 @@ class: middle
 
 ---
 
-connection of continuous variables with Kolmogorov axioms
-https://www.ge.infn.it/~zanghi/FS/BasicProb1.pdf slide 46
+# Random variables
 
----
-
-# Continuous variables
-
-- For continuous variables, the probability distribution can be described by a probability **density** function.
-    - That is, the distribution is described by a *continuous function* of its value:
-        - e.g., $P(X=x) = U\[18,26\](x)$ for a uniform density between $18$ and $26$.
-    - a density *integrates* to $1$ and is non-negative everywhere.
-- The absolute likelihood that a continuous variable $X$ takes value $x$ is $0$.
-- The (integral of the) density provides the probability of falling within a particular range of values.
-- E.g., $P(X=20.5) = 0.125$ really means
-$\lim_{dx \to 0} P(20.5 \leq X \leq 20.5+dx)/dx = 0.125$.
-
-.center.width-40[![](figures/lec5/uniform.png)]
+Let $X: \Omega \to D\_X$ be a random variable.
+- When $D\_X$ is finite or countably infinite, $X$ is called a discrete random variable.
+- Its probability distribution is described by a probability mass function that assigns a probability to each value $x \in D\_X$.
+- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a *continuous random variable*.
+- If $X$ is absolutely continuous, its probability distribution is described by a **density function** $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
+$$P(a < X \leq b) = \int\_a^b p(x) dx,$$
+where $p$ is non-negative piecewise continuous and such that $\int\_{D\_X} p(x)dx=1$.
 
 ???
 
-R: rehearse this slide
+R: definition of absolutely continuous
+
+---
+
+# Uniform
+
+.center.width-60[![](figures/lec6/uniform.png)]
+
+The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
+$$
+p(x) = \begin{cases}
+\frac{1}{b-a} & \text{if } x \in \[a,b\]\\\\
+0 & \text{otherwise}
+\end{cases}$$
+where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
 
 
 ---
 
-# Gaussian distribution
+# Normal
 
-.center.width-60[![](figures/lec6/gaussian.png)]
+.center.width-60[![](figures/lec6/normal.png)]
 
-$$P(x)=\mathcal{N}(\mu,\sigma)(x)=\frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(x-\mu)^2}{2\sigma^2})$$
+The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
+$$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
 
-- $\mu$ and $\sigma$ are *parameters* of the distribution.
-- The *multivariate* Gaussian distribution generalizes to $n \geq 1$ random variables.
+---
+
+# Multivariate normal
+
+.center.width-60[![](figures/lec6/mvn.png)]
+
+The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
+where $\mu \in \mathbb{R}^n$ and $\Sigma \in R^{n\times n}$ is positive semi-definite.
 
 ---
 
 # Hybrid Bayesian networks
 
-.center.width-40[![](figures/lec6/continuous-net.png)]
+<br><br>
+.center.width-60[![](figures/lec6/continuous-net.png)]
 
-- What if we have both *discrete* (e.g., $\text{subsidy}$ and $\text{buys}$) and *continuous*
-variables (e.g., $\text{harvest}$ and $\text{cost}$) in a same network?
-- Options:
-    - *discretization*: transform continuous variables into discrete variables.
-        - issues: possibly large errors due to precision loss, large CPTs.
-    - define the conditional distribution with a **finitely parameterized** canonical distribution.
-        - e.g., assume it is a gaussian distribution.
-    - use a non-parametric representation.
+What if we have both *discrete* (e.g., $\text{Subsidy}$ and $\text{Buys}$) and *continuous*
+variables (e.g., $\text{Harvest}$ and $\text{Cost}$) in a same Bayesian network?
 
 ---
 
-# Continuous child variables
+class: middle
 
-- We need to specify a *conditional density* function for each continuous child variable
+## Options
+
+- Discretization: transform continuous variables into discrete variables.
+    - Issues: possibly large errors due to precision loss, large CPTs.
+- Define the conditional distribution with a **finitely parameterized** canonical distribution.
+    - e.g., assume it is a Gaussian distribution.
+- Use a non-parametric representation.
+
+---
+
+class: middle
+
+## Continuous child variables
+
+- We need to specify a conditional density function for each continuous child variable
 given continuous parents, for each possible assignment to discrete parents.
-    - e.g., we need to specify both $P(c|h,s)$ and $P(c|h,\lnot s)$
+    - e.g., we need to specify both $p(c|h,s)$ and $p(c|h,\lnot s)$
 - Common choice: the **linear Gaussian model** (LG):
-    - $P(c|h,s) = \mathcal{N}(a\_th+b\_t, \sigma_t^2)(c)$
-    - $P(c|h,\lnot s) = \mathcal{N}(a\_fh+b\_f, \sigma_f^2)(c)$
+    - $p(c|h,s) = \mathcal{N}(a\_th+b\_t, \sigma_t^2)(c)$
+    - $p(c|h,\lnot s) = \mathcal{N}(a\_fh+b\_f, \sigma_f^2)(c)$
 
 .center.width-90[![](figures/lec6/joint-density.png)]
 
 ---
 
-# Conditional Gaussian network
+class: middle
 
-- The joint distribution of an all-continuous network with LG distributions
+## Conditional Gaussian network
+
+- The joint distribution of an all-continuous network with linear Gaussian distributions
 is a multivariate Gaussian.
-- The joint distribution of a network with discrete+LG continuous variables is
+- The joint distribution of a network with discrete or linear Gaussian continuous variables is
 a **conditional Gaussian network**.
     - i.e., a multivariate Gaussian over all continuous variables for each combination of the discrete variable values.
 
 ---
 
-# Discrete child variables, with continuous parents
+class: middle
 
-- We need to specify a *conditional distribution* for each discrete child variable,
+## Discrete child variables, with continuous parents
+
+- We need to specify a conditional distribution for each discrete child variable,
 given continuous parents.
 - It is often reasonable to assume that the probability values of the discrete outcomes are almost piece-wise constant but *vary smoothly in intermediate regions*.
-- E.g., $P(b|c)$ could be a "soft" threshold:
 
-.grid[
-.kol-1-3[
-.center.width-50[![](figures/lec6/probit.png)]
-]
-.kol-2-3[
-The **probit distribution** uses integral of Gaussian:
-- $\Phi(x) = \int\_{-\infty}^x \mathcal{N}(0,1)(x) dx$
-- $P(b|c) = \Phi((-c+\mu) / \sigma)$
-]
-]
+---
+
+class: middle
+
+For example, if $B$ is binary, $P(b|c)$ could be a "soft" threshold, such as the **probit distribution** for which
+$$P(b | c) = \Phi((c - \mu) / \sigma),$$
+where $\Phi$ is the cumulative distribution function of the (standard) normal distribution.
+
+.center.width-60[![](figures/lec6/probit.png)]
 
 ---
 
 # Variable elimination
 
-- Variable elimination in Hybrid Bayesian networks can be conducted similarly as in the discrete case,
-  by replacing **summations with integrations**.
-- Exact inference remains possible *under some assumptions* (e.g., linear Gaussian models).
-    - in which case exact analytical computations can be derived.
+Variable elimination in hybrid Bayesian networks can be conducted similarly as in the discrete case,
+by replacing **summations with integrations**.
+- Exact inference remains possible *under some assumptions*.
+    - e.g., for linear Gaussian models, queries can all be derived analytically.
 - However, this often **does not scale** to arbitrary continuous distributions.
     - e.g., numerical approximations of integrals amount to discretize continuous variables.
 
@@ -439,7 +469,9 @@ The **probit distribution** uses integral of Gaussian:
 
 class: middle
 
-# Monte Carlo methods
+# Approximate inference
+
+a.k.a. Monte Carlo methods
 
 ---
 
@@ -779,3 +811,8 @@ The end.
 # References
 
 - Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.
+
+???
+
+MATHEMATICAL PROBABILITY THEORY IN A
+NUTSHELL 1
