@@ -186,7 +186,7 @@ The algorithm interleaves:
 
 .center.width-80[![](figures/lec6/elimination.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
 
 <!-- <hr>
 
@@ -383,7 +383,7 @@ where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standa
 
 The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
-where $\mu \in \mathbb{R}^n$ and $\Sigma \in R^{n\times n}$ is positive semi-definite.
+where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
 
 ---
 
@@ -475,50 +475,111 @@ a.k.a. Monte Carlo methods
 
 ---
 
-# Approximate inference
+class: middle
 
-- Exact inference is **intractable** for most probabilistic models of practical interest.
-    - e.g., involving many variables, continuous and discrete, undirected cycles, etc.
-- Solution: abandon exact inference and develop  **approximate** but *faster* inference algorithms.
-- Main families of approximate inference algorithms:
-    - *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
-        - This is the family of methods we will consider.
-    - *Variational methods*: formulate inference as an optimization problem.
-    - *(Loopy) belief propagation* methods: formulate inference as a message-passing algorithm.
+Exact inference is **intractable** for most probabilistic models of practical interest.
+(e.g., involving many variables, continuous and discrete, undirected cycles, etc).
+
+## Solution
+
+Abandon exact inference and develop  **approximate** but *faster* inference algorithms:
+- *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
+- *Variational methods*: formulate inference as an optimization problem.
+- *Belief propagation methods*: formulate inference as a message-passing algorithm.
 
 ---
 
-# Sampling from a distribution
+# Sampling methods
 
-.center.width-50[![](figures/lec6/sampling.png)]
+Basic idea:
+- Draw $N$ samples from a sampling distribution $S$.
+- Compute an approximate posterior probability $\hat{P}$.
+- Show this approximate converges to the true probability distribution $P$.
 
-- How to sample from the distribution of a *discrete* variable $X$?
-    - Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
-    - Assume sampling from $U[0,1]$ is possible.
-        - e.g., as enabled by a standard `rand()` function.
-    - Divide the $[0,1]$ interval into $d$ regions, with region $i$ having size $P(x_i)$.
-    - Sample $u \sim U[0,1]$ and return the value associated to the region in which $u$ falls.
-- The same algorithm extends to *continuous* variables, assuming access to the **inverse cumulative distribution function** $F^{-1}$.
-    - for $p \in [0,1]$, $F^{-1}(p) = x$ such that $F(x)=p$, where $F$ is the CDF.
-    - $F^{-1}$ is known analytically for most canonical distributions (e.g., Gaussian).
+## Why sampling?
+
+Generating samples is often much faster than computing the right answer (e.g., with variable elimination).
+
+.center.width-70[![](figures/lec6/sampling-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+# Sampling
+
+How to sample from the distribution of a discrete variable $X$?
+- Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
+- Assume sampling from $\mathcal{U}(0,1)$ is possible.
+    - e.g., as enabled by a standard `rand()` function.
+- Divide the $[0,1]$ interval into $k$ regions, with region $i$ having size $P(x_i)$.
+- Sample $u \sim \mathcal{U}(0,1)$ and return the value associated to the region in which $u$ falls.
+
+<br>
+.center.width-60[![](figures/lec6/sampling.png)]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-3.center[
+$P(C)$
+
+| $C$ | $P$ |
+| --- | --- |
+| $\text{red}$ | $0.6$ |
+| $\text{green}$ | $0.1$ |
+| $\text{blue}$ | $0.3$ |
+]
+.kol-2-3[<br>
+$$\begin{aligned}
+0 \leq u < 0.6 &\to C = \text{red} \\\\
+0.6 \leq u < 0.7 &\to C = \text{green} \\\\
+0.7 \leq u < 1 &\to C = \text{blue} \\\\
+\end{aligned}$$
+]
+]
+
+.center.width-70[![](figures/lec6/sampling-colors.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+The same algorithm extends to continuous variables, assuming access to the **inverse cumulative distribution function** $F^{-1}$.
+- for $u \in [0,1]$, $F^{-1}(u) = b$ such that $F(b)=u$, where $F$ is the cumulative distribution function
+$$F(b) = \int\_0^b p(x)dx.$$
+- $F^{-1}$ is known analytically for most canonical distributions.
 
 <span class="Q">[Q]</span> How to extend to arbitrary multivariate distributions?
 
 ???
 
+R: make plot?
 Draw the situation for the continuous case.
 
 ---
 
-# Ancestral sampling
+# Prior sampling
 
 Sampling from a Bayesian network, *without observed evidence*:
 - Sample each variable in turn, **in topological order**.
 - The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
 
-<hr>
+---
+
+class: middle
 
 .center.width-100[![](figures/lec6/ancestral-sampling.png)]
+
+<br>
+
+.center.width-100[![](figures/lec6/ancestral-sampling-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -572,34 +633,20 @@ count: false
 
 class: middle
 
-## Analysis
+## Example
 
-- The probability that ancestral sampling generates a particular event is
-$$S\_{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
-i.e., the Bayesian network's joint probability.
-- Let the number of samples of an event be $N\_{PS}(x\_1, ..., x\_n)$. We
-define the **probability estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
-- Then:<br>
-$\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) = \lim\_{N \to \infty} N\_{PS}(x\_1, ..., x\_n) / N$<br>
-$\quad \quad \quad \quad \quad \quad \quad \quad \quad= S\_{PS}(x\_1, ..., x\_n)$<br>
-$\quad \quad \quad \quad \quad \quad \quad \quad \quad= P(x\_1, ..., x\_n)$
-- That is, the sampling procedure is *consistent*: $P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$.
+We will collect a bunch of samples from the Bayesian network:
 
----
+$c, \lnot s, r, w$<br>
+$c, s, r, w$<br>
+$\lnot c, s, r, \lnot w$<br>
+$c, \lnot s, r, w$<br>
+$\lnot c, \lnot s, \lnot r, w$
 
-# Rejection sampling
-
-Using ancestral sampling, an estimate $\hat{P}(x|e)$ can be formed from the samples *agreeing with the evidence*.
-
-<hr>
-
-.center.width-100[![](figures/lec6/rejection-sampling.png)]
-
-<span class="Q">[Q]</span> Can we use a similar idea to sample continuous variables for which $P$ is known but $F^{-1}$ isn't?
-
-???
-
-Explain general rejection sampling.
+If we want to know $P(W)$:
+- We have counts $\langle w:4, \lnot w:1 \rangle$
+- Normalize to obtain $\hat{P}(W) = \langle w:0.8, \lnot w:0.2 \rangle$
+- This will get closer to the true distribution $P(W)$ as we collect more samples.
 
 ---
 
@@ -607,15 +654,64 @@ class: middle
 
 ## Analysis
 
-- Let consider the posterior **probability estimate** $\hat{P}(x|e)$ formed by rejection sampling:<br><br>
-$\hat{P}(x|e) = \alpha N\_{PS}(x,e)$ (by definition of the algorithm)<br>
-$= N\_{PS}(x,e) / N\_{PS}(e)$<br>
-$\approx P(x,e) / P(e)$<br>
-$= P(x|e)$
-- Therefore, rejection sampling returns *consistent* posterior estimates.
+The probability that prior sampling generates a particular event is
+$$S\_{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
+i.e., the Bayesian network's joint probability.
+
+Let $N\_{PS}(x\_1, ..., x\_n)$ denote the number of samples of an event. We
+define the probability **estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_{PS}(x\_1, ..., x\_n) / N.$$
+
+---
+
+class: middle
+
+Then,
+$$\begin{aligned}
+\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) &= \lim\_{N \to \infty} N\_{PS}(x\_1, ..., x\_n) / N \\\\
+&= S\_{PS}(x\_1, ..., x\_n) \\\\
+&= P(x\_1, ..., x\_n)
+\end{aligned}$$
+Therefore, prior sampling is consistent:
+$$P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$$
+
+---
+
+# Rejection sampling
+
+Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the samples *agreeing with the evidence* $e$.
+
+<br><br><br>
+.center.width-100[![](figures/lec6/rejection-sampling-cartoon.png)]
+
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec6/rejection-sampling.png)]
+
+---
+
+class: middle
+
+
+## Analysis
+
+Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejection sampling:
+
+$$\begin{aligned}
+\hat{P}(x|e) &\propto  N\_{PS}(x,e) \\\\
+&= N\_{PS}(x,e) / N\_{PS}(e) \\\\
+&\approx P(x,e) / P(e) \\\\
+&= P(x|e)
+\end{aligned}$$
+
+Therefore, rejection sampling returns *consistent* posterior estimates.
+
 - The standard deviation of the error in each probability is $O(1/\sqrt{n})$.
 - **Problem**: many samples are rejected!
-    - Hopelessly expensive if $P(e)$ is small.
+    - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
     - Evidence is not exploited when sampling.
 
 ???
@@ -626,13 +722,20 @@ R: improve the description of how probability estimates are built.
 
 # Likelihood weighting
 
-Idea: *fix evidence* variables, sample the rest.
+Idea: *clamp* the evidence variables, sample the rest.
 - Problem: the resulting sampling distribution is not consisent.
 - Solution: **weight** by probability of evidence given parents.
 
-<hr>
+<br><br><br>
+.center.width-100[![](figures/lec6/likelihood-weighting-cartoon.png)]
 
-.center.width-80[![](figures/lec6/importance-sampling.png)]
+.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec6/importance-sampling.png)]
 
 ---
 
@@ -674,16 +777,20 @@ class: middle
 
 ## Analysis
 
-- The sampling probability for an event with likelihood weighting is
+The sampling probability for an event with likelihood weighting is
 $$S\_{WS}(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)),$$
 where the product is over the non-evidence variables.
-- The weight for a given sample $z,e$ is
+The weight for a given sample $z,e$ is
 $$w(z,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
 where the product is over the evidence variables.
-- The weighted sampling probability is
-<br><br>
-$S\_{WS}(z,e) w(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i))$<br>
-$\quad \quad \quad \quad \quad \quad \quad= P(z,e).$
+
+The weighted sampling probability is
+$$
+\begin{aligned}
+S\_{WS}(z,e) w(z,e) &= \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
+&= P(z,e)
+\end{aligned}
+$$
 
 ???
 
@@ -693,26 +800,27 @@ R: improve the description of how probability estimates are built.
 
 class: middle
 
-- The estimated posterior probability is computed as follows:
-<br><br>
-$\hat{P}(x|e) = \alpha \sum\_y N\_{WS}(x,y,e) w(x,y,e)$<br>
-$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\approx \alpha' \sum\_y S\_{WS}(x,y,e) w(x,y,e)$<br>
-$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' \sum\_y P(x,y,e)$<br>
-$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
-- Hence likelihood weighting returns *consistent* estimates.
+
+
+The estimated posterior probability is computed as follows:
+
+$$\begin{aligned}
+\hat{P}(x|e) &\propto \frac{1}{N} \sum\_y N\_{WS}(x,y,e) w(x,y,e) \\\\
+&\approx \sum\_y S\_{WS}(x,y,e) w(x,y,e) \\\\
+&= \sum\_y P(x,y,e) \\\\
+&= P(x,e) \propto P(x|e)
+\end{aligned}
+$$
+
+Hence likelihood weighting returns *consistent* estimates.
 - Performance **still degrades** with many evidence variables.
-    - A few samples have nearly all the total weight.
-
-<span class="Q">[Q]</span> What should be the normalization constants $\alpha$ and $\alpha'$ to obtain correct results?
-
-???
-
-- $\alpha = 1 / \sum w$
-- $\alpha' = 1 / (N \sum w)$
+- A few samples have nearly all the total weight.
 
 ---
 
-# Likelihood weighting
+class: middle
+
+## Comments
 
 - Likelihood weighting is *good*:
     - The evidence is taken into account to generate a sample.
@@ -725,34 +833,34 @@ $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,= \alpha' P(x,e) = P(x|e)$
 
 # Gibbs sampling
 
-- *Procedure*:
-    - Keep track of a full instance $x\_1, ..., x\_n$. Start with an arbitrary instance consistent with the evidence.
-    - Sample one variable at a time, conditioned on all the rest.
-        - Keep the evidence fixed.
-    - Keep repeating this for a long time.
-- *Property*:
-    - The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
-- *Rationale*:
-    - Both upstream and downstream variables condition on evidence.
-    - In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
+## Procedure
+- Keep track of a full instance $x\_1, ..., x\_n$.
+- Start with an arbitrary instance consistent with the evidence.
+- Sample one variable at a time, conditioned on all the rest, but keep the evidence fixed.
+- Keep repeating this for a long time.
+
+The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
 
 ---
 
-# Gibbs sampling
+class: middle
 
 .center.width-100[![](figures/lec6/gibbs-sampling.png)]
+<br>
 
-Note that we need to derive $P(Z\_i|mb(Z\_i))$:
-- $mb(Z\_i)$ is the **Markov blanket** of $Z\_i$.
-- i.e., the set of  $Z\_i$'s parents, children and children's parents.
+## Rationale
+- Both upstream and downstream variables condition on evidence.
+- In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
 
 ---
 
-# Example
+class: middle
+
+## Example
 
 .grid[
 .kol-1-4[
-1) Fix the evidence
+1) Fix the evidence.
 ]
 .kol-1-4.width-100[![](figures/lec6/gibbs-init.png)]
 .kol-1-4[
@@ -762,27 +870,30 @@ Note that we need to derive $P(Z\_i|mb(Z\_i))$:
 ]
 
 3) Repeat
-- Choose a non-evidence variable $X$
-- Resample $X$ from $P(X|\text{all other variables})$
+- Choose a non-evidence variable $X$.
+- Resample $X$ from $P(X|\text{all other variables})$.
 
 .center.width-100[![](figures/lec6/gibbs-process.png)]
 
 ---
 
-# Further reading on Gibbs sampling
+class: middle
+
+## Demo
+
+(See code)
+
+---
+
+class: middle
+
+## Further reading
 
 - Gibbs sampling produces samples from the query distribution $P(X|e)$ in the limit of re-sampling infinitely often.
 - Gibbs sampling is a special case of a more general methods called
 **Markov chain Monte Carlo** (MCMC) methods.
-    - *Metropolis-Hastings* is one of the more famous MCMC methods.
-        - In fact, Gibbs sampling is a special case of Metropolis-Hastings.
-- You may read about *Monte Carlo* methods: they are just sampling.
-
----
-
-class: center, middle
-
-(Gibbs sampling demo)
+- Metropolis-Hastings is one of the most famous MCMC methods.
+    - In fact, Gibbs sampling is a special case of Metropolis-Hastings.
 
 ---
 
@@ -796,8 +907,7 @@ class: center, middle
     - LW and GS generally insensitive to topology.
     - Convergence can be slow with probabilities close to 1 or 0.
     - Can handle arbitrary combinations of discrete and continuous variables.
-- Want to know more about sampling?
-    - Follow [MATH2022 Large sample analysis: theory and practice](https://www.programmes.uliege.be/cocoon/en/cours/MATH2022-1.html).
+- Want to know more about sampling methods? Follow [MATH2022](https://www.programmes.uliege.be/cocoon/en/cours/MATH2022-1.html).
 
 ---
 
