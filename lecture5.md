@@ -36,7 +36,7 @@ R: https://kuleshov.github.io/cs228-notes/representation/directed/
 
 **Do not overlook this lecture!**<br> You will need these concepts a lot. (Now and in future courses)
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -62,7 +62,7 @@ Sensors are **noisy**, but we know the probability $P(\text{color}|\text{distanc
 .kol-1-2[.width-100[![](figures/lec5/gb-grid.png)]]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -75,7 +75,7 @@ class: middle, black-slide
 
 <span class="Q">[Q]</span> Could we use a logical agent for this game?
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -169,7 +169,7 @@ $P(W)$
 .kol-1-2[.width-100[![](figures/lec5/pw.png)]]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -387,7 +387,7 @@ Probabilistic **inference** is the problem of computing a desired probability fr
 
 .center.width-20[![](figures/lec5/inference-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -693,7 +693,7 @@ class: middle, black-slide
 
 <span class="Q">[Q]</span> What if we had chosen a different prior?
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -780,7 +780,7 @@ Is there a burglar?
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -898,7 +898,7 @@ For the left network:
 
 .center.width-50[![](figures/lec5/causality.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 

@@ -39,7 +39,7 @@ R: theoretical results of approximate algorithms?
 ]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -61,7 +61,7 @@ A Bayesian network implicitly **encodes** the full joint distribution as the pro
 .width-70[![](figures/lec6/bn-cartoon3.png)]]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -111,7 +111,7 @@ Inference is concerned with the problem **computing a desired probability** from
 
 .center.width-30[![](figures/lec6/query-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -173,7 +173,7 @@ class: middle
 
 Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -185,6 +185,12 @@ The algorithm interleaves:
 - Eliminating hidden variables
 
 .center.width-80[![](figures/lec6/elimination.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+R: Have a query for illustration
 
 
 
@@ -274,6 +280,10 @@ $$P(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) P(J|a) \sum\_m P(m|a)$$
 
 $H$ is irrelevant for $P(Q|E=e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
+???
+
+R: add plot for the network
+
 ---
 
 # Complexity
@@ -321,12 +331,12 @@ The computational and space complexity of variable elimination is determined by 
 class: middle
 
 If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
-By reduction, inference in Bayesian networks is therefore **NP-hard**.
+- By reduction, inference in Bayesian networks is therefore **NP-hard**.
 - There is no known efficient probabilistic inference algorithm in general.
 
 ???
 
-R: rehearse this slide
+R: explain what is reduction (oral)
 
 ---
 
@@ -502,7 +512,7 @@ Generating samples is often much faster than computing the right answer (e.g., w
 
 .center.width-70[![](figures/lec6/sampling-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -543,7 +553,7 @@ $$\begin{aligned}
 
 .center.width-70[![](figures/lec6/sampling-colors.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -551,7 +561,7 @@ class: middle
 
 The same algorithm extends to continuous variables, assuming access to the **inverse cumulative distribution function** $F^{-1}$.
 - for $u \in [0,1]$, $F^{-1}(u) = b$ such that $F(b)=u$, where $F$ is the cumulative distribution function
-$$F(b) = \int\_0^b p(x)dx.$$
+$$F(b) = P(X < b)= \int\_0^b p(x)dx.$$
 - $F^{-1}$ is known analytically for most canonical distributions.
 
 <span class="Q">[Q]</span> How to extend to arbitrary multivariate distributions?
@@ -579,7 +589,7 @@ class: middle
 
 .center.width-100[![](figures/lec6/ancestral-sampling-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -683,7 +693,7 @@ Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the samples 
 <br><br><br>
 .center.width-100[![](figures/lec6/rejection-sampling-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -701,8 +711,7 @@ class: middle
 Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejection sampling:
 
 $$\begin{aligned}
-\hat{P}(x|e) &\propto  N\_{PS}(x,e) \\\\
-&= N\_{PS}(x,e) / N\_{PS}(e) \\\\
+\hat{P}(x|e) &= N\_{PS}(x,e) / N\_{PS}(e) \\\\
 &\approx P(x,e) / P(e) \\\\
 &= P(x|e)
 \end{aligned}$$
@@ -729,7 +738,7 @@ Idea: *clamp* the evidence variables, sample the rest.
 <br><br><br>
 .center.width-100[![](figures/lec6/likelihood-weighting-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
