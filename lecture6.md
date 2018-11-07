@@ -190,8 +190,8 @@ $$\begin{aligned}
 P(B|j, m) &\propto P(B,j,m) \\\\
 &= P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a) \\\\
 &= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \sum\_a \mathbf{f}\_3(a,B,e) \times \mathbf{f}\_4(a) \times \mathbf{f}\_5(a) \\\\
-&= \mathbf{f}\_1(B) \sum\_e \mathbf{f}\_2(e) \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
-&= \mathbf{f}\_1(B) \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
+&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
+&= \mathbf{f}\_1(B) \times \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
 \end{aligned}$$
 
 ---
@@ -841,7 +841,7 @@ $$\begin{aligned}
 &= P(x,e)
 \end{aligned}$$
 
-From this, the esimated posterior probability is given by:
+From this, the estimated posterior probability is given by:
 $$\begin{aligned}
 \hat{P}(x|e) &= \hat{P}(x,e) / \hat{P}(e) \\\\
 &\approx P(x,e) / P(e) = P(x|e)
