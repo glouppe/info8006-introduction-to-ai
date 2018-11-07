@@ -108,9 +108,9 @@ class: middle
 ## Programming project
 
 Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty:
-- Eat as much dots as possible
-- Eat as much dots as possible, while not getting killed by ghosts (deterministic)
-- Eat as much dots as possible, while not getting killed by ghosts (stochastic)
+- Eat as many dots as possible
+- Eat as many dots as possible, while not getting killed by ghosts (deterministic)
+- Eat as many dots as possible, while not getting killed by ghosts (stochastic)
 
 .center.width-30[![](figures/outline/pacman.png)]
 

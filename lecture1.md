@@ -74,7 +74,7 @@ Artificial intelligence is the science of making machines or programs that:
 ]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -347,7 +347,7 @@ class: middle
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -637,7 +637,7 @@ Can it be implemented in a *small* agent program?
 
 .center[![](figures/lec1/rational-agent-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 

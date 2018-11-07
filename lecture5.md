@@ -10,8 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: make sure they know what is a latent variable model
-R: develop on causality?
+R: https://kuleshov.github.io/cs228-notes/representation/directed/
 
 ---
 
@@ -19,13 +18,13 @@ R: develop on causality?
 
 .grid[
 .kol-1-2[
-- *Probability*:
+- Probability:
     - Random variables
     - Joint and marginal distributions
     - Conditional distributions
     - Product rule, Chain rule, Bayes' rule
     - Inference
-- *Bayesian networks*:
+- Bayesian networks:
     - Representing uncertain knowledge
     - Semantics
     - Construction
@@ -37,7 +36,7 @@ R: develop on causality?
 
 **Do not overlook this lecture!**<br> You will need these concepts a lot. (Now and in future courses)
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -63,7 +62,7 @@ Sensors are **noisy**, but we know the probability $P(\text{color}|\text{distanc
 .kol-1-2[.width-100[![](figures/lec5/gb-grid.png)]]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -76,7 +75,7 @@ class: middle, black-slide
 
 <span class="Q">[Q]</span> Could we use a logical agent for this game?
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -170,7 +169,7 @@ $P(W)$
 .kol-1-2[.width-100[![](figures/lec5/pw.png)]]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -192,7 +191,9 @@ the probability of each (combined) outcome:
 
 $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
 
-## Example $P(T,W)$
+## Example
+
+.center[$P(T,W)$]
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -386,7 +387,7 @@ Probabilistic **inference** is the problem of computing a desired probability fr
 
 .center.width-20[![](figures/lec5/inference-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -404,7 +405,8 @@ class: middle
 
 # Inference by enumeration
 
-Procedure:
+Start from the joint distribution $P(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+
 1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
 2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
 $$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
@@ -691,7 +693,7 @@ class: middle, black-slide
 
 <span class="Q">[Q]</span> What if we had chosen a different prior?
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -778,7 +780,7 @@ Is there a burglar?
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -896,7 +898,7 @@ For the left network:
 
 .center.width-50[![](figures/lec5/causality.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 

@@ -30,7 +30,7 @@ Prof. Gilles Louppe<br>
 ]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -164,7 +164,7 @@ class: middle
 .width-100[![](figures/lec2/search-problems-models.png)]
 .center[Search problems are **models**.]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
@@ -284,7 +284,7 @@ Strategies:
 <br><br>
 .width-100[![](figures/lec2/dfs-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -351,7 +351,7 @@ class: middle
 <br><br>
 .width-100[![](figures/lec2/bfs-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -412,7 +412,7 @@ class: middle
 <br><br>
 .width-100[![](figures/lec2/ucs-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -467,7 +467,7 @@ the fringe in decreasing order of *desirability*.
 <br>
 .width-100[![](figures/lec2/gs-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -528,7 +528,7 @@ At worst, it is like a badly-guided BFS.]
 <br><br>
 .width-100[![](figures/lec2/as-cartoon.png)]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -682,7 +682,7 @@ A*
 ]
 ]
 
-.footnote[Credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ???
 
