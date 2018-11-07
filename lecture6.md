@@ -184,6 +184,8 @@ The algorithm interleaves:
 
 class: middle
 
+.center.width-30[![](figures/lec6/bn-burglar.png)]
+
 ## Example
 
 $$\begin{aligned}
@@ -200,7 +202,7 @@ class: middle
 
 ## Factors
 
-- Each **factor $\mathbf{f}_i$** is a tensor indexed by the values of its argument variables. E.g.:
+- Each **factor $\mathbf{f}_i$** is a multi-dimensional array indexed by the values of its argument variables. E.g.:
 .grid[
 .kol-1-2[
 $$

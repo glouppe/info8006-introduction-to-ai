@@ -7,6 +7,7 @@ Lecture 7: Reasoning over time
 ???
 
 R: add EM!! crucially missing
+R: refaire les plots comme pour lecture 6
 
 ---
 
