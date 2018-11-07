@@ -155,7 +155,7 @@ What are the chances that you actually have the disease?
 \subsubsection{$\approx 20$ min}
 We have a bag of three biased coins a, b, and c with probabilities of coming up heads
 of 20\%, 60\%, and 80\%, respectively. One coin is drawn randomly from the bag (with equal
-likelihood of drawing each of the three coins), and then the coin is flipped three times to
+probability of drawing each of the three coins), and then the coin is flipped three times to
 generate the outcomes X1, X2, and X3.
 \begin{enumerate}
     \item Draw the Bayesian network corresponding to this setup and define the necessary CPTs.
@@ -174,6 +174,7 @@ the handedness.
     \item Which of the three networks in Figure \ref{fig:b_net} claim that\\ $P(G_{father},G_{mother},G_{child}) =
 P(G_{father} )P(G_{mother} )P(G_{child} )$?
     \item Which of the three networks make independence claims that are consistent with the
+hypothesis about the inheritance of handedness?
     \item Which of the three networks is the best description of the hypothesis?
     \item Write down the CPT for the Gchild node in network (a), in terms of s and m.
     \item Suppose that $P(G_{father} =l) = P(G_{mother} =l) = q$. In network (a), derive an expression
@@ -199,11 +200,12 @@ hypothesis about the inheritance of handedness?
 \end{figure}
 Consider the Bayesian network of Figure \ref{fig:pearl-b-net}, which, if any, of the following are asserted by the network structure?
 \begin{itemize}
-    \item $P(B, C) = P(B)P(C)$
-    \item $P(B, C|A) = P(B|A)P(C|A)$
-    \item $P(B, C| A, D) = P(B|A, D) P(C|A, D)$
-    \item $P(C|A, D, E) = P(C|A, B, D, E)$
-    \item $P(B, E) = \sum_{A, C, D} P(A) P(B|A) P(C|A) P(E|C) P(D|B, C)$
+    \item $P(b, c) = P(b)P(c)$
+    \item $P(b, c|a) = P(b|a)P(c|a)$
+    \item $P(b, c| a, d) = P(b|a, d) P(c|a, d)$
+    \item $P(c|a, d, e) = P(c|a, b, d, e)$
+    \item $P(b, e|a) = P(b|a)P(e|a)$
+    \item $P(b, e) = \sum_{a \in A, c \in C, d \in D} P(a) P(b|a) P(c|a) P(e|c) P(d|b, c)$
 \end{itemize}
 
    \subsection{Supplementary material}
