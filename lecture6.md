@@ -133,29 +133,12 @@ P(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a P(B,j,m,e,a) \\\\
 
 Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
 $\begin{aligned}
-P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a) \\\\
-&\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
+P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a)
 \end{aligned}$
 
-Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
+???
 
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/inference-enumeration.png)]
-
----
-
-class: middle
-
-## Evaluation tree for $P(b|j,m)$
-
-.center.width-80[![](figures/lec6/enumeration-tree.png)]
-
-Enumeration is **inefficient**: there are repeated computations!
-- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
-- These can be avoided by *storing intermediate results*.
+&\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
 
 ---
 
@@ -166,6 +149,37 @@ class: middle
 Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+Notice that factors that do not depend on the variables in the summations can be factored out, hence avoiding building the whole joint distribution before marginalizing out:
+
+$$\begin{aligned}
+P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a) \\\\
+&= P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
+\end{aligned}$$
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec6/inference-enumeration.png)]
+
+Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
+
+---
+
+class: middle
+
+## Evaluation tree for $P(b|j,m)$
+
+.center.width-80[![](figures/lec6/enumeration-tree.png)]
+
+Enumeration is still **inefficient**: there are repeated computations!
+- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
+- These can be avoided by *storing intermediate results*.
 
 ---
 
@@ -924,9 +938,8 @@ class: middle
 
 class: middle
 
-## Further reading
+## MCMC
 
-- Gibbs sampling produces samples from the query distribution $P(X|e)$ in the limit of re-sampling infinitely often.
 - Gibbs sampling is a special case of a more general set of methods called
 **Markov chain Monte Carlo** (MCMC) methods.
 - Metropolis-Hastings is one of the most famous MCMC methods.
