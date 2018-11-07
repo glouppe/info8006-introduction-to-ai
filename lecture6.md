@@ -8,14 +8,6 @@ Lecture 6: Inference in Bayesian networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
-???
-
-R: took 2h30 to cover everything
-R: slide on MCMC
-R: cartoons from cs188 18 and 19
-R: re draw the figures for continuous variables (see DL lectures style)
-R: theoretical results of approximate algorithms?
-
 ---
 
 # Today
@@ -25,7 +17,6 @@ R: theoretical results of approximate algorithms?
 - Exact inference
     - Inference by enumeration
     - Inference by variable elimination
-    - Complexity of exact inference
 - Continuous variables
 - Approximate inference
     - Ancestral sampling
@@ -48,8 +39,8 @@ R: theoretical results of approximate algorithms?
 .grid[
 .kol-2-3[
 A Bayesian network is a *directed acyclic graph* in which:
-- Each node corresponds to a *random variable*.
-- Each node $X_i$ is annotated with a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+- Each node corresponds to a *random variable* $X\_i$.
+- Each node $X\_i$ is annotated with a **conditional probability distribution** $P(X\_i | \text{parents}(X\_i))$ that quantifies the effect of the parents on the node.
 
 A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
     $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
@@ -79,7 +70,6 @@ P(b,\lnot e, a, \lnot j, m) &= P(b)P(\lnot e)P(a|b, \lnot e)P(\lnot j|a)P(m, a) 
 &= 0.001 \times 0.998 \times 0.94 \times 0.1 \times 0.7
 \end{aligned}$$
 
-
 ---
 
 class: middle
@@ -90,7 +80,7 @@ class: middle
 
 # Inference
 
-Inference is concerned with the problem **computing a desired probability** from a joint probability distribution:
+Inference is concerned with the problem **computing a marginal and/or conditional probability** from a joint probability distribution:
 
 .grid[
 .kol-1-3.center[Simple queries:]
@@ -133,19 +123,21 @@ P(Q|e_1, ..., e_k) &= \frac{1}{Z} P(Q,e_1,...,e_k)
 
 class: middle
 
-- Consider the alarm network and the query $P(B|j,m)$:<br><br>
+.pull-right[![](figures/lec6/bn-burglar.png)]
+
+Consider the alarm network and the query $P(B|j,m)$:<br><br>
 $\begin{aligned}
-P(B|j,m) &\propto \sum\_e \sum\_a P(B,j,m,e,a)
+P(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a P(B,j,m,e,a) \\\\
+&\propto \sum\_e \sum\_a P(B,j,m,e,a)
 \end{aligned}$
-- Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
+
+Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
 $\begin{aligned}
 P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a) \\\\
 &\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
 \end{aligned}$
 
-???
-
-be more explicit about $\alpha$
+Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
 
 ---
 
@@ -157,7 +149,7 @@ class: middle
 
 class: middle
 
-## Evaluation tree
+## Evaluation tree for $P(b|j,m)$
 
 .center.width-80[![](figures/lec6/enumeration-tree.png)]
 
@@ -188,21 +180,21 @@ The algorithm interleaves:
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
-???
+---
 
-R: Have a query for illustration
+class: middle
 
+.center.width-30[![](figures/lec6/bn-burglar.png)]
 
+## Example
 
-<!-- <hr>
-
-Example:
-
-$P(B|j,m)$<br>
-$= \alpha  P(B) \sum_e P(e) \sum_a P(a|B,e)P(j|a)P(m|a)$<br>
-$= \alpha  f_1(B) \sum_e f_2(E) \sum_a f_3(A,B,E) f_4(A) f_5(A)$<br>
-$= \alpha  f_1(B) \sum_e f_2(E) f_6(B,E)$ (eliminate $A$)<br>
-$= \alpha  f_1(B) f_7(B)$ (eliminate $E$)<br> -->
+$$\begin{aligned}
+P(B|j, m) &\propto P(B,j,m) \\\\
+&= P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a) \\\\
+&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \sum\_a \mathbf{f}\_3(a,B,e) \times \mathbf{f}\_4(a) \times \mathbf{f}\_5(a) \\\\
+&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
+&= \mathbf{f}\_1(B) \times \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
+\end{aligned}$$
 
 ---
 
@@ -210,10 +202,22 @@ class: middle
 
 ## Factors
 
-- Each **factor $f_i$** is a matrix indexed by the values of its argument variables. E.g.:
-
-.center.width-90[![](figures/lec6/ve-factors.png)]
-
+- Each **factor $\mathbf{f}_i$** is a multi-dimensional array indexed by the values of its argument variables. E.g.:
+.grid[
+.kol-1-2[
+$$
+\begin{aligned}
+\mathbf{f}\_4 &= \mathbf{f}\_4(A) = \left(\begin{matrix}
+P(j|a) \\\\
+P(j|\lnot a) \end{matrix}\right)
+= \left(\begin{matrix}
+0.90 \\\\
+0.05 \end{matrix}\right) \\\\
+\mathbf{f}\_4(a) &= 0.90 \\\\
+\mathbf{f}\_4(\lnot a) &= 0.5
+\end{aligned}$$
+]
+]
 - Factors are initialized with the CPTs annotating the nodes of the Bayesian network, conditioned on the evidence.
 
 ---
@@ -222,10 +226,10 @@ class: middle
 
 ## Join
 
-The *pointwise product*, or **join**, of two factors $f_1$ and $f_2$ yields a new factor $f$.
+The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}$.
 - Exactly like a **database join**!
-- The variables of $f$ are the *union* of the variables in $f_1$ and $f_2$.
-- The elements of $f$ are given by the product of the corresponding elements in $f_1$ and $f_2$.
+- The variables of $\mathbf{f}$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+- The elements of $\mathbf{f}$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
 
 .center.width-100[![](figures/lec6/ve-product.png)]
 
@@ -235,25 +239,39 @@ class: middle
 
 ## Elimination
 
-*Summing out*, or **eliminating**, a variable from a sum of products of factors:
-- move any constant factor outside the summation;
-- add up submatrices of pointwise product of remaining factors.
+*Summing out*, or **eliminating**, a variable from a factor is done by adding up the submatrices formed by fixing the variable to each of its values in turn.
 
-<hr>
+For example, to sum out $A$ from $\mathbf{f}\_3(A, B, C)$, we write:
 
-Example (eliminate $E$):
-
-$\begin{aligned}
-&\sum\_e f\_2(E) f\_3(A,B,E) f\_4(A) f\_5(A) \\\\
-&= f\_4(A) f\_5(A) \sum\_e f\_2(E) f\_3(A,B,E) \\\\
-&= f\_4(A) f\_5(A) f\_6'(A,B)
-\end{aligned}$
+$$\begin{aligned}
+\mathbf{f}(B,C) &= \sum\_a \mathbf{f}\_3(a, B, C) = \mathbf{f}\_3(a, B, C) + \mathbf{f}\_3(\lnot a, B, C) \\\\
+&= \left(\begin{matrix}
+0.06 & 0.24 \\\\
+0.42 & 0.28
+\end{matrix}\right) + \left(\begin{matrix}
+0.18 & 0.72 \\\\
+0.06 & 0.04
+\end{matrix}\right) = \left(\begin{matrix}
+0.24 & 0.96 \\\\
+0.48 & 0.32
+\end{matrix}\right)
+\end{aligned}$$
 
 ---
 
 class: middle
 
-.width-100[![](figures/lec6/ve-algorithm.png)]
+## General Variable Elimination algorithm
+
+- Query: $P(Q|e\_1, ..., e\_k)$.
+- Start with the initial factors.
+    - The local CPTs, instantiated by the evidence.
+- While there are still hidden variables:
+    - Pick a hidden variable $H$
+    - Join all factors mentioning $H$
+    - Eliminate H
+- Join all remaining factors
+- Normalize
 
 ---
 
@@ -265,7 +283,7 @@ class: middle
 
 ???
 
-Prepare this!!
+Prepare this for $P(B|j,m)$.
 
 ---
 
@@ -276,13 +294,10 @@ $$P(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) P(J|a) \sum\_m P(m|a)$$
 - $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
 - In other words, $P(J|b)$ remains unchanged if we remove $M$ from the network.
 
+.pull-right[![](figures/lec6/bn-burglar.png)]
 ## Theorem
 
-$H$ is irrelevant for $P(Q|E=e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
-
-???
-
-R: add plot for the network
+$H$ is irrelevant for $P(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
 ---
 
@@ -358,7 +373,8 @@ where $p$ is non-negative piecewise continuous and such that $\int\_{D\_X} p(x)d
 
 ???
 
-R: definition of absolutely continuous
+RVs and densities are a layer of abstraction
+http://ai.stanford.edu/~paskin/gm-short-course/lec1.pdf
 
 ---
 
@@ -394,6 +410,17 @@ where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standa
 The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
 where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
+
+---
+
+class: middle
+
+- The (multivariate) Normal density is the only density for real random variables that is
+**closed under marginalization and multiplication**.
+- Also, a linear (or affine) function of a Normal random variable is
+Normal; and, a sum of Normal variables is Normal.
+- For these reasons, the algorithms we will discuss will be tractable only for
+finite random variables or Normal random variables.
 
 ---
 
@@ -688,7 +715,7 @@ $$P(x\_1, ..., x\_n) \approx N\_{PS}(x\_1, ..., x\_n) / N$$
 
 # Rejection sampling
 
-Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the samples *agreeing with the evidence* $e$.
+Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the proportion of samples $x$ *agreeing with the evidence* $e$ among all samples agreeing with the evidence.
 
 <br><br><br>
 .center.width-100[![](figures/lec6/rejection-sampling-cartoon.png)]
@@ -712,6 +739,7 @@ Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejecti
 
 $$\begin{aligned}
 \hat{P}(x|e) &= N\_{PS}(x,e) / N\_{PS}(e) \\\\
+&= \frac{N\_{PS}(x,e)}{N} / \frac{N\_{PS}(e)}{N} \\\\
 &\approx P(x,e) / P(e) \\\\
 &= P(x|e)
 \end{aligned}$$
@@ -722,10 +750,6 @@ Therefore, rejection sampling returns *consistent* posterior estimates.
 - **Problem**: many samples are rejected!
     - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
     - Evidence is not exploited when sampling.
-
-???
-
-R: improve the description of how probability estimates are built.
 
 ---
 
@@ -787,17 +811,17 @@ class: middle
 ## Analysis
 
 The sampling probability for an event with likelihood weighting is
-$$S\_{WS}(z,e) = \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)),$$
+$$S\_{WS}(x,e) = \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)),$$
 where the product is over the non-evidence variables.
-The weight for a given sample $z,e$ is
-$$w(z,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
+The weight for a given sample $x,e$ is
+$$w(x,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
 where the product is over the evidence variables.
 
 The weighted sampling probability is
 $$
 \begin{aligned}
-S\_{WS}(z,e) w(z,e) &= \prod\_{i=1}^l P(z\_i|\text{parents}(Z\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
-&= P(z,e)
+S\_{WS}(x,e) w(x,e) &= \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
+&= P(x,e)
 \end{aligned}
 $$
 
@@ -811,15 +835,19 @@ class: middle
 
 
 
-The estimated posterior probability is computed as follows:
+The estimated joint probability is computed as follows:
 
 $$\begin{aligned}
-\hat{P}(x|e) &\propto \frac{1}{N} \sum\_y N\_{WS}(x,y,e) w(x,y,e) \\\\
-&\approx \sum\_y S\_{WS}(x,y,e) w(x,y,e) \\\\
-&= \sum\_y P(x,y,e) \\\\
-&= P(x,e) \propto P(x|e)
-\end{aligned}
-$$
+\hat{P}(x,e) &= N\_{WS}(x,e) w(x,e) / N \\\\
+&\approx S\_{WS}(x,e) w(x,e) \\\\
+&= P(x,e)
+\end{aligned}$$
+
+From this, the estimated posterior probability is given by:
+$$\begin{aligned}
+\hat{P}(x|e) &= \hat{P}(x,e) / \hat{P}(e) \\\\
+&\approx P(x,e) / P(e) = P(x|e)
+\end{aligned}$$
 
 Hence likelihood weighting returns *consistent* estimates.
 - Performance **still degrades** with many evidence variables.
@@ -899,10 +927,10 @@ class: middle
 ## Further reading
 
 - Gibbs sampling produces samples from the query distribution $P(X|e)$ in the limit of re-sampling infinitely often.
-- Gibbs sampling is a special case of a more general methods called
+- Gibbs sampling is a special case of a more general set of methods called
 **Markov chain Monte Carlo** (MCMC) methods.
 - Metropolis-Hastings is one of the most famous MCMC methods.
-    - In fact, Gibbs sampling is a special case of Metropolis-Hastings.
+    - Gibbs sampling is a special case of Metropolis-Hastings.
 
 ---
 
@@ -930,8 +958,3 @@ The end.
 # References
 
 - Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.
-
-???
-
-MATHEMATICAL PROBABILITY THEORY IN A
-NUTSHELL 1
