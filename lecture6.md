@@ -154,7 +154,7 @@ Inference by enumeration is slow because the whole joint distribution is joined 
 
 class: middle
 
-Notice that factors that do not depend on the variables in the summations can be factored out, hence avoiding building the whole joint distribution before marginalizing out:
+Notice that factors that do not depend on the variables in the summations can be factored out, which means that marginalization does not necessarily have to be done at the end:
 
 $$\begin{aligned}
 P(B|j,m) &\propto \sum\_e \sum\_a P(B)P(e)P(a|B,e)P(j|a)P(m|a) \\\\
@@ -240,10 +240,10 @@ class: middle
 
 ## Join
 
-The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}$.
+The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}\_3$.
 - Exactly like a **database join**!
-- The variables of $\mathbf{f}$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
-- The elements of $\mathbf{f}$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+- The variables of $\mathbf{f}\_3$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+- The elements of $\mathbf{f}\_3$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
 
 .center.width-100[![](figures/lec6/ve-product.png)]
 
@@ -360,7 +360,7 @@ The computational and space complexity of variable elimination is determined by 
 class: middle
 
 If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
-- By reduction, inference in Bayesian networks is therefore **NP-hard**.
+- By reduction, inference in Bayesian networks is therefore **NP-complete**.
 - There is no known efficient probabilistic inference algorithm in general.
 
 ???
@@ -950,7 +950,7 @@ class: middle
 # Summary
 
 - **Exact inference** by variable elimination .
-    - NP-hard on general graphs, but polynomial on polytrees.
+    - NP-complete on general graphs, but polynomial on polytrees.
     - space = time, very sensitive to topology.
 - **Approximate inference** gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
     - LW does poorly when there is lots of evidence.

@@ -4,18 +4,24 @@ class: middle, center, title-slide
 
 Lecture 7: Reasoning over time
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
 R: add EM!! crucially missing
 R: refaire les plots comme pour lecture 6
+R: trim down the part on DBN
+R: Bayes filter -> then kf as a special case
 
 ---
 
 # Today
 
 .grid[
-.col-1-2[
-- *Markov models*
+.kol-1-2[
+- Markov models
     - Markov processes
     - Inference tasks
         - Prediction
@@ -23,34 +29,34 @@ R: refaire les plots comme pour lecture 6
         - Smoothing
         - Most likely explanation
     - Hidden Markov models
-- *Filtering*
+- Filtering
     - Kalman filter
     - Dynamic Bayesian networks
     - Particle filters
 ]
-.col-1-2[
-![](figures/lec7/outline-cartoon.png)
+.kol-1-2[.width-100[![](figures/lec7/outline-cartoon.png)]
 ]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Pacman revenge
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
   <source src="./figures/lec7/pacman-no-beliefs.mp4" type="video/mp4">
-</video>]
+</video>
 
-<span class="Q">[Q]</span> How to make good use of the sonar readings?
+Pacman revenge: How to make good use of the sonar readings?
+]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-class: middle, center
+class: middle
 
 # Markov models
 
@@ -156,7 +162,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}
   <source src="./figures/lec7/gb-basics.mp4" type="video/mp4">
 </video>]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -167,7 +173,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}
   <source src="./figures/lec7/gb-circular.mp4" type="video/mp4">
 </video>]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -178,7 +184,7 @@ $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}
   <source src="./figures/lec7/gb-whirlpool.mp4" type="video/mp4">
 </video>]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -227,7 +233,7 @@ $P(\mathbf{X}\_\infty = rain) = \frac{1}{4}$
 ]
 ]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -679,7 +685,7 @@ Run demo.
   <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
 </video>]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -696,3 +702,14 @@ Run demo.
 - DBNs generalize HMMs and Kalman filters.
     - Exact inference is usually **intractable**.
     - Particle filtering is a good approximate filtering algorithm for DBNs.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
+
+---
+
+# References
