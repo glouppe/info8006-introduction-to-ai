@@ -200,7 +200,7 @@ The transition model $P(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently b
 
 .center.width-50[![](figures/lec7/stationary-cartoon.png)]
 
-To predict the future:
+To predict the future  $P(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
 - **Push** the prior belief state $P(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
 $$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
 
@@ -323,11 +323,15 @@ class: middle
 
 ## Bayes filter
 
-- An agent maintains a *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ (its prior) and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected (to obtain its posterior).
-    - Rather than going back over the entire history of percepts for each update.
-- **Recursive Bayesian estimation**: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
-    - Project the current state belief forward from $t$ to $t+1$ through the transition model.
-    - Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+An agent maintains a *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ (its prior) and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected (to obtain its posterior).
+
+Recursive Bayesian estimation:
+- (Predict step): Project the current state belief forward from $t$ to $t+1$ through the transition model.
+- (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+
+???
+
+$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
 
 ---
 
@@ -344,7 +348,7 @@ P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1
 $$
 
 where
-- $\alpha$ is a normalization constant used to make probabilities sum to 1;
+- the normalization constant $$\alpha = \frac{1}{P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t})} = 1 / \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
 - in the last expression, the first and second terms are given by the model while the third is obtained recursively.
 
 <!-- $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
@@ -352,6 +356,14 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\ma
 $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t})$<br>
 $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $<br>
 $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $ -->
+
+---
+
+class: middle
+
+We can think of $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
+- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
+- The complexity of a forward update is constant (in time and space) with $t$.
 
 ---
 
@@ -389,19 +401,9 @@ Solve on blackboard.
 
 ---
 
-class: middle
-
-We can think of $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
-- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
-- The complexity of a forward update is constant (in time and space) with $t$.
-
-???
-
-<span class="Q">[Q]</span> What is the explicit form of the normalization constant $\alpha$?
-
----
-
 # Smoothing
+
+We want to compute $P(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
 
 Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$. Then,
 
@@ -477,7 +479,9 @@ $\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\m
 
 ---
 
-# Example
+class: middle
+
+## Example
 
 .center.width-90[![](figures/lec7/viterbi.png)]
 
@@ -487,23 +491,27 @@ $\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\m
 
 # Hidden Markov models
 
-- So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
+So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
 - A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
-    - i.e., $\mathbf{X}\_t = X\_t$, with domain $\\\{1, ..., S\\\}$.
-- This restricted structure allows for a simple *matrix implementation* of the inference algorithms.
+    - e.g., $\mathbf{X}\_t = X\_t$, with domain $\\\{1, ..., S\\\}$.
+- This restricted structure allows for a matrix formulation of the inference algorithms.
 
-<hr>
+---
 
-Note on terminology:
-- Some authors instead divide Markov models into two classes, depending on the observability of the system state:
-    - Observable system state: Markov chains
-    - Partially-observable system state: Hidden Markov models.
-- We follow here the terminology of the textbook.
+class: middle
+
+## Note on terminology
+
+Some authors instead divide Markov models into two classes, depending on the observability of the system state:
+- Observable system state: Markov chains
+- Partially-observable system state: Hidden Markov models.
+
+We follow here the terminology of the textbook.
 
 
 ---
 
-# Simplified matrix algorithms
+## Simplified matrix algorithms
 
 - The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ *transition matrix* $\mathbf{T}$, where $\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i)$.
 - The sensor model $P(E\_t | X\_t)$ is defined, for convenience, as an  $S \times S$ *sensor matrix*
@@ -519,45 +527,61 @@ R: is the evidence binary?
 
 ---
 
+class: middle
+
+## Example
+
+xxx
+
+---
+
 # Applications
 
-HMMs are used in many fields where the goal is to recover a data sequence that is not immediately observable, but other data data that depend on the sequence are.
+HMMs are used in many fields where the goal is to recover a data sequence that is not immediately observable, but other data that depend on the sequence are.
 
 - Computational finance
-- **Speech recognition**
+- Speech recognition (see Lecture 10)
 - Speech synthesis
 - Part-of-speech tagging
 - Machine translation
 - Handwriting recognition
 - Time series analysis
 - Activity recognition
-- ...
+- etc
 
 ---
 
-class: middle, center
+class: middle
 
 # Filters
 
 ---
 
-# Continuous state variables
+# Continuous variables
 
-- From noisy observations collected over time, we want to estimate **continuous** state variables, e.g.
-    - position $\mathbf{X}\_t$,
-    - velocity $\mathbf{\dot{X}}\_t$.
-- We still assume *discrete* time steps.
-- Applications:
-    - tracking
-    - robots
-    - guidance
-    - planet motion
-    - financial time series
-    - ...
+xxx introduce instead the robot example
+
+From noisy observations collected over time, we want to estimate **continuous** state variables.
+- e.g. the position $\mathbf{X}\_t$ and velocity $\mathbf{\dot{X}}\_t$ of a robot.
+
+We still assume *discrete* time steps.
 
 <br><br>
 
 <span class="Q">[Q]</span> How can we model this system to make filtering efficient and accurate?
+
+---
+
+class: middle
+
+The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals:
+$$
+\begin{aligned}
+p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &= \alpha\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
+\end{aligned}
+$$
+where the normalization constant is
+$$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
 
 ---
 
