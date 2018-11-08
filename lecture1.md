@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: go over the Intelligent agents part, formalize a bit more.
+R: change this silly vacuum cleaner agent to something more fun
 
 ---
 
