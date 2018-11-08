@@ -57,7 +57,7 @@ The reading assignment includes the main text (pages 1-6), as well as the method
 
 Constraints:
 - English
-- 2 pages
+- 2 pages (excluding references, if any)
 - Formatted using the LaTeX template [`template-report-reading-assignment.tex`](https://glouppe.github.io/info8006-introduction-to-ai/template-report-reading-assignment.tex)
 
 Your report should be submitted  by **December 14, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.

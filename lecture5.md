@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: https://kuleshov.github.io/cs228-notes/representation/directed/
+R: add a slide on how to "read" a bayesian network (and how to infer some independence properties)
 
 ---
 
