@@ -460,22 +460,38 @@ Solve on blackboard.
 
 ---
 
-xxx
+.pull-right.width-80[![](figures/lec7/weather.png)]
 
 # Most likely explanation
 
-- The most likely sequence  **is not** the sequence of most likely states!
+Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+
+What is the weather sequence that is the most likely to explain this?
+- Does the absence of umbrella at day 3 means it wasn't raining?
+- Or did the director forget to bring it?
+- If it didn't rain on day 3, perhaps it didn't rain on day 4 either, but the director brought the umbrella just in case?
+
+Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+- The most likely sequence  **is not** the sequence of the most likely states!
 - The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
-<br><br>
-$\max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1})$<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( P(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )$
-- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced by:
-<br><br>
-$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t})$<br><br>
-i.e., $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
-- The update has its sum replaced by max, giving the **Viterbi algorithm**:
-<br><br>
-$\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{1:t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$
+$$
+\begin{aligned}
+&\max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
+&= \alpha P(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( P(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
+\end{aligned}
+$$
+- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
+$$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} P(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t}),$$
+where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
+- The update has its sum replaced by max, resulting in the **Viterbi algorithm**:
+$$\mathbf{m}\_{1:t+1} = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{1:t}} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$$
 
 ---
 
@@ -485,6 +501,8 @@ class: middle
 
 .center.width-90[![](figures/lec7/viterbi.png)]
 
+???
+
 <span class="Q">[Q]</span> How do you retrieve the path, in addition to its likelihood?
 
 ---
@@ -493,8 +511,8 @@ class: middle
 
 So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
 - A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
-    - e.g., $\mathbf{X}\_t = X\_t$, with domain $\\\{1, ..., S\\\}$.
-- This restricted structure allows for a matrix formulation of the inference algorithms.
+    - e.g., $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$.
+- This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
 
 ---
 
@@ -511,11 +529,13 @@ We follow here the terminology of the textbook.
 
 ---
 
+class: middle
+
 ## Simplified matrix algorithms
 
-- The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ *transition matrix* $\mathbf{T}$, where $\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i)$.
-- The sensor model $P(E\_t | X\_t)$ is defined, for convenience, as an  $S \times S$ *sensor matrix*
-$\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose other entries are 0.
+- The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
+- The sensor model $P(E\_t | X\_t)$ is defined as an  $S \times S$ **sensor matrix**
+$\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose other entries are $0$.
 - If we use column vectors to represent forward and backward messages, then we have:
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
@@ -531,23 +551,45 @@ class: middle
 
 ## Example
 
-xxx
+Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+
+$$
+\begin{aligned}
+\mathbf{T} &= \left(\begin{matrix}
+0.7 & 0.3 \\\\
+0.3 & 0.7
+\end{matrix}\right)\\\\
+\mathbf{O}\_1 = \mathbf{O}\_1 = \mathbf{O}\_3 = \mathbf{O}\_5 &= \left(\begin{matrix}
+0.9 & 0.0 \\\\
+0.0 & 0.2
+\end{matrix}\right) \\\\
+\mathbf{O}\_2 &= \left(\begin{matrix}
+0.1 & 0.0 \\\\
+0.0 & 0.8
+\end{matrix}\right)
+\end{aligned}
+$$
+
+See `code/lecture7-forward-backward.ipynb` for the execution.
+
 
 ---
 
-# Applications
+class: middle
+
+## Applications
 
 HMMs are used in many fields where the goal is to recover a data sequence that is not immediately observable, but other data that depend on the sequence are.
 
-- Computational finance
 - Speech recognition (see Lecture 10)
 - Speech synthesis
 - Part-of-speech tagging
 - Machine translation
+- Robotics
+- Computational finance
 - Handwriting recognition
 - Time series analysis
 - Activity recognition
-- etc
 
 ---
 

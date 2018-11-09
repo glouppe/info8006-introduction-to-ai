@@ -932,7 +932,7 @@ class: middle
 
 ## Demo
 
-(See code)
+See `code/lecture6-gibbs.ipynb`.
 
 ---
 
