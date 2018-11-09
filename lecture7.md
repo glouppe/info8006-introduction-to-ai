@@ -196,6 +196,36 @@ The transition model $P(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently b
 
 ---
 
+# Base cases
+
+.grid[
+.kol-1-2.center[
+.width-80[![](figures/lec7/base-case1.png)]
+
+$\begin{aligned}
+P(\mathbf{X}\_1 | \mathbf{e}\_1) &= \frac{P(\mathbf{X}\_1, \mathbf{e}\_1)}{P(\mathbf{e}\_1)} \\\\
+&\propto P(\mathbf{X}\_1, \mathbf{e}\_1) \\\\
+&= P(\mathbf{X}\_1) P(\mathbf{e}\_1 | \mathbf{X}\_1)
+\end{aligned}$
+
+Update $P(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
+]
+.kol-1-2.center[
+.width-80[![](figures/lec7/base-case2.png)]
+
+$\begin{aligned}
+P(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} P(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
+&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) P(\mathbf{X}\_2 | \mathbf{x}\_1)
+\end{aligned}$
+
+Push $P(\mathbf{X}\_1)$ forward through the transition model.
+]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
 # Prediction
 
 .center.width-50[![](figures/lec7/stationary-cartoon.png)]
@@ -559,7 +589,7 @@ $$
 0.7 & 0.3 \\\\
 0.3 & 0.7
 \end{matrix}\right)\\\\
-\mathbf{O}\_1 = \mathbf{O}\_1 = \mathbf{O}\_3 = \mathbf{O}\_5 &= \left(\begin{matrix}
+\mathbf{O}\_1 = \mathbf{O}\_2 = \mathbf{O}\_4 = \mathbf{O}\_5 &= \left(\begin{matrix}
 0.9 & 0.0 \\\\
 0.0 & 0.2
 \end{matrix}\right) \\\\
@@ -599,18 +629,19 @@ class: middle
 
 ---
 
-# Continuous variables
+class: middle
 
-xxx introduce instead the robot example
+.center.width-50[![](figures/lec7/robot-helicopter.png)]
 
-From noisy observations collected over time, we want to estimate **continuous** state variables.
-- e.g. the position $\mathbf{X}\_t$ and velocity $\mathbf{\dot{X}}\_t$ of a robot.
+Suppose we want track the position and velocity of a robot from noisy observations collected over time.
+
+Formally, we want to estimate **continuous** state variables such
+- the position $\mathbf{X}\_t$ of the robot at time $t$
+- the velocity $\mathbf{\dot{X}}\_t$ of the robot at time $t$.
 
 We still assume *discrete* time steps.
 
-<br><br>
-
-<span class="Q">[Q]</span> How can we model this system to make filtering efficient and accurate?
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -627,11 +658,13 @@ $$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+
 
 ---
 
-# Kalman filters
+# Kalman filter
+
+<br>
 
 .center.width-50[![](figures/lec7/kalman-network.png)]
 
-A **Kalman filter** assumes:
+The **Kalman filter** is a special case of the Bayes filter, which assumes:
 - Gaussian prior
 - Linear Gaussian transition model
 - Linear Gaussian sensor model
