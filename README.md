@@ -16,7 +16,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 4 (October 18): [Games and adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)]
 - Lecture 5 (October 25): [Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)]
 - Lecture 6 (November 8): [Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)]
-- Lecture 7 (November 15): Reasoning over time [PDF]
+- Lecture 7 (November 15): [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)]
 - Lecture 8 (November 22): Making decisions [PDF]
 - Lecture 9 (November 29): Learning [PDF]
 - Lecture 10 (December 6): Communication [PDF]

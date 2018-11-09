@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 8: Learning
 
+???
+
+R: add EM?
+
 ---
 
 # Today

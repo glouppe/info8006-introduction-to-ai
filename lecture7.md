@@ -10,10 +10,9 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: add EM!! crucially missing
+
 R: refaire les plots comme pour lecture 6
-R: trim down the part on DBN
-R: Bayes filter -> then kf as a special case
+R: product of gaussian, marginalization of gaussians?
 
 ---
 
@@ -29,10 +28,10 @@ R: Bayes filter -> then kf as a special case
         - Smoothing
         - Most likely explanation
     - Hidden Markov models
-- Filtering
-    - Kalman filter
     - Dynamic Bayesian networks
-    - Particle filters
+- Filters
+    - Kalman filter
+    - Particle filter
 ]
 .kol-1-2[<br><br><br>.width-100[![](figures/lec7/outline-cartoon.png)]
 ]
@@ -431,6 +430,20 @@ Solve on blackboard.
 
 ---
 
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
+</video>
+
+Ghostbusters with a Bayes filter
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
 # Smoothing
 
 We want to compute $P(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
@@ -635,11 +648,11 @@ class: middle
 
 Suppose we want track the position and velocity of a robot from noisy observations collected over time.
 
-Formally, we want to estimate **continuous** state variables such
-- the position $\mathbf{X}\_t$ of the robot at time $t$
+Formally, we want to estimate **continuous** state variables such as
+- the position $\mathbf{X}\_t$ of the robot at time $t$,
 - the velocity $\mathbf{\dot{X}}\_t$ of the robot at time $t$.
 
-We still assume *discrete* time steps.
+We assume *discrete* time steps.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -671,32 +684,109 @@ The **Kalman filter** is a special case of the Bayes filter, which assumes:
 
 ---
 
-# Updating Gaussian distributions
+class: middle
 
-- *Prediction step*:
-    - If $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then
-$$P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t}) = \int\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
-is Gaussian.
-- *Update step*:
-    - If $P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1})$ is linear Gaussian, then
-$$P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
-is also Gaussian.
-- Hence, for a Kalman filter, $P(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
-- General (nonlinear, non-Gaussian) process: the description of the posterior grows **unboundedly** as $t \to \infty$.
+## Linear Gaussian models
+
+.grid[
+.kol-1-2.center[
+<br><br><br>
+![](figures/lec7/lg-model1.png)
+
+$p(\mathbf{X}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}})$
+
+]
+.kol-1-2.center[
+![](figures/lec7/lg-model2.png)
+
+$p(\mathbf{E}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}})$
+]
+]
 
 ---
 
-# 1D example
+class: middle
 
-- Gaussian random walk on $X$-axis:
-    - Gaussian prior with variance $\sigma_0^2$.
-    - The transition model adds random perturbations of constant variance $\sigma\_x^2$.
-    - The sensor model yields measurements with Gaussian noise with variance $\sigma\_z^2$.
-- Then the update equations given a new evidence $z\_{t+1}$ are:
-    - $\mu\_{t+1} = \frac{(\sigma\_t^2 + \sigma\_x^2) z\_{t+1} + \sigma\_z^2 \mu_t }{\sigma\_t^2 + \sigma\_x^2 + \sigma\_z^2}$
-    - $\sigma\_{t+1}^2 = \frac{(\sigma_t^2 + \sigma\_x^2) \sigma\_z^2}{\sigma\_t^2 + \sigma\_x^2 + \sigma\_z^2}$
+## Filtering Gaussian distributions
 
-.center.width-40[![](figures/lec7/1d-kalman.png)]
+- .italic[Prediction step:]<br><br>
+If the distribution $p(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{X}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
+$$p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
+is also a Gaussian distribution.
+- .italic[Update step:]<br><br>
+If the prediction $p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
+$$p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+is also a Gaussian distribution.
+
+???
+
+R: would be more convincing if the parameters of the resulting Gaussian distributions were given.
+
+---
+
+class: middle
+
+Therefore, for the Kalman filter,  $p(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
+
+- Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
+- By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
+
+---
+
+class: middle
+
+## 1D example
+
+Gaussian random walk:
+- Gaussian prior: $$p(x\_0) = \alpha \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right)$$
+- The transition model adds random perturbations of constant variance:
+    $$p(x\_{t+1}|x\_t) =  \alpha \exp\left(-\frac{1}{2} \frac{(x\_{t+1} - x\_t)^2}{\sigma\_x^2}\right)$$
+- The sensor model yields measurements with Gaussian noise of constant variance:
+    $$p(e\_{t}|x\_t) =  \alpha \exp\left(-\frac{1}{2} \frac{(e\_{t} - x\_t)^2}{\sigma\_e^2}\right)$$
+
+---
+
+class: middle
+
+The one-step predicted distribution is given by
+$$
+\begin{aligned}
+p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
+&= \alpha \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
+&= \alpha \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
+&... \,\, \text{(simplify by completing the square)} \\\\
+&= \alpha \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&= \mathcal{N}(\mu\_0, \sigma\_0^2 + \sigma\_x^2)
+\end{aligned}
+$$
+
+---
+
+class: middle
+
+For the update step, we need to condition on the observation at the first time step:
+$$
+\begin{aligned}
+p(x\_1 | e\_1) &= \alpha p(e\_1 | x\_1) p(x\_1) \\\\
+&= \alpha \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&= \alpha \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
+&= \mathcal{N}\left(\frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
+\end{aligned}
+$$
+
+---
+
+class: middle
+
+.center.width-70[![](figures/lec7/walk.png)]
+
+In summary, the update equations given a new evidence $e\_{t+1}$ are:
+$$
+\begin{aligned}
+\mu\_{t+1} &= \frac{(\sigma\_t^2 + \sigma\_x^2) e\_{t+1} + \sigma\_e^2 \mu\_t }{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2} \\\\
+\sigma\_{t+1}^2 &= \frac{(\sigma_t^2 + \sigma\_x^2) \sigma\_e^2}{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2}
+\end{aligned}
+$$
 
 ???
 
@@ -710,18 +800,20 @@ unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observ
 
 ---
 
-# General Kalman update
+class: middle
 
-- Transition and sensor models:
-    - $P(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{F}\mathbf{x}\_t, \mathbf{\Sigma}\_x)(\mathbf{x}\_{t+1})$
-    - $P(\mathbf{z}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{H}\mathbf{x}\_t, \mathbf{\Sigma}\_z)(\mathbf{z}\_{t})$
-- $\mathbf{F}$ and $\mathbf{\Sigma}\_x$  are matrices describing the linear transition model and transition noise covariance.
-- $\mathbf{H}$ and $\mathbf{\Sigma}\_z$ are the corresponding matrices for the sensor model.
-- The filter computes the following update:
-    - $\mu\_{t+1} = \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{z}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t)$
-    - $\mathbf{\Sigma}\_{t+1} = (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)$
-        - where $\mathbf{K}\_{t+1} = (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_z)^{-1}$ is the *Kalman gain matrix*.
-- Note that $\mathbf{\Sigma}\_t$ and $\mathbf{K}\_t$ are independent of the evidence. Therefore, they can be computed offline.
+## General Kalman update
+
+The same derivations generalize to multivariate normal distributions. In this case, we arrive at the following general update equations:
+$$
+\begin{aligned}
+\mu\_{t+1} &= \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t) \\\\
+\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \\\\
+\mathbf{K}\_{t+1} &= (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_e)^{-1}
+\end{aligned}$$
+where $\mathbf{K}\_{t+1}$ is the Kalman gain matrix.
+
+Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
 
 ???
 
@@ -732,112 +824,89 @@ the update for the mean state estimate $\mu\_{t+1}$.
 - The term  $\mathbf{F}\mathbf{\mu}\_t$ is the predicted state at $t + 1$,
 - so
 $\mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ is the predicted observation.
-- Therefore, the term $\mathbf{z}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
+- Therefore, the term $\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
 the predicted observation.
 - This is multiplied by $ \mathbf{K}\_{t+1}$ to correct the predicted state; hence,
 $ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation relative to the prediction.
 
 ---
 
-# 2D tracking: filtering
+class: middle
+
+## 2D tracking: filtering
 
 .center.width-80[![](figures/lec7/kf-filtering.png)]
 
 ---
 
-# 2D tracking: smoothing
+class: middle
+
+## 2D tracking: smoothing
 
 .center.width-80[![](figures/lec7/kf-smoothing.png)]
 
 ---
 
-# Apollo Guidance Computer
+class: middle
+
+## Apollo guidance computer
+
+- The Kalman filter put man on the Moon, literally!
+- The onboard guidance software of Saturn-V used a Kalman filter to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
 
 .grid[
-.col-3-4[
-- The Kalman filter put man on the Moon, **literally**!
-- The onboard guidance software of Saturn-V used a *Kalman filter*.
-    - Used to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+.kol-1-3[.width-100[![](figures/lec7/saturn-v.jpg)]]
+.kol-1-3[.width-100[![](figures/lec7/agc.jpg)]]
+.kol-1-3[.width-100[![](figures/lec7/kf-agc.png)]]
 ]
-.col-1-4[
-![](figures/lec7/agc.jpg)]
-]
-.center.width-50[![](figures/lec7/kf-agc.png)]
+
 
 .footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
 
 ---
 
-# Limitations
-
-- The Kalman filter cannot be applied if the transition model is **non-linear**.
-- The *Extended Kalman Filter* models transitions as locally linear around $\mathbf{x}\_t = \mu\_t$.
-    - Still fails if the system is locally unsmooth.
-
-.center.width-80[![](figures/lec7/kf-birds.png)]
-
----
-
 # Dynamic Bayesian networks
 
-- A **dynamic Bayesian network** (DBN) is a Bayesian network that represents a temporal probability model.
-    - Over infinitely many time steps.
-- Each slice of a DBN can have any number of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
-- Nodes can be arbitrarily connected
-    - to nodes from the same slice
-    - to nodes from previous slices
-- The Markov assumption **need not** to be satisfied.
+.grid[
+.kol-2-3[.center.width-100[![](figures/lec7/dbn-cartoon.png)]]
+.kol-1-3[.center.width-80[![](figures/lec7/robot-dbn1.svg)]]
+]
 
-.center.width-70[![](figures/lec7/dbn-examples.png)]
 
----
+Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables over time, using multiple sources of evidence.
+- Idea: Repeat a fixed Bayes net structure at each time $t$.
+- Variables from time $t$ condition on those from $t-1$.
+- DBNs are a generalization of HMMs and of the Kalman filter.
 
-# DBNs vs HMMs
-
-- Every HMM is a single-variable DBN.
-- Every discrete DBN can be transformed into an HMM.
-    - Group state (resp. evidence) variables into a single variable whose values are all possible tuples of values of the individual state variables.
-- By decomposing a system state into its constituent variables, DBNs can take advantage of the **sparseness** of the temporal probability model.
-    - $20$ boolean state variables, each of which has $3$ parents in the preceding slice.
-    - The DBN transition model counts $20 \times 2^3 = 160$ probabilities.  
-    - The corresponding HMM has $2^{20}$ state values and therefore $2^{40}$ probabilities in the transition matrix!
-
-.center.width-60[![](figures/lec7/dbn-vs-hmm.png)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# DBNs vs Kalman filters
+class: middle
 
-- Every Kalman filter model is a DBN.
-- Few DBNs are Kalman filter models.
-    - The real world requires non-Gaussian posteriors.
-    - DBNs can model **arbitrary distributions**.
+## Exact inference
 
----
+.center.width-100[![](figures/lec7/dbn-unrolling.svg)]
 
-# Exact inference in DBNs
-
-.center.width-80[![](figures/lec7/dbn-unrolling.png)]
-
-- Straightforward method for exact inference: **unroll** the network through time and run any exact algorithm.
-    - e.g., variable elimination.
+**Unroll** the network through time and run any exact inference algorithm (e.g., variable elimination)
 - Problem: inference cost for each update grows with $t$.
-- *Rollup filtering*: add slice $t+1$, sum out slice $t$ using variable elimination.
+- Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
     - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
     - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
 
-<span class="Q">[Q]</span> Compare rollup filtering to forward-backward in Markov processes.
-
 ---
 
-# Likelihood weighting for DBNs
+class: middle
 
-- If exact inference is intractable, then let's use instead *approximate inference*. What about likelihood weighting?
-- Generated LW samples **pay no attention** to the evidence!
-    - The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
-    - Therefore, the number of required samples for inference grows exponentially with $t$.
+## Likelihood weighting for DBNs
 
-.center.width-50[![](figures/lec7/dbn-lw.png)]
+If exact inference is intractable, then let's use instead *approximate inference*.
+
+What about likelihood weighting? Generated LW samples **pay no attention** to the evidence!
+- The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
+- Therefore, the number of required samples for inference grows exponentially with $t$.
+
+We need a better solution!
 
 ---
 
@@ -852,47 +921,41 @@ state space.
 - Scale to high-dimensional state spaces ($n > 10^5$).
 - Can be shown to be *consistent*.
 
-<hr>
+---
 
-.center.width-90[![](figures/lec7/pf-algorithm.png)]
+class: middle
+
+.center.width-100[![](figures/lec7/pf-algorithm.png)]
 
 ---
 
-# Update cycle
+class: middle
+
+## Update cycle
 
 .center.width-100[![](figures/lec7/pf-example.png)]
 
 ---
 
-# Performance
+class: middle
+
+## Performance
 
 Approximation error of particle filtering remains bounded over time.
-- At least *empirically*.
+- At least empirically.
 - Theoretical analysis is difficult.
 
-.center.width-70[![](figures/lec7/pf-performance.png)]
+.center.width-60[![](figures/lec7/pf-performance.png)]
 
 ---
 
-class: center
+class: middle
 
-# Robot localization
-
+## Robot localization
 
 .center.width-70[![](figures/lec7/pf-demo.png)]
 
-Run demo.
-
----
-
-# Pacman, revisited
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
-</video>]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.center[(See demo.)]
 
 ---
 
@@ -903,12 +966,15 @@ Run demo.
     - transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$
     - sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$
 - Inference tasks include filtering, prediction, smoothing and most likely sequence.
-    - All can be done recursively with constant cost per time step.
-- HMMs have a signel discrete state variable.
+- HMMs have a signal discrete state variable.
 - Kalman filters allow $n$ *continuous* state variables, assume a linear Gaussian model.
 - DBNs generalize HMMs and Kalman filters.
     - Exact inference is usually **intractable**.
     - Particle filtering is a good approximate filtering algorithm for DBNs.
+
+???
+
+Rephrase, add Bayes filter.
 
 ---
 
@@ -920,3 +986,5 @@ The end.
 ---
 
 # References
+
+xxx
