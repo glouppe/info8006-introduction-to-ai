@@ -8,12 +8,6 @@ Lecture 7: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
-???
-
-
-R: refaire les plots comme pour lecture 6
-R: product of gaussian, marginalization of gaussians?
-
 ---
 
 # Today
@@ -352,7 +346,7 @@ class: middle
 
 ## Bayes filter
 
-An agent maintains a *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ (its prior) and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected (to obtain its posterior).
+An agent maintains a *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
 
 Recursive Bayesian estimation:
 - (Predict step): Project the current state belief forward from $t$ to $t+1$ through the transition model.
@@ -577,16 +571,12 @@ class: middle
 ## Simplified matrix algorithms
 
 - The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model $P(E\_t | X\_t)$ is defined as an  $S \times S$ **sensor matrix**
+- The sensor model $P(e\_t | X\_t)$ is defined as an  $S \times S$ **sensor matrix**
 $\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose other entries are $0$.
 - If we use column vectors to represent forward and backward messages, then we have:
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
-
-???
-
-R: is the evidence binary?
 
 ---
 
@@ -718,10 +708,6 @@ If the prediction $p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the
 $$p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
-???
-
-R: would be more convincing if the parameters of the resulting Gaussian distributions were given.
-
 ---
 
 class: middle
@@ -760,6 +746,10 @@ p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
 \end{aligned}
 $$
 
+???
+
+Check Bishop page 92 for another derivation.
+
 ---
 
 class: middle
@@ -792,8 +782,8 @@ $$
 
 We can interpret
 the calculation for the new mean $\mu\_{t+1}$ as simply a weighted mean of the new observation
-$z\_{t+1}$ and the old mean $\mu\_t$ .
-- If the observation is unreliable, then $\sigma\_z^2$ is large and we pay more
+$e\_{t+1}$ and the old mean $\mu\_t$ .
+- If the observation is unreliable, then $\sigma\_e^2$ is large and we pay more
 attention to the old mean;
 - if the old mean is unreliable ($\sigma\_t^2$ is large) or the process is highly
 unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
@@ -835,7 +825,7 @@ class: middle
 
 ## 2D tracking: filtering
 
-.center.width-80[![](figures/lec7/kf-filtering.png)]
+.center.width-90[![](figures/lec7/kf-filtering.png)]
 
 ---
 
@@ -843,7 +833,7 @@ class: middle
 
 ## 2D tracking: smoothing
 
-.center.width-80[![](figures/lec7/kf-smoothing.png)]
+.center.width-90[![](figures/lec7/kf-smoothing.png)]
 
 ---
 
@@ -888,7 +878,7 @@ class: middle
 
 .center.width-100[![](figures/lec7/dbn-unrolling.svg)]
 
-**Unroll** the network through time and run any exact inference algorithm (e.g., variable elimination)
+Unroll the network through time and run any exact inference algorithm (e.g., variable elimination)
 - Problem: inference cost for each update grows with $t$.
 - Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
     - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
@@ -898,19 +888,20 @@ class: middle
 
 class: middle
 
-## Likelihood weighting for DBNs
+## Likelihood weighting
 
-If exact inference is intractable, then let's use instead *approximate inference*.
-
-What about likelihood weighting? Generated LW samples **pay no attention** to the evidence!
+If exact inference in DBNs intractable, then let's use *approximate inference* instead.
+- Likelihood weighting? Generated LW samples **pay no attention** to the evidence!
 - The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
 - Therefore, the number of required samples for inference grows exponentially with $t$.
 
-We need a better solution!
+$\Rightarrow$ We need a better solution!
 
 ---
 
-# Particle filtering
+# Particle filter
+
+**XXX: rerwrite this part**
 
 - Basic idea:
     - Maintain a *finite* population of samples, called **particles**.
@@ -920,6 +911,10 @@ state space.
     - Replicate those that have high weight.
 - Scale to high-dimensional state spaces ($n > 10^5$).
 - Can be shown to be *consistent*.
+
+???
+
+R: improve with CS188 stuff
 
 ---
 
