@@ -12,6 +12,8 @@ Prof. Gilles Louppe<br>
 
 # Today
 
+Maintain a belief state about the world, and update it as time passes and evidence is collected.
+
 .grid[
 .kol-1-2[
 - Markov models
@@ -27,11 +29,12 @@ Prof. Gilles Louppe<br>
     - Kalman filter
     - Particle filter
 ]
-.kol-1-2[<br><br><br>.width-100[![](figures/lec7/outline-cartoon.png)]
+.kol-1-2[<br><br>.width-100[![](figures/lec7/outline-cartoon.png)]
 ]
 ]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
 
 ---
 
@@ -989,6 +992,7 @@ class: middle
 # Summary
 
 - Temporal models use state and sensor variables replicated over time.
+    - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
 - The Markov and stationarity assumptions imply that we only need to specify
     - a transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
     - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
