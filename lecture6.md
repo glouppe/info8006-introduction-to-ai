@@ -436,6 +436,10 @@ Normal; and, a sum of Normal variables is Normal.
 - For these reasons, the algorithms we will discuss will be tractable only for
 finite random variables or Normal random variables.
 
+???
+
+Be more precise and cite Bishop pg 93?
+
 ---
 
 # Hybrid Bayesian networks
@@ -468,8 +472,8 @@ class: middle
 given continuous parents, for each possible assignment to discrete parents.
     - e.g., we need to specify both $p(c|h,s)$ and $p(c|h,\lnot s)$
 - Common choice: the **linear Gaussian model** (LG):
-    - $p(c|h,s) = \mathcal{N}(a\_th+b\_t, \sigma_t^2)(c)$
-    - $p(c|h,\lnot s) = \mathcal{N}(a\_fh+b\_f, \sigma_f^2)(c)$
+    - $p(c|h,s) = \mathcal{N}(c|a\_th+b\_t, \sigma_t^2)$
+    - $p(c|h,\lnot s) = \mathcal{N}(c|a\_fh+b\_f, \sigma_f^2)$
 
 .center.width-90[![](figures/lec6/joint-density.png)]
 

@@ -683,15 +683,41 @@ class: middle
 <br><br><br>
 ![](figures/lec7/lg-model1.png)
 
-$p(\mathbf{X}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}})$
+$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{\Sigma}\_{\mathbf{x}})$
+
+Transition model
 
 ]
 .kol-1-2.center[
 ![](figures/lec7/lg-model2.png)
 
-$p(\mathbf{E}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}})$
+$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{C} \mathbf{x}\_t + \mathbf{d}, \mathbf{\Sigma}\_{\mathbf{e}})$
+
+Sensor model
 ]
 ]
+
+---
+
+class: middle
+
+## Cheat sheet for Gaussian models (Bishop, 2006)
+
+Given a marginal Gaussian distribution for $\mathbf{x}$ and a linear Gaussian distribution for $\mathbf{y}$ given $\mathbf{x}$ in the form
+$$
+\begin{aligned}
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mu, \mathbf{\Lambda}^{-1}) \\\\
+p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{x}+\mathbf{b}, \mathbf{L}^{-1})
+\end{aligned}
+$$
+the marginal distribution of $\mathbf{y}$ and the conditional distribution of $\mathbf{x}$ given $\mathbf{y}$ are given by
+$$
+\begin{aligned}
+p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mu + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A}\mathbf{\Lambda}^{-1}\mathbf{A}^T) \\\\
+p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{\Sigma}\left(\mathbf{A}^T\mathbf{L}(\mathbf{y}-\mathbf{b}) + \mathbf{\Lambda}\mu\right), \mathbf{\Sigma})
+\end{aligned}$$
+where
+$$\mathbf{\Sigma} = (\mathbf{\Lambda} + \mathbf{A}^T \mathbf{L}\mathbf{A})^{-1}.$$
 
 ---
 
@@ -700,19 +726,19 @@ class: middle
 ## Filtering Gaussian distributions
 
 - .italic[Prediction step:]<br><br>
-If the distribution $p(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{X}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
-$$p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
+If the distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
 is also a Gaussian distribution.
 - .italic[Update step:]<br><br>
-If the prediction $p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) p(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
 ---
 
 class: middle
 
-Therefore, for the Kalman filter,  $p(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
+Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
 
 - Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
 - By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
@@ -724,11 +750,11 @@ class: middle
 ## 1D example
 
 Gaussian random walk:
-- Gaussian prior: $$p(x\_0) = \alpha \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right)$$
+- Gaussian prior: $$p(x\_0) = \mathcal{N}(\mu\_0, \sigma\_0^2) $$
 - The transition model adds random perturbations of constant variance:
-    $$p(x\_{t+1}|x\_t) =  \alpha \exp\left(-\frac{1}{2} \frac{(x\_{t+1} - x\_t)^2}{\sigma\_x^2}\right)$$
+    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_t, \sigma\_x^2)$$
 - The sensor model yields measurements with Gaussian noise of constant variance:
-    $$p(e\_{t}|x\_t) =  \alpha \exp\left(-\frac{1}{2} \frac{(e\_{t} - x\_t)^2}{\sigma\_e^2}\right)$$
+    $$p(e\_{t}|x\_t) =  \mathcal{N}(x\_t, \sigma\_e^2)$$
 
 ---
 
@@ -742,13 +768,15 @@ p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
 &= \alpha \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
 &... \,\, \text{(simplify by completing the square)} \\\\
 &= \alpha \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
-&= \mathcal{N}(\mu\_0, \sigma\_0^2 + \sigma\_x^2)
+&= \mathcal{N}(x\_1 | \mu\_0, \sigma\_0^2 + \sigma\_x^2)
 \end{aligned}
 $$
 
+Note that the same result can be obtained by using instead the Gaussian models identities.
+
 ???
 
-Check Bishop page 92 for another derivation.
+Check Bishop page 93 for another derivation.
 
 ---
 
@@ -760,7 +788,7 @@ $$
 p(x\_1 | e\_1) &= \alpha p(e\_1 | x\_1) p(x\_1) \\\\
 &= \alpha \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
 &= \alpha \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
-&= \mathcal{N}\left(\frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
+&= \mathcal{N}\left(x\_1 \bigg\vert \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
 \end{aligned}
 $$
 
@@ -794,7 +822,16 @@ class: middle
 
 ## General Kalman update
 
-The same derivations generalize to multivariate normal distributions. In this case, we arrive at the following general update equations:
+The same derivations generalize to multivariate normal distributions.
+
+Assuming the transition and sensor models
+$$
+\begin{aligned}
+p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}}) \\\\
+p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}}),
+\end{aligned}
+$$
+we arrive at the following general update equations:
 $$
 \begin{aligned}
 \mu\_{t+1} &= \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t) \\\\
@@ -803,9 +840,9 @@ $$
 \end{aligned}$$
 where $\mathbf{K}\_{t+1}$ is the Kalman gain matrix.
 
-Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
-
 ???
+
+Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
 
 These equations intuitively make sense.
 
@@ -855,6 +892,12 @@ class: middle
 
 ---
 
+class: center, black-slide, middle
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/aNzGCMRnvXQ?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+
+---
+
 # Dynamic Bayesian networks
 
 .grid[
@@ -901,20 +944,29 @@ $\Rightarrow$ We need a better solution!
 
 # Particle filter
 
-**XXX: rerwrite this part**
-
-- Basic idea:
-    - Maintain a *finite* population of samples, called **particles**.
-    - Ensure the particles track the high-likelihood regions of the
+ Basic idea:
+- Maintain a finite population of samples, called **particles**.
+    - The representation of our beliefs is a list of $N$ particles.
+- Ensure the particles track the high-likelihood regions of the
 state space.
-    - Throw away samples that have very low weight, **according to the evidence**.
-    - Replicate those that have high weight.
-- Scale to high-dimensional state spaces ($n > 10^5$).
-- Can be shown to be *consistent*.
+- Throw away samples that have very low weight, according to the evidence.
+- Replicate those that have high weight.
 
-???
+This scale to high dimensions!
 
-R: improve with CS188 stuff
+.center.width-50[![](figures/lec7/robot.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+## Update cycle
+
+.center.width-100[![](figures/lec7/particle-filter.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -926,50 +978,24 @@ class: middle
 
 class: middle
 
-## Update cycle
-
-.center.width-100[![](figures/lec7/pf-example.png)]
-
----
-
-class: middle
-
-## Performance
-
-Approximation error of particle filtering remains bounded over time.
-- At least empirically.
-- Theoretical analysis is difficult.
-
-.center.width-60[![](figures/lec7/pf-performance.png)]
-
----
-
-class: middle
-
 ## Robot localization
 
 .center.width-70[![](figures/lec7/pf-demo.png)]
 
-.center[(See demo.)]
+.center[(See demo)]
 
 ---
 
 # Summary
 
 - Temporal models use state and sensor variables replicated over time.
-- *Markov assumptions* and *stationarity assumption*. So we only need:
-    - transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$
-    - sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$
-- Inference tasks include filtering, prediction, smoothing and most likely sequence.
-- HMMs have a signal discrete state variable.
-- Kalman filters allow $n$ *continuous* state variables, assume a linear Gaussian model.
-- DBNs generalize HMMs and Kalman filters.
-    - Exact inference is usually **intractable**.
-    - Particle filtering is a good approximate filtering algorithm for DBNs.
-
-???
-
-Rephrase, add Bayes filter.
+- The Markov and stationarity assumptions imply that we only need to specify
+    - a transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
+    - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
+- Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
+- Filter algorithms are all based on the core of idea of
+    - projecting the current belief through the transition model,
+    - update or correct the prediction according to the new evidence.
 
 ---
 
@@ -982,4 +1008,5 @@ The end.
 
 # References
 
-xxx
+- Kalman, Rudolph Emil. "A new approach to linear filtering and prediction problems." Journal of basic Engineering 82.1 (1960): 35-45.
+- Bishop, Christopher "Pattern Recognition and Machine Learning" (2006).
