@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-Maintain a belief state about the world, and update it as time passes and evidence is collected.
+Maintain a **belief state** about the world, and update it as time passes and evidence is collected.
 
 .grid[
 .kol-1-2[
@@ -24,7 +24,6 @@ Maintain a belief state about the world, and update it as time passes and eviden
         - Smoothing
         - Most likely explanation
     - Hidden Markov models
-    - Dynamic Bayesian networks
 - Filters
     - Kalman filter
     - Particle filter
@@ -196,6 +195,16 @@ The transition model $P(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently b
 
 .grid[
 .kol-1-2.center[
+.width-80[![](figures/lec7/base-case2.png)]
+
+$\begin{aligned}
+P(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} P(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
+&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) P(\mathbf{X}\_2 | \mathbf{x}\_1)
+\end{aligned}$
+
+(Predict) Push $P(\mathbf{X}\_1)$ forward through the transition model.
+]
+.kol-1-2.center[
 .width-80[![](figures/lec7/base-case1.png)]
 
 $\begin{aligned}
@@ -204,17 +213,7 @@ P(\mathbf{X}\_1 | \mathbf{e}\_1) &= \frac{P(\mathbf{X}\_1, \mathbf{e}\_1)}{P(\ma
 &= P(\mathbf{X}\_1) P(\mathbf{e}\_1 | \mathbf{X}\_1)
 \end{aligned}$
 
-Update $P(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
-]
-.kol-1-2.center[
-.width-80[![](figures/lec7/base-case2.png)]
-
-$\begin{aligned}
-P(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} P(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
-&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) P(\mathbf{X}\_2 | \mathbf{x}\_1)
-\end{aligned}$
-
-Push $P(\mathbf{X}\_1)$ forward through the transition model.
+(Update) Update $P(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
 ]
 ]
 
@@ -351,13 +350,9 @@ class: middle
 
 An agent maintains a *belief state* estimate $P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
 
-Recursive Bayesian estimation:
-- (Predict step): Project the current state belief forward from $t$ to $t+1$ through the transition model.
+Recursive Bayesian estimation: $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
+- (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
 - (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
-
-???
-
-$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, P(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
 
 ---
 
@@ -741,7 +736,7 @@ is also a Gaussian distribution.
 
 class: middle
 
-Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
+Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{x}\_t | \mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
 
 - Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
 - By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
@@ -753,11 +748,11 @@ class: middle
 ## 1D example
 
 Gaussian random walk:
-- Gaussian prior: $$p(x\_0) = \mathcal{N}(\mu\_0, \sigma\_0^2) $$
+- Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 | \mu\_0, \sigma\_0^2) $$
 - The transition model adds random perturbations of constant variance:
-    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_t, \sigma\_x^2)$$
+    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_{t+1}|x\_t, \sigma\_x^2)$$
 - The sensor model yields measurements with Gaussian noise of constant variance:
-    $$p(e\_{t}|x\_t) =  \mathcal{N}(x\_t, \sigma\_e^2)$$
+    $$p(e\_{t}|x\_t) =  \mathcal{N}(e\_t | x\_t, \sigma\_e^2)$$
 
 ---
 
@@ -998,8 +993,8 @@ class: middle
     - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
 - Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
 - Filter algorithms are all based on the core of idea of
-    - projecting the current belief through the transition model,
-    - update or correct the prediction according to the new evidence.
+    - projecting the current belief state through the transition model,
+    - updating the prediction according to the new evidence.
 
 ---
 
