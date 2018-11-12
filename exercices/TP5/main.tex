@@ -1,0 +1,214 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage{vmargin}
+
+\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
+%------------------------------Packages généraux------------------------------
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage{scrextend}
+\usepackage{hyperref}
+
+%-------------------------Mathématiques------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{eucal}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%-----------------------Codes et algorithmes--------------------------
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{clrscode3e}
+
+%------------------------------Graphics------------------------------
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+%\usepackage{slashbox}
+%------------------------------Syntaxe------------------------------
+
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+
+\def\refmark#1{\hbox{$^{\ref{#1}}$}}
+\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
+\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
+
+%------------------------------Inclure code MatLab------------------------------
+
+\usepackage{listings}
+\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
+\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
+
+%------------------Sub-sections--------%
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\makeatletter
+% on fixe le langage utilisé
+\lstset{language=matlab}
+\edef\Motscle{emph={\lst@keywords}}
+\expandafter\lstset\expandafter{%
+  \Motscle}
+\makeatother
+
+
+\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
+
+\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
+basicstyle=\styleC,
+keywordstyle=\ttfamily,
+commentstyle=\color{Ggris}\styleD, % commentaire en gris
+numberstyle=\tiny\color{red},
+numbers=left,
+numbersep=10pt,
+lineskip=0.7pt,
+showstringspaces=false}
+%  % inclure le fichier source
+\newcommand{\FSource}[1]{%
+\lstinputlisting[texcl=true]{#1}
+}
+
+\usepackage[section]{placeins}
+
+\let\cleardoublepage\clearpage
+
+\usepackage{hyperref}
+               
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+%------------------------------Début du document------------------------------
+\begin{document}
+%------------------------------Page de garde------------------------------
+
+
+  % \frontmatter
+  %\tableofcontents
+   \setcounter{page}{1}
+   %%%%%%%%% TP 5 %%%%%%%%%%%
+   \section{Reasoning under uncertainty II (15/11/2018)}
+   \subsection{Objectives}
+      At the end of this repetition you should be able to:
+      \begin{itemize}
+          \item Define, construct a Bayesian network
+          \item Compute probabilities in the context of a simple Bayesian network.
+          \item Do inference by variable elimination
+          \item Explain the following approximate inference algorithm: ancestral sampling and rejection sampling; Likelihood weighting; Gibbs sampling.
+      \end{itemize}
+\subsection{Exercises}
+\subsubsection{$\approx 15$ min}
+We have a bag of three biased coins a, b, and c with probabilities of coming up heads
+of 20\%, 60\%, and 80\%, respectively. One coin is drawn randomly from the bag (with equal
+probability of drawing each of the three coins), and then the coin is flipped three times to
+generate the outcomes X1, X2, and X3.
+\begin{enumerate}
+    \item Draw the Bayesian network corresponding to this setup and define the necessary CPTs.
+    \item Calculate which coin was most likely to have been drawn from the bag if the observed
+flips come out heads twice and tails once.
+\end{enumerate}
+\subsubsection{$\approx 20$ min}
+Let $H_x$ be a random variable denoting the handedness of an individual $x$, with possible
+values $l$ or $r$. A common hypothesis is that left- or right-handedness is inherited by a simple
+mechanism; that is, perhaps there is a gene $G_x$, also with values l or r, and perhaps actual
+handedness turns out mostly the same (with some probability s) as the gene an individual
+possesses. Furthermore, perhaps the gene itself is equally likely to be inherited from either
+of an individual’s parents, with a small nonzero probability m of a random mutation flipping
+the handedness.
+\begin{enumerate}
+    \item Which of the three networks in Figure \ref{fig:b_net} claim that\\ $P(G_{father},G_{mother},G_{child}) =
+P(G_{father} )P(G_{mother} )P(G_{child} )$?
+    \item Which of the three networks make independence claims that are consistent with the
+hypothesis about the inheritance of handedness?
+    \item Which of the three networks is the best description of the hypothesis?
+    \item Write down the CPT for the Gchild node in network (a), in terms of s and m.
+    \item Suppose that $P(G_{father} =l) = P(G_{mother} =l) = q$. In network (a), derive an expression
+for $P(G_{child} =l)$ in terms of m and q only, by conditioning on its parent nodes.
+    \item Under conditions of genetic equilibrium, we expect the distribution of genes to be the
+same across generations. Use this to calculate the value of q, and, given what you know
+about handedness in humans, explain why the hypothesis described at the beginning of
+this question must be wrong.
+hypothesis about the inheritance of handedness?
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.\textwidth]{figures/bnet.png}
+    \caption{Possible Bayesian Networks of handedness inheritance}
+    \label{fig:b_net}
+\end{figure}
+\subsubsection{$\approx 15$ min}
+You are advised to take a look at d-separation before doing this exercise: \url{http://web.mit.edu/jmn/www/6.034/d-separation.pdf}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.\textwidth]{figures/pearl-bn-example.png}
+    \caption{Bayesian Network of metastatic cancer}
+    \label{fig:pearl-b-net}
+\end{figure}
+Consider the Bayesian network of Figure \ref{fig:pearl-b-net}, which, if any, of the following are asserted by the network structure ?
+\begin{itemize}
+    \item $P(b, c) = P(b)P(c)$
+    \item $P(b, c|a) = P(b|a)P(c|a)$
+    \item $P(b, c| a, d) = P(b|a, d) P(c|a, d)$
+    \item $P(c|a, d, e) = P(c|a, b, d, e)$
+    \item $P(b, e|a) = P(b|a)P(e|a)$
+    \item $P(b, e) = \sum_{a \in A, c \in C, d \in D} P(a) P(b|a) P(c|a) P(e|c) P(d|b, c)$
+\end{itemize}
+Use inference by variable elimination to compute $P(E|a, b)$.
+\subsubsection{Quizz ($\approx 10$ min)}
+\begin{enumerate}
+    \item What is the Markov Blanket of a node ?
+    \item Complete the Prior Sampling algorithm of Figure $\ref{fig:prior_sampling}$.
+    \item Why is Rejection sampling inefficient ?
+    \item Complete the Gibbs Weighting algorithm of Figure $\ref{fig:gibbs_weighting}$.
+\end{enumerate}
+\begin{figure}
+    \centering
+    \includegraphics[width=1.\textwidth]{figures/prior_sampling.png}
+    \caption{Incomplete Prior Sampling Algorithm}
+    \label{fig:prior_sampling}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=1.\textwidth]{figures/gibbs_weighting.png}
+    \caption{Incomplete Gibbs Weighting Algorithm}
+    \label{fig:gibbs_weighting}
+\end{figure}
+   \subsection{Supplementary material}
+   \url{http://bayes.cs.ucla.edu/WHY/why-intro.pdf}
+   
+ 
+   
+   
+\end{document}
