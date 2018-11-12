@@ -4,6 +4,10 @@ class: middle, center, title-slide
 
 Lecture 8: Making decisions
 
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
+
 ???
 
 R: quick intro to RL
@@ -49,6 +53,12 @@ class: middle
 
 # Utility over time
 
+- finite
+- infinite horizon
+
+- additive
+- discounted -> bound the utility
+
 ---
 
 # Optimal policies
@@ -89,9 +99,15 @@ class: middle
 
 # Value iteration
 
+inefficient
+
 ---
 
 # Online agents
+
+expectiminimax solution
+
+---
 
 see bair 10
 

@@ -78,8 +78,9 @@ Consider the world as a *discrete* series of *time slices*, each of which contai
 - $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
 
 We specify:
-- a **transition model** $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ that defines the probability distribution over the latest state variables, given the previous (unobserved) values.
-- a **sensor model** $P(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
+- a prior $P(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables.
+- a **transition model** $P(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values.
+- a **sensor model** $P(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
 ---
 
@@ -339,8 +340,7 @@ $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
 
 What if we collect new observations?
 Beliefs get reweighted, and uncertainty "decreases":
-
-$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) \propto P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+$$P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha P(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
 
 ---
 
@@ -546,7 +546,8 @@ class: middle
 
 So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
 - A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
-    - e.g., $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$.
+    - $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$
+    - $\mathbf{E}\_t = E\_t$, with domain $D\_{E\_t} = \\\{1, ..., R\\\}$
 - This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
 
 ---
@@ -568,14 +569,20 @@ class: middle
 
 ## Simplified matrix algorithms
 
+- The prior $P(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
 - The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model $P(e\_t | X\_t)$ is defined as an  $S \times S$ **sensor matrix**
-$\mathbf{O}\_t$ whose $i$-th diagonal element is $P(e\_t | X\_t = i)$ and whose other entries are $0$.
+- The sensor model $P(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
+$$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
+
+---
+
+class: middle
+
+- Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
 - If we use column vectors to represent forward and backward messages, then we have:
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
-
 ---
 
 class: middle
@@ -586,9 +593,17 @@ Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
 
 $$
 \begin{aligned}
+\mathbf{f}\_0 &= \left(\begin{matrix}
+    0.5 \\\\
+    0.5
+\end{matrix}\right)\\\\
 \mathbf{T} &= \left(\begin{matrix}
 0.7 & 0.3 \\\\
 0.3 & 0.7
+\end{matrix}\right)\\\\
+\mathbf{B} &= \left(\begin{matrix}
+0.9 & 0.1 \\\\
+0.2 & 0.8
 \end{matrix}\right)\\\\
 \mathbf{O}\_1 = \mathbf{O}\_2 = \mathbf{O}\_4 = \mathbf{O}\_5 &= \left(\begin{matrix}
 0.9 & 0.0 \\\\
@@ -602,6 +617,17 @@ $$
 $$
 
 See `code/lecture7-forward-backward.ipynb` for the execution.
+
+---
+
+class: middle
+
+## Stationary distribution
+
+The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
+$$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
+Therefore, the stationary distribution corresponds to the (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
+
 
 
 ---
@@ -965,6 +991,10 @@ class: middle
 .center.width-100[![](figures/lec7/particle-filter.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+redraw captions
 
 ---
 
