@@ -15,6 +15,8 @@ R: bellman equation!
 R: pomdp! -> this makes the connection with lecture 7
 R: finish with bandits?
 
+R: pomdp -> lec 20 of bair
+
 ---
 
 # Today
@@ -23,7 +25,7 @@ R: finish with bandits?
 
 # Planning under uncertainty
 
-agent-env loop, maintain belief state, make decisions
+agent-env loop, maintain belief state, new: make decisions
 
 ---
 
@@ -91,9 +93,7 @@ class: middle
 
 # Online agents
 
----
-
-# Unknown dynamics
+see bair 10
 
 connection with learning and RL
 

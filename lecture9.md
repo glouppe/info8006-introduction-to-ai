@@ -7,6 +7,7 @@ Lecture 8: Learning
 ???
 
 R: add EM?
+R: take the time for linear model -> perceptron -> neural nets -> deep learning
 
 ---
 

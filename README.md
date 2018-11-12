@@ -19,8 +19,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 7 (November 15): [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)]
 - Lecture 8 (November 22): Making decisions [PDF]
 - Lecture 9 (November 29): Learning [PDF]
-- Lecture 10 (December 6): Communication [PDF]
-- Lecture 11 (December 13): Artificial General Intelligence and beyond [PDF]
+- Lecture 10 (December 13): Communication [PDF]
+- Lecture 11 (December 20): Artificial General Intelligence and beyond [PDF]
 
 ## Exercise sessions
 
@@ -29,10 +29,10 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Session 3 (October 18): Constraint satisfaction problems [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP2.pdf)]
 - Session 4 (October 25): Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP3.pdf)]
 - Session 5 (November 8): Representing uncertain knowledge [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP4.pdf)]
-- Session 6 (November 15): Inference in bayesian networks
+- Session 6 (November 15): Inference in Bayesian networks
 - Session 7 (November 22): Reasoning over time
 - Session 8 (November 29): Making decisions
-- Session 9 (November 29): Learning
+- Session 9 (November 13): Learning
 
 ## Projects
 
