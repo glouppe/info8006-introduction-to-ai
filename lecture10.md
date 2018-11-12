@@ -2,7 +2,11 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 9: Communication
+Lecture 10: Communication
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
 
 ???
 
@@ -31,7 +35,7 @@ class: center, middle
 
 class: middle, center
 
-.width-100[![](figures/lec9/lb.jpg)]
+.width-100[![](figures/lec10/lb.jpg)]
 
 ---
 
@@ -41,13 +45,13 @@ class: middle, center
 - **\#1 conference** on machine learning, artificial intelligence and computational neuroscience.
 - Pre-proceedings available for [download](http://papers.nips.cc/book/advances-in-neural-information-processing-systems-30-2017).
 
-.center.width-50[![](figures/lec9/poster.png)]
+.center.width-50[![](figures/lec10/poster.png)]
 
 ---
 
 # Stats
 
-.center.width-80[![](figures/lec9/stats.png)]
+.center.width-80[![](figures/lec10/stats.png)]
 
 ---
 
@@ -190,7 +194,7 @@ class: center, middle
 
 # Natural Language Processing
 
-.center.width-70[![](figures/lec9/dog.png)]
+.center.width-70[![](figures/lec10/dog.png)]
 
 - Fundamental goal:
     - Analyze and process human language, broadly, robustly, accurately, ...
@@ -221,7 +225,7 @@ R: dont assume they know what is a grammar.
 
 # Lexicon of $\xi\_0$
 
-.center.width-80[![](figures/lec9/lexicon.png)]
+.center.width-80[![](figures/lec10/lexicon.png)]
 
 ???
 
@@ -231,7 +235,7 @@ Lexicon = list of allowable words.
 
 # Grammar of $\xi\_0$
 
-.center.width-80[![](figures/lec9/grammar.png)]
+.center.width-80[![](figures/lec10/grammar.png)]
 
 ---
 
@@ -250,13 +254,13 @@ Grammar = compact list of allowable sentences.
 
 # Parse tree
 
-.center.width-80[![](figures/lec9/parse-tree.png)]
+.center.width-80[![](figures/lec10/parse-tree.png)]
 
 ---
 
 # Syntactic analysis
 
-.center.width-80[![](figures/lec9/parsing.png)]
+.center.width-80[![](figures/lec10/parsing.png)]
 
 - **Parsing** is the process of analyzing a string of words to uncover its phrase structure.
 - This process can be carried out efficiently using the CYK algorithm:
@@ -280,7 +284,7 @@ class: center, middle
 - There may be several distinct parse trees for a given sentence.
 - E.g., the sentence "Fall leaves fall and spring leaves spring." admit 4 parse trees:
 
-.center.width-80[![](figures/lec9/ambiguity.png)]
+.center.width-80[![](figures/lec10/ambiguity.png)]
 
 - With A*:
     - Define the cost of a state as the inverse of its probability as defined by the rules applied so far.
@@ -305,7 +309,7 @@ class: center, middle
 
 # Semantic interpretation
 
-.center.width-80[![](figures/lec9/semantic1.png)]
+.center.width-80[![](figures/lec10/semantic1.png)]
 
 - Semantics can be added to each rule of a grammar.
 - The rules obey the principle of **compositional semantics**:
@@ -319,7 +323,7 @@ R: better explain the first-order logic relation
 
 ---
 
-.center.width-80[![](figures/lec9/semantic2.png)]
+.center.width-80[![](figures/lec10/semantic2.png)]
 
 ---
 
@@ -350,7 +354,7 @@ R: better explain the first-order logic relation
     - Trivial knowledge: tiny script / response database.
     - Example: matching "I remember \_\_\_" results in "Do you often think of \_\_\_?"
 ]
-.col-1-3[![](figures/lec9/eliza.png)]
+.col-1-3[![](figures/lec10/eliza.png)]
 ]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -364,8 +368,8 @@ R: review
 # Modern chatbots
 
 .grid[
-.col-1-2[![](figures/lec9/siri.jpg)]
-.col-1-2[![](figures/lec9/assistant.jpg)]
+.col-1-2[![](figures/lec10/siri.jpg)]
+.col-1-2[![](figures/lec10/assistant.jpg)]
 ]
 
 .center[Siri, Google Assistant, Alexa, etc]
@@ -378,7 +382,7 @@ R: review
 
 # Machine translation
 
-.center.width-80[![](figures/lec9/translation.png)]
+.center.width-80[![](figures/lec10/translation.png)]
 
 - Translate text from one language to another, while *preserving the intended meaning*.
 - Recombines fragments of example translations.
@@ -396,7 +400,7 @@ R: review
 
 # Issue of dictionary lookups
 
-.center.width-80[![](figures/lec9/lookups.png)]
+.center.width-80[![](figures/lec10/lookups.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -404,7 +408,7 @@ R: review
 
 # History
 
-.center.width-100[![](figures/lec9/history.png)]
+.center.width-100[![](figures/lec10/history.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -416,7 +420,7 @@ R: review
 
 # Data-driven machine translation
 
-.center.width-100[![](figures/lec9/data-driven-mt.png)]
+.center.width-100[![](figures/lec10/data-driven-mt.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -435,7 +439,7 @@ $$f^\* = \arg\max\_f P(f|e) = \arg\max\_f P(e|f)P(f)$$
 
 # HMM translation model
 
-.center.width-100[![](figures/lec9/hmm-mt.png)]
+.center.width-100[![](figures/lec10/hmm-mt.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -447,7 +451,7 @@ R: take the time to understand the model in details.
 
 # Levels of transfer
 
-.center.width-100[![](figures/lec9/levels.png)]
+.center.width-100[![](figures/lec10/levels.png)]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
 
@@ -457,7 +461,7 @@ R: take the time to understand the model in details.
 
 - Modern machine translation systems are all based on neural networks.
 
-.center.width-80[![](figures/lec9/rnn.png)]
+.center.width-80[![](figures/lec10/rnn.png)]
 
 ---
 
@@ -466,13 +470,13 @@ R: take the time to understand the model in details.
 - The latest approaches (e.g., arXiv:1711.00043) do not even need to have a bilingual corpus!
 - Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
 
-.center.width-100[![](figures/lec9/umt1.png)]
+.center.width-100[![](figures/lec10/umt1.png)]
 
 ---
 
 # Unsupervised machine translation (2)
 
-.center.width-100[![](figures/lec9/umt2.png)]
+.center.width-100[![](figures/lec10/umt2.png)]
 
 ---
 

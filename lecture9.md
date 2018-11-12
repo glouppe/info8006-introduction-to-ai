@@ -2,7 +2,11 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 8: Learning
+Lecture 9: Learning
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
 
 ???
 
@@ -21,7 +25,7 @@ R: take the time for linear model -> perceptron -> neural nets -> deep learning
 - *Reinforcement learning*
 - *Unsupervised learning*
 ]
-.col-1-3[![](figures/lec8/rosenblatt.jpg)]
+.col-1-3[![](figures/lec9/rosenblatt.jpg)]
 ]
 
 ---
@@ -50,7 +54,7 @@ R: take the time for linear model -> perceptron -> neural nets -> deep learning
     - Deny the existence of innate cognitive structure specific for thought and language.
     - Postulate instead all cognitive acquisitions, including language, to be the outcome of a gradual process of construction, i.e., a learning procedure.
 ]
-.col-1-3[![](figures/lec8/piaget-chomsky.jpg)]
+.col-1-3[![](figures/lec9/piaget-chomsky.jpg)]
 ]
 
 
@@ -77,7 +81,7 @@ R: take the time for linear model -> perceptron -> neural nets -> deep learning
 
 # Learning agents
 
-.center.width-100[![](figures/lec8/learning-agent.png)]
+.center.width-100[![](figures/lec9/learning-agent.png)]
 
 ???
 
@@ -99,7 +103,7 @@ R: take the time for linear model -> perceptron -> neural nets -> deep learning
     - What kind of feedback is available.
 - Examples:    
 
-.center.width-70[![](figures/lec8/table-components.png)]
+.center.width-70[![](figures/lec9/table-components.png)]
 - The nature and frequency of the feedback often determines a learning strategy:
     - *Supervised learning*: correct answer for each instance.
     - *Reinforcement learning*: occasional rewards.
@@ -143,23 +147,23 @@ $$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i
     - $P(h\_4)=0.2$, with $h\_4$: 25% cherry candies + 75% lime candies
     - $P(h\_5)=0.1$, with $h\_5$: 100% lime candies
 
-.center.width-70[![](figures/lec8/candies.png)]
+.center.width-70[![](figures/lec9/candies.png)]
 - Then we observe candies drawn from som bag:
 
-.center.width-40[![](figures/lec8/all-limes.png)]
+.center.width-40[![](figures/lec9/all-limes.png)]
 - What kind of bag is it? What flavour will the next candy be?
 
 ---
 
 # Posterior probability of hypotheses
 
-.center.width-70[![](figures/lec8/posterior-candies.png)]
+.center.width-70[![](figures/lec9/posterior-candies.png)]
 
 ---
 
 # Prediction probability
 
-.center.width-70[![](figures/lec8/prediction-candies.png)]
+.center.width-70[![](figures/lec9/prediction-candies.png)]
 
 - This example illustrates the fact that the Bayesian prediction *eventually agrees with the true hypothesis*.
 - The posterior probability of any false hypothesis eventually vanishes.
@@ -202,7 +206,7 @@ $$h\_{MLE} = \arg \max\_{h\_i} P(\mathbf{d} | h\_i)$$
 
 # Parameter learning BNs
 
-.center.width-100[![](figures/lec8/parameterized-bn.png)]
+.center.width-100[![](figures/lec9/parameterized-bn.png)]
 
 ---
 
@@ -252,7 +256,7 @@ $\,\,\,\,+ r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)$
 
 # MLE for linear Gaussian models
 
-.center.width-70[![](figures/lec8/lg.png)]
+.center.width-70[![](figures/lec9/lg.png)]
 
 - Assume a **parameterized** *linear Gaussian model* with one continuous parent $X$ and one continuous child $Y$.
 - To learn the conditional distribution $P(Y|X)$, we maximize
@@ -318,7 +322,7 @@ class: middle, center,
 - A hypothesis $h$ **generalizes** well if it correctly predicts the value of $y$ for novel examples
 (resp., its conditional density).
 
-.center.width-80[![](figures/lec8/functions.png)]
+.center.width-80[![](figures/lec9/functions.png)]
 
 <span class="Q">[Q]</span> Which of those is best?
 
@@ -355,7 +359,7 @@ How to find $h^\* \in \mathcal{H}$?
 - Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ *attribute* or *feature* values.
 - If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
 
-.center.width-60[![](figures/lec8/features.png)]
+.center.width-60[![](figures/lec9/features.png)]
 
 <span class="Q">[Q]</span> Given this data representation, what family $\mathcal{H}$ of hypothesis shall we consider?
 
@@ -365,7 +369,7 @@ How to find $h^\* \in \mathcal{H}$?
 
 # Brains (simplified)
 
-.center.width-80[![](figures/lec8/perceptron_neuron.png)]
+.center.width-80[![](figures/lec9/perceptron_neuron.png)]
 
 - $10^{11}$ neurons of $>20$ types, $10^{14}$ synapses.
 - Information are (*presumably*) stored in synapses.
@@ -377,7 +381,7 @@ How to find $h^\* \in \mathcal{H}$?
 
 # Linear classifiers (1)
 
-.center.width-70[![](figures/lec8/perceptron_schematic.png)]
+.center.width-70[![](figures/lec9/perceptron_schematic.png)]
 
 - Taking loose inspiration from neuroscience, we may consider an **overly** simplified *model* of neuron (McCulloch and Pitts, 1943).
 - The linear classifier model is a squashed linear function of its inputs.
@@ -404,7 +408,7 @@ $$h(\mathbf{x}; \mathbf{w}) = sign(w\_0 + \sum\_{j=1}^p w\_j x\_j)$$
 
 # Binary decision rules
 
-.center.width-30[![](figures/lec8/linear-classifier.png)]
+.center.width-30[![](figures/lec9/linear-classifier.png)]
 
 - Intuitively, predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$.
 - Learning boils down to figuring out a good weight vector from the training set.
@@ -429,7 +433,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
     - If the prediction is incorrect, then update parameters.
 
 ]
-.col-1-2[![](figures/lec8/perceptron-cartoon.png)]
+.col-1-2[![](figures/lec9/perceptron-cartoon.png)]
 ]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -438,7 +442,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
 
 # Learning: Binary perceptron
 
-.center.width-30[![](figures/lec8/perceptron-update.png)]
+.center.width-30[![](figures/lec9/perceptron-update.png)]
 
 - Start with $\mathbf{w}=0$.
 - For each training example $(\mathbf{x},y)$:
@@ -450,7 +454,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
 
 # Multiclass perceptron
 
-.center.width-30[![](figures/lec8/multiclass.png)]
+.center.width-30[![](figures/lec9/multiclass.png)]
 
 - If we have more than $2$ classes, then
     - Define a weight vector $\mathbf{w}\_c$ for each class $c$.
@@ -470,7 +474,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec8/multiclass-perceptron.mp4" type="video/mp4">
+  <source src="./figures/lec9/multiclass-perceptron.mp4" type="video/mp4">
 </video>]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -479,7 +483,7 @@ The dot product tells you what amount of one vector goes in the direction of ano
 
 # Properties of the perceptron
 
-.center.width-60[![](figures/lec8/separability.png)]
+.center.width-60[![](figures/lec9/separability.png)]
 .caption[Separable vs. Non-separable]
 
 - (Novikoff, 1962): If the training set is *linearly separable*, the perceptron will
@@ -491,7 +495,7 @@ eventually **converge** (binary case).
 
 # Pacman apprenticeship
 
-.center.width-60[![](figures/lec8/pacman.png)]
+.center.width-60[![](figures/lec9/pacman.png)]
 
 - Examples are state-action pairs $(s, a)$ that we collect by observing an expert playing.
 - Features are defined over states, e.g. $g(s)$.
@@ -507,7 +511,7 @@ eventually **converge** (binary case).
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec8/training1.mp4" type="video/mp4">
+  <source src="./figures/lec9/training1.mp4" type="video/mp4">
 </video>]
 
 The Perceptron agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
@@ -520,7 +524,7 @@ The Perceptron agent observes a very good Minimax-based agent for two games and 
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec8/training2.mp4" type="video/mp4">
+  <source src="./figures/lec9/training2.mp4" type="video/mp4">
 </video>]
 
 .footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
@@ -531,7 +535,7 @@ The Perceptron agent observes a very good Minimax-based agent for two games and 
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec8/apprentice.mp4" type="video/mp4">
+  <source src="./figures/lec9/apprentice.mp4" type="video/mp4">
 </video>]
 
 After two training episodes, the Perceptron agents plays. No more Minimax!
@@ -542,7 +546,7 @@ After two training episodes, the Perceptron agents plays. No more Minimax!
 
 # Checkerboard problem
 
-.center.width-30[![](figures/lec8/checkerboard.png)]
+.center.width-30[![](figures/lec9/checkerboard.png)]
 
 - We want to learn a binary classifier to determine the color (blue or red) of a point given its position.
 - Based only on *local generalization*, we can correctly guess the color of a new point if it lies within the same square as a training example.
@@ -559,13 +563,13 @@ R: improve the flow a bit, the motivation (this and the next slides)
 
 **Hypothesis**: The data was generated by a composition of factors, potentially at multiple levels in a hierarchy.
 
-.center.width-100[![](figures/lec8/composition.png)]
+.center.width-100[![](figures/lec9/composition.png)]
 
 ---
 
 # Multi-layer perceptron
 
-.center.width-100[![](figures/lec8/mlp.png)]
+.center.width-100[![](figures/lec9/mlp.png)]
 
 - The **multi-layer perceptron** (MLP) is a hierarchical *composition* of individual perceptron-like models, called *neurons*. The MLP is an example of **neural network**.
 - The network parameters are the union of the individual neuron parameters.
@@ -575,7 +579,7 @@ R: improve the flow a bit, the motivation (this and the next slides)
 
 # Deep Learning
 
-.center.width-70[![](figures/lec8/dl-hierarchy.png)]
+.center.width-70[![](figures/lec9/dl-hierarchy.png)]
 
 - Effectively, training a *deep neural network* amounts to learn the parameters of a hierarchical representation of the data, tailored for the target task.
 - The high-level features are not-preprogrammed! *Concepts* are learned by the network itself.
@@ -586,7 +590,7 @@ R: improve the flow a bit, the motivation (this and the next slides)
 
 # Expressiveness
 
-.center.width-70[![](figures/lec8/folding.png)]
+.center.width-70[![](figures/lec9/folding.png)]
 
 - The compositional assumption used in deep learning allows **exponential gains** in the number of required training examples.
 - $O(2^k)$ regions can be defined from $O(k)$ examples, as long as one introduces dependencies between disconnected regions.
@@ -667,7 +671,7 @@ class: middle, center
     - This predictive model gives us **common sense**.
     - Unsupervised learning discovers regularities in the world.
 
-.center.width-30[![](figures/lec8/peekaboo.jpg)]
+.center.width-30[![](figures/lec9/peekaboo.jpg)]
 
 .footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
 
@@ -682,7 +686,7 @@ class: middle, center
     - He and his bag are not in the room anymore.
     - He probably did not dematerialized or flied out.
 
-.center.width-50[![](figures/lec8/bernard.png)]
+.center.width-50[![](figures/lec9/bernard.png)]
 
 .footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
 

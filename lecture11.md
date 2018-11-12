@@ -2,7 +2,11 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 10: Artificial General Intelligence
+Lecture 11: Artificial General Intelligence
+
+<br><br>
+Prof. Gilles Louppe<br>
+[g.louppe@uliege.be](g.louppe@uliege.be)
 
 ???
 
@@ -14,7 +18,7 @@ https://en.wikipedia.org/wiki/Open_Letter_on_Artificial_Intelligence
 
 # From technological breakthroughs...
 
-.center.width-100[![](figures/lec10/ai-in-news.png)]
+.center.width-100[![](figures/lec11/ai-in-news.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
 
@@ -23,22 +27,22 @@ https://en.wikipedia.org/wiki/Open_Letter_on_Artificial_Intelligence
 # ... to popular media
 
 .grid[
-.col-1-4[![](figures/lec10/news1.png)]
-.col-1-4[![](figures/lec10/news2.png)]
-.col-1-4[![](figures/lec10/news6.png)]
-.col-1-4[![](figures/lec10/news8.png)]
+.col-1-4[![](figures/lec11/news1.png)]
+.col-1-4[![](figures/lec11/news2.png)]
+.col-1-4[![](figures/lec11/news6.png)]
+.col-1-4[![](figures/lec11/news8.png)]
 ]
 .grid[
-.col-1-4[![](figures/lec10/news5.png)]
-.col-1-4[![](figures/lec10/news3.png)]
-.col-1-4[![](figures/lec10/news7.png)]
-.col-1-4[![](figures/lec10/news4.png)]
+.col-1-4[![](figures/lec11/news5.png)]
+.col-1-4[![](figures/lec11/news3.png)]
+.col-1-4[![](figures/lec11/news7.png)]
+.col-1-4[![](figures/lec11/news4.png)]
 ]
 .grid[
-.col-1-4[![](figures/lec10/news11.png)]
-.col-1-4[![](figures/lec10/news9.png)]
-.col-1-4[![](figures/lec10/news10.png)]
-.col-1-4[![](figures/lec10/news12.png)]
+.col-1-4[![](figures/lec11/news11.png)]
+.col-1-4[![](figures/lec11/news9.png)]
+.col-1-4[![](figures/lec11/news10.png)]
+.col-1-4[![](figures/lec11/news12.png)]
 ]
 
 ---
@@ -63,7 +67,7 @@ https://en.wikipedia.org/wiki/Open_Letter_on_Artificial_Intelligence
 - *Clear and fast evaluation* (as stated by Go rules)
 - *Huge dataset available* (games)
 
-.center.width-40[![](figures/lec10/go.png)]
+.center.width-40[![](figures/lec11/go.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
 
@@ -73,7 +77,7 @@ class: smaller
 
 # Picking challenge
 
-.center.width-100[![](figures/lec10/picking.png)]
+.center.width-100[![](figures/lec11/picking.png)]
 
 .center[Can we run AlphaGo on a robot for the Amazon Picking Challenge?]
 
@@ -86,7 +90,7 @@ class: smaller
 
 # Picking challenge
 
-.center.width-100[![](figures/lec10/picking.png)]
+.center.width-100[![](figures/lec11/picking.png)]
 
 - *Deterministic*: OK
 - *Fully observed*: **OKish**
@@ -117,7 +121,7 @@ class: smaller
 
 # Singularity
 
-.center.circle.width-20[![](figures/lec10/good.jpg)]
+.center.circle.width-20[![](figures/lec11/good.jpg)]
 
 Irving John Good (1965):
 - Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
@@ -189,7 +193,7 @@ $\pi^{AIXI}$ is a **perfect** theoretical agent.
 - Which Turing machine is the agent in? If it knew, it could plan perfectly.
 - Use the *Bayes rule* to update the agent beliefs given its experience so far.
 
-.center.width-100[![](figures/lec10/tm.png)]
+.center.width-100[![](figures/lec11/tm.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
 
@@ -208,7 +212,7 @@ $\pi^{AIXI}$ is a **perfect** theoretical agent.
 
 # Acting optimally (2)
 
-.center.width-100[![](figures/lec10/optimal-action.png)]
+.center.width-100[![](figures/lec11/optimal-action.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
 
@@ -223,7 +227,7 @@ rigorously shown by [Hut05] to be optimal in many different senses of the word.
 
 # Incomputability
 
-.center.width-100[![](figures/lec10/aixi-action.png)]
+.center.width-100[![](figures/lec11/aixi-action.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://docs.google.com/presentation/d/119VW6ueBGLQXsw-jGMboGP2-WuOnyMAOYLgd44SL6xM)]
 
@@ -235,7 +239,7 @@ rigorously shown by [Hut05] to be optimal in many different senses of the word.
 
 # Monte Carlo approximation
 
-.center.width-100[![](figures/lec10/mc-aixi.png)]
+.center.width-100[![](figures/lec11/mc-aixi.png)]
 
 ---
 
@@ -248,7 +252,7 @@ class: middle, center
 
 # Whole brain emulation
 
-.center.width-50[![](figures/lec10/brain.jpg)]
+.center.width-50[![](figures/lec11/brain.jpg)]
 
 - A hypothesis for AGI is **whole brain simulation**.
     - A low-level brain model is built by scanning and mapping a biological brain in detail and copying its state into a computer system.
@@ -279,7 +283,7 @@ class: middle, center
     - The computer could then run a simulation of the brain's information processing, such that it responds in the same way as the original brain.
 - That is, simulation would be indistinguishable from reality.
 
-.center.width-70[![](figures/lec10/simulation.png)]
+.center.width-70[![](figures/lec11/simulation.png)]
 
 ---
 
@@ -291,7 +295,7 @@ class: middle, center
 
 # How did intelligence arise in Nature?
 
-.center.width-100[![](figures/lec10/tree.gif)]
+.center.width-100[![](figures/lec11/tree.gif)]
 
 ---
 
@@ -364,7 +368,7 @@ class: center, middle
 - For the emergence of generally intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit*.
     - attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...
 
-.center.width-60[![](figures/lec10/envs.png)]
+.center.width-60[![](figures/lec11/envs.png)]
 
 - **Multi-agent** environments are certainly better because of:
     - *Variety*: the environment is parameterized by its agent  population. The optimal strategy must be derived dynamically.
@@ -420,7 +424,7 @@ Don't fear intelligent machines, work with them. Garry Kasparov
 
 class: center, middle
 
-.center.width-70[![](figures/lec10/gameover.png)]
+.center.width-70[![](figures/lec11/gameover.png)]
 
 Thanks for following Introduction to AI!
 
