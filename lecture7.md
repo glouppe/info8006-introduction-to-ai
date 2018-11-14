@@ -976,7 +976,7 @@ state space.
 - Throw away samples that have very low weight, according to the evidence.
 - Replicate those that have high weight.
 
-This scale to high dimensions!
+This scales to high dimensions!
 
 .center.width-50[![](figures/lec7/robot.png)]
 
