@@ -488,9 +488,24 @@ class: middle
 
 # POMPDs
 
+What if the environment is *partially observable*?
+- The agent does not know in which state $s$ it is in.
+    - Similarly, it cannot evaluate the reward $R(s)$ associated to the unknown state.
+    - Therefore, it makes no sense to talk about a policy $\pi(s)$.
+- Instead, the agent maintains a belief state $b(s)$ (a probability distribution over states) which it can update with the evidence $e$ it collects.
+    - This is filtering!
+
+.center.width-60[![](figures/lec8/pomdp.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
 ---
 
-# Belief MDP
+class: middle
+
+A **partially observable Markov decision process** (POMDP)
+- has the same elements as an MDP,
+- but adds a sensor model $P(e|s)$.
 
 ---
 
@@ -498,10 +513,8 @@ class: middle
 
 .grid[
 .kol-1-5.center[
-<br><br><br><br>
+<br><br><br><br><br>
 $$e\_{t+1}$$
-
-$$r\_{t+1} = R(s\_{t+1})$$
 ]
 .kol-3-5.center[
 $$b\_t(s) = P(s\_t | a\_{1:t-1}, e\_{1:t})$$
@@ -517,27 +530,98 @@ $$a\_t$$
 
 ---
 
-# Value iteration
+# Belief MDP
 
-inefficient
+.bold[Theorem (Astrom, 1965).] The optimal action depends only on the agent's current belief state.
+- The optimal policy can be described by a mapping $\pi^\*(b)$ from beliefs to actions.
+- It does not depend on the actual state the agent is in.
+
+In other words, POMDPs can be reduced to an MDP in belief-state space, provided we can define a transition model $P(b'|b,a)$ and a reward function $\rho$ over belief states.
+
+---
+
+class: middle
+
+If $b(s)$ was the previous belief state and the agent does action $a$ and perceives $e$, then the new belief state is given by
+$$b'(s') = \alpha P(e|s') \sum\_{s} P(s'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$$
+
+Therefore,
+$$
+\begin{aligned}
+P(b'|b,a) &= \sum\_e P(b'|b,a,e) P(e|b,a) \\\\
+&= \sum\_e P(b'|b,a,e) \sum\_{s'} P(e|b,a,s') P(s'|b,a) \\\\
+&= \sum\_e P(b'|b,a,e) \sum\_{s'} P(e|s') \sum\_{s} P(s'|s,a) b(s)
+\end{aligned}
+$$
+
+where $P(b'|b,a,e)=1$ if $b'=\text{forward}(b,a,e)$ and $0$ otherwise.
+
+---
+
+class: middle
+
+We can also define a reward function for belief states as the expected reward for the actual state the agent might be in:
+$$\rho(b) = \sum\_{s} b(s) R(s)$$
+
+---
+
+class: middle
+
+.grid[
+.kol-1-5.center[
+<br><br><br><br>
+$$b\_{t+1}$$
+
+$$\rho\_{t+1}$$
+]
+.kol-3-5.center[
+$$b\_t$$
+.width-90[![](figures/lec8/loop.png)]
+$$b\_{t+1} \sim P(b\_{t+1}|b\_t,a\_t)$$
+]
+.kol-1-5[
+<br><br><br><br><br>
+$$a\_t$$
+]
+]
+
+---
+
+class: middle
+
+Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a *continuous* (and usually high-dimensional) state space.
+- None of the algorithms described earlier directly apply.
+- In fact, solving POMDPs is **very** (actually, PSPACE-)**hard**!
 
 ---
 
 # Online agents
 
-expectiminimax solution
+xxx
 
 ---
 
-see bair 10
+class: middle
 
-connection with learning and RL
+.center.width-100[![](figures/lec8/generic-ddn.svg)]
 
-bandits example?
+---
+
+class: middle
+
+.center.width-100[![](figures/lec8/pomdp-tree.svg)]
+
+---
+
+# Reinforcement learning
+
+xxx
 
 ---
 
 # Summary
+
+xxx
 
 ---
 
