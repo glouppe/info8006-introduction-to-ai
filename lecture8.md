@@ -595,33 +595,62 @@ Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a *continu
 
 ---
 
-# Online agents
+# Online agents for POMDPs
 
-xxx
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec8/generic-ddn.svg)]
+While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent can be constructed for POMDPs:
+- The transition and sensor models are represented by a *dynamic Bayesian network*;
+- The dynamic Bayesian network is extended with decision ($A$) and utility ($R$ and $U$) nodes to form a dynamic decision network;
+- A *filtering algorithm* is used to incorporate each new percept and action and to update the belief state representation;
+- Decisions are made by projecting forward possible action sequences and choosing (approximately) the best one, in a manner similar to a truncated *Expectiminimax*.
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec8/pomdp-tree.svg)]
+.width-100[![](figures/lec8/generic-ddn.svg)]
+
+At time $t$, the agent must decide what to do.
+- Shaded nodes represent variables with known values.
+- The network is unrolled for a finite horizon.
+- It includes nodes for the reward of $\mathbf{X}\_{t+1}$ and $\mathbf{X}\_{t+2}$, but the (estimated) utility of $\mathbf{X}\_{t+3}$.
+
+---
+
+class: middle
+
+.center.width-80[![](figures/lec8/pomdp-tree.svg)]
+
+Part of the look-ahead solution of the previous decision network.
+
+A decision can be extracted from the search tree by backing up the (estimated) utility values from the leaves, taking the average at the chance nodes and taking the maximum at the decision nodes.
 
 ---
 
 # Reinforcement learning
 
-xxx
+The MDP formulation assumes the knowledge of
+- a transition model $P(s'|s,a)$
+- a reward function $R:\mathcal{S} \to \mathbb{R}$
+
+What if these elements are unknown?
+
+$\Rightarrow$ We must observe or interact with the environment in order to **learn** the dynamics.
+This is reinforcement learning.
+
+.center.width-80[![](figures/lec8/rl.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Summary
 
-xxx
+- Sequential decision problems in uncertain environments, called MDPs, are defined by transition model and a reward function.
+- The utility of a state sequence is the sum of all the rewards over the sequence, possibly discounted over time.
+    - The solution of an MDP is a policy that associates a decision with every state that the agent might reach.
+    - An optimal policy maximizes the utility of the state sequence encountered when it is executed.
+- Value iteration and policy can both be used for solving MDPs.
+- POMDPs are much more difficult than MDPs. However, a decision-theoretic agent can be constructed for those environments.
 
 ---
 
@@ -633,3 +662,5 @@ The end.
 ---
 
 # References
+
+xxx
