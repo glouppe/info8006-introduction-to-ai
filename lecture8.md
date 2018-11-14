@@ -22,7 +22,7 @@ R: pomdp -> lec 20 of bair
 
 .center.width-50[![](figures/lec8/intro.png)]
 
-Reason under uncertainty and **take decisions**:
+Reasoning under uncertainty and **taking decisions**:
 - Markov decision processes
     - MDPs
     - Bellman equation
@@ -48,7 +48,7 @@ class: middle
 
 .grid[
 .kol-2-3[
-Assume our agent lives in $4 \times 3$ grid environment.
+Assume our agent lives in a $4 \times 3$ grid environment.
 - Noisy movements: actions do not always go as planned.
     - Each action achieves the intended effect with probability $0.8$.
     - The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intented direction.
@@ -208,8 +208,8 @@ Discuss the balance between risk and rewards.
 .center.width-70[![](figures/lec8/preferences.png)]
 
 What preferences should an agent have over state or reward sequences?
-- More or less? $[1, 2, 2]$ or $[2,3,4]$?
-- Now or later? $[0,0,1]$ or $[1,0,0]$?
+- More or less? $[2,3,4]$ or $[1, 2, 2]$?
+- Now or later? $[1,0,0]$ or $[0,0,1]$?
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -266,7 +266,7 @@ class: middle
 
 ## Infinite sequences
 
-What if the agent lives forever? Do we get infinite rewards? Comparing reward sequences with $+\infty$ utility becomes undefined.
+What if the agent lives forever? Do we get infinite rewards? Comparing reward sequences with $+\infty$ utility is problematic.
 
 Solutions:
 - Finite horizon: (similar to depth-limited search)
@@ -281,7 +281,7 @@ Solutions:
 
 class: middle
 
-.center.width-30[![](figures/lec8/fixed-policy.png)]
+.center.width-25[![](figures/lec8/fixed-policy.png)]
 
 ## Policy evaluation
 
@@ -324,7 +324,7 @@ Utilities of the states in Grid World, calculated with $\gamma=1$ and $R(s)=-0.0
 
 class: middle
 
-.center.width-40[![](figures/lec8/expectiminimax.png)]
+.center.width-40[![](figures/lec8/policy-extraction.png)]
 
 ## Policy extraction
 
@@ -332,7 +332,7 @@ Using the principle of maximum expected utility (MEU), the optimal action maximi
 That is,
 $$\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 
-Therefore, we can derive optimal policies provided we can estimate the utilities of states.
+Therefore, we can extract the optimal policy provided we can estimate the utilities of states.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -355,7 +355,7 @@ The utility of a state is the immediate reward for that state, plus the expected
 That is,
 $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 - These equations are called the **Bellman equations**. They form a system of $n=|\mathcal{S}|$ non-linear equations with as many unknowns.
-- The utilities of states, defined as the expected utility of subsequent state sequences, are solutions of the set of Bellman equations. In fact, they are *unique* solutions.
+- The utilities of states, defined as the expected utility of subsequent state sequences, are solutions of the set of Bellman equations.
 
 ---
 
@@ -376,7 +376,7 @@ $$
 
 # Value iteration
 
-Because of the $\max$ operator, the Bellman equations are non-linear and the resolution of the system is problematic.
+Because of the $\max$ operator, the Bellman equations are non-linear and solving the system is problematic.
 
 The **value iteration** algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
 - Let $V\_i(s)$ be the estimated utility value for $s$ at the $i$-th iteration step.
@@ -400,7 +400,7 @@ Let $||V|| = \max\_s |V(s)|$ be the max-norm of the vector of utilities, such th
 
 Let $V\_i$ and $V\_{i+1}$ be successive approximations to the true utility $V$.
 
-.bold[Theorem.] For any two approximations $V\_t$ and $V'\_t$,
+.bold[Theorem.] For any two approximations $V\_i$ and $V'\_i$,
 $$||V\_{i+1} - V'\_{i+1}|| \leq \gamma ||V\_i - V'\_i||.$$
 - That is, the Bellman update is a contraction by a factor $\gamma$ on the space of utility vector.
 - Therefore, any two approximations must get closer to each other, and in particular any approximation must get closer to the true $V$.
@@ -426,7 +426,7 @@ Therefore, value iteration converges exponentially fast:
 
 class: middle
 
-.center.width-30[![](figures/lec8/expectiminimax.png)]
+.center.width-30[![](figures/lec8/policy-evaluation-tree.png)]
 
 ## Problems with value iteration
 
@@ -443,7 +443,7 @@ $$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') $$
 The **policy iteration** algorithm instead directly computes the policy (instead of state values). It alternates the following two steps:
 - Policy evaluation: given $\pi\_i$, calculate $V\_i = V^{\pi\_i}$, i.e. the utility of each state if $\pi\_i$ is executed.
 - Policy improvement: calculate a new policy $\pi\_{i+1}$ using one-step look-ahead based on $V\_i$:
-$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s'|s,a)V\_i(s)$$
+$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s'|s,a)V\_i(s')$$
 
 This algorithm is still optimal, and might converge (much) faster under some conditions.
 
@@ -451,12 +451,12 @@ This algorithm is still optimal, and might converge (much) faster under some con
 
 class: middle
 
-.center.width-20[![](figures/lec8/fixed-policy.png)]
+.center.width-25[![](figures/lec8/fixed-policy.png)]
 
 ## Policy evaluation
 
-How does one compute $V\_i$ for a fixed policy $\pi\_i$? At $i$-th iteration we have a simplified version of the Bellman equations that relates of utility of $s$ to the utilities of its neighbors:
-$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,a) V\_i(s')$$
+At the $i$-th iteration we have a simplified version of the Bellman equations that relate the utility of $s$ to the utilities of its neighbors:
+$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s)) V\_i(s')$$
 These equations are now **linear** because the $\max$ operator has been removed.
 - for $n$ states, we have $n$ equations with $n$ unknowns;
 - this can be solved exactly in $O(n^3)$ by standard linear algebra methods.
@@ -469,6 +469,8 @@ In some cases $O(n^3)$ is too prohibitive. Fortunately, it is not necessary to p
 
 One way is to run $k$ iterations of simplified Bell updates:
 $$V\_{i+1}(s) = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s))V\_i(s) $$
+
+This hybrid algorithm is called **modified policy iteration**.
 
 ---
 
