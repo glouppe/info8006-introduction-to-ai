@@ -12,6 +12,7 @@ Prof. Gilles Louppe<br>
 
 R: add EM?
 R: take the time for linear model -> perceptron -> neural nets -> deep learning
+R: NN for control https://www.youtube.com/watch?v=qv6UVOQ0F44&t=33s
 
 ---
 

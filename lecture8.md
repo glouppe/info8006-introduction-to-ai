@@ -8,14 +8,6 @@ Lecture 8: Making decisions
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
-???
-
-https://courses.cs.washington.edu/courses/cse473/14sp/slides/8-MDPs.pdf
-
-R: add demos
-R: finish with bandits?
-R: pomdp -> lec 20 of bair
-
 ---
 
 # Today
@@ -31,16 +23,6 @@ Reasoning under uncertainty and **taking decisions**:
 - Partially observable Markov decision processes
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.grid[
-.kol-1-5[]
-.kol-3-5[.center.width-90[![](figures/lec8/loop.png)]]
-.kol-1-5[]
-]
 
 ---
 
@@ -93,12 +75,11 @@ class: middle
 
 # Markov decision processes
 
-A **Markov decision process** (MDP) is a 5-tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
+A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
-- $P$ is a transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
+- $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
 - $R$ is reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
-- $0 < \gamma \leq 1$ is a discount factor, which represents the difference in importance between future and present rewards.
 
 ---
 
@@ -107,17 +88,17 @@ class: middle
 .grid[
 .kol-1-5.center[
 <br><br><br><br>
-$$s\_{t+1}$$
-$$r\_{t+1} = R(s\_{t+1})$$
+$$s'$$
+$$r' = R(s')$$
 ]
 .kol-3-5.center[
-$$s\_t$$
+$$s$$
 .width-90[![](figures/lec8/loop.png)]
-$$s\_{t+1} \sim P(s\_{t+1}|s\_t,a\_t)$$
+$$s' \sim P(s'|s,a)$$
 ]
 .kol-1-5[
 <br><br><br><br><br>
-$$a\_t$$
+$$a$$
 ]
 ]
 
@@ -133,8 +114,8 @@ class: middle
 
 ## Example
 
-- $s \in \mathcal{S}$: locations $(i,j)$ on the grid.
-- $a \in \mathcal{A}$: $[\text{Up}, \text{Down}, \text{Right}, \text{Left}]$.
+- $\mathcal{S}$: locations $(i,j)$ on the grid.
+- $\mathcal{A}$: $[\text{Up}, \text{Down}, \text{Right}, \text{Left}]$.
 - Transition model: $P(s'|s,a)$
 - Reward:
 $$
@@ -143,7 +124,6 @@ R(s) = \begin{cases}
 \pm 1  & \text{for terminal states}
 \end{cases}
 $$
-- $\gamma = 0.9$.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -156,7 +136,7 @@ class: middle
 ## What is Markovian about MDPs?
 
 Given the present state, the future and the past are independent:
-$$P(S\_{t+1} | S\_t, A\_t, S\_{t-1}, A\_{t-1}, ..., S\_0) = P(S\_{t+1} | S\_t, A\_t)$$
+$$P(s\_{t+1} | s\_t, a\_t, s\_{t-1}, a\_{t-1}, ..., s\_0) = P(s\_{t+1} | s\_t, a\_t)$$
 This is similar to search problems, where the successor function could only depend on the current state.
 ]
 .kol-1-4.center[.circle.width-100[![](figures/lec8/markov.jpg)]
@@ -246,7 +226,7 @@ class: middle
 
 ## Discounting
 
-- Each we time we transition to the next state, we multiply in the discount once.
+- Each time we transition to the next state, we multiply in the discount once.
 - Why discount?
     - Sooner rewards probably do have higher utility than later rewards.
     - Will help our algorithms converge.
@@ -272,8 +252,8 @@ Solutions:
 - Finite horizon: (similar to depth-limited search)
     - Terminate episodes after a fixed number of steps $T$.
     - Results in non-stationary policies ($\pi$ depends on time left).
-- Discounting (with $0 < \gamma < 1$):
-    $$V([r\_0, r\_1, ..., r\_\infty]) = \sum\_{t=0}^{\infty} \gamma^t r\_t \leq \frac{R\_{max}}{1-\gamma}$$
+- Discounting (with $0 < \gamma < 1$ and rewards bounded by $\pm R\_\text{max}$):
+    $$V([r\_0, r\_1, ..., r\_\infty]) = \sum\_{t=0}^{\infty} \gamma^t r\_t \leq \frac{R\_\text{max}}{1-\gamma}$$
   Smaller $\gamma$ results in a shorter horizon.
 - Absorbing state: guarantee that for every policy, a terminal state will eventually be reached.
 
@@ -286,7 +266,7 @@ class: middle
 ## Policy evaluation
 
 The expected utility obtained by executing $\pi$ starting in $s$ is given by
-$$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right],$$
+$$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\rvert\_{s\_0=s}$$
 where the expectation is with respect to the probability distribution over state sequences determined by $s$ and $\pi$.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
@@ -346,7 +326,7 @@ class: middle
 
 ---
 
-# Bellman equation
+# The Bellman equation
 
 There is a direct relationship between the utility of a state and the utility of its neighbors:
 
@@ -396,12 +376,10 @@ class: middle
 
 ## Convergence
 
-Let $||V|| = \max\_s |V(s)|$ be the max-norm of the vector of utilities, such that $||V-V'||$ is the maximum difference between any two corresponding elements of $V$ and $V'$.
-
 Let $V\_i$ and $V\_{i+1}$ be successive approximations to the true utility $V$.
 
 .bold[Theorem.] For any two approximations $V\_i$ and $V'\_i$,
-$$||V\_{i+1} - V'\_{i+1}|| \leq \gamma ||V\_i - V'\_i||.$$
+$$||V\_{i+1} - V'\_{i+1}||\_\infty \leq \gamma ||V\_i - V'\_i||\_\infty.$$
 - That is, the Bellman update is a contraction by a factor $\gamma$ on the space of utility vector.
 - Therefore, any two approximations must get closer to each other, and in particular any approximation must get closer to the true $V$.
 
@@ -413,11 +391,11 @@ class: middle
 
 ## Performance
 
-Since $||V\_{i+1} - V|| \leq \gamma ||V\_i - V||$,
+Since $||V\_{i+1} - V||\_\infty \leq \gamma ||V\_i - V||\_\infty$,
 the error is reduced by a factor of at least $\gamma$ at each iteration.
 
 Therefore, value iteration converges exponentially fast:
-- The maximum initial error is $||V\_0 - V|| \leq 2R\_\text{max} / (1-\gamma)$.
+- The maximum initial error is $||V\_0 - V||\_\infty \leq 2R\_\text{max} / (1-\gamma)$.
 - To reach an error of at most $\epsilon$ after $N$ iterations, we require $\gamma^N 2R\_\text{max}/(1-\gamma) \leq \epsilon$.
 
 .center.width-100[![](figures/lec8/vi-performance.png)]
@@ -480,6 +458,47 @@ class: middle
 
 ---
 
+# Recap example: 2048
+
+.grid[
+.kol-2-3[
+
+The game 2048 is a Markov decision process!
+
+- $\mathcal{S}$: all possible configurations of the board (large!)
+- $\mathcal{A}$: swiping left, right, up or down.
+- $P(s'|s,a)$: encodes the game's dynamic
+    - collapse matching tiles
+    - place a random tile on the board
+- $R(s)=1$ if $s$ is a winning state, and $0$ otherwise.
+]
+.kol-1-3[
+.width-100[![](figures/lec8/2048.gif)]
+]
+]
+
+<span class="Q">[Q]</span> For $\gamma<1$, is the optimal solution also the shortest?
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec8/mdp_2x2_3_with_no_canonicalization.svg)]
+
+.center[The transition model for a $2\times 2$ board and a winning state at $8$.]
+
+.footnote[Image credits: [jdlm.info](https://jdlm.info/articles/2018/03/18/markov-decision-process-2048.html), The Mathematics of 2048.]
+
+---
+
+class: middle, center
+
+Optimal play for a $3\times 3$ grid and a winning state at $1024$.
+
+See [jdlm.info: The Mathematics of 2048](https://jdlm.info/articles/2018/03/18/markov-decision-process-2048.html).
+
+---
+
 class: middle
 
 # Partially observable Markov decision processes
@@ -488,12 +507,11 @@ class: middle
 
 # POMPDs
 
-What if the environment is *partially observable*?
+What if the environment is only **partially observable**?
 - The agent does not know in which state $s$ it is in.
-    - Similarly, it cannot evaluate the reward $R(s)$ associated to the unknown state.
-    - Therefore, it makes no sense to talk about a policy $\pi(s)$.
-- Instead, the agent maintains a belief state $b(s)$ (a probability distribution over states) which it can update with the evidence $e$ it collects.
-    - This is filtering!
+    - Therefore, it cannot evaluate the reward $R(s)$ associated to the unknown state.
+    - Also, it makes no sense to talk about a policy $\pi(s)$.
+- Instead, the agent collects percepts $e$ through a sensor model $P(e|s)$, from which it can reason about the unknown state $s$.
 
 .center.width-60[![](figures/lec8/pomdp.png)]
 
@@ -503,9 +521,12 @@ What if the environment is *partially observable*?
 
 class: middle
 
-A **partially observable Markov decision process** (POMDP)
-- has the same elements as an MDP,
-- but adds a sensor model $P(e|s)$.
+We will assume that the agent maintains a belief state $b$.
+- $b$ represents a probability distribution $P(S)$ of the current agent's beliefs over  its state;
+- $b(s)$  denotes the probability $P(S=s)$ under the current belief state;
+- the belief state $b$ is updated as evidence $e$ are collected.
+
+This is filtering!
 
 ---
 
@@ -514,17 +535,17 @@ class: middle
 .grid[
 .kol-1-5.center[
 <br><br><br><br><br>
-$$e\_{t+1}$$
+$$e'$$
 ]
 .kol-3-5.center[
-$$b\_t(s) = P(s\_t | a\_{1:t-1}, e\_{1:t})$$
+$$b$$
 .width-90[![](figures/lec8/loop.png)]
-$$s\_{t+1} \sim P(s\_{t+1}|s\_t,a\_t)$$
-$$e\_{t+1} \sim P(e\_{t+1} | s\_{t+1})$$
+$$s' \sim P(s'|s,a)$$
+$$e' \sim P(e' | s')$$
 ]
 .kol-1-5[
 <br><br><br><br><br>
-$$a\_t$$
+$$a$$
 ]
 ]
 
@@ -542,8 +563,8 @@ In other words, POMDPs can be reduced to an MDP in belief-state space, provided 
 
 class: middle
 
-If $b(s)$ was the previous belief state and the agent does action $a$ and perceives $e$, then the new belief state is given by
-$$b'(s') = \alpha P(e|s') \sum\_{s} P(s'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$$
+If $b$ was the previous belief state and the agent does action $a$ and perceives $e$, then the new belief state over $S'$ is given by
+$$b' = \alpha P(e|S') \sum\_{s} P(S'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$$
 
 Therefore,
 $$
@@ -570,18 +591,18 @@ class: middle
 .grid[
 .kol-1-5.center[
 <br><br><br><br>
-$$b\_{t+1}$$
+$$b'$$
 
-$$\rho\_{t+1}$$
+$$\rho(b')$$
 ]
 .kol-3-5.center[
-$$b\_t$$
+$$b$$
 .width-90[![](figures/lec8/loop.png)]
-$$b\_{t+1} \sim P(b\_{t+1}|b\_t,a\_t)$$
+$$b' \sim P(b'|b,a)$$
 ]
 .kol-1-5[
 <br><br><br><br><br>
-$$a\_t$$
+$$a$$
 ]
 ]
 
@@ -589,9 +610,10 @@ $$a\_t$$
 
 class: middle
 
-Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a *continuous* (and usually high-dimensional) state space.
+Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a **continuous** (and usually high-dimensional) state space.
 - None of the algorithms described earlier directly apply.
-- In fact, solving POMDPs is **very** (actually, PSPACE-)**hard**!
+- In fact, solving POMDPs remains a difficult problem for which there is no known efficient exact algorithm.
+- Yet, Nature is a POMDP.
 
 ---
 
@@ -600,7 +622,7 @@ Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a *continu
 While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent can be constructed for POMDPs:
 - The transition and sensor models are represented by a *dynamic Bayesian network*;
 - The dynamic Bayesian network is extended with decision ($A$) and utility ($R$ and $U$) nodes to form a dynamic decision network;
-- A *filtering algorithm* is used to incorporate each new percept and action and to update the belief state representation;
+- A **filtering algorithm** is used to incorporate each new percept and action and to update the belief state representation;
 - Decisions are made by projecting forward possible action sequences and choosing (approximately) the best one, in a manner similar to a truncated *Expectiminimax*.
 
 ---
@@ -628,15 +650,15 @@ A decision can be extracted from the search tree by backing up the (estimated) u
 
 # Reinforcement learning
 
-The MDP formulation assumes the knowledge of
-- a transition model $P(s'|s,a)$
-- a reward function $R:\mathcal{S} \to \mathbb{R}$
-
+A Markov decision process assumes the knowledge of a transition model $P(s'|s,a)$
+and of a reward function $R$.
 What if these elements are unknown?
+- We do not know which states are good not what actions do!
+- We must observe or interact with the environment in order  to jointly *learn* these dynamics and act upon them.
 
-$\Rightarrow$ We must observe or interact with the environment in order to **learn** the dynamics.
-This is reinforcement learning.
+$\Rightarrow$ This is **reinforcement learning**.
 
+<br>
 .center.width-80[![](figures/lec8/rl.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
@@ -651,6 +673,7 @@ This is reinforcement learning.
     - An optimal policy maximizes the utility of the state sequence encountered when it is executed.
 - Value iteration and policy can both be used for solving MDPs.
 - POMDPs are much more difficult than MDPs. However, a decision-theoretic agent can be constructed for those environments.
+    - Research is going on!
 
 ---
 
@@ -663,4 +686,4 @@ The end.
 
 # References
 
-xxx
+- Åström, Karl J. "Optimal control of Markov processes with incomplete state information." Journal of Mathematical Analysis and Applications 10.1 (1965): 174-205.
