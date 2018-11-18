@@ -12,22 +12,27 @@ Prof. Gilles Louppe<br>
 
 R: add EM?
 R: take the time for linear model -> perceptron -> neural nets -> deep learning
-R: NN for control https://www.youtube.com/watch?v=qv6UVOQ0F44&t=33s
+R: NN for control https://www.youtube.com/watch?v=Ipi40cb_RsI
 
 ---
 
 # Today
 
 .grid[
-.col-2-3[
-- *Learning*
-- *Statistical learning*
-- *Supervised learning*
-- *Reinforcement learning*
-- *Unsupervised learning*
+.kol-2-3[
+- Statistical learning
+- Supervised learning
+    - Linear models
+    - Perceptron
+    - Neural networks
+- Unsupervised learning
 ]
-.col-1-3[![](figures/lec9/rosenblatt.jpg)]
+.kol-1-3[![](figures/lec9/rosenblatt.jpg)]
 ]
+
+???
+
+R: change this picture
 
 ---
 
@@ -47,7 +52,7 @@ R: NN for control https://www.youtube.com/watch?v=qv6UVOQ0F44&t=33s
 # Chomsky vs. Piaget
 
 .grid[
-.col-2-3[
+.kol-2-3[
 - *Noam Chomsky* (innatism):
     - State that humans possess a genetically determined faculty for thought and language.
     - The structures of language and thought are set in motion through interaction with the environment.
@@ -55,7 +60,7 @@ R: NN for control https://www.youtube.com/watch?v=qv6UVOQ0F44&t=33s
     - Deny the existence of innate cognitive structure specific for thought and language.
     - Postulate instead all cognitive acquisitions, including language, to be the outcome of a gradual process of construction, i.e., a learning procedure.
 ]
-.col-1-3[![](figures/lec9/piaget-chomsky.jpg)]
+.kol-1-3[.width-100[![](figures/lec9/piaget-chomsky.jpg)]]
 ]
 
 
@@ -63,10 +68,12 @@ R: NN for control https://www.youtube.com/watch?v=qv6UVOQ0F44&t=33s
 
 ---
 
-# The debate continues...
+class: middle, black-slide
 
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/aCCotxqxFsk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+The debate continues...
 ]
 
 ---
@@ -609,47 +616,7 @@ Deep learning is now at the core of many *state-of-the-art systems*, including:
 
 ---
 
-class: middle, center
-
-# Reinforcement learning
-
----
-
-# Reinforcement learning
-
-- Supervised learning can be used to learn functions or probabilistic models, **provided the (large) availability of training data**.
-- Reinforcement learning (RL) is learning *what to do* in the absence of labeled examples of what to do.
-- Instead of labeled examples, an agent may perceive *sparse* feedback, called **rewards**, indicating whether or not the consequences of its actions were good.
-- In addition, the agent does not know:
-    - how the world works;
-    - how rewards are computed.
-- RL might be considered to encompass all of AI: an agent is placed in an unknown environment and must learn to behave successfully therein.
-
----
-
-# Playing Pinball
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
----
-
-# Playing Seaquest
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/5WXVJ1A0k6Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
----
-
-# Playing Enduro
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/6kO4eZWeKOM?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-<span class="Q">[Q]</span> What about the real world, for which there is no simulator?
+recap with mario kart
 
 ---
 
