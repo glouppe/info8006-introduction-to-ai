@@ -18,7 +18,7 @@ The goal of this programming project is to implement intelligent agents for the 
 - [Instructions](#instructions)
     * [Part 1: Search agent](#search-agent--part-1-3-)
     * [Part 2: Minimax agent](#search-agent-against-ghosts--part-2-3-)
-    * [Part 3: MDP agent](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
+    * [Part 3: Reasoning over time](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
 - [FAQ](#helpers)
     * [Game score](#score)
     * [API](#api)
@@ -104,7 +104,7 @@ You deliverables must be submitted as an archive on the [Montefiore submission p
 
 ### Part 1: Search agent
 
-This part is due on **October 26, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **October 26, 2018 at 23:59**. This is a **hard** deadline.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
@@ -125,7 +125,7 @@ Your report should be organized into 3 parts:
 
 ### Part 2: Minimax agent
 
-This part is due on **November 23, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **November 23, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
 
@@ -151,9 +151,19 @@ Your report should be organized into 3 parts:
   For each ghost agent, report as a bar plot the performance of your 3 Pacman agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the maze layout (`small_adv`, `medium_adv` and `large_adv`) and the ghost agent. Evaluate the impact of your custom evaluation and cutoff functions. Comment on possible improvements.
 
-### Part 3: MDP agent
+### Part 3: Reasoning over time
 
-TBD.
+This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
+
+In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
+
+You are asked to implement a Bayes filter to maintain a belief state about the ghosts locations.
+- The sonar sensor model $P(e_t|x_t)$ is defined as ...
+- The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as ...
+
+You should implement the `update(evidence, beliefs)` method of the human-player `PacmanAgent` class of `bayes.py`.
+
+Your report should be organized...
 
 ---
 
