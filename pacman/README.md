@@ -79,9 +79,24 @@ python run.py --silentdisplay
 python run.py --layout medium
 ```
 
-`--ghostagent`: Start the game with a user-specifed ghost pattern among (`dumby`,`greedy`,`smarty`):
+`--nghosts`: Specifies the maximum number of ghosts:
+```bash
+python run.py --nghosts 1
+```
+
+`--hiddenghosts`: Hides the position of the ghost in the layout (relevant only for Project Part 3):
+```bash
+python run.py --hiddenghosts
+```
+
+`--ghostagent`: Start the game with a user-specifed ghost pattern among (`dumby`,`greedy`,`smarty`,`leftrandy`):
 ```bash
 python run.py --ghostagent greedy
+```
+
+`--bsagentfile`: Start the game with a Belief State agent following a user-defined ghost positions' belief state update policy (relevant only for Project Part 3):
+```bash
+python run.py --bsagentfile beliefstateagent.py
 ```
 
 `-h`: For further details, check the command-line help section:
@@ -158,10 +173,10 @@ This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
 In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
 
 You are asked to implement a Bayes filter to maintain a belief state about the ghosts locations.
-- The sonar sensor model $P(e_t|x_t)$ is defined as ...
+- The sonar sensor model $P(e_t|x_t)$ follows Poisson distribution with lambda=e_t.
 - The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as ...
 
-You should implement the `update(evidence, beliefs)` method of the (human player) `PacmanAgent` class of `bayes.py`.
+You should complete the `updateAndGetBeliefStates(evidences, beliefs)` method of the (human player) `BeliefStateAgent` class of `beliefstateagent.py`.
 
 Your report should be organized...
 

@@ -38,6 +38,34 @@ class GhostAgent(Agent):
            over actions from the provided state."""
         util.raiseNotDefined()
 
+class LeftAlphaRandyGhost(GhostAgent):
+    
+    def getDistribution(self,state):
+        ALPHA=0.7
+        dist = util.Counter()
+        legal = state.getLegalActions(self.index)
+        num_legal = len(legal)
+        for a in state.getLegalActions(self.index):
+            dist[a] = 1/(num_legal-1) if num_legal > 1 else 0
+        
+
+        current = state.getGhostState(self.index).configuration.direction
+        left = Directions.LEFT[current]
+        if current == Directions.STOP:
+            current = Directions.NORTH
+        if left in legal:
+            dist[left] = ALPHA
+        elif current in legal:
+            dist[current] = ALPHA
+        elif Directions.RIGHT[current] in legal:
+            dist[Directions.RIGHT[current]] = ALPHA
+        elif Directions.LEFT[left] in legal:
+            dist[Directions.LEFT[left]] = ALPHA
+        dist.normalize()
+        return dist
+
+
+
 
 class DumbyGhost(GhostAgent):
     "A dumb ghost."

@@ -3,7 +3,7 @@ import os
 from argparse import ArgumentParser, ArgumentTypeError
 
 from pacman_module.pacman import runGame
-from pacman_module.ghostAgents import GreedyGhost, SmartyGhost, DumbyGhost
+from pacman_module.ghostAgents import GreedyGhost, SmartyGhost, DumbyGhost, LeftAlphaRandyGhost
 
 
 def restricted_float(x):
@@ -20,9 +20,9 @@ def positive_integer(x):
     return x
 
 
-def load_agent_from_file(filepath):
+def load_agent_from_file(filepath, class_module):
     class_mod = None
-    expected_class = 'PacmanAgent'
+    expected_class = class_module
     mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
 
     if file_ext.lower() == '.py':
@@ -41,6 +41,7 @@ ghosts = {}
 ghosts["greedy"] = GreedyGhost
 ghosts["smarty"] = SmartyGhost
 ghosts["dumby"] = DumbyGhost
+ghosts["leftrandy"] = LeftAlphaRandyGhost
 
 if __name__ == '__main__':
     usage = """
@@ -51,19 +52,31 @@ if __name__ == '__main__':
     """
 
     parser = ArgumentParser(usage)
-    parser.add_argument('--seed', help='RNG seed', type=int, default=1)
+    parser.add_argument('--seed', help='Seed for random number generator', type=int, default=1)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a `PacmanAgent` class.',
         default="humanagent.py")
     parser.add_argument(
+        '--bsagentfile',
+        help='Python file containing a `BeliefStateAgent` class.',
+        default="beliefstateagent.py")
+    parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["dumby", "greedy", "smarty"], default="greedy")
+        choices=["dumby", "greedy", "smarty","leftrandy"], default="greedy")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
         default="small")
+    parser.add_argument(
+        '--nghosts',
+        help='Maximum number of ghosts in a maze.',
+        type=int,default=1)
+    parser.add_argument(
+        '--hiddenghosts',
+        help='Whether the ghost is hidden or not. Relevant for Project Part 3.',
+        default=False,action="store_true")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
@@ -74,17 +87,21 @@ if __name__ == '__main__':
     if (args.agentfile == "humanagent.py" and args.silentdisplay):
         print("Human agent cannot play without graphical display")
         exit()
-    agent = load_agent_from_file(args.agentfile)(args)
+    agent = load_agent_from_file(args.agentfile,"PacmanAgent")(args)
 
     gagt = ghosts[args.ghostagent]
-    nghosts = 1
+    nghosts = args.nghosts
     if (nghosts > 0):
         gagts = [gagt(i + 1) for i in range(nghosts)]
     else:
         gagts = []
+  
+    bsagt = None
+    if args.hiddenghosts:
+        bsagt = load_agent_from_file(args.bsagentfile,"BeliefStateAgent")(args)
     total_score, total_computation_time, total_expanded_nodes = runGame(
-        args.layout, agent, gagts, not args.silentdisplay, expout=0)
-
+        args.layout, agent, gagts, bsagt, not args.silentdisplay, expout=0, hiddenGhosts=args.hiddenghosts)
+    
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
     print("Total expanded nodes : " + str(total_expanded_nodes))

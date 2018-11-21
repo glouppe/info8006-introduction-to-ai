@@ -26,6 +26,8 @@ import os
 import traceback
 import sys
 import pacman_module as pacmodule
+import numpy as np
+from copy import deepcopy
 
 #######################
 # Parts worth reading #
@@ -89,9 +91,10 @@ class Configuration:
     horizontally and y increases vertically.  Therefore, north is the direction of increasing y, or (0,1).
     """
 
-    def __init__(self, pos, direction):
+    def __init__(self, pos, direction, visible=True):
         self.pos = pos
         self.direction = direction
+        self.visible = visible
 
     def getPosition(self):
         return (self.pos)
@@ -102,6 +105,9 @@ class Configuration:
     def isInteger(self):
         x, y = self.pos
         return x == int(x) and y == int(y)
+
+    def isVisible(self):
+        return self.visible
 
     def __eq__(self, other):
         if other is None:
@@ -129,7 +135,7 @@ class Configuration:
         direction = Actions.vectorToDirection(vector)
         if direction == Directions.STOP:
             direction = self.direction  # There is no stop direction
-        return Configuration((x + dx, y + dy), direction)
+        return Configuration((x + dx, y + dy), direction, self.visible)
 
 
 class AgentState:
@@ -137,19 +143,23 @@ class AgentState:
     AgentStates hold the state of an agent (configuration, speed, scared, etc).
     """
 
-    def __init__(self, startConfiguration, isPacman):
+    def __init__(self, startConfiguration, agtType):
         self.start = startConfiguration
         self.configuration = startConfiguration
-        self.isPacman = isPacman
+        self.agtType = agtType
+        self.isPacman = agtType == 0
         self.scaredTimer = 0
         self.numCarrying = 0
         self.numReturned = 0
+        
 
     def __str__(self):
         if self.isPacman:
             return "Pacman: " + str(self.configuration)
-        else:
+        elif self.agtType > 0:
             return "Ghost: " + str(self.configuration)
+        else:
+            return "BeliefStateAgent"
 
     def __eq__(self, other):
         if other is None:
@@ -160,7 +170,7 @@ class AgentState:
         return hash(hash(self.configuration) + 13 * hash(self.scaredTimer))
 
     def copy(self):
-        state = AgentState(self.start, self.isPacman)
+        state = AgentState(self.start, self.agtType)
         state.configuration = self.configuration
         state.scaredTimer = self.scaredTimer
         state.numCarrying = self.numCarrying
@@ -174,6 +184,9 @@ class AgentState:
 
     def getDirection(self):
         return self.configuration.getDirection()
+
+    def isVisible(self):
+        return self.configuration.isVisible()
 
 
 class Grid:
@@ -421,6 +434,10 @@ class GameStateData:
             self.layout = prevState.layout
             self._eaten = prevState._eaten
             self.score = prevState.score
+            try:
+                self.beliefStates = np.copy(prevState.beliefStates)
+            except:
+                pass
 
         self._foodEaten = None
         self._foodAdded = None
@@ -438,6 +455,10 @@ class GameStateData:
         state._foodEaten = self._foodEaten
         state._foodAdded = self._foodAdded
         state._capsuleEaten = self._capsuleEaten
+        try:
+            state.beliefStates = np.copy(self.beliefStates)
+        except:
+            pass
         return state
 
     def copyAgentStates(self, agentStates):
@@ -543,10 +564,11 @@ class GameStateData:
             return '3'
         return 'E'
 
-    def initialize(self, layout, numGhostAgents):
+    def initialize(self, layout, numGhostAgents, isGhostVisible=True, beliefStateAgent=None):
         """
         Creates an initial game state from a layout array (see layout.py).
         """
+
         self.food = layout.food.copy()
         #self.capsules = []
         self.capsules = layout.capsules[:]
@@ -556,19 +578,46 @@ class GameStateData:
 
         self.agentStates = []
         numGhosts = 0
-        for isPacman, pos in layout.agentPositions:
+        for agtType, pos in layout.agentPositions:
+            isPacman = agtType == 0 
             if not isPacman:
                 if numGhosts == numGhostAgents:
                     continue  # Max ghosts reached already
                 else:
                     numGhosts += 1
-            self.agentStates.append(
-                AgentState(
+                    #If ghost is not visible, it is Project Part III
+                    #Here we choose a random initial location
+                    if not isGhostVisible:
+                        pos = layout.getRandomLegalGhostPosition()
+            agt = AgentState(
                     Configuration(
                         pos,
-                        Directions.STOP),
-                    isPacman))
+                        Directions.STOP, visible=isGhostVisible if not isPacman else True),
+                    agtType)
+            self.agentStates.append(agt)
         self._eaten = [False for a in self.agentStates]
+        if beliefStateAgent is not None:
+            """
+            Create a uniform prior on the belief state
+            """
+            uniformBelief = np.zeros((self.layout.width,self.layout.height))
+            #Count the number of plausible states
+            s = 0
+            for i in range(self.layout.width):
+                for j in range(self.layout.height):
+                    if not self.layout.isWall((i,j)) and self.layout.getPacmanPosition() != (i,j):
+                        s += 1.0
+            for i in range(self.layout.width):
+                for j in range(self.layout.height):
+                    if not self.layout.isWall((i,j)) and self.layout.getPacmanPosition() != (i,j):
+                        uniformBelief[i][j] = 1/s
+            agtState = AgentState(
+                          Configuration(
+                             -1,
+                             (-1,-1), False),
+                             -1)
+            self.agentStates.append(agtState)
+            self.beliefStates = [np.copy(uniformBelief) for _ in range(numGhosts)]
 
 
 try:
@@ -663,7 +712,6 @@ class Game:
             skip_action = False
             # Generate an observation of the state
             observation = self.state.deepCopy()
-
             # Solicit an action
             action = None
             self.mute(agentIndex)
@@ -679,14 +727,14 @@ class Game:
                     violated = True
             totalComputationTime += (time.time() - t)
             totalExpandedNodes += pacmodule.pacman.GameState.countExpanded
-            if action not in self.state.getLegalActions(agentIndex):
+            if not self.state.isLegalAction(agentIndex, action):
                 print("Illegal move !")
                 action = previous_action
             elif violated:
                 print("Node expansion budget violated !")
                 action = previous_action
 
-            if action not in self.state.getLegalActions(agentIndex):
+            if not self.state.isLegalAction(agentIndex,action):
                 action = Directions.STOP
             self.unmute()
             # Execute the action
