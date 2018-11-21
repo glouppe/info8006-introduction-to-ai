@@ -370,6 +370,12 @@ class: middle
 
 .center.width-100[![](figures/lec8/value-iteration.png)]
 
+???
+
+The stopping criterion is based on the fact that if the update is small, then the error is also small. That is, if
+$$||V\_{i+1} - V\_i|| < \epsilon (1-\gamma)/\gamma$$
+then $$||V\_{i+1}-V||<\epsilon$$
+
 ---
 
 class: middle
@@ -465,7 +471,7 @@ class: middle
 
 The game 2048 is a Markov decision process!
 
-- $\mathcal{S}$: all possible configurations of the board (large!)
+- $\mathcal{S}$: all possible configurations of the board (huge!)
 - $\mathcal{A}$: swiping left, right, up or down.
 - $P(s'|s,a)$: encodes the game's dynamic
     - collapse matching tiles
@@ -569,7 +575,8 @@ $$b' = \alpha P(e|S') \sum\_{s} P(S'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$
 Therefore,
 $$
 \begin{aligned}
-P(b'|b,a) &= \sum\_e P(b'|b,a,e) P(e|b,a) \\\\
+P(b'|b,a) &= \sum\_e P(b',e|b,a)\\\\
+&= \sum\_e P(b'|b,a,e) P(e|b,a) \\\\
 &= \sum\_e P(b'|b,a,e) \sum\_{s'} P(e|b,a,s') P(s'|b,a) \\\\
 &= \sum\_e P(b'|b,a,e) \sum\_{s'} P(e|s') \sum\_{s} P(s'|s,a) b(s)
 \end{aligned}
@@ -617,7 +624,7 @@ Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a **contin
 
 ---
 
-# Online agents for POMDPs
+# Online agents
 
 While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent can be constructed for POMDPs:
 - The transition and sensor models are represented by a *dynamic Bayesian network*;
@@ -645,6 +652,14 @@ class: middle
 Part of the look-ahead solution of the previous decision network.
 
 A decision can be extracted from the search tree by backing up the (estimated) utility values from the leaves, taking the average at the chance nodes and taking the maximum at the decision nodes.
+
+???
+
+Notice that there are no chance nodes
+corresponding to the action outcomes; this is because the belief-state update for an action is
+deterministic regardless of the actual outcome.
+
+That is, we transition from $b$ to $b'$, instead of $s$ to $s'$.
 
 ---
 

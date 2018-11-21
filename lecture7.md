@@ -455,7 +455,8 @@ $$
 class: middle
 
 Let the **backward** message $\mathbf{b}\_{k+1:t}$ correspond to $P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
-$$P(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \mathbf{b}\_{k+1:t}$$
+$$P(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
+where $\times$ is a pointwise multiplication of vectors.
 
 
 This backward message can be computed using backwards recursion:
@@ -579,9 +580,10 @@ $$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
 class: middle
 
 - Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
-- If we use column vectors to represent forward and backward messages, then we have:
+- If we use column vectors to represent forward and backward messages, then we have
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
-$$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t}$$
+$$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
+where $\mathbf{b}\_{t:t}$ is an all-one vector of size $S$.
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
 ---
 
