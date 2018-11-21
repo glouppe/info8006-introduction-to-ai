@@ -587,7 +587,7 @@ class GameStateData:
                     numGhosts += 1
                     #If ghost is not visible, it is Project Part III
                     #Here we choose a random initial location
-                    if not isGhostVisible:
+                    if beliefStateAgent is not None:
                         pos = layout.getRandomLegalGhostPosition()
             agt = AgentState(
                     Configuration(
@@ -600,17 +600,7 @@ class GameStateData:
             """
             Create a uniform prior on the belief state
             """
-            uniformBelief = np.zeros((self.layout.width,self.layout.height))
-            #Count the number of plausible states
-            s = 0
-            for i in range(self.layout.width):
-                for j in range(self.layout.height):
-                    if not self.layout.isWall((i,j)) and self.layout.getPacmanPosition() != (i,j):
-                        s += 1.0
-            for i in range(self.layout.width):
-                for j in range(self.layout.height):
-                    if not self.layout.isWall((i,j)) and self.layout.getPacmanPosition() != (i,j):
-                        uniformBelief[i][j] = 1/s
+            uniformBelief = np.full((self.layout.width,self.layout.height), 1.0/(self.layout.width*self.layout.height))
             agtState = AgentState(
                           Configuration(
                              -1,

@@ -53,6 +53,7 @@ import time
 import random
 import os
 import numpy as np
+from copy import deepcopy
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
@@ -352,6 +353,7 @@ class ClassicGameRules:
             display,
             quiet=False,
             catchExceptions=False, hiddenGhosts=False):
+        
         agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + ([beliefStateAgent] if beliefStateAgent is not None else []) 
         initState = GameState()
         initState.initialize(layout, len(ghostAgents), hiddenGhosts=hiddenGhosts, beliefStateAgent=beliefStateAgent)
@@ -489,6 +491,25 @@ class GhostRules:
         
         return possibleActions
     getLegalActions = staticmethod(getLegalActions)
+
+    def getLegalActionsAtPositionAndDirection(state, ghostIndex, position, direction):
+        """
+        Ghosts cannot stop, and cannot turn around unless they
+        reach a dead end, but can turn 90 degrees at intersections.
+        """
+        conf = deepcopy(state.getGhostState(ghostIndex).configuration)
+        conf.pos = position
+        conf.direction = direction
+        possibleActions = Actions.getPossibleActions(
+            conf, state.data.layout.walls)
+        reverse = Actions.reverseDirection(conf.direction)
+        if Directions.STOP in possibleActions:
+            possibleActions.remove(Directions.STOP)
+        if reverse in possibleActions and len(possibleActions) > 1:
+            possibleActions.remove(reverse)
+        
+        return possibleActions
+    getLegalActionsAtPositionAndDirection = staticmethod(getLegalActionsAtPositionAndDirection)
 
     def applyAction(state, action, ghostIndex):
 

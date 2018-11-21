@@ -261,7 +261,6 @@ class PacmanGraphics:
     def update(self, newState):
         agentIndex = newState._agentMoved
         agentState = newState.agentStates[agentIndex]
-        
         if agentState.agtType == -1:
             self.updateDistributions(newState.beliefStates)     
 

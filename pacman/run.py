@@ -3,8 +3,8 @@ import os
 from argparse import ArgumentParser, ArgumentTypeError
 
 from pacman_module.pacman import runGame
-from pacman_module.ghostAgents import GreedyGhost, SmartyGhost, DumbyGhost, LeftAlphaRandyGhost
-
+from pacman_module.ghostAgents import GreedyGhost, SmartyGhost, DumbyGhost, EastRandyGhost
+import numpy as np
 
 def restricted_float(x):
     x = float(x)
@@ -18,6 +18,30 @@ def positive_integer(x):
     if x < 0:
         raise ArgumentTypeError("%r is not >= 0" % (x,))
     return x
+
+def layout_thin_borders(layout,w):
+    if w <= 1:
+        return layout
+    lay = layout.replace(".lay","")
+    with open("pacman_module/layouts/"+lay+".lay") as f:
+        list_lines = f.readlines()
+    old_len = len(list_lines)
+    for _ in range(w*2):
+        list_lines[0] = '%' + list_lines[0] 
+        list_lines[-1] = '%' + list_lines[-1]  
+    for _ in range(w-1):
+        list_lines.insert(0,list_lines[0])
+        list_lines.append(list_lines[0])
+    for i in range (w, len(list_lines)-w):
+        list_lines[i] = list_lines[i].replace("\n","")
+        for _ in range(w):
+            list_lines[i] += '%'
+            list_lines[i] = '%' + list_lines[i]
+        list_lines[i] += "\n"
+    with open("pacman_module/layouts/"+lay+"_thicker.lay", "w+") as f:
+        f.writelines(list_lines)
+    return lay+"_thicker.lay"
+    
 
 
 def load_agent_from_file(filepath, class_module):
@@ -41,7 +65,7 @@ ghosts = {}
 ghosts["greedy"] = GreedyGhost
 ghosts["smarty"] = SmartyGhost
 ghosts["dumby"] = DumbyGhost
-ghosts["leftrandy"] = LeftAlphaRandyGhost
+ghosts["leftrandy"] = EastRandyGhost
 
 if __name__ == '__main__':
     usage = """
@@ -58,10 +82,6 @@ if __name__ == '__main__':
         help='Python file containing a `PacmanAgent` class.',
         default="humanagent.py")
     parser.add_argument(
-        '--bsagentfile',
-        help='Python file containing a `BeliefStateAgent` class.',
-        default="beliefstateagent.py")
-    parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
         choices=["dumby", "greedy", "smarty","leftrandy"], default="greedy")
@@ -75,12 +95,25 @@ if __name__ == '__main__':
         type=int,default=1)
     parser.add_argument(
         '--hiddenghosts',
-        help='Whether the ghost is hidden or not. Relevant for Project Part 3.',
+        help='Whether the ghost is graphically hidden or not.',
         default=False,action="store_true")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
         action="store_true")
+    #Specific to Project III
+    parser.add_argument(
+        '--bsagentfile',
+        help='Python file containing a `BeliefStateAgent` class.',
+        default=None)
+    parser.add_argument(
+        '--w',
+        help='Parameter w as specified in instructions for Project Part 3.',
+        type=int,default=1)
+    parser.add_argument(
+        '--p',
+        help='Parameter p as specified in instructions for Project Part 3.',
+        type=float,default=0.5)
 
     args = parser.parse_args()
 
@@ -92,15 +125,18 @@ if __name__ == '__main__':
     gagt = ghosts[args.ghostagent]
     nghosts = args.nghosts
     if (nghosts > 0):
-        gagts = [gagt(i + 1) for i in range(nghosts)]
+        gagts = [gagt(i + 1, args) for i in range(nghosts)]
     else:
         gagts = []
-  
+    layout = layout_thin_borders(args.layout,args.w)
     bsagt = None
-    if args.hiddenghosts:
+    if args.bsagentfile is not None:
         bsagt = load_agent_from_file(args.bsagentfile,"BeliefStateAgent")(args)
+
+    
+
     total_score, total_computation_time, total_expanded_nodes = runGame(
-        args.layout, agent, gagts, bsagt, not args.silentdisplay, expout=0, hiddenGhosts=args.hiddenghosts)
+        layout, agent, gagts, bsagt, not args.silentdisplay, expout=0, hiddenGhosts=args.hiddenghosts)
     
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))

@@ -23,8 +23,9 @@ import numpy as np
 
 
 class GhostAgent(Agent):
-    def __init__(self, index):
+    def __init__(self, index, args):
         self.index = index
+        self.args = args
 
     def get_action(self, state):
         dist = self.getDistribution(state)
@@ -38,33 +39,56 @@ class GhostAgent(Agent):
            over actions from the provided state."""
         util.raiseNotDefined()
 
-class LeftAlphaRandyGhost(GhostAgent):
-    
-    def getDistribution(self,state):
-        ALPHA=0.7
+
+class EastRandyGhost(GhostAgent):
+
+    def _uniformOverLegalActions(self, state):
+        """
+        Returns uniform discrete distribution over legal actions
+        """
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-        num_legal = len(legal)
-        for a in state.getLegalActions(self.index):
-            dist[a] = 1/(num_legal-1) if num_legal > 1 else 0
-        
-
-        current = state.getGhostState(self.index).configuration.direction
-        left = Directions.LEFT[current]
-        if current == Directions.STOP:
-            current = Directions.NORTH
-        if left in legal:
-            dist[left] = ALPHA
-        elif current in legal:
-            dist[current] = ALPHA
-        elif Directions.RIGHT[current] in legal:
-            dist[Directions.RIGHT[current]] = ALPHA
-        elif Directions.LEFT[left] in legal:
-            dist[Directions.LEFT[left]] = ALPHA
+        for a in legal:
+            dist[a] = 1
         dist.normalize()
         return dist
 
-
+    def getDistribution(self, state):
+        """
+        Returns a distribution such that
+        if East is in legal actions, then
+        select it with 50% probability.
+        If East is select, returns a distribution
+        with East probability set to 1 and 0 for others.
+        If East is not selected, returns a uniform distribution
+        over legal actions (incl. East)
+        """
+        legal = state.getLegalActions(self.index)
+        args = self.args
+        N = len(legal)
+        if Directions.EAST in legal:
+            #Select EAST with probability p
+            dist = util.Counter()
+            dist[Directions.EAST] = args.p
+            
+            for a in legal:
+                if a != Directions.EAST:
+                    dist[a] = (1-args.p)/(N-1)
+            d = util.chooseFromDistribution(dist)
+            #If EAST is not selected,
+            #return uniform distribution over legal actions
+            #Otherwise... return EAST with probability 1 !
+            if d != Directions.EAST:
+                return self._uniformOverLegalActions(state)
+            else:
+                for a in legal:
+                    dist[a] = 0
+                dist[Directions.EAST] = 1
+                dist.normalize()
+                return dist
+        else:
+            return self._uniformOverLegalActions(state)
+        
 
 
 class DumbyGhost(GhostAgent):
@@ -137,7 +161,7 @@ class GreedyGhost(GhostAgent):
         for a in legalActions:
             dist[a] += (1 - bestProb) / len(legalActions)
         dist.normalize()
-        
+
         return dist
 
 
