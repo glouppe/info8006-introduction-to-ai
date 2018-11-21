@@ -120,7 +120,7 @@ class: middle
 - Reward:
 $$
 R(s) = \begin{cases}
--0.3 & \text{for non-terminal states} \\\\
+-0.03 & \text{for non-terminal states} \\\\
 \pm 1  & \text{for terminal states}
 \end{cases}
 $$
@@ -151,7 +151,7 @@ This is similar to search problems, where the successor function could only depe
 .kol-2-3[
 - In deterministic single-agent search problems, our goal was to find an optimal plan, or *sequence* of actions, from start to goal.
 - For MDPs, we want to find an optimal **policy** $\pi^* : \mathcal{S} \to \mathcal{A}$.
-    - A policy $\pi$ maps states to actions.
+    - A policy $\pi$ maps actions to states.
     - An optimal policy is one that maximizes the expected utility, e.g. the expected sum of rewards.
     - An explicit policy defines a reflex agent.
 - Expectiminimax did not compute entire policies, but only some action for a single state.
@@ -160,7 +160,7 @@ This is similar to search problems, where the successor function could only depe
 .kol-1-3[
 <br>
 .width-100[![](figures/lec8/optimal-policy.png)]
-.center[Optimal policy when $R(s)=-0.3$ for all non-terminal states $s$.]
+.center[Optimal policy when $R(s)=-0.03$ for all non-terminal states $s$.]
 ]
 ]
 

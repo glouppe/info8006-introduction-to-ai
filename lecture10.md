@@ -15,8 +15,6 @@ R: explain limitations of dividing by tasks -> hence nn
 R: check KC tuto on NLP
 R: emergent communication
 
-R: check https://gitlab.com/Valiox/voice-transfer-across-languages
-
 ---
 
 # Today
