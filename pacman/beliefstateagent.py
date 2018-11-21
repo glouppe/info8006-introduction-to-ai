@@ -14,11 +14,10 @@ class BeliefStateAgent(Agent):
         """
         self.args = args
         
-
     def updateAndGetBeliefStates(self, sensors, belief_states):
         """
         Given a list of (noised) distances from pacman to ghosts,
-        returns a list of belief states about ghosts positions     
+        returns a list of belief states about ghosts positions
 
         Arguments:
         ----------
@@ -26,7 +25,7 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        - A list of belief states about ghost positions 
+        - A list of belief states about ghost positions
           as N*M numpy matrices of probabilities
           where N and M are respectively width and height
           of the maze layout.
@@ -42,7 +41,7 @@ class BeliefStateAgent(Agent):
             beliefStates[z] /= np.sum(beliefStates[z])
         # End of modification
 
-        
+
 
         return beliefStates
 
@@ -61,7 +60,7 @@ class BeliefStateAgent(Agent):
         """
 
         """
-           XXX: Do NOT modify that function. 
+           XXX: Do NOT modify that function.
                 Doing so will result in a 0 grade.
         """
         return self.updateAndGetBeliefStates(state.getNoisyGhostDistances(), state.getGhostBeliefStates())
