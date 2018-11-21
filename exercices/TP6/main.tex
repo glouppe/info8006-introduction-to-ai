@@ -1,0 +1,165 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage{vmargin}
+
+\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
+%------------------------------Packages généraux------------------------------
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage{scrextend}
+\usepackage{hyperref}
+
+%-------------------------Mathématiques------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{eucal}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%-----------------------Codes et algorithmes--------------------------
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{clrscode3e}
+
+%------------------------------Graphics------------------------------
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+%\usepackage{slashbox}
+%------------------------------Syntaxe------------------------------
+
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+
+\def\refmark#1{\hbox{$^{\ref{#1}}$}}
+\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
+\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
+
+%------------------------------Inclure code MatLab------------------------------
+
+\usepackage{listings}
+\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
+\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%------------------Sub-sections--------%
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\makeatletter
+% on fixe le langage utilisé
+\lstset{language=matlab}
+\edef\Motscle{emph={\lst@keywords}}
+\expandafter\lstset\expandafter{%
+  \Motscle}
+\makeatother
+
+
+\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
+
+\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
+basicstyle=\styleC,
+keywordstyle=\ttfamily,
+commentstyle=\color{Ggris}\styleD, % commentaire en gris
+numberstyle=\tiny\color{red},
+numbers=left,
+numbersep=10pt,
+lineskip=0.7pt,
+showstringspaces=false}
+%  % inclure le fichier source
+\newcommand{\FSource}[1]{%
+\lstinputlisting[texcl=true]{#1}
+}
+\newenvironment{solution}
+    {%\begin{center}
+    %\begin{tabular}{|p{0.9\textwidth}|}
+    %\hline\\
+    \color{red}
+    }
+    { 
+    %\\\\\hline
+    %\end{tabular} 
+    %\end{center}
+    \color{black}
+    }
+\usepackage[section]{placeins}
+
+\let\cleardoublepage\clearpage
+
+\usepackage{hyperref}
+               
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+    
+\renewcommand{\arraystretch}{1.2}
+%------------------------------Début du document------------------------------
+\begin{document}
+%------------------------------Page de garde------------------------------
+
+
+  % \frontmatter
+  %\tableofcontents
+   \setcounter{page}{1}
+%%%%%%%%% TP 6 %%%%%%%%%%%
+   \section{Reasoning over time (22/11/2018)}
+   
+   \subsection{Objectives}
+   At the end of this repetition you should be able to:
+   \begin{itemize}
+       \item Define a Markov Model
+       \item Define what is Filtering/Prediction/Smoothing/Most Likely Explanation in general and how it is done in the context of Markov Model
+       \item Explain the simplified matrix representation of HMM (Hidden Markov Model).
+       \item Define what is a Kalman filter and be able to use it in the context of a dynamic random process.
+   \end{itemize}
+   \subsection{Exercises }
+   \subsubsection{The coin ($\approx 30$ minutes)}
+   You are in a room containing a table, on this table are placed 3 very precious biased coins (named A, B and C). Suddenly another person enters the room and takes the coins. He decides to throw 4 times a coin and then asks you 4 questions, before that he provides you the following information. First he tells you that he has selected the first coin uniformly at random. Then, to chose the next coins he has kept the same coin with a probability 2/3 or he has replaced it by another coin with equal probabilities, afterward he has thrown the selected coin. When you entered the room you inspected the coins and noticed that the coin A has a head probability of 80\%, the B 50\% and the C 20\%. The result of the throws are head, head, tail and head. 
+   If you answer right to his questions he will give you the coins. The questions are the following:
+   \begin{enumerate}
+       \item Give the hidden Markov model of this statement.
+       \item What are the probabilities of the last coin given the sequence of evidence ?
+       \item What are the probabilities of the first coin chosen given the sequence evidence ? And of the first coin thrown ?
+       \item What is the most likely sequence of coins thrown ?
+       
+   \end{enumerate}
+   \subsubsection{Hyperloop($\approx 25$ minutes)}
+   This year ULiège has decided to get into the hyperloop competition\footnote{https://www.spacex.com/hyperloop}. Briefly, what you should do to win this competition is to build the fastest and most reliable autonomous pod. 
+   
+   One of the most important engineering problem to build the pod is to be able to compute a robust estimation of the state of the pod (position, speed) given many noisy sensors. 
+   
+   This morning you received a mail asking you what would be your solution to this estimation problem. The mail contains information about the sensors they plan to put in the pod. They say that they will use 3 unbiased speed sensors with a 99.7\% accuracy\footnote{It means that 99.7\% of the value measured will get a smaller error. e.g. (\url{https://math.stackexchange.com/questions/1412683/3-sigma-approximation})} of 0.1m/s and a GPS sensor (also unbiased) which provides the pod's position (in one dimension) with a 99.7\% precision of 1 meter. After some research on the web you found out that you should use a Kalman filter to solve this task. Thus you have to define the key elements of the Kalman filter in the context of the state estimation of the ULiège's pod. Please define below these elements, you can assume that the acceleration $a$ is distributed normally around $\mu_a m/s^2$ with a variance equal to $\sigma_a^2$.
+   \subsection{Supplementary material}
+   \url{http://ai.berkeley.edu/sections/section_6.pdf}
+\end{document}
