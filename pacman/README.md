@@ -101,12 +101,12 @@ python run.py --bsagentfile beliefstateagent.py
 
 `--p`: Specifies the 'p' parameter for ghost transition model (only relevant for Project Part 3, see instructions):
 ```bash
-python run.py --bsagentfile beliefstateagent.py
+python run.py --p 0.5
 ```
 
 `--w`: Specifies the 'w' parameter for sonar sensor model (only relevant for Project Part 3, see instructions):
 ```bash
-python run.py --bsagentfile beliefstateagent.py
+python run.py --w 1
 ```
 
 `-h`: For further details, check the command-line help section:
