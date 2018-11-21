@@ -174,7 +174,8 @@ In the last part of the project, ghosts are no longer visible to Pacman! However
 
 You are asked to implement a Bayes filter to maintain a belief state about the ghosts locations.
 - The sonar sensor model $P(e_t|x_t)$ follows Poisson distribution with lambda=e_t.
-- The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as ...
+- The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as the following : $\alpha$ for the first available action in $\left[ North, South, East, West \right]$ and $\frac{1 - \alpha}{N-1}$ where $\alpha \in \left{ 0.3,0.5,0.7 \right}$ and $N$ is the number of legal action for a ghost in $x_t$
+- The initial position $P(x_{1})$ follows an uniform distribution over legal positions (i.e., where neither Pacman or a wall is located).
 
 You should complete the `updateAndGetBeliefStates(evidences, beliefs)` method of the (human player) `BeliefStateAgent` class of `beliefstateagent.py`.
 
