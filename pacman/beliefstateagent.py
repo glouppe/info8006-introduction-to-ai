@@ -22,7 +22,7 @@ class BeliefStateAgent(Agent):
         self.beliefGhostStates = None
         """
            Dictionary of legal actions per (x,y,dir) keys
-           where x and y are respectively the horizontal 
+           where x and y are respectively the horizontal
            and the vertical location of the ghost,
            and dir is the orientation of the ghost
            (Necessary because Ghosts cannot make half-turn).
@@ -49,7 +49,6 @@ class BeliefStateAgent(Agent):
         N.B. : [1,1] is the bottom left corner of the maze
         """
 
-        
         beliefStates = self.beliefGhostStates
         # Random normalized probabilities
         # XXX: Modify this part *only*
@@ -62,7 +61,7 @@ class BeliefStateAgent(Agent):
         self.beliefGhostStates = beliefStates
         return beliefStates
 
-    def _computeNoisyPositions(self,state):
+    def _computeNoisyPositions(self, state):
         """
             Compute a noisy position from true ghosts positions.
             XXX: DO NOT MODIFY THAT FUNCTION !!!
@@ -70,19 +69,18 @@ class BeliefStateAgent(Agent):
         """
         positions = state.getGhostPositions()
         w = self.args.w
-        
-        div = float(w*w)
+
+        div = float(w * w)
         new_positions = []
         for p in positions:
-            (x,y) = p
+            (x, y) = p
             dist = util.Counter()
-            for i in range(x-w,x+w):
-                for j in range(y-w,y+w):
-                    dist[(i,j)] = 1.0/(w*w)
+            for i in range(x - w, x + w):
+                for j in range(y - w, y + w):
+                    dist[(i, j)] = 1.0 / (w * w)
             dist.normalize()
             new_positions.append(util.chooseFromDistribution(dist))
         return new_positions
-            
 
     def get_action(self, state):
         """
@@ -102,7 +100,7 @@ class BeliefStateAgent(Agent):
            XXX: DO NOT MODIFY THAT FUNCTION !!!
                 Doing so will result in a 0 grade.
         """
-        
+
         # XXX : You shouldn't care on what is going on below.
         # Variables are specified in constructor.
         if self.beliefGhostStates is None:
@@ -111,7 +109,14 @@ class BeliefStateAgent(Agent):
             self.legalActionsPerGhostPosition = dict()
             for i in range(self.beliefGhostStates[0].shape[0]):
                 for j in range(self.beliefGhostStates[0].shape[1]):
-                    for direction in [Directions.NORTH, Directions.SOUTH, Directions.WEST, Directions.EAST]:
-                        self.legalActionsPerGhostPosition[(i,j,direction)] = GhostRules.getLegalActionsAtPositionAndDirection(state, 1, (i,j), direction) if not state.hasWall(i,j) else []     
+                    for d in [
+                            Directions.NORTH,
+                            Directions.SOUTH,
+                            Directions.WEST,
+                            Directions.EAST]:
+                        self.legalActionsPerGhostPosition[(i, j, d)] = \
+                            GhostRules.getLegalActionsAtPositionAndDirection(
+                            state, 1, (i, j), d)\
+                            if not state.hasWall(i, j) else []
         return self.updateAndGetBeliefStates(
             self._computeNoisyPositions(state))

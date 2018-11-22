@@ -67,17 +67,17 @@ class EastRandyGhost(GhostAgent):
         args = self.args
         N = len(legal)
         if Directions.EAST in legal:
-            #Select EAST with probability p
+            # Select EAST with probability p
             dist = util.Counter()
             dist[Directions.EAST] = args.p
-            
+
             for a in legal:
                 if a != Directions.EAST:
-                    dist[a] = (1-args.p)/(N-1)
+                    dist[a] = (1 - args.p) / (N - 1)
             d = util.chooseFromDistribution(dist)
-            #If EAST is not selected,
-            #return uniform distribution over legal actions
-            #Otherwise... return EAST with probability 1 !
+            # If EAST is not selected,
+            # return uniform distribution over legal actions
+            # Otherwise... return EAST with probability 1 !
             if d != Directions.EAST:
                 return self._uniformOverLegalActions(state)
             else:
@@ -88,7 +88,6 @@ class EastRandyGhost(GhostAgent):
                 return dist
         else:
             return self._uniformOverLegalActions(state)
-        
 
 
 class DumbyGhost(GhostAgent):
@@ -116,8 +115,8 @@ class DumbyGhost(GhostAgent):
 class GreedyGhost(GhostAgent):
     "A greedy ghost."
 
-    def __init__(self, index, prob_attack=1.0, prob_scaredFlee=1.0):
-        self.index = index
+    def __init__(self, index, args, prob_attack=1.0, prob_scaredFlee=1.0):
+        GhostAgent.__init__(self, index, args)
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee
 
@@ -168,13 +167,14 @@ class GreedyGhost(GhostAgent):
 class SmartyGhost(GhostAgent):
     """A smart ghost"""
 
-    def __init__(self, index):
+    def __init__(self, index, args):
+        GhostAgent.__init__(self, index, args)
         self.index = index
         self.fscore = None
         self.gscore = None
         self.wasScared = False
         self.corners = None
-        self.gghost = GreedyGhost(index)
+        self.gghost = GreedyGhost(index, args)
 
     def _pathsearch(self, state, fscore_in, gscore_in, goal):
         fringe = PriorityQueue()
