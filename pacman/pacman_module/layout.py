@@ -80,11 +80,22 @@ class Layout:
         return self.walls[x][col]
 
     def getRandomLegalPosition(self):
-        x = random.choice(list(range(self.width)))
-        y = random.choice(list(range(self.height)))
+        x = random.choice(list(range(1,self.width)))
+        y = random.choice(list(range(1,self.height)))
         while self.isWall((x, y)):
-            x = random.choice(list(range(self.width)))
-            y = random.choice(list(range(self.height)))
+            x = random.choice(list(range(1,self.width)))
+            y = random.choice(list(range(1,self.height)))
+        #print(x,y)
+        return (x, y)
+
+    def getPacmanPosition(self): return self.pacPos
+
+    def getRandomLegalGhostPosition(self):
+        x = random.choice(list(range(self.width-1)))
+        y = random.choice(list(range(self.height-1)))
+        while self.isWall((x, y)) or (x,y) == self.pacPos:
+            x = random.choice(list(range(self.width-1)))
+            y = random.choice(list(range(self.height-1)))
         return (x, y)
 
     def getRandomCorner(self):
@@ -127,7 +138,7 @@ class Layout:
                 layoutChar = layoutText[maxY - y][x]
                 self.processLayoutChar(x, y, layoutChar)
         self.agentPositions.sort()
-        self.agentPositions = [(i == 0, pos) for i, pos in self.agentPositions]
+        #self.agentPositions = [(i, pos) for i, pos in self.agentPositions]
 
     def processLayoutChar(self, x, y, layoutChar):
         if layoutChar == '%':
@@ -138,6 +149,7 @@ class Layout:
             self.capsules.append((x, y))
         elif layoutChar == 'P':
             self.agentPositions.append((0, (x, y)))
+            self.pacPos = (x,y)
         elif layoutChar in ['G']:
             self.agentPositions.append((1, (x, y)))
             self.numGhosts += 1

@@ -16,6 +16,7 @@ from .graphicsUtils import *
 import math
 import time
 from .game import Directions
+import numpy as np
 
 ###########################
 #  GRAPHICS DISPLAY CODE  #
@@ -260,13 +261,15 @@ class PacmanGraphics:
     def update(self, newState):
         agentIndex = newState._agentMoved
         agentState = newState.agentStates[agentIndex]
+        if agentState.agtType == -1:
+            self.updateDistributions(newState.beliefStates)     
 
         if self.agentImages[agentIndex][0].isPacman != agentState.isPacman:
             self.swapImages(agentIndex, agentState)
         prevState, prevImage = self.agentImages[agentIndex]
         if agentState.isPacman:
             self.animatePacman(agentState, prevState, prevImage)
-        else:
+        elif agentState.isPacman != -1:
             self.moveGhost(agentState, agentIndex, prevState, prevImage)
         self.agentImages[agentIndex] = (agentState, prevImage)
 
@@ -363,6 +366,9 @@ class PacmanGraphics:
 
     def drawGhost(self, ghost, agentIndex):
         pos = self.getPosition(ghost)
+        if not ghost.isVisible():
+            #Ghost is not visible, cannot draw it
+            return 
         dir = self.getDirection(ghost)
         (screen_x, screen_y) = (self.to_screen(pos))
         coords = []
@@ -465,6 +471,9 @@ class PacmanGraphics:
                    self.gridSize * GHOST_SIZE * 0.08)
 
     def moveGhost(self, ghost, ghostIndex, prevGhost, ghostImageParts):
+        if not ghost.isVisible():
+            #Ghost is not visible, cannot draw it
+            return
         old_x, old_y = self.to_screen(self.getPosition(prevGhost))
         new_x, new_y = self.to_screen(self.getPosition(ghost))
         delta = new_x - old_x, new_y - old_y
@@ -803,7 +812,7 @@ class PacmanGraphics:
             for cell in self.expandedCells:
                 remove_from_screen(cell)
 
-    def updateDistributions(self, distributions):
+    def updateDistributions_bak(self, distributions):
         "Draws an agent's belief distributions"
         # copy all distributions so we don't change their state
         distributions = [x.copy() for x in distributions]
@@ -813,6 +822,30 @@ class PacmanGraphics:
             for y in range(len(self.distributionImages[0])):
                 image = self.distributionImages[x][y]
                 weights = [dist[(x, y)] for dist in distributions]
+
+                if sum(weights) != 0:
+                    pass
+                # Fog of war
+                color = [0.0, 0.0, 0.0]
+                colors = GHOST_VEC_COLORS[1:]  # With Pacman
+                if self.capture:
+                    colors = GHOST_VEC_COLORS
+                for weight, gcolor in zip(weights, colors):
+                    color = [min(1.0, c + 0.95 * g * weight ** .3)
+                             for c, g in zip(color, gcolor)]
+                changeColor(image, formatColor(*color))
+        refresh()
+
+    def updateDistributions(self, distributions):
+        "Draws an agent's belief distributions"
+        # copy all distributions so we don't change their state
+        distributions = [np.copy(x) for x in distributions]
+        if self.distributionImages is None:
+            self.drawDistributions(self.previousState)
+        for x in range(len(self.distributionImages)):
+            for y in range(len(self.distributionImages[0])):
+                image = self.distributionImages[x][y]
+                weights = [dist[x][y] for dist in distributions]
 
                 if sum(weights) != 0:
                     pass

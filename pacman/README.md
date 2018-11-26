@@ -7,7 +7,7 @@
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
 - **Part 1.** You must implement a Search agent for eating all the food dots as quickly as possible.
 - **Part 2.** You must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
-- **Part 3.** You must implement a MDP agent for eating all the food dots as quickly as possible, in a maze where some of the walls may appear and disappear at random.
+- **Part 3.** You must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
 
 
 ## Table of contents
@@ -16,9 +16,9 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Setup](#setup)
     * [Usage](#usage)
 - [Instructions](#instructions)
-    * [Part 1: Search agent](#search-agent--part-1-3-)
-    * [Part 2: Minimax agent](#search-agent-against-ghosts--part-2-3-)
-    * [Part 3: MDP agent](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
+    * [Part 1: Search agent](#part-1-search-agent)
+    * [Part 2: Minimax agent](#part-2-minimax-agent)
+    * [Part 3: Reasoning over time](#part-3-reasoning-over-time)
 - [FAQ](#helpers)
     * [Game score](#score)
     * [API](#api)
@@ -79,9 +79,34 @@ python run.py --silentdisplay
 python run.py --layout medium
 ```
 
-`--ghostagent`: Start the game with a user-specifed ghost pattern among (`dumby`,`greedy`,`smarty`):
+`--nghosts`: Specifies the maximum number of ghosts:
+```bash
+python run.py --nghosts 1
+```
+
+`--hiddenghosts`: Hides the position of the ghost in the layout (relevant only for Project Part 3):
+```bash
+python run.py --hiddenghosts
+```
+
+`--ghostagent`: Start the game with a user-specifed ghost pattern among (`dumby`,`greedy`,`smarty`,`leftrandy`):
 ```bash
 python run.py --ghostagent greedy
+```
+
+`--bsagentfile`: Start the game with a Belief State agent following a user-defined ghost positions' belief state update policy (relevant only for Project Part 3):
+```bash
+python run.py --bsagentfile beliefstateagent.py
+```
+
+`--p`: Specifies the 'p' parameter for ghost transition model (only relevant for Project Part 3, see instructions):
+```bash
+python run.py --p 0.5
+```
+
+`--w`: Specifies the 'w' parameter for sonar sensor model (only relevant for Project Part 3, see instructions):
+```bash
+python run.py --w 1
 ```
 
 `-h`: For further details, check the command-line help section:
@@ -104,7 +129,7 @@ You deliverables must be submitted as an archive on the [Montefiore submission p
 
 ### Part 1: Search agent
 
-This part is due on **October 26, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **October 26, 2018 at 23:59**. This is a **hard** deadline.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
@@ -125,7 +150,7 @@ Your report should be organized into 3 parts:
 
 ### Part 2: Minimax agent
 
-This part is due on **November 23, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **November 23, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
 
@@ -151,9 +176,25 @@ Your report should be organized into 3 parts:
   For each ghost agent, report as a bar plot the performance of your 3 Pacman agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the maze layout (`small_adv`, `medium_adv` and `large_adv`) and the ghost agent. Evaluate the impact of your custom evaluation and cutoff functions. Comment on possible improvements.
 
-### Part 3: MDP agent
+### Part 3: Reasoning over time
 
-TBD.
+This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
+
+In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
+
+You are asked to implement a Bayes filter to maintain a belief state about the ghost locations, as if there were no walls on the map.
+- The sonar sensor model $P(e_t|x_t)$ follows  a uniform $w\times w$ discrete distribution centered around the unknown position $x_t$ of the ghost.
+- The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as follows: If `East` is a legal action, then the ghost selects this action with a probability $0 \leq p \leq 1$. If it does not select it, then it follows uniformly at random one of the legal actions (including `East`).
+    If `East` is not a legal action, the ghost takes uniformly at random one of the legal actions.
+- The initial ghost position follows a uniform distribution over legal positions (i.e., where neither Pacman nor a wall is located).
+
+You should complete the method `updateAndGetBeliefStates(evidences)` method of the `BeliefStateAgent` class of `beliefstateagent.py`. To test your implementation, specify `beliefstateagent.py` as a parameter of the argument `--bsagentfile`.
+
+Your report should be organized as follows:
+1. For the `observer.lay` map, illustrate and discuss the convergence of your belief state with respect to $w \in \{ 1, 3, 5\}$, $p$ and the number of time steps.
+2. Discuss how you would improve your agent to take into account measurements that are not physically possible, such as a position that actually corresponds to a wall.
+
+Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
 
 ---
 
