@@ -7,7 +7,7 @@
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
 - **Part 1.** You must implement a Search agent for eating all the food dots as quickly as possible.
 - **Part 2.** You must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
-- **Part 3.** You must implement a MDP agent for eating all the food dots as quickly as possible, in a maze where some of the walls may appear and disappear at random.
+- **Part 3.** You must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
 
 
 ## Table of contents
@@ -16,9 +16,9 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Setup](#setup)
     * [Usage](#usage)
 - [Instructions](#instructions)
-    * [Part 1: Search agent](#search-agent--part-1-3-)
-    * [Part 2: Minimax agent](#search-agent-against-ghosts--part-2-3-)
-    * [Part 3: Reasoning over time](#search-agent-against-ghosts-with-blinking-walls--part-3-3-)
+    * [Part 1: Search agent](#part-1-search-agent)
+    * [Part 2: Minimax agent](#part-2-minimax-agent)
+    * [Part 3: Reasoning over time](#part-3-reasoning-over-time)
 - [FAQ](#helpers)
     * [Game score](#score)
     * [API](#api)

@@ -22,9 +22,10 @@ def positive_integer(x):
     return x
 
 
-def layout_thin_borders(layout, w):
-    if w <= 1:
+def layout_thin_borders(layout, thickness):
+    if thickness <= 1:
         return layout
+    w = thickness-1
     lay = layout.replace(".lay", "")
     with open("pacman_module/layouts/" + lay + ".lay") as f:
         list_lines = f.readlines()
@@ -32,10 +33,10 @@ def layout_thin_borders(layout, w):
     for _ in range(w * 2):
         list_lines[0] = '%' + list_lines[0]
         list_lines[-1] = '%' + list_lines[-1]
-    for _ in range(w - 1):
+    for _ in range(w):
         list_lines.insert(0, list_lines[0])
         list_lines.append(list_lines[0])
-    for i in range(w, len(list_lines) - w):
+    for i in range(w+1, len(list_lines) - w-1):
         list_lines[i] = list_lines[i].replace("\n", "")
         for _ in range(w):
             list_lines[i] += '%'

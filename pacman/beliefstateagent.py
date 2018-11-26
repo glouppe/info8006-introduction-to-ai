@@ -20,14 +20,8 @@ class BeliefStateAgent(Agent):
         """
         # Current list of belief states over ghost positions
         self.beliefGhostStates = None
-        """
-           Dictionary of legal actions per (x,y,dir) keys
-           where x and y are respectively the horizontal
-           and the vertical location of the ghost,
-           and dir is the orientation of the ghost
-           (Necessary because Ghosts cannot make half-turn).
-        """
-        self.legalActionsPerGhostPosition = None
+        # Grid of walls (assigned with 'state.getWalls()' method) 
+        self.walls = None
 
     def updateAndGetBeliefStates(self, evidences):
         """
@@ -41,23 +35,18 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        - A list of Z belief states about ghost positions
+        - A list of Z belief states at state x_{t} about ghost positions
           as N*M numpy matrices of probabilities
           where N and M are respectively width and height
           of the maze layout and Z is the number of ghosts.
 
-        N.B. : [1,1] is the bottom left corner of the maze
+        N.B. : [0,0] is the bottom left corner of the maze
         """
 
         beliefStates = self.beliefGhostStates
-        # Random normalized probabilities
-        # XXX: Modify this part *only*
-        for z in range(len(beliefStates)):
-            for i in range(beliefStates[z].shape[0]):
-                for j in range(beliefStates[z].shape[1]):
-                    beliefStates[z][i][j] = np.random.random()
-            beliefStates[z] /= np.sum(beliefStates[z])
-        # End of modifications
+        # XXX: Your code here
+        pass
+        # XXX: End of your code
         self.beliefGhostStates = beliefStates
         return beliefStates
 
@@ -77,8 +66,7 @@ class BeliefStateAgent(Agent):
             dist = util.Counter()
             for i in range(x - w, x + w):
                 for j in range(y - w, y + w):
-                    dist[(i, j)] = 1.0 / (w * w)
-            dist.normalize()
+                    dist[(i, j)] = 1.0 / div
             new_positions.append(util.chooseFromDistribution(dist))
         return new_positions
 
@@ -105,18 +93,7 @@ class BeliefStateAgent(Agent):
         # Variables are specified in constructor.
         if self.beliefGhostStates is None:
             self.beliefGhostStates = state.getGhostBeliefStates()
-        if self.legalActionsPerGhostPosition is None:
-            self.legalActionsPerGhostPosition = dict()
-            for i in range(self.beliefGhostStates[0].shape[0]):
-                for j in range(self.beliefGhostStates[0].shape[1]):
-                    for d in [
-                            Directions.NORTH,
-                            Directions.SOUTH,
-                            Directions.WEST,
-                            Directions.EAST]:
-                        self.legalActionsPerGhostPosition[(i, j, d)] = \
-                            GhostRules.getLegalActionsAtPositionAndDirection(
-                            state, 1, (i, j), d)\
-                            if not state.hasWall(i, j) else []
+        if self.walls is None:
+            self.walls = state.getWalls()
         return self.updateAndGetBeliefStates(
             self._computeNoisyPositions(state))

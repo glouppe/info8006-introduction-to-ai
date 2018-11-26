@@ -486,7 +486,7 @@ class GhostRules:
         reverse = Actions.reverseDirection(conf.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
-        if reverse in possibleActions and len(possibleActions) > 1:
+        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
         
         return possibleActions
@@ -505,7 +505,7 @@ class GhostRules:
         reverse = Actions.reverseDirection(conf.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
-        if reverse in possibleActions and len(possibleActions) > 1:
+        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
         
         return possibleActions
