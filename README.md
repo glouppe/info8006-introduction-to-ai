@@ -38,9 +38,9 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ### Pacman programming project
 
-- Pacman Part 1/3: [Search agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-1-search-agent). Due on October 26.
-- Pacman Part 2/3: [Minimax agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-2-minimax-agent). Due on November 23.
-- Pacman Part 3/3: [Reasoning over time](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-3-reasoning-over-time) Due on December 21.
+- Pacman Part 1/3: [Search agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-1-search-agent). Due by October 26.
+- Pacman Part 2/3: [Minimax agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-2-minimax-agent). Due by November 23.
+- Pacman Part 3/3: [Reasoning over time](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-3-reasoning-over-time) Due by December 21.
 
 Further instructions can be found in the [`/pacman/`](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman) folder.
 
