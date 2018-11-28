@@ -333,9 +333,13 @@ class: middle
 
 - Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ attribute or feature values.
 - If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
-.center.width-80[![](figures/lec9/features.png)]
+.center.width-90[![](figures/lec9/features.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+R: change this figure
 
 ---
 
@@ -942,10 +946,6 @@ Deep learning and AI at NVIDIA
 class: middle
 
 # Unsupervised learning
-
-???
-
-R: expand with tenenbaum videos? (intuitive physics)
 
 ---
 
