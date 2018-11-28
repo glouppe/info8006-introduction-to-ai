@@ -1,0 +1,202 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage{vmargin}
+
+\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
+%------------------------------Packages généraux------------------------------
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage{scrextend}
+\usepackage{hyperref}
+\usepackage{eurosym}
+
+%-------------------------Mathématiques------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{eucal}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%-----------------------Codes et algorithmes--------------------------
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{clrscode3e}
+
+%------------------------------Graphics------------------------------
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+%\usepackage{slashbox}
+%------------------------------Syntaxe------------------------------
+
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+
+\def\refmark#1{\hbox{$^{\ref{#1}}$}}
+\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
+\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
+
+%------------------------------Inclure code MatLab------------------------------
+
+\usepackage{listings}
+\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
+\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%------------------Sub-sections--------%
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\makeatletter
+% on fixe le langage utilisé
+\lstset{language=matlab}
+\edef\Motscle{emph={\lst@keywords}}
+\expandafter\lstset\expandafter{%
+  \Motscle}
+\makeatother
+
+
+\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
+
+\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
+basicstyle=\styleC,
+keywordstyle=\ttfamily,
+commentstyle=\color{Ggris}\styleD, % commentaire en gris
+numberstyle=\tiny\color{red},
+numbers=left,
+numbersep=10pt,
+lineskip=0.7pt,
+showstringspaces=false}
+%  % inclure le fichier source
+\newcommand{\FSource}[1]{%
+\lstinputlisting[texcl=true]{#1}
+}
+\newenvironment{solution}
+    {%\begin{center}
+    %\begin{tabular}{|p{0.9\textwidth}|}
+    %\hline\\
+    \color{red}
+    }
+    { 
+    %\\\\\hline
+    %\end{tabular} 
+    %\end{center}
+    \color{black}
+    }
+\usepackage[section]{placeins}
+
+\let\cleardoublepage\clearpage
+
+\usepackage{hyperref}
+               
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+    
+\renewcommand{\arraystretch}{1.2}
+%------------------------------Début du document------------------------------
+\begin{document}
+%------------------------------Page de garde------------------------------
+
+
+  % \frontmatter
+  %\tableofcontents
+   \setcounter{page}{1}
+%%%%%%%%% TP 6 %%%%%%%%%%%
+   \section{Making decisions (29/11/2018)}
+   
+   \subsection{Objectives}
+   At the end of this repetition you should be able to:
+   \begin{itemize}
+       \item Define a Markov Decision Process (MDP)
+       \item Define what is the reward, the Expected Utility, an Optimal Policy.
+       \item Define the Bellman equations of a simple MDP and apply value iteration.
+       \item Define and apply policy iteration.
+       \item Define a Partially Observable Markov Decision Process.
+       \item Explain the difference between Model-based and Model-free reinforcement algorithms.
+   \end{itemize}
+   \subsection{Exercises}
+   \subsubsection{MDPs: Micro-Blackjack \protect\footnote{source: \url{http://ai.berkeley.edu/sections/section_4_9vzQ4e7e6xqagFuQDinu0lmeSEI29Z.pdf}} ($\approx 20$ min)}
+   In micro-blackjack, you repeatedly draw a card (with replacement) that is equally likely to be a 2, 3, or 4. You
+can either Draw or Stop if the total score of the cards you have drawn is less than 6. Otherwise, you must Stop.
+When you Stop, your utility is equal to your total score (up to 5), or zero if you get a total of 6 or higher. When
+you Draw, you receive no utility. There is no discount ($\gamma = 1$).
+\begin{enumerate}
+    \item Formalise the associated MDP.
+    \item Give the optimal policy for this MDP.
+\end{enumerate}
+\subsubsection{ Pursuit Evasion \protect\footnote{source: \url{http://ai.berkeley.edu/sections/section_4_9vzQ4e7e6xqagFuQDinu0lmeSEI29Z.pdf}} ($\approx 20$ min)}
+\begin{minipage}{0.7\textwidth}
+Pacman is trapped in the following 2 by 2 maze with a hungry ghost (the horror)!
+When it is his turn to move, Pacman must move one step horizontally or vertically to a
+neighboring square. When it is the ghost’s turn, he must also move one step horizontally
+or vertically. The ghost and Pacman alternate moves. After every move (by either the
+ghost or Pacman) if Pacman and the ghost occupy the same square, Pacman is eaten
+and receives utility -100. Otherwise, he receives a utility of 1. The ghost attempts
+to minimize the utility that Pacman receives. Assume the ghost makes the first
+move.\\
+For example, with a discount factor of $\gamma = 1.0$, if the ghost moves down, then Pacman moves left, Pacman earns
+a reward of 1 after the ghost’s move and -100 after his move for a total utility of -99.\\
+Note that this game is not guaranteed to terminate.
+
+\end{minipage}
+\begin{minipage}{0.25\textwidth}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\textwidth]{figures/pacman.png}
+    \caption{Pacman vs Ghost}
+    \label{fig:pacman}
+\end{figure}
+\end{minipage}
+\begin{enumerate}
+    \item Assume a discount factor $\gamma = 0.5$, where the discount factor is applied once every time either Pacman or
+the ghost moves. What is the minimax value of the truncated game after 2 ghost moves and 2 Pacman
+moves? (Hint: you should not need to build the minimax tree)
+\item Assume a discount factor $\gamma = 0.5$. What is the minimax value of the complete (infinite) game? (Hint:
+you should not need to build the minimax tree)
+\item Why is value iteration superior to minimax for solving this game? 
+\item This game is similar to an MDP because rewards are earned at every timestep. However, it is also an
+adversarial game involving decisions by two agents.
+Let $s$ be the state (e.g. the position of Pacman and the ghost), and let $A_P (s)$ be the space of actions available to Pacman in state s (and similarly let $A_G(s)$ be the space of actions available to the ghost).
+Let $N(s, a) = s'$ denote the successor function (given a starting state $s$, this function returns the state $s'$ which results after taking action $a$. Finally, let $R(s)$ denote the utility received after moving to state $s$.
+Write down an expression for $P^\star (s)$, the value of the game to Pacman as a function of the current state $s$ (analogous to the Bellman equations). Use a discount factor of $\gamma = 1.0$. Hint: your answer should include $P^\star (s)$ on the right hand side.
+\end{enumerate}
+\subsubsection{Crying Baby Problem ($\approx 20$ min)}
+To earn money you've decided to do babysitting. Tonight you'll keep a 9 months old child, his parents asked you to take care to food him when he is hungry. Because you're a super babysitter you know from your experience that the probability of the baby crying when he is hungry is equal to $0.8$ and to cry when he is not hungry equal to $0.1$. The cost of feeding the baby is equal to $5\EUR$ whereas if you don't feed him while he is hungry it costs you $10\EUR$ (because the parent will be upset and will give you a smaller salary). You will have many things to do tonight and so you decide to optimize your time by just checking the baby cries every 10 minutes. Between two intervals of time you assume that the baby has a probability of 0.2 to become hungry. You can also suppose that the baby has a uniform probability of being hungry when you start your babysitting.
+\begin{enumerate}
+    \item Draw the dynamic bayesian network (as well as the conditional probability tables) associated with your babysitting of tonight. 
+    \item Give the sequence of belief states if you assume a uniform prior and that the sequence of (action, observation) is: (No feed, cry), (Feed, no cry), (No feed, No cry), (No feed, No cry).
+\end{enumerate}
+
+\end{document}
