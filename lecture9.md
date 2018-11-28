@@ -8,59 +8,53 @@ Lecture 9: Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
-???
-
-R: add EM?
-R: take the time for linear model -> perceptron -> neural nets -> deep learning
-R: NN for control https://www.youtube.com/watch?v=Ipi40cb_RsI
-
 ---
 
 # Today
 
-.grid[
-.kol-2-3[
+.center.width-50[![](figures/lec9/sl-cartoon.png)]
+
+Make our agents capable of self-improvement through a **learning** mechanism.
 - Statistical learning
 - Supervised learning
     - Linear models
     - Perceptron
     - Neural networks
 - Unsupervised learning
-]
-.kol-1-3[![](figures/lec9/rosenblatt.jpg)]
-]
 
-???
-
-R: change this picture
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Intelligence?
 
-- What we covered so far...
-    - Search algorithms, using a state space specified by domain knowledge.
-    - Adversarial search, for known and fully observable games.
-    - Constraint satisfaction problems, by exploiting a known structure of the states.
-    - Logical inference, using well-specified facts and inference rules.
-    - Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
-- Enough to implement complex and rational behaviors, *in some situations*.
-- But is that **intelligence**? Aren't we missing a critical component?
+What we covered so far:
+- Search algorithms, using a state space specified by domain knowledge.
+- Constraint satisfaction problems, by exploiting a known structure of the states.
+- Logical inference, using well-specified facts and inference rules.
+- Adversarial search, for known and fully observable games.
+- Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
+- Taking optimal decisions, under uncertainty and possibly under partial observation.
+
+Sufficient to implement complex and rational behaviors, in some situations.
+But is that **intelligence**? Aren't we missing a critical component?
 
 ---
 
-# Chomsky vs. Piaget
+class: middle
+
+## Chomsky vs. Piaget
 
 .grid[
 .kol-2-3[
-- *Noam Chomsky* (innatism):
+- Noam Chomsky's *innatism*:
     - State that humans possess a genetically determined faculty for thought and language.
     - The structures of language and thought are set in motion through interaction with the environment.
-- *Jean Piaget* (constructivism):
+- Jean Piaget's **constructivism**:
     - Deny the existence of innate cognitive structure specific for thought and language.
     - Postulate instead all cognitive acquisitions, including language, to be the outcome of a gradual process of construction, i.e., a learning procedure.
 ]
-.kol-1-3[.width-100[![](figures/lec9/piaget-chomsky.jpg)]]
+.kol-1-3[.center.width-80[![](figures/lec9/piaget-chomsky.jpg)]]
 ]
 
 
@@ -71,25 +65,25 @@ R: change this picture
 class: middle, black-slide
 
 .center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/aCCotxqxFsk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/aCCotxqxFsk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
 The debate continues...
 ]
 
 ---
 
-# Learning
+# Learning agents
 
-- What if the environment is *unknown*?
-- **Learning** can be used as a system construction method.
-    - i.e., expose the agent to reality rather trying to hardcode reality into the agent's program.
-- Learning can be used as an *automated way* to modify the agent's decision mechanisms to improve performance.
+What if the environment is **unknown**?
+- *Learning* can be used as a system construction method.
+- Expose the agent to reality rather trying to hardcode reality into the agent's program.
+- Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 
 ---
 
-# Learning agents
+class: middle
 
-.center.width-100[![](figures/lec9/learning-agent.png)]
+.center.width-80[![](figures/lec9/learning-agent.svg)]
 
 ???
 
@@ -99,560 +93,895 @@ The debate continues...
     - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
 - The *problem generator* identifies certain areas of behavior in need of improvement and suggest experiments.
 
+---
+
+class: middle
+
+The design of the **learning element** is dictated by:
+- What type of performance element is used.
+- Which functional component is to be learned.
+- How that functional component is represented.
+- What kind of feedback is available.
+
+<br><br>
+.center.width-80[![](figures/lec9/table-components.png)]
 
 ---
 
-# Learning element
-
-- The design of the **learning element** is dictated by:
-    - What type of performance element is used.
-    - Which functional component is to be learned.
-    - How that functional component is represented.
-    - What kind of feedback is available.
-- Examples:    
-
-.center.width-70[![](figures/lec9/table-components.png)]
-- The nature and frequency of the feedback often determines a learning strategy:
-    - *Supervised learning*: correct answer for each instance.
-    - *Reinforcement learning*: occasional rewards.
-    - *Unsupervised learning*: no feedback!
-
----
-
-class: middle, center,
+class: middle
 
 # Statistical learning
 
 ---
 
-# Learning probabilistic models
-
-- Agents can handle uncertainty by using a **specified** probabilistic model of the world.
-- This model may then be combined with decision theory to take actions.
-- In lack of a good probabilistic model, what should an agent do?
-- **Learn** it from experience with the world!
-
----
-
 # Bayesian learning
 
-- View **learning as Bayesian updating** of probability distribution over the *hypothesis space*.
-    - $H$ is the hypothesis variable, values are $h\_1$, $h\_2$, ... and the prior is $P(H)$.
-    - $\mathbf{d}$ is the observed data.
-- Given the data so far, each hypothesis has a posterior probability $$P(h\_i|\mathbf{d}) = \alpha P(\mathbf{d}|h\_i) P(h\_i)$$ where $P(\mathbf{d}|h\_i)$ is called the *likelihood*.
-- Predictions use a likelihood-weighted average over the hypotheses:
-$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i P(X|h\_i) P(h\_i | \mathbf{d})$$
-- No need to pick one best-guess hypothesis!
+View **learning** as a Bayesian update of a probability distribution $P(H)$ over a *hypothesis space*, where
+- $H$ is the hypothesis variable;
+- values are $h\_1$, $h\_2$, ...;
+- the prior is $P(H)$;
+- $\mathbf{d}$ is the observed data.
+
+Given data, each hypothesis has a posterior probability
+$$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is called the *likelihood*.
 
 ---
 
-# Example
+class: middle
 
-- Suppose there are five kinds of bags of candies. Assume a prior $P(H)$:
-    - $P(h\_1)=0.1$, with $h\_1$: 100% cherry candies
-    - $P(h\_2)=0.2$, with $h\_2$: 75% cherry candies + 25% lime candies
-    - $P(h\_3)=0.4$, with $h\_3$: 50% cherry candies + 50% lime candies
-    - $P(h\_4)=0.2$, with $h\_4$: 25% cherry candies + 75% lime candies
-    - $P(h\_5)=0.1$, with $h\_5$: 100% lime candies
+Predictions use a likelihood-weighted average over the hypotheses:
+$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i P(X|h\_i) P(h\_i | \mathbf{d})$$
+No need to pick one best-guess hypothesis!
 
+---
+
+class: middle
+
+## Example
+
+Suppose there are five kinds of bags of candies. Assume a prior $P(H)$:
+- $P(h\_1)=0.1$, with $h\_1$: 100% cherry candies
+- $P(h\_2)=0.2$, with $h\_2$: 75% cherry candies + 25% lime candies
+- $P(h\_3)=0.4$, with $h\_3$: 50% cherry candies + 50% lime candies
+- $P(h\_4)=0.2$, with $h\_4$: 25% cherry candies + 75% lime candies
+- $P(h\_5)=0.1$, with $h\_5$: 100% lime candies
+
+<br>
 .center.width-70[![](figures/lec9/candies.png)]
-- Then we observe candies drawn from som bag:
+
+---
+
+class: middle
+
+
+Then we observe candies drawn from some bag:
 
 .center.width-40[![](figures/lec9/all-limes.png)]
-- What kind of bag is it? What flavour will the next candy be?
+
+- What kind of bag is it?
+- What flavor will the next candy be?
 
 ---
 
-# Posterior probability of hypotheses
+class: middle
+
+## Posterior probability of hypotheses
 
 .center.width-70[![](figures/lec9/posterior-candies.png)]
 
 ---
 
-# Prediction probability
+class: middle
+
+## Prediction probability
 
 .center.width-70[![](figures/lec9/prediction-candies.png)]
 
-- This example illustrates the fact that the Bayesian prediction *eventually agrees with the true hypothesis*.
+- This example illustrates the fact that the Bayesian prediction eventually agrees with the true hypothesis.
 - The posterior probability of any false hypothesis eventually vanishes.
 
 ---
 
-# MAP approximation
+# Maximum a posteriori
 
-- Summing over the hypothesis space is often *intractable*.
-    - e.g., there are $2^{2^n}$ $n$-ary boolean functions of boolean inputs.
-- **Maximum a posteriori** (MAP) learning:
-$$h\_{MAP} = \arg \max\_{h\_i} P(h\_i | \mathbf{d})$$
-- That is, maximize $P(\mathbf{d}|h\_i) P(h\_i)$ or $\log P(\mathbf{d}|h\_i) + \log P(h\_i)$.
-    - Log terms can be be viewed as (negative of) *bits to encode data given hypothesis* + *bits to encode hypothesis*.
-    - This is the basic idea of minimum description length learning, i.e., Occam's razor.
+Summing over the hypothesis space is often intractable.
+
+Instead,
+**maximum a posteriori** (MAP) estimation consists in using the hypothesis
+$$h\_{MAP} = \arg \max\_{h\_i} P(h\_i | \mathbf{d}).$$
+
+That is, maximize $P(\mathbf{d}|h\_i) P(h\_i)$ or $\log P(\mathbf{d}|h\_i) + \log P(h\_i)$.
+- Log terms can be be viewed as (negative of) bits to encode data given hypothesis + bits to encode hypothesis.
+- This is the basic idea of minimum description length learning, i.e., Occam's razor.
 - Finding the MAP hypothesis is often much easier than Bayesian learning, since it requires solving an optimization problem instead of a large summation problem.
-- For deterministic hypotheses, $P(\mathbf{d}|h\_i)=1$ if $h\_i$ is consistent, and $0$ otherwise.
-    - Therefore, MAP yields the simplest consistent hypothesis.
 
 ---
 
 # Maximum likelihood
 
-- For large data sets, the prior $P(H)$ becomes irrelevant.
-- **Maximum likelihood estimation** (MLE):
+For large data sets, the prior $P(H)$ becomes irrelevant.
+
+In this case, **maximum likelihood estimation** (MLE) consists in using the hypothesis
 $$h\_{MLE} = \arg \max\_{h\_i} P(\mathbf{d} | h\_i)$$
-- That is, simply get the best fit to the data.
-    - Identical to MAP for uniform prior.
-- MLE is the standard (non-Bayesian) statistical learning method.
-    - Procedure:
-        - Choose a parameterized family of models to describe the data.
-            - requires substantial insight and sometimes new models.
-        - Write down the likelihood of the data as a function of the parameters.
-            - may require summing over hidden variables, i.e., inference.
-        - Write down the derivative of the log likelihood w.r.t. each parameter.
-        - Find the parameter values such that the derivatives are zero.
-            - may be hard/impossible; modern optimization techniques help.
+
+That is, simply get the best fit to the data.
+- Identical to MAP for uniform prior.
+- Maximum likelihood estimation is the standard (non-Bayesian) statistical learning method.
 
 ---
 
-# Parameter learning BNs
+class: middle
+
+## Recipe
+
+- Choose a parameterized family of models to describe the data.
+    - e.g., a Bayesian network.
+    - requires substantial insight and sometimes new models.
+- Write down the log-likelihood $L$ of the data as a function of the parameters.
+    - may require summing over hidden variables, i.e., inference.
+- Write down the derivative of the log likelihood w.r.t. each parameter.
+- Find the parameter values such that the derivatives are zero.
+    - may be hard/impossible; modern optimization techniques help.
+
+---
+
+# Parameter learning in Bayesian networks
 
 .center.width-100[![](figures/lec9/parameterized-bn.png)]
 
 ---
 
-# MLE, case (a)
+class: middle
 
-- Bag from a new manufacturer; fraction $\theta$ of cherry candies?
-    - Any $\theta$ is possible: continuum of hypotheses $h\_\theta$.
-    - $\theta$ is a **parameter** for this simple binomial family of models.
-- Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
-- These are *i.i.d.* observations, so:
+## MLE, case (a)
+
+Bag from a new manufacturer; fraction $\theta$ of cherry candies?
+- Any $\theta$ is possible: continuum of hypotheses $h\_\theta$.
+- $\theta$ is a **parameter** for this simple binomial family of models.
+
+Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
+These are i.i.d. observations, so:
 $$P(\mathbf{d}|h\_\theta) = \prod\_{j=1}^N P(d\_j | h\_\theta) = \theta^c (1-\theta)^l$$
-- Maximize this w.r.t. $\theta$, which is easier for the *log-likelihood*:
-    - $L(\mathbf{d}|h\_\theta) = \log P(\mathbf{d}|h\_\theta) = c \log \theta + l \log(1-\theta)$
-    - $\frac{d L(\mathbf{d}|h\_\theta)}{d \theta} = \frac{c}{\theta} - \frac{l}{1-\theta}=0$, therefore $\theta=\frac{c}{N}$.
-    - Seems *sensible*, but causes problems with $0$ counts!
----
+Maximize this w.r.t. $\theta$, which is easier for the log-likelihood:
+$$\begin{aligned}
+L(\mathbf{d}|h\_\theta) &= \log P(\mathbf{d}|h\_\theta) = c \log \theta + l \log(1-\theta) \\\\
+\frac{d L(\mathbf{d}|h\_\theta)}{d \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0
+\end{aligned}$$
+Therefore $\theta=\frac{c}{N}$.
+Seems sensible, but causes problems with $0$ counts!
 
-# MLE, case (b)
+???
 
-- Red/green wrapper depends probabilistically on flavor.
-- Likelihood for e.g. a cherry candy in green wrapper:
-<br><br>
-$P(F=cherry, W=green|h\_{\theta,\theta\_1, \theta\_2})$<br>
-$= P(F=cherry|h\_{\theta,\theta\_1, \theta\_2}) P(W=green|F=cherry, h\_{\theta,\theta\_1, \theta\_2})$<br>
-$= \theta (1-\theta\_1)$
-- The likelihood for the data, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc. is:
-<br><br>
-$P(\mathbf{d}|h\_{\theta,\theta\_1, \theta\_2}) = \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l}$
-<br><br>
-$L = c \log \theta + l \log(1-\theta) $<br>
-$\,\,\,\,+ r\_c \log \theta\_1 + g\_c \log(1-\theta\_1)$<br>
-$\,\,\,\,+ r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)$
+Highlight that using the empirical estimate as an estimator of the mean can be viewed as consequence of
+- deciding on a probabilistic model
+- maximum likelihood estimation under this model
 
 ---
 
-# MLE, case (b), cont.
+class: middle
 
-- Derivatives of $L$ contain only the relevant parameter:
-    - $\frac{\partial L}{\partial \theta} = \frac{c}{\theta} - \frac{l}{1-\theta} = 0 \quad\Rightarrow\quad \theta = \frac{c}{c+l}$
-    - $\frac{\partial L}{\partial \theta\_1} = \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 \quad\Rightarrow\quad \theta\_1 = \frac{r\_c}{r\_c + g\_c}$
-    - $\frac{\partial L}{\partial \theta\_2} = \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 \quad\Rightarrow\quad \theta\_2 = \frac{r\_l}{r\_l + g\_l}$
+## MLE, case (b)
+
+Red/green wrapper depends probabilistically on flavor.
+E.g., the likelihood for a cherry candy in green wrapper:
+$$\begin{aligned}
+&P(\text{cherry}, \text{green}|h\_{\theta,\theta\_1, \theta\_2}) \\\\
+&= P(\text{cherry}|h\_{\theta,\theta\_1, \theta\_2}) P(\text{green}|\text{cherry}, h\_{\theta,\theta\_1, \theta\_2}) \\\\
+&= \theta (1-\theta\_1)
+\end{aligned}$$
+
+The likelihood for the data, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc. is:
+$$\begin{aligned}
+P(\mathbf{d}|h\_{\theta,\theta\_1, \theta\_2}) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
+L =&\,\, c \log \theta + l \log(1-\theta)  +  \\\\
+   &\,\, r\_c \log \theta\_1 + g\_c \log(1-\theta\_1) + \\\\
+   &\,\, r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)
+\end{aligned}$$
+
+---
+
+class: middle
+
+Derivatives of $L$ contain only the relevant parameter:
+$$\begin{aligned}
+\frac{\partial L}{\partial \theta} = \frac{c}{\theta} - \frac{l}{1-\theta} = 0 &\Rightarrow \theta = \frac{c}{c+l} \\\\
+\frac{\partial L}{\partial \theta\_1} = \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 &\Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
+\frac{\partial L}{\partial \theta\_2} = \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 &\Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}
+\end{aligned}$$
 - Again, results coincide with intuition.
 - This can be extended to any Bayesian network with parameterized CPTs.
-- Importantly, with *complete data*, maximum likelihood parameter learning for a Bayesian network **decomposes into separate learning problems**, one for each parameter.
+- Importantly, with complete data, maximum likelihood parameter estimation for a Bayesian network **decomposes into separate optimization problems**, one for each parameter.
 
 ---
 
-# MLE for linear Gaussian models
-
-.center.width-70[![](figures/lec9/lg.png)]
-
-- Assume a **parameterized** *linear Gaussian model* with one continuous parent $X$ and one continuous child $Y$.
-- To learn the conditional distribution $P(Y|X)$, we maximize
-$$P(y|x) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y-(\theta\_1 x + \theta\_2))^2}{2\sigma^2})$$
-w.r.t. $\theta\_1$ and $\theta\_2$ over the data $\mathbf{d}$.
-
----
-
-# MLE for linear Gaussian models
-
-- Constraint the derivatives of the log-likelihood to 0 and simplify. We arrive to the problem of minimizing
-$$\sum\_{j=1}^N (y\_j - (\theta\_1 x\_j + \theta\_2))^2$$
-- That is, minimizing the sum of squared errors corresponds to MLE solution for a linear fit, *assuming Gaussian noise of fixed variance*.
-- This is also known as **linear regression**.
-
-<span class="Q">[Q]</span> Can you derive the equivalence?
-
----
-
-# Recap
-
-- Full Bayesian learning gives best possible predictions but is **intractable**.
-- MAP learning *balances complexity with accuracy* on training data.
-- Maximum likelihood is equivalent to *assuming a uniform prior*.
-
----
-
-# Going further
-
-- When some variables are hidden, local maximum likelihood solutions can be found using the **EM algorithm** or approximation methods such as **variational inference**.
-- Learning the structure of Bayesian networks is also possible. This is an example of *model selection* and usually involves a discrete search in the space of structures.
-- *Non-parametric* models represent a distribution using the collection of data points.
-Thus, the number of parameters grows with the training set.
-
-???
-
-https://www.cs.cmu.edu/~tom/10-702/Zoubin-702.pdf
-
----
-
-class: middle, center,
+class: middle
 
 # Supervised learning
 
----
-
-# Supervised learning
-
-- Assume a **training set** $\mathbf{d}\_\text{train} \sim P(X,Y)$ of $N$ example input-output pairs
-    $$\mathbf{d}\_\text{train} = \\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\},$$
-    where
-    - $\mathbf{x}\_i$ are the input data;
-    - $y_i$ was generated by an unknown function $y\_i=f(\mathbf{x}\_i)$.
-- From this data, we wish to *learn* a function $h$ that approximates the true function $f$.
-- Sometimes, $f$ is stochastic, i.e., $y$ is not strictly a function $x$, and we have to learn the conditional $P(Y|x)$.
+(mostly neural networks)
 
 ---
 
-# Generalization
+class: middle
 
-- The function $h$ is a **hypothesis**.
-- To measure the accuracy of a hypothesis, we evaluate its predictions on a *test set* $\mathbf{d}\_\text{test} \sim P(X,Y)$ that is independent of the training set.
-- A hypothesis $h$ **generalizes** well if it correctly predicts the value of $y$ for novel examples
-(resp., its conditional density).
+## Problem statement
 
-.center.width-80[![](figures/lec9/functions.png)]
+Assume data $\mathbf{d} \sim P(X,Y)$ of $N$ example input-output pairs
+    $$\mathbf{d} = \\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\},$$
+where
+$\mathbf{x}\_i$ are the input data and
+$y_i$ was generated by an unknown function $y\_i=f(\mathbf{x}\_i)$.
 
-<span class="Q">[Q]</span> Which of those is best?
-
----
-
-# Best model?
-
-- Supervised learning can be done by choosing the hypothesis $h^\*$ that is most probable **on new data** $\mathbf{d}\_\text{test} \sim P(X,Y)$:
-$$h^* = \arg \max\_{h \in \mathcal{H}} P(h|\mathbf{d}\_\text{test})$$
-- By Bayes's rule, this is equivalent to
-$$h^* = \arg \max\_{h \in \mathcal{H}} P(\mathbf{d}\_\text{test}|h)P(h)$$
-where $P(\mathbf{d}\_\text{test}|h)$ = $\prod\_{(\mathbf{x}, y) \in \mathbf{d}\_\text{test}} P(y|x,h)$
-- This is the same as:
-    - Maximum a posteriori estimation.
-    - Maximum likelihood estimation if $P(h)$ is uniform.
-- **Issue**: in practice, we often only have a *finite* test set!
-
-???
-
-R: be clearer, we want to be good in generalization, not on one specific test set.
+- From this data, we wish to **learn a function** $h \in \mathcal{H}$ that approximates the true function $f$.
+- $\mathcal{H}$ is huge! How do we find a good hypothesis?
 
 ---
 
-class: middle, center
+class: middle
 
-What is $\mathcal{H}$?
+.center.width-10[![](figures/lec9/latent.svg)]
 
-How to find $h^\* \in \mathcal{H}$?
+In general, $f$ will be stochastic. In this case, $y$ is not strictly a function $x$, and we wish to learn the conditional $P(Y|X)$.
+
+Most of supervised learning is actually (approximate) maximum likelihood estimation.
 
 ---
 
-# Feature vectors
+class: middle
 
-- Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ *attribute* or *feature* values.
+## Feature vectors
+
+- Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ attribute or feature values.
 - If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
+.center.width-80[![](figures/lec9/features.png)]
 
-.center.width-60[![](figures/lec9/features.png)]
-
-<span class="Q">[Q]</span> Given this data representation, what family $\mathcal{H}$ of hypothesis shall we consider?
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Brains (simplified)
+# Linear regression
 
-.center.width-80[![](figures/lec9/perceptron_neuron.png)]
+.grid[
+.kol-1-5[.center.width-50[![](figures/lec9/latent.svg)]]
+.kol-4-5[.center.width-100[![](figures/lec9/lg.png)]]
+]
 
-- $10^{11}$ neurons of $>20$ types, $10^{14}$ synapses.
-- Information are (*presumably*) stored in synapses.
-- Signals are noisy spike trains of electrical potential.
-
-.footnote[Credits: Sebastian Raschka, [Single-Layer Neural Networks and Gradient Descent](http://sebastianraschka.com/Articles/2015_singlelayer_neurons.html)]
-
----
-
-# Linear classifiers (1)
-
-.center.width-70[![](figures/lec9/perceptron_schematic.png)]
-
-- Taking loose inspiration from neuroscience, we may consider an **overly** simplified *model* of neuron (McCulloch and Pitts, 1943).
-- The linear classifier model is a squashed linear function of its inputs.
-
-.footnote[Credits: Sebastian Raschka, [Single-Layer Neural Networks and Gradient Descent](http://sebastianraschka.com/Articles/2015_singlelayer_neurons.html)]
+Let us assume a **parameterized** linear Gaussian model
+$$y=\mathbf{w}^T \mathbf{x} + b + \epsilon$$
+with one continuous parent $X$, one continuous child $Y$ and $\epsilon \sim \mathcal{N}(0, \sigma^2)$.
 
 ---
 
-# Linear classifiers (2)
+class: middle
 
-- Assume $Y$ takes binary values in $\\\{-1,1\\\}$.
-- The linear classifier model is a squashed linear function of its inputs:
-$$h(\mathbf{x}; \mathbf{w}) = sign(w\_0 + \sum\_{j=1}^p w\_j x\_j)$$
-    - Inputs are *feature values* $x\_j$;
-    - Each feature has a *weight* $w\_j$;
-    - $w\_0$ is the *intercept*;
-    - Feature and weight values are *linearly combined* as $w\_0 + \sum w\_j x\_j$
-        - Assuming a constant dummy input feature $x\_0=1$, we write $\mathbf{w}^T\mathbf{x}$;
-    - This sum is squashed through an *activation function*. E.g.,
-        - if positive, output $+1$,
-        - if negative, output $-1$.
+To learn the conditional distribution $p(y|x)$, we maximize
+$$p(y|x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{2\sigma^2}\right)$$
+w.r.t. $\theta\_1$ and $\theta\_2$ over the data $\mathbf{d} = \\\{ (x\_j, y\_j) \\\}$.
+
+By constraining the derivatives of the log-likelihood to $0$, we arrive to the problem of minimizing
+$$\sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
+Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance.
 
 ---
 
-# Binary decision rules
+# Linear classification
+
+.grid[
+.kol-4-5[
+Let us now assume $Y$ takes discrete values in $\\\\\\\\{0,1\\\\\\\\}$.
+
+## Decision rules
+
+The linear classifier model is a squashed linear function of its inputs:
+$$h(\mathbf{x}; \mathbf{w}, b) = \text{sign}(\mathbf{w}^T \mathbf{x} + b)$$
+
+]
+.kol-1-5[.center.width-50[![](figures/lec9/latent.svg)]]
+]
+.center.width-60[![](figures/lec9/activation-sign.png)]
+
+---
+
+class: middle
 
 .center.width-30[![](figures/lec9/linear-classifier.png)]
 
-- Intuitively, predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$.
-- Learning boils down to figuring out a good weight vector from the training set.
+- Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{p+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
+- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$.
+- Learning boils down to figuring out a good weight vector from data.
 - The family $\mathcal{H}$ of hypothesis is induced from the set of possible parameters values $\mathbf{w}$, that is $\mathbb{R}^{p+1}$.
 
-<span class="Q">[Q]</span> $\mathcal{H}$ is huge! How do we find a good hypothesis?
-
-???
-
-The dot product tells you what amount of one vector goes in the direction of another.
-
 ---
 
-# Learning: Binary perceptron
+# Perceptron
 
 .grid[
-.col-1-2[
-- Start with $\mathbf{w}=0$.
-- For each training example:
-    - Classify with current $\mathbf{w}$.
-    - If the prediction is correct, then do nothing.
-    - If the prediction is incorrect, then update parameters.
-
-]
-.col-1-2[![](figures/lec9/perceptron-cartoon.png)]
-]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-# Learning: Binary perceptron
-
-.center.width-30[![](figures/lec9/perceptron-update.png)]
-
+.kol-1-2[
 - Start with $\mathbf{w}=0$.
 - For each training example $(\mathbf{x},y)$:
-    - Classify with current weights: $\hat{y} = sign(\mathbf{w}^T \mathbf{x})$
+    - Classify with current weights: $\hat{y} = \text{sign}(\mathbf{w}^T \mathbf{x})$
     - If $y=\hat{y}$, do nothing.
-    - Otherwise, update parameters: $\mathbf{w} = \mathbf{w} + y\mathbf{x}$
+    - Otherwise, update parameters: $\mathbf{w} = \mathbf{w} + y\mathbf{x} - (1-y)\mathbf{x}$
+
+.center.width-70[![](figures/lec9/perceptron-update.png)]
+]
+.kol-1-2[.width-100[![](figures/lec9/perceptron-cartoon.png)]]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Multiclass perceptron
+class: middle
 
-.center.width-30[![](figures/lec9/multiclass.png)]
+
+
+## Multiclass perceptron
+
+.grid[
+.kol-2-3[
 
 - If we have more than $2$ classes, then
     - Define a weight vector $\mathbf{w}\_c$ for each class $c$.
     - The activation for class $c$ is $\mathbf{w}\_c^T \mathbf{x}$.
 - Learning:
     - Start with $\mathbf{w}\_c=0$ for all $c$.
-    For each training example $(\mathbf{x},y)$:
+    - For each training example $(\mathbf{x},y)$:
         - Classify with current weights: $\hat{y} = \arg \max\_{c}\, \mathbf{w}\_c^T \mathbf{x}$
         - If $y=\hat{y}$, do nothing.
         - Otherwise, update parameters:
             - $\mathbf{w}\_y = \mathbf{w}\_y + \mathbf{x}$ (raise score of right answer)
-            - $\mathbf{w}\_{\hat{y}} = \mathbf{w}\_{\hat{y}} - \mathbf{x}$ (lower score of wrong answer).
+            - $\mathbf{w}\\\_{\hat{y}} = \mathbf{w}\_{\hat{y}} - \mathbf{x}$ (lower score of wrong answer).
+
+
+]
+.kol-1-3[.center.width-100[![](figures/lec9/multiclass.png)]]
+]
 
 ---
 
-# Multiclass perceptron
+class: middle
 
 .center[
-<video controls preload="auto" height="400" width="640">
+<video controls preload="auto" height="500" width="700">
   <source src="./figures/lec9/multiclass-perceptron.mp4" type="video/mp4">
 </video>]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
 
 ---
 
-# Properties of the perceptron
+# Apprenticeship
 
-.center.width-60[![](figures/lec9/separability.png)]
-.caption[Separable vs. Non-separable]
-
-- (Novikoff, 1962): If the training set is *linearly separable*, the perceptron will
-eventually **converge** (binary case).
-- Assume the training set is *linearly separable*. Let $S$ be a sequence of labeled examples consistent with a linear threshold function ${\mathbf{w}^\*}^T \mathbf{x}$, where $\mathbf{w}^\*$ is a unit-length vector. The number of mistakes $M$ on $S$ made by the Perceptron is at most $\frac{1}{\gamma^2}$, where $\gamma$ is the $L\_2$ *margin* of ${\mathbf{w}^\*}$ on $S$:
-    $$\gamma = \min\_{\mathbf{x} \in S} \frac{|{\mathbf{w}^\*}^T \mathbf{x}|}{||\mathbf{x}||}.$$
-
----
-
-# Pacman apprenticeship
-
-.center.width-60[![](figures/lec9/pacman.png)]
-
-- Examples are state-action pairs $(s, a)$ that we collect by observing an expert playing.
-- Features are defined over states, e.g. $g(s)$.
-- We want to learn the actions that the expert would take in a given situation.
-    - i.e., learn the mapping $a=f(g(s))$.
+Can we learn to play Pacman from observations?
+- Examples are state-action pairs $(\mathbf{x}=g(s), y=a)$  collected by observing an expert playing.
+- Features are defined over states, e.g. $g(s) \in \mathbb{R}^p$.
+- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^p \to \mathcal{A}$.
 - This is a multiclass classification problem.
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+<br>
+.center.width-70[![](figures/lec9/pacman.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+<span class="Q">[Q]</span> How is this (very) different from reinforcement learning?
 
 ---
 
-# Training (1)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
   <source src="./figures/lec9/training1.mp4" type="video/mp4">
-</video>]
+</video>
 
 The Perceptron agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
+]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Training (2)
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
   <source src="./figures/lec9/training2.mp4" type="video/mp4">
-</video>]
+</video>
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+<br><br>]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Apprentice
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
   <source src="./figures/lec9/apprentice.mp4" type="video/mp4">
-</video>]
+</video>
 
-After two training episodes, the Perceptron agents plays. No more Minimax!
+After two training episodes, the Perceptron agents plays.<br>
+No more Minimax!
+]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-# Checkerboard problem
-
-.center.width-30[![](figures/lec9/checkerboard.png)]
-
-- We want to learn a binary classifier to determine the color (blue or red) of a point given its position.
-- Based only on *local generalization*, we can correctly guess the color of a new point if it lies within the same square as a training example.
-- **No guarantee** that the learned hypothesis correctly extends the checkerboard pattern in squares that do not contain training examples.
-- In general, to distinguish $O(k)$ regions, traditional supervised learning methods require $O(k)$ examples.
-
-???
-
-R: improve the flow a bit, the motivation (this and the next slides)
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-# Compositional assumption
+# Logistic regression
 
-**Hypothesis**: The data was generated by a composition of factors, potentially at multiple levels in a hierarchy.
+An alternative to the hard threshold model based on the $\text{sign}$ function is to consider that $P(Y|\mathbf{x})$ varies smoothly with $\mathbf{x}$.
+The **logistic regression** model postulates
+$$P(Y|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
+where the sigmoid activation function
+$\sigma(x) = \frac{1}{1 + \exp(-x)}$
+looks like a soft heavyside:
+.center.width-60[![](figures/lec9/activation-sigmoid.png)]
 
-.center.width-100[![](figures/lec9/composition.png)]
+---
+
+class: middle
+
+In terms of **tensor operations**, the computational graph of $h$ can be represented as:
+
+.center.width-70[![](figures/lec9/logistic-neuron.svg)]
+
+where
+- white nodes correspond to inputs and outputs;
+- red nodes correspond to model parameters;
+- blue nodes correspond to intermediate operations, which themselves produce intermediate output values (not represented).
+
+This unit is the *core component* all neural networks!
+
+---
+
+class: middle
+
+Following the principle of maximum likelihood estimation, we have
+
+$$\begin{aligned}
+&\arg \max\_{\mathbf{w},b} P(\mathbf{d}|\mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i|\mathbf{x}\_i, \mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_i + b)^{y\_i}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))^{1-y\_i}  \\\\
+&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
+\end{aligned}$$
+
+This loss is an instance of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y|\mathbf{x}\_i$ and $q=\hat{Y}|\mathbf{x}\_i$.
+
+---
+
+# Gradient descent
+
+Let $\mathcal{L}(\theta)$ denote a loss function defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
+
+To minimize $\mathcal{L}(\theta)$, **gradient descent** uses local linear information to iteratively move towards a (local) minimum.
+
+For $\theta\_0 \in \mathbb{R}^d$, a first-order approximation around $\theta\_0$ can be defined as
+$$\hat{\mathcal{L}}(\theta\_0 + \epsilon) = \mathcal{L}(\theta\_0) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{2\gamma}||\epsilon||^2.$$
+
+---
+
+class: middle
+
+A minimizer of the approximation $\hat{\mathcal{L}}(\theta\_0 + \epsilon)$ is given for
+$$\begin{aligned}
+\nabla\_\epsilon \hat{\mathcal{L}}(\theta\_0 + \epsilon) &= 0 \\\\
+ &= \nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{\gamma} \epsilon,
+\end{aligned}$$
+which results in the best improvement for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta\_0)$.
+
+Therefore, model parameters can be updated iteratively using the update rule:
+$$\theta\_{t+1} = \theta\_t -\gamma \nabla\_\theta \mathcal{L}(\theta\_t)$$
+
+Notes:
+- $\theta_0$ are the initial parameters of the model;
+- $\gamma$ is the **learning rate**;
+- both are critical for the convergence of the update rule.
+
+---
+
+class: center, middle
+
+![](figures/lec9/gd-good-0.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-1.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-2.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-3.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-4.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-5.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-6.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-7.png)
+
+Example 1: Convergence to a local minima
+
+---
+
+class: center, middle
+
+![](figures/lec9/gd-good-right-0.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-1.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-2.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-3.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-4.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-5.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-6.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-good-right-7.png)
+
+Example 2: Convergence to the global minima
+
+---
+
+class: center, middle
+
+![](figures/lec9/gd-bad-0.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-bad-1.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-bad-2.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-bad-3.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-bad-4.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec9/gd-bad-5.png)
+
+Example 3: Divergence due to a too large learning rate
+
+---
+
+# Layers
+
+So far we considered the logistic unit $h=\sigma\left(\mathbf{w}^T \mathbf{x} + b\right)$, where $h \in \mathbb{R}$, $\mathbf{x} \in \mathbb{R}^p$, $\mathbf{w} \in \mathbb{R}^p$ and $b \in \mathbb{R}$.
+
+These units can be composed *in parallel* to form a **layer** with $q$ outputs:
+$$\mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})$$
+where  $\mathbf{h} \in \mathbb{R}^q$, $\mathbf{x} \in \mathbb{R}^p$, $\mathbf{W} \in \mathbb{R}^{p\times q}$, $b \in \mathbb{R}^q$ and where $\sigma(\cdot)$ is upgraded to the element-wise sigmoid function.
+
+<br>
+.center.width-70[![](figures/lec9/layer.svg)]
 
 ---
 
 # Multi-layer perceptron
 
-.center.width-100[![](figures/lec9/mlp.png)]
+Similarly, layers can be composed *in series*, such that:
+$$\begin{aligned}
+\mathbf{h}\_0 &= \mathbf{x} \\\\
+\mathbf{h}\_1 &= \sigma(\mathbf{W}\_1^T \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
+... \\\\
+\mathbf{h}\_L &= \sigma(\mathbf{W}\_L^T \mathbf{h}\_{L-1} + \mathbf{b}\_L) \\\\
+f(\mathbf{x}; \theta) &= \mathbf{h}\_L
+\end{aligned}$$
+where $\theta$ denotes the model parameters $\\{ \mathbf{W}\_k, \mathbf{b}\_k, ... | k=1, ..., L\\}$.
 
-- The **multi-layer perceptron** (MLP) is a hierarchical *composition* of individual perceptron-like models, called *neurons*. The MLP is an example of **neural network**.
-- The network parameters are the union of the individual neuron parameters.
-- Parameters are learned efficiently using stochastic gradient descent.
-
----
-
-# Deep Learning
-
-.center.width-70[![](figures/lec9/dl-hierarchy.png)]
-
-- Effectively, training a *deep neural network* amounts to learn the parameters of a hierarchical representation of the data, tailored for the target task.
-- The high-level features are not-preprogrammed! *Concepts* are learned by the network itself.
-
-.footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
-
----
-
-# Expressiveness
-
-.center.width-70[![](figures/lec9/folding.png)]
-
-- The compositional assumption used in deep learning allows **exponential gains** in the number of required training examples.
-- $O(2^k)$ regions can be defined from $O(k)$ examples, as long as one introduces dependencies between disconnected regions.
-
----
-
-# Applications
-
-Deep learning is now at the core of many *state-of-the-art systems*, including:
-- Image recognition
-- Speech recognition
-- Natural language processing
-- Scientific studies
-- Autonomous agents
-
----
-
-recap with mario kart
+- This model is the **multi-layer perceptron**, also known as the fully connected feedforward network.
+- Optionally, the last activation $\sigma$ can be skipped to produce unbounded output values $\hat{y} \in \mathbb{R}$.
 
 ---
 
 class: middle, center
 
+.width-100[![](figures/lec9/mlp.svg)]
+
+---
+
+# Convolutional networks
+
+<br>
+.center.width-70[![](figures/lec9/hubel-wiesel.png)]
+
+.center[Hubel and Wiesel, 1962]
+
+???
+
+Given the non-satisfactory results of the MLPs, researchers in ML turned to domain knowledge for inspiration.
+
+- Nobel prize in 1981 in Medicine for their study of the visual system in cats.
+- Simple cells: detect features (convolutional layer+activation) -> activate upon specific patterns, mostly oriented edges
+- Complex cells: achieve position invariance (pooling) -> activate upon specific patterns, regardless of their position in their receptive field
+
+---
+
+class: middle, center
+
+.width-80[![](figures/lec9/lenet.png)]
+
+Convolutional network (LeCun et al, 1989)
+
+???
+
+- Similar principle:
+    - S-cell/C-cell -> Convolutional layer (stride=2) + activation
+    - Connected to an MLP
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/zj_JlVqWK1M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Computing predictions with a convolutional neural network.
+]
+
+???
+
+(CONV+RELU + CONV+RELU + POOL) x 3 + FC
+
+---
+
+# Recurrent networks
+
+When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
+
+For example,
+$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x} + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
+where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
+
+.center.width-50[![](figures/lec9/rnn.svg)]
+
+---
+
+class: middle
+
+Notice how this is similar to filtering and dynamic decision networks:
+- $\mathbf{h}\_t$ can be viewed as some current belief state;
+- $\mathbf{x}\_{1:T}$ is a sequence of observations;
+- $\mathbf{h}\_{t+1}$ is computed from the current belief state $\mathbf{h}\_t$ and the latest evidence $\mathbf{x}\_t$ through some fixed computation (in this case a neural network, instead of being inferred from the assumed dynamics).
+- $\mathbf{h}\_t$ can also be used to decide on some action, through another network $f$ such that $a\_t = f(\mathbf{h}\_t;\theta)$.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/Ipi40cb_RsI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+A recurrent network playing Mario Kart.
+]
+
+---
+
+# Applications
+
+Neural networks are now at the core of many *state-of-the-art systems*, including:
+- Image recognition
+- Speech recognition and synthesis
+- Natural language processing
+- Scientific studies
+- Reinforcement learning
+- Autonomous agents
+
+... and many many many others.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/H7Ym3DMSGms?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Autonomous drone navigation with deep learning
+]
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/PCBTZh41Ris?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Pose detection and video synthesis
+]
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/GiZ7kyrwZGQ?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Deep learning and AI at NVIDIA
+]
+
+
+---
+
+class: middle
+
 # Unsupervised learning
+
+???
+
+R: expand with tenenbaum videos? (intuitive physics)
 
 ---
 
 # Unsupervised learning
 
-- Most of the learning performed by animals and humans is **unsupervised**.
+-  Most of the learning performed by animals and humans is **unsupervised**.
     - Without labeled examples nor rewards.
 - We learn how the world works by observing it:
     - We learn that the world is 3-dimensional.
     - We learn that objects can move independently of each other.
     - We learn *object permanence*.
     - We learn to predict what the world will look one second or one hour from now.
-- We build a model of the world through *predictive unsupervised learning*.
-    - This predictive model gives us **common sense**.
-    - Unsupervised learning discovers regularities in the world.
 
-.center.width-30[![](figures/lec9/peekaboo.jpg)]
+<br>
+.center.width-50[![](figures/lec9/peekaboo.jpg)]
 
 .footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
 
 ---
 
-# Common sense
+class: middle
 
-- Learning a predictive model of the world gives us *common sense*.
-- If I say: "Bernard picks up his bag and leaves the room".
-- You can **infer**:
-    - Bernard stood up, extended his arm to pick the bag, walked towards the door, opened the door, walked out.
-    - He and his bag are not in the room anymore.
-    - He probably did not dematerialized or flied out.
+## Common sense
+
+We build a model of the world through *predictive unsupervised learning*.
+- This predictive model gives us **common sense**.
+- Unsupervised learning discovers regularities in the world.
+
+---
+
+class: middle
+
+If I say: "Bernard picks up his bag and leaves the room".
+
+You can **infer**:
+- Bernard stood up, extended his arm to pick the bag, walked towards the door, opened the door, walked out.
+- He and his bag are not in the room anymore.
+- He probably did not dematerialized or flied out.
 
 .center.width-50[![](figures/lec9/bernard.png)]
 
@@ -660,7 +989,9 @@ class: middle, center
 
 ---
 
-# How do we do that?
+class: middle
+
+## How do we do that?
 
 We have no clue! (mostly)
 
@@ -668,22 +999,23 @@ We have no clue! (mostly)
 
 # Summary
 
-- *Learning* is a key element of intelligence.
-- **Statistical learning** aims at learning probabilistic models (their parameters or structures) automatically from data.
-- **Supervised learning** is used to learn functions from a set of training examples.
+- Learning is (supposedly) a key element of intelligence.
+- Statistical learning aims at learning probabilistic models (their parameters or structures) automatically from data.
+- Supervised learning is used to learn functions from a set of training examples.
     - Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
     - Neural networks are composition of squashed linear models.
-    - *Deep learning* = learning hierarchical representations.
 - Reinforcement learning = learning to behave in an unknown environment from sparse rewards.
 - Unsupervised learning = learning a model of the world by observing it.
 
 ---
 
-# Going further?
+class: end-slide, center
+count: false
 
-We *barely scratched* the surface today...
+The end.
 
-- ELEN0062: Introduction to Machine Learning
-- INFO8004: Advanced Machine Learning  (Spring 2018)
-- INFO8003: Optimal decision making for complex problems (Spring 2018)
-- INFOXXXX: Deep Learning (Spring 2019)
+---
+
+# References
+
+xxx

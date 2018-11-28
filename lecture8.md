@@ -79,7 +79,7 @@ A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-- $R$ is reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
+- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
 
 ---
 
@@ -316,6 +316,10 @@ Therefore, we can extract the optimal policy provided we can estimate the utilit
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
+???
+
+Point out the circularity of the argument!
+
 ---
 
 class: middle
@@ -336,6 +340,10 @@ That is,
 $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 - These equations are called the **Bellman equations**. They form a system of $n=|\mathcal{S}|$ non-linear equations with as many unknowns.
 - The utilities of states, defined as the expected utility of subsequent state sequences, are solutions of the set of Bellman equations.
+
+???
+
+Bellman equation combine the expected utility (slide 16) with the policy extraction equation (slide 20).
 
 ---
 
@@ -406,6 +414,10 @@ Therefore, value iteration converges exponentially fast:
 
 .center.width-100[![](figures/lec8/vi-performance.png)]
 
+???
+
+Figure on the right: $\gamma$ helps with convergence.
+
 ---
 
 class: middle
@@ -444,6 +456,10 @@ $$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s)) V\_i(s')$$
 These equations are now **linear** because the $\max$ operator has been removed.
 - for $n$ states, we have $n$ equations with $n$ unknowns;
 - this can be solved exactly in $O(n^3)$ by standard linear algebra methods.
+
+???
+
+Notice how we replaced $a$ with $\pi\_i(s)$.
 
 ---
 
