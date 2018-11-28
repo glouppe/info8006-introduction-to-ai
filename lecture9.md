@@ -117,10 +117,10 @@ class: middle
 # Bayesian learning
 
 View **learning** as a Bayesian update of a probability distribution $P(H)$ over a *hypothesis space*, where
-- $H$ is the hypothesis variable;
-- values are $h\_1$, $h\_2$, ...;
-- the prior is $P(H)$;
-- $\mathbf{d}$ is the observed data.
+- $H$ is the hypothesis variable
+- values are $h\_1$, $h\_2$, ...
+- the prior is $P(H)$
+- $\mathbf{d}$ is the observed data
 
 Given data, each hypothesis has a posterior probability
 $$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is called the *likelihood*.
@@ -167,7 +167,7 @@ class: middle
 
 ## Posterior probability of hypotheses
 
-.center.width-70[![](figures/lec9/posterior-candies.png)]
+.center.width-60[![](figures/lec9/posterior-candies.png)]
 
 ---
 
@@ -175,31 +175,32 @@ class: middle
 
 ## Prediction probability
 
-.center.width-70[![](figures/lec9/prediction-candies.png)]
+.center.width-60[![](figures/lec9/prediction-candies.png)]
 
 - This example illustrates the fact that the Bayesian prediction eventually agrees with the true hypothesis.
-- The posterior probability of any false hypothesis eventually vanishes.
+- The posterior probability of any false hypothesis eventually vanishes (under weak assumptions).
 
 ---
 
 # Maximum a posteriori
 
-Summing over the hypothesis space is often intractable.
+Summing over the hypothesis space is often *intractable*.
 
 Instead,
 **maximum a posteriori** (MAP) estimation consists in using the hypothesis
 $$h\_{MAP} = \arg \max\_{h\_i} P(h\_i | \mathbf{d}).$$
 
 That is, maximize $P(\mathbf{d}|h\_i) P(h\_i)$ or $\log P(\mathbf{d}|h\_i) + \log P(h\_i)$.
-- Log terms can be be viewed as (negative of) bits to encode data given hypothesis + bits to encode hypothesis.
-- This is the basic idea of minimum description length learning, i.e., Occam's razor.
-- Finding the MAP hypothesis is often much easier than Bayesian learning, since it requires solving an optimization problem instead of a large summation problem.
+- Log terms can be be viewed as (negative number of) bits to encode data given hypothesis + bits to encode hypothesis.
+    - This is the basic idea of minimum description length learning, i.e., Occam's razor.
+- Finding the MAP hypothesis is often much easier than Bayesian learning.
+    - It requires solving an optimization problem instead of a large summation problem.
 
 ---
 
 # Maximum likelihood
 
-For large data sets, the prior $P(H)$ becomes irrelevant.
+For large data sets, the prior $P(H)$ becomes *irrelevant*.
 
 In this case, **maximum likelihood estimation** (MLE) consists in using the hypothesis
 $$h\_{MLE} = \arg \max\_{h\_i} P(\mathbf{d} | h\_i)$$
@@ -214,13 +215,12 @@ class: middle
 
 ## Recipe
 
-- Choose a parameterized family of models to describe the data.
-    - e.g., a Bayesian network.
+- Choose a *parameterized* family of models to describe the data (e.g., a Bayesian network).
     - requires substantial insight and sometimes new models.
 - Write down the log-likelihood $L$ of the data as a function of the parameters.
     - may require summing over hidden variables, i.e., inference.
-- Write down the derivative of the log likelihood w.r.t. each parameter.
-- Find the parameter values such that the derivatives are zero.
+- Write down the derivative of the log likelihood w.r.t. each parameter $\theta$.
+- Find the parameter values $\theta$ such that the derivatives are zero.
     - may be hard/impossible; modern optimization techniques help.
 
 ---
@@ -236,7 +236,7 @@ class: middle
 ## MLE, case (a)
 
 Bag from a new manufacturer; fraction $\theta$ of cherry candies?
-- Any $\theta$ is possible: continuum of hypotheses $h\_\theta$.
+- Any $\theta \in [0,1]$ is possible: continuum of hypotheses $h\_\theta$.
 - $\theta$ is a **parameter** for this simple binomial family of models.
 
 Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
@@ -248,13 +248,14 @@ L(\mathbf{d}|h\_\theta) &= \log P(\mathbf{d}|h\_\theta) = c \log \theta + l \log
 \frac{d L(\mathbf{d}|h\_\theta)}{d \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0
 \end{aligned}$$
 Therefore $\theta=\frac{c}{N}$.
-Seems sensible, but causes problems with $0$ counts!
 
 ???
 
 Highlight that using the empirical estimate as an estimator of the mean can be viewed as consequence of
 - deciding on a probabilistic model
 - maximum likelihood estimation under this model
+
+Seems sensible, but causes problems with $0$ counts!
 
 ---
 
@@ -284,13 +285,16 @@ class: middle
 
 Derivatives of $L$ contain only the relevant parameter:
 $$\begin{aligned}
-\frac{\partial L}{\partial \theta} = \frac{c}{\theta} - \frac{l}{1-\theta} = 0 &\Rightarrow \theta = \frac{c}{c+l} \\\\
-\frac{\partial L}{\partial \theta\_1} = \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 &\Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
-\frac{\partial L}{\partial \theta\_2} = \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 &\Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}
+\frac{\partial L}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta} = 0 \Rightarrow \theta = \frac{c}{c+l} \\\\
+\frac{\partial L}{\partial \theta\_1} &= \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 \Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
+\frac{\partial L}{\partial \theta\_2} &= \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 \Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}
 \end{aligned}$$
-- Again, results coincide with intuition.
 - This can be extended to any Bayesian network with parameterized CPTs.
-- Importantly, with complete data, maximum likelihood parameter estimation for a Bayesian network **decomposes into separate optimization problems**, one for each parameter.
+- With complete data, maximum likelihood parameter estimation for a Bayesian network decomposes into separate optimization problems, one for each parameter.
+
+???
+
+Again, results coincide with intuition.
 
 ---
 
@@ -313,7 +317,7 @@ $\mathbf{x}\_i$ are the input data and
 $y_i$ was generated by an unknown function $y\_i=f(\mathbf{x}\_i)$.
 
 - From this data, we wish to **learn a function** $h \in \mathcal{H}$ that approximates the true function $f$.
-- $\mathcal{H}$ is huge! How do we find a good hypothesis?
+- $\mathcal{H}$ is huge! How do we *find* a good hypothesis?
 
 ---
 
@@ -321,9 +325,9 @@ class: middle
 
 .center.width-10[![](figures/lec9/latent.svg)]
 
-In general, $f$ will be stochastic. In this case, $y$ is not strictly a function $x$, and we wish to learn the conditional $P(Y|X)$.
+In general, $f$ will be **stochastic**. In this case, $y$ is not strictly a function $x$, and we wish to learn the conditional $P(Y|X)$.
 
-Most of supervised learning is actually (approximate) maximum likelihood estimation.
+Most of supervised learning is actually (approximate) maximum likelihood estimation on parametric models.
 
 ---
 
@@ -331,7 +335,7 @@ class: middle
 
 ## Feature vectors
 
-- Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ attribute or feature values.
+- Assume the input samples $\mathbf{x}\_i \in \mathbb{R}^p$ are described as real-valued vectors of $p$ attributes or features values.
 - If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
 .center.width-90[![](figures/lec9/features.png)]
 
@@ -350,7 +354,7 @@ R: change this figure
 .kol-4-5[.center.width-100[![](figures/lec9/lg.png)]]
 ]
 
-Let us assume a **parameterized** linear Gaussian model
+Let us assume a *parameterized* linear Gaussian model
 $$y=\mathbf{w}^T \mathbf{x} + b + \epsilon$$
 with one continuous parent $X$, one continuous child $Y$ and $\epsilon \sim \mathcal{N}(0, \sigma^2)$.
 
@@ -360,7 +364,7 @@ class: middle
 
 To learn the conditional distribution $p(y|x)$, we maximize
 $$p(y|x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{2\sigma^2}\right)$$
-w.r.t. $\theta\_1$ and $\theta\_2$ over the data $\mathbf{d} = \\\{ (x\_j, y\_j) \\\}$.
+w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (x\_j, y\_j) \\\}$.
 
 By constraining the derivatives of the log-likelihood to $0$, we arrive to the problem of minimizing
 $$\sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
@@ -391,9 +395,8 @@ class: middle
 .center.width-30[![](figures/lec9/linear-classifier.png)]
 
 - Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{p+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
-- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$.
-- Learning boils down to figuring out a good weight vector from data.
-- The family $\mathcal{H}$ of hypothesis is induced from the set of possible parameters values $\mathbf{w}$, that is $\mathbb{R}^{p+1}$.
+- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to the $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
+- The family $\mathcal{H}$ of hypothesis is induced from the set of possible parameters values $\mathbf{w}$, that is $\mathbb{R}^{p+1}$. Learning consists in finding a good vector $\mathbf{w}$ in this space.
 
 ---
 
@@ -459,8 +462,8 @@ class: middle
 # Apprenticeship
 
 Can we learn to play Pacman from observations?
-- Examples are state-action pairs $(\mathbf{x}=g(s), y=a)$  collected by observing an expert playing.
-- Features are defined over states, e.g. $g(s) \in \mathbb{R}^p$.
+- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
+- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
 - We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^p \to \mathcal{A}$.
 - This is a multiclass classification problem.
 
@@ -531,7 +534,7 @@ looks like a soft heavyside:
 
 class: middle
 
-In terms of **tensor operations**, the computational graph of $h$ can be represented as:
+In terms of **matrix operations**, the computational graph of $h$ can be represented as:
 
 .center.width-70[![](figures/lec9/logistic-neuron.svg)]
 
@@ -935,7 +938,7 @@ Pose detection and video synthesis
 class: middle, black-slide
 
 .center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/GiZ7kyrwZGQ?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/Dy0hJWltsyE?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
 Deep learning and AI at NVIDIA
 ]
