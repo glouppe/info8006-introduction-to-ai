@@ -839,12 +839,6 @@ class: middle, center
 
 Convolutional network (LeCun et al, 1989)
 
-???
-
-- Similar principle:
-    - S-cell/C-cell -> Convolutional layer (stride=2) + activation
-    - Connected to an MLP
-
 ---
 
 class: middle, black-slide
@@ -852,12 +846,20 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="400" src="https://www.youtube.com/embed/zj_JlVqWK1M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Computing predictions with a convolutional neural network.
+Deep neural networks learn a hierarchical composition of features.
 ]
 
-???
+---
 
-(CONV+RELU + CONV+RELU + POOL) x 3 + FC
+class: middle, black-slide
+
+.center[
+
+<iframe width="640" height="480" src="https://www.youtube.com/embed/FwFduRA_L6Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+]
+
+.center[LeNet-1, LeCun et al, 1993.]
 
 ---
 
@@ -1016,6 +1018,8 @@ The end.
 
 ---
 
-# References
+# Going further?
 
-xxx
+- ELEN0062: Introduction to Machine Learning
+- INFO8004: Advanced Machine Learning
+- INFO8010: Deep Learning
