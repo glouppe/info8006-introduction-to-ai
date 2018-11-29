@@ -187,7 +187,7 @@ class: middle
 Summing over the hypothesis space is often *intractable*.
 
 Instead,
-**maximum a posteriori** (MAP) estimation consists in using the hypothesis
+**maximum a posteriori estimation** (MAP) consists in using the hypothesis
 $$h\_{MAP} = \arg \max\_{h\_i} P(h\_i | \mathbf{d}).$$
 
 That is, maximize $P(\mathbf{d}|h\_i) P(h\_i)$ or $\log P(\mathbf{d}|h\_i) + \log P(h\_i)$.
@@ -327,7 +327,7 @@ class: middle
 
 In general, $f$ will be **stochastic**. In this case, $y$ is not strictly a function $x$, and we wish to learn the conditional $P(Y|X)$.
 
-Most of supervised learning is actually (approximate) maximum likelihood estimation on parametric models.
+Most of supervised learning is actually (approximate) maximum likelihood estimation on (huge) parametric models.
 
 ---
 
@@ -522,9 +522,9 @@ No more Minimax!
 
 # Logistic regression
 
-An alternative to the hard threshold model based on the $\text{sign}$ function is to consider that $P(Y|\mathbf{x})$ varies smoothly with $\mathbf{x}$.
+An alternative to the hard threshold model based on the $\text{sign}$ function is to consider that $P(Y=1|\mathbf{x})$ varies smoothly with $\mathbf{x}$.
 The **logistic regression** model postulates
-$$P(Y|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
+$$P(Y=1|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
 looks like a soft heavyside:
@@ -1008,7 +1008,7 @@ We have no clue! (mostly)
 - Statistical learning aims at learning probabilistic models (their parameters or structures) automatically from data.
 - Supervised learning is used to learn functions from a set of training examples.
     - Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
-    - Neural networks are composition of squashed linear models.
+    - Neural networks are defined as a composition of squashed linear models.
 - Reinforcement learning = learning to behave in an unknown environment from sparse rewards.
 - Unsupervised learning = learning a model of the world by observing it.
 
