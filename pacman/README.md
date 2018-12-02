@@ -183,7 +183,7 @@ This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
 In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
 
 You are asked to implement a Bayes filter to maintain a belief state about the ghost locations, as if there were no walls on the map.
-- The sonar sensor model $P(e_t|x_t)$ follows  a uniform $w\times w$ discrete distribution centered around the unknown position $x_t$ of the ghost.
+- The sonar sensor model $P(e_t|x_t)$ follows  a uniform $2w+1 \times 2w+1$ discrete distribution centered around the unknown position $x_t$ of the ghost.
 - The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as follows: If `East` is a legal action, then the ghost selects this action with a probability $0 \leq p \leq 1$. If it does not select it, then it follows uniformly at random one of the legal actions (including `East`).
     If `East` is not a legal action, the ghost takes uniformly at random one of the legal actions.
 - The initial ghost position follows a uniform distribution over legal positions (i.e., where neither Pacman nor a wall is located).
@@ -194,9 +194,7 @@ Your report should be organized as follows:
 1. For the `observer.lay` map, illustrate and discuss the convergence of your belief state with respect to $w \in \{ 1, 3, 5\}$, $p$ and the number of time steps.
 2. Discuss how you would improve your agent to take into account measurements that are not physically possible, such as a position that actually corresponds to a wall.
 
-Notes: 
-- The game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
-- You should re-download the game engine before working on the project.
+Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
 
 ---
 
