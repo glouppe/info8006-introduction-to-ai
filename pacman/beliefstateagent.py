@@ -22,6 +22,12 @@ class BeliefStateAgent(Agent):
         self.beliefGhostStates = None
         # Grid of walls (assigned with 'state.getWalls()' method) 
         self.walls = None
+        # Uniform distribution size parameter 'w'
+        # for sensor noise (see instructions)
+        self.w = self.args.w
+        # Probability for 'leftturn' ghost to take 'EAST' action
+        # when 'EAST' is legal (see instructions)
+        self.p = self.args.p
 
     def updateAndGetBeliefStates(self, evidences):
         """
