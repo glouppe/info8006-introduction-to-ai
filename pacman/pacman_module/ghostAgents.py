@@ -41,6 +41,7 @@ class GhostAgent(Agent):
 
 
 class EastRandyGhost(GhostAgent):
+    "A stochastic ghost which favor EAST direction when legal"
 
     def _uniformOverLegalActions(self, state):
         """
@@ -48,8 +49,9 @@ class EastRandyGhost(GhostAgent):
         """
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
+        len_legal = len(legal)
         for a in legal:
-            dist[a] = 1
+            dist[a] = 1.0/len_legal
         dist.normalize()
         return dist
 
@@ -57,11 +59,12 @@ class EastRandyGhost(GhostAgent):
         """
         Returns a distribution such that
         if East is in legal actions, then
-        select it with 50% probability.
+        select it with 'p' probability.
         If East is select, returns a distribution
         with East probability set to 1 and 0 for others.
-        If East is not selected, returns a uniform distribution
-        over legal actions (incl. East)
+        If East is not selected or not legal,
+        returns a uniform distribution over legal actions
+        (incl. East if legal)
         """
         legal = state.getLegalActions(self.index)
         args = self.args

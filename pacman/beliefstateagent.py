@@ -20,7 +20,7 @@ class BeliefStateAgent(Agent):
         """
         # Current list of belief states over ghost positions
         self.beliefGhostStates = None
-        # Grid of walls (assigned with 'state.getWalls()' method) 
+        # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
         # Uniform distribution size parameter 'w'
         # for sensor noise (see instructions)
