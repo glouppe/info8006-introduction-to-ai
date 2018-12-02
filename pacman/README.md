@@ -183,7 +183,7 @@ This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
 In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
 
 You are asked to implement a Bayes filter to maintain a belief state about the ghost locations, as if there were no walls on the map.
-- The sonar sensor model $P(e_t|x_t)$ follows  a uniform $2w+1 \times 2w+1$ discrete distribution centered around the unknown position $x_t$ of the ghost.
+- The sonar sensor model $P(e_t|x_t)$ follows  a uniform $W \times W$ discrete distribution centered around the unknown position $x_t$ of the ghost, where $W = 2w+1$.
 - The transition model $P(x_{t+1}|x_t)$ of a ghost is defined as follows: If `East` is a legal action, then the ghost selects this action with a probability $0 \leq p \leq 1$. If it does not select it, then it follows uniformly at random one of the legal actions (including `East`).
     If `East` is not a legal action, the ghost takes uniformly at random one of the legal actions.
 - The initial ghost position follows a uniform distribution over legal positions (i.e., where neither Pacman nor a wall is located).
