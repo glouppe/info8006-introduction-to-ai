@@ -22,7 +22,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 10 (December 13): Communication [PDF]
 - Lecture 11 (December 20): Artificial General Intelligence and beyond [PDF]
 
-## Exercise sessions
+## Practicals
 
 - Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
 - Session 2 (October 11): Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP1.pdf)]
