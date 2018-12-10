@@ -14,6 +14,10 @@ https://futureoflife.org/wp-content/uploads/2017/01/Jurgen-Schmidhuber.pdf?x5693
 http://machineintelligence.org/universal-ai.pdf
 https://en.wikipedia.org/wiki/Open_Letter_on_Artificial_Intelligence
 
+open challenges https://medium.com/@GaryMarcus/the-deepest-problem-with-deep-learning-91c5991f5695
+
+R: add a comment on internships and msc thesis (in liege and abroad)
+
 ---
 
 # From technological breakthroughs...

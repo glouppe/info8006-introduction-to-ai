@@ -8,6 +8,11 @@ Lecture 9: Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
+???
+
+R: add Emmanuel Dupoux experiment (objects are not supposed to levitate, see Lecun Deep RL 2018)
+R: ... and orang-outan video ;)
+
 ---
 
 # Today
