@@ -250,25 +250,32 @@ class: middle, center, black-slide
 
 ---
 
-# HMM-based recognizer
+# Speech as probabilistic inference
 
-<br><br><br>
-.center.width-90[![](figures/lec10/hmm-recognition.png)]
+Speech recognition can be viewed as an instance of the problem of **finding the most likely sequence** of state variables $\mathbf{w}\_{1:L}$, given a sequence of observations $\mathbf{y}\_{1:T}$.
+
+- In this case, state variables are the words and the observations are sounds.
+
+- The input audio waveform from a microphone is converted into a sequence of fixed size acoustic vectors $\mathbf{y}\_{1:T}$ in a process called *feature extraction*.
+
+- The decoder attempts to find the sequence of words $\mathbf{w}\_{1:L} = w\_1, ..., w\_L$ which is the most likely to have generated $\mathbf{y}\_{1:T}$:
+$$\hat{\mathbf{w}}\_{1:L} = \arg \max\_{\mathbf{w}\_{1:L}} P(\mathbf{w}\_{1:L}|\mathbf{y}\_{1:T})$$
 
 ---
 
 class: middle
 
-The input audio waveform from a microphone is converted into a sequence of fixed size acoustic vectors $\mathbf{Y}\_{1:T} = \mathbf{y}\_1, ..., \mathbf{y}\_T$ in a process called feature extraction.
-
-The decoder attempts to find the sequence of words $\mathbf{w}\_{1:L} = w\_1, ..., w\_L$ which is the most likely to have generated $\mathbf{Y}$:
-$$\hat{\mathbf{w}} = \arg \max\_\mathbf{w} P(\mathbf{w}|\mathbf{Y})$$
-
-Since $P(\mathbf{w}|\mathbf{Y})$ is difficult to model directly, Bayes' rule is the used to solve the equivalent problem
-$$\hat{\mathbf{w}} = \arg \max\_\mathbf{w} p(\mathbf{Y}|\mathbf{w}) P(\mathbf{w}),$$
+Since $P(\mathbf{w}\_{1:L}|\mathbf{y}\_{1:T})$ is difficult to model directly, Bayes' rule is the used to solve the equivalent problem
+$$\hat{\mathbf{w}}\_{1:L} = \arg \max\_{\mathbf{w}\_{1:L}} p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L}) P(\mathbf{w}\_{1:L}),$$
 where
-- the likelihood $p(\mathbf{Y}|\mathbf{w})$ is the acoustic model;
-- the prior $P(\mathbf{w})$ is the language model.
+- the likelihood $p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L})$ is the **acoustic model**;
+- the prior $P(\mathbf{w}\_{1:L})$ is the *language model*.
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec10/hmm-recognition.png)]
 
 ---
 
@@ -276,9 +283,9 @@ class: middle
 
 ## Feature extraction
 
-- The feature extraction seeks to provide a compact representation $\mathbf{Y}$ of the speech waveform.
+- The feature extraction seeks to provide a compact representation $\mathbf{e}\_{1:T}$ of the speech waveform.
 - This form should minimize the loss of information that discriminates between words.
-- One of the most widely used encoding schemes is based on *mel-frequency cepstral coefficients* (MFCCs).
+- One of the most widely used encoding schemes is based on **mel-frequency cepstral coefficients** (MFCCs).
 
 ---
 
@@ -309,15 +316,18 @@ $$\downarrow$$
 
 class: middle
 
-## HMM acoustic model
+## Acoustic model
 
-- A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *base phones*.
-  This sequence is called its pronunciation $\mathbf{q}^{(w)}\_{1:K\_w} = q\_1, ..., q\_{K\_w}$.
-- The acoustic model allows for multiple pronunciations through marginalization:
-$$p(\mathbf{Y}|\mathbf{w}) = \sum\_{\mathbf{Q}} p(\mathbf{Y}|\mathbf{Q}) P(\mathbf{Q}|\mathbf{w}),$$
-where the summation is over all valid pronunciations sequences for $\mathbf{w}$, $\mathbf{Q}$ is a particular sequence of pronunciations,
-$$P(\mathbf{Q}|\mathbf{w}) = \prod\_{l=1}^L P(\mathbf{q}^{(w\_l)}|w\_l)$$
-and where each $\mathbf{q}^{(w\_l)}$ is a valid pronunciation for word $w\_l$.
+A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *base phones* (such as vowels or consonants).
+
+- This sequence is called its pronunciation $\mathbf{q}^{w}\_{1:K\_w} = q\_1, ..., q\_{K\_w}$.
+- Pronunciations are related to words through **pronunciations models** defined for each word.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/phone-model.png)]
 
 ---
 
@@ -325,21 +335,39 @@ class: middle
 
 .center.width-60[![](figures/lec10/hmm-phone.png)]
 
-Each base phone $q$ is represented by a continuous density HMM, where
+Each base phone $q$ is represented by **phone model** defined as a three-state continuous density HMM, where
 - the transition probability parameter $a\_{ij}$ corresponds to the probability of making the particular transition from state $s\_i$ to $s\_j$;
-- the output observation distributions are $b\_j(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mu^{(j)}, \Sigma^{(j)})$.
+- the output sensor models are $b\_j(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mu^{(j)}, \Sigma^{(j)})$ and relate state variables $s\_j$ to MFCCs $\mathbf{y}$.
 
 ---
 
 class: middle
 
-Given the composite HMM $\mathbf{Q}$ formed by concatenating all the constituent base phones $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$, the acoustic likelihood is given by
+The full acoustic model can now be defined as a composition pronunciation models with individual phone models:
 $$
-p(\mathbf{Y}|\mathbf{Q}) = \sum\_\mathbf{s} p(\mathbf{s},\mathbf{Y}|\mathbf{Q})
+\begin{aligned}
+p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L}) &= \sum\_{\mathbf{Q}} P(\mathbf{y}\_{1:T} | \mathbf{Q}) P(\mathbf{Q} | \mathbf{w}\_{1:L})
+\end{aligned}
+$$
+where the summation is over all valid pronunciation sequences for $\mathbf{w}\_{1:L}$, $\mathbf{Q}$ is a particular sequence $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$ of pronunciations,
+$$
+\begin{aligned}
+P(\mathbf{Q}|\mathbf{w}\_{1:L}) &= \prod\_{l=1}^L P(\mathbf{q}^{w\_l}|w\_l)
+\end{aligned}$$
+as given by the pronunciation model,
+and where $\mathbf{q}^{w\_l}$ is a valid pronunciation for word $w\_l$.
+
+---
+
+class: middle
+
+Given the composite HMM formed by concatenating all the constituent base phones $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$, the acoustic likelihood is given by
+$$
+p(\mathbf{y}\_{1:T}|\mathbf{Q}) = \sum\_\mathbf{s} p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q})
 $$
 where $\mathbf{s} = s\_0, ..., s\_{T+1}$ is a state sequence through the composite model
 and
-$$p(\mathbf{s},\mathbf{Y}|\mathbf{Q}) = a\_{s\_0, s\_1} \prod\_{t=1}^T b\_{s\_t}(\mathbf{y}\_t) a\_{s\_t s\_{t+1}}.$$
+$$p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q}) = a\_{s\_0, s\_1} \prod\_{t=1}^T b\_{s\_t}(\mathbf{y}\_t) a\_{s\_t s\_{t+1}}.$$
 
 From this formulation, all model parameters can be efficiently estimated from a corpus of training utterances with expectation-minimization.
 
@@ -350,7 +378,7 @@ class: middle
 ## N-gram language model
 
 The prior probability of a word sequence $\mathbf{w} = w\_1, ..., w\_L$ is given by
-$$P(\mathbf{w}) = \prod\_{l=1}^L P(w\_k | w\_{k-1}, ..., w\_{k-N+1}).$$
+$$P(\mathbf{w}) = \prod\_{l=1}^L P(w\_l | w\_{l-1}, ..., w\_{l-N+1}).$$
 
 The N-gram probabilities probabilities are estimated from training texts by counting N-gram occurrences to form maximum likelihood estimates.
 
@@ -361,7 +389,10 @@ class: middle
 
 ## Decoding
 
-Inference is carried out by running a variant of Viterbi.
+The composite model corresponds to a HMM, from which the most-likely state sequence $\mathbf{s}$ can be inferred using (a variant of) **Viterbi**.
+
+By construction, states $\mathbf{s}$ relate to phones, phones to pronunciations, and pronunciations to words.
+
 
 ---
 
