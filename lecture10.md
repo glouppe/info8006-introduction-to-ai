@@ -250,7 +250,18 @@ class: middle, center, black-slide
 
 ---
 
-# Speech as probabilistic inference
+# Recognition as inference
+
+.grid[
+.kol-1-2.center[
+$\mathbf{y}\_{1:T}$
+.width-100[![](figures/lec10/time_signal.jpg)]]
+.kol-1-12.center[
+<br><br>$\rightarrow$]
+.kol-5-12.center[
+$\mathbf{w}\_{1:L}$
+<br><br>My name is HAL]
+]
 
 Speech recognition can be viewed as an instance of the problem of **finding the most likely sequence** of state variables $\mathbf{w}\_{1:L}$, given a sequence of observations $\mathbf{y}\_{1:T}$.
 
@@ -411,14 +422,9 @@ Recurrent neural network with
 - followed by multiple recurrent layers,
 - and one fully connected layer before a softmax layer.
 - Total of 35M parameters.
-
-That's it!
-
 ]
 .kol-1-3[.width-100[![](figures/lec10/deepspeech.png)]]
 ]
-
-
 
 ---
 
@@ -439,11 +445,31 @@ class: middle
 
 ---
 
+class: middle
+
+.grid[
+.kol-5-12.center[
+$\mathbf{w}\_{1:L}$
+<br><br>My name is HAL]
+.kol-1-12.center[
+<br><br>$\rightarrow$]
+.kol-1-2.center[
+$\mathbf{y}\_{1:T}$
+.width-100[![](figures/lec10/time_signal.jpg)]]]
+
+---
+
 wavenet
 
 ---
 
-video of the google assistant booking a restaurant
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/7gh6_U7Nfjs?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Google Assistant: Soon in your smartphone.
+]
 
 ---
 
