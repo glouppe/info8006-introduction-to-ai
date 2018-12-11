@@ -398,6 +398,38 @@ By construction, states $\mathbf{s}$ relate to phones, phones to pronunciations,
 
 # Neural speech recognition
 
+Modern speech recognition systems are now based on *end-to-end* deep neural network architectures trained on large corpus of data.
+
+<br>
+
+.grid[
+.kol-2-3[
+## Deep Speech 2
+
+Recurrent neural network with
+- one one more convolutional input layers,
+- followed by multiple recurrent layers,
+- and one fully connected layer before a softmax layer.
+- Total of 35M parameters.
+
+That's it!
+
+]
+.kol-1-3[.width-100[![](figures/lec10/deepspeech.png)]]
+]
+
+
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/IFPwMKbdQnI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Deep Speech 2
+]
+
 ---
 
 
@@ -427,3 +459,5 @@ The end.
 ---
 
 # References
+
+- Gales, M., & Young, S. (2008). The application of hidden Markov models in speech recognition. Foundations and Trends® in Signal Processing, 1(3), 195-304.
