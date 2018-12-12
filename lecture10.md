@@ -11,31 +11,46 @@ Prof. Gilles Louppe<br>
 ???
 
 R: check https://gitlab.com/Valiox/voice-transfer-across-languages
-https://drive.google.com/file/d/1Q8SIQi57r6N5wvc4IPTxv0_tQ-D0K3Fb/view
-
-
-http://lxmls.it.pt/2017/talk.pdf
+R: check https://static.googleusercontent.com/media/research.google.com/fr//pubs/archive/45882.pdf
 
 ---
 
 # Today
 
+.center.width-30[![](figures/lec10/robot-speech.png)]
 
-
-.grid[
-.kol-2-3[
 Can you **talk** to an artificial agent? Can it understand what you say?
 
 - Machine translation
 - Speech recognition
 - Speech synthesis
-]
-.kol-1-3[
-.center.width-100[![](figures/lec10/robot-speech.png)]
-]
-]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+## Sequence-to-sequence mapping
+
+.grid[
+.kol-1-3[Machine translation:]
+.kol-1-4.center[Hello, my name is HAL.]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[Bonjour, mon nom est HAL.]
+]
+.grid[
+.kol-1-3[Speech recognition:]
+.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[Hello, my name is HAL.]
+]
+.grid[
+.kol-1-3[Speech synthesis:]
+.kol-1-4.center[Hello, my name is HAL.]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
+]
 
 ---
 
@@ -61,7 +76,7 @@ class: middle
 
 ## Issue of dictionary lookups
 
-.center.width-90[![](figures/lec10/lookups.png)]
+.center.width-80[![](figures/lec10/lookups.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -97,8 +112,8 @@ class: middle
 ## Machine translation systems
 
 Translation systems must model the source and target languages, but systems vary in the type of models they use.
-- Some systems analyze the source language text all the way into an interlingua knowledge representation and then generate sentences in the target language from that representation.
-- Other systems are based on a *transfer model*. They keep a database of translation rules and whenever the rule matches, they translate directly. Transfer can occur at the lexical, syntactic or semantic level.
+- Some systems analyze the source language text all the way into an *interlingua knowledge representation* and then generate sentences in the target language from that representation.
+- Other systems are based on a **transfer model**. They keep a database of translation rules and whenever the rule matches, they translate directly. Transfer can occur at the lexical, syntactic or semantic level.
 
 ---
 
@@ -161,11 +176,13 @@ All that remains is to learn the phrasal and distortion probabilities:
 
 # Neural machine translation
 
-Modern machine translation systems are all based on neural networks of various types.
+Modern machine translation systems are all based on **neural networks** of various types, often architectured as compositions of
+- recurrent networks for sequence-to-sequence learning,
+- convolutional networks for modeling spatial dependencies.
 
 <br>
 
-.center.width-80[![](figures/lec10/gnmt.jpg)]
+.center.width-70[![](figures/lec10/gnmt.jpg)]
 
 ---
 
@@ -205,9 +222,9 @@ Word-by-word translation:
 - The system learn rotation of the word embedding in one language to match the word embedding in the other language, using adversarial training.
 - This can be used to infer a fairly accurate bilingual dictionary without access to any translation!
 
-.center.width-60[![](figures/lec10/umt-word-by-word.gif)]
+.center.width-50[![](figures/lec10/umt-word-by-word.gif)]
 
-.footnote[Image credits: [Facebook AI Research](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/), Unsupervised machine translation.]
+.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
 
 ---
 
@@ -221,7 +238,7 @@ Translating sentences:
 
 .center.width-70[![](figures/lec10/umt1.png)]
 
-.footnote[Image credits: [Lample et al, arXiv:1711.00043](https://arxiv.org/pdf/1711.00043.pdf).]
+.footnote[Image credits: [Lample et al, 2017. arXiv:1711.00043](https://arxiv.org/pdf/1711.00043.pdf).]
 
 ---
 
@@ -229,7 +246,7 @@ class: middle
 
 .center.width-100[![](figures/lec10/GermanA.png)]
 
-.footnote[Image credits: [Facebook AI Research](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/), Unsupervised machine translation.]
+.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
 
 ---
 
@@ -253,14 +270,14 @@ class: middle, center, black-slide
 # Recognition as inference
 
 .grid[
-.kol-1-2.center[
+.kol-5-12.center[
 $\mathbf{y}\_{1:T}$
-.width-100[![](figures/lec10/time_signal.jpg)]]
-.kol-1-12.center[
-<br><br>$\rightarrow$]
+.width-100[![](figures/lec10/waveform.png)]]
+.kol-2-12.center[
+<br>$\rightarrow$]
 .kol-5-12.center[
 $\mathbf{w}\_{1:L}$
-<br><br>My name is HAL]
+<br>My name is HAL.]
 ]
 
 Speech recognition can be viewed as an instance of the problem of **finding the most likely sequence** of state variables $\mathbf{w}\_{1:L}$, given a sequence of observations $\mathbf{y}\_{1:T}$.
@@ -307,7 +324,7 @@ class: middle
 
 MFCCs calculation.]
 
-.footnote[Image credits: [Giampiero Salvi, DT2118](https://www.kth.se/social/files/56fd38eaf276547ad14588ec/lecture.pdf), Lecture 2.]
+.footnote[Image credits: [Giampiero Salvi, 2016. DT2118](https://www.kth.se/social/files/56fd38eaf276547ad14588ec/lecture.pdf).]
 
 ---
 
@@ -321,7 +338,7 @@ $$\downarrow$$
 
 .center[Feature extraction from the signal in the time domain to MFCCs.]
 
-.footnote[Image credits: [Haytham Fayek](https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html).]
+.footnote[Image credits: [Haytham Fayek, 2016](https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html).]
 
 ---
 
@@ -338,6 +355,12 @@ A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *b
 
 class: middle
 
+.center.width-100[![](figures/lec10/phones.png)]
+
+---
+
+class: middle
+
 .center.width-100[![](figures/lec10/phone-model.png)]
 
 ---
@@ -348,7 +371,7 @@ class: middle
 
 Each base phone $q$ is represented by **phone model** defined as a three-state continuous density HMM, where
 - the transition probability parameter $a\_{ij}$ corresponds to the probability of making the particular transition from state $s\_i$ to $s\_j$;
-- the output sensor models are $b\_j(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mu^{(j)}, \Sigma^{(j)})$ and relate state variables $s\_j$ to MFCCs $\mathbf{y}$.
+- the output sensor models are Gaussians $b\_j(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mu^{(j)}, \Sigma^{(j)})$ and relate state variables $s\_j$ to MFCCs $\mathbf{y}$.
 
 ---
 
@@ -411,20 +434,21 @@ By construction, states $\mathbf{s}$ relate to phones, phones to pronunciations,
 
 Modern speech recognition systems are now based on *end-to-end* deep neural network architectures trained on large corpus of data.
 
-<br>
-
 .grid[
 .kol-2-3[
 ## Deep Speech 2
 
-Recurrent neural network with
-- one one more convolutional input layers,
-- followed by multiple recurrent layers,
-- and one fully connected layer before a softmax layer.
+- Recurrent neural network with
+    - one one more convolutional input layers,
+    - followed by multiple recurrent layers,
+    - and one fully connected layer before a softmax layer.
 - Total of 35M parameters.
+- Same architecture for both English and Mandarin.
 ]
 .kol-1-3[.width-100[![](figures/lec10/deepspeech.png)]]
 ]
+
+.footnote[Image credits: [Amodei et al, 2015. arXiv:1512.02595](https://arxiv.org/abs/1512.02595).]
 
 ---
 
@@ -441,7 +465,7 @@ Deep Speech 2
 
 class: middle
 
-# Speech synthesis
+# Text-to-speech synthesis
 
 ---
 
@@ -450,16 +474,95 @@ class: middle
 .grid[
 .kol-5-12.center[
 $\mathbf{w}\_{1:L}$
-<br><br>My name is HAL]
-.kol-1-12.center[
-<br><br>$\rightarrow$]
-.kol-1-2.center[
+<br>My name is HAL.]
+.kol-2-12.center[
+<br>$\rightarrow$]
+.kol-5-12.center[
 $\mathbf{y}\_{1:T}$
-.width-100[![](figures/lec10/time_signal.jpg)]]]
+.width-100[![](figures/lec10/waveform.png)]]
+]
 
 ---
 
-wavenet
+# Autoregressive models
+
+.grid[
+.kol-3-4[
+By the chain rule, any joint distribution can always be written as an incremental product of conditional distributions:
+$$
+\begin{aligned}
+p(x\_1,...,x\_n) &= \prod\_{k=1}^n p(x\_k | x\_1, ..., x\_{k-1}).
+\end{aligned}
+$$
+If $h\_{k-1}$ is a sufficient statistic of the previous observations in the sequence, then we can express
+$$p(x\_k | x\_1, ..., x\_{k-1}) = g\_\theta(x\_k | h\_{k-1}).$$
+]
+.kol-1-4.center[
+.width-100[![](figures/lec10/ar-image.png)]
+.caption[Autoregressive model<br> for images.]
+]
+]
+
+
+
+---
+
+class: middle
+
+An autoregressive model can be formulated as a recurrent neural network such that
+
+$$
+\begin{aligned}
+p(x\_k | x\_1, ..., x\_{k-1}) &= g\_\theta(x\_k | h\_{k-1}) \\\\
+h\_k &= f\_\theta(x\_k, h\_{k-1})
+\end{aligned}
+$$
+where
+- $g$ specifies a probability density function for the next $x$ given $h$.
+- $f$ specifies (in a deterministic way) the next state $h$ given $x$.
+
+If $g$ and $f$ have enough capacity (e.g., $f$ and $g$ are large neural networks), then the resulting autoregressive model is often capable of modeling complex distributions, such as text, images or speech.
+
+The same architecture can be used for modeling *conditional* distributions over inputs.
+
+---
+
+# Deep Voice
+
+The Deep Voice 3 system is a **sequence-to-sequence neural network** architecture for text-to-speech. It consists of three components:
+- *Encoder*: A fully-convolutional encoder, which converts textual features to an internal
+learned representation.
+- *Decoder*: A fully-convolutional causal decoder, which decodes the learned representation
+with a multi-hop convolutional attention mechanism into a low-dimensional audio representation
+(mel-scale spectrograms) in an autoregressive manner.
+- *Converter*: A fully-convolutional post-processing network, which predicts final vocoder
+parameters (depending on the vocoder choice) from the decoder hidden states.
+
+---
+
+class: middle
+
+.width-100[![](figures/lec10/deepvoice-1.png)]
+
+.footnote[Image credits: [Ping et al, 2017. arXiv:1710.07654](https://arxiv.org/abs/1710.07654).]
+
+---
+
+class: middle
+
+.width-100[![](figures/lec10/deepvoice-2.png)]
+
+.footnote[Image credits: [Ping et al, 2017. arXiv:1710.07654](https://arxiv.org/abs/1710.07654).]
+
+---
+
+# Wavenet
+
+architecture
+
+---
+
+samples
 
 ---
 

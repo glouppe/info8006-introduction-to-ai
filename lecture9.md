@@ -10,6 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: convnet part needs some text explanation
 R: add Emmanuel Dupoux experiment (objects are not supposed to levitate, see Lecun Deep RL 2018)
 R: ... and orang-outan video ;)
 
