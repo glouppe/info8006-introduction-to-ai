@@ -10,7 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: check https://gitlab.com/Valiox/voice-transfer-across-languages
 R: check https://static.googleusercontent.com/media/research.google.com/fr//pubs/archive/45882.pdf
 
 ---
@@ -23,7 +22,7 @@ Can you **talk** to an artificial agent? Can it understand what you say?
 
 - Machine translation
 - Speech recognition
-- Speech synthesis
+- Text-to-speech synthesis
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -46,7 +45,7 @@ class: middle
 .kol-1-4.center[Hello, my name is HAL.]
 ]
 .grid[
-.kol-1-3[Speech synthesis:]
+.kol-1-3[Text-to-speech synthesis:]
 .kol-1-4.center[Hello, my name is HAL.]
 .kol-2-12.center[$\rightarrow$]
 .kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
@@ -68,7 +67,11 @@ class: middle
 
 Automatic translation of text from one natural language (the source) to another (the target), while preserving the intended meaning.
 
-<span class="Q">[Q]</span> How would engineer a machine translation system?
+<span class="Q">[Q]</span> How would you engineer a machine translation system?
+
+???
+
+Expect the students to come up with a dictionary-based solution.
 
 ---
 
@@ -78,6 +81,8 @@ class: middle
 
 .center.width-80[![](figures/lec10/lookups.png)]
 
+.center[Natural languages are not 1:1 mappings of each other!]
+
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
@@ -86,7 +91,9 @@ class: middle
 
 .center.width-100[![](figures/lec10/translate-soccer.png)]
 
-.center[To obtain a correct translation, one must decide whether "it" refers to the soccer ball or to the window. Therefore, one must understand physics as well as language.]
+.center[To obtain a correct translation, one must decide<br> whether "it" refers to the soccer ball or to the window.
+
+Therefore, one must understand physics as well as language.]
 
 ---
 
@@ -129,8 +136,8 @@ To translate an English sentence $e$ into a French sentence $f$, we seek the str
 $$f^\* = \arg\max\_f P(f|e).$$
 
 - The language model $P(f|e)$ is learned from a **bilingual corpus**, i.e. a collection of parallel texts, each an English/French pair.
-- Most of the English sentences to be translated will be novel, but will be composed of phrases that that have been see before.
-- The corresponding French phrases will be reassembled to form a French sentence that make sense.
+- Most of the English sentences to be translated will be novel, but will be composed of phrases that that have been seen before.
+- The corresponding French phrases will be reassembled to form a French sentence that makes sense.
 
 ---
 
@@ -139,7 +146,7 @@ class: middle
 Given an English source sentence $e$, finding a French translation $f$ is a matter of three steps:
 - Break $e$ into phrases $e\_1, ..., e\_n$.
 - For each phrase $e\_i$, choose a corresponding French phrase $f\_i$. We use the notation $P(f\_i|e\_i)$ for the phrasal probability that $f\_i$ is a translation of $e\_i$.
-- Choose a permutation of the phrases $f\_1, ..., f\_n$. For each $f\_i$, we choose a *distortion* $d\_i$, which is the number of words that phrase $f\_i$ has moved with respect to $f\_{i-1}$; positive for moving to the right, negative for moving the left.
+- Choose a permutation of the phrases $f\_1, ..., f\_n$. For each $f\_i$, we choose a distortion $$d\_i = \text{start}(f\_i) - \text{end}(f\_{i-1}) - 1,$$ which is the number of words that phrase $f\_i$ has moved with respect to $f\_{i-1}$; positive for moving to the right, negative for moving the left.
 
 ---
 
@@ -153,11 +160,17 @@ class: middle
 
 We define the probability $P(f,d|e)$ that the sequence of phrases $f$ with distortions $d$ is a translation of the sequence of phrases $e$.
 
-Assuming mutual independence of each phrase translation and each distortion, we have
+Assuming that each phrase translation and each distortion is independent of the others, we have
 $$P(f,d|e) = \prod\_i P(f\_i | e\_i) P(d\_i).$$
 
 - The best $f$ and $e$ cannot be found through enumeration because of the combinatorial explosion.
 - Instead, local beam search with a heuristic that estimates probability has proven effective at finding a nearly-most-probable translation.
+
+???
+
+With maybe
+100 French phrases for each English phrase in the corpus, there are $100^5$ different 5-phrase
+translations, and $5!$ reorderings for each of those.
 
 ---
 
@@ -169,7 +182,7 @@ All that remains is to learn the phrasal and distortion probabilities:
 3. Align sentences.
 4. Align phrases.
 5. Extract distortions.
-6. Improve estimates with expectation-minimization.
+6. Improve estimates with expectation-maximization.
 
 
 ---
@@ -254,11 +267,6 @@ class: middle
 
 # Speech recognition
 
-???
-
-R: check 23.5
-R: check lec 15 of bair
-
 ---
 
 class: middle, center, black-slide
@@ -282,7 +290,7 @@ $\mathbf{w}\_{1:L}$
 
 Speech recognition can be viewed as an instance of the problem of **finding the most likely sequence** of state variables $\mathbf{w}\_{1:L}$, given a sequence of observations $\mathbf{y}\_{1:T}$.
 
-- In this case, state variables are the words and the observations are sounds.
+- In this case, (hidden) state variables are the words and the observations are sounds.
 
 - The input audio waveform from a microphone is converted into a sequence of fixed size acoustic vectors $\mathbf{y}\_{1:T}$ in a process called *feature extraction*.
 
@@ -311,7 +319,7 @@ class: middle
 
 ## Feature extraction
 
-- The feature extraction seeks to provide a compact representation $\mathbf{e}\_{1:T}$ of the speech waveform.
+- The feature extraction seeks to provide a compact representation $\mathbf{y}\_{1:T}$ of the speech waveform.
 - This form should minimize the loss of information that discriminates between words.
 - One of the most widely used encoding schemes is based on **mel-frequency cepstral coefficients** (MFCCs).
 
@@ -325,6 +333,15 @@ class: middle
 MFCCs calculation.]
 
 .footnote[Image credits: [Giampiero Salvi, 2016. DT2118](https://www.kth.se/social/files/56fd38eaf276547ad14588ec/lecture.pdf).]
+
+???
+
+- Pre-emphasis: amply the high frequencies.
+- Windowing: split the signal into short-time frames.
+- FFT: calculate the frequency spectrum and compute the power spectrum (periodogram).
+- Filter banks: apply triangular filter (around 40) on a Mel-scale to the power spectrum to extract frequency bands.
+    - The Mel-scale aims to mimic the non-linear human ear perception of sound, by being more discriminate at lower frequencies and less discriminative at higher frequencies.
+- Decorrelate the bank coefficients through a Discrete Cosine Transform.
 
 ---
 
@@ -377,7 +394,7 @@ Each base phone $q$ is represented by **phone model** defined as a three-state c
 
 class: middle
 
-The full acoustic model can now be defined as a composition pronunciation models with individual phone models:
+The full acoustic model can now be defined as a composition of pronunciation models with individual phone models:
 $$
 \begin{aligned}
 p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L}) &= \sum\_{\mathbf{Q}} P(\mathbf{y}\_{1:T} | \mathbf{Q}) P(\mathbf{Q} | \mathbf{w}\_{1:L})
@@ -395,7 +412,7 @@ and where $\mathbf{q}^{w\_l}$ is a valid pronunciation for word $w\_l$.
 
 class: middle
 
-Given the composite HMM formed by concatenating all the constituent base phones $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$, the acoustic likelihood is given by
+Given the composite HMM formed by concatenating all the constituent pronunciations $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$ and their corresponding base phones, the acoustic likelihood is given by
 $$
 p(\mathbf{y}\_{1:T}|\mathbf{Q}) = \sum\_\mathbf{s} p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q})
 $$
@@ -403,7 +420,7 @@ where $\mathbf{s} = s\_0, ..., s\_{T+1}$ is a state sequence through the composi
 and
 $$p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q}) = a\_{s\_0, s\_1} \prod\_{t=1}^T b\_{s\_t}(\mathbf{y}\_t) a\_{s\_t s\_{t+1}}.$$
 
-From this formulation, all model parameters can be efficiently estimated from a corpus of training utterances with expectation-minimization.
+From this formulation, all model parameters can be efficiently estimated from a corpus of training utterances with expectation-maximization.
 
 ---
 
@@ -414,7 +431,7 @@ class: middle
 The prior probability of a word sequence $\mathbf{w} = w\_1, ..., w\_L$ is given by
 $$P(\mathbf{w}) = \prod\_{l=1}^L P(w\_l | w\_{l-1}, ..., w\_{l-N+1}).$$
 
-The N-gram probabilities probabilities are estimated from training texts by counting N-gram occurrences to form maximum likelihood estimates.
+The N-gram probabilities are estimated from training texts by counting N-gram occurrences to form maximum likelihood estimates.
 
 
 ---
@@ -439,7 +456,7 @@ Modern speech recognition systems are now based on *end-to-end* deep neural netw
 ## Deep Speech 2
 
 - Recurrent neural network with
-    - one one more convolutional input layers,
+    - one or more convolutional input layers,
     - followed by multiple recurrent layers,
     - and one fully connected layer before a softmax layer.
 - Total of 35M parameters.
@@ -494,7 +511,7 @@ $$
 p(x\_1,...,x\_n) &= \prod\_{k=1}^n p(x\_k | x\_1, ..., x\_{k-1}).
 \end{aligned}
 $$
-If $h\_{k-1}$ is a sufficient statistic of the previous observations in the sequence, then we can express
+If $h\_{k-1}$ is a lossless statistic of the previous observations in the sequence, then we can express
 $$p(x\_k | x\_1, ..., x\_{k-1}) = g\_\theta(x\_k | h\_{k-1}).$$
 ]
 .kol-1-4.center[
@@ -502,8 +519,6 @@ $$p(x\_k | x\_1, ..., x\_{k-1}) = g\_\theta(x\_k | h\_{k-1}).$$
 .caption[Autoregressive model<br> for images.]
 ]
 ]
-
-
 
 ---
 
