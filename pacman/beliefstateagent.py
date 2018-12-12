@@ -20,8 +20,14 @@ class BeliefStateAgent(Agent):
         """
         # Current list of belief states over ghost positions
         self.beliefGhostStates = None
-        # Grid of walls (assigned with 'state.getWalls()' method) 
+        # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
+        # Uniform distribution size parameter 'w'
+        # for sensor noise (see instructions)
+        self.w = self.args.w
+        # Probability for 'leftturn' ghost to take 'EAST' action
+        # when 'EAST' is legal (see instructions)
+        self.p = self.args.p
 
     def updateAndGetBeliefStates(self, evidences):
         """
@@ -58,15 +64,16 @@ class BeliefStateAgent(Agent):
         """
         positions = state.getGhostPositions()
         w = self.args.w
-
-        div = float(w * w)
+        w2 = 2*w+1
+        div = float(w2 * w2)
         new_positions = []
         for p in positions:
             (x, y) = p
             dist = util.Counter()
-            for i in range(x - w, x + w):
-                for j in range(y - w, y + w):
+            for i in range(x - w, x + w + 1):
+                for j in range(y - w, y + w + 1):
                     dist[(i, j)] = 1.0 / div
+            dist.normalize()
             new_positions.append(util.chooseFromDistribution(dist))
         return new_positions
 

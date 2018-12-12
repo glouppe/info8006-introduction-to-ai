@@ -19,10 +19,10 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 7 (November 15): [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)]
 - Lecture 8 (November 22): [Making decisions](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf)]
 - Lecture 9 (November 29): [Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)]
-- Lecture 10 (December 13): Communication [PDF]
+- Lecture 10 (December 13): [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)]
 - Lecture 11 (December 20): Artificial General Intelligence and beyond [PDF]
 
-## Exercise sessions
+## Practicals
 
 - Session 1 (October 4): Python tutorial [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pacman/presentations/tutorial.pdf)]
 - Session 2 (October 11): Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP1.pdf)]
@@ -60,7 +60,7 @@ Constraints:
 - 2 pages (excluding references, if any)
 - Formatted using the LaTeX template [`template-report-reading-assignment.tex`](https://glouppe.github.io/info8006-introduction-to-ai/template-report-reading-assignment.tex)
 
-Your report should be submitted  by **December 14, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.
+Your report should be submitted  by **December 16, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.
 
 #### Overleaf
 

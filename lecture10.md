@@ -10,401 +10,83 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: add speech recognition after translation, with hmm and nnets as a comparison
-R: explain limitations of dividing by tasks -> hence nn
-R: check KC tuto on NLP
-R: emergent communication
-
 R: check https://gitlab.com/Valiox/voice-transfer-across-languages
+R: check https://static.googleusercontent.com/media/research.google.com/fr//pubs/archive/45882.pdf
 
 ---
 
 # Today
 
-- A guided tour of NIPS 2017
-- Natural language processing
-    - Parsing
-    - Semantics
+.center.width-30[![](figures/lec10/robot-speech.png)]
+
+Can you **talk** to an artificial agent? Can it understand what you say?
+
 - Machine translation
+- Speech recognition
+- Speech synthesis
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
-class: center, middle
+class: middle
 
-# NIPS 2017
-
----
-
-class: middle, center
-
-.width-100[![](figures/lec10/lb.jpg)]
-
----
-
-# NIPS?
-
-- Research conference and workshops on *Neural Information Processing Systems* (NIPS).
-- **\#1 conference** on machine learning, artificial intelligence and computational neuroscience.
-- Pre-proceedings available for [download](http://papers.nips.cc/book/advances-in-neural-information-processing-systems-30-2017).
-
-.center.width-50[![](figures/lec10/poster.png)]
-
----
-
-# Stats
-
-.center.width-80[![](figures/lec10/stats.png)]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/YJnddoa8sHk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Deep Learning: Practice and Trends]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/LvmjbXZyoP0?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Geometric Deep Learning on Graphs and Manifold]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/iXp-wc0QV8w?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Reverse-Engineering Intelligence Using Probabilistic Programs]
-
-???
-
-- Near 28:00
-- Near 40:00
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/po9z_tMuEwE?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Deep Learning for Robotics]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/A3ekFcZ3KNw?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[AlphaZero]
-
-???
-
-- before 27:00
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/fMym_BKWQzk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[The Trouble with Bias]
-
-???
-
-- 15:22
-- 18:20
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/9saauSBgmcQ?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Bayesian Deep Learning and Deep Bayesian Learning]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/NHTGY8VCinY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Deep Probabilistic Modelling with Gaussian Processes]
-
----
-
-# Highlights
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/rhNxt0VccsE?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
-.center[Learning to Run competition]
-
----
-
-# Topics to watch out for
-
-- Generative adversarial networks
-- Hierarchical reinforcement learning
-- Probabilistic programming
-- Meta-learning
-- Leveraging simulation
-- Bayesian deep learning
-- Dealing with data bias
-- Optimal transport
-- Emergent communication
-
----
-
-# Academia vs Private labs
-
-- NIPS remains an *academic* research conference.
-- But there is an increasing presence of **strong private research labs**.
-    - Google Brain, Google DeepMind, NVidia, Facebook, IBM, Intel, Microsoft, etc.
-    - All are aggressively hiring!
-
-.center[
-<iframe width="640" height="320" src="https://www.youtube.com/embed/J5p3XVTXb0o?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-]
-
----
-
-class: center, middle
-
-# Natural language processing
-
----
-
-# Natural Language Processing
-
-.center.width-70[![](figures/lec10/dog.png)]
-
-- Fundamental goal:
-    - Analyze and process human language, broadly, robustly, accurately, ...
-- End systems that we want to build:
-    - **Ambitious**: speech recognition, machine translation, information extraction, dialog interfaces, question answering, etc.
-    - *Modest*: spelling correction, text categorization, etc.
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
----
-
-# Probabilistic context-free grammar
-
-- A **grammar** is a collection of rules that defines a *language* as a set of allowable strings of words.
-- Probabilistic context-free grammars are grammars such that:
-    - production rules do not depend on context (context-free);
-    - a probability is assigned to every string (probabilistic).
-- Example:
-    - $VP \rightarrow Verb [0.7] | VP \, NP [0.3]$
-- Let $\xi\_0$ be a language suitable for communication between agents exploring the Wumpus world.
-
-
-???
-
-R: dont assume they know what is a grammar.
-
----
-
-# Lexicon of $\xi\_0$
-
-.center.width-80[![](figures/lec10/lexicon.png)]
-
-???
-
-Lexicon = list of allowable words.
-
----
-
-# Grammar of $\xi\_0$
-
-.center.width-80[![](figures/lec10/grammar.png)]
-
----
-
-- Unfortunately, this grammar **overgenerates**:
-    - It generates sentences that are not grammatical (in English).
-    - e.g., "Me go Boston" or "I smell pits wumpus John"
-- It also **undergenerates**:
-    - Many English sentences are rejected.
-    - e.g., "I think the wumpus is smelly."
-
-???
-
-Grammar = compact list of allowable sentences.
-
----
-
-# Parse tree
-
-.center.width-80[![](figures/lec10/parse-tree.png)]
-
----
-
-# Syntactic analysis
-
-.center.width-80[![](figures/lec10/parsing.png)]
-
-- **Parsing** is the process of analyzing a string of words to uncover its phrase structure.
-- This process can be carried out efficiently using the CYK algorithm:
-    - Imagine a state-action space where actions correspond to production rules.
-    - Use A* to search the space efficiently until the string has been compressed to a single item $S$.
-
-???
-
-R: baby step them into the decision process, show backtracking, etc -> analogous to a maze exploration
-
----
-
-class: center, middle
-
-[(demo)](http://tomato.banatao.berkeley.edu:8080/parser/parser.html)
-
----
-
-# Ambiguity
-
-- There may be several distinct parse trees for a given sentence.
-- E.g., the sentence "Fall leaves fall and spring leaves spring." admit 4 parse trees:
-
-.center.width-80[![](figures/lec10/ambiguity.png)]
-
-- With A*:
-    - Define the cost of a state as the inverse of its probability as defined by the rules applied so far.
-    - Estimate the remaining distance using machine learning.
-    - With very high probability, the procedure yields the most probable tree.
-
----
-
-# Learning PCFGs
-
-- A PCFG has many rules, with a probability for each rule.
-- **Learning** the grammar might be better than a knowledge engineering approach.
-- If we are given a corpus of correctly parsed sentences, the rules and their probability can be estimated directly from this data.
-    - E.g., count nodes $S$ and nodes $\[S \[NP ...\]\[VP ...\]\]$ over all trees to estimate the probability of $S \rightarrow  NP \, VP$.
-- If we dont have labeled sentences, then we have to learn both the rules and their probability.
-    - This is more complicated, but several algorithms exist:
-        - Assume (or cross-validate) a number of categories $X, Y, Z, ...$.
-        - Assume the grammar includes every possible rule $X \rightarrow Y Z$ or $X \rightarrow word$.
-        - Use an expectation-minimization algorithm estimate the probabilities.
-
----
-
-# Semantic interpretation
-
-.center.width-80[![](figures/lec10/semantic1.png)]
-
-- Semantics can be added to each rule of a grammar.
-- The rules obey the principle of **compositional semantics**:
-    - The semantics of a phrase is a function of the semantics of the subphrases.
-- In general, semantics can be properly defined with *first-order logic*, where nodes are either associated to a logical term, a logical sentence or a predicate.
-
-
-???
-
-R: better explain the first-order logic relation
-
----
-
-.center.width-80[![](figures/lec10/semantic2.png)]
-
----
-
-# Real language
-
-- A real language like English is difficult to map to a grammar and to a semantics, because of the following reasons:
-    - Long-distance dependencies
-    - Ambiguities (lexical, syntax, semantic)
-    - Metonymies (figure of speech)
-    - Metaphors
-- Recovering the most probable intended *meaning* is called **disambiguation**. To do disambiguation properly, we need to combine:
-    - The *world model*: the likelihood that a proposition occurs in the world.
-    - The *mental model*: the likelihood that the speaker forms the intention of communicating some fact to the hearer.
-    - The *language model*: the likelihood that a certain string of words will be chosen.
-    - The *acoustic model*: the likelihood that a certain sequence of sounds will be generated.
-- Combining perfectly all these pieces together remains an **open problem**!
-
----
-
-# Eliza
+## Sequence-to-sequence mapping
 
 .grid[
-.col-2-3[
-- *Eliza* is one of the earliest instances of a **chatterbot** (Weizenbaum, 1964).
-- Led to a long line of chatterbots.
-- How does it work?
-    - Trivial NLP: string match and substitution.
-    - Trivial knowledge: tiny script / response database.
-    - Example: matching "I remember \_\_\_" results in "Do you often think of \_\_\_?"
+.kol-1-3[Machine translation:]
+.kol-1-4.center[Hello, my name is HAL.]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[Bonjour, mon nom est HAL.]
 ]
-.col-1-3[![](figures/lec10/eliza.png)]
-]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
-???
-
-R: review
-
----
-
-# Modern chatbots
-
 .grid[
-.col-1-2[![](figures/lec10/siri.jpg)]
-.col-1-2[![](figures/lec10/assistant.jpg)]
+.kol-1-3[Speech recognition:]
+.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[Hello, my name is HAL.]
+]
+.grid[
+.kol-1-3[Speech synthesis:]
+.kol-1-4.center[Hello, my name is HAL.]
+.kol-2-12.center[$\rightarrow$]
+.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
 ]
 
-.center[Siri, Google Assistant, Alexa, etc]
-
-???
-
-R: review
-
 ---
+
+class: middle
 
 # Machine translation
 
-.center.width-80[![](figures/lec10/translation.png)]
+---
 
-- Translate text from one language to another, while *preserving the intended meaning*.
-- Recombines fragments of example translations.
-- Challenges:
-    - What fragments? [Learning to translate]
-    - How to make efficient? [Fast translation search]
+class: middle
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.center.width-100[![](figures/lec10/translate.png)]
 
-???
+## Machine translation
 
-R: review
+Automatic translation of text from one natural language (the source) to another (the target), while preserving the intended meaning.
+
+<span class="Q">[Q]</span> How would engineer a machine translation system?
 
 ---
 
-# Issue of dictionary lookups
+class: middle
+
+## Issue of dictionary lookups
 
 .center.width-80[![](figures/lec10/lookups.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/translate-soccer.png)]
+
+.center[To obtain a correct translation, one must decide whether "it" refers to the soccer ball or to the window. Therefore, one must understand physics as well as language.]
 
 ---
 
@@ -412,78 +94,521 @@ R: review
 
 .center.width-100[![](figures/lec10/history.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
-
-???
-
-R: review
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 # Data-driven machine translation
 
+<br>
 .center.width-100[![](figures/lec10/data-driven-mt.png)]
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+## Machine translation systems
+
+Translation systems must model the source and target languages, but systems vary in the type of models they use.
+- Some systems analyze the source language text all the way into an *interlingua knowledge representation* and then generate sentences in the target language from that representation.
+- Other systems are based on a **transfer model**. They keep a database of translation rules and whenever the rule matches, they translate directly. Transfer can occur at the lexical, syntactic or semantic level.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/vauquois.png)]
 
 ---
 
 # Statistical machine translation
 
-To translate a sentence in English ($e$) into French ($f$), we seek the strings of words $f^\*$ that maximizes
+To translate an English sentence $e$ into a French sentence $f$, we seek the strings of words $f^\*$ such that
+$$f^\* = \arg\max\_f P(f|e).$$
 
-$$f^\* = \arg\max\_f P(f|e) = \arg\max\_f P(e|f)P(f)$$
-
-- $P(f)$ is the *language model*
-- $P(e|f)$ is the *translation model* (from French to English)
+- The language model $P(f|e)$ is learned from a **bilingual corpus**, i.e. a collection of parallel texts, each an English/French pair.
+- Most of the English sentences to be translated will be novel, but will be composed of phrases that that have been see before.
+- The corresponding French phrases will be reassembled to form a French sentence that make sense.
 
 ---
 
-# HMM translation model
+class: middle
 
-.center.width-100[![](figures/lec10/hmm-mt.png)]
+Given an English source sentence $e$, finding a French translation $f$ is a matter of three steps:
+- Break $e$ into phrases $e\_1, ..., e\_n$.
+- For each phrase $e\_i$, choose a corresponding French phrase $f\_i$. We use the notation $P(f\_i|e\_i)$ for the phrasal probability that $f\_i$ is a translation of $e\_i$.
+- Choose a permutation of the phrases $f\_1, ..., f\_n$. For each $f\_i$, we choose a *distortion* $d\_i$, which is the number of words that phrase $f\_i$ has moved with respect to $f\_{i-1}$; positive for moving to the right, negative for moving the left.
 
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/translation-wumpus.png)]
+
+---
+
+class: middle
+
+We define the probability $P(f,d|e)$ that the sequence of phrases $f$ with distortions $d$ is a translation of the sequence of phrases $e$.
+
+Assuming mutual independence of each phrase translation and each distortion, we have
+$$P(f,d|e) = \prod\_i P(f\_i | e\_i) P(d\_i).$$
+
+- The best $f$ and $e$ cannot be found through enumeration because of the combinatorial explosion.
+- Instead, local beam search with a heuristic that estimates probability has proven effective at finding a nearly-most-probable translation.
+
+---
+
+class: middle
+
+All that remains is to learn the phrasal and distortion probabilities:
+1. Find parallel texts.
+2. Segment into sentences.
+3. Align sentences.
+4. Align phrases.
+5. Extract distortions.
+6. Improve estimates with expectation-minimization.
+
+
+---
+
+# Neural machine translation
+
+Modern machine translation systems are all based on **neural networks** of various types, often architectured as compositions of
+- recurrent networks for sequence-to-sequence learning,
+- convolutional networks for modeling spatial dependencies.
+
+<br>
+
+.center.width-70[![](figures/lec10/gnmt.jpg)]
+
+---
+
+class: middle
+
+## Attention-based recurrent neural network
+
+.grid[
+.kol-1-2[
+- Encoder: bidirectional RNN, producing a set of annotation vectors $h\_i$.
+- Decoder: attention-based.
+    - Compute attention weights $\alpha\_{ij}$.
+    - Compute the weighted sum of the annotation vectors, as a way to align the input words to the output words.
+    - Decode using the context vector, the embedding of the previous output word and the hidden state.
+]
+.kol-1-2[
+.center.width-100[![](figures/lec10/nmt.png)]
+]
+]
+
+---
+
+class: middle
+
+## Unsupervised machine translation
+
+- The latest approaches do not even need to have a bilingual corpus!
+- Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
+
+---
+
+class: middle
+
+Word-by-word translation:
+- Learn a neural word embedding trained to predict the words around a given word using a context.
+- Embedding in different languages share similar neighborhood structure.
+- The system learn rotation of the word embedding in one language to match the word embedding in the other language, using adversarial training.
+- This can be used to infer a fairly accurate bilingual dictionary without access to any translation!
+
+.center.width-50[![](figures/lec10/umt-word-by-word.gif)]
+
+.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
+
+---
+
+class: middle
+
+Translating sentences:
+- Bootstrap the translation model with word-by-word initialization.
+- The neural translation model must be able to reconstruct a sentence in a given language from a noisy version of it.
+- The model also learns to reconstruct any source sentence given a noisy translation of the same sentence in the target domain, and vice-versa.
+- The source and target sentence latent representations are constrained to have the same latent distributions through adversarial training.
+
+.center.width-70[![](figures/lec10/umt1.png)]
+
+.footnote[Image credits: [Lample et al, 2017. arXiv:1711.00043](https://arxiv.org/pdf/1711.00043.pdf).]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/GermanA.png)]
+
+.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
+
+---
+
+class: middle
+
+# Speech recognition
 
 ???
 
-R: take the time to understand the model in details.
+R: check 23.5
+R: check lec 15 of bair
 
 ---
 
-# Levels of transfer
+class: middle, center, black-slide
 
-.center.width-100[![](figures/lec10/levels.png)]
-
-.footnote[Credits: UC Berkeley, [CS188](http://ai.berkeley.edu/lecture_slides.html)]
+.center.width-100[![](figures/lec10/google-assistant.gif)]
 
 ---
 
-# Neural translation
+# Recognition as inference
 
-- Modern machine translation systems are all based on neural networks.
+.grid[
+.kol-5-12.center[
+$\mathbf{y}\_{1:T}$
+.width-100[![](figures/lec10/waveform.png)]]
+.kol-2-12.center[
+<br>$\rightarrow$]
+.kol-5-12.center[
+$\mathbf{w}\_{1:L}$
+<br>My name is HAL.]
+]
 
-.center.width-80[![](figures/lec10/rnn.png)]
+Speech recognition can be viewed as an instance of the problem of **finding the most likely sequence** of state variables $\mathbf{w}\_{1:L}$, given a sequence of observations $\mathbf{y}\_{1:T}$.
+
+- In this case, state variables are the words and the observations are sounds.
+
+- The input audio waveform from a microphone is converted into a sequence of fixed size acoustic vectors $\mathbf{y}\_{1:T}$ in a process called *feature extraction*.
+
+- The decoder attempts to find the sequence of words $\mathbf{w}\_{1:L} = w\_1, ..., w\_L$ which is the most likely to have generated $\mathbf{y}\_{1:T}$:
+$$\hat{\mathbf{w}}\_{1:L} = \arg \max\_{\mathbf{w}\_{1:L}} P(\mathbf{w}\_{1:L}|\mathbf{y}\_{1:T})$$
 
 ---
 
-# Unsupervised machine translation (1)
+class: middle
 
-- The latest approaches (e.g., arXiv:1711.00043) do not even need to have a bilingual corpus!
-- Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
-
-.center.width-100[![](figures/lec10/umt1.png)]
+Since $P(\mathbf{w}\_{1:L}|\mathbf{y}\_{1:T})$ is difficult to model directly, Bayes' rule is the used to solve the equivalent problem
+$$\hat{\mathbf{w}}\_{1:L} = \arg \max\_{\mathbf{w}\_{1:L}} p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L}) P(\mathbf{w}\_{1:L}),$$
+where
+- the likelihood $p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L})$ is the **acoustic model**;
+- the prior $P(\mathbf{w}\_{1:L})$ is the *language model*.
 
 ---
 
-# Unsupervised machine translation (2)
+class: middle
 
-.center.width-100[![](figures/lec10/umt2.png)]
+.center.width-90[![](figures/lec10/hmm-recognition.png)]
+
+---
+
+class: middle
+
+## Feature extraction
+
+- The feature extraction seeks to provide a compact representation $\mathbf{e}\_{1:T}$ of the speech waveform.
+- This form should minimize the loss of information that discriminates between words.
+- One of the most widely used encoding schemes is based on **mel-frequency cepstral coefficients** (MFCCs).
+
+---
+
+class: middle
+
+
+.center.width-100[![](figures/lec10/mfcc.png)
+
+MFCCs calculation.]
+
+.footnote[Image credits: [Giampiero Salvi, 2016. DT2118](https://www.kth.se/social/files/56fd38eaf276547ad14588ec/lecture.pdf).]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec10/time_signal.jpg)]
+
+$$\downarrow$$
+
+.center.width-90[![](figures/lec10/mfcc.jpg)]
+
+.center[Feature extraction from the signal in the time domain to MFCCs.]
+
+.footnote[Image credits: [Haytham Fayek, 2016](https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html).]
+
+---
+
+class: middle
+
+## Acoustic model
+
+A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *base phones* (such as vowels or consonants).
+
+- This sequence is called its pronunciation $\mathbf{q}^{w}\_{1:K\_w} = q\_1, ..., q\_{K\_w}$.
+- Pronunciations are related to words through **pronunciations models** defined for each word.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/phones.png)]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec10/phone-model.png)]
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec10/hmm-phone.png)]
+
+Each base phone $q$ is represented by **phone model** defined as a three-state continuous density HMM, where
+- the transition probability parameter $a\_{ij}$ corresponds to the probability of making the particular transition from state $s\_i$ to $s\_j$;
+- the output sensor models are Gaussians $b\_j(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mu^{(j)}, \Sigma^{(j)})$ and relate state variables $s\_j$ to MFCCs $\mathbf{y}$.
+
+---
+
+class: middle
+
+The full acoustic model can now be defined as a composition pronunciation models with individual phone models:
+$$
+\begin{aligned}
+p(\mathbf{y}\_{1:T}|\mathbf{w}\_{1:L}) &= \sum\_{\mathbf{Q}} P(\mathbf{y}\_{1:T} | \mathbf{Q}) P(\mathbf{Q} | \mathbf{w}\_{1:L})
+\end{aligned}
+$$
+where the summation is over all valid pronunciation sequences for $\mathbf{w}\_{1:L}$, $\mathbf{Q}$ is a particular sequence $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$ of pronunciations,
+$$
+\begin{aligned}
+P(\mathbf{Q}|\mathbf{w}\_{1:L}) &= \prod\_{l=1}^L P(\mathbf{q}^{w\_l}|w\_l)
+\end{aligned}$$
+as given by the pronunciation model,
+and where $\mathbf{q}^{w\_l}$ is a valid pronunciation for word $w\_l$.
+
+---
+
+class: middle
+
+Given the composite HMM formed by concatenating all the constituent base phones $\mathbf{q}^{w\_1}, ..., \mathbf{q}^{w\_L}$, the acoustic likelihood is given by
+$$
+p(\mathbf{y}\_{1:T}|\mathbf{Q}) = \sum\_\mathbf{s} p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q})
+$$
+where $\mathbf{s} = s\_0, ..., s\_{T+1}$ is a state sequence through the composite model
+and
+$$p(\mathbf{s},\mathbf{y}\_{1:T}|\mathbf{Q}) = a\_{s\_0, s\_1} \prod\_{t=1}^T b\_{s\_t}(\mathbf{y}\_t) a\_{s\_t s\_{t+1}}.$$
+
+From this formulation, all model parameters can be efficiently estimated from a corpus of training utterances with expectation-minimization.
+
+---
+
+class: middle
+
+## N-gram language model
+
+The prior probability of a word sequence $\mathbf{w} = w\_1, ..., w\_L$ is given by
+$$P(\mathbf{w}) = \prod\_{l=1}^L P(w\_l | w\_{l-1}, ..., w\_{l-N+1}).$$
+
+The N-gram probabilities probabilities are estimated from training texts by counting N-gram occurrences to form maximum likelihood estimates.
+
+
+---
+
+class: middle
+
+## Decoding
+
+The composite model corresponds to a HMM, from which the most-likely state sequence $\mathbf{s}$ can be inferred using (a variant of) **Viterbi**.
+
+By construction, states $\mathbf{s}$ relate to phones, phones to pronunciations, and pronunciations to words.
+
+
+---
+
+# Neural speech recognition
+
+Modern speech recognition systems are now based on *end-to-end* deep neural network architectures trained on large corpus of data.
+
+.grid[
+.kol-2-3[
+## Deep Speech 2
+
+- Recurrent neural network with
+    - one one more convolutional input layers,
+    - followed by multiple recurrent layers,
+    - and one fully connected layer before a softmax layer.
+- Total of 35M parameters.
+- Same architecture for both English and Mandarin.
+]
+.kol-1-3[.width-100[![](figures/lec10/deepspeech.png)]]
+]
+
+.footnote[Image credits: [Amodei et al, 2015. arXiv:1512.02595](https://arxiv.org/abs/1512.02595).]
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/IFPwMKbdQnI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Deep Speech 2
+]
+
+---
+
+
+class: middle
+
+# Text-to-speech synthesis
+
+---
+
+class: middle
+
+.grid[
+.kol-5-12.center[
+$\mathbf{w}\_{1:L}$
+<br>My name is HAL.]
+.kol-2-12.center[
+<br>$\rightarrow$]
+.kol-5-12.center[
+$\mathbf{y}\_{1:T}$
+.width-100[![](figures/lec10/waveform.png)]]
+]
+
+---
+
+# Autoregressive models
+
+.grid[
+.kol-3-4[
+By the chain rule, any joint distribution can always be written as an incremental product of conditional distributions:
+$$
+\begin{aligned}
+p(x\_1,...,x\_n) &= \prod\_{k=1}^n p(x\_k | x\_1, ..., x\_{k-1}).
+\end{aligned}
+$$
+If $h\_{k-1}$ is a sufficient statistic of the previous observations in the sequence, then we can express
+$$p(x\_k | x\_1, ..., x\_{k-1}) = g\_\theta(x\_k | h\_{k-1}).$$
+]
+.kol-1-4.center[
+.width-100[![](figures/lec10/ar-image.png)]
+.caption[Autoregressive model<br> for images.]
+]
+]
+
+
+
+---
+
+class: middle
+
+An autoregressive model can be formulated as a recurrent neural network such that
+
+$$
+\begin{aligned}
+p(x\_k | x\_1, ..., x\_{k-1}) &= g\_\theta(x\_k | h\_{k-1}) \\\\
+h\_k &= f\_\theta(x\_k, h\_{k-1})
+\end{aligned}
+$$
+where
+- $g$ specifies a probability density function for the next $x$ given $h$.
+- $f$ specifies (in a deterministic way) the next state $h$ given $x$.
+
+If $g$ and $f$ have enough capacity (e.g., $f$ and $g$ are large neural networks), then the resulting autoregressive model is often capable of modeling complex distributions, such as text, images or speech.
+
+The same architecture can be used for modeling *conditional* distributions over inputs.
+
+---
+
+# Tacotron 2
+
+The Tacotron 2 system is a **sequence-to-sequence neural network** architecture for text-to-speech. It consists of two components:
+- a recurrent sequence-to-sequence feature prediction network with attention which predicts a sequence of mel spectrogram frames from an input character sequence;
+- a *Wavenet vocoder* which generates time-domain waveform samples conditioned on the predicted mel spectrogram frames.
+
+---
+
+class: middle
+
+.width-80.center[![](figures/lec10/tacotron.png)]
+
+.footnote[Image credits: [Shen et al, 2017. arXiv:1712.05884](https://arxiv.org/abs/1712.05884).]
+
+---
+
+class: middle
+
+## Wavenet
+
+- The Tacotron 2 architecture produces mel spectrograms as outputs, which remain to be synthesized as waveforms.
+- This last step can be performed through another autoregressive neural model, such as **Wavenet**, to transform mel-scale spectrograms into high-fidelity waveforms.
+
+<br>
+.center.width-40[![](figures/lec10/mel-to-wave.png)]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec10/wavenet.png)]
+
+.center[The Wavenet architecture.]
+
+.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec10/wavenet.gif)]
+
+.center[Dilated convolutions.]
+
+.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
+
+---
+
+class: middle
+
+Audio samples at
+- [deepmind.com/blog/wavenet-generative-model-raw-audio](https://deepmind.com/blog/wavenet-generative-model-raw-audio/)
+- [google.github.io/tacotron](https://google.github.io/tacotron/)
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/7gh6_U7Nfjs?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Google Assistant: Soon in your smartphone.
+]
+
+---
+
+# Summary
+
+- Natural language understanding is one of the most important subfields of AI.
+- Machine translation, speech recognition and text-to-speech synthesis are instances of sequence-to-sequence problems.
+- All problems can be tackled with traditional statistical inference methods but require sophisticated engineering.
+- State-of-the-art methods are now based on neural networks.
+
+---
+
+class: end-slide, center
+count: false
+
+The end.
 
 ---
 
 # References
 
-- Vogel, S. et al. "HMM-based word alignment in statistical translation.", 1996.
-- Bahdanau, Dzmitry, Kyunghyun Cho, and Yoshua Bengio. "Neural machine translation by jointly learning to align and translate." arXiv preprint arXiv:1409.0473 (2014).
-- Lample, Guillaume, Ludovic Denoyer, and Marc'Aurelio Ranzato. "Unsupervised Machine Translation Using Monolingual Corpora Only." arXiv preprint arXiv:1711.00043 (2017).
+- Gales, M., & Young, S. (2008). The application of hidden Markov models in speech recognition. Foundations and Trends® in Signal Processing, 1(3), 195-304.
