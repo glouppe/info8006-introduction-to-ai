@@ -1,0 +1,189 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage{vmargin}
+
+\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
+%------------------------------Packages généraux------------------------------
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage{scrextend}
+\usepackage{hyperref}
+\usepackage{eurosym}
+
+%-------------------------Mathématiques------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{eucal}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%-----------------------Codes et algorithmes--------------------------
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{clrscode3e}
+
+%------------------------------Graphics------------------------------
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{color}
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+%\usepackage{slashbox}
+%------------------------------Syntaxe------------------------------
+
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+
+\def\refmark#1{\hbox{$^{\ref{#1}}$}}
+\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
+\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
+
+%------------------------------Inclure code MatLab------------------------------
+
+\usepackage{listings}
+\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
+\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+%------------------Sub-sections--------%
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\makeatletter
+% on fixe le langage utilisé
+\lstset{language=matlab}
+\edef\Motscle{emph={\lst@keywords}}
+\expandafter\lstset\expandafter{%
+  \Motscle}
+\makeatother
+
+
+\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
+
+\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
+basicstyle=\styleC,
+keywordstyle=\ttfamily,
+commentstyle=\color{Ggris}\styleD, % commentaire en gris
+numberstyle=\tiny\color{red},
+numbers=left,
+numbersep=10pt,
+lineskip=0.7pt,
+showstringspaces=false}
+%  % inclure le fichier source
+\newcommand{\FSource}[1]{%
+\lstinputlisting[texcl=true]{#1}
+}
+\newenvironment{solution}
+    {%\begin{center}
+    %\begin{tabular}{|p{0.9\textwidth}|}
+    %\hline\\
+    \color{red}
+    }
+    {
+    %\\\\\hline
+    %\end{tabular}
+    %\end{center}
+    \color{black}
+    }
+\usepackage[section]{placeins}
+
+\let\cleardoublepage\clearpage
+
+\usepackage{hyperref}
+
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+
+%\renewcommand{\arraystretch}{1.2}
+%------------------------------Début du document------------------------------
+\begin{document}
+%------------------------------Page de garde------------------------------
+
+
+  % \frontmatter
+  %\tableofcontents
+   \setcounter{page}{1}
+%%%%%%%%% TP 8 %%%%%%%%%%%
+   \section{Learning (13/12/2018)}
+
+   \subsection{Objectives}
+   At the end of this repetition you should be able to:
+   \begin{itemize}
+      \item Apply Maximum Likelihood Estimation (MLE) to estimate the parameters of a model from data.
+   \end{itemize}
+   \subsection{Exercises}
+\subsubsection{PacBaby ($\approx 20 min$ \protect\footnote{Source: \url{http://ai.berkeley.edu/sections/section\_10\_sp14.pdf}})}
+Pacman and Mrs. Pacman have been searching for each other in the Maze. Mrs. Pacman has been pregnant with a
+baby, and just this morning she has given birth to Pacbaby (Congratulations, Pacmans!).
+Because Pacbaby was born before Pacman and Mrs. Pacman reunited in the maze, he has never met his father.
+Naturally, Mrs. Pacman wants to teach Pacbaby to recognize his father, using a set of Polaroids of Pacman. She also has several pictures of ghosts to use as negative examples.
+Because the polaroids are black and white, and were taken from strange angles, Mrs. Pacman has decided to teach
+Pacbaby to identify Pacman based on more salient features: the presence of a bowtie $(b)$, hat $(h)$, or mustache $(m)$.\\
+The following table summarizes the content of the Polaroids. Each binary feature is represented as 1 (meaning the feature is present) or 0 (meaning it is absent). The subject y of the photo is encoded as $+1$ for Pacman or $-1$ for ghost.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|ccc|c|}
+        \hline
+        $(m)$ &  $(b)$ & $(h)$ & Subject $(y)$\\\hline
+        0 & 0 & 0 & $+1$\\
+        1 & 0 & 0 & $+1$\\
+        1 & 1 & 0 & $+1$\\
+        0 & 1 & 1 & $+1$\\
+        1 & 0 & 1 & $-1$\\
+        1 & 1 & 1 & $-1$\\\hline
+    \end{tabular}
+    \caption{Matrix of Pacman polaroids data.}
+    \label{tab:pacman}
+\end{table}
+Suppose Pacbaby has a Naive Bayes based brain.
+\begin{enumerate}
+    \item Write the Naive Bayes classification rule for this problem (i.e. write a formula which given a data point $x = (m, b, h)$ returns the most likely subject $y$). Write the formula in terms of conditional and prior probabilities. Be explicit about which parameters are involved, but you do not need to estimate them yet.
+    \item What are the parameters of this model? Give estimates of these parameters for the classification rule based on the Polaroids.
+    \item Suppose a character comes by wearing a hat but without a mustache or bowtie. What would happen if Pacbaby had to guess the identity of the character?
+\end{enumerate}
+\subsubsection{Predict your grade ($\approx 30 min$)}
+The Bayesian network shown in Figure \ref{fig:bnet_marks} represents how the final mark of this class is computed. In this model, $X_1, X_2, X_3$ respectively denote the marks obtain by a student at the homework, the project and at the exam. The teaching assistant who marks the exam also marks the homework, which implies a slight bias in the exam correction, such that we can write $X_3 = a_1X_2 + \mathcal{N}(\mu_3, \sigma_3^2)$. The random variable $C = a_2X_1 + a_3X_2 + \mathcal{N}(\mu_C, \sigma_C^2)$ is a linear combination of the homework and project grades plus a computation error which is normally distributed. Finally, $Y = a_4C + a_5 X_3 + \mathcal{N}(\mu_y, \sigma_y^2)$ stands for the final grade obtained by the student, which is a linear combination of the exam grades and the grades obtained for the work done during the semester plus some Gaussian noise on it due to rounding errors.
+Answer the following questions about this model.
+\begin{enumerate}
+    \item Assume the parameters of the model are known, give the prediction rule of $Y$ given $X_1$, $X_2$, $X_3$.
+    \item Simplify this rule and give the minimal set of parameters of this model that are required to predict $Y$ given $X_1$, $X_2$, $X_3$.
+    \item Can you recognise a model seen in class?
+    \item From a data set of points $d = \{(x_{1, 1}, x_{2, 1}, x_{3, 1}, y_1), \hdots, (x_{1, N}, x_{2, N}, x_{3, N}, y_N)\}$ explain how you would compute the parameters of the simplest model.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.4\textwidth]{figures/bnet_marks.png}
+    \caption{Bayesian network of the final grade calculation.}
+    \label{fig:bnet_marks}
+\end{figure}
+\end{document}
