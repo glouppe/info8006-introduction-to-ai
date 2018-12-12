@@ -60,7 +60,7 @@ Constraints:
 - 2 pages (excluding references, if any)
 - Formatted using the LaTeX template [`template-report-reading-assignment.tex`](https://glouppe.github.io/info8006-introduction-to-ai/template-report-reading-assignment.tex)
 
-Your report should be submitted  by **December 14, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.
+Your report should be submitted  by **December 16, 2018 at 23:59** on the [submission platform](https://submit.montefiore.ulg.ac.be/). This is a **hard** deadline.
 
 #### Overleaf
 
