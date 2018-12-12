@@ -106,9 +106,9 @@ showstringspaces=false}
     %\hline\\
     \color{red}
     }
-    { 
+    {
     %\\\\\hline
-    %\end{tabular} 
+    %\end{tabular}
     %\end{center}
     \color{black}
     }
@@ -117,13 +117,13 @@ showstringspaces=false}
 \let\cleardoublepage\clearpage
 
 \usepackage{hyperref}
-               
+
  \hypersetup{
     colorlinks = true,
     linkcolor=black,
     urlcolor = black
     }
-    
+
 %\renewcommand{\arraystretch}{1.2}
 %------------------------------Début du document------------------------------
 \begin{document}
@@ -135,7 +135,7 @@ showstringspaces=false}
    \setcounter{page}{1}
 %%%%%%%%% TP 8 %%%%%%%%%%%
    \section{Learning (13/12/2018)}
-   
+
    \subsection{Objectives}
    At the end of this repetition you should be able to:
    \begin{itemize}
@@ -172,14 +172,13 @@ Suppose Pacbaby has a Naive Bayes based brain.
     \item Suppose a character comes by wearing a hat but without a mustache or bowtie. What would happen if Pacbaby had to guess the identity of the character?
 \end{enumerate}
 \subsubsection{Predict your grade ($\approx 30 min$)}
-The Bayesian network shown in Figure \ref{fig:bnet_marks} represents how the final mark of this class is computed. In this model, $X_1, X_2, X_3$ respectively denote the marks obtain by a student at the homework, the project and at the exam. The teaching assistant who marks the exam also marks the homework, which implies a slight bias in the exam correction, such that we can write $X_3 = a_1X_2 + \mathcal{N}(\mu_3, \sigma_3)$. The random variable $C = a_2X_1 + a_3X_2 + \mathcal{N}(\mu_C, \sigma_C)$ is a linear combination of the homework and project grades plus a computation error which is normally distributed. Finally, $Y = a_4C + a_5 X_3 + \mathcal{N}(\mu_y, \sigma_y)$ stands for the final grade obtained by the student, which is a linear combination of the exam grades and the grades obtained for the work done during the semester plus some Gaussian noise on it due to rounding errors.
+The Bayesian network shown in Figure \ref{fig:bnet_marks} represents how the final mark of this class is computed. In this model, $X_1, X_2, X_3$ respectively denote the marks obtain by a student at the homework, the project and at the exam. The teaching assistant who marks the exam also marks the homework, which implies a slight bias in the exam correction, such that we can write $X_3 = a_1X_2 + \mathcal{N}(\mu_3, \sigma_3^2)$. The random variable $C = a_2X_1 + a_3X_2 + \mathcal{N}(\mu_C, \sigma_C^2)$ is a linear combination of the homework and project grades plus a computation error which is normally distributed. Finally, $Y = a_4C + a_5 X_3 + \mathcal{N}(\mu_y, \sigma_y^2)$ stands for the final grade obtained by the student, which is a linear combination of the exam grades and the grades obtained for the work done during the semester plus some Gaussian noise on it due to rounding errors.
 Answer the following questions about this model.
 \begin{enumerate}
     \item Assume the parameters of the model are known, give the prediction rule of $Y$ given $X_1$, $X_2$, $X_3$.
-    \item Simplify this rule and give the minimal set of parameters of this model that are required to predict $Y$ given $X_1$, $X_2$, $X_3$. 
+    \item Simplify this rule and give the minimal set of parameters of this model that are required to predict $Y$ given $X_1$, $X_2$, $X_3$.
     \item Can you recognise a model seen in class?
-    \item From a data set of points $d = \{(x_{1, 1}, x_{2, 1}, x_{3, 1}, y_1), \hdots, (x_{1, N}, x_{2, N}, x_{3, N}, y_N)\}$ explain how you would compute the parameters of the complete model.
-    \item Do the same for the minimal subset of parameters required to predict $Y$ from $X_1, X_2, X_3$.
+    \item From a data set of points $d = \{(x_{1, 1}, x_{2, 1}, x_{3, 1}, y_1), \hdots, (x_{1, N}, x_{2, N}, x_{3, N}, y_N)\}$ explain how you would compute the parameters of the simplest model.
 \end{enumerate}
 \begin{figure}[H]
     \centering
