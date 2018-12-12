@@ -527,42 +527,59 @@ The same architecture can be used for modeling *conditional* distributions over 
 
 ---
 
-# Deep Voice
+# Tacotron 2
 
-The Deep Voice 3 system is a **sequence-to-sequence neural network** architecture for text-to-speech. It consists of three components:
-- *Encoder*: A fully-convolutional encoder, which converts textual features to an internal
-learned representation.
-- *Decoder*: A fully-convolutional causal decoder, which decodes the learned representation
-with a multi-hop convolutional attention mechanism into a low-dimensional audio representation
-(mel-scale spectrograms) in an autoregressive manner.
-- *Converter*: A fully-convolutional post-processing network, which predicts final vocoder
-parameters (depending on the vocoder choice) from the decoder hidden states.
+The Tacotron 2 system is a **sequence-to-sequence neural network** architecture for text-to-speech. It consists of two components:
+- a recurrent sequence-to-sequence feature prediction network with attention which predicts a sequence of mel spectrogram frames from an input character sequence;
+- a *Wavenet vocoder* which generates time-domain waveform samples conditioned on the predicted mel spectrogram frames.
 
 ---
 
 class: middle
 
-.width-100[![](figures/lec10/deepvoice-1.png)]
+.width-80.center[![](figures/lec10/tacotron.png)]
 
-.footnote[Image credits: [Ping et al, 2017. arXiv:1710.07654](https://arxiv.org/abs/1710.07654).]
+.footnote[Image credits: [Shen et al, 2017. arXiv:1712.05884](https://arxiv.org/abs/1712.05884).]
 
 ---
 
 class: middle
 
-.width-100[![](figures/lec10/deepvoice-2.png)]
+## Wavenet
 
-.footnote[Image credits: [Ping et al, 2017. arXiv:1710.07654](https://arxiv.org/abs/1710.07654).]
+- The Tacotron 2 architecture produces mel spectrograms as outputs, which remain to be synthesized as waveforms.
+- This last step can be performed through another autoregressive neural model, such as **Wavenet**, to transform mel-scale spectrograms into high-fidelity waveforms.
 
----
-
-# Wavenet
-
-architecture
+<br>
+.center.width-40[![](figures/lec10/mel-to-wave.png)]
 
 ---
 
-samples
+class: middle
+
+.center.width-90[![](figures/lec10/wavenet.png)]
+
+.center[The Wavenet architecture.]
+
+.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec10/wavenet.gif)]
+
+.center[Dilated convolutions.]
+
+.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
+
+---
+
+class: middle
+
+Audio samples at
+- [deepmind.com/blog/wavenet-generative-model-raw-audio](https://deepmind.com/blog/wavenet-generative-model-raw-audio/)
+- [google.github.io/tacotron](https://google.github.io/tacotron/)
 
 ---
 
@@ -577,6 +594,11 @@ Google Assistant: Soon in your smartphone.
 ---
 
 # Summary
+
+- Natural language understanding is one of the most important subfields of AI.
+- Machine translation, speech recognition and text-to-speech synthesis are instances of sequence-to-sequence problems.
+- All problems can be tackled with traditional statistical inference methods but require sophisticated engineering.
+- State-of-the-art methods are now based on neural networks.
 
 ---
 
