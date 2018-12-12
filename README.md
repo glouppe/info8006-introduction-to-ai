@@ -32,7 +32,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Session 6 (November 15): Reasoning under uncertainty II [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP5.pdf)]
 - Session 7 (November 22): Reasoning over time [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP6.pdf)]
 - Session 8 (November 29): Making decisions [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP7.pdf)]
-- Session 9 (December 13): Learning
+- Session 9 (December 13): Learning [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP8.pdf)]
 
 ## Projects
 
