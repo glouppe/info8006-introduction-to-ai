@@ -30,9 +30,9 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Session 4 (October 25): Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP3.pdf)]
 - Session 5 (November 8): Reasoning under uncertainty I [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP4.pdf)]
 - Session 6 (November 15): Reasoning under uncertainty II [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP5.pdf)]
-- Session 7 (November 22): Reasoning over time [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP6.pdf)][[Solution](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP6_Solutions.pdf)] 
+- Session 7 (November 22): Reasoning over time [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP6.pdf)][[Solution](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP6_Solutions.pdf)]
 - Session 8 (November 29): Making decisions [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP7.pdf)][[Solution](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP7_Solutions.pdf)]
-- Session 9 (December 13): Learning [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP8.pdf)] [[Solution](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP8_Solutions.pdf)]
+- Session 9 (December 13): Learning [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP8.pdf)] [[Solution](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercices/TP_8_Solutions.pdf)]
 
 ## Projects
 
