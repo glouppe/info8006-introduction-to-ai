@@ -188,7 +188,7 @@ You are asked to implement a Bayes filter to maintain a belief state about the g
     If `East` is not a legal action, the ghost takes uniformly at random one of the legal actions.
 - The initial ghost position follows a uniform distribution over legal positions (i.e., where neither Pacman nor a wall is located).
 
-You should complete the method `updateAndGetBeliefStates(evidences)` method of the `BeliefStateAgent` class of `beliefstateagent.py`. To test your implementation, specify `beliefstateagent.py` as a parameter of the argument `--bsagentfile`.
+You should complete the method `updateAndGetBeliefStates(evidences)` method of the `BeliefStateAgent` class of `beliefstateagent.py`. To test your implementation, specify `beliefstateagent.py` for the argument `--bsagentfile` and `rightrandy` for the argument `ghostagent`, along with your `w` and `p` parameters.
 
 Your report should be organized as follows:
 1. For the `observer.lay` map, illustrate and discuss the convergence of your belief state with respect to $w \in \{ 1, 3, 5\}$, $p$ and the number of time steps.

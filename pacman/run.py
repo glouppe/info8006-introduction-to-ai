@@ -68,7 +68,7 @@ ghosts = {}
 ghosts["greedy"] = GreedyGhost
 ghosts["smarty"] = SmartyGhost
 ghosts["dumby"] = DumbyGhost
-ghosts["leftrandy"] = EastRandyGhost
+ghosts["rightrandy"] = EastRandyGhost
 
 if __name__ == '__main__':
     usage = """
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["dumby", "greedy", "smarty", "leftrandy"], default="greedy")
+        choices=["dumby", "greedy", "smarty", "rightrandy"], default="greedy")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
