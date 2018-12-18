@@ -28,28 +28,32 @@ R: add a comment on internships and msc thesis (in liege and abroad)
 
 ---
 
+xxx split in two columns, terminator from lec1, news on the other columns
+
 # ... to popular media
 
 .grid[
-.col-1-4[![](figures/lec11/news1.png)]
-.col-1-4[![](figures/lec11/news2.png)]
-.col-1-4[![](figures/lec11/news6.png)]
-.col-1-4[![](figures/lec11/news8.png)]
+.kol-1-4[![](figures/lec11/news1.png)]
+.kol-1-4[![](figures/lec11/news2.png)]
+.kol-1-4[![](figures/lec11/news6.png)]
+.kol-1-4[![](figures/lec11/news8.png)]
 ]
 .grid[
-.col-1-4[![](figures/lec11/news5.png)]
-.col-1-4[![](figures/lec11/news3.png)]
-.col-1-4[![](figures/lec11/news7.png)]
-.col-1-4[![](figures/lec11/news4.png)]
+.kol-1-4[![](figures/lec11/news5.png)]
+.kol-1-4[![](figures/lec11/news3.png)]
+.kol-1-4[![](figures/lec11/news7.png)]
+.kol-1-4[![](figures/lec11/news4.png)]
 ]
 .grid[
-.col-1-4[![](figures/lec11/news11.png)]
-.col-1-4[![](figures/lec11/news9.png)]
-.col-1-4[![](figures/lec11/news10.png)]
-.col-1-4[![](figures/lec11/news12.png)]
+.kol-1-4[![](figures/lec11/news11.png)]
+.kol-1-4[![](figures/lec11/news9.png)]
+.kol-1-4[![](figures/lec11/news10.png)]
+.kol-1-4[![](figures/lec11/news12.png)]
 ]
 
 ---
+
+xxx washing machines
 
 # Artificial narrow intelligence
 
@@ -426,15 +430,17 @@ Don't fear intelligent machines, work with them. Garry Kasparov
 
 ---
 
-class: center, middle
+class: center, middle, black-slide
+count: false
 
 .center.width-70[![](figures/lec11/gameover.png)]
 
-Thanks for following Introduction to AI!
+<br>
+Thanks for following Introduction to Artificial Intelligence!
 
 ---
 
-# Readings
+# References
 
 - Bostrom, Nick. Superintelligence. Dunod, 2017.
 - Legg, Shane, and Marcus Hutter. "Universal intelligence: A definition of machine intelligence." Minds and Machines 17.4 (2007): 391-444.
