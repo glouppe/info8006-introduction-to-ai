@@ -409,6 +409,20 @@ class: black-slide, middle
 
 ---
 
+class: middle
+
+.center[
+.width-100[![](figures/lec11/es.gif)]
+
+Evolution strategies for locomotion.
+]
+
+.footnote[Image credits: [OpenAI](https://blog.openai.com/evolution-strategies/).]
+
+
+
+---
+
 class: middle, center
 
 Neurevolution [demo](http://otoro.net/planks/).
