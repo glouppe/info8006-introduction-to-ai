@@ -14,7 +14,7 @@ Prof. Gilles Louppe<br>
 
 This course is given by:
 - Theory: Prof. Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
-- Exercises: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be))
+- Practicals: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be))
 - Projects: Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
 
 Feel free to contact any of us for help!

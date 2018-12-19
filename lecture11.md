@@ -137,7 +137,8 @@ class: middle
 
 ???
 
-Good worked as a cryptologist with Alan Turing.
+- Good worked as a cryptologist with Alan Turing.
+- Note that human is also capable of self-improvement, with medicine (from macro to gene).
 
 ---
 
@@ -169,6 +170,10 @@ Or maybe (certainly) something else?
 class: middle
 
 # AIXI
+
+???
+
+Mathematical formalism for AGI.
 
 ---
 
@@ -222,6 +227,10 @@ class: middle
 
 $$\Upsilon(\pi) := \sum\_{\mu \in E} 2^{-K(\mu)} V^{\pi}\_\mu$$
 
+???
+
+Mix all items together (Solomonoff induction with decision theory) and you get AIXI.
+
 ---
 
 class: middle
@@ -238,10 +247,10 @@ class: middle
 
 ## AIXI
 
-$$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^{AIXI})$$
+$$\bar{\Upsilon} = \max\_\pi \Upsilon(\pi) = \Upsilon(\pi^\text{AIXI})$$
 
 .center[
-$\pi^{AIXI}$ is a **perfect** theoretical agent.
+$\pi^\text{AIXI}$ is a **perfect** theoretical agent.
 ]
 
 ---
@@ -288,7 +297,7 @@ rigorously shown by [Hut05] to be optimal in many different senses of the word.
 
 class: middle
 
-## Incomputability
+## AIXI is incomputable
 
 .center.width-100[![](figures/lec11/aixi-action.png)]
 
@@ -309,7 +318,7 @@ class: middle
 ## Benefits of a foundational theory of AI
 
 AIXI provides
-- high-level *blue-print* or inspiration for design;
+- a high-level *blue-print* or inspiration for design;
 - common terminology and goal formulation;
 - understand and predict behavior of yet-to-be-built agents;
 - appreciation of **fundamental challenges** (e.g., exploration-exploitation);
@@ -377,6 +386,10 @@ class: middle
 - Their virtual genes containing coded instructions for their growth are copied, combined and mutated to *make offspring* for a new population.
 - The new creatures are tested again, some of which may be improvements on their parents.
 - As this cycle of variation and selection continues, creatures with more and more successful behaviors may **emerge**.
+
+???
+
+Virtual genes could be artificial neural networks.
 
 ---
 

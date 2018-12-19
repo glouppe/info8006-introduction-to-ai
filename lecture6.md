@@ -8,6 +8,10 @@ Lecture 6: Inference in Bayesian networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
+???
+
+R: draw the BN's with draw.io to have a consistent style.
+
 ---
 
 # Today
