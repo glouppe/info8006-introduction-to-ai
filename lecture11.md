@@ -8,6 +8,10 @@ Lecture 11: Artificial General Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
+???
+
+http://www.machineintelligence.org/universal-ai.pdf
+
 ---
 
 # Today$^\*$
