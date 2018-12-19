@@ -20,7 +20,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 8 (November 22): [Making decisions](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf)]
 - Lecture 9 (November 29): [Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)]
 - Lecture 10 (December 13): [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)]
-- Lecture 11 (December 20): Artificial General Intelligence and beyond [PDF]
+- Lecture 11 (December 20): [Artificial General Intelligence and beyond](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf)]
+- All lectures [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec-all.pdf)]
 
 ## Practicals
 
