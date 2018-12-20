@@ -20,7 +20,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Lecture 8 (November 22): [Making decisions](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf)]
 - Lecture 9 (November 29): [Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)]
 - Lecture 10 (December 13): [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)]
-- Lecture 11 (December 20): Artificial General Intelligence and beyond [PDF]
+- Lecture 11 (December 20): [Artificial General Intelligence and beyond](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf)]
+- All lectures [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec-all.pdf)]
 
 ## Practicals
 
@@ -40,7 +41,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - Pacman Part 1/3: [Search agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-1-search-agent). Due by October 26.
 - Pacman Part 2/3: [Minimax agent](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-2-minimax-agent). Due by November 23.
-- Pacman Part 3/3: [Reasoning over time](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-3-reasoning-over-time) Due by December 21.
+- Pacman Part 3/3: [Reasoning over time](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman#part-3-reasoning-over-time) Due by December 22.
 
 Further instructions can be found in the [`/pacman/`](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/pacman) folder.
 

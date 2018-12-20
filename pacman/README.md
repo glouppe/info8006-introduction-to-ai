@@ -178,7 +178,7 @@ Your report should be organized into 3 parts:
 
 ### Part 3: Reasoning over time
 
-This part is due by **December 21, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **December 22, 2018 at 23:59**. This is a **hard** deadline.
 
 In the last part of the project, ghosts are no longer visible to Pacman! However, Pacman is now equipped with a sonar that indicates the position of each ghost in the maze. Unfortunately Pacman's device is getting rusty and it only gives noisy estimates of the ghost positions.
 
