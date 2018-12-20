@@ -72,7 +72,7 @@ class EastRandyGhost(GhostAgent):
         if Directions.EAST in legal:
             # Select EAST with probability p
             dist = util.Counter()
-            dist[Directions.EAST] = args.p
+            dist[Directions.EAST] = 1 if len(legal) == 1 and args.p==0 else args.p
 
             for a in legal:
                 if a != Directions.EAST:
