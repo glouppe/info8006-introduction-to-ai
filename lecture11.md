@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 http://www.machineintelligence.org/universal-ai.pdf
+R: https://virtualcreatures.github.io/
 
 ---
 
@@ -419,7 +420,9 @@ Evolution strategies for locomotion.
 
 .footnote[Image credits: [OpenAI](https://blog.openai.com/evolution-strategies/).]
 
+???
 
+See also http://blog.otoro.net/2017/11/12/evolving-stable-strategies/.
 
 ---
 
