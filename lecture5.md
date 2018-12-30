@@ -12,6 +12,7 @@ Prof. Gilles Louppe<br>
 
 R: https://kuleshov.github.io/cs228-notes/representation/directed/
 R: add a slide on how to "read" a bayesian network (and how to infer some independence properties)
+R: add d-separation https://inst.eecs.berkeley.edu/~cs188/fa18/assets/slides/lec14/FA18_cs188_lecture14_bayes_nets_II_independence_1pp.pdf
 
 ---
 
