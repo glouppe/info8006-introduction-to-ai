@@ -13,6 +13,8 @@ Prof. Gilles Louppe<br>
 http://www.machineintelligence.org/universal-ai.pdf
 R: https://virtualcreatures.github.io/
 
+R: consciousness, self-awareness
+
 ---
 
 # Today$^\*$
