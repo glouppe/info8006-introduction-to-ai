@@ -8,6 +8,10 @@ Fall 2018
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](g.louppe@uliege.be)
 
+???
+
+check Nando's https://www.youtube.com/watch?v=z8937RleAZo
+
 ---
 
 # Logistics
