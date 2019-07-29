@@ -10,12 +10,16 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: lecun https://www.facebook.com/konbinitechno/videos/916293425386640/UzpfSTcyMjY3NzE0MjoxMDE1NjEyNjg2MzYwMjE0Mw/
+
 R: What is Intelligence? Quote from Van Neuman
 R: go over the Intelligent agents part, formalize a bit more.
 R: change this silly vacuum cleaner agent to something more fun
 R: draw the agent diagrams in draw.io
 
 http://ai.stanford.edu/~nilsson/QAI/qai.pdf
+
+R: reading assingment instructions http://web.stanford.edu/class/cs224n/project/project-proposal-instructions.pdf
 
 
 ---
