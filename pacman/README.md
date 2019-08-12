@@ -123,24 +123,25 @@ For each part of the project, you must provide the following deliverables:
 - The source code of your Pacman agent(s).
 - A report in PDF format of 4 pages (at most and in total).
 
-The three parts of the project must be carried out in groups of 2 students (with the same group across all parts).
+The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
 
-You deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+
+**One delay of maximum 24 hours** will be **tolerated** for all parts of the project. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade. 
 
 ### Part 1: Search agent
 
-This part is due by **October 26, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
+To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are provided in the corresponding Python files `bfs.py` and `dfs.py`. 
+
 You are asked to implement an agent based on each of these search algorithms:
- - Depth-First Search (DFS)
- - Breadth-First Search (BFS)
  - Uniform Cost Search (UCS)
  - A* (and an associated heuristic of your choice).
-
-Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`dfs.py`, `bfs.py`, `ucs.py`, `astar.py`), following the template of `pacmanagent.py`.
+Each search algorithm should be implemented inside the `get_action` function of the corresponding Python files (`ucs.py`, `astar.py`), following the template of `pacmanagent.py`. Be careful, Uniform Cost Search (UCS) must be provided with its own cost function. 
 
 Your report should be organized into 3 parts:
 1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
@@ -195,6 +196,50 @@ Your report should be organized as follows:
 2. Discuss how you would improve your agent to take into account measurements that are not physically possible, such as a position that actually corresponds to a wall.
 
 Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
+
+---
+
+## Evaluation criteria
+
+For each part of the project, you will be evaluated according to different criteria. Each criterion is associated to a percentage defining its weights for the parent criterion.
+
+### Part 1: Search agent
+
+**Code** - 50% 
+1. Style - 20%
+- PEP8 compatibility - 30%
+- Documentation - 40%
+- Structure - 30%
+2. Algorithms implementations - 50%
+- UCS - 50%  
+- A* - 50% 
+3. Algorithms performances - 20%
+- UCS - 50%
+- A* - 50%
+4. Bonus - 10%
+- Factorisation - 50%
+- Modularity - 50%
+
+**Report** - 50%
+1. Problem statement - 30%
+- State space - 20%
+- Action space - 20%
+- Transition model - 20% 
+- Step cost - 20%
+- Goal test - 20%
+2. Figures - 30%
+- Presence - 20%
+- Readability - 40%
+- Scale - 40%
+3. Discussion - 30%
+TO COMPLETE
+4. Style - 10%
+- English - 40%
+- Structure - 30%
+- Relevance & length (??) - 30%
+
+N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
+
 
 ---
 
