@@ -468,7 +468,7 @@ class: middle
 In some cases $O(n^3)$ is too prohibitive. Fortunately, it is not necessary to perform exact policy evaluation. An approximate solution is sufficient.
 
 One way is to run $k$ iterations of simplified Bell updates:
-$$V\_{i+1}(s) = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s))V\_i(s) $$
+$$V\_{i+1}(s) = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s))V\_i(s') $$
 
 This hybrid algorithm is called **modified policy iteration**.
 
