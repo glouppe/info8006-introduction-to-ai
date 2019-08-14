@@ -226,8 +226,8 @@ Relevance of the subdivision of your code into functions.
 2. **Algorithms implementations** - 5 points
 Correctness of the implementation of the different search algorithms.
 - **UCS** - 50%  
-**5 points** : correct implementation.
-**0 point**: otherwise.
+	- **5 points** : correct implementation.
+	- **0 point**: otherwise.
 - **A*** - 50% 
 **5 points** : correct implementation.
 **2.5 points**: incorrect implementation or not admissible heuristic.
