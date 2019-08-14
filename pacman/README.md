@@ -197,97 +197,6 @@ Your report should be organized as follows:
 
 Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
 
----
-
-## Evaluation criteria
-
-For each part of the project, you will be evaluated according to different criteria. Each criterion belongs to a given parent class and is associated to a percentage defining its weights for the parent criterion, i.e. the factor which the grade of the points of the criterion is multiplied by. Some criteria are also provided with the conditions to fulfill in order to obtain points. 
-
-### Part 1: Search agent
-
-**Code** - 10 points
-1. **Style** - 2 points
-- **PEP8 compatibility** - 30%
-PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
-	- **2 points** : the script runs without error.
-	- **0 point**: otherwise.
-
-- **Documentation** - 40%
-Quality of the specification of your functions and the comments inside your code.
-	- **2 points** : perfect documentation.
-	- **1.5 points** : only a few mistakes but globally good documentation.
-	- **1 point** : several mistakes but comprehensible documentation.
-	- **0.5 point**: barely comprehensible documentation.
-	- **0 point**: no documentation.
- 
-- **Structure** - 30%
-Relevance of the subdivision of your code into functions.
-
-2. **Algorithms implementations** - 5 points
-Correctness of the implementation of the different search algorithms.
-- **UCS** - 50%  
-	- **5 points** : correct implementation.
-	- **0 point**: otherwise.
-- **A*** - 50% 
-	- **5 points** : correct implementation.
-	- **2.5 points**: incorrect implementation or not admissible heuristic.
-	- **0 point**: incorrect implementation and not admissible heuristic.
-
-3. **Algorithms performances** - 2 points 
-Results accuracy and execution time. 
-- **UCS** - 50%
-- **A*** - 50%
-For each algorithm:
-	- **2 points** : execution time $<$ 2 sec.
-	- **1.5 points** : exection time between 2 and 5 sec.
-	- **1 point** : exection time between 5 and 10 sec.
-	- **0.5 point**: inaccurate results and/or execution time $\geq$ 10 sec.
-	- **0 point**: no result.
-
-4. **Bonus** - 1 point
-Bonus point for a particularly good code structure.
-- **Factorisation** - 50%
-- **Modularity** - 50%
-
-**Report** - 10 points
-1. **Problem statement** - 3 points
-- **State space** - 20%
-- **Action space** - 20%
-- **Transition model** - 20% 
-- **Step cost** - 20%
-- **Goal test** - 20%
-For each component of the statement:
-	- **3 points** : correct component.
-	- **0 point**: otherwise.
-2. **Graphs** - 3 points
-- **Presence** - 20%
-
-- **Readability** - 40%
-Ease to understand the information given by the graphs and quality of their descriptions.
-- **Scale** - 40%
-Consistency of the graphs between each other and ease to compare them visually. 
-3. **Discussion** - 3 points
-- Q1 (TO DECIDE) - 40%
-
-- Q2 (TO DECIDE)  - 40%
-
-- **Project feedback** - 20%
-You're invited to provide a short feedback about the project and speak about the difficulties you may have encountered.
-	- **3 points**: constructive feedback.
-	- **0 point**: otherwise. 
-4. **Style** - 1 point
-- **English** - 40%
-Quality of the writing.
-
-- **Structure** - 30%
-Respect of the provided template.
-	- **1 point**: respected template.
-	- **0 point**: otherwise. 
-
-- **Relevance & length (??)** - 30%
-
-N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
-
 
 ---
 
@@ -332,6 +241,88 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 ---
 
+## Evaluation criteria
+
+For each part of the project, you will be evaluated according to different criteria. Each criterion is associated to a certain amount of points according to its importance. 
+
+### Part 1: Search agent
+
+**Code** - 10 points
+1. **Style** - 2 points
+	* **PEP8 compatibility** - 0.8 point: PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+		* 0.8 point : the script runs without error.
+		* 0 point: otherwise.
+	* **Specification** - 0.8 point: correctness of the specification of your functions.
+		* 0.8 point : all specifications are correct.
+		* 0.6 point : at least 75% correct specifications.
+		* 0.4 point: at least 50% correct specifications.
+		* 0.2 point: at least 25% correct specifications.
+		* 0 point: less than 25% correct specifications.
+	 * **Structure & Comments** - 0.4 point - Relevance of the subdivision of your code into functions. See [Typical mistakes and bad practice](#typical-mistakes-and-bad-practice) for more examples.
+
+2. **Algorithms implementations** - 5 points: correctness of the implementation of the different search algorithms.
+	* **UCS** - 2.5 points  
+		* 2.5 points : correct implementation of UCS and its components (goal test, cost function, ...).
+		* 0 point: incorrect implementation of UCS or any of its components.
+	* **A*** - 2.5 points 
+		* 2.5 points: correct implementation of A* and its components (UCS components + admissible heuristic).
+		* 1.25 points: error due to UCS implementation but admissible heuristic.
+		* 0 point: not admissible heuristic or implementation error of any component of A*.
+
+3. **Algorithms performances** - 2 points: results accuracy and execution time. 
+	* **UCS** - 1 point
+	* **A*** - 1 point</br> 
+	For each algorithm:
+		* 1 point : execution time $<$ 2 sec.
+		* 0.75 point: exection time between 2 and 5 sec.
+		* 0.5 point: exection time between 5 and 10 sec.
+		* 0.25 point: inaccurate results and/or execution time $\geq$ 10 sec.
+		* 0 point: no result.
+
+4. **Bonus** - 1 point: bonus point for a particularly good code structure.
+	* **Factorisation** - 0.5 point: avoiding rewriting several times the same code instructions.
+	* **Modularity** - 0.5 point: smart subdivision of the code into different files. 
+
+**Report** - 10 points
+1. **Problem statement** - 5 points
+	* **State space** - 1 point
+	* **Action space** - 1 point
+	* **Transition model** - 1 point 
+	* **Step cost** - 1 point
+	* **Goal test** - 1 point</br>
+	For each component of the statement:
+		* 1 point : correct component.
+		* 0 point: incorrect component.
+		
+2. **Graphs** - 1 point
+	* **Presence** - 0.4 point
+		* 0.4 point : graphs present.
+		* 0 point: no graph.
+	* **Readability** - 0.2 point: ease to understand the information given by the graphs and quality of their descriptions.
+	* **Scale** - 0.4 point: consistency of the graphs between each other and ease to compare them visually. 
+	
+3. **Discussion** - 3 points
+	* **Q1 (TO DECIDE)** - 1.2 points
+	* **Q2 (TO DECIDE)**  - 1.2 points
+	* **Project feedback** - 0.6 point: you're invited to provide a short feedback about the project and discuss about the difficulties you may have encountered.
+		* 3 points: constructive feedback.
+		* 0 point: otherwise. 
+		
+4. **Style** - 1 point
+	* **English** - 0.25 point: quality of the writing.
+	* **Structure** - 0.5 point: respect of the provided template.
+		* 0.5 point: respected template.
+		* 0 point: otherwise. 
+	* **Length** - 0.25 point
+		* 0.25 point: at least 2 pages and at most 4 pages.
+		* 0 point: length not respected 
+
+N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
+
+:warning: Plagiarism is checked and sanctioned by a grade of 0.
+
+---
+
 ## Evaluation
 
 The evaluation of your deliverables is based on the following criteria:
@@ -348,6 +339,11 @@ The evaluation of your deliverables is based on the following criteria:
 	* Your source code must be Python 3 and [PEP8](https://www.python.org/dev/peps/pep-0008/) compatible.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
+
+---
+## Typical mistakes and bad practice
+
+
 
 ---
 
