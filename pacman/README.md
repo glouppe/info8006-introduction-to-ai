@@ -197,6 +197,8 @@ Your report should be organized as follows:
 
 Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
 
+---
+
 ## Evaluation criteria
 
 For each part of the project, you will be evaluated according to different criteria. Each criterion belongs to a given parent class and is associated to a percentage defining its weights for the parent criterion, i.e. the factor which the grade of the points of the criterion is multiplied by. Some criteria are also provided with the conditions to fulfill in order to obtain points. 
@@ -224,31 +226,36 @@ Relevance of the subdivision of your code into functions.
 2. **Algorithms implementations** - 5 points
 Correctness of the implementation of the different search algorithms.
 - **UCS** - 50%  
+**5 points** : correct implementation.
+**0 point**: otherwise.
 - **A*** - 50% 
+**5 points** : correct implementation.
+**2.5 points**: incorrect implementation or not admissible heuristic.
+**0 point**: incorrect implementation and not admissible heuristic.
 
 3. **Algorithms performances** - 2 points 
 Results accuracy and execution time. 
 - **UCS** - 50%
 - **A*** - 50%
 For each algorithm:
-**2 points** : Execution time $<$ 2 sec.
-**1.5 points** : Exection time between 2 and 5 sec.
-**1 point** : Exection time between 5 and 10 sec.
+**2 points** : execution time $<$ 2 sec.
+**1.5 points** : exection time between 2 and 5 sec.
+**1 point** : exection time between 5 and 10 sec.
 **0.5 point**: inaccurate results and/or execution time $\geq$ 10 sec.
 **0 point**: no result.
 
 4. **Bonus** - 1 point
 Bonus point for a particularly good code structure.
-- Factorisation - 50%
-- Modularity - 50%
+- **Factorisation** - 50%
+- **Modularity** - 50%
 
 **Report** - 10 points
 1. **Problem statement** - 3 points
-- State space - 20%
-- Action space - 20%
-- Transition model - 20% 
-- Step cost - 20%
-- Goal test - 20%
+- **State space** - 20%
+- **Action space** - 20%
+- **Transition model** - 20% 
+- **Step cost** - 20%
+- **Goal test** - 20%
 For each component of the statement:
 **3 points** : correct component.
 **0 point**: otherwise.
