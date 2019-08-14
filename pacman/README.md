@@ -209,16 +209,16 @@ For each part of the project, you will be evaluated according to different crite
 1. **Style** - 2 points
 - **PEP8 compatibility** - 30%
 PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
-**2 points** : the script runs without error.
-**0 point**: otherwise.
+	- **2 points** : the script runs without error.
+	- **0 point**: otherwise.
 
 - **Documentation** - 40%
 Quality of the specification of your functions and the comments inside your code.
-**2 points** : perfect documentation.
-**1.5 points** : only a few mistakes but globally good documentation.
-**1 point** : several mistakes but comprehensible documentation.
-**0.5 point**: barely comprehensible documentation.
-**0 point**: no documentation.
+	- **2 points** : perfect documentation.
+	- **1.5 points** : only a few mistakes but globally good documentation.
+	- **1 point** : several mistakes but comprehensible documentation.
+	- **0.5 point**: barely comprehensible documentation.
+	- **0 point**: no documentation.
  
 - **Structure** - 30%
 Relevance of the subdivision of your code into functions.
@@ -229,20 +229,20 @@ Correctness of the implementation of the different search algorithms.
 	- **5 points** : correct implementation.
 	- **0 point**: otherwise.
 - **A*** - 50% 
-**5 points** : correct implementation.
-**2.5 points**: incorrect implementation or not admissible heuristic.
-**0 point**: incorrect implementation and not admissible heuristic.
+	- **5 points** : correct implementation.
+	- **2.5 points**: incorrect implementation or not admissible heuristic.
+	- **0 point**: incorrect implementation and not admissible heuristic.
 
 3. **Algorithms performances** - 2 points 
 Results accuracy and execution time. 
 - **UCS** - 50%
 - **A*** - 50%
 For each algorithm:
-**2 points** : execution time $<$ 2 sec.
-**1.5 points** : exection time between 2 and 5 sec.
-**1 point** : exection time between 5 and 10 sec.
-**0.5 point**: inaccurate results and/or execution time $\geq$ 10 sec.
-**0 point**: no result.
+	- **2 points** : execution time $<$ 2 sec.
+	- **1.5 points** : exection time between 2 and 5 sec.
+	- **1 point** : exection time between 5 and 10 sec.
+	- **0.5 point**: inaccurate results and/or execution time $\geq$ 10 sec.
+	- **0 point**: no result.
 
 4. **Bonus** - 1 point
 Bonus point for a particularly good code structure.
@@ -257,8 +257,8 @@ Bonus point for a particularly good code structure.
 - **Step cost** - 20%
 - **Goal test** - 20%
 For each component of the statement:
-**3 points** : correct component.
-**0 point**: otherwise.
+	- **3 points** : correct component.
+	- **0 point**: otherwise.
 2. **Graphs** - 3 points
 - **Presence** - 20%
 
@@ -273,16 +273,16 @@ Consistency of the graphs between each other and ease to compare them visually.
 
 - **Project feedback** - 20%
 You're invited to provide a short feedback about the project and speak about the difficulties you may have encountered.
-**3 points**: constructive feedback.
-**0 point**: otherwise. 
+	- **3 points**: constructive feedback.
+	- **0 point**: otherwise. 
 4. **Style** - 1 point
 - **English** - 40%
 Quality of the writing.
 
 - **Structure** - 30%
 Respect of the provided template.
-**1 point**: respected template.
-**0 point**: otherwise. 
+	- **1 point**: respected template.
+	- **0 point**: otherwise. 
 
 - **Relevance & length (??)** - 30%
 
