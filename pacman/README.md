@@ -121,7 +121,7 @@ python run.py -h
 For each part of the project, you must provide the following deliverables:
 
 - The source code of your Pacman agent(s).
-- A report in PDF format of 4 pages (at most and in total).
+- A report in PDF format of 4 pages (at most and in total). A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
 
 The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
 
@@ -146,7 +146,7 @@ Each search algorithm should be implemented inside the `get_action` function of 
 Your report should be organized into 3 parts:
 1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
 2. You should run your agents against the 3 maze layouts located the  `/pacman_module/layouts/` folder.
-  For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
+  For each layout, report as a bar plot the performance of your 2 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
 3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
 
 ### Part 2: Minimax agent
@@ -197,46 +197,87 @@ Your report should be organized as follows:
 
 Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
 
----
-
 ## Evaluation criteria
 
-For each part of the project, you will be evaluated according to different criteria. Each criterion is associated to a percentage defining its weights for the parent criterion.
+For each part of the project, you will be evaluated according to different criteria. Each criterion belongs to a given parent class and is associated to a percentage defining its weights for the parent criterion, i.e. the factor which the grade of the points of the criterion is multiplied by. Some criteria are also provided with the conditions to fulfill in order to obtain points. 
 
 ### Part 1: Search agent
 
-**Code** - 50% 
-1. Style - 20%
-- PEP8 compatibility - 30%
-- Documentation - 40%
-- Structure - 30%
-2. Algorithms implementations - 50%
-- UCS - 50%  
-- A* - 50% 
-3. Algorithms performances - 20%
-- UCS - 50%
-- A* - 50%
-4. Bonus - 10%
+**Code** - 10 points
+1. **Style** - 2 points
+- **PEP8 compatibility** - 30%
+PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+**2 points** : the script runs without error.
+**0 point**: otherwise.
+
+- **Documentation** - 40%
+Quality of the specification of your functions and the comments inside your code.
+**2 points** : perfect documentation.
+**1.5 points** : only a few mistakes but globally good documentation.
+**1 point** : several mistakes but comprehensible documentation.
+**0.5 point**: barely comprehensible documentation.
+**0 point**: no documentation.
+ 
+- **Structure** - 30%
+Relevance of the subdivision of your code into functions.
+
+2. **Algorithms implementations** - 5 points
+Correctness of the implementation of the different search algorithms.
+- **UCS** - 50%  
+- **A*** - 50% 
+
+3. **Algorithms performances** - 2 points 
+Results accuracy and execution time. 
+- **UCS** - 50%
+- **A*** - 50%
+For each algorithm:
+**2 points** : Execution time $<$ 2 sec.
+**1.5 points** : Exection time between 2 and 5 sec.
+**1 point** : Exection time between 5 and 10 sec.
+**0.5 point**: inaccurate results and/or execution time $\geq$ 10 sec.
+**0 point**: no result.
+
+4. **Bonus** - 1 point
+Bonus point for a particularly good code structure.
 - Factorisation - 50%
 - Modularity - 50%
 
-**Report** - 50%
-1. Problem statement - 30%
+**Report** - 10 points
+1. **Problem statement** - 3 points
 - State space - 20%
 - Action space - 20%
 - Transition model - 20% 
 - Step cost - 20%
 - Goal test - 20%
-2. Figures - 30%
-- Presence - 20%
-- Readability - 40%
-- Scale - 40%
-3. Discussion - 30%
-TO COMPLETE
-4. Style - 10%
-- English - 40%
-- Structure - 30%
-- Relevance & length (??) - 30%
+For each component of the statement:
+**3 points** : correct component.
+**0 point**: otherwise.
+2. **Graphs** - 3 points
+- **Presence** - 20%
+
+- **Readability** - 40%
+Ease to understand the information given by the graphs and quality of their descriptions.
+- **Scale** - 40%
+Consistency of the graphs between each other and ease to compare them visually. 
+3. **Discussion** - 3 points
+- Q1 (TO DECIDE) - 40%
+
+- Q2 (TO DECIDE)  - 40%
+
+- **Project feedback** - 20%
+You're invited to provide a short feedback about the project and speak about the difficulties you may have encountered.
+**3 points**: constructive feedback.
+**0 point**: otherwise. 
+4. **Style** - 1 point
+- **English** - 40%
+Quality of the writing.
+
+- **Structure** - 30%
+Respect of the provided template.
+**1 point**: respected template.
+**0 point**: otherwise. 
+
+- **Relevance & length (??)** - 30%
 
 N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
 
