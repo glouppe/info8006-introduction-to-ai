@@ -23,7 +23,9 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Game score](#score)
     * [API](#api)
     * [Illegal moves](#illegal-moves)
+- [Evaluation criteria](evaluation-criteria)	
 - [Evaluation](#evaluation)
+- [Typical mistakes and bad practice](#typical-mistakes-and-bad-practice)
 - [Credits](#credits)
 
 ---
@@ -136,7 +138,7 @@ This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
-To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are provided in the corresponding Python files `bfs.py` and `dfs.py`. 
+To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are available in the corresponding Python files `bfs.py` and `dfs.py`. 
 
 You are asked to implement an agent based on each of these search algorithms:
  - Uniform Cost Search (UCS)
@@ -269,14 +271,14 @@ For each part of the project, you will be evaluated according to different crite
 		* 1.25 points: error due to UCS implementation but admissible heuristic.
 		* 0 point: not admissible heuristic or implementation error of any component of A*.
 
-3. **Algorithms performances** - 2 points: results accuracy and execution time. 
+3. **Algorithms performances** - 3 points: results accuracy and execution time. 
 	* **UCS** - 1 point
 	* **A*** - 1 point</br> 
 	For each algorithm:
-		* 1 point : execution time $<$ 2 sec.
-		* 0.75 point: exection time between 2 and 5 sec.
-		* 0.5 point: exection time between 5 and 10 sec.
-		* 0.25 point: inaccurate results and/or execution time $\geq$ 10 sec.
+		* 1.5 point : execution time $<$ 2 sec.
+		* 1.125 points: exection time between 2 and 5 sec.
+		* 0.75 point: exection time between 5 and 10 sec.
+		* 0.375 point: inaccurate results and/or execution time $\geq$ 10 sec.
 		* 0 point: no result.
 
 4. **Bonus** - 1 point: bonus point for a particularly good code structure.
@@ -304,15 +306,15 @@ For each part of the project, you will be evaluated according to different crite
 3. **Discussion** - 3 points
 	* **Q1 (TO DECIDE)** - 1.2 points
 	* **Q2 (TO DECIDE)**  - 1.2 points
-	* **Project feedback** - 0.6 point: you're invited to provide a short feedback about the project and discuss about the difficulties you may have encountered.
+	* **Project feedback** - 0.6 point: you're expected to provide a short feedback about the project and discuss about the difficulties you may have encountered during the project.
 		* 3 points: constructive feedback.
 		* 0 point: otherwise. 
 		
 4. **Style** - 1 point
 	* **English** - 0.25 point: quality of the writing.
 	* **Structure** - 0.5 point: respect of the provided template.
-		* 0.5 point: respected template.
-		* 0 point: otherwise. 
+		* 0.5 point: template respected.
+		* 0 point: template not respected. 
 	* **Length** - 0.25 point
 		* 0.25 point: at least 2 pages and at most 4 pages.
 		* 0 point: length not respected 
@@ -343,6 +345,10 @@ The evaluation of your deliverables is based on the following criteria:
 ---
 ## Typical mistakes and bad practice
 
+**TODO**: Things to add:
+1. Good/bad comments
+2. Good/bad specifications
+3. How do we handle crashes ? (compilation, execution, warnings, ...)
 
 
 ---
