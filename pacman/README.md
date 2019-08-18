@@ -25,7 +25,7 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Illegal moves](#illegal-moves)
 - [Evaluation criteria](evaluation-criteria)	
 - [Evaluation](#evaluation)
-- [Typical mistakes and bad practice](#typical-mistakes-and-bad-practice)
+- [Typical mistakes and bad practices](#typical-mistakes-and-bad-practices)
 - [Credits](#credits)
 
 ---
@@ -343,14 +343,58 @@ The evaluation of your deliverables is based on the following criteria:
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
 
 ---
-## Typical mistakes and bad practice
+## Typical mistakes and bad practices
 
-**TODO**: Things to add:
-1. Good/bad comments
-2. Good/bad specifications
-3. How do we handle crashes ? (compilation, execution, warnings, ...)
+We show through this section a list of common mistakes and bad practices that we have observed through past projects. Although this section is non exhaustive and thus is subject to regular updates, we hope that the following list will help you to avoid many pitfalls that can hurt the quality of your project. 
 
+### Report
 
+- **Formalism**
+	1) Reference to a function/method to describe any component of a problem statement. A formal description of a problem statement is **always** independent of its implementation.
+	2) Missing variables in state/action spaces. This error always jeopardizes the formal description of the problem, and often jeopardizes the whole project.
+	3) Variables not taken into account in transition model. Transitions must include **all** the variables, even if some of them might stay idle. 
+	4) Algorithmic-dependent definition of a problem component. Some components of the problem might have to be described differently to fit the requirements of the algorithms. However, the formal description of the problem have to remains **independent** of these algorithm requirements.
+	
+- **Graphics**
+	1) Unreadable legend/axis, e.g., tiny font, flash coloured text, mixing text and plots. Not only this is annoying for the readers, but it also might slow you down in your working progress, if not interfere with the quality of your discussion on results.   
+	2) Variables with different scales on the same graphics. When in presence of large variables values, others variable with small scales can literally vanish out of the graphics. You should often instead separate them. [Logarithmic scale](https://en.wikipedia.org/wiki/Logarithmic_scale) might also be considered when including two variables with different scales in the same graphics is relevant to the discussion.
+	
+	
+### Code
+
+- **Style/Documentation**
+	1) Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. You can use dedicated [scripts](https://pypi.org/project/pep8/) to check PEP8-compliance of your source code.
+	2) Function specifications are either wrong or missing. They must be present and they must **formally** describe the function out of ambiguity. An example of a correct specification is provided below : 
+	
+	```python
+	   def nth_fibonacci(n):
+           """
+           Computes the n-th member of the Fibonacci sequence.
+           Recursive definition: f(0)=0, f(1)=1, f(n)=f(n-1) + f(n-2)
+
+           Arguments:
+           ----------
+           - `n (integer): Index of the Fibonacci sequence.
+
+           Return:
+           -------
+           - The n-th member of the Fibonacci sequence.
+           """
+	       if n == 0:
+	           return 0
+	       if n == 1:
+	           return 1
+	       return nth_fibonacci(n-1) + nth_fibonacci(n-2) 
+	```
+	3) Variables and functions are not named accordingly to their meanings. A source code in which names are based on target meanings is easier to read and might need less comments to be readable.
+	4) Comments are either uninformative, too verbose or missing. They are important to structure the code and to provide high-level insights on how each part of code interacts with each other, and how the source code is actually behaving (useful for optimization among other benefits). They must contains few words and be straight to the point. 
+	
+- **Implementation**
+	5) Incorrect implementation of the algorithms. This is often due to the violation of any specification of the algorithms, or to an incorrect implementation of the problem statement, e.g., a wrong goal test is provided to the algorithm. Be sure to understand the problem statement you need to describe and the algorithms you are required to implement. 
+	6) Over confidence on unit tests. While they are useful to spot implementation errors, they cannot discard all of them. Even if your implementation "works" on some instances of the problem statement, and even if you are encouraged to do such tests, you need to carefully verify your implementation. This includes 1) the correctness of the inputs given to your algorithms with respect to the problem statement and 2) the fullfilment of the algorithms specifications in your implementation.
+	7) Inefficiency during execution. Only a few seconds is necessary in the worst case to solve each instance of the problem statement we provide in the projects. While you should first have a working version of your implementation, you should also be careful to limit the computation time below these few seconds.
+	8) Import and edge-cases errors, e.g. index out of bounds. While a typo in import sections does not jeopardize the implementation correctness - as long as the required files are present -, it is often difficult for the reader to decide if edge-cases error are either typos or part of the incorrect implementation. The safest policy being the latter, we refer to it when evaluating your work.  
+       
 ---
 
 ## Credits
