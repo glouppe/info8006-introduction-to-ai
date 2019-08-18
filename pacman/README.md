@@ -370,21 +370,22 @@ We show through this section a list of common mistakes and bad practices that we
 	   def nth_fibonacci(n):
            """
            Computes the n-th member of the Fibonacci sequence.
-           Recursive definition: f(0)=0, f(1)=1, f(n)=f(n-1) + f(n-2)
+           Recursive definition: f(0)=0, f(1)=1,
+                                 f(n)=f(n-1) + f(n-2) for n > 1
 
            Arguments:
            ----------
-           - `n (integer): Index of the Fibonacci sequence.
+           - `n (integer): Positive index of the Fibonacci sequence.
 
            Return:
            -------
            - The n-th member of the Fibonacci sequence.
            """
-	       if n == 0:
-	           return 0
-	       if n == 1:
-	           return 1
-	       return nth_fibonacci(n-1) + nth_fibonacci(n-2) 
+           if n == 0:
+               return 0
+           if n == 1:
+               return 1
+           return nth_fibonacci(n-1) + nth_fibonacci(n-2)
 	```
 	3) Variables and functions are not named accordingly to their meanings. A source code in which names are based on target meanings is easier to read and might need less comments to be readable.
 	4) Comments are either uninformative, too verbose or missing. They are important to structure the code and to provide high-level insights on how each part of code interacts with each other, and how the source code is actually behaving (useful for optimization among other benefits). They must contains few words and be straight to the point. 
