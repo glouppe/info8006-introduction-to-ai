@@ -140,16 +140,24 @@ Your task is to design an intelligent based on search algorithms (see [Lecture 2
 
 To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are available in the corresponding Python files `bfs.py` and `dfs.py`. 
 
-You are asked to implement an agent based on each of these search algorithms:
+You are asked to implement an agent based on each of the following algorithms:
  - Uniform Cost Search (UCS)
  - A* (and an associated heuristic of your choice).
 Each search algorithm should be implemented inside the `get_action` function of the corresponding Python files (`ucs.py`, `astar.py`), following the template of `pacmanagent.py`. Be careful, Uniform Cost Search (UCS) must be provided with its own cost function. 
 
-Your report should be organized into 3 parts:
+Your report should be organized into 4 parts:
 1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
 2. You should run your agents against the 3 maze layouts located the  `/pacman_module/layouts/` folder.
-  For each layout, report as a bar plot the performance of your 2 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
-3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
+  For each layout, report as a bar plot the performance of your 2 agents in terms of:
+	- a. final score 
+	- b. total computation time 
+	- c. total number of expanded nodes. 
+In total, you should therefore produce 9 bar plots.
+3. Answer the following questions:
+	- a. (TO DECIDE)
+	- b. (TO DECIDE)
+4. You're expected to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
+	
 
 ### Part 2: Minimax agent
 
@@ -306,7 +314,7 @@ For each part of the project, you will be evaluated according to different crite
 3. **Discussion** - 3 points
 	* **Q1 (TO DECIDE)** - 1.2 points
 	* **Q2 (TO DECIDE)**  - 1.2 points
-	* **Project feedback** - 0.6 point: you're expected to provide a short feedback about the project and discuss about the difficulties you may have encountered during the project.
+	* **Project feedback** - 0.6 point: relevance of the feedback.
 		* 3 points: constructive feedback.
 		* 0 point: otherwise. 
 		
