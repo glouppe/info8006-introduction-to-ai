@@ -1,4 +1,5 @@
 
+
 # Pacman
 
 <p align="center">
@@ -24,7 +25,7 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Game score](#score)
     * [API](#api)
     * [Illegal moves](#illegal-moves)
-- [Evaluation criteria](evaluation-criteria)	
+- [Evaluation criteria](#evaluation-criteria)	
 - [Credits](#credits)
 
 ---
@@ -143,37 +144,37 @@ You are asked to answer the following questions:
  1. **Problem statement**
 	 - 1.a. **Describe the game** you are asked to solve, within a few lines.
 	 - 1.b. Formalize the game as a **search problem**, i.e. in terms of:
-		 - Set of all possible states
-		 - Set of all possible actions
+		 - Set of possible states <br/> :warning: Unnesseary to specify the initial state as it depends on the layout.
+		 - Set of legal actions
 		 - Transition model
 		 - Goal test
 		 - Step cost (must be > 0)
  2.  **A\* implementation**
-	 - 2.a. Implement A* algorithm with **your own cost function** $g(n)$  and **admissible heuristic** $h(n)$. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
-		 - You must have $g(n)$ different from $depth(n)$
-		 - You must have $h(n)$ different from 0 everywhere.
+	 - 2.a. Implement A* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+		 - You must have *g(n)* different from *depth(n)*
+		 - You must have *h(n)* different from 0 everywhere.
 		 - You must prevent cycles. A cycle is a path where a given state occurs at least twice.
-	  - 2.b. Define and describe formally your cost function $g(n)$ and your heuristic $h(n)$.
-	  - 2.c. **Show** that your $h(n)$ is **admissible**.
+	  - 2.b. Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.c. **Show** that your *h(n)* is **admissible**.
  3. **Experiment 1** 
-	 - 3.a. Run A* with your own $g(n)$ and $h(n)$ and  A* with your own $g(n)$ and $h(n) = 0$ everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+	 - 3.a. Run A* with your own *g(n)* and *h(n)* and  A* with your own *g(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
 	- 3.b. Describe the changes between the results of the two runs.
 	- 3.c. Justify those changes using the course.
-	- 3.d. Which algorithm corresponds A* with $h(n) = 0$ everywhere to ? 
+	- 3.d. Which algorithm corresponds A* with *h(n) = 0* everywhere to ? 
  4. **Experiment 2** 
-	 - 4.a. Run A* with your own $g(n)$ and $h(n)$, DFS and BFS against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+	 - 4.a. Run A* with your own *g(n)* and *h(n)*, DFS and BFS against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
 	  - 4.b. Describe the changes between A* and DFS/BFS. 
 	  - 4.c. Justify the changes between A* and DFS/BFS using the course.
- 5. **Experiment 3**.   
-	   - 5.a. Run A* with $g(n) = depth(n)$ and $h(n) = 0$ everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+ 5. **Experiment 3**   
+	   - 5.a. Run A* with *g(n) = depth(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		   - Score
 		   - Number of expanded nodes 
 	  - 5.b. Describe those results compared to DSF/BFS and justify your observations using the course.
-	  - 5.c. Which algorithm corresponds A* with $g(n) = depth(n)$ and $h(n) = 0$ everywhere to ? 
+	  - 5.c. Which algorithm corresponds A* with *g(n) = depth(n)* and *h(n) = 0* everywhere to ? 
  6. **Project feedback (BONUS)** <br/> You're expected to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
 
 Your report should the subdivision provided above. A template with a predefined structure will be provided in order to standardize the report for all students. 
@@ -181,7 +182,7 @@ Your report should the subdivision provided above. A template with a predefined 
 
 ### Part 2: Minimax agent
 
-This part is due by **November 23, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **November 10, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
 
@@ -191,6 +192,8 @@ The ghost follows one of the following policies, as set through the `--ghostagen
  - `smarty`: Select the next position which leads to the shortest path towards Pacman.
 
 Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)) for eating all the dots as quickly as possible while avoiding the ghost.
+
+
 
 You are asked to implement an agent based on each of these adversarial search algorithms:
  - Minimax.
@@ -297,10 +300,10 @@ For each part of the project, you will be evaluated according to different crite
 
 3. **Algorithms performances** - 3 points: results accuracy and execution time.
 	* **A*** - 3 points
-		* 3 point : execution time $<$ 2 sec.
+		* 3 point : execution time < 2 sec.
 		* 2.25 points: exection time between 2 and 5 sec.
 		* 1.5 point: exection time between 5 and 10 sec.
-		* 0.75 point: inaccurate results and/or execution time $>$ 10 sec.
+		* 0.75 point: inaccurate results and/or execution time > 10 sec.
 		* 0 point: no result.
 
 **Report** - 10 points
@@ -310,8 +313,7 @@ For each part of the project, you will be evaluated according to different crite
 	* **Set of actions** - 1 point
 	* **Transition model** - 1 point 
 	* **Goal test** - 1 point
-	* **Step cost** - 1 point</br>
-	For each component of the statement:
+	* **Step cost** - 1 point<br/> For each component of the statement:
 		* 1 point : correct component.
 		* 0 point: incorrect component.
 		
