@@ -160,25 +160,26 @@ You are asked to answer the following questions:
 	 - 3.a. Run A* with your own *g(n)* and *h(n)* and  A* with your own *g(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
-	- 3.b. Describe the changes between the results of the two runs.
-	- 3.c. Justify those changes using the course.
+	- 3.b. Describe the differences between the results of the two versions of A*.
+	- 3.c. Refer to the course in order to justify these differences.
 	- 3.d. Which algorithm corresponds A* with *h(n) = 0* everywhere to ? 
  4. **Experiment 2** 
 	 - 4.a. Run A* with your own *g(n)* and *h(n)*, DFS and BFS against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
-	  - 4.b. Describe the changes between A* and DFS/BFS. 
-	  - 4.c. Justify the changes between A* and DFS/BFS using the course.
+	  - 4.b. Describe the differences between: 
+		  - A* and DFS
+		  - A* and BFS
+	  - 4.c. Refer to the course in order to justify these differences.
  5. **Experiment 3**   
 	   - 5.a. Run A* with *g(n) = depth(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
 		   - Score
 		   - Number of expanded nodes 
-	  - 5.b. Describe those results compared to DSF/BFS and justify your observations using the course.
+	  - 5.b. Describe these results compared to DSF and BFS and refer to the course in order to justify these observations.
 	  - 5.c. Which algorithm corresponds A* with *g(n) = depth(n)* and *h(n) = 0* everywhere to ? 
- 6. **Project feedback (BONUS)** <br/> You're expected to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
+ 6. **Project feedback (BONUS)** <br/> You're invited to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
 
-Your report should the subdivision provided above. A template with a predefined structure will be provided in order to standardize the report for all students. 
-	
+Your report has to follow the subdivision provided above. To do so, a template is provided. (ADD LINK TO TEMPLATE) 	
 
 ### Part 2: Minimax agent
 
