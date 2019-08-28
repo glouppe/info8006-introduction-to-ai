@@ -43,7 +43,7 @@ You are asked to answer the following questions:
 	  - 2.b. - **0.375 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
 	  - 2.c. - **0.375 point** - **Show** that your *h(n)* is **admissible**.
 	  - 2.d. - **2 points** - Implement Breadth-First Search (BFS) from your A* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If implementation errors are due to the implementation of A*, these will not be taken into account for this question.
-	  - 2.e. - **0.375 point** - Justify briefly the choice of *g(n)* and *h(n)*.
+	  - 2.e. - **0.375 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1** 
 	 - 3.a. - **0.5 point** - Run A* with your own *g(n)* and *h(n)* and  A* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plot in terms of:
 	 
