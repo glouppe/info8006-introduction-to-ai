@@ -71,7 +71,7 @@ For each **discussion question** (2.b, 2.c, 2.e, 3.b, 3.c, 3.d, 4.b, 4.c), the e
  - 50% points: some relevant elements but incomplete answer.
  - no point: no relevant element or no answer.
 
-Questions implying the inclusion of **plots** in the report will be evaluated considering the following criteria:
+Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be evaluated considering the following criteria:
 
  - Presence
  - Readability: ease to understand the information given by the graphs and quality of their descriptions.
