@@ -15,57 +15,66 @@ This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
-To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are available in the corresponding Python files `bfs.py` and `dfs.py`. 
+To provide you some help, the implementations of Depth-First Search (DFS) are available in the corresponding Python file `dfs.py`. 
 
 You are asked to answer the following questions:
  1. **Problem statement**
-	 - 1.a. **Describe the game** you are asked to solve, within a few lines.
-	 - 1.b. Formalize the game as a **search problem**, i.e. in terms of:
-		 - Set of all possible states
-		 - Set of all possible actions
+	 - 1.a. Formalize the game as a **search problem**, i.e. in terms of:
+		 - Set of possible states 
+			 - You should specify the initial state.
+		 - Set of legal actions
 		 - Transition model
 		 - Goal test
-		 - Step cost (must be > 0)
- 2.  **A\* implementation**
-	 - 2.a. Implement A* algorithm with **your own cost function** $g(n)$  and **admissible heuristic** $h(n)$. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
-		 - You must have $g(n)$ different from $depth(n)$
-		 - You must have $h(n)$ different from 0 everywhere.
-		 - You must prevent cycles. A cycle is a path where a given state occurs at least twice.
-	  - 2.b. Define and describe formally your cost function $g(n)$ and your heuristic $h(n)$.
-	  - 2.c. **Show** that your $h(n)$ is **admissible**.
+		 - Step cost
+			 - Must be > 0
+			 - Should rely on the game score function:  <br/>	`score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`
+ 2.  **Implementation**
+	 - 2.a. Implement A* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
+		 - You must have *h(n)* different from 0 for all *n*.
+		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
+	  - 2.b. Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.c. **Show** that your *h(n)* is **admissible**.
+	  - 2.d. Implement Breadth-First Search (BFS) from your A* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. Justify briefly the choice of *g(n)* and *h(n)*
  3. **Experiment 1** 
-	 - 3.a. Run A* with your own $g(n)$ and $h(n)$ and  A* with your own $g(n)$ and $h(n) = 0$ everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+	 - 3.a. Run A* with your own *g(n)* and *h(n)* and  A* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
-	- 3.b. Describe the changes between the results of the two runs.
-	- 3.c. Justify those changes using the course.
-	- 3.d. Which algorithm corresponds A* with $h(n) = 0$ everywhere to ? 
+	- 3.b. Describe the differences between the results of the two versions of A*.
+	- 3.c. Refer to the course in order to justify these differences.
+	- 3.d. Which algorithm corresponds to A* with *h(n) = 0* for all *n* ? 
  4. **Experiment 2** 
-	 - 4.a. Run A* with your own $g(n)$ and $h(n)$, DFS and BFS against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+	 - 4.a. Run A* with your own *g(n)* and *h(n)*, DFS and your implepentation of BFS against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plot in terms of:
 		 - Score
 		 - Number of expanded nodes
-	  - 4.b. Describe the changes between A* and DFS/BFS. 
-	  - 4.c. Justify the changes between A* and DFS/BFS using the course.
- 5. **Experiment 3**   
-	   - 5.a. Run A* with $g(n) = depth(n)$ and $h(n) = 0$ everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
-		   - Score
-		   - Number of expanded nodes 
-	  - 5.b. Describe those results compared to DSF/BFS and justify your observations using the course.
-	  - 5.c. Which algorithm corresponds A* with $g(n) = depth(n)$ and $h(n) = 0$ everywhere to ? 
- 6. **Project feedback (BONUS)** <br/> You're expected to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
+	  - 4.b. Describe the differences between: 
+		  - A* and DFS
+		  - A* and BFS
+	  - 4.c. Refer to the course in order to justify these differences.
 
-Your report should the subdivision provided above. A template with a predefined structure will be provided in order to standardize the report for all students. 
-
+Your report has to follow the subdivision provided above. To do so, a template is provided. (TODO: add link to the template) 	
 ---
 
 ## Evaluation criteria
 
-For each part of the project, you will be evaluated according to different criteria. Each criterion is associated to a certain amount of points according to its importance. 
-
-### Part 1: Search agent
-
 **Code** - 10 points
-1. **Style** - 2 points
+1. **Algorithms implementations** - 5 points: correctness of the implementation of A* algorithm.
+	* **A\*** - 3 points 
+		* 5 points: correct implementation of A* and its components ( goal test, cost function, admissible heuristic, etc...).
+		* 0 point: implementation error of any component of A*.
+	* **BFS** - 2 points 
+		* 2 points: correct implementation of BFS and its components.
+		* 1 point: implementation error due to a component of A*
+		* 0 point: implementation error of any other component of BFS.
+
+2. **Algorithms performances** - 3 points: results accuracy and execution time. <br/> TODO: Set realistic benchmarks with submission platform machine.
+		* 3 point : execution time < 2 sec.
+		* 2.25 points: exection time between 2 and 5 sec.
+		* 1.5 point: exection time between 5 and 10 sec.
+		* 0.75 point: inaccurate results and/or execution time > 10 sec.
+		* 0 point: no result.
+
+3. **Style** - 2 points
 	* **PEP8 compatibility** - 0.8 point: PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
 		* 0.8 point : the script runs without error.
 		* 0 point: otherwise.
@@ -77,54 +86,37 @@ For each part of the project, you will be evaluated according to different crite
 		* 0 point: less than 25% correct specifications.
 	 * **Structure & Comments** - 0.4 point - Relevance of the subdivision of your code into functions. See [Typical mistakes and bad practice](#typical-mistakes-and-bad-practice) for more examples.
 
-2. **Algorithms implementations** - 5 points: correctness of the implementation of A* algorithm.
-	* **A*** - 5 points 
-		* 5 points: correct implementation of A* and its components ( goal test, cost function, admissible heuristic, etc...).
-		* 0 point: implementation error of any component of A*.
-
-3. **Algorithms performances** - 3 points: results accuracy and execution time.
-	* **A*** - 3 points
-		* 3 point : execution time $<$ 2 sec.
-		* 2.25 points: exection time between 2 and 5 sec.
-		* 1.5 point: exection time between 5 and 10 sec.
-		* 0.75 point: inaccurate results and/or execution time $>$ 10 sec.
-		* 0 point: no result.
-
 **Report** - 10 points
 
 1. **Problem statement** - 5 points
 	* **Set of states** - 1 point
+		* The initial state must be specified
 	* **Set of actions** - 1 point
 	* **Transition model** - 1 point 
 	* **Goal test** - 1 point
-	* **Step cost** - 1 point</br>
-	For each component of the statement:
+	* **Step cost** - 1 point<br/> For each component of the statement:
 		* 1 point : correct component.
 		* 0 point: incorrect component.
-		
-2. **Graphs** - 1 point
+	
+2. **Discussion** - 3 points
+	* **Question 2** - 1.125 points
+		* Q2.b. Definition of the cost function and of the heuristic - 0.375 point
+		* Q2.c. Admissibility of the heuristic - 0.375 point
+		* Q2.d. Justification of BFS components - 0.375 point
+	* **Question 3** - 1.125 points
+		* Q3.b. Description of the results - 0.375 point
+		* Q3.c. Justification of the results - 0.375 point
+		* Q3.d. Relation to existing algorithm - 0.375 point
+	* **Question 4** - 0.75 point
+		* Q4.b. Description of the results - 0.375 point
+		* Q4.c. Justification of the results - 0.375 point
+
+3. **Plots** - 1 point
 	* **Presence** - 0.4 point
 		* 0.4 point : graphs present.
 		* 0 point: no graph.
 	* **Readability** - 0.2 point: ease to understand the information given by the graphs and quality of their descriptions.
 	* **Scale** - 0.4 point: consistency of the graphs between each other and ease to compare them visually. 
-	
-3. **Discussion** - 3 points
-	* **Question 1** - 0.3 point
-		* Q1.a. Description of the game - 0.3 point
-	* **Question 2** - 0.6 point
-		* Q2.b. Definition of the cost function and of the heuristic - 0.3 point
-		* Q2.c. Admissibility of the heuristic - 0.3 point
-	* **Question 3** - 0.9 point
-		* Q3.b. Description of the results - 0.3 point
-		* Q3.c. Justification of the results - 0.3 point
-		* Q3.d. Relation to existing algorithm - 0.3 point
-	* **Question 4** - 0.6 point
-		* Q4.b. Description of the results - 0.3 point
-		* Q4.c. Justification of the results - 0.3 point
-	* **Question 5** - 0.6 point
-		* Q4.b. Description and justification of the results - 0.3 point
-		* Q4.c. Relation to existing algorithm - 0.3 point
 		
 4. **Style** - 1 point
 	* **English** - 0.25 point: quality of the writing.
@@ -134,15 +126,8 @@ For each part of the project, you will be evaluated according to different crite
 	* **Length** - 0.25 point
 		* 0.25 point: at least 2 pages and at most 4 pages.
 		* 0 point: length not respected
-		
-5. **Feedback (BONUS)** - 1 point
-	* 1 point: constructive feedback.
-	* 0 point: irrelevant feedback.   
-
-N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
-
 ---
 
 ## Credits

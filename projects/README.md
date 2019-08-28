@@ -14,6 +14,123 @@ The goal of this programming project is to implement intelligent agents for the 
  
 --
 
+## Table of contents
+
+- [Installation](#installation)
+    * [Setup](#setup)
+    * [Usage](#usage)
+- [Instructions](#instructions)
+- [FAQ](#helpers)
+    * [Game score](#score)
+    * [API](#api)
+    * [Illegal moves](#illegal-moves)	
+- [Credits](#credits)
+ 
+--
+
+## Installation
+
+The instructions below have been tested under Windows, Linux and MacOS.
+
+We recommend to install a Python (3) environment using the Anaconda distribution. Further instructions can be found on the [Anaconda user guide](https://conda.io/docs/user-guide/install/index.html). Once installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
+
+### Setup
+
+(Linux/MacOS) Create a `pacman` environment and activate it:
+```bash
+conda create -n pacman python=3.6
+source activate pacman
+```
+
+(Windows) Create a `pacman` environment and activate it:
+```bash
+conda create -n pacman python=3.6
+activate pacman
+```
+
+From now, it is assumed that `pacman` is activated.
+
+Dependencies should be installed through `conda`:
+```bash
+conda install numpy
+```
+
+### Usage
+
+Start the game with a Pacman agent controlled by the keyboard (keys `j`, `l`, `i`, `k` or arrow keys):
+```bash
+python run.py
+```
+
+**Options**:
+
+`--agentfile`: Start the game with a Pacman agent following a user-defined control policy:
+```bash
+python run.py  --agentfile randomagent.py
+```
+
+`--silentdisplay`: Disable the graphical user interface:
+```bash
+python run.py --silentdisplay
+```
+
+`--layout`: Start the game with a user-specifed layout for the maze (see the `/pacman_module/layouts/` folder):
+```bash
+python run.py --layout medium
+```
+
+`--nghosts`: Specifies the maximum number of ghosts:
+```bash
+python run.py --nghosts 1
+```
+
+`--hiddenghosts`: Hides the position of the ghost in the layout (relevant only for Project Part 3):
+```bash
+python run.py --hiddenghosts
+```
+
+`--ghostagent`: Start the game with a user-specifed ghost pattern among (`dumby`,`greedy`,`smarty`,`leftrandy`):
+```bash
+python run.py --ghostagent greedy
+```
+
+`--bsagentfile`: Start the game with a Belief State agent following a user-defined ghost positions' belief state update policy (relevant only for Project Part 3):
+```bash
+python run.py --bsagentfile beliefstateagent.py
+```
+
+`--p`: Specifies the 'p' parameter for ghost transition model (only relevant for Project Part 3, see instructions):
+```bash
+python run.py --p 0.5
+```
+
+`--w`: Specifies the 'w' parameter for sonar sensor model (only relevant for Project Part 3, see instructions):
+```bash
+python run.py --w 1
+```
+
+`-h`: For further details, check the command-line help section:
+```bash
+python run.py -h
+```
+
+--
+
+## Instructions
+
+For each part of the project, you must provide the following deliverables:
+
+- The source code of your Pacman agent(s).
+- A report in PDF format of 4 pages (at most and in total). A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
+
+The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
+
+Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+
+**One delay of maximum 24 hours** will be **tolerated** for all parts of the project. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade. 
+
+--
+
 ## FAQ
 
 ### Game score
