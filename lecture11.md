@@ -15,6 +15,8 @@ R: https://virtualcreatures.github.io/
 
 R: consciousness, self-awareness
 
+R: chinese room argument https://plato.stanford.edu/entries/chinese-room/
+
 ---
 
 # Today$^\*$
