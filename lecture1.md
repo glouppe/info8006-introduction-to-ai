@@ -21,6 +21,8 @@ http://ai.stanford.edu/~nilsson/QAI/qai.pdf
 
 R: reading assingment instructions http://web.stanford.edu/class/cs224n/project/project-proposal-instructions.pdf
 
+R: tesla crash prevention
+
 
 ---
 
