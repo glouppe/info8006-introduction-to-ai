@@ -38,7 +38,7 @@ You are asked to answer the following questions:
 		 - You must have *h(n)* different from 0 for all *n*.
 		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
 	
-		These conditions are necessary for a correct implementation but not sufficient. There are other components required for A* (e.g. goal test, cost function, admissible heuristic, ...).
+		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path that maximizes the game score. 
 		
 	  - 2.b. - **0.375 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
 	  - 2.c. - **0.375 point** - **Show** that your *h(n)* is **admissible**.
