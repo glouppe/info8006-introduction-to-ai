@@ -319,12 +319,12 @@ For each part of the project, you will be evaluated according to different crite
 		* 1 point : correct component.
 		* 0 point: incorrect component.
 		
-2. **Graphs** - 1 point
+2. **Plots** - 1 point
 	* **Presence** - 0.4 point
-		* 0.4 point : graphs present.
-		* 0 point: no graph.
-	* **Readability** - 0.2 point: ease to understand the information given by the graphs and quality of their descriptions.
-	* **Scale** - 0.4 point: consistency of the graphs between each other and ease to compare them visually. 
+		* 0.4 point : plots present.
+		* 0 point: no plot.
+	* **Readability** - 0.2 point: ease to understand the information given by the plots and quality of their descriptions.
+	* **Scale** - 0.4 point: consistency of the plots between each other and ease to compare them visually. 
 	
 3. **Discussion** - 3 points
 	* **Question 1** - 0.3 point
@@ -374,9 +374,9 @@ We show through this section a list of common mistakes and bad practices that we
 	* Missing variables in state/action spaces. This error always jeopardizes the formal description of the problem, and often jeopardizes the whole project.
 	* Variables not taken into account in the transition model. Transitions must include **all** the variables, even if some of them might stay idle.
 	
-- **Graphics**
+- **Plots**
 	* Unreadable legend/axis, e.g., tiny font, flash coloured text, mixing text and plots. Not only this is annoying for the readers, but it also might slow you down in your working progress, if not interfere with the quality of your discussion on results.   
-	* Variables with different scales on the same graphics. When in presence of large variables values, others variable with small scales can literally vanish out of the graphics. You should often instead separate them. [Logarithmic scale](https://en.wikipedia.org/wiki/Logarithmic_scale) might also be considered when including two variables with different scales in the same graphics is relevant to the discussion.
+	* Variables with different scales on the same plot. When in presence of large variables values, others variable with small scales can literally vanish out of the plot. You should often instead separate them. [Logarithmic scale](https://en.wikipedia.org/wiki/Logarithmic_scale) might also be considered when including two variables with different scales in the same plot is relevant to the discussion.
 	
 	
 ### Code
