@@ -1,14 +1,16 @@
 
+
 # Project 1
 
 ## Table of contents
 
-- [Instructions & Evaluation](#instructions&evaluation)
+- [Instructions and Evaluation](#instructions-and-evaluation)
+- [Deliverables](#deliverables)
 - [Credits](#credits)
 
 ---
 
-## Instructions & Evaluation
+## Instructions and Evaluation
 
 This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 
@@ -32,11 +34,12 @@ You are asked to answer the following questions:
 			 
 		Any **reference to the API** in any component of the problem statement will be considered as **false**.
  2.  **Implementation**
-	 -  2.a. - **3 points** - Implement A* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+	 -  2.a. - **3 points** - Implement A\* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
 	 
 		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
 		 - You must have *h(n)* different from 0 for all *n*.
 		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
+		 - You may want to have a look at the file `util.py` in order find a suitable data structure for the exploration of the game tree.
 	
 		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path that maximizes the game score. 
 		
@@ -77,11 +80,12 @@ Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be e
  - Readability: ease to understand the information given by the graphs and quality of their descriptions.
  - Scale: consistency of the graphs between each other and ease to compare them visually.
 
-Your report has to follow the subdivision provided above. To do so, a template is provided. (ADD LINK TO TEMPLATE) 	
+Your report has to follow the subdivision provided above. To do so, a [template](https://glouppe.github.io/info8006-introduction-to-ai/projects/project1/template-project1.tex) is provided. 	
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
 
  - **Code performances** - **3 points** - Your code will be tested on the submission platform machines. After each submission, you will receive a feedback which will contain information about the accuracy of your results and the time performances of your code.  
+ TODO: ADD CONFIGURATION OF SUBMISSION MACHINES
  
 	 - 3 points: TBD
 	 - 2.25 points: TBD
@@ -90,26 +94,40 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 	 - 0 point: TBD
  
  - **Code style** - **2 points**
-	 - **PEP8 compatibility** - 0.8 point - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
 		 - 0.8 point : the script runs without error.
 		 - 0 point: any error during the execution of the script.
-	- **Specification** - 0.8 point - correctness of the specification of your functions.
+	 - **Specification** - **0.8 point** - correctness of the specification of your functions.
 		- 0.8 point : all specifications are correct.
 		- 0.6 point : at least 75% correct specifications.
 		- 0.4 point : at least 50% correct specifications.
 		- 0.2 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
-	- **Structure & Comments** - 0.4 point - Relevance of the subdivision of your code into functions. See ADD LINK TO BAD PRACTICE for more examples.
+	 - **Structure & Comments** - **0.4 point** - Relevance of the subdivision of your code into functions. See [Typical mistakes and bad practices](https://glouppe.github.io/info8006-introduction-to-ai/projects#typical-mistakes-and-bad-practices) for more examples.
  - **Report style** - **1 point**
-	 * **English** - 0.25 point: quality of the writing.
-	 * **Structure** - 0.5 point: respect of the provided template.
+	 - **English** - 0.25 point: quality of the writing.
+	 - **Structure** - 0.5 point: respect of the provided template.
 		* 0.5 point: template respected.
 		* 0 point: template not respected. 
-	* **Length** - 0.25 point
+	 - **Length** - 0.25 point
 		* 0.25 point: at least 2 pages and at most 4 pages.
 		* 0 point: length not respected
+
+	
+Note that your implementation might be tested on other layouts. 
 		
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
+
+---
+
+## Deliverables
+
+You're expected to produce the following deliverables: a *tar.gz* archive containing:
+ - Your report named `report.pdf`.
+ - Your `astar.py` file containing your implementation of A* algorithm.
+ - Your `bfs.py` file containing your implementation of BFS algorithm.
+
+Note that your implementation of BFS algorithm should only differ from A* by its cost function and heuristic. 
 
 ---
 <!--
