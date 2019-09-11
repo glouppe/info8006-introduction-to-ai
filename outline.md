@@ -80,7 +80,8 @@ This textbook is **strongly recommended**, although not required.
 
 # Outline
 
-- Lecture 1: Foundations
+- Lecture 0: Introduction to artificial intelligence
+- Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
 - Lecture 3: Constraint satisfaction problems
 - Lecture 4: Adversarial search
