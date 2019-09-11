@@ -148,3 +148,7 @@ if __name__ == '__main__':
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
     print("Total expanded nodes : " + str(total_expanded_nodes))
+    f = open("temp", "w+")
+    s, c, e = total_score, total_computation_time, total_expanded_nodes
+    f.write(str(s) + ";" + str(c) + ";" + str(e))
+    f.close()
