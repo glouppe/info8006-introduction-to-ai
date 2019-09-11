@@ -6,7 +6,7 @@ Lecture 8: Making decisions
 
 <br><br>
 Prof. Gilles Louppe<br>
-[g.louppe@uliege.be](g.louppe@uliege.be)
+[g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
 ---
 

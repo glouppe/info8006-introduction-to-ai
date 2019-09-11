@@ -6,22 +6,25 @@ Lecture 1: Foundations
 
 <br><br>
 Prof. Gilles Louppe<br>
-[g.louppe@uliege.be](g.louppe@uliege.be)
+[g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
 ???
+
+R: check https://www.youtube.com/watch?v=z8937RleAZo
 
 R: lecun https://www.facebook.com/konbinitechno/videos/916293425386640/UzpfSTcyMjY3NzE0MjoxMDE1NjEyNjg2MzYwMjE0Mw/
 
 R: What is Intelligence? Quote from Van Neuman
+
+http://ai.stanford.edu/~nilsson/QAI/qai.pdf
+
+R: tesla crash prevention
+
 R: go over the Intelligent agents part, formalize a bit more.
 R: change this silly vacuum cleaner agent to something more fun
 R: draw the agent diagrams in draw.io
 
-http://ai.stanford.edu/~nilsson/QAI/qai.pdf
 
-R: reading assingment instructions http://web.stanford.edu/class/cs224n/project/project-proposal-instructions.pdf
-
-R: tesla crash prevention
 
 
 ---

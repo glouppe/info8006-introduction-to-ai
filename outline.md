@@ -2,32 +2,30 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2018
+Fall 2019
 
 <br><br>
 Prof. Gilles Louppe<br>
-[g.louppe@uliege.be](g.louppe@uliege.be)
-
-???
-
-check Nando's https://www.youtube.com/watch?v=z8937RleAZo
+[g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
 ---
 
 # Logistics
 
 This course is given by:
-- Theory: Prof. Gilles Louppe ([g.louppe@uliege.be](mailto:g.louppe@uliege.be))
-- Practicals: Antoine Wehenkel ([antoine.wehenkel@uliege.be](antoine.wehenkel@uliege.be))
-- Projects: Samy Aittahar ([saittahar@uliege.be](mailto:saittahar@uliege.be))
+- Theory: Gilles Louppe
+- Exercises: Antoine Wehenkel
+- Projects: Samy Aittahar, Pascal Leroy and Florian Merchie
 
-Feel free to contact any of us for help!
+Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) for help!
 
-<br>
 .center[
-.circle[![](figures/outline/gilles.jpg)] &nbsp;
-.circle[![](figures/outline/antoine.jpg)] &nbsp;
-.circle[![](figures/outline/samy.png)]
+.circle.width-20[![](figures/outline/gilles.jpg)] &nbsp;
+.circle.width-20[![](figures/outline/antoine.jpg)]
+
+.circle.width-15[![](figures/outline/samy.png)] &nbsp;
+.circle.width-15[![](figures/outline/pascal.jpg)] &nbsp;
+.circle.width-15[![](figures/outline/florian.jpg)]
 ]
 
 ---
@@ -44,7 +42,7 @@ Feel free to contact any of us for help!
 Slides are available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
 - In HTML and in PDFs.
 - Posted online the day before the lesson (hopefully).
-- Slightly different from previous years.
+- Minor improvements/fixes from previous years.
 
 Some lessons are partially adapted from "[Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html)" (CS188), from UC Berkeley.
 
@@ -82,7 +80,8 @@ This textbook is **strongly recommended**, although not required.
 
 # Outline
 
-- Lecture 1: Foundations
+- Lecture 0: Introduction to artificial intelligence
+- Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
 - Lecture 3: Constraint satisfaction problems
 - Lecture 4: Adversarial search
@@ -100,7 +99,7 @@ This textbook is **strongly recommended**, although not required.
 
 ## Reading assignment
 
-Read, summarize and criticize a major scientific paper in Artificial Intelligence.
+Read a major scientific paper in Artificial Intelligence.
 (Paper to be announced later.)
 
 .center.width-40[![](figures/outline/alphago-paper.png)]
@@ -109,31 +108,28 @@ Read, summarize and criticize a major scientific paper in Artificial Intelligenc
 
 class: middle
 
-## Programming project
+## Programming projects
 
-Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty:
-- Eat as many dots as possible
-- Eat as many dots as possible, while not getting killed by ghosts (deterministic)
-- Eat as many dots as possible, while not getting killed by ghosts (stochastic)
+Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty.
 
-.center.width-30[![](figures/outline/pacman.png)]
+.center.width-40[![](figures/outline/pacman.png)]
 
 ---
 
 # Evaluation
 
-- Exam (60%)
-- Reading assignment (10%)
-- Programming project (30%)
-
-Projects are **mandatory** for presenting the exam.
+- Written exam (60%)
+    - Short questions on the reading assignment will be part of the exam.
+- Programming projects (40%)
+    - **Mandatory** for presenting the exam.
 
 ---
 
 # Going further
 
-This course is designed as an introduction to the many other courses available at ULiège and related to AI, including:
+This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
 
+- **INFO8006: Introduction to Artificial Intelligence $\leftarrow$ you are there**
 - ELEN0062: Introduction to Machine Learning
 - INFO8004: Advanced Machine Learning
 - INFO8010: Deep Learning
@@ -141,6 +137,8 @@ This course is designed as an introduction to the many other courses available a
 - INFO0948: Introduction to Intelligent Robotics
 - INFO0049: Knowledge representation
 - ELEN0016: Computer vision
+- ELEN0060: Information and coding theory
+- MATH2022: Large-sample analysis: theory and practice
 - DROI8031: Introduction to the law of robots
 
 ---
