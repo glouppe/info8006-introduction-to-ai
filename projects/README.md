@@ -6,11 +6,11 @@
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
-- **Project 1.** You must implement a Search agent for eating all the food dots as quickly as possible.
+- **Project I**: you must implement a Search agent for eating all the food dots as quickly as possible.
  </br> &#8594; **Add link to project 1 here**
-- **Project 2.** You must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
+- **Project II**: you must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
  </br> &#8594; **Add link to project 2 here**
-- **Project 3.** You must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
+- **Project III**: you must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
  </br> &#8594; **Add link to project 3 here**
  
 --
@@ -236,7 +236,7 @@ You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also m
  - Pascal Leroy - TBD
  - Florian Merchie - TBD
 
-Do not wait to be a couple of days before the **hard** deadline to start your project and/or ask your questions. Indeed, we cannot guarantee a precise and helpful answer if the questions are not sent at least 5 days before the deadline.
+Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
 
 ---
 
