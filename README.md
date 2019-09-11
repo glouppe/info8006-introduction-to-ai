@@ -5,8 +5,6 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - Instructor: Gilles Louppe
 - Teaching assistants: Antoine Wehenkel, Samy Aittahar, Pascal Leroy and Florian Merchie
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
-
-
 - When: Fall 2019, Thursday 8:30 AM.
 - Classroom: 0.89 Domat / B31
 
