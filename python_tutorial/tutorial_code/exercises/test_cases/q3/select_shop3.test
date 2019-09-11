@@ -1,0 +1,23 @@
+class: "EvalTest"
+success: "shopSmart(order, shops) selects the cheapest shop"
+failure: "shopSmart(order, shops) must select the cheapest shop"
+
+# Python statements initializing variables for the test below.
+preamble: """
+import shop
+
+dir1 = {'apples': 2.0, 'oranges':1.0}
+shop1 =  shop.FruitShop('shop1',dir1)
+dir2 = {'apples': 1.0, 'oranges': 5.0}
+shop2 = shop.FruitShop('shop2',dir2)
+dir3 = {'apples': 1.5, 'oranges': 2.0}
+shop3 = shop.FruitShop('shop3',dir3)
+shops = [shop1, shop2, shop3]
+
+order = [('apples',10.0), ('oranges',3.0)]
+ans = shopSmart.shopSmart(order, shops)
+"""
+
+# A python expression to be evaluated.  This expression must return the 
+# same result for the student and instructor's code.
+test: "ans"

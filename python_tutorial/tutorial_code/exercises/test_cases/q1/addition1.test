@@ -1,0 +1,7 @@
+class: "EvalTest"
+success: "add(a,b) returns the sum of a and b"
+failure: "add(a,b) must return the sum of a and b"
+
+# A python expression to be evaluated.  This expression must return the 
+# same result for the student and instructor's code.
+test: "addition.add(1,1)"
