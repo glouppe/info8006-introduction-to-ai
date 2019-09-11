@@ -8,39 +8,8 @@ body {
     word-wrap: break-word;
 }
 
-.footnote {
-  position: absolute;
-  bottom: 2em;
-  font-size: 0.5em;
-  opacity: 0.75;
-  margin-left: -5.5em;
-}
 
-
-.footnote a{
-    color: #20707e;
-}
-
-.footnote:before {
-    content: "\2015\2015\2015";
-    display: block;
-}
-
-.red {
-    color: #d11a01;
-}
-
-.Q {
-    color: #009933;
-}
-
-.italic {
-    font-style: italic;
-}
-
-.bold {
-    font-weight: bold;
-}
+/* Remark ------------------------------------------------------------------- */
 
 .remark-container {
     background: #ddd;
@@ -75,8 +44,12 @@ body {
     bottom: 2em;
 }
 
-.smaller {
-    font-size: 1.2em;
+
+/* Styles ------------------------------------------------------------------- */
+
+.footnote:before {
+    content: "\2015\2015\2015";
+    display: block;
 }
 
 a {
@@ -88,6 +61,22 @@ a:hover {
     text-decoration: underline;
 }
 
+.red {
+    color: #d11a01;
+}
+
+.Q {
+    color: #009933;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 em {
     color: #0288d1;
     font-style: normal;
@@ -97,6 +86,11 @@ strong {
     color: #d11a01;
     font-style: normal;
     font-weight: normal;
+}
+
+
+.smaller {
+    font-size: 1.2em;
 }
 
 .katex {
@@ -157,16 +151,6 @@ td {
     padding: 5px 8px;
 }
 
-.pull-left {
-    float: left;
-    margin-right: 1em;
-}
-
-.pull-right {
-    float: right;
-    margin-left: 1em;
-}
-
 .caption {
     display: block;
     text-align: center;
@@ -183,8 +167,60 @@ td {
     height: auto;
 }
 
+.footnote {
+  position: absolute;
+  bottom: 2em;
+  font-size: 0.5em;
+  opacity: 0.75;
+  margin-left: -5.5em;
+}
+
+.footnote a{
+    color: #0288d1; /*#20707e;*/
+}
+
+.inactive {
+    color: lightgray;
+}
+
+.exercice {
+    background-color: rgba(40,167,69,0.25);
+    border: 2px solid rgb(40,167,69);
+    border-radius: 5px;
+    width: 95%;
+    display: block;
+    padding: 1em;
+}
+
+.exercice:before {
+    content: "Exercice";
+    font-weight: bold;
+    display: block;
+}
+
+
+/* Placement ---------------------------------------------------------------- */
+
+.pull-left {
+    float: left;
+    margin-right: 1em;
+}
+
+.pull-right {
+    float: right;
+    margin-left: 1em;
+}
+
+.width-5 * {
+    width: 5%;
+}
+
 .width-10 * {
     width: 10%;
+}
+
+.width-15 * {
+    width: 15%;
 }
 
 .width-20 * {
@@ -199,28 +235,56 @@ td {
     width: 30%;
 }
 
+.width-35 * {
+    width: 35%;
+}
+
 .width-40 * {
     width: 40%;
+}
+
+.width-45 * {
+    width: 45%;
 }
 
 .width-50 * {
     width: 50%;
 }
 
+.width-55 * {
+    width: 55%;
+}
+
 .width-60 * {
     width: 60%;
+}
+
+.width-65 * {
+    width: 65%;
 }
 
 .width-70 * {
     width: 70%;
 }
 
+.width-75 * {
+    width: 75%;
+}
+
 .width-80 * {
     width: 80%;
 }
 
+.width-85 * {
+    width: 85%;
+}
+
 .width-90 * {
     width: 90%;
+}
+
+.width-95 * {
+    width: 95%;
 }
 
 .width-100 * {
@@ -228,7 +292,7 @@ td {
 }
 
 
-/* Title slide */
+/* Specials ----------------------------------------------------------------- */
 
 .title-slide:after {
     content: '';
@@ -247,7 +311,7 @@ td {
 }
 
 .end-slide {
-    background-color: #20707e;
+    background-color: #20707e; 
     color: white;
     vertical-align: middle;
 }

@@ -10,6 +10,8 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: check https://www.youtube.com/watch?v=z8937RleAZo
+
 R: lecun https://www.facebook.com/konbinitechno/videos/916293425386640/UzpfSTcyMjY3NzE0MjoxMDE1NjEyNjg2MzYwMjE0Mw/
 
 R: What is Intelligence? Quote from Van Neuman
