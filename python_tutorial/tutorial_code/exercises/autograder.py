@@ -14,13 +14,12 @@
 
 # imports from python standard library
 from __future__ import print_function
-import grading
 import imp
 import optparse
 import os
 import re
 import sys
-import projectParams
+from tools import projectParams, testClasses, grading, testParser, textDisplay
 import random
 random.seed(0)
 try: 
@@ -131,7 +130,6 @@ def loadModuleString(moduleSource):
     setModuleName(tmp, k)
     return tmp
 
-import py_compile
 
 def loadModuleFile(moduleName, filePath):
     with open(filePath, 'r') as f:
@@ -197,8 +195,6 @@ def printTest(testDict, solutionDict):
 
 
 def runTest(testName, moduleDict, printTestCase=False, display=None):
-    import testParser
-    import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
 
@@ -216,7 +212,7 @@ def runTest(testName, moduleDict, printTestCase=False, display=None):
         printTest(testDict, solutionDict)
 
     # This is a fragile hack to create a stub grades object
-    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)])
+    grades = grading.Grades(projectParams.PROJECT_NAME, [(None, 0)])
     testCase.execute(grades, moduleDict, solutionDict)
 
 
@@ -250,8 +246,6 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             printTestCase=False, questionToGrade=None, display=None):
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
-    import testParser
-    import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
 
@@ -324,7 +318,6 @@ def getDisplay(graphicsByDefault, options=None):
             return graphicsDisplay.PacmanGraphics(1, frameTime=.05)
         except ImportError:
             pass
-    import textDisplay
     return textDisplay.NullGraphics()
 
 

@@ -85,7 +85,7 @@ MacBook-Pro-de-Pascal:foo pascalleroy$ cd ..
 MacBook-Pro-de-Pascal:~ pascalleroy$ 
 ```
 
-Download **TODO** into a directory (note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
+Download **[LINK TO ZIP]()** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
 ```
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
@@ -93,7 +93,9 @@ tutorial_code.zip
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ unzip tutorial_code.zip 
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
 tutorial_code		tutorial_code.zip
-MacBook-Pro-de-Pascal:19_20 pascalleroy$ cd tutorial_code/python_basics/
+MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
+exercises python_basics
+MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd python_basics/
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ ls
 foreach.py	
 listcomp.py	
@@ -117,13 +119,13 @@ Some other useful Unix commands:
 - `fg` brings a program running in the background to the foreground
 
 ### Windows basics
-Download **TODO** into a directory of your choice and unzip it using your file explorer.
+Since you are on Windows, you will use the *Anaconda prompt* that is installed with Conda. In this terminal, the commands are different from those of UNIX.
 
-If you are on Windows, you will use the *Anaconda prompt* that is installed with Conda. The commands are different from those of a UNIX terminal.
+Download **[LINK TO ZIP]()** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
 
-In order to go in the directory where you have just extracted the different files, there are several commands:
+You can find several commands to manipulate files and the current directory of your prompt in the following:
 
-- If you are not on the right disk, you just have to type the right one in the prompt:
+- If you are not on the desired disk, you just have to type its name in the prompt:
 	
 ```
 C:\Users>D:
@@ -140,6 +142,8 @@ D:\>
 - To create an empty file, prefer the file explorer
 
 ### Python environment management
+In the following, the commands are the same either you are working on Anaconda prompt or a UNIX terminal.
+
 #### Creating a Conda Environment
 The command for creating a conda environment with Python 3.6 is:
 
@@ -150,26 +154,26 @@ conda create --name <env-name> python=3.6
 For us, we decide to name our environment cs188, so we run the following command, and press y to confirm installing any missing packages.
 
 ```
-[cs188-ta@nova ~/python_basics]$ conda create --name cs188 python=3.6
+MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
 ```
 
 #### Entering the Environment
 To enter the conda environment that we just created, do the following. Note that the Python version within the environment is 3.6, just what we want.
 
 ```
-[cs188-ta@nova ~/python_basics]$ source activate cs188
-(cs188) [cs188-ta@nova ~/python_basics]$ python -V
-Python 3.6.6 :: Anaconda, Inc.
+MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda activate info8006
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
+Python 3.6.9 :: Anaconda, Inc.
 ```
 
-Note: the tag (<env-name>) shows you the name of the conda environment that is active. In our case, we have (cs188), as what we’d expect.
+Note: the tag (<env-name>) shows you the name of the conda environment that is active. In our case, we have (info8006), as what we’d expect.
 
 #### Leaving the Environment
 Leaving the environment is just as easy.
 ```
-(cs188) [cs188-ta@nova ~/python_basics]$ source deactivate
-[cs188-ta@nova ~/python_basics]$ python -V
-Python 3.5.2 :: Anaconda custom (x86_64)
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda deactivate
+MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
+Python 2.7.10
 ```
 
 Our python version has now returned to whatever the system default is!
@@ -193,11 +197,11 @@ Python can be run in one of two modes. It can either be used interactively, via 
 You invoke the interpreter using the command `python` at the Unix command prompt; or if you are using Windows that doesn’t work for you in Git Bash, using `python -i`.
 
 ```
-(cs188) [cs188-ta@nova ~]$ python
-Python 3.6.6 |Anaconda, Inc.| (default, Jun 28 2018, 11:07:29)
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
+Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17) 
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
->>>
+>>> 
 ```
 
 ### Operators
@@ -289,7 +293,7 @@ find(...) method of builtins.str instance
 1
 ```
 
-Try out some of the string functions listed in `dir` (ignore those with underscores ‘_’ around the method name).
+Try out some of the string functions listed in `dir` (ignore those with underscores '_' around the method name).
 
 ### Built-in Data Structures
 
@@ -377,14 +381,15 @@ Play with some of the list functions. You can find the methods you can call on a
           L.reverse() -- reverse \*IN PLACE\*
 
 ```
+
 ```
 >>> lst = ['a', 'b', 'c']
 >>> lst.reverse()
->>> ['c', 'b', 'a']`
+>>> ['c', 'b', 'a']
 
 ```
 
-Note: Ignore functions with underscores “_” around the names; these are private helper methods. Press ‘q’ to back out of a help screen.
+Note: Ignore functions with underscores "_" around the names; these are private helper methods. Press 'q' to back out of a help screen.
 
 #### Tuples
 
@@ -498,7 +503,7 @@ for fruit, price in fruitPrices.items():
 At the command line, use the following command in the directory containing `foreach.py`:
 
 ```
-[cs188-ta@nova ~/tutorial]$ python foreach.py
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py 
 apples for sale
 oranges for sale
 pears for sale
@@ -533,7 +538,7 @@ print(oddNumsPlusOne)
 This code is in a file called `listcomp.py`, which you can run:
 
 ```
-[cs188-ta@nova ~]$ python listcomp.py
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python listcomp.py
 [1, 3, 5]
 [2, 4, 6]
 ```
@@ -595,7 +600,7 @@ Rather than having a `main` function as in Java, the `__name__ == '__main__'` ch
 Save this script as fruit.py and run it:
 
 ```
-(cs188) [cs188-ta@nova ~]$ python fruit.py
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python fruit.py
 That'll be 4.800000 please
 Sorry we don't have coconuts
 ```
@@ -657,10 +662,10 @@ class FruitShop:
         return self.name
 ```
 
-The `FruitShop class has some data, the name of the shop and the prices per pound of some fruit, and it provides functions, or methods, on this data. What advantage is there to wrapping this data in a class?
+The `FruitShop` class has some data, the name of the shop and the prices per pound of some fruit, and it provides functions, or methods, on this data. What advantage is there to wrapping this data in a class?
 
-    Encapsulating the data prevents it from being altered or used inappropriately,
-    The abstraction that objects provide make it easier to write general-purpose code.
+1. Encapsulating the data prevents it from being altered or used inappropriately,
+  2. The abstraction that objects provide make it easier to write general-purpose code.
 
 #### Using Objects
 
@@ -688,7 +693,7 @@ print("My, that's expensive!")
 This code is in `shopTest.py`; you can run it like this:
 
 ```
-[cs188-ta@nova ~]$ python shopTest.py
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python shopTest.py 
 Welcome to the Berkeley Bowl fruit shop
 1.0
 Apples cost $1.00 at the Berkeley Bowl.
@@ -723,7 +728,7 @@ class Person:
 
 We first compile the script:
 
-`[cs188-ta@nova ~]$ python person_class.py`
+`(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python person_class.py`
 
 Now use the class as follows:
 
@@ -748,7 +753,7 @@ In the code above, `age` is an instance variable and `population` is a static va
 
 This tutorial has briefly touched on some major aspects of Python that will be relevant to the course. Here are some more useful tidbits:
 
-- Use `range to generate a sequence of integers, useful for generating traditional indexed for loops:
+- Use `range` to generate a sequence of integers, useful for generating traditional indexed for loops:
 	
 	```
     for index in range(3):
@@ -771,7 +776,7 @@ These are some problems (and their solutions) that new Python learners commonly 
 
 - **Problem**: NameError: name ‘MY VARIABLE’ is not defined even after importing you may see this.
 
-	**Solution**: To access a member of a module, you have to type `MODULE NAME.MEMBER NAME`, where `MODULE NAME` is the name of the `.py` file, and `MEMBER NAME is the name of the variable (or function) you are trying to access.
+	**Solution**: To access a member of a module, you have to type `MODULE NAME.MEMBER NAME`, where `MODULE NAME` is the name of the `.py` file, and `MEMBER NAME` is the name of the variable (or function) you are trying to access.
 
 - **Problem**: TypeError: ‘dict’ object is not callable
 
@@ -814,6 +819,23 @@ There are other (more complete) python tutorials:
 
 In the following, we will ask you to code, test, and find solutions for three problems.
 
+First, you need to change the current directory to `exercices`.
+
+```
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ cd ..
+(info8006) MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
+exercises python_basics
+(info8006) MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd exercises/
+(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ ls
+addition.py
+autograder.py
+buyLotsOfFruit.py
+shop.py
+shopSmart.py
+tools
+test_cases
+```
+
 There are a number of files you’ll edit or run:
 
 - `addition.py`: source file for question 1
@@ -822,20 +844,13 @@ There are a number of files you’ll edit or run:
 - `shopSmart.py`: source file for question 3
 - `autograder.py`: autograding script (see below)
 
-
-and others you can ignore:
-
-- `test_cases`: directory contains the test cases for each question
-- `grading.py`: autograder code
-- `testClasses.py`: autograder code
-- `tutorialTestClasses.py`: test classes for this particular project
-- `projectParams.py`: project parameters
+and others you can ignore in the directory `tools`.
 
 The command `python autograder.py` grades your solution to all three problems. If we run it before editing any files we get a page or two of output:
 
 ```
-[cs188-ta@nova ~/tutorial]$ python autograder.py
-Starting on 1-21 at 23:39:51
+(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py 
+Starting on 9-12 at 15:49:35
 
 Question q1
 ===========
@@ -922,7 +937,7 @@ Looking at the results for question 1, you can see that it has failed three test
 
 ## Question 1: Addition
 
-Open `addition.py` and look at the definition of `add:
+Open `addition.py` and look at the definition of `add`:
 
 ```
 def add(a, b):
@@ -943,7 +958,7 @@ def add(a, b):
 Now rerun the autograder (omitting the results for questions 2 and 3):
 
 ```
-[cs188-ta@nova ~/tutorial]$ python autograder.py -q q1
+(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py -q q1
 Starting on 1-21 at 23:52:05
 
 Question q1

@@ -27,7 +27,7 @@ At gas price -1 the best route is: ['shop2', 'shop1', 'shop3']
 
 from __future__ import print_function
 import shop
-import town
+from tools import town
 
 
 def shopAroundTown(orderList, fruitTown, gasCost):

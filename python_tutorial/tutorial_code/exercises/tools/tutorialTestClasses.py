@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-import testClasses
+from tools import testClasses
 
 
 # Simple test case which evals an arbitrary piece of python code.
