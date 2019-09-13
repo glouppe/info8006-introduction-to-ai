@@ -104,29 +104,35 @@ For each **discussion question** (2.b, 2.c, 2.e, 3.b, 3.c, 3.d, 4.b, 4.c), the e
 
 Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be evaluated considering the following criteria:
 
- - Presence
- - Readability: ease to understand the information given by the graphs and quality of their descriptions.
- - Scale: consistency of the graphs between each other and ease to compare them visually.
+ - Presence : your resulting grade will be half the ratio between the provided and expected number of relevant bars.
+ - Readability: Each bar that is not clearly readable/identifiable will be considered as not provided.
+ - Scale: All the bars on each plot that is not correctly scaled will be considered as not provided.
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
 
- - **Code performances** - **2 points** - Your code will be tested on the submission platform machines. You will be evaluated with respect to its time performances.  
+ - **Code performances** - **2 points** - Your code will be tested on the submission platform machines. You will be evaluated with respect to its time performances: 
  
-	 - 2 points: fast enough
-	 - 1 points: satisfying
-	 - 0 point: too slow
+	 - 2 points: fast enough (<3 seconds).
+	 - 1 point: satisfying (3-10 seconds).
+	 - 0 point: too slow (>10 seconds).
  
  - **Code style** - **2 points**
-	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+	 - **PEP8 compatibility** - **0.9 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
 		 - 0.8 point : the script runs without error.
 		 - 0 point: any error during the execution of the script.
-	 - **Specification** - **0.8 point** - correctness of the specification of your functions.
+	 - **Specification** - **1.1 point** - correctness of the specification of your functions.
 		- 0.8 point : all specifications are correct.
 		- 0.6 point : at least 75% correct specifications.
 		- 0.4 point : at least 50% correct specifications.
 		- 0.2 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
-	 - **Structure & Comments** - **0.4 point** - Relevance of the subdivision of your code into functions. See [Typical mistakes and bad practices](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/README.md#typical-mistakes-and-bad-practices) for more examples.
+
+
+Take care of providing a clearly structured and commented source code. We reserve the right to refuse to evaluate a source code (i.e. to consider it entirely wrong), despite its possible correctness, which is difficult to read and understand, e.g. because of a lack of structure/documentation such that it is difficult to catch the semantics of your implementation. 
+
+In the same way, take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which is difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right.
+
+We have written a [Typical mistakes and bad practices](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/README.md#typical-mistakes-and-bad-practices) section to help you to provide a working source code of good quality.
 
 Sanctions will be imposed in case of non-respect of the guidelines about the structure and length of the report:
 
