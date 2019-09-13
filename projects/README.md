@@ -6,14 +6,9 @@
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
-- **Project I**: you must implement a Search agent for eating all the food dots as quickly as possible.
- </br> &#8594; **Add link to project 1 here**
-- **Project II**: you must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
- </br> &#8594; **Add link to project 2 here**
-- **Project III**: you must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
- </br> &#8594; **Add link to project 3 here**
- 
----
+- [**Project I**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1): you must implement a Search agent for eating all the food dots as quickly as possible.
+- [**Project II**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2): you must implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
+- [**Project III**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1): you must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
 
 ## Table of contents
 
@@ -130,7 +125,7 @@ The three parts of the project must be carried out in groups of maximum 2 studen
 
 Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
-We tolerate **only one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade.
+We tolerate only *one* delay of maximum 24 hours. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of *more than one delay*, the concerned parts will receive a *0/20* grade.
 ---
 
 ## Typical mistakes and bad practices
