@@ -1,7 +1,7 @@
 # Python tutorial
 In the different projects, you will be asked to code using Python 3.6.
 
-In this tutorial, you will install Python and learn its basics. This tutorial is strongly based on the [**Berkley's tutorial**](https://inst.eecs.berkeley.edu/~cs188/su19/project0/).
+In this tutorial, you will install Python and learn its basics. This tutorial is strongly based on [**CS188 project 0 from UC Berkeley**](https://inst.eecs.berkeley.edu/~cs188/su19/project0/).
 
 ## Table of contents
 - [Tools](#tools)
@@ -47,22 +47,21 @@ In this tutorial, you will install Python and learn its basics. This tutorial is
 ## Tools
 In order to work with Python, we encourage you to use a text editor and a terminal. Make sure to read the whole tools section before starting your installation.
 
-On Unix and OS X, you can use the basic terminal while on windows, you will use the *Anaconda prompt* (see further).
+On Unix and OS X, you can use the basic terminal while on Windows, you will use the *Anaconda prompt* (see further).
 
-There are plenty of text edtior that can be used but [Atom](https://atom.io/) or [Sublime Text](https://www.sublimetext.com/) are good candidates.
+There are plenty of text editors that can be used but [Atom](https://atom.io/) or [Sublime Text](https://www.sublimetext.com/) are good candidates.
 
 Also, there exist many IDEs such as [Spyder](https://www.spyder-ide.org/) or [PyCharm](https://www.jetbrains.com/pycharm/) that could be used **CAREFULLY**.
 
 ### Python
-We recommand you to install python 
-[Conda](https://docs.anaconda.com/anaconda/install/). It allows you to manage many environments, with different Python versions and dependencies.
+We recommend you to install [Anaconda](https://docs.anaconda.com/anaconda/install/). It allows you to manage many environments, with different Python versions and dependencies.
 
-For windows users, Conda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
+For Windows users, Anaconda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
 
 ### Unix & OS X basics
 When you open a terminal window, you’re placed at a command prompt:
 
-```
+```console
 MacBook-Pro-de-Pascal:~ pascalleroy$ 
 ```
 
@@ -119,7 +118,7 @@ Some other useful Unix commands:
 - `fg` brings a program running in the background to the foreground
 
 ### Windows basics
-Since you are on Windows, you will use the *Anaconda prompt* that is installed with Conda. In this terminal, the commands are different from those of UNIX.
+Since you are on Windows, you will use the *Anaconda prompt* that is installed with Anaconda. In this terminal, the commands are different from those of UNIX.
 
 Download **[LINK TO ZIP]()** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
 
@@ -151,7 +150,7 @@ The command for creating a conda environment with Python 3.6 is:
 conda create --name <env-name> python=3.6
 ```
 
-For us, we decide to name our environment cs188, so we run the following command, and press y to confirm installing any missing packages.
+For us, we decide to name our environment info8006, so we run the following command, and press y to confirm installing any missing packages.
 
 ```
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
@@ -176,7 +175,7 @@ MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
 Python 2.7.10
 ```
 
-Our python version has now returned to whatever the system default is!
+Our Python version has now returned to whatever the system default is!
 
 ## Python Basics
 ### Required Files
@@ -186,9 +185,9 @@ Following the terminal basics of your OS, you have normally dowloaded a zip file
 
 The programming assignments in this course will be written in Python, an interpreted, object-oriented language that shares some features with both Java and Scheme. This tutorial will walk through the primary syntactic constructions in Python, using short examples.
 
-We encourage you to type all python shown in the tutorial onto your own machine. Make sure it responds the same way.
+We encourage you to type in yourself the Python code of this tutorial. Make sure it produces the same results.
 
-You may find the Troubleshooting section helpful if you run into problems. It contains a list of the frequent problems previous CS188 students have encountered when following this tutorial.
+You may find the [Troubleshooting](#troubleshooting) section helpful if you run into problems. It contains a list of the frequent problems previous students have encountered when following this tutorial.
 
 ### Invoking the Interpreter
 
@@ -607,7 +606,7 @@ Sorry we don't have coconuts
 
 ### Advanced Exercises
 
-Write a `mean`function in Python. You can find two solutions in `mean.py`.
+Write a `mean` function in Python. You can find two solutions in `mean.py`.
 
 Write a `quickSort` function in Python using list comprehensions. Use the first element as the pivot. You can find the solution in `quickSort.py`.
 
@@ -703,7 +702,7 @@ Apples cost $4.50 at the Stanford Mall.
 My, that's expensive!
 ```
 
-So what just happended? The `import shop` statement told Python to load all of the functions and classes in `shop.py`. The `line berkeleyShop = shop.FruitShop(shopName, fruitPrices)` constructs an instance of the `FruitShop` class defined in `shop.py`, by calling the `__init__` function in that class. Note that we only passed two arguments in, while `__init__` seems to take three arguments: `(self, name, fruitPrices)`. The reason for this is that all methods in a class have `self` as the first argument. The `self` variable’s value is automatically set to the object itself; when calling a method, you only supply the remaining arguments. The `self` variable contains all the data (`name` and `fruitPrices`) for the current specific instance (similar to `this` in Java). The print statements use the substitution operator (described in the [Python docs](https://docs.python.org/2/library/stdtypes.html#string-formatting) if you’re curious).
+So what just happended? The `import shop` statement told Python to load all of the functions and classes in `shop.py`. The `line berkeleyShop = shop.FruitShop(shopName, fruitPrices)` constructs an instance of the `FruitShop` class defined in `shop.py`, by calling the `__init__` function in that class. Note that we only passed two arguments in, while `__init__` seems to take three arguments: `(self, name, fruitPrices)`. The reason for this is that all methods in a class have `self` as the first argument. The `self` variable’s value is automatically set to the object itself; when calling a method, you only supply the remaining arguments. The `self` variable contains all the data (`name` and `fruitPrices`) for the current specific instance (similar to `this` in Java). The print statements use the substitution operator (described in the [Python docs](https://docs.python.org/3.6/) if you’re curious).
 
 ### Static vs Instance Variables
 
