@@ -1,5 +1,5 @@
 # Python tutorial
-In the different projects, you will be asked to code using Python 3.6.
+In the projects, you will be asked to code using Python 3.6.
 
 In this tutorial, you will install Python and learn its basics. This tutorial is strongly based on [**CS188 project 0 from UC Berkeley**](https://inst.eecs.berkeley.edu/~cs188/su19/project0/).
 
@@ -38,11 +38,11 @@ In this tutorial, you will install Python and learn its basics. This tutorial is
     - [Static vs Instance Variables](#static-vs-instance-variables)
     - [More Python Tips and Tricks](#more-python-tips-and-tricks)
     - [Troubleshooting](#troubleshooting)
-    - [More References](#more-references)
 - [Exercises](#exercises)
     - [Question 1: Addition](#question-1-addition)
     - [Question 2: buyLotsOfFruit function](#question-2-buylotsoffruit-function)
     - [Question 3: shopSmart function](#question-3-shopsmart-function)
+- [More References](#more-references)
 
 ## Tools
 In order to work with Python, we encourage you to use a text editor and a terminal. Make sure to read the whole tools section before starting your installation.
@@ -54,7 +54,7 @@ There are plenty of text editors that can be used but [Atom](https://atom.io/) o
 Also, there exist many IDEs such as [Spyder](https://www.spyder-ide.org/) or [PyCharm](https://www.jetbrains.com/pycharm/) that could be used **CAREFULLY**.
 
 ### Python
-We recommend you to install [Anaconda](https://docs.anaconda.com/anaconda/install/). It allows you to manage many environments, with different Python versions and dependencies.
+We recommend you to install [Anaconda](https://docs.anaconda.com/anaconda/install/). It allows you to manage many environments, with distinct Python versions and dependencies.
 
 For Windows users, Anaconda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
 
@@ -807,13 +807,6 @@ These are some problems (and their solutions) that new Python learners commonly 
 	1. Make sure you are saving all your files after any changes.
 	2. If you are editing a file in a window different from the one you are using to execute python, make sure you `reload(_YOUR_MODULE_)` to guarantee your changes are being reflected. `reload` works similarly to `import`.
 
-### More References
-There are other (more complete) python tutorials:
-- [Official python tutorial](https://docs.python.org/3.6/tutorial/)
-- [w3school](https://www.w3schools.com/python/default.asp)
-- [tutorialspoint](https://www.tutorialspoint.com/python/index.htm)
-
-
 ## Exercises
 
 In the following, we will ask you to code, test, and find solutions for three problems.
@@ -1014,3 +1007,10 @@ shops = [shop1, shop2]
 `test_cases/q3/select_shop1.test` tests whether: `shopSmart.shopSmart(orders1, shops) == shop1`
 
 and `test_cases/q3/select_shop2.test` tests whether: `shopSmart.shopSmart(orders2, shops) == shop2`
+
+
+## More References
+There are other (more complete) python tutorials:
+- [Official python tutorial](https://docs.python.org/3.6/tutorial/)
+- [w3school](https://www.w3schools.com/python/default.asp)
+- [tutorialspoint](https://www.tutorialspoint.com/python/index.htm)
