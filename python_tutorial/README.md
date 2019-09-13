@@ -67,7 +67,7 @@ MacBook-Pro-de-Pascal:~ pascalleroy$
 
 The prompt shows your username, the host you are logged onto, and your current location in the directory structure (your path). The tilde character is shorthand for your home directory. Note your prompt may look slightly different. To make a directory, use the `mkdir` command. Use `cd` to change to that directory:
 
-```
+```console
 MacBook-Pro-de-Pascal:~ pascalleroy$ mkdir foo
 MacBook-Pro-de-Pascal:~ pascalleroy$ cd foo
 MacBook-Pro-de-Pascal:foo pascalleroy$ 
@@ -75,7 +75,7 @@ MacBook-Pro-de-Pascal:foo pascalleroy$
 
 Use `ls` to see a listing of the contents of a directory, and `touch` to create an empty file:
 
-```
+```console
 MacBook-Pro-de-Pascal:foo pascalleroy$ ls
 MacBook-Pro-de-Pascal:foo pascalleroy$ touch hello
 MacBook-Pro-de-Pascal:foo pascalleroy$ ls
@@ -86,7 +86,7 @@ MacBook-Pro-de-Pascal:~ pascalleroy$
 
 Download **[LINK TO ZIP]()** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
-```
+```console
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
 tutorial_code.zip
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ unzip tutorial_code.zip 
@@ -126,7 +126,7 @@ You can find several commands to manipulate files and the current directory of y
 
 - If you are not on the desired disk, you just have to type its name in the prompt:
 	
-```
+```console
 C:\Users>D:
 D:\>
 ```
@@ -146,20 +146,20 @@ In the following, the commands are the same either you are working on Anaconda p
 #### Creating a Conda Environment
 The command for creating a conda environment with Python 3.6 is:
 
-```
+```console
 conda create --name <env-name> python=3.6
 ```
 
 For us, we decide to name our environment info8006, so we run the following command, and press y to confirm installing any missing packages.
 
-```
+```console
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
 ```
 
 #### Entering the Environment
 To enter the conda environment that we just created, do the following. Note that the Python version within the environment is 3.6, just what we want.
 
-```
+```console
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda activate info8006
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
 Python 3.6.9 :: Anaconda, Inc.
@@ -169,7 +169,7 @@ Note: the tag (<env-name>) shows you the name of the conda environment that is a
 
 #### Leaving the Environment
 Leaving the environment is just as easy.
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda deactivate
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
 Python 2.7.10
@@ -195,7 +195,7 @@ Python can be run in one of two modes. It can either be used interactively, via 
 
 You invoke the interpreter using the command `python` at the Unix command prompt; or if you are using Windows that doesn’t work for you in Git Bash, using `python -i`.
 
-```
+```python
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
 Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17) 
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
@@ -207,7 +207,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 The Python interpreter can be used to evaluate expressions, for example simple arithmetic expressions. If you enter such expressions at the prompt (`>>>`) they will be evaluated and the result will be returned on the next line.
 
-```
+```python
 >>> 1 + 1
 2
 >>> 2 * 3
@@ -217,7 +217,7 @@ The Python interpreter can be used to evaluate expressions, for example simple a
 
 Boolean operators also exist in Python to manipulate the primitive `True` and `False` values.
 
-```
+```python
 >>> 1 == 0
 False
 >>> not (1 == 0)
@@ -232,13 +232,13 @@ True
 
 Like Java, Python has a built in string type. The `+` operator is overloaded to do string concatenation on string values.
 
-```
+```python
 >>> 'artificial' + "intelligence"
 'artificialintelligence'
 ```
 There are many built-in methods which allow you to manipulate strings.
 
-```
+```python
 >>> 'artificial'.upper()
 'ARTIFICIAL'
 >>> 'HELP'.lower()
@@ -250,7 +250,7 @@ Notice that we can use either single quotes `' '` or double quotes `" "` to surr
 
 We can also store expressions into variables.
 
-```
+```python
 >>> s = 'hello world'
 >>> print(s)
 hello world
@@ -269,7 +269,7 @@ In Python, you do not have declare variables before you assign to them.
 
 Learn about the methods Python provides for strings. To see what methods Python provides for a datatype, use the `dir` and `help` commands:
 
-```
+```python
 >>> s = 'abc'
 
 >>> dir(s)
@@ -302,7 +302,7 @@ Python comes equipped with some useful built-in data structures, broadly similar
 
 Lists store a sequence of mutable items:
 
-```
+```python
 >>> fruits = ['apple', 'orange', 'pear', 'banana']
 >>> fruits[0]
 'apple'
@@ -310,7 +310,7 @@ Lists store a sequence of mutable items:
 
 We can use the `+` operator to do list concatenation:
 
-```
+```python
 >>> otherFruits = ['kiwi', 'strawberry']
 >>> fruits + otherFruits
 >>> ['apple', 'orange', 'pear', 'banana', 'kiwi', 'strawberry']
@@ -318,7 +318,7 @@ We can use the `+` operator to do list concatenation:
 
 Python also allows negative-indexing from the back of the list. For instance, `fruits[-1]` will access the last element `'banana'`:
 
-```
+```python
 >>> fruits[-2]
 'pear'
 >>> fruits.pop()
@@ -334,7 +334,7 @@ Python also allows negative-indexing from the back of the list. For instance, `f
 ```
 We can also index multiple adjacent elements using the slice operator. For instance, `fruits[1:3]`, returns a list containing the elements at position 1 and 2. In general `fruits[start:stop]` will get the elements in `start, start+1, ..., stop-1`. We can also do `fruits[start:]` which returns all elements starting from the `start` index. Also `fruits[:end]` will return all elements before the element at position `end`:
 
-```
+```python
 >>> fruits[0:2]
 ['apple', 'orange']
 >>> fruits[:3]
@@ -347,7 +347,7 @@ We can also index multiple adjacent elements using the slice operator. For insta
 
 The items stored in lists can be any Python data type. So for instance we can have lists of lists:
 
-```
+```python
 >>> lstOfLsts = [['a', 'b', 'c'], [1, 2, 3], ['one', 'two', 'three']]
 >>> lstOfLsts[1][2]
 3
@@ -361,7 +361,7 @@ The items stored in lists can be any Python data type. So for instance we can ha
 
 Play with some of the list functions. You can find the methods you can call on an object via the dir and get information about them via the help command:
 
-```
+```python
 >>> dir(list)
 ['__add__', '__class__', '__contains__', '__delattr__', '__delitem__',
 '__delslice__', '__doc__', '__eq__', '__ge__', '__getattribute__',
@@ -372,7 +372,7 @@ Play with some of the list functions. You can find the methods you can call on a
 'append', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse',
 'sort']
 ```
-```
+```python
 >>> help(list.reverse)
           Help on built-in function reverse:
 
@@ -381,7 +381,7 @@ Play with some of the list functions. You can find the methods you can call on a
 
 ```
 
-```
+```python
 >>> lst = ['a', 'b', 'c']
 >>> lst.reverse()
 >>> ['c', 'b', 'a']
@@ -394,7 +394,7 @@ Note: Ignore functions with underscores "_" around the names; these are private 
 
 A data structure similar to the list is the tuple, which is like a list except that it is immutable once it is created (i.e. you cannot change its content once created). Note that tuples are surrounded with parentheses while lists have square brackets.
 
-```
+```python
 >>> pair = (3, 5)
 >>> pair[0]
 3
@@ -413,7 +413,7 @@ The attempt to modify an immutable structure raised an exception. Exceptions ind
 
 A set is another data structure that serves as an unordered list with no duplicate items. Below, we show how to create a set:
 
-```
+```python
 >>> shapes = ['circle', 'square', 'triangle', 'circle']
 >>> setOfShapes = set(shapes)
 ```
@@ -424,7 +424,7 @@ Another way of creating a set is shown below:
 
 Next, we show how to add things to the set, test if an item is in the set, and perform common set operations (difference, intersection, union):
 
-```
+```python
 >>> setOfShapes
 set(['circle', 'square', 'triangle'])
 >>> setOfShapes.add('polygon')
@@ -452,7 +452,7 @@ The last built-in data structure is the dictionary which stores a map from one t
 
 Note: In the example below, the printed order of the keys returned by Python could be different than shown below. The reason is that unlike lists which have a fixed ordering, a dictionary is simply a hash table for which there is no fixed ordering of the keys (like HashMaps in Java). The order of the keys depends on how exactly the hashing algorithm maps keys to buckets, and will usually seem arbitrary. Your code should not rely on key ordering, and you should not be surprised if even a small modification to how your code uses a dictionary results in a new key ordering.
 
-```
+```python
 >>> studentIds = {'knuth': 42.0, 'turing': 56.0, 'nash': 92.0}
 >>> studentIds['turing']
 56.0
@@ -485,7 +485,7 @@ Use `dir` and `help` to learn about the functions you can call on dictionaries.
 
 Now that you’ve got a handle on using Python interactively, let’s write a simple Python script that demonstrates Python’s `for` loop. Open the file called `foreach.py`, which should contain the following code:
 
-```
+```python
 # This is what a comment looks like
 fruits = ['apples', 'oranges', 'pears', 'bananas']
 for fruit in fruits:
@@ -501,7 +501,7 @@ for fruit, price in fruitPrices.items():
 
 At the command line, use the following command in the directory containing `foreach.py`:
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py 
 apples for sale
 oranges for sale
@@ -516,7 +516,7 @@ Remember that the print statements listing the costs may be in a different order
 
 If you like functional programming you might also like map and filter:
 
-```
+```python
 >>> list(map(lambda x: x * x, [1, 2, 3]))
 [1, 4, 9]
 >>> list(filter(lambda x: x > 3, [1, 2, 3, 4, 5, 4, 3, 2, 1]))
@@ -525,7 +525,7 @@ If you like functional programming you might also like map and filter:
 
 The next snippet of code demonstrates Python’s list comprehension construction:
 
-```
+```python
 nums = [1, 2, 3, 4, 5, 6]
 plusOneNums = [x + 1 for x in nums]
 oddNums = [x for x in nums if x % 2 == 1]
@@ -536,7 +536,7 @@ print(oddNumsPlusOne)
 
 This code is in a file called `listcomp.py`, which you can run:
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python listcomp.py
 [1, 3, 5]
 [2, 4, 6]
@@ -550,7 +550,7 @@ Write a list comprehension which, from a list, generates a lowercased version of
 
 Unlike many other languages, Python uses the indentation in the source code for interpretation. So for instance, for the following script:
 
-```
+```python
 if 0 == 1:
     print('We are in a world of arithmetic pain')
 print('Thank you for playing')
@@ -560,7 +560,7 @@ will output: Thank you for playing
 
 But if we had written the script as
 
-```
+```python
 if 0 == 1:
     print('We are in a world of arithmetic pain')
     print('Thank you for playing')
@@ -578,7 +578,7 @@ This most commonly happens when opening up a Python file that uses an indentatio
 
 As in Java, in Python you can define your own functions:
 
-```
+```python
 fruitPrices = {'apples': 2.00, 'oranges': 1.50, 'pears': 1.75}
 
 def buyFruit(fruit, numPounds):
@@ -598,7 +598,7 @@ Rather than having a `main` function as in Java, the `__name__ == '__main__'` ch
 
 Save this script as fruit.py and run it:
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python fruit.py
 That'll be 4.800000 please
 Sorry we don't have coconuts
@@ -618,7 +618,7 @@ Although this isn’t a class in object-oriented programming, you’ll have to u
 
 Here’s an example of defining a class named `FruitShop`:
 
-```
+```python
 class FruitShop:
 
     def __init__(self, name, fruitPrices):
@@ -670,7 +670,7 @@ The `FruitShop` class has some data, the name of the shop and the prices per pou
 
 So how do we make an object and use it? Make sure you have the `FruitShop` implementation in `shop.py`. We then import the code from this file (making it accessible to other scripts) using `import shop`, since `shop.py` is the name of the file. Then, we can create `FruitShop` objects as follows:
 
-```
+```python
 import shop
 
 shopName = 'the Berkeley Bowl'
@@ -691,7 +691,7 @@ print("My, that's expensive!")
 
 This code is in `shopTest.py`; you can run it like this:
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python shopTest.py 
 Welcome to the Berkeley Bowl fruit shop
 1.0
@@ -710,7 +710,7 @@ The following example illustrates how to use static and instance variables in Py
 
 Create the `person_class.py` containing the following code:
 
-```
+```python
 class Person:
     population = 0
 
@@ -731,7 +731,7 @@ We first compile the script:
 
 Now use the class as follows:
 
-```
+```python
 >>> import person_class
 >>> p1 = person_class.Person(12)
 >>> p1.get_population()
@@ -754,14 +754,14 @@ This tutorial has briefly touched on some major aspects of Python that will be r
 
 - Use `range` to generate a sequence of integers, useful for generating traditional indexed for loops:
 	
-	```
+	```python
     for index in range(3):
         print(lst[index])
 	```
 
 - After importing a file, if you edit a source file, the changes will not be immediately propagated in the interpreter. For this, use the `reload` command:
 
-	```
+	```python
     >>> reload(shop)
 	```
 
@@ -791,7 +791,7 @@ These are some problems (and their solutions) that new Python learners commonly 
 
     Here is a problematic scenario involving a for loop:
 
-	```
+	```python
       pairList = [('apples', 2.00), ('oranges', 1.50), ('pears', 1.75)]
       for fruit, price, color in pairList:
           print('%s fruit costs %f and is the color %s' % (fruit, price, color))
@@ -820,7 +820,7 @@ In the following, we will ask you to code, test, and find solutions for three pr
 
 First, you need to change the current directory to `exercices`.
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ cd ..
 (info8006) MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
 exercises python_basics
@@ -847,7 +847,7 @@ and others you can ignore in the directory `tools`.
 
 The command `python autograder.py` grades your solution to all three problems. If we run it before editing any files we get a page or two of output:
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py 
 Starting on 9-12 at 15:49:35
 
@@ -938,7 +938,7 @@ Looking at the results for question 1, you can see that it has failed three test
 
 Open `addition.py` and look at the definition of `add`:
 
-```
+```python
 def add(a, b):
     "Return the sum of a and b"
     "*** YOUR CODE HERE ***"
@@ -947,7 +947,7 @@ def add(a, b):
 
 The tests called this with `a` and `b` set to different values, but the code always returned zero. Modify this definition to read:
 
-```
+```python
 def add(a, b):
     "Return the sum of a and b"
     print("Passed a = %s and b = %s, returning a + b = %s" % (a, b, a + b))
@@ -956,7 +956,7 @@ def add(a, b):
 
 Now rerun the autograder (omitting the results for questions 2 and 3):
 
-```
+```console
 (info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py -q q1
 Starting on 1-21 at 23:52:05
 
@@ -1001,7 +1001,7 @@ Fill in the function `shopSmart(orders,shops)` in `shopSmart.py`, which takes an
 
 Run `python autograder.py` until question 3 passes all tests and you get full marks. Each test will confirm that `shopSmart(orders,shops)` returns the correct answer given various possible inputs. For example, with the following variable definitions:
 
-```
+```python
 orders1 = [('apples', 1.0), ('oranges', 3.0)]
 orders2 = [('apples', 3.0)]
 dir1 = {'apples': 2.0, 'oranges': 1.0}
