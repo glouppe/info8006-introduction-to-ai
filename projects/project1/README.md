@@ -2,6 +2,7 @@
 
 
 
+
 # Project I
 
 ## Table of contents
@@ -31,7 +32,7 @@ This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline. 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
-To provide you some help, the implementations of Depth-First Search (DFS) are available in the corresponding Python file `dfs.py`. You can test this implementation of DFS using the following instruction once your Pacman environment has been activated:
+To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file dfs.py. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minut before the deadline. We have fixed most of the bugs but we might have left one of them. Please answer the appropriate question to tell us where the error was in the code, and how you have fixed it. Do not submit at all the DFS source code, tough. Once you have corrected the mistake, you can test this implementation of DFS using the following instruction once your Pacman environment has been activated:
 ```bash
 python run.py --agentfile dfs.py --layout medium
 ```
@@ -52,7 +53,8 @@ You are asked to answer the following questions:
 			 
 		Any **reference to the API** in any component of the problem statement will be considered as **wrong**.
  2.  **Implementation**
-	 -  2.a. - **4 points** - Implement A\* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+	  - 2.a. - **0.5 point** - Identify the implementation error in dfs. Explain its impact and how to fix it. We do not ask you to submit the fixed version of DFS.
+	  - 2.b. - **4 points** - Implement A\* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
 	 
 		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
 		 - You must have *h(n)* different from 0 for all *n*.
@@ -61,10 +63,10 @@ You are asked to answer the following questions:
 	
 		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path that maximizes the game score. 
 		
-	  - 2.b. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
-	  - 2.c. - **0.5 point** - **Show** that your *h(n)* is **admissible**.
-	  - 2.d. - **2 points** - Implement Breadth-First Search (BFS) from your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If implementation errors are due to the implementation of A\*, these will not be taken into account for this question.
-	  - 2.e. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
+	  - 2.c. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.d. - **0.5 point** - **Show** that your *h(n)* is **admissible**.
+	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) from your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If implementation errors are due to the implementation of A\*, these will not be taken into account for this question.
+	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1** 
 	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plots in terms of:
 	 
@@ -93,11 +95,11 @@ You are asked to answer the following questions:
 
 In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code and report. 
 
-For each **implementation question** (2.a, 2.d), the evaluation will be performed as follows:
+For each **implementation question** (2.b, 2.e), the evaluation will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
  - no point: implementation error of any component of the algorithm.
 
-For each **discussion question** (2.b, 2.c, 2.e, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
+For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.
  - no point: no relevant element or no answer.
@@ -118,13 +120,13 @@ Besides the questions you're expected to answer, you will also be evaluated acco
  
  - **Code style** - **2 points**
 	 - **PEP8 compatibility** - **0.9 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
-		 - 0.8 point : the script runs without error.
+		 - 0.9 point : the script runs without error.
 		 - 0 point: any error during the execution of the script.
 	 - **Specification** - **1.1 point** - correctness of the specification of your functions.
-		- 0.8 point : all specifications are correct.
-		- 0.6 point : at least 75% correct specifications.
-		- 0.4 point : at least 50% correct specifications.
-		- 0.2 point : at least 25% correct specifications.
+		- 1.1 point : all specifications are correct.
+		- 0.825 point : at least 75% correct specifications.
+		- 0.55 point : at least 50% correct specifications.
+		- 0.275 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
 
 

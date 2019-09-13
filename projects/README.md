@@ -13,7 +13,7 @@ The goal of this programming project is to implement intelligent agents for the 
 - **Project III**: you must implement a Bayes filter algorithm for tracking all the non-visible ghosts' positions.
  </br> &#8594; **Add link to project 3 here**
  
---
+---
 
 ## Table of contents
 
@@ -29,7 +29,7 @@ The goal of this programming project is to implement intelligent agents for the 
 	* [Questions about the projects](#questions-about-the-projects)	
 - [Credits](#credits)
  
---
+---
 
 ## Installation
 
@@ -117,22 +117,22 @@ python run.py --w 1
 python run.py -h
 ```
 
---
+--- 
 
 ## Instructions
 
 For each part of the project, you must provide the following deliverables:
 
 - The source code of your Pacman agent(s).
-- A report in PDF format of 4 pages (at most and in total). A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
+- A report in PDF format. A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
 
 The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
 
 Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
-We tolerate **only one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade. TODO: ADD COMMENTS ABOUT WHY THERE SHOULD NOT BE ANY DISCUSSION ABOUT THIS. 
+We tolerate **only one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade.
+---
 
---
 ## Typical mistakes and bad practices
 
 We show through this section a list of common mistakes and bad practices that we have observed through past projects. Although this section is non exhaustive and thus is subject to regular updates, we hope that the following list will help you to avoid many pitfalls that can hurt the quality of your project. 
@@ -185,7 +185,7 @@ We show through this section a list of common mistakes and bad practices that we
 	* Inefficiency during execution. Only a few seconds is necessary in the worst case to solve each instance of the problem statement we provide in the projects. While you should first have a working version of your implementation, you should also be careful to limit the computation time below these few seconds.
 	* Import and edge-cases errors, e.g. index out of bounds. While a typo in import sections does not jeopardize the implementation correctness - as long as the required files are present -, it is often difficult for the reader to decide if edge-cases error are either typos or part of the incorrect implementation. The safest policy being the latter, we refer to it when evaluating your work.  
    
---
+---
 
 ## FAQ
 
