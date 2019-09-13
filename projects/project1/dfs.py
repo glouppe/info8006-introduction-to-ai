@@ -1,3 +1,17 @@
+"""
+Author : one of the TAs, just after
+submitting an important journal manuscript.
+
+I am so tired that I might have screwed up the following DFS implementation.
+
+My fellow TAs are expected to fix all the errors
+while I'm taking a very long nap.
+
+I trust them but you should also, student,
+check the following code against a possible *unique* error.
+
+"""
+
 import random
 import numpy as np
 
@@ -8,7 +22,7 @@ from pacman_module.graphicsUtils import keys_waiting, keys_pressed
 
 class PacmanAgent(Agent):
     """
-    An agent following DFS strategy in search game.
+    An agent following DFS in search game.
     """
 
     def __init__(self, args):
@@ -41,10 +55,10 @@ class PacmanAgent(Agent):
 
         return self.moves.pop(0)
 
-    def dfs(self, state):
+    def stateKey(self, state):
         """
-        Given a pacman game state,
-        returns a list of legal moves to solve the search layout.
+        Given a pacman game state, returns a list of attributes
+        which represents the state.
 
         Arguments:
         ----------
@@ -53,35 +67,48 @@ class PacmanAgent(Agent):
 
         Return:
         -------
-        - A legal path as a list of moves defined in `game.Directions`.
+        - A list of attributes of the game state space
+        """
+        return state.getPacmanPosition()
+
+    def dfs(self, state):
+        """
+        Given a pacman game state,
+        returns a list of legal moves to solve the seach layout.
+
+        Arguments:
+        ----------
+        - `state`: the current game state. See FAQ and class
+                   `pacman.GameState`.
+
+        Return:
+        -------
+        - A list of legal moves as defined in `game.Directions`.
         """
 
         current = state
-        key = tuple([state.getPacmanPosition()] + state.getFood().asList())
+        key = self.stateKey(current)
         self.paths[key] = []
         self.visited[key] = [key]
 
         while not current.isWin():
             legal_actions = current.getLegalActions()
             for action in legal_actions:
-                # Retrieve info of successor
+                # Retrive info of successor
                 next_state = current.generatePacmanSuccessor(action)
-                pacman_pos = next_state.getPacmanPosition()
-                food_pos = next_state.getFood().asList()
-                next_state_key = tuple(pacman_pos + food_pos)
-                if next_state_key not in self.visited[key]:
+                next_key = self.stateKey(next_state)
+                if next_key not in self.visited[key]:
                     # Add successor to the fringe if not visited yet
                     self.fringe.append(next_state)
                     # Add path information
-                    self.paths[next_state_key] = self.paths[key].copy()
-                    self.paths[next_state_key].append(action)
+                    self.paths[next_key] = self.paths[key].copy()
+                    self.paths[next_key].append(action)
                     # Add visited states information
-                    self.visited[next_state_key] = self.visited[key].copy()
-                    self.visited[next_state_key].append(next_state_key)
+                    self.visited[next_key] = self.visited[key].copy()
+                    self.visited[next_key].append(next_key)
 
             # Choose new state to expand
             current = self.fringe.pop()
-            key = tuple([current.getPacmanPosition()] +
-                        current.getFood().asList())
+            key = self.stateKey(current)
 
         return self.paths[key]
