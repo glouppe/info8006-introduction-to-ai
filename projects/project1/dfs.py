@@ -64,7 +64,7 @@ class PacmanAgent(Agent):
         while not current.isWin():
             legal_actions = current.getLegalActions()
             for action in legal_actions:
-                # Retrive info of successor
+                # Retrieve info of successor
                 next_state = current.generatePacmanSuccessor(action)
                 pacman_pos = next_state.getPacmanPosition()
                 food_pos = next_state.getFood().asList()
