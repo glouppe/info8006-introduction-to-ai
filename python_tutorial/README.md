@@ -84,7 +84,7 @@ MacBook-Pro-de-Pascal:foo pascalleroy$ cd ..
 MacBook-Pro-de-Pascal:~ pascalleroy$ 
 ```
 
-Download **[LINK TO ZIP]()** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
+Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python_tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
 ```console
 MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
@@ -120,7 +120,7 @@ Some other useful Unix commands:
 ### Windows basics
 Since you are on Windows, you will use the *Anaconda prompt* that is installed with Anaconda. In this terminal, the commands are different from those of UNIX.
 
-Download **[LINK TO ZIP]()** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
+Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python_tutorial/tutorial_code.zip)** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
 
 You can find several commands to manipulate files and the current directory of your prompt in the following:
 
