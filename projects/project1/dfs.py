@@ -5,8 +5,6 @@ from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 from pacman_module.graphicsUtils import keys_waiting, keys_pressed
 
-from utils import get_state_info
-
 class PacmanAgent(Agent):
     """
     An agent following DFS in search game.

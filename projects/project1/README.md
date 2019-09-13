@@ -16,7 +16,7 @@
 ## Deliverables
 
 You're expected to produce the following deliverables: a *tar.gz* archive containing:
- - Your report named `report.pdf`. This should be at most 5 pages long. 
+ - Your report named `report.pdf`. This must be at most 5 pages long. 
  - Your `astar.py` file containing your implementation of A\* algorithm.
  - Your `bfs.py` file containing your implementation of BFS algorithm.
 
@@ -26,7 +26,7 @@ Note that your implementation of BFS algorithm should only differ from A\* by it
 
 ## Instructions
 
-This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline. The following instructions are divided into different questions. You're asked to follow this subdivision in yoiur report. To do so, a [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/project1/template-project1.tex) is provided.
+This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline. The following instructions are divided into different questions. You're asked to follow this subdivision in your report. To do so, a [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/project1/template-project1.tex) is provided.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
