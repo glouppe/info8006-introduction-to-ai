@@ -195,7 +195,7 @@ Python can be run in one of two modes. It can either be used interactively, via 
 
 You invoke the interpreter using the command `python` at the Unix command prompt; or if you are using Windows that doesn’t work for you in Git Bash, using `python -i`.
 
-```python
+```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
 Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17) 
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
