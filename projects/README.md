@@ -1,4 +1,5 @@
 
+
 # Projects - Pacman
 
 <p align="center">
@@ -43,7 +44,7 @@ source activate pacman
 (Windows) Create a `pacman` environment and activate it:
 ```bash
 conda create -n pacman python=3.6
-activate pacman
+conda activate pacman
 ```
 
 From now, it is assumed that `pacman` is activated.
@@ -126,6 +127,7 @@ The three parts of the project must be carried out in groups of maximum 2 studen
 Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
 We tolerate only *one* delay of maximum 24 hours. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of *more than one delay*, the concerned parts will receive a *0/20* grade.
+
 ---
 
 ## Typical mistakes and bad practices
