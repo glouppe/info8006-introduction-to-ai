@@ -87,11 +87,12 @@ MacBook-Pro-de-Pascal:~ pascalleroy$
 Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python_tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
 ```console
-MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
+MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ ls
 tutorial_code.zip
-MacBook-Pro-de-Pascal:19_20 pascalleroy$ unzip tutorial_code.zip 
-MacBook-Pro-de-Pascal:19_20 pascalleroy$ ls
+MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ unzip tutorial_code.zip 
+MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ ls
 tutorial_code		tutorial_code.zip
+MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ cd tutorial_code
 MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
 exercises python_basics
 MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd python_basics/
@@ -150,14 +151,17 @@ The command for creating a conda environment with Python 3.6 is:
 conda create --name <env-name> python=3.6
 ```
 
-For us, we decide to name our environment info8006, so we run the following command, and press y to confirm installing any missing packages.
+We name our environment info8006 with the following command. 
 
 ```console
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
 ```
 
+Enter y to confirm the installation of any missing packages.
+
 #### Entering the Environment
-To enter the conda environment that we just created, do the following. Note that the Python version within the environment is 3.6, just what we want.
+We do the following to enter the conda environment that we just created and to check the python version. 
+Note that the Python version within the environment is 3.6, just what we want.
 
 ```console
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda activate info8006
@@ -179,13 +183,13 @@ Our Python version has now returned to whatever the system default is!
 
 ## Python Basics
 ### Required Files
-Following the terminal basics of your OS, you have normally dowloaded a zip file, extracted the content of this archive in a chosen directory and the current directoty of your terminal should contains those files. 
+Following the terminal basics of your OS, you should have downloaded a zip file, extracted the content of this archive in a chosen directory and the current directory of your terminal should contains those files. 
 
 ### Introduction
 
-The programming assignments in this course will be written in Python, an interpreted, object-oriented language that shares some features with both Java and Scheme. This tutorial will walk through the primary syntactic constructions in Python, using short examples.
+The programming assignments of this course will be written in Python, an interpreted, object-oriented language that shares some features with both Java and Scheme. This tutorial will walk you through the primary syntactic constructions in Python, using short examples.
 
-We encourage you to type in yourself the Python code of this tutorial. Make sure it produces the same results.
+We encourage you to try to type by yourself the python code of this tutorial. Check that your code produces the same results.
 
 You may find the [Troubleshooting](#troubleshooting) section helpful if you run into problems. It contains a list of the frequent problems previous students have encountered when following this tutorial.
 
@@ -193,7 +197,7 @@ You may find the [Troubleshooting](#troubleshooting) section helpful if you run 
 
 Python can be run in one of two modes. It can either be used interactively, via an interpeter, or it can be called from the command line to execute a script. We will first use the Python interpreter interactively.
 
-You invoke the interpreter using the command `python` at the Unix command prompt; or if you are using Windows that doesn’t work for you in Git Bash, using `python -i`.
+You invoke the interpreter using the command `python` at the command prompt.
 
 ```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
@@ -263,7 +267,8 @@ hello world
 >>> print(num)
 10.5
 ```
-In Python, you do not have declare variables before you assign to them.
+
+In Python, you do not have to declare a variable before assigning it a value.
 
 ### Exercise: Dir and Help
 
@@ -499,7 +504,7 @@ for fruit, price in fruitPrices.items():
         print(fruit + ' are too expensive!')
 ```
 
-At the command line, use the following command in the directory containing `foreach.py`:
+In the command line, use the following command in the directory containing `foreach.py`:
 
 ```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py 
@@ -512,7 +517,7 @@ oranges cost 1.500000 a pound
 pears cost 1.750000 a pound
 ```
 
-Remember that the print statements listing the costs may be in a different order on your screen than in this tutorial; that’s due to the fact that we’re looping over dictionary keys, which are unordered. To learn more about control structures (e.g., `if` and `else`) in Python, check out the official [Python tutorial section on this topic](https://docs.python.org/3.6/tutorial/).
+Remember that the print statements listing the costs may be in a different order on your screen than in this tutorial; it comes from the fact that we are looping over dictionary keys, which are unordered. To learn more about control structures (e.g., `if` and `else`) in Python, check out the official [Python tutorial section on this topic](https://docs.python.org/3.6/tutorial/).
 
 If you like functional programming you might also like map and filter:
 
@@ -542,13 +547,13 @@ This code is in a file called `listcomp.py`, which you can run:
 [2, 4, 6]
 ```
 
-### Exercise: List Comprehensions
+### Exercise: List comprehensions
 
-Write a list comprehension which, from a list, generates a lowercased version of each string that has length greater than five. You can find the solution in `listcomp2.py`.
+Write a list comprehension which, from a list, generates a lowercased version of each string which length is greater than 5. You can find the solution in `listcomp2.py`.
 
 ### Beware of Indendation!
 
-Unlike many other languages, Python uses the indentation in the source code for interpretation. So for instance, for the following script:
+Unlike many other languages, Python uses the indentation in the source code for interpretation. For instance, the following script:
 
 ```python
 if 0 == 1:
@@ -572,7 +577,7 @@ there would be no output. The moral of the story: **be careful how you indent!**
 
 Because Python uses indentation for code evaluation, it needs to keep track of the level of indentation across code blocks. This means that if your Python file switches from using tabs as indentation to spaces as indentation, the Python interpreter will not be able to resolve the ambiguity of the indentation level and throw an exception. Even though the code can be lined up visually in your text editor, Python “sees” a change in indentation and most likely will throw an exception (or rarely, produce unexpected behavior).
 
-This most commonly happens when opening up a Python file that uses an indentation scheme that is opposite from what your text editor uses (aka, your text editor uses spaces and the file uses tabs). When you write new lines in a code block, there will be a mix of tabs and spaces, even though the whitespace is aligned. For a longer discussion on tabs vs spaces, see [this](https://stackoverflow.com/questions/119562/tabs-versus-spaces-in-python-programming) discussion on StackOverflow.
+This most commonly happens when opening up a Python file that uses an indentation scheme that is opposite from what your text editor uses (e.g., your text editor uses spaces and the file uses tabs). When you write new lines in a code block, there will be a mix of tabs and spaces, even though the whitespace is aligned. For a longer discussion on tabs vs spaces, see [this](https://stackoverflow.com/questions/119562/tabs-versus-spaces-in-python-programming) discussion on StackOverflow.
 
 ### Writing Functions
 
@@ -608,11 +613,11 @@ Sorry we don't have coconuts
 
 Write a `mean` function in Python. You can find two solutions in `mean.py`.
 
-Write a `quickSort` function in Python using list comprehensions. Use the first element as the pivot. You can find the solution in `quickSort.py`.
+Write a `quickSort` function in Python using list comprehensions. Use the first element as the pivot. You can find a solution in `quickSort.py`.
 
 ### Object Basics
 
-Although this isn’t a class in object-oriented programming, you’ll have to use some objects in the programming projects, and so it’s worth covering the basics of objects in Python. An object encapsulates data and provides functions for interacting with that data.
+Although this is not a class in object-oriented programming, you will have to use some objects in the programming projects, and so it is worth covering the basics of objects in Python. An object encapsulates data and provides functions for interacting with that data.
 
 #### Defining Classes
 
@@ -702,7 +707,7 @@ Apples cost $4.50 at the Stanford Mall.
 My, that's expensive!
 ```
 
-So what just happended? The `import shop` statement told Python to load all of the functions and classes in `shop.py`. The `line berkeleyShop = shop.FruitShop(shopName, fruitPrices)` constructs an instance of the `FruitShop` class defined in `shop.py`, by calling the `__init__` function in that class. Note that we only passed two arguments in, while `__init__` seems to take three arguments: `(self, name, fruitPrices)`. The reason for this is that all methods in a class have `self` as the first argument. The `self` variable’s value is automatically set to the object itself; when calling a method, you only supply the remaining arguments. The `self` variable contains all the data (`name` and `fruitPrices`) for the current specific instance (similar to `this` in Java). The print statements use the substitution operator (described in the [Python docs](https://docs.python.org/3.6/) if you’re curious).
+So what just happened? The `import shop` statement told Python to load all of the functions and classes in `shop.py`. The `line berkeleyShop = shop.FruitShop(shopName, fruitPrices)` constructs an instance of the `FruitShop` class defined in `shop.py`, by calling the `__init__` function in that class. Note that we only passed two arguments in, while `__init__` seems to take three arguments: `(self, name, fruitPrices)`. The reason for this is that all methods in a class have `self` as the first argument. The `self` variable’s value is automatically set to the object itself; when calling a method, you only supply the remaining arguments. The `self` variable contains all the data (`name` and `fruitPrices`) for the current specific instance (similar to `this` in Java). The print statements use the substitution operator (described in the [Python docs](https://docs.python.org/3.6/) if you’re curious).
 
 ### Static vs Instance Variables
 
