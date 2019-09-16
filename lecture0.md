@@ -8,12 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-http://ai.stanford.edu/~nilsson/QAI/qai.pdf
-
-R: tesla crash prevention
-
 ---
 
 # Today
