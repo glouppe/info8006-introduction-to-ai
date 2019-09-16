@@ -1,0 +1,3 @@
+# This is the solution file for test_cases/q1/addition3.test.
+# The result of evaluating the test must equal the below when cast to a string.
+result: "7.9"
