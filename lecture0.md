@@ -10,12 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: check https://www.youtube.com/watch?v=z8937RleAZo
-
-R: lecun https://www.facebook.com/konbinitechno/videos/916293425386640/UzpfSTcyMjY3NzE0MjoxMDE1NjEyNjg2MzYwMjE0Mw/
-
-R: What is Intelligence? Quote from Van Neuman
-
 http://ai.stanford.edu/~nilsson/QAI/qai.pdf
 
 R: tesla crash prevention
@@ -52,11 +46,52 @@ class: middle, center
 
 ---
 
-# What is AI?
+class: middle
 
---
+.center[
 
-count: false
+.width-25.circle[![](figures/lec0/dijkstra.jpg)]&nbsp;&nbsp;&nbsp;
+.width-25.circle[![](figures/lec0/valiant.jpg)]
+
+
+]
+
+Edsger Dijkstra: .italic[What do you work on?]<br>
+Leslie Valiant (very proudly): .italic[Aritificial Intelligence.]<br>
+Edsger Dijkstra: .italic[Why don't you work first on the .bold["Intelligence"] part?]
+
+???
+
+-> On évacue le terme 'artificielle'
+
+---
+
+class: middle
+
+.width-30.circle.center[![](figures/lec0/minsky.png)]
+
+.italic[".bold[What is intelligence, anyway?] It is only a word that people use to name those unknown processes with which our brains
+solve problems we call hard. But whenever you learn a skill yourself, you're less impressed or mystified when other people
+do the same.
+
+This is why .bold[the meaning of "intelligence" seems so elusive]: it describes not some definite thing but only the
+momentary horizon of .bold[our ignorance about how minds might work]. It is hard for scientists who try to understand intelligence
+to explain precisely what they do, since our working definitions change from year to year. But it is not at all unusual for
+sciences to aim at moving targets." -- Marvin Minsky]
+
+???
+
+-> On évacue le terme 'intelligence'
+
+---
+
+class: middle, center, black-slide
+
+<iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen allow="autoplay"></iframe>
+
+---
+
+# A definition?
 
 Artificial intelligence is the science of making machines or programs that:
 .center.grid[
@@ -67,8 +102,7 @@ Artificial intelligence is the science of making machines or programs that:
 ]
 .kol-1-4[
 .caption[Think rationally]
-.width-100[![](figures/lec0/ai-think-rationally.png)]
-]
+.width-100[![](figures/lec0/ai-think-rationally.png)]]
 ]
 .grid[
 .kol-1-4[]
@@ -96,7 +130,7 @@ a computer.
 
 .grid[
 .kol-2-3[
-.width-100[![The Turing test](figures/lec0/turing-test.jpg)]
+.width-80.center[<br>![The Turing test](figures/lec0/turing-test.jpg)]
 ]
 .kol-1-3.center[
 .width-100.circle[![Alan Turing](figures/lec0/alan-turing.jpg)]
@@ -134,10 +168,14 @@ The Turing test tends to focus on *human-like errors*, *linguistic tricks*, etc.
 
 However, it seems more important to study the **principles** underlying intelligence than to replicate an exemplar.
 
-<br>
-.center.width-70[![](figures/lec0/cargo-plane.jpg)]
-.caption[Aeronautics is not defined as the field of making machines<br> that fly
-so exactly like pigeons that they can fool even other pigeons.]
+---
+
+class: middle, center, black-slide
+
+.center.width-80[![](figures/lec0/cargo-plane.jpg)]
+
+Aeronautics is not defined as the field of making machines<br> that fly
+so exactly like pigeons that they can fool even other pigeons.
 
 ---
 
@@ -149,7 +187,7 @@ Study of the *human mind* and its processes.
 - The goal of cognitive science
   is to form a theory about the structure of the mind, summarized as a comprehensive **computer
   model**.
-- It includes language, problem-sovling, decision-making and perception.
+- It includes language, problem-solving, decision-making and perception.
 - A *cognitive architecture* usually follows human-like reasoning and can be used to
 produce testable predictions (time of delays during problem solving, kinds of
 mistakes, learning rates, etc).
@@ -164,7 +202,7 @@ class: middle, center
 
 .width-80[![ACT-R](figures/lec0/soar.jpg)]
 
-.caption[The modern SOAR cognitive architecture.]
+The modern SOAR cognitive architecture.
 
 ???
 
@@ -211,7 +249,9 @@ with **innate knowledge** for representing language.
 ]
 ]
 
-It may not be possible to implement a fully functioning
+???
+
+Therefore, it may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
@@ -319,7 +359,7 @@ class: middle
 
 - Representation of *informal* knowledge is difficult.
 - Hard to define provable *plausible* reasoning.
-- *Combinatorial explosion* (in time and space).
+- Combinatorial **explosion** (in time and space).
 - Logical inference is only a part of intelligence. It does not cover everything:
     - e.g., might be no provably correct thing to do, but still something must be done;
     - e.g., reflex actions can be more successful than slower carefully deliberated ones.
@@ -390,7 +430,15 @@ Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 - 1965: Robinson's complete algorithm for logical reasoning.
 - 1966-1974: AI discovers computational complexity.
 
-.center.width-70[![](figures/lec0/dartmouth.jpg)]
+---
+
+class: middle
+
+.width-60.center[![](figures/lec0/dartmouth.jpg)]
+
+## The Darthmouth workshop (1956)
+
+.italic[The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be *so precisely described* that a machine can be made to simulate it.]
 
 ---
 
@@ -442,6 +490,22 @@ class: middle
 
 class: middle, center, black-slide
 
+<iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
+
+Speech translation and synthesis (2012)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/7gh6_U7Nfjs" frameborder="0" allowfullscreen></iframe>
+
+Speech synthesis and question answering (Google, 2018)
+
+---
+
+class: middle, center, black-slide
+
 <iframe width="600" height="450" src="https://www.youtube.com/embed/V1eYniJ0Rnk" frameborder="0" allowfullscreen></iframe>
 
 Playing Atari games
@@ -466,9 +530,39 @@ Beat teams of human players at real-time strategy games (Dota 2) (2018)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
 
-Speech translation and synthesis (2012)
+Playing soccer (2018)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
+
+Learning to walk (2017)
+
+???
+
+Single algorithm for learning! Nothing is hardcoded.
+
+Similar to a baby learning to walk.
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/qhUvQiKec2U" frameborder="0" allowfullscreen></iframe>
+
+Driving a car (NVIDIA, 2016)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/DuIrjRAzNPQ" frameborder="0" allowfullscreen></iframe>
+
+... and preventing accidents.
 
 ---
 
@@ -498,20 +592,6 @@ Detecting skin cancer (2017)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
-
-Learning to walk (2017)
-
-???
-
-Single algorithm for learning! Nothing is hardcoded.
-
-Similar to a baby learning to walk.
-
----
-
-class: middle, center, black-slide
-
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gy5g33S0Gzo" frameborder="0" allowfullscreen></iframe>
 
 Folding laundry (2010)
@@ -520,17 +600,9 @@ Folding laundry (2010)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/egJ0PTKQp4U?start=223" frameborder="0" allowfullscreen></iframe>
 
-Playing soccer (2018)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/-96BEoXJMs0" frameborder="0" allowfullscreen></iframe>
-
-Driving a car (2016)
+Compose music (NVIDIA, 2017)
 
 ---
 
@@ -538,7 +610,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/hYZM5l0G28I" frameborder="0" allowfullscreen></iframe>
 
-Learning to sort waste (Norman Marlier, ULiège, 2018)
+Learning to sort waste, before training <br>(Norman Marlier, ULiège, 2018)
 
 ---
 
@@ -547,7 +619,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/MsuS0gaSHJ0" frameborder="0" allowfullscreen></iframe>
 
-Learning to sort waste (Norman Marlier, ULiège, 2018)
+Learning to sort waste, after training <br>(Norman Marlier, ULiège, 2018)
 
 ---
 
