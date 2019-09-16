@@ -1,9 +1,12 @@
 # Python tutorial
-In the projects, you will be asked to code using Python 3.6.
 
-In this tutorial, you will install Python and learn its basics. This tutorial is strongly based on [**CS188 project 0 from UC Berkeley**](https://inst.eecs.berkeley.edu/~cs188/su19/project0/).
+Programming projects will be done in Python 3.6.
+In this tutorial, you will install Python and learn its basics.
+
+Credits: This tutorial is strongly based on [CS188 project 0](https://inst.eecs.berkeley.edu/~cs188/su19/project0/) from UC Berkeley.
 
 ## Table of contents
+
 - [Tools](#tools)
     - [Python](#python)
     - [Unix & OS X basics](#unix--os-x-basics)
@@ -42,10 +45,11 @@ In this tutorial, you will install Python and learn its basics. This tutorial is
     - [Question 1: Addition](#question-1-addition)
     - [Question 2: buyLotsOfFruit function](#question-2-buylotsoffruit-function)
     - [Question 3: shopSmart function](#question-3-shopsmart-function)
-- [More References](#more-references)
+- [Going further](#going-further)
 
 ## Tools
-In order to work with Python, we encourage you to use a text editor and a terminal. Make sure to read the whole tools section before starting your installation.
+
+In order to work with Python, we encourage you to use a text editor and a terminal. Make sure to read the entire [Tools](#tools) section before starting your installation.
 
 On Unix and OS X, you can use the basic terminal while on Windows, you will use the *Anaconda prompt* (see further).
 
@@ -62,7 +66,7 @@ For Windows users, Anaconda comes with the *Anaconda prompt* that will be used a
 When you open a terminal window, you’re placed at a command prompt:
 
 ```console
-MacBook-Pro-de-Pascal:~ pascalleroy$ 
+MacBook-Pro-de-Pascal:~ pascalleroy$
 ```
 
 The prompt shows your username, the host you are logged onto, and your current location in the directory structure (your path). The tilde character is shorthand for your home directory. Note your prompt may look slightly different. To make a directory, use the `mkdir` command. Use `cd` to change to that directory:
@@ -70,7 +74,7 @@ The prompt shows your username, the host you are logged onto, and your current l
 ```console
 MacBook-Pro-de-Pascal:~ pascalleroy$ mkdir foo
 MacBook-Pro-de-Pascal:~ pascalleroy$ cd foo
-MacBook-Pro-de-Pascal:foo pascalleroy$ 
+MacBook-Pro-de-Pascal:foo pascalleroy$
 ```
 
 Use `ls` to see a listing of the contents of a directory, and `touch` to create an empty file:
@@ -81,29 +85,29 @@ MacBook-Pro-de-Pascal:foo pascalleroy$ touch hello
 MacBook-Pro-de-Pascal:foo pascalleroy$ ls
 hello
 MacBook-Pro-de-Pascal:foo pascalleroy$ cd ..
-MacBook-Pro-de-Pascal:~ pascalleroy$ 
+MacBook-Pro-de-Pascal:~ pascalleroy$
 ```
 
-Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python_tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
+Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python-tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
 ```console
-MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ ls
+MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ ls
 tutorial_code.zip
-MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ unzip tutorial_code.zip 
-MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ ls
+MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ unzip tutorial_code.zip
+MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ ls
 tutorial_code		tutorial_code.zip
-MacBook-Pro-de-Pascal:python_tutorial pascalleroy$ cd tutorial_code
+MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ cd tutorial_code
 MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
 exercises python_basics
 MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd python_basics/
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ ls
-foreach.py	
-listcomp.py	
+foreach.py
+listcomp.py
 mean.py		
 shop.py
-helloWorld.py	
-listcomp2.py	
-quickSort.py	
+helloWorld.py
+listcomp2.py
+quickSort.py
 shopTest.py
 ```
 
@@ -121,12 +125,12 @@ Some other useful Unix commands:
 ### Windows basics
 Since you are on Windows, you will use the *Anaconda prompt* that is installed with Anaconda. In this terminal, the commands are different from those of UNIX.
 
-Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python_tutorial/tutorial_code.zip)** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
+Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python-tutorial/tutorial_code.zip)** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
 
 You can find several commands to manipulate files and the current directory of your prompt in the following:
 
 - If you are not on the desired disk, you just have to type its name in the prompt:
-	
+
 ```console
 C:\Users>D:
 D:\>
@@ -151,7 +155,7 @@ The command for creating a conda environment with Python 3.6 is:
 conda create --name <env-name> python=3.6
 ```
 
-We name our environment info8006 with the following command. 
+We name our environment info8006 with the following command.
 
 ```console
 MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
@@ -160,7 +164,7 @@ MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 py
 Enter y to confirm the installation of any missing packages.
 
 #### Entering the Environment
-We do the following to enter the conda environment that we just created and to check the python version. 
+We do the following to enter the conda environment that we just created and to check the python version.
 Note that the Python version within the environment is 3.6, just what we want.
 
 ```console
@@ -183,7 +187,7 @@ Our Python version has now returned to whatever the system default is!
 
 ## Python Basics
 ### Required Files
-Following the terminal basics of your OS, you should have downloaded a zip file, extracted the content of this archive in a chosen directory and the current directory of your terminal should contains those files. 
+Following the terminal basics of your OS, you should have downloaded a zip file, extracted the content of this archive in a chosen directory and the current directory of your terminal should contains those files.
 
 ### Introduction
 
@@ -201,10 +205,10 @@ You invoke the interpreter using the command `python` at the command prompt.
 
 ```console
 (info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
-Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17) 
+Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
->>> 
+>>>
 ```
 
 ### Operators
@@ -507,7 +511,7 @@ for fruit, price in fruitPrices.items():
 In the command line, use the following command in the directory containing `foreach.py`:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py 
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py
 apples for sale
 oranges for sale
 pears for sale
@@ -609,11 +613,10 @@ That'll be 4.800000 please
 Sorry we don't have coconuts
 ```
 
-### Advanced Exercises
+#### Advanced exercises
 
-Write a `mean` function in Python. You can find two solutions in `mean.py`.
-
-Write a `quickSort` function in Python using list comprehensions. Use the first element as the pivot. You can find a solution in `quickSort.py`.
+- Write a `mean` function in Python. You can find two solutions in `mean.py`.
+- Write a `quickSort` function in Python using list comprehensions. Use the first element as the pivot. You can find a solution in `quickSort.py`.
 
 ### Object Basics
 
@@ -697,7 +700,7 @@ print("My, that's expensive!")
 This code is in `shopTest.py`; you can run it like this:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python shopTest.py 
+(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python shopTest.py
 Welcome to the Berkeley Bowl fruit shop
 1.0
 Apples cost $1.00 at the Berkeley Bowl.
@@ -758,7 +761,7 @@ In the code above, `age` is an instance variable and `population` is a static va
 This tutorial has briefly touched on some major aspects of Python that will be relevant to the course. Here are some more useful tidbits:
 
 - Use `range` to generate a sequence of integers, useful for generating traditional indexed for loops:
-	
+
 	```python
     for index in range(3):
         print(lst[index])
@@ -846,7 +849,7 @@ and others you can ignore in the directory `tools`.
 The command `python autograder.py` grades your solution to all three problems. If we run it before editing any files we get a page or two of output:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py 
+(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py
 Starting on 9-12 at 15:49:35
 
 Question q1
@@ -932,7 +935,7 @@ For each of the three questions, this shows the results of that question’s tes
 Looking at the results for question 1, you can see that it has failed three tests with the error message “add(a, b) must return the sum of a and b”. The answer your code gives is always 0, but the correct answer is different. We’ll fix that in the next tab.
 
 
-## Question 1: Addition
+### Question 1: Addition
 
 Open `addition.py` and look at the definition of `add`:
 
@@ -985,7 +988,7 @@ Total: 1/3
 
 You now pass all tests, getting full marks for question 1. Notice the new lines “Passed a=…” which appear before “*** PASS: …”. These are produced by the print statement in `add`. You can use print statements like that to output information useful for debugging.
 
-## Question 2: buyLotsOfFruit function
+### Question 2: `buyLotsOfFruit` function
 
 Add a `buyLotsOfFruit(orderList)` function to `buyLotsOfFruit.py` which takes a list of `(fruit,pound)` tuples and returns the cost of your list. If there is some `fruit` in the list which doesn’t appear in `fruitPrices` it should print an error message and return `None`. Please do not change the `fruitPrices` variable.
 
@@ -993,7 +996,7 @@ Run `python autograder.py` until question 2 passes all tests and you get full ma
 
 `Cost of [('apples', 2.0), ('pears', 3.0), ('limes', 4.0)] is 12.25`
 
-## Question 3: shopSmart function
+### Question 3: `shopSmart` function
 
 Fill in the function `shopSmart(orders,shops)` in `shopSmart.py`, which takes an `orderList` (like the kind passed in to `FruitShop.getPriceOfOrder`) and a list of `FruitShop` and returns the `FruitShop` where your order costs the least amount in total. Don’t change the file name or variable names, please.
 
@@ -1014,8 +1017,9 @@ shops = [shop1, shop2]
 and `test_cases/q3/select_shop2.test` tests whether: `shopSmart.shopSmart(orders2, shops) == shop2`
 
 
-## More References
-There are other (more complete) python tutorials:
-- [Official python tutorial](https://docs.python.org/3.6/tutorial/)
-- [w3school](https://www.w3schools.com/python/default.asp)
-- [tutorialspoint](https://www.tutorialspoint.com/python/index.htm)
+## Going further
+
+For more documentation and tutorials about Python, we recommend the following references:
+- [Official Python tutorial](https://docs.python.org/3.6/tutorial/)
+- [W3School](https://www.w3schools.com/python/default.asp)
+- [Tutorialspoint](https://www.tutorialspoint.com/python/index.htm)
