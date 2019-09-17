@@ -1,16 +1,7 @@
-\documentclass[a4paper, 10pt]{article}
+\documentclass[9pt,a4paper]{extarticle}
 
-\usepackage{vmargin}
+\usepackage[margin=5em,bottom=8em]{geometry}
 
-\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
-%1 est la marge gauche
-%2 est la marge en haut
-%3 est la marge droite
-%4 est la marge en bas
-%5 fixe la hauteur de l'entête
-%6 fixe la distance entre l'entête et le texte
-%7 fixe la hauteur du pied de page
-%8 fixe la distance entre le texte et le pied de page
 %------------------------------Packages généraux------------------------------
 
 \usepackage[english]{babel}
@@ -104,31 +95,36 @@ showstringspaces=false}
 \let\cleardoublepage\clearpage
 
 \usepackage{hyperref}
-               
+
  \hypersetup{
     colorlinks = true,
     linkcolor=black,
     urlcolor = black
     }
+
+\title{{\bf INFO8006 Introduction to Artificial Intelligence}\\[1em]
+Exercises 1: Solving problems by searching}
+
+\author{}
+\date{}
+
 %------------------------------Début du document------------------------------
 \begin{document}
-%------------------------------Page de garde------------------------------
+\maketitle
+\vspace{-4em}
 
-  % \frontmatter
-  %\tableofcontents
-   \newpage
-   \setcounter{page}{1}
-   %%%%%%%%% TP 1 %%%%%%%%%%%
-   \section{Solving problems by searching (11/10/2018)}
-   \subsection{Objectives}
-   At the end of this exercise session you should be able to:
-   \begin{itemize}
-       \item Define rigorously what is a "Search Problem".
-       \item Theoretically (COST\footnote{Completeness-Optimality-Space Complexity-Time Complexity}) analyse the algorithms to do uninformed (Depth-first, Breadth-first, Uniform-cost) and informed (Greedy-search, A-star) search.
-       \item Be able to apply each of these algorithms on any search problem define in a fully observable and deterministic environment.
-   \end{itemize}
-   \subsection{Exercises}
-   \subsubsection{Search algorithms ($\approx$ 35 min)}
+\section*{Objectives}
+At the end of this exercise session you should be able to:
+\begin{itemize}
+   \item define rigorously what is a "Search Problem".
+   \item theoretically analyse the algorithms to perform uninformed (Depth-first, Breadth-first, Uniform-cost) and informed (Greedy-search, A-star) search.
+   \item apply each of these algorithms on any search problem defined in a fully observable and deterministic environment.
+\end{itemize}
+
+\section*{Exercises}
+
+\subsection{(1) Search algorithms ($\approx$ 35 min)}
+
    \begin{tikzpicture}[
             -> = stealth, % arrow head style
             %shorten > = 1pt, % don't touch arrow head to node
@@ -164,8 +160,9 @@ showstringspaces=false}
 
         %\draw[red, dashed] (1, 2) -- (1, -2);
     \end{tikzpicture}
-    \\
+
     For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
+
     \begin{enumerate}
         \item Depth-First
         \item Breadth-First
@@ -173,14 +170,16 @@ showstringspaces=false}
         \item Greedy
         \item A-Star (Is the heuristic admissible?)
     \end{enumerate}
-   \subsubsection{Maze Car ($\approx$ 25 min)}
-   %The project RAGI aims at building an agent,	
-%meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,	
-%in	a	smart	way. 
+
+\subsection{(2) Maze Car ($\approx$ 25 min)}
+   %The project RAGI aims at building an agent,
+%meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,
+%in	a	smart	way.
    %Imagine a car-like agent wishes to guide a visitor to Professor Louppe's office a maze like the one shown below:
-Imagine a car-like agent wishes to exit a maze like the one shown below:
+Imagine a car-like agent that wishes to exit a maze like the one shown below:
 \\
-\includegraphics[scale=1]{figures/tp1_maze.png}\\
+\includegraphics[scale=1]{figures/tp1_maze.png}
+
 The agent is directional and at all times faces some direction d $\in$ (N, S, E, W). With a single action, the agent
 can either move forward at an adjustable velocity v or turn. The turning actions are left and right, which change
 the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero).
@@ -192,10 +191,11 @@ on the exit square using as few actions (time steps) as possible.
 As an example: if the agent shown were initially stationary, it might first turn to the east using (right), then
 move one square east using fast, then two more squares east using fast again. The agent will of course have to
 slow to turn.
+
 \begin{itemize}
     \item Quizz ($\approx 15$ minutes):
     \begin{enumerate}
-    \item If the grid is M by N, what is the size of the state space? You should assume that all configurations are reachable from the start state. 
+    \item If the grid is M by N, what is the size of the state space? You should assume that all configurations are reachable from the start state.
     \item What is the maximum branching factor of this problem? You may assume that illegal actions are simply not returned by the successor function.
     \item Is the Manhattan distance from the agent’s location to the exit’s location admissible?
     \item If we used an inadmissible heuristic in A* tree search, could it change the completeness of the search?
@@ -207,7 +207,10 @@ slow to turn.
         \item Give a general advantage that an inadmissible heuristic might have over an admissible one.
     \end{enumerate}
 \end{itemize}
-   \subsection{Supplementary material}
+
+
+\section{Supplementary materials}
    \url{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}\\
    \url{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}\\
+
 \end{document}

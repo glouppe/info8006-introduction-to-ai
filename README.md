@@ -12,8 +12,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 | Date | Topic |
 | --- | --- |
-| September 19 | [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/outline.pdf)]<br>Lecture 0: Introduction to artificial intelligence<br>Lecture 1: Intelligent agents<br>Tutorial: [Introduction to Python](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial) |
-| September 26 | Lecture 2: Solving problems by searching<br>Exercises 1: Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/tp1.pdf)] <br>Project 1 announcement |
+| September 19 | [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/outline.pdf)]<br>Lecture 0: [Introduction to artificial intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf)]<br>Lecture 1: Intelligent agents<br>Tutorial: [Introduction to Python](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial) |
+| September 26 | Lecture 2: Solving problems by searching<br>Exercises 1: Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises1.pdf)] <br>Project 1 announcement |
 | October 3 | Q&A and guidance for project 1 |
 | October 10 | Lecture 3: Constraint satisfaction problems<br>Exercises 2: Constraint satisfaction problems |
 | October 13 | Project 1 deadline |

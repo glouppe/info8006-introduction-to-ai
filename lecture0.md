@@ -51,12 +51,12 @@ class: middle
 ]
 
 Edsger Dijkstra: .italic[What do you work on?]<br>
-Leslie Valiant (very proudly): .italic[Aritificial Intelligence.]<br>
+Leslie Valiant (very proudly): .italic[Artificial Intelligence.]<br>
 Edsger Dijkstra: .italic[Why don't you work first on the .bold["Intelligence"] part?]
 
 ???
 
--> On évacue le terme 'artificielle'
+-> No more "artificial"
 
 ---
 
@@ -75,7 +75,7 @@ sciences to aim at moving targets." -- Marvin Minsky]
 
 ???
 
--> On évacue le terme 'intelligence'
+-> No more "intelligence"
 
 ---
 
@@ -134,7 +134,7 @@ a computer.
 
 ???
 
-- The Turing test is an *operational* definition of intelligence.
+The Turing test is an *operational* definition of intelligence.
 
 ---
 
@@ -208,10 +208,10 @@ The SOAR architecture is both:
 
 class: middle
 
-## Neuroscience
+## Neurobiology and neuroscience
 
 Study of the anatomy and physiology of neural tissue.
-- Neurobiology is concerned with the the anatomy and physiology of the brain, from major structures down to neurons and molecules.
+- Neurobiology is concerned with the the *anatomy and physiology of the brain*, from major structures down to neurons and molecules.
 - Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
 
 .center.width-50[![](figures/lec0/brain.png)]
@@ -243,10 +243,11 @@ with **innate knowledge** for representing language.
 ]
 ]
 
-???
-
 Therefore, it may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
+
+???
+
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
 
@@ -365,10 +366,10 @@ class: middle
 
 # Acting rationally
 
-A **rational agent** acts so as to achieve the best (expected) outcome.
+A **rational agent** acts so as to achieve the *best expected* outcome.
 - Correct logical inference is just one of several possible mechanisms for achieving this goal.
 - Perfect rationality cannot be achieved due to computational limitations!
-  The amount of reasoning is adjusted according to available resources and importance of the result.
+  - The amount of reasoning is adjusted according to available resources and importance of the result.
 - The brain is good at making rational decisions but not perfect either.
 
 ---
