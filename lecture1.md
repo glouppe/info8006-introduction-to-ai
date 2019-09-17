@@ -11,7 +11,6 @@ Prof. Gilles Louppe<br>
 ???
 
 R: go over the Intelligent agents part, formalize a bit more.
-R: change this silly vacuum cleaner agent to something more fun --> replace by Pacman 2-cell grid
 R: draw the agent diagrams in draw.io
 
 ---
@@ -46,43 +45,42 @@ class: middle
 
 class: middle
 
-## Vacuum-cleaner world
+## Simplified Pacman world
 
-.width-60.center[![](figures/lec1/vacuum2-environment.svg)]
+.width-40.center[![](figures/lec1/pacman.png)]
 
-- Percepts: location and content, e.g. $[A, \text{Dirty}]$
-- Actions: $\text{Left}, \text{Right}, \text{Suck}, \text{NoOp}$
+- Percepts: location and content, e.g. $(\text{left cell}, \text{no food})$
+- Actions: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
 
 ---
 
 class: middle
 
-## A vacuum-cleaner agent
+## Pacman agent
 
-Partial tabulation of a simple vacuum-cleaner agent function:
+Partial tabulation of a simple Pacman agent function:
 
 | Percept sequence | Action |
 | ---------------- | ------ |
-| $[A, \text{Clean}]$     | $\text{Right}$ |
-| $[A, \text{Dirty}]$     | $\text{Suck}$ |
-| $[B, \text{Clean}]$     | $\text{Left}$ |
-| $[A, \text{Dirty}]$     | $\text{Suck}$ |
-| $[A, \text{Clean}], [A, \text{Clean}]$     | $\text{Right}$ |
-| $[A, \text{Clean}], [A, \text{Dirty}]$     | $\text{Suck}$ |
+| $(\text{left cell}, \text{no food})$     | $\text{go right}$ |
+| $(\text{left cell}, \text{food})$     | $\text{eat}$ |
+| $(\text{right cell}, \text{no food})$     | $\text{go left}$ |
+| $(\text{left cell}, \text{food})$     | $\text{eat}$ |
+| $(\text{left cell}, \text{no food}), (\text{left cell}, \text{no food})$     | $\text{go right}$ |
+| $(\text{left cell}, \text{no food}), (\text{left cell}, \text{food})$     | $\text{eat}$ |
 | (...) | (...) |
 
 ---
 
 class: middle
 
-## The optimal vacuum-cleaner?
+## The optimal Pacman?
 
 What is the **right** agent function?
-
-How to formulate the *goal* of the vacuum-cleaner agent?
-- 1 point per square cleaned up at time $t$?
-- 1 point per clean square per time step, minus one per move?
-- penalize for $>k$ dirty squares?
+How to formulate the *goal* of Pacman?
+- 1 point per food collected up to time $t$?
+- 1 point per food collected up to time $t$, minus one per move?
+- penalize when too many foods are left not collected?
 
 Can it be implemented in a *small* agent program?
 
