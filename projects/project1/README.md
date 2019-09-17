@@ -3,6 +3,7 @@
 
 
 
+
 # Project I
 
 ## Table of contents
@@ -16,27 +17,32 @@
 
 ## Deliverables
 
-You're expected to produce the following deliverables: a *tar.gz* archive containing:
- - Your report named `report.pdf`. This must be at most 5 pages long. 
+You're expected to produce a *tar.gz* archive containing:
+ - Your report named `report.pdf`. This must be at most 5 pages long and based on the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex). 
+	 - Your report must be at most 5 pages long.
+	 - Fill the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex) to write your report.
  - Your `astar.py` file containing your implementation of A\* algorithm.
+	 - Put the class template inside `pacmanagent.py` to `astar.py` and fill the `get_action` function.
  - Your `bfs.py` file containing your implementation of BFS algorithm.
+	 - Put the class template inside `pacmanagent.py` to `bfs.py` and fill the `get_action` function.
+	 - Your implementation of BFS should only differ from A\* by its cost function and heuristic.
 
-Note that your implementation of BFS algorithm should only differ from A\* by its cost function and heuristic. 
+:warning: A penalty of **2 point** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
 
 ## Instructions
 
-This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline. The following instructions are divided into different questions. You're asked to follow this subdivision in your report. To do so, a [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/project1/template-project1.tex) is provided.
+This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 
-In this first part of the project, only food dots are in the maze. No ghost is present.
+In this first part of the project, only food dots and Pacman are in the maze.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
-To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file dfs.py. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minut before the deadline. We have fixed most of the bugs but we might have left one of them. Please answer the appropriate question to tell us where the error was in the code, and how you have fixed it. Do not submit at all the DFS source code, tough. Once you have corrected the mistake, you can test this implementation of DFS using the following instruction once your Pacman environment has been activated:
+To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file dfs.py. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minut before the deadline. We have fixed most of the bugs but we might have left one of them. Please answer the appropriate question to tell us where the error was in the code, and how you have fixed it. Do not submit at all the DFS source code, though. Once you have fixed the implementation and activated your Pacman environment (see our [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial#creating-a-conda-environment)), you can test DFS algorithm using the following commands:
 ```bash
 python run.py --agentfile dfs.py --layout medium
 ```
-When you want to test one of your implementation, just replace the script parameter `dfs.py` by the name of the file of the agent you want to test. If you want to explore more Pacman configurations, you can refer to [Usage section](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/README.md#usage)
+When you want to test one of your implementation, just replace the script parameter `dfs.py` by the name of the file of the agent you want to test. Refer to [Usage section](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#usage) for more details about the game parameters.
 
 You are asked to answer the following questions:
  1. **Problem statement**
@@ -53,7 +59,7 @@ You are asked to answer the following questions:
 			 
 		Any **reference to the API** in any component of the problem statement will be considered as **wrong**.
  2.  **Implementation**
-	  - 2.a. - **0.5 point** - Identify the implementation error in dfs. Explain its impact and how to fix it. We do not ask you to submit the fixed version of DFS.
+	  - 2.a. - **0.5 point** - Identify the implementation error in dfs. Explain its impact and how to fix it. Do not submit the fixed version of DFS.
 	  - 2.b. - **4 points** - Implement A\* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
 	 
 		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
@@ -61,11 +67,11 @@ You are asked to answer the following questions:
 		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
 		 - You may want to have a look at the file `util.py` in order find a suitable data structure for the exploration of the game tree.
 	
-		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path that maximizes the game score. 
+		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path maximizing the game score. 
 		
 	  - 2.c. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
 	  - 2.d. - **0.5 point** - **Show** that your *h(n)* is **admissible**.
-	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) from your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If implementation errors are due to the implementation of A\*, these will not be taken into account for this question.
+	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) from your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are      errors in the implementation of A\*, these will not be penalised for this question.
 	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1** 
 	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plots in terms of:
@@ -106,7 +112,7 @@ For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), 
 
 Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be evaluated considering the following criteria:
 
- - Presence : your resulting grade will be half the ratio between the provided and expected number of relevant bars.
+ - Presence: your resulting grade will be half the ratio between the provided and expected number of relevant bars.
  - Readability: Each bar that is not clearly readable/identifiable will be considered as not provided.
  - Scale: All the bars on each plot that is not correctly scaled will be considered as not provided.
 
@@ -119,22 +125,22 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 	 - 0 point: too slow (>10 seconds).
  
  - **Code style** - **2 points**
-	 - **PEP8 compatibility** - **0.9 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
-		 - 0.9 point : the script runs without error.
+	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+		 - 0.8 point : the script runs without error.
 		 - 0 point: any error during the execution of the script.
-	 - **Specification** - **1.1 point** - correctness of the specification of your functions.
-		- 1.1 point : all specifications are correct.
-		- 0.825 point : at least 75% correct specifications.
-		- 0.55 point : at least 50% correct specifications.
-		- 0.275 point : at least 25% correct specifications.
+	 - **Specification** - **1.2 point** - correctness of the specification of your functions.
+		- 1.2 point : all specifications are correct.
+		- 0.9 point : at least 75% correct specifications.
+		- 0.6 point : at least 50% correct specifications.
+		- 0.3 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
 
 
-Take care of providing a clearly structured and commented source code. We reserve the right to refuse to evaluate a source code (i.e. to consider it entirely wrong), despite its possible correctness, which is difficult to read and understand, e.g. because of a lack of structure/documentation such that it is difficult to catch the semantics of your implementation. 
+Take care of providing a clearly structured and commented source code. We reserve the right to refuse to evaluate a source code (i.e. to consider it entirely wrong), which would be difficult to read and understand despite its possible correctness. 
 
-In the same way, take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which is difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right.
+In the same way, take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which would be difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right.
 
-We have written a [Typical mistakes and bad practices](https://github.com/glouppe/info8006-introduction-to-ai/blob/modif_projets/projects/README.md#typical-mistakes-and-bad-practices) section to help you to provide a working source code of good quality.
+We have written a [Typical mistakes and bad practices](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#typical-mistakes-and-bad-practices) section to help you to provide a working source code of good quality.
 
 Sanctions will be imposed in case of non-respect of the guidelines about the structure and length of the report:
 
