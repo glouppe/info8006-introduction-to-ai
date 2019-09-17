@@ -1,7 +1,17 @@
 \documentclass[9pt,a4paper]{extarticle}
 
-\usepackage[margin=5em,bottom=8em]{geometry}
 
+	\usepackage[margin=5em,bottom=8em]{geometry}
+
+
+%1 est la marge gauche
+%2 est la marge en haut
+%3 est la marge droite
+%4 est la marge en bas
+%5 fixe la hauteur de l'entête
+%6 fixe la distance entre l'entête et le texte
+%7 fixe la hauteur du pied de page
+%8 fixe la distance entre le texte et le pied de page
 %------------------------------Packages généraux------------------------------
 
 \usepackage[english]{babel}
@@ -10,7 +20,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage{scrextend}
 \usepackage{hyperref}
-
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
 %-------------------------Mathématiques------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -33,98 +47,64 @@
 \usepackage{pgf, tikz}
 \usetikzlibrary{arrows, automata}
 %\usepackage{slashbox}
-%------------------------------Syntaxe------------------------------
-
-\usepackage{listings}
-\lstloadlanguages{Matlab}
-
-\def\refmark#1{\hbox{$^{\ref{#1}}$}}
-\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
-\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
-
-%------------------------------Inclure code MatLab------------------------------
-
-\usepackage{listings}
-\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
-\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
 
 %------------------Sub-sections--------%
 \usepackage{titlesec}
 \usepackage{hyperref}
-
-\renewcommand\thesubsubsection{\alph{subsubsection}}
-
-\titleclass{\subsubsubsection}{straight}[\subsubsection]
-
-\newcounter{subsubsubsection}[subsubsection]
-\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
-
-\titleformat{\subsubsubsection}
-  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
-\titlespacing*{\subsubsubsection}
-{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
-
-\makeatletter
-% on fixe le langage utilisé
-\lstset{language=matlab}
-\edef\Motscle{emph={\lst@keywords}}
-\expandafter\lstset\expandafter{%
-  \Motscle}
-\makeatother
-
-
-\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
-
-\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
-basicstyle=\styleC,
-keywordstyle=\ttfamily,
-commentstyle=\color{Ggris}\styleD, % commentaire en gris
-numberstyle=\tiny\color{red},
-numbers=left,
-numbersep=10pt,
-lineskip=0.7pt,
-showstringspaces=false}
-%  % inclure le fichier source
-\newcommand{\FSource}[1]{%
-\lstinputlisting[texcl=true]{#1}
-}
-
-\usepackage[section]{placeins}
-
-\let\cleardoublepage\clearpage
+\usepackage{comment}
 
 \usepackage{hyperref}
-
+               
  \hypersetup{
     colorlinks = true,
     linkcolor=black,
     urlcolor = black
     }
+    
+\newenvironment{solution}
+    {%\begin{center}
+    %\begin{tabular}{|p{0.9\textwidth}|}
+    %\hline\\
+    \color{red}
+    }
+    { 
+    %\\\\\hline
+    %\end{tabular} 
+    %\end{center}
+    \color{black}
+    }
+    
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+
+\newif\ifhideproofs
+\hideproofstrue %uncomment to hide proofs
+
+\ifhideproofs
+\usepackage{environ}
+\NewEnviron{hide}{}
+\let\solution\hide
+\let\endsolution\endhide
+\fi
 
 \title{{\bf INFO8006 Introduction to Artificial Intelligence}\\[1em]
 Exercises 1: Solving problems by searching}
-
-\author{}
-\date{}
-
 %------------------------------Début du document------------------------------
 \begin{document}
 \maketitle
 \vspace{-4em}
+%------------------------------Page de garde------------------------------
 
-\section*{Objectives}
-At the end of this exercise session you should be able to:
+  \section*{Objectives}
+  At the end of this exercise session you should be able to:
 \begin{itemize}
    \item define rigorously what is a "Search Problem".
    \item theoretically analyse the algorithms to perform uninformed (Depth-first, Breadth-first, Uniform-cost) and informed (Greedy-search, A-star) search.
    \item apply each of these algorithms on any search problem defined in a fully observable and deterministic environment.
 \end{itemize}
 
-\section*{Exercises}
-
-\subsection{(1) Search algorithms ($\approx$ 35 min)}
-
+   \section*{Exercises}
+   \subsection*{(1) Search algorithms ($\approx$ 60 min)}
    \begin{tikzpicture}[
             -> = stealth, % arrow head style
             %shorten > = 1pt, % don't touch arrow head to node
@@ -160,26 +140,104 @@ At the end of this exercise session you should be able to:
 
         %\draw[red, dashed] (1, 2) -- (1, -2);
     \end{tikzpicture}
-
+    \\
     For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 
     \begin{enumerate}
-        \item Depth-First
+        \item Depth-First 
+        %\begin{comment}
+        %coccu
+        %\end{comment}
+        \begin{solution}
+        \\
+        Expansion: S, A, B, D, Goal \\
+        Path: S -> A -> B -> D -> G \\
+        Step-by-step:
+        \begin{itemize}
+            \item Heap = \{S\}; Expand(S); Path = S
+            \item Heap = \{A, B, C\}; Expand(A); Path = S -> A
+            \item Heap = \{B(A), B(S), C\}; Expand(B); Path = S -> A -> B
+            \item Heap = \{D, E, C\}; Expand(D); Path = S -> A -> B -> D
+            \item Heap = \{Goal, E, C\}; Expand(Goal); Path = S -> A -> B -> D -> Goal
+        \end{itemize}
+        \end{solution}
         \item Breadth-First
+        \begin{solution}
+        \\
+        Expansion: S, A, B, C, D, E, Goal \\
+        Path: S -> B -> D -> Goal \\
+        Step-by-step:
+        \begin{itemize}
+            \item Heap = \{S\}; Expand(S); Path = S
+            \item Heap = \{A, B, C\}; Expand(A); Path = S -> A
+            \item Heap = \{B(S), C, B(A)\}; Expand(B); Path = S -> B
+            \item Heap = \{C, B(A), D, E\}; Expand(C); Path = S -> C
+            \item Heap = \{B(A), D, E, B(C)\}; Expand(B), B is already expanded so we drop it.
+            \item Heap = \{D, E, B(C)\}; Expand(D); Path = S -> B ->D
+            \item Heap = \{E, B(C), Goal\}; Expand(E); Path = S -> B -> E
+            \item Heap = \{B(C), Goal(D), Goal(E)\}; Expand(B), B is already expanded so we drop it.
+            \item Heap = \{Goal(D), Goal(E)\}; Expand(Goal); Path = S -> B -> D -> Goal
+        \end{itemize}
+        \end{solution}
         \item Uniform-Cost
+        \begin{solution}
+        \\
+        Expansion: S, A, C, B, D, E, Goal\\
+        Path: S -> B -> D -> Goal\\
+        Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
+        \begin{itemize}
+            \item P-Queue = \{S(0, None)\}; Expand(S); Path = S
+            \item P-Queue = \{A(1, S), C(3, S), B(4, S)\}; Expand(A); Path = S -> A
+            \item P-Queue = \{C(3, S), B(4, S), \blue{B(6, A)}\}; Expand(C); Path = S -> C
+            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
+            \item P-Queue = \{B(4, S), \blue{B(5, C)}\}; Expand(B); Path = S -> B
+            \item P-Queue = \{D(9, B), E(9, B)\}; Expand(D); Path = S -> B -> D
+            \item P-Queue = \{E(9, B), Goal(19, D)\}; Expand(E); Path = S -> B -> E
+            \item P-Queue = \{Goal(19, D), \blue{Goal(29, B)}\}; Expand(Goal); Path = S -> B -> D -> Goal
+        \end{itemize}
+        \end{solution}
         \item Greedy
+        \begin{solution}
+        \\
+        Expansion: S, C, B, E, Goal\\
+        Path: S -> B -> E -> Goal\\
+        Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
+        \begin{itemize}
+            \item P-Queue = \{S(inf, None)\}; Expand(S); Path = S
+            \item P-Queue = \{C(10, S), B(12, S), A(20, S)\}; Expand(C); Path = S -> C
+            \item P-Queue = \{B(12, S), A(20, S), \blue{B(12, C)}\}; Expand(B); Path = S -> B
+            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
+            \item P-Queue = \{E(19, B), A(20, S), D(25, B), \blue{A(20, B)}\}; Expand(E); Path = S -> B -> E
+            \item P-Queue = \{Goal(0, E), A(20, S), D(25, B)\}; Expand(Goal); Path = S -> B -> E -> Goal
+        \end{itemize}
+        \end{solution}
         \item A-Star (Is the heuristic admissible?)
+        \begin{solution}
+        \\
+        We notice that the heuristic is not admissible. We can make it so, by changing the heuristic at D by $h=9$.
+        \\
+        Expansion: S, C, B, D, Goal\\
+        Path: S -> B -> D -> Goal\\
+        Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
+        \begin{itemize}
+            \item P-Queue = \{S(inf, None)\}; Expand(S); Path = S
+            \item P-Queue = \{C(13, S), B(16, S), A(21, S)\}; Expand(C); Path = S -> C
+            \item P-Queue = \{B(12, S), A(20, S), \blue{B(17, C)}\}; Expand(B); Path = S -> B
+            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
+            \item P-Queue = \{D(18, B), E(28, B), A(20, S), \blue{A(29, B)}\}; Expand(D); Path = S -> B -> D
+            \item P-Queue = \{Goal(19, D), E(28, B), A(20, S)\}; Expand(Goal); Path = S -> B -> D -> Goal
+        \end{itemize}
+        \end{solution}
     \end{enumerate}
-
-\subsection{(2) Maze Car ($\approx$ 25 min)}
-   %The project RAGI aims at building an agent,
-%meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,
-%in	a	smart	way.
+   \subsection*{(2) Maze Car ($\approx$ 25 min)}
+   %The project RAGI aims at building an agent,	
+%meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,	
+%in	a	smart	way. 
    %Imagine a car-like agent wishes to guide a visitor to Professor Louppe's office a maze like the one shown below:
-Imagine a car-like agent that wishes to exit a maze like the one shown below:
+This exercice is taken from \url{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}.\\
+Imagine a car-like agent wishes to exit a maze like the one shown below:
 \\
-\includegraphics[scale=1]{figures/tp1_maze.png}
-
+\includegraphics[scale=1]{figures/tp1_maze.png}\\
 The agent is directional and at all times faces some direction d $\in$ (N, S, E, W). With a single action, the agent
 can either move forward at an adjustable velocity v or turn. The turning actions are left and right, which change
 the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero).
@@ -191,26 +249,193 @@ on the exit square using as few actions (time steps) as possible.
 As an example: if the agent shown were initially stationary, it might first turn to the east using (right), then
 move one square east using fast, then two more squares east using fast again. The agent will of course have to
 slow to turn.
-
 \begin{itemize}
     \item Quizz ($\approx 15$ minutes):
     \begin{enumerate}
-    \item If the grid is M by N, what is the size of the state space? You should assume that all configurations are reachable from the start state.
+    \item If the grid is M by N, what is the size of the state space? You should assume that all configurations are reachable from the start state. 
+    \begin{solution}
+    \\
+    $N \times M \times 4 \times (V_{max} + 1)$
+    \end{solution}
     \item What is the maximum branching factor of this problem? You may assume that illegal actions are simply not returned by the successor function.
+    \begin{solution}
+    \\
+    The maximum branching factor is 3, and this happens when the agent is stationary. While stationary it
+    can take the following 3 actions - fast, left, right.
+    \end{solution}
     \item Is the Manhattan distance from the agent’s location to the exit’s location admissible?
+    \begin{solution}
+    \\
+    No because it could overestimate the true cost in the case where the average car speed is greater than 1.
+    \end{solution}
     \item If we used an inadmissible heuristic in A* tree search, could it change the completeness of the search?
+    \begin{solution}\\
+    No, A star will still find a final state if there exists a reachable one.
+    \end{solution}
     \item If we used an inadmissible heuristic in A* tree search, could it change the optimality of the search?
+    \begin{solution}\\
+    Yes, we could stop the search whereas there exists a better solution.
+    \end{solution}
     \end{enumerate}
     \item Discussion (if time permits) ($\approx 10$ minutes):
     \begin{enumerate}
         \item State and justify a non-trivial admissible heuristic for this problem.
+        \begin{solution}\\
+        Some examples of admissible heuristics are:
+        \begin{itemize}
+            \item The Manhattan distance divided by the speed max.
+            \item We can improve the above relaxation by accounting for the deceleration dynamics. In this case the
+agent will have to slow down to 0 when it is about to reach the goal. Note that this heuristic will
+always return a greater value than the previous one, but is still not an overestimate of the true cost
+to reach the goal. We can say that this heuristic dominates the previous one
+        \end{itemize}
+        \end{solution}
         \item Give a general advantage that an inadmissible heuristic might have over an admissible one.
+        \begin{solution}
+        \\
+        The time to solve an A* tree search problem is a function of two factors: the number of nodes expanded,
+and the time spent per node.
+An inadmissible heuristic may be faster to compute, leading to a solution that is obtained faster due to
+less time spent per node. It can also be a closer estimate to the actual cost function (even though at times
+it will overestimate!), thus expanding less nodes.
+We lose the guarantee of optimality by using an inadmissible heuristic. But sometimes we may be okay
+with finding a suboptimal solution to a search problem.
+        \end{solution}
     \end{enumerate}
 \end{itemize}
+\section*{Supplementary exercises}
+\subsection*{(1) Heuristic}
+Consider a search problem where all edges have cost 1 and the optimal solution has cost C. Let h be a heuristic which is max\{$h^* - k$, 0\}, where $h^*$ is the actual cost to the closest goal and k is a nonnegative constant.
+\begin{enumerate}
+    \item Is $h$ admissible?
+    \begin{solution}
+    \\
+    Yes.
+    \end{solution}
+    \item Which of the following is the most reasonable description of how much more work will be done (= how many more nodes will be expanded) with heuristic h compared to $h^\star$ , as a function of k?
+    \begin{enumerate}
+        \item Constant in k
+        \item Linear in k
+        \item Exponential in k
+        \item Unbounded
+    \end{enumerate}
+    \begin{solution}
+    %\\
+    Exponential in k. At k = 0, only the d nodes on an optimal path to the closest goal are expanded for search depth (= optimal path length) d. At k = max(h), the problem reduces to uninformed search and BFS expands b d nodes for branching factor b. In general, all nodes within distance k of the closest goal will have heuristic h = 0 and uninformed search may expand them. Note that search reduces to BFS since A* with h = 0 is UCS and in this search problem all edges have cost 1 so path cost = path length
+    \end{solution}
+\end{enumerate}
+\subsection*{(2) Search algorithms}
+\begin{tikzpicture}[
+            -> = stealth, % arrow head style
+            %shorten > = 1pt, % don't touch arrow head to node
+            auto,
+            node distance = 3cm, % distance between nodes
+            semithick % line style
+        ]
 
+        \tikzstyle{every state}=[
+            draw = black,
+            thick,
+            fill = white,
+            minimum size = 12mm
+        ]
 
-\section{Supplementary materials}
+        \node[state, align=center] (S) {Start};
+        \node[state, align=center] (A) [above right of=S] {A};
+        \node[state, align=center] (B) [right of=A] {B};
+        \node[state, align=center] (C) [below of=B] {C};
+        \node[state, align=center] (D) [below right of=B] {D};
+        \node[state, align=center] (G) [below of=D] {G};
+
+        \path[-] (S) edge node {1} (A);
+        \path[-] (S) edge node {12} (G);
+        \path[-] (A) edge node {3} (B);
+        \path[-] (A) edge node {1} (C);
+        \path[-] (B) edge node {3} (D);
+        \path[-] (C) edge node {1} (D);
+        \path[-] (C) edge node {2} (G);
+        \path[-] (D) edge node {3} (G);
+
+        %\draw[red, dashed] (1, 2) -- (1, -2);
+    \end{tikzpicture}\\
+For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
+\begin{enumerate}
+    \item Depth-First
+    \begin{solution}
+    \\
+    Expansion: S-A-B-D-C-G\\
+    Path: S->A->B->D->C->G
+    \end{solution}
+    \item Breadth-First
+    \begin{solution}
+    \\
+    Expansion: S-A-G\\
+    Path: S->G
+    \end{solution}
+    \item Uniform-Cost
+    \begin{solution}
+    \\
+    Expansion: S-A-C-D-B-G\\
+    Path: S->A->C->G
+    \end{solution}
+    \item Consider the following heuristics:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|c|c|c|}
+        \hline
+            State & h1 & h2 \\ \hline
+            S & 5 & 4\\ \hline
+            A & 3 & 2\\ \hline
+            B & 6 & 6\\ \hline
+            C & 2 & 1\\ \hline
+            D & 3 & 3\\ \hline
+            G & 0 & 0\\ \hline
+        \end{tabular}
+        \caption{2 possible heuristics}
+        \label{tab:my_label}
+    \end{table}
+    Which one is not admissible? Why?
+    \begin{solution}
+    \\
+    h1 is not admissible because the real cost from S to G is 4 which smaller than 5.
+    \end{solution}
+    \item Use the admissible algorithm to apply A* algorithm
+    \begin{solution}
+    \\
+    Expansion: S-A-C-G
+    Path: S->A->C->G
+    \end{solution}
+\end{enumerate}
+\subsection*{(3) The hive}
+The hive of insects needs your help. You control an insect in a rectangular maze-like environment
+with dimensions M x N, as shown on \ref{fig:hive}. At each time step,
+the insect can move into a free adjacent square or stay in its current
+location. All actions have cost 1. \\
+In this particular case, the insect must pass through a series of partially
+flooded tunnels. Flooded squares are lightly shaded in the example map
+shown. The insect can hold its breath for A time steps in a row. Moving
+into a flooded square requires your insect to expend 1 unit of air, while
+moving into a free square refills its air supply.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.2 \textwidth]{figures/hive.png}
+    \caption{}
+    \label{fig:hive}
+\end{figure}
+\begin{itemize}
+    \item Give a minimal state space for this problem (i.e. do not include extra information). You should
+answer for a general instance of the problem, not the specific map shown
+\begin{solution}
+\\
+The position of the insect  as well as the number of unit of air it has left. $s = (x, y, u_a) \in \{1, \hdots, M\} \times \{1, \hdots N\} \times \{1, \hdots, A\}$.
+\end{solution}
+    \item Give the size of your state space.
+    \begin{solution}
+    \\
+    $M\times N \times A$ 
+    \end{solution}
+\end{itemize}
+   \section*{Supplementary material}
    \url{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}\\
    \url{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}\\
-
 \end{document}
