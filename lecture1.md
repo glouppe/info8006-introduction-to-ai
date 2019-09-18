@@ -52,6 +52,10 @@ class: middle
 - Percepts: location and content, e.g. $(\text{left cell}, \text{no food})$
 - Actions: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
 
+???
+
+Take the time to explain that the game is here different from the actual Pacman.
+
 ---
 
 class: middle
@@ -209,6 +213,12 @@ A *table-driven agent* determines its next action with a lookup table that conta
 <br><br>
 .center.width-80[![](figures/lec1/simple-reflex-agent.svg)]
 
+???
+
+Solution to huge tables: forget about the past!
+
+Compress them using condition-action rules.
+
 
 
 ---
@@ -233,6 +243,12 @@ class: middle
 <br><br>
 .center.width-80[![](figures/lec1/model-based-reflex-agent.svg)]
 
+???
+
+Solution: do not actually forget about the past. Remember what you have seen so far by maintaining an internal representation of the world, a belief state.
+
+Then map this state to an action.
+
 ---
 
 class: middle
@@ -250,6 +266,10 @@ class: middle
 
 <br><br>
 .center.width-80[![](figures/lec1/goal-based-agent.svg)]
+
+???
+
+It is not easy to map a state to an action because goals are not explicit in condition-action rules.
 
 ---
 
@@ -271,6 +291,10 @@ class: middle
 
 <br><br>
 .center.width-80[![](figures/lec1/utility-based-agent.svg)]
+
+???
+
+Often there are several sequences of actions that achieve a goal. We should pick the best.
 
 ---
 
@@ -325,6 +349,10 @@ class: middle
 - The **agent program** effectively implements the agent function. Their designs are dictated by the task environment.
 - *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
 - All agents can improve their performance through **learning**.
+
+???
+
+Next week we will see how to implement our first agent, a goal-based agent based on search algorithms.
 
 ---
 

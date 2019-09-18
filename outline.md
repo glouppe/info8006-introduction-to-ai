@@ -121,7 +121,10 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 - Written exam (60%)
     - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
-    - **Mandatory** for presenting the exam.
+    - Project 1: 10%
+    - Project 2: 15%
+    - Project 3: 15%
+    - Programming projects are **mandatory** for presenting the exam.
 
 ---
 

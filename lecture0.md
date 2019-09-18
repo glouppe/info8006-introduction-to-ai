@@ -30,6 +30,10 @@ class: middle, center
 
 "With artificial intelligence we are summoning the demon" -- Elon Musk
 
+???
+
+Triggers a rich imagination fueled by science-fiction.
+
 ---
 
 class: middle, center
