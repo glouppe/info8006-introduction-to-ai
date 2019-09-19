@@ -69,7 +69,7 @@ You are asked to answer the following questions:
 	
 		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path maximizing the game score. 
 		
-	  - 2.c. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.c. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*. Explain how your choice of *g(n)* preserves the completeness of A\*.
 	  - 2.d. - **0.5 point** - **Show** that your *h(n)* is **admissible**.
 	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) from your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are      errors in the implementation of A\*, these will not be penalised for this question.
 	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
@@ -109,6 +109,8 @@ For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), 
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.
  - no point: no relevant element or no answer.
+ 
+Note that any unjustified answer will be considered as incomplete.
 
 Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be evaluated considering the following criteria:
 
