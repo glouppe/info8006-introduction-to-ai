@@ -14,10 +14,10 @@ check the following code against a possible *unique* error.
 
 import random
 import numpy as np
+import time
 
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
-from pacman_module.graphicsUtils import keys_waiting, keys_pressed
 
 
 class PacmanAgent(Agent):
@@ -32,9 +32,6 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.moves = []
-        self.fringe = []
-        self.paths = dict()
-        self.visited = dict()
 
     def get_action(self, state):
         """
@@ -53,7 +50,10 @@ class PacmanAgent(Agent):
         if not self.moves:
             self.moves = self.dfs(state)
 
-        return self.moves.pop(0)
+        try:
+            return self.moves.pop(0)
+        except IndexError:
+            return Directions.STOP
 
     def stateKey(self, state):
         """
@@ -74,7 +74,7 @@ class PacmanAgent(Agent):
     def dfs(self, state):
         """
         Given a pacman game state,
-        returns a list of legal moves to solve the seach layout.
+        returns a list of legal moves to solve the search layout.
 
         Arguments:
         ----------
@@ -87,28 +87,39 @@ class PacmanAgent(Agent):
         """
 
         current = state
-        key = self.stateKey(current)
-        self.paths[key] = []
-        self.visited[key] = [key]
-
+        key = self.stateKey(state)
+        # Global stack is useful to avoid storing
+        # multiple growing paths in each node
+        # /!\ That optimisation only works on DFS
+        path = []
+        len_path = 0
+        fringe = [(state, 0, Directions.STOP)]
+        visited = {key}
+        current = state
+        previous_d, d = 0, 0
         while not current.isWin():
-            legal_actions = current.getLegalActions()
-            for action in legal_actions:
-                # Retrive info of successor
-                next_state = current.generatePacmanSuccessor(action)
+            # Expand the current node
+            for next_state, action in current.generatePacmanSuccessors():
                 next_key = self.stateKey(next_state)
-                if next_key not in self.visited[key]:
+                if next_key not in visited:
                     # Add successor to the fringe if not visited yet
-                    self.fringe.append(next_state)
-                    # Add path information
-                    self.paths[next_key] = self.paths[key].copy()
-                    self.paths[next_key].append(action)
-                    # Add visited states information
-                    self.visited[next_key] = self.visited[key].copy()
-                    self.visited[next_key].append(next_key)
+                    fringe.append((next_state, d + 1, action))
+                    visited.add(next_key)
 
-            # Choose new state to expand
-            current = self.fringe.pop()
-            key = self.stateKey(current)
+            # Choose new node to expand if any - quit otherwise
+            try:
+                current, d, last_move = fringe.pop()
+                key = self.stateKey(current)
+            except BaseException:
+                key = self.stateKey(current)
+                break
 
-        return self.paths[key]
+            # Pop moves when selecting shallower nodes
+            for i in range(min(previous_d - d + 1, len_path)):
+                path.pop()
+                len_path -= 1
+            path.append(last_move)
+            len_path += 1
+            previous_d = d
+
+        return path
