@@ -88,38 +88,29 @@ class PacmanAgent(Agent):
 
         current = state
         key = self.stateKey(state)
-        # Global stack is useful to avoid storing
-        # multiple growing paths in each node
-        # /!\ That optimisation only works on DFS
         path = []
         len_path = 0
-        fringe = [(state, 0, Directions.STOP)]
+        # Item in the fringe is composed
+        # of a state and a sequence of actions
+        fringe = [(state, [])]
+        # No need to revisit the initial state later
         visited = {key}
         current = state
-        previous_d, d = 0, 0
         while not current.isWin():
             # Expand the current node
             for next_state, action in current.generatePacmanSuccessors():
                 next_key = self.stateKey(next_state)
                 if next_key not in visited:
                     # Add successor to the fringe if not visited yet
-                    fringe.append((next_state, d + 1, action))
+                    fringe.append((next_state, path+[action]))
                     visited.add(next_key)
 
             # Choose new node to expand if any - quit otherwise
             try:
-                current, d, last_move = fringe.pop()
+                current, path = fringe.pop()
                 key = self.stateKey(current)
             except BaseException:
                 key = self.stateKey(current)
                 break
-
-            # Pop moves when selecting shallower nodes
-            for i in range(min(previous_d - d + 1, len_path)):
-                path.pop()
-                len_path -= 1
-            path.append(last_move)
-            len_path += 1
-            previous_d = d
 
         return path
