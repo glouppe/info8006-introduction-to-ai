@@ -144,6 +144,12 @@ This course is designed as an introduction to the many other courses available a
 - MATH2022: Large-sample analysis: theory and practice
 - DROI8031: Introduction to the law of robots
 
+???
+
+Mention pre-requisites:
+- programming experience
+- probability theory
+
 ---
 
 class: end-slide, center

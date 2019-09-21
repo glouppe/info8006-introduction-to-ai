@@ -42,6 +42,10 @@ class: middle, center
 
 "We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab.
 
+???
+
+The reality is quite different...
+
 ---
 
 class: middle
@@ -115,6 +119,10 @@ Artificial intelligence is the science of making machines or programs that:
 ]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Textbook definition(s) from AIMA.
 
 ---
 

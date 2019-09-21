@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: go over the Intelligent agents part, formalize a bit more.
+R: ^ really do this next year
 R: draw the agent diagrams in draw.io
 
 ---
