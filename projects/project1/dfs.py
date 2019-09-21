@@ -48,13 +48,13 @@ class PacmanAgent(Agent):
 
         try:
             return self.moves.pop(0)
+
         except IndexError:
             return Directions.STOP
 
-    def stateKey(self, state):
+    def state_key(self, state):
         """
-        Given a pacman game state, returns a list of attributes
-        which represents the state.
+        Returns a key that uniquely identifies a Pacman game state.
 
         Arguments:
         ----------
@@ -63,7 +63,7 @@ class PacmanAgent(Agent):
 
         Return:
         -------
-        - A list of attributes of the game state space
+        - A hashable key object that uniquely identifies a Pacman game state.
         """
         return state.getPacmanPosition()
 
@@ -81,32 +81,24 @@ class PacmanAgent(Agent):
         -------
         - A list of legal moves as defined in `game.Directions`.
         """
-
-        current = state
-        key = self.stateKey(state)
         path = []
-        len_path = 0
-        # Item in the fringe is composed
-        # of a state and a sequence of actions
-        fringe = [(state, [])]
-        # No need to revisit the initial state later
-        visited = {key}
-        current = state
-        while not current.isWin():
-            # Expand the current node
-            for next_state, action in current.generatePacmanSuccessors():
-                next_key = self.stateKey(next_state)
-                if next_key not in visited:
-                    # Add successor to the fringe if not visited yet
-                    fringe.append((next_state, path+[action]))
-                    visited.add(next_key)
+        fringe = [(state, path)]
+        visited = {self.state_key(state)}
 
-            # Choose new node to expand if any - quit otherwise
-            try:
-                current, path = fringe.pop()
-                key = self.stateKey(current)
-            except BaseException:
-                key = self.stateKey(current)
-                break
+        while True:
+            if len(fringe) == 0:
+                return []  # failure
+
+            current, path = fringe.pop()
+
+            if current.isWin():
+                return path
+
+            for next_state, action in current.generatePacmanSuccessors():
+                next_key = self.state_key(next_state)
+
+                if next_key not in visited:
+                    fringe.append((next_state, path + [action]))
+                    visited.add(next_key)
 
         return path

@@ -8,6 +8,11 @@ Lecture 2: Solving problems by searching
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: revise dfs.py
+R: write astar.py and bfs.py
+
 ---
 
 # Today
@@ -56,7 +61,9 @@ Reflex agents
 .width-100[![](figures/lec2/pacman-reflex2.png)]
 ]
 ]
-.caption[For example, a simple reflex agent moves to a dot if there is one in its neighborhood.<br>No planning is involved to take this decision. ]
+.caption[For example, a simple reflex agent based on condition-action rules could move<br>
+         to a dot if there is one in its neighborhood.
+         No planning is involved to take this decision. ]
 
 .Q[[Q]] Can a reflex agent be rational?
 
@@ -135,7 +142,7 @@ class: middle
     - A *path* is a sequence of states connected by actions.
 - A *goal test* which determines whether the solution of the problem is achieved in state $s$.
 - A *path cost* that assigns a numeric value to each path.
-  - We may also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
+  - In this course, we will also assume that the path cost corresponds to a sum of strictly positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
 
 ---
 
@@ -311,10 +318,11 @@ class: middle
         * the depth of $s$ is defined as the number of actions from the initial state to $s$.
     - $m$: maximum length of any path in the state space (may be $\infty$)
 
-<span class="Q">[Q]</span> Number of nodes in a tree?
+
 
 ???
 
+<span class="Q">[Q]</span> Number of nodes in a tree?
 - Number of nodes = $\frac{b^{d+1}-1}{b-1}$
 
 ---
@@ -736,6 +744,10 @@ This amounts to grow a tree directly on the state-space graph.
 .width-100[![](figures/lec2/graph-search.png)]
 
 <span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
+
+???
+
+R: Il me semble que dans le slide 57 du cours 2 de 2018-2019 l’algorithme n’est pas correct (ou du moins casse l’optimalité) pour UCS et A*. Simplement car rien ne dit que le chemin optimal vers un noeud sera le chemin que l’on « découvre » en premier, on doit donc toujours vérifier si le « nouveau » chemin a un coup plus faible et si oui mettre à jour le coup des noeud en conséquence.
 
 ---
 

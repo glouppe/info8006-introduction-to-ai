@@ -28,7 +28,6 @@ def layout_thin_borders(layout, thickness):
     lay = layout.replace(".lay", "")
     with open("pacman_module/layouts/" + lay + ".lay") as f:
         list_lines = f.readlines()
-    old_len = len(list_lines)
     for _ in range(w * 2):
         list_lines[0] = '%' + list_lines[0]
         list_lines[-1] = '%' + list_lines[-1]
@@ -107,6 +106,19 @@ if __name__ == '__main__':
         '--silentdisplay',
         help="Disable the graphical display of the game.",
         action="store_true")
+    # Specific to Project III
+    parser.add_argument(
+        '--bsagentfile',
+        help='Python file containing a `BeliefStateAgent` class.',
+        default=None)
+    parser.add_argument(
+        '--w',
+        help='Parameter w as specified in instructions for Project Part 3.',
+        type=int, default=1)
+    parser.add_argument(
+        '--p',
+        help='Parameter p as specified in instructions for Project Part 3.',
+        type=float, default=0.5)
 
     args = parser.parse_args()
 
