@@ -12,10 +12,6 @@ check the following code against a possible *unique* error.
 
 """
 
-import random
-import numpy as np
-import time
-
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 

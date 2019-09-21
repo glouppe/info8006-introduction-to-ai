@@ -5,7 +5,6 @@ from argparse import ArgumentParser, ArgumentTypeError
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import\
     GreedyGhost, SmartyGhost, DumbyGhost, EastRandyGhost
-import numpy as np
 
 
 def restricted_float(x):
@@ -108,19 +107,6 @@ if __name__ == '__main__':
         '--silentdisplay',
         help="Disable the graphical display of the game.",
         action="store_true")
-    # Specific to Project III
-    parser.add_argument(
-        '--bsagentfile',
-        help='Python file containing a `BeliefStateAgent` class.',
-        default=None)
-    parser.add_argument(
-        '--w',
-        help='Parameter w as specified in instructions for Project Part 3.',
-        type=int, default=1)
-    parser.add_argument(
-        '--p',
-        help='Parameter p as specified in instructions for Project Part 3.',
-        type=float, default=0.5)
 
     args = parser.parse_args()
 
