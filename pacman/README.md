@@ -1,3 +1,5 @@
+
+
 # Pacman
 
 <p align="center">
@@ -23,7 +25,8 @@ The goal of this programming project is to implement intelligent agents for the 
     * [Game score](#score)
     * [API](#api)
     * [Illegal moves](#illegal-moves)
-- [Evaluation](#evaluation)
+- [Typical mistakes and bad practices](#typical-mistakes-and-bad-practices)
+- [Evaluation criteria](#evaluation-criteria)	
 - [Credits](#credits)
 
 ---
@@ -121,36 +124,67 @@ python run.py -h
 For each part of the project, you must provide the following deliverables:
 
 - The source code of your Pacman agent(s).
-- A report in PDF format of 4 pages (at most and in total).
+- A report in PDF format of 4 pages (at most and in total). A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
 
-The three parts of the project must be carried out in groups of 2 students (with the same group across all parts).
+The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
 
-You deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+Your deliverables must be submitted as an archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
+
+**One delay of maximum 24 hours** will be **tolerated** for all parts of the project. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of **more than one delay**, the concerned parts will receive a **0/20** grade. 
 
 ### Part 1: Search agent
 
-This part is due by **October 26, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
 
 In this first part of the project, only food dots are in the maze. No ghost is present.
 Your task is to design an intelligent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
 
-You are asked to implement an agent based on each of these search algorithms:
- - Depth-First Search (DFS)
- - Breadth-First Search (BFS)
- - Uniform Cost Search (UCS)
- - A* (and an associated heuristic of your choice).
+To provide you some help, the implementations of Breadth-First Search (BFS) and Depth-First Search (DFS) are available in the corresponding Python files `bfs.py` and `dfs.py`. 
 
-Each agent should be implemented as a `PacmanAgent` class. Each should be specified in a different Python file (`dfs.py`, `bfs.py`, `ucs.py`, `astar.py`), following the template of `pacmanagent.py`.
+You are asked to answer the following questions:
+ 1. **Problem statement**
+	 - 1.a. **Describe the game** you are asked to solve, within a few lines.
+	 - 1.b. Formalize the game as a **search problem**, i.e. in terms of:
+		 - Set of possible states <br/> :warning: Unnesseary to specify the initial state as it depends on the layout.
+		 - Set of legal actions
+		 - Transition model
+		 - Goal test
+		 - Step cost (must be > 0)
+ 2.  **A\* implementation**
+	 - 2.a. Implement A* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+		 - You must have *g(n)* different from *depth(n)*
+		 - You must have *h(n)* different from 0 everywhere.
+		 - You must prevent cycles. A cycle is a path where a given state occurs at least twice.
+	  - 2.b. Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.c. **Show** that your *h(n)* is **admissible**.
+ 3. **Experiment 1** 
+	 - 3.a. Run A* with your own *g(n)* and *h(n)* and  A* with your own *g(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+		 - Score
+		 - Number of expanded nodes
+	- 3.b. Describe the differences between the results of the two versions of A*.
+	- 3.c. Refer to the course in order to justify these differences.
+	- 3.d. Which algorithm corresponds A* with *h(n) = 0* everywhere to ? 
+ 4. **Experiment 2** 
+	 - 4.a. Run A* with your own *g(n)* and *h(n)*, DFS and BFS against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+		 - Score
+		 - Number of expanded nodes
+	  - 4.b. Describe the differences between: 
+		  - A* and DFS
+		  - A* and BFS
+	  - 4.c. Refer to the course in order to justify these differences.
+ 5. **Experiment 3**   
+	   - 5.a. Run A* with *g(n) = depth(n)* and *h(n) = 0* everywhere against the 3 maze layouts located the  `/pacman_module/layouts/` folder. For each layout, report the results as a bar plot in terms of:
+		   - Score
+		   - Number of expanded nodes 
+	  - 5.b. Describe these results compared to DSF and BFS and refer to the course in order to justify these observations.
+	  - 5.c. Which algorithm corresponds A* with *g(n) = depth(n)* and *h(n) = 0* everywhere to ? 
+ 6. **Project feedback (BONUS)** <br/> You're invited to provide a short and constructive feedback about the project. In particular, you should discuss about the experience the project has brought to you and about the difficulties you may have encountered during the project. 
 
-Your report should be organized into 3 parts:
-1. You must formalize the game as a search problem, as seen in [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md).
-2. You should run your agents against the 3 maze layouts located the  `/pacman_module/layouts/` folder.
-  For each layout, report as a bar plot the performance of your 4 agents in terms of i) final score, ii) total computation time and iii) total number of expanded nodes. In total, you should therefore produce 9 bar plots.
-3. Discuss the performance and limitations of your agents, with respect to their search algorithm, the heuristic (in the case of A*) and the maze layout. Comment on possible improvements.
+Your report has to follow the subdivision provided above. To do so, a template is provided. (ADD LINK TO TEMPLATE) 	
 
 ### Part 2: Minimax agent
 
-This part is due by **November 23, 2018 at 23:59**. This is a **hard** deadline.
+This part is due by **November 10, 2018 at 23:59**. This is a **hard** deadline.
 
 In this second part, Pacman can no longer wander peacefully in its maze. It is chased by a ghost that tries to kill him!
 
@@ -160,6 +194,8 @@ The ghost follows one of the following policies, as set through the `--ghostagen
  - `smarty`: Select the next position which leads to the shortest path towards Pacman.
 
 Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)) for eating all the dots as quickly as possible while avoiding the ghost.
+
+
 
 You are asked to implement an agent based on each of these adversarial search algorithms:
  - Minimax.
@@ -195,6 +231,7 @@ Your report should be organized as follows:
 2. Discuss how you would improve your agent to take into account measurements that are not physically possible, such as a position that actually corresponds to a wall.
 
 Note: the game engine will keep displaying the ghosts in order for you to compare your belief state to their positions. You can play the game in belief-state mode only by turning on the `--hiddenghosts` flag.
+
 
 ---
 
@@ -239,25 +276,146 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 ---
 
-## Evaluation
+## Evaluation criteria
 
-The evaluation of your deliverables is based on the following criteria:
+For each part of the project, you will be evaluated according to different criteria. Each criterion is associated to a certain amount of points according to its importance. 
 
-- Performance of your intelligent agent (as evaluated by its final score, its total computation time and its total number of expanded nodes). Note that your agents might be evaluated on mazes that are not included within the `/pacman_module/layouts/` folder.
-- Quality and clarity of your report.
-	* Avoid long and vague sentences and be straight to the point.
-	* Follow the structure mentioned in the instructions.
+### Part 1: Search agent
 
-- Quality, clarity and structure of the source code.
-	* Avoid single-file long code source, and prefers to use a multiple-files modular architecture.
-	* Name your variables-attributes-classes according to their usage.
-    * Comment your code so that explanations are concise and clear enough to allow the reader to understand the semantics in a quick look.
-	* Your source code must be Python 3 and [PEP8](https://www.python.org/dev/peps/pep-0008/) compatible.
+**Code** - 10 points
+1. **Style** - 2 points
+	* **PEP8 compatibility** - 0.8 point: PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code. 
+		* 0.8 point : the script runs without error.
+		* 0 point: otherwise.
+	* **Specification** - 0.8 point: correctness of the specification of your functions.
+		* 0.8 point : all specifications are correct.
+		* 0.6 point : at least 75% correct specifications.
+		* 0.4 point: at least 50% correct specifications.
+		* 0.2 point: at least 25% correct specifications.
+		* 0 point: less than 25% correct specifications.
+	 * **Structure & Comments** - 0.4 point - Relevance of the subdivision of your code into functions. See [Typical mistakes and bad practice](#typical-mistakes-and-bad-practice) for more examples.
+
+2. **Algorithms implementations** - 5 points: correctness of the implementation of A* algorithm.
+	* **A*** - 5 points 
+		* 5 points: correct implementation of A* and its components ( goal test, cost function, admissible heuristic, etc...).
+		* 0 point: implementation error of any component of A*.
+
+3. **Algorithms performances** - 3 points: results accuracy and execution time.
+	* **A*** - 3 points
+		* 3 point : execution time < 2 sec.
+		* 2.25 points: exection time between 2 and 5 sec.
+		* 1.5 point: exection time between 5 and 10 sec.
+		* 0.75 point: inaccurate results and/or execution time > 10 sec.
+		* 0 point: no result.
+
+**Report** - 10 points
+
+1. **Problem statement** - 5 points
+	* **Set of states** - 1 point
+	* **Set of actions** - 1 point
+	* **Transition model** - 1 point 
+	* **Goal test** - 1 point
+	* **Step cost** - 1 point<br/> For each component of the statement:
+		* 1 point : correct component.
+		* 0 point: incorrect component.
+		
+2. **Plots** - 1 point
+	* **Presence** - 0.4 point
+		* 0.4 point : plots present.
+		* 0 point: no plot.
+	* **Readability** - 0.2 point: ease to understand the information given by the plots and quality of their descriptions.
+	* **Scale** - 0.4 point: consistency of the plots between each other and ease to compare them visually. 
+	
+3. **Discussion** - 3 points
+	* **Question 1** - 0.3 point
+		* Q1.a. Description of the game - 0.3 point
+	* **Question 2** - 0.6 point
+		* Q2.b. Definition of the cost function and of the heuristic - 0.3 point
+		* Q2.c. Admissibility of the heuristic - 0.3 point
+	* **Question 3** - 0.9 point
+		* Q3.b. Description of the results - 0.3 point
+		* Q3.c. Justification of the results - 0.3 point
+		* Q3.d. Relation to existing algorithm - 0.3 point
+	* **Question 4** - 0.6 point
+		* Q4.b. Description of the results - 0.3 point
+		* Q4.c. Justification of the results - 0.3 point
+	* **Question 5** - 0.6 point
+		* Q4.b. Description and justification of the results - 0.3 point
+		* Q4.c. Relation to existing algorithm - 0.3 point
+		
+4. **Style** - 1 point
+	* **English** - 0.25 point: quality of the writing.
+	* **Structure** - 0.5 point: respect of the provided template.
+		* 0.5 point: template respected.
+		* 0 point: template not respected. 
+	* **Length** - 0.25 point
+		* 0.25 point: at least 2 pages and at most 4 pages.
+		* 0 point: length not respected
+		
+5. **Feedback (BONUS)** - 1 point
+	* 1 point: constructive feedback.
+	* 0 point: irrelevant feedback.   
+
+N.B.: For any project, if the total grade (bonus included) is higher than 20, the exceeding points can be transferred to another project.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0.
 
 ---
 
+
+## Typical mistakes and bad practices
+
+We show through this section a list of common mistakes and bad practices that we have observed through past projects. Although this section is non exhaustive and thus is subject to regular updates, we hope that the following list will help you to avoid many pitfalls that can hurt the quality of your project. 
+
+### Report
+
+- **Formalism**
+	* Reference to an implemented function/method to describe any component of a problem statement. A formal description of a problem statement is **always** independent of its implementation.
+	* Missing variables in state/action spaces. This error always jeopardizes the formal description of the problem, and often jeopardizes the whole project.
+	* Variables not taken into account in the transition model. Transitions must include **all** the variables, even if some of them might stay idle.
+	
+- **Plots**
+	* Unreadable legend/axis, e.g., tiny font, flash coloured text, mixing text and plots. Not only this is annoying for the readers, but it also might slow you down in your working progress, if not interfere with the quality of your discussion on results.   
+	* Variables with different scales on the same plot. When in presence of large variables values, others variable with small scales can literally vanish out of the plot. You should often instead separate them. [Logarithmic scale](https://en.wikipedia.org/wiki/Logarithmic_scale) might also be considered when including two variables with different scales in the same plot is relevant to the discussion.
+	
+	
+### Code
+
+- **Style/Documentation**
+	* Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. You can use dedicated [scripts](https://pypi.org/project/pep8/) to check PEP8-compliance of your source code.
+	* Function specifications are either wrong or missing. They must be present and they must **formally** describe the function out of ambiguity. Its purpose is to provide an easier-to-understand description of the function than the code itself. An example of a correct specification is provided below : 
+	
+	```python
+	   def nth_fibonacci(n):
+           """
+           Computes the n-th member of the Fibonacci sequence.
+           Recursive definition: f(0)=0, f(1)=1,
+                                 f(n)=f(n-1) + f(n-2) for n > 1
+
+           Arguments:
+           ----------
+           - `n (integer): Positive index of the Fibonacci sequence.
+
+           Return:
+           -------
+           - The n-th member of the Fibonacci sequence.
+           """
+           if n == 0:
+               return 0
+           if n == 1:
+               return 1
+           return nth_fibonacci(n-1) + nth_fibonacci(n-2)
+	```
+	* Variables and functions are not named accordingly to their meanings. A source code in which names are based on target meanings is easier to read and might need less comments to be readable.
+	* Comments are either uninformative, too verbose or missing. They are important to structure the code and to provide high-level insights on how each part of code interacts with each other, and how the source code is actually behaving (useful for optimization among other benefits). They must contains few words and be straight to the point. 
+	
+- **Implementation**
+	* Incorrect implementation of the algorithms. This is often due to the violation of any specification of the algorithms, or to an incorrect implementation of the problem statement, e.g., a wrong goal test is provided to the algorithm. Be sure to understand the problem statement you need to describe and the algorithms you are required to implement. 
+	* Over confidence on implementation correctness by testing on a small subset of problem instances. While tests are useful to spot implementation errors, they cannot discard all of them. Even if your implementation "works" on some instances of the problem statement, and even if you are encouraged to do such tests, you need to carefully verify your implementation. This includes 1) the correctness of the inputs given to your algorithms with respect to the problem statement and 2) the fullfilment of the algorithms specifications in your implementation.
+	* Inefficiency during execution. Only a few seconds is necessary in the worst case to solve each instance of the problem statement we provide in the projects. While you should first have a working version of your implementation, you should also be careful to limit the computation time below these few seconds.
+	* Import and edge-cases errors, e.g. index out of bounds. While a typo in import sections does not jeopardize the implementation correctness - as long as the required files are present -, it is often difficult for the reader to decide if edge-cases error are either typos or part of the incorrect implementation. The safest policy being the latter, we refer to it when evaluating your work.  
+       
+---
 ## Credits
 
 Credits: [UC Berkeley](http://ai.berkeley.edu/project_overview.html)
