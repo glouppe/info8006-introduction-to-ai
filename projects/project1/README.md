@@ -147,7 +147,7 @@ Sanctions will be imposed in case of non-respect of the guidelines about the str
 
 Note that your implementation might be tested on other layouts.
 
-:warning: Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will be also be reported to the Faculty.
+:warning: Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.
 
 ---
 <!--
