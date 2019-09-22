@@ -10,6 +10,12 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: update pseudo code for search algorithms by slides 72-73 of https://inst.eecs.berkeley.edu/~cs188/fa19/assets/slides/lec3.pdf
+
+Check slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
+=> without reopening requires consistency
+=> if re-opening, admissibility is enough
+
 R: prepare solutions for bfs, dfs and astar
 
 R: pacman demo
@@ -22,12 +28,12 @@ insist on the fact that the goal is to have eaten all, not one
 .grid[
 .kol-1-2[
 - Planning agents
-- **Search problems**
-- *Uninformed* search methods
+- Search problems
+- Uninformed search methods
     - Depth-first search
     - Breadth-first search
     - Uniform-cost search
-- *Informed* search methods
+- Informed search methods
     - A*
     - Heuristics
 ]
@@ -57,11 +63,9 @@ Reflex agents
 
 .grid[
 .kol-1-2[
-.width-100[![](figures/lec2/pacman-reflex.png)]
-]
+.width-100[![](figures/lec2/pacman-reflex.png)]]
 .kol-1-2[
-.width-100[![](figures/lec2/pacman-reflex2.png)]
-]
+.width-100[![](figures/lec2/pacman-reflex2.png)]]
 ]
 .caption[For example, a simple reflex agent based on condition-action rules could move<br>
          to a dot if there is one in its neighborhood.
@@ -183,9 +187,10 @@ The process of removing details from a representation is called abstraction.
 
 ---
 
-# Example: Traveling in Romania
+class: middle
 
-<br>
+## Example: Traveling in Romania
+
 .center.width-100[![](figures/lec2/romania.svg)]
 
 .caption[How to go from Arad to Bucharest?]
@@ -208,21 +213,29 @@ class: middle
 
 # Selecting a state space
 
-- Real world is absurdly **complex**.
-    - The *world state* includes every last detail of the environment.
-    - State space must be *abstracted* for problem solving.
-- A *search state* keeps only the details needed for planning.
-    - Example: eat-all-dots
-        - States: $\\{ (x, y), \text{dot booleans}\\}$
-        - Actions: NSEW
-        - Transition: update location and possibly a dot boolean
-        - Goal test: dots all false
+The real world is absurdly **complex**.
+- The *world state* includes every last detail of the environment.
+- State space must be *abstracted* for problem solving.
 
-.width-100[![](figures/lec2/pacman-world.png)]
+A *search state* keeps only the details needed for planning.
 
 ---
 
-# State space size
+class: middle
+
+##  Example: eat-all-dots
+- States: $\\{ (x, y), \text{dot booleans}\\}$
+- Actions: NSEW
+- Transition: update location and possibly a dot boolean
+- Goal test: dots all false
+
+.width-100.center[![](figures/lec2/pacman-world.png)]
+
+---
+
+class: middle
+
+## State space size
 
 .grid[
 .kol-1-2[
@@ -260,7 +273,7 @@ The set of possible acceptable sequences starting at the initial state form a **
 
 .width-100[![](figures/lec2/tree-search.png)]
 
-Important ideas:
+## Important ideas
 - *Fringe* (or *frontier*) of partial plans under consideration
 - *Expansion*
 - *Exploration*
@@ -288,24 +301,6 @@ Strategies:
 
 ---
 
-# Depth-first search
-
-<br><br>
-.width-100[![](figures/lec2/dfs-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-- *Strategy*: expand the deepest node in the fringe.
-- *Implementation*: fringe is a **LIFO stack**.
-
-.width-80.center[![](figures/lec2/dfs-progress.svg)]
-
----
-
 # Properties of search strategies
 
 - A strategy is defined by picking the **order of expansion**.
@@ -329,13 +324,33 @@ class: middle
 
 ---
 
+# Depth-first search
+
+<br><br>
+.width-100[![](figures/lec2/dfs-cartoon.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+- *Strategy*: expand the deepest node in the fringe.
+- *Implementation*: fringe is a **LIFO stack**.
+
+.width-80.center[![](figures/lec2/dfs-progress.svg)]
+
+---
+
 class: middle
 
 .center.width-80[![](figures/lec2/search-properties.png)]
 
 ---
 
-# Properties of DFS
+class: middle
+
+## Properties of DFS
 
 - *Completeness*:
     - $m$ could be infinite, so only if we prevent cycles (more on this later).
@@ -374,7 +389,9 @@ class: middle
 
 ---
 
-# Properties of BFS
+class: middle
+
+## Properties of BFS
 
 - *Completeness*:
     - If the shallowest goal node is at some finite depth $d$, BFS will eventually find it after generating all shallower nodes (provided $b$ is finite).
@@ -433,7 +450,9 @@ class: middle
 
 ---
 
-# Properties of UCS
+class: middle
+
+## Properties of UCS
 
 - *Completeness*:
     - Yes, if step cost are all such that $c(s,a,s') \geq \epsilon > 0$.
@@ -511,7 +530,9 @@ $h(n)$ = straight line distance to Bucharest.
 
 ---
 
-# Properties of greedy search
+class: middle
+
+## Properties of greedy search
 
 - *Completeness*:
     - No, unless we prevent cycles (more on this later).
@@ -711,14 +732,18 @@ Admissible heuristics can be derived from the exact solutions to *relaxed proble
 
 ---
 
-# Dominance
+class: middle
+
+## Dominance
 
 - If $h_1$ and $h_2$ are both admissible and if $h_2(n) \geq h_1(n)$ for all $n$, then $h_2$ **dominates** $h_1$ and is *better* for search.
 - Given any admissible heuristics $h_a$ and $h_b$, $$h(n) = \max(h_a(n), h_b(n))$$ is also admissible and dominates $h_a$ and $h_b$.
 
 ---
 
-# Learning heuristics from experience
+class: middle
+
+## Learning heuristics from experience
 
 - Assuming an *episodic* environment, an agent can **learn** good heuristics by playing the game many times.
 - Each optimal solution $s^\*$ provides *training examples* from which $h(n)$ can be learned.
@@ -732,24 +757,30 @@ Admissible heuristics can be derived from the exact solutions to *relaxed proble
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one!
 
-<br><br>
-
 .width-100[![](figures/lec2/redundant.png)]
+
+Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
+This amounts to grow a tree directly on the state-space graph.
 
 ---
 
 class: middle
 
-Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
-This amounts to grow a tree directly on the state-space graph.
-
 .width-100[![](figures/lec2/graph-search.png)]
-
-<span class="Q">[Q]</span> What are the properties of DFS/GFS/UCS/GS/A* based on graph search?
 
 ???
 
 R: Il me semble que dans le slide 57 du cours 2 de 2018-2019 l’algorithme n’est pas correct (ou du moins casse l’optimalité) pour UCS et A*. Simplement car rien ne dit que le chemin optimal vers un noeud sera le chemin que l’on « découvre » en premier, on doit donc toujours vérifier si le « nouveau » chemin a un coup plus faible et si oui mettre à jour le coup des noeud en conséquence.
+
+see https://inst.eecs.berkeley.edu/~cs188/fa19/assets/slides/lec3.pdf => require consistency
+
+---
+
+# A* graph search gone wrong?
+
+---
+
+# Consistency of heuristics
 
 ---
 

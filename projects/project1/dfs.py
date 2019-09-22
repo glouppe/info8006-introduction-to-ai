@@ -84,7 +84,7 @@ class PacmanAgent(Agent):
         """
         path = []
         fringe = [(state, path)]
-        visited = {key(state)}
+        closed = set()
 
         while True:
             if len(fringe) == 0:
@@ -95,11 +95,12 @@ class PacmanAgent(Agent):
             if current.isWin():
                 return path
 
-            for next_state, action in current.generatePacmanSuccessors():
-                next_key = key(next_state)
+            current_key = key(current)
 
-                if next_key not in visited:
+            if current_key not in closed:
+                closed.add(current_key)
+
+                for next_state, action in current.generatePacmanSuccessors():
                     fringe.append((next_state, path + [action]))
-                    visited.add(next_key)
 
         return path
