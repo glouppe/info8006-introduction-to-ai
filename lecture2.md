@@ -10,8 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: update pseudo code for search algorithms by slides 72-73 of https://inst.eecs.berkeley.edu/~cs188/fa19/assets/slides/lec3.pdf
-
 Check slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
 => without reopening requires consistency
 => if re-opening, admissibility is enough
@@ -114,7 +112,7 @@ class: middle
 
 ## Offline vs. Online solving
 
-- Problem-solving agents are *offline*. The solution is executed "eyes closed", ignoring the percepts.
+- Problem-solving agents are **offline**. The solution is executed "eyes closed", ignoring the percepts.
 - *Online* problem solving involves acting without complete knowledge. In this case, the sequence of actions might be recomputed at each step.
 
 ---
@@ -145,7 +143,7 @@ class: middle
     - The state space forms a directed graph:
         - nodes = states
         - links = actions
-    - A *path* is a sequence of states connected by actions.
+    - A path is a sequence of states connected by actions.
 - A *goal test* which determines whether the solution of the problem is achieved in state $s$.
 - A *path cost* that assigns a numeric value to each path.
   - In this course, we will also assume that the path cost corresponds to a sum of strictly positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
@@ -154,10 +152,9 @@ class: middle
 
 class: middle
 
-A **solution** to a problem is an action sequence that leads from the initial state to a goal state.
+A *solution* to a problem is an action sequence that leads from the initial state to a goal state.
 - A solution quality is measured by the path cost function.
-- An *optimal solution* has the lowest path cost
-among all solutions.
+- An **optimal solution** has the lowest path cost among all solutions.
 
 <span class="Q">[Q]</span> What if the environment is partially observable? non-deterministic?
 
@@ -215,9 +212,7 @@ class: middle
 
 The real world is absurdly **complex**.
 - The *world state* includes every last detail of the environment.
-- State space must be *abstracted* for problem solving.
-
-A *search state* keeps only the details needed for planning.
+- A *search state* keeps only the details needed for planning.
 
 ---
 
@@ -259,11 +254,11 @@ class: middle
 
 # Search trees
 
-The set of possible acceptable sequences starting at the initial state form a **search tree**:
+The set of acceptable sequences starting at the initial state form a **search tree**:
 - Nodes correspond to states in the state space, where the initial state is the root node.
 - Branches correspond to applicable actions.
     - Child nodes correspond to successors.
-- **For most problems, we can never actually build the whole tree**.
+- For most problems, we can never actually build the whole tree.
 
 .center[![](figures/lec2/pacman-tree.png)]
 
@@ -274,9 +269,11 @@ The set of possible acceptable sequences starting at the initial state form a **
 .width-100[![](figures/lec2/tree-search.png)]
 
 ## Important ideas
-- *Fringe* (or *frontier*) of partial plans under consideration
-- *Expansion*
-- *Exploration*
+- Fringe (or frontier) of partial plans under consideration
+- Expansion
+- Exploration
+
+???
 
 <span class="Q">[Q]</span> Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?
 
@@ -291,9 +288,9 @@ class: middle
 # Uninformed search strategies
 
 **Uninformed** search strategies use only the information available in the problem definition.
-- They do not know whether a state looks more promising than some other.
+They do not know whether a state looks more promising than some other.
 
-Strategies:
+## Strategies
 - Depth-first search
 - Breadth-first search
 - Uniform-cost search
@@ -500,7 +497,9 @@ the fringe in decreasing order of *desirability*.
 
 ---
 
-# Heuristics
+class: middle
+
+## Heuristics
 
 A **heuristic** (or evaluation) function $h(n)$ is:
 - a function that *estimates* the cost of the cheapest path from node $n$ to a goal state;
@@ -604,12 +603,12 @@ class: middle
 
 ---
 
-# Admissible heuristics
+class: middle
+
+## Admissible heuristics
 
 A heuristic $h$ is **admissible** if $$0 \leq h(n) \leq h^\*(n)$$ where $h^\*(n)$ is the true cost to a nearest goal.
 
-
-<br><br>
 .center.width-80[![](figures/lec2/admissible.png)]
 .caption[The Manhattan distance is admissible]
 
@@ -619,16 +618,18 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 
 ---
 
-# Optimality of A* (tree search)
+class: middle
+
+## Optimality of A* (tree search)
 
 .grid[
 .kol-2-3[
-## Assumptions
+Assumptions:
 - $A$ is an optimal goal node
 - $B$ is a suboptimal goal node
 - $h$ is admissible
 
-## Claim
+Claim:
 $A$ will exit the fringe before $B$.
 ]
 .kol-1-3[
@@ -669,7 +670,9 @@ All ancestors of $A$ expand before $B$, including $A$. Therefore **A* is optimal
 
 ---
 
-# A* contours
+class: middle
+
+## A* contours
 
 - Assume $f$-costs are non-decreasing along any path.
 - We can define **contour levels** $t$ in the state space, that include all nodes $n$ for which $f(n) \leq t$.
@@ -755,11 +758,10 @@ class: middle
 
 # Graph search
 
-The failure to detect **repeated states** can turn a linear problem into an exponential one!
+.center.width-80[![](figures/lec2/redundant.png)]
 
-.width-100[![](figures/lec2/redundant.png)]
-
-Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
+- The failure to detect **repeated states** can turn a linear problem into an exponential one!
+- Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
 This amounts to grow a tree directly on the state-space graph.
 
 ---
@@ -768,19 +770,17 @@ class: middle
 
 .width-100[![](figures/lec2/graph-search.png)]
 
-???
+---
 
-R: Il me semble que dans le slide 57 du cours 2 de 2018-2019 l’algorithme n’est pas correct (ou du moins casse l’optimalité) pour UCS et A*. Simplement car rien ne dit que le chemin optimal vers un noeud sera le chemin que l’on « découvre » en premier, on doit donc toujours vérifier si le « nouveau » chemin a un coup plus faible et si oui mettre à jour le coup des noeud en conséquence.
+class: middle
 
-see https://inst.eecs.berkeley.edu/~cs188/fa19/assets/slides/lec3.pdf => require consistency
+## A* graph search gone wrong?
 
 ---
 
-# A* graph search gone wrong?
+class: middle
 
----
-
-# Consistency of heuristics
+## Consistency of heuristics
 
 ---
 
@@ -832,10 +832,10 @@ Comment on the actions taken at any frame (right, jump, speed) shown in red.
 - **Heuristic functions** estimate costs of shortest paths.
 - Good heuristic can dramatically *reduce search cost*.
 - **Greedy best-first search** expands lowest $h$.
-    - *incomplete* and *not always optimal*.
+    - incomplete and not always optimal.
 - **A*** search expands lower $f=g+h$
-    - *complete* and *optimal*
-- Admissible heuristics can be derived from exact solutions of relaxed problems or *learned* from training examples.
+    - complete* and optimal
+- Admissible heuristics can be derived from exact solutions of relaxed problems or learned from training examples.
 - *Graph search* can be exponentially more efficient than tree search.
 
 ---
