@@ -10,8 +10,10 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: revise dfs.py
-R: write astar.py and bfs.py
+R: prepare solutions for bfs, dfs and astar
+
+R: pacman demo
+insist on the fact that the goal is to have eaten all, not one
 
 ---
 
@@ -777,7 +779,6 @@ R: Il me semble que dans le slide 57 du cours 2 de 2018-2019 l’algorithme n’
     * transition model = given by the game engine (assume we know that!)
     * goal test = have we reached the flag?
     * path cost = shortest path, the better; malus if killed, bonus if coin and killed enemies
-
 
 ---
 

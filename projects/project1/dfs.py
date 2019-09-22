@@ -16,9 +16,25 @@ from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 
 
+def key(state):
+    """
+    Returns a key that uniquely identifies a Pacman game state.
+
+    Arguments:
+    ----------
+    - `state`: the current game state. See FAQ and class
+               `pacman.GameState`.
+
+    Return:
+    -------
+    - A hashable key object that uniquely identifies a Pacman game state.
+    """
+    return state.getPacmanPosition()
+
+
 class PacmanAgent(Agent):
     """
-    An agent following DFS in search game.
+    A Pacman agent based on Depth-First-Search.
     """
 
     def __init__(self, args):
@@ -52,21 +68,6 @@ class PacmanAgent(Agent):
         except IndexError:
             return Directions.STOP
 
-    def state_key(self, state):
-        """
-        Returns a key that uniquely identifies a Pacman game state.
-
-        Arguments:
-        ----------
-        - `state`: the current game state. See FAQ and class
-                   `pacman.GameState`.
-
-        Return:
-        -------
-        - A hashable key object that uniquely identifies a Pacman game state.
-        """
-        return state.getPacmanPosition()
-
     def dfs(self, state):
         """
         Given a pacman game state,
@@ -83,7 +84,7 @@ class PacmanAgent(Agent):
         """
         path = []
         fringe = [(state, path)]
-        visited = {self.state_key(state)}
+        visited = {key(state)}
 
         while True:
             if len(fringe) == 0:
@@ -95,7 +96,7 @@ class PacmanAgent(Agent):
                 return path
 
             for next_state, action in current.generatePacmanSuccessors():
-                next_key = self.state_key(next_state)
+                next_key = key(next_state)
 
                 if next_key not in visited:
                     fringe.append((next_state, path + [action]))
