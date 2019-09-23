@@ -740,7 +740,9 @@ class: middle
 
 # Graph search
 
-.center.width-80[![](figures/lec2/redundant.png)]
+<br>
+.center.width-90[![](figures/lec2/redundant.png)]
+<br>
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one. It can also lead to non-terminating searches.
 
@@ -753,17 +755,31 @@ class: middle
 
 .width-100[![](figures/lec2/graph-search.png)]
 
+???
+
+- Completeness is fine.
+- Optimality is tricky. Maybe we found the wrong one!
+
 ---
 
 class: middle
 
+
+
+.grid[
+.kol-1-2[<br><br>
 ## A* graph-search gone wrong?
+- We start at $S$ and $G$ is a goal state.
+- Which path does graph search find?
+]
+.kol-1-2[.width-95[![](figures/lec2/astar-gone-wrong.png)]]
+]
 
 ---
 
 class: middle
 
-## Consistency of heuristics
+## Consistent heuristics
 
 ---
 
