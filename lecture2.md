@@ -160,27 +160,13 @@ A *solution* to a problem is an action sequence that leads from the initial stat
 
 ???
 
-- With partial observability, the agent needs to keep in which states it might be in.
-    - Percepts narrow down the set of possible states.
-- If stochastic, the agent will need to consider what to do for each contingency that its percepts may reveal.
-    - Percepts reveal which the outcomes has actually occurred.
+With partial observability, the agent needs to keep in which states it might be in.
+- Percepts narrow down the set of possible states.
+
+If stochastic, the agent will need to consider what to do for each contingency that its percepts may reveal.
+- Percepts reveal which the outcomes has actually occurred.
 
 See 4.3 and 4.4 for more details.
-
----
-
-class: middle
-
-.width-100[![](figures/lec2/search-problems-models.png)]
-.center[Search problems are **models**.]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Search problems are models, i.e. abstract mathematical abstractions. These models omit details that not relevant for solving the problem.
-
-The process of removing details from a representation is called abstraction.
 
 ---
 
@@ -213,6 +199,17 @@ class: middle
 The real world is absurdly **complex**.
 - The *world state* includes every last detail of the environment.
 - A *search state* keeps only the details needed for planning.
+
+.width-75.center[![](figures/lec2/search-problems-models.png)]
+.center[Search problems are **models**.]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Search problems are models, i.e. abstract mathematical abstractions. These models omit details that not relevant for solving the problem.
+
+The process of removing details from a representation is called abstraction.
 
 ---
 
@@ -254,11 +251,11 @@ class: middle
 
 # Search trees
 
-The set of acceptable sequences starting at the initial state form a **search tree**:
+The set of acceptable sequences starting at the initial state form a **search tree**.
 - Nodes correspond to states in the state space, where the initial state is the root node.
-- Branches correspond to applicable actions.
-    - Child nodes correspond to successors.
-- For most problems, we can never actually build the whole tree.
+- Branches correspond to applicable actions, with child nodes corresponding to successors.
+
+For most problems, we can never actually build the whole tree.
 
 .center[![](figures/lec2/pacman-tree.png)]
 
@@ -272,8 +269,6 @@ The set of acceptable sequences starting at the initial state form a **search tr
 - Fringe (or frontier) of partial plans under consideration
 - Expansion
 - Exploration
-
-???
 
 <span class="Q">[Q]</span> Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?
 
@@ -312,13 +307,6 @@ They do not know whether a state looks more promising than some other.
         * the depth of $s$ is defined as the number of actions from the initial state to $s$.
     - $m$: maximum length of any path in the state space (may be $\infty$)
 
-
-
-???
-
-<span class="Q">[Q]</span> Number of nodes in a tree?
-- Number of nodes = $\frac{b^{d+1}-1}{b-1}$
-
 ---
 
 # Depth-first search
@@ -343,6 +331,17 @@ class: middle
 
 .center.width-80[![](figures/lec2/search-properties.png)]
 
+???
+
+<span class="Q">[Q]</span> Number of nodes in a tree?
+Number of nodes = $\frac{b^{d+1}-1}{b-1}$
+
+---
+
+class: middle
+
+.center.width-80[![](figures/lec2/dfs-properties.png)]
+
 ---
 
 class: middle
@@ -359,12 +358,6 @@ class: middle
 - *Space complexity*:
     - Only store siblings on path to root, therefore $O(bm)$.
     - When all the descendants of a node have been visited, the node can be removed from memory.
-
----
-
-class: middle
-
-.center.width-80[![](figures/lec2/dfs-properties.png)]
 
 ---
 
@@ -388,6 +381,12 @@ class: middle
 
 class: middle
 
+.center.width-80[![](figures/lec2/bfs-properties.png)]
+
+---
+
+class: middle
+
 ## Properties of BFS
 
 - *Completeness*:
@@ -402,18 +401,12 @@ class: middle
 
 ---
 
-class: middle
-
-.center.width-80[![](figures/lec2/bfs-properties.png)]
-
----
-
 # Iterative deepening
 
-- Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
-    - Run DFS with depth limit 1.
-    - If no solution, run DFS with depth limit 2.
-    - If no solution, run DFS with depth limit 3.
+Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
+- Run DFS with depth limit 1.
+- If no solution, run DFS with depth limit 2.
+- If no solution, run DFS with depth limit 3.
     - ...
 
 .grid[
@@ -423,7 +416,7 @@ class: middle
 <span class="Q">[Q]</span> Isn't this process wastefully redundant?
 ]
 .kol-1-2[
-.center.width-100[![](figures/lec2/id-properties.png)]
+.center.width-80[![](figures/lec2/id-properties.png)]
 ]
 ]
 
@@ -449,10 +442,16 @@ class: middle
 
 class: middle
 
+.center.width-70[![](figures/lec2/ucs-properties.png)]
+
+---
+
+class: middle
+
 ## Properties of UCS
 
 - *Completeness*:
-    - Yes, if step cost are all such that $c(s,a,s') \geq \epsilon > 0$.
+    - Yes, if step cost are all such that $c(s,a,s') \geq \epsilon > 0$. (Why?)
 - *Optimality*:
     - Yes, sinces UCS expands nodes in order of their optimal path cost.
 - *Time complexity*:
@@ -462,24 +461,15 @@ class: middle
 - *Space complexity*:
      - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
 
-???
-
-R: explain why positive step cost is required for completeness.
-
----
-
-class: middle
-
-.center.width-70[![](figures/lec2/ucs-properties.png)]
-
 ---
 
 # Informed search strategies
 
+.center.width-70[![](figures/lec2/ucs-issues.png)]
+
+
 One of the **issues of UCS** is that it explores the state space in *every direction*,
 without exploiting information about the (plausible) location of the goal node.
-
-.center.width-70[![](figures/lec2/ucs-issues.png)]
 
 **Informed** search strategies aim to solve this problem by expanding nodes in
 the fringe in decreasing order of *desirability*.
@@ -531,6 +521,15 @@ $h(n)$ = straight line distance to Bucharest.
 
 class: middle
 
+.center.width-90[![](figures/lec2/gs-properties.png)]
+
+.center[At best, greedy search takes you straight to the goal.<br>
+At worst, it is like a badly-guided BFS.]
+
+---
+
+class: middle
+
 ## Properties of greedy search
 
 - *Completeness*:
@@ -541,15 +540,6 @@ class: middle
     - $O(b^m)$, unless we have a good heuristic function.
 - *Space complexity*:
     - $O(b^m)$, unless we have a good heuristic function.
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec2/gs-properties.png)]
-
-.center[At best, greedy search takes you straight to the goal.<br>
-At worst, it is like a badly-guided BFS.]
 
 ---
 
@@ -564,10 +554,10 @@ At worst, it is like a badly-guided BFS.]
 
 class: middle
 
+.grid[
+.kol-1-2[<br><br><br><br>
 ## Shakey the Robot
 
-.grid[
-.kol-1-2[
 - A\* was first proposed in **1968** to improve robot planning.
 - Goal was to navigate through a room with obstacles.
 ]
@@ -620,7 +610,7 @@ $h$ is admissible if it underestimates the true cost towards the goal.
 
 class: middle
 
-## Optimality of A* (tree search)
+## Optimality of A*
 
 .grid[
 .kol-2-3[
@@ -643,10 +633,6 @@ class: middle
 
 .grid[
 .kol-2-3[
-## Claim
-
-$n$ will be expanded before $B$.
-
 ## Proof
 
 Assume $B$ is on the fringe.
@@ -659,14 +645,14 @@ Some ancestor $n$ of $A$ is on the fringe too.
 - $f(A) < f(B)$
     - $g(A) < g(B)$ ($B$ is suboptimal)
     - $f(A) < f(B)$ ($h=0$ at a goal)
-- $n$ expands before $B$
+- Therefore, $n$ expands before $B$.
     - since $f(n) \leq f(A) < f(B)$
 ]
 .kol-1-3[
 .width-100[![](figures/lec2/astar-proof2.png)]
 ]
 ]
-All ancestors of $A$ expand before $B$, including $A$. Therefore **A* is optimal**.
+Similarly, all ancestors of $A$ expand before $B$, including $A$. Therefore **A* is optimal**.
 
 ---
 
@@ -681,12 +667,8 @@ class: middle
 ![](figures/lec2/contours-ucs.png)
 ![](figures/lec2/contours-as.png)]
 .grid[
-.kol-1-2[
-For UCS ($h(n)=0$ for all $n$), bands are circular around the start.
-]
-.kol-1-2[
-For A* with accurate heuristics, bands stretch towards the goal.
-]
+.kol-1-2[For UCS ($h(n)=0$ for all $n$), bands are circular around the start.]
+.kol-1-2[For A* with accurate heuristics, bands stretch towards the goal.]
 ]
 
 ---
@@ -760,8 +742,9 @@ class: middle
 
 .center.width-80[![](figures/lec2/redundant.png)]
 
-- The failure to detect **repeated states** can turn a linear problem into an exponential one!
-- Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
+The failure to detect **repeated states** can turn a linear problem into an exponential one. It can also lead to non-terminating searches.
+
+Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
 This amounts to grow a tree directly on the state-space graph.
 
 ---
@@ -774,13 +757,19 @@ class: middle
 
 class: middle
 
-## A* graph search gone wrong?
+## A* graph-search gone wrong?
 
 ---
 
 class: middle
 
 ## Consistency of heuristics
+
+---
+
+class: middle
+
+## Optimality of A* (graph-search)
 
 ---
 
@@ -815,7 +804,7 @@ class: middle
 
 class: center, middle, black-slide
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="400" src="https://www.youtube.com/embed/DlkMs4ZHHr8" frameborder="0" allowfullscreen></iframe>
 
 A* in action
 
