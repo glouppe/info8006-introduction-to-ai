@@ -390,6 +390,12 @@ class: middle
 
 ---
 
+class: middle, center
+
+Demo comparing DFS against BFS.
+
+---
+
 # Iterative deepening
 
 Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
