@@ -54,20 +54,17 @@ You are asked to answer the following questions:
 		Any **reference to the API** in any component of the problem statement will be considered as **wrong**.
  2.  **Implementation**
 	  - 2.a. - **0.5 point** - Identify the implementation error in `dfs.py`. Explain its impact and how to fix it. Do not submit the fixed version of DFS.
-	  - 2.b. - **3.5 points** - Implement the A\* algorithm with **your own cost function** *g(n)*  and **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+	  - 2.b. - **3.5 points** - Implement the A\* algorithm with **your own cost function** *g(n)*  and an **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
 
 		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
 		 - You must have *h(n)* different from 0 for all *n*.
 		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
 		 - You may want to have a look at the file `util.py` in order find a suitable data structure for the exploration of the game tree.
 
-		Note that (i) these conditions are necessary for a correct implementation but not sufficient and (ii) a correct implementation of all components of A\*, including an admissible heuristic, is guaranteed to extract the optimal path, i.e. the path maximizing the game score.
-
-	  - 2.c. - **0.5 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*.
+	  - 2.c. - **1.0 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*. Explain whether your heuristic *h(n)* guarantees the optimality of your A\* implementation.
 	  - 2.d - **0.5 point** - Explain how your choice of *g(n)* preserves the completeness and optimality - with respect to the original score function - of A\* when *h(n)* = 0 for all *n*.
-	  - 2.e. - **0.5 point** - **Show** that your *h(n)* is **admissible**.
-	  - 2.f. - **1.5 points** - Implement Breadth-First Search (BFS) by adapting your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are errors in the implementation of A\*, these will not be penalised for this question.
-	  - 2.g. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
+	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) by adapting your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are errors in the implementation of A\*, these will not be penalised for this question.
+	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1**
 	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plots in terms of:
 
@@ -96,11 +93,11 @@ You are asked to answer the following questions:
 
 In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code and report.
 
-For each **implementation question** (2.b, 2.f), the evaluation will be performed as follows:
+For each **implementation question** (2.b, 2.e), the evaluation will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
  - no point: implementation error of any component of the algorithm.
 
-For each **discussion question** (2.a, 2.c, 2.d, 2.e, 2.g, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
+For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.
  - no point: no relevant element or no answer.
