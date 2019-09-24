@@ -8,17 +8,6 @@ Lecture 2: Solving problems by searching
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Check slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
-=> without reopening requires consistency
-=> if re-opening, admissibility is enough
-
-R: prepare solutions for bfs, dfs and astar
-
-R: pacman demo
-insist on the fact that the goal is to have eaten all, not one
-
 ---
 
 # Today
@@ -146,7 +135,7 @@ class: middle
     - A path is a sequence of states connected by actions.
 - A *goal test* which determines whether the solution of the problem is achieved in state $s$.
 - A *path cost* that assigns a numeric value to each path.
-  - In this course, we will also assume that the path cost corresponds to a sum of strictly positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
+  - In this course, we will also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
 
 ---
 
@@ -797,6 +786,12 @@ Consequences of consistent heuristics:
 - $f(n)$ is non-decreasing along any path.
 - $h(n)$ is admissible.
 - With a consistent heuristic, graph-search A* is optimal.
+
+???
+
+Alternative graph-search algorithm: See slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
+=> without reopening requires consistency
+=> if re-opening, admissibility is enough
 
 ---
 
