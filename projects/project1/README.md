@@ -95,6 +95,7 @@ In this section, you can find the criteria according to which the different ques
 
 For each **implementation question** (2.b, 2.e), the evaluation will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
+ - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem (A\* and BFS) and to the heuristic (A\*).
  - no point: implementation error of any component of the algorithm.
 
 For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
