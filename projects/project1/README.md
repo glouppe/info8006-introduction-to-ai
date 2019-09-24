@@ -66,7 +66,7 @@ You are asked to answer the following questions:
 	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) by adapting your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are errors in the implementation of A\*, these will not be penalised for this question.
 	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1**
-	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plots in terms of:
+	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as a bar plots in terms of:
 
 		 - Score
 		 - Number of expanded nodes
@@ -75,7 +75,7 @@ You are asked to answer the following questions:
 	- 3.c. - **0.5 point** - Refer to the course in order to justify these differences.
 	- 3.d. - **0.5 point** - Which algorithm corresponds to A\* with *h(n) = 0* for all *n* ?
  4. **Experiment 2**
-	 - 4.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)*, DFS and your implementation of BFS against the medium maze layout located in the  `/pacman_module/layouts/` directory. Report the results as a bar plots in terms of:
+	 - 4.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)*, DFS and your implementation of BFS against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as a bar plots in terms of:
 
 		 - Score
 		 - Number of expanded nodes
