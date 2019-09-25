@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 human centered ai, ai concerns more than engineers
+ai for what? climate, energy, science, etc
 
 http://www.machineintelligence.org/universal-ai.pdf
 R: https://virtualcreatures.github.io/
