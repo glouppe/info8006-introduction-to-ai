@@ -35,8 +35,13 @@
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
 %-----------------------Codes et algorithmes--------------------------
 \usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{clrscode3e}
+%\usepackage{algorithmic}
+%\usepackage{clrscode3e}
+\usepackage[noend]{algpseudocode}
+%\newcommand{\pushline}{\Indp}% Indent
+%\newcommand{\popline}{\Indm\dosemic}% Undent
+%\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}%
+
 
 %------------------------------Graphics------------------------------
 
@@ -89,23 +94,24 @@
 
 \title{{\bf INFO8006 Introduction to Artificial Intelligence}\\[1em]
 Exercises 1: Solving problems by searching}
+\date{}
 %------------------------------Début du document------------------------------
 \begin{document}
 \maketitle
 \vspace{-4em}
 %------------------------------Page de garde------------------------------
 
-  \section*{Objectives}
+  \section*{Learning outcomes}
   At the end of this exercise session you should be able to:
 \begin{itemize}
-   \item define rigorously what is a "Search Problem".
-   \item theoretically analyse the algorithms to perform uninformed (Depth-first, Breadth-first, Uniform-cost) and informed (Greedy-search, A-star) search.
-   \item apply each of these algorithms on any search problem defined in a fully observable and deterministic environment.
+   \item formulate search problems rigorously.
+   \item theoretically analyse the algorithms to perform uninformed search (depth-first, breadth-first, uniform-cost) and informed search (greedy-search, $\text{A}^\star$).
+   \item apply each of these algorithms on search problems defined in fully observable and deterministic environments.
 \end{itemize}
 
-   \section*{Exercises}
-   \subsection*{(1) Search algorithms ($\approx$ 60 min)}
-   \begin{tikzpicture}[
+   \section*{Exercises 1: Search algorithms}
+   \begin{center}
+       \begin{tikzpicture}[
             -> = stealth, % arrow head style
             %shorten > = 1pt, % don't touch arrow head to node
             auto,
@@ -121,11 +127,11 @@ Exercises 1: Solving problems by searching}
         ]
 
         \node[state, align=center] (S) {Start};
-        \node[state, align=center] (A) [above right of=S] {A\\h=20};
-        \node[state, align=center] (B) [right of=S] {B\\h=12};
-        \node[state, align=center] (C) [below right of=S] {C\\h=10};
-        \node[state, align=center] (D) [below right of=B] {D\\h=25};
-        \node[state, align=center] (E) [above right of=B] {E\\h=19};
+        \node[state, align=center] (A) [above right of=S] {A\\$h=20$};
+        \node[state, align=center] (B) [right of=S] {B\\$h=12$};
+        \node[state, align=center] (C) [below right of=S] {C\\$h=10$};
+        \node[state, align=center] (D) [below right of=B] {D\\$h=25$};
+        \node[state, align=center] (E) [above right of=B] {E\\$h=19$};
         \node[state, align=center] (F) [right of=D] {Goal};
 
         \path[-] (S) edge node {1} (A);
@@ -140,11 +146,55 @@ Exercises 1: Solving problems by searching}
 
         %\draw[red, dashed] (1, 2) -- (1, -2);
     \end{tikzpicture}
-    \\
+   \end{center}
     For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
+    \begin{solution}
+    \\
+    Here follows a search algorithm which is valid for non-consistent (but admissible) heuristics.
+\begin{algorithm}[H]
+\caption{Graph-Search Algorithm}\label{algo:GS}
+\begin{tabular}{ll}
+    \textit{Input:}  & $f$: The fringe, which is a priority queue for nodes, \textbf{initialised with the starting node}. \\
+     & $c$: A list of closed nodes, \textbf{initially empty}.\\
+     \textit{Output:}  & $p$: A list of nodes which represents the optimal path.\\
+\end{tabular}
+\small
+\begin{algorithmic}[1]
+\Procedure{Graph-Search}{$f, c$}
+\While{$True$}
+\State $n \gets f.pop()$ %\Comment{Pop the node with highest priority}
+\If{$n == nil$}
+ \State \Return $nil$
+\EndIf
+\If{$n.isGoal()$}
+   \State \Return $n.getPath()$
+\EndIf
+\State $c.append(n)$
+\For{$n' \in n.children$}
+    \State $p \gets n'.computePriority(n)$
+    \If{$n' \not\in c \quad \&\& \quad n' \not\in f$}
+    \State $n'.setPriority(p)$
+    \State $n'.setParent(n)$
+    \State $f.push(n')$
+    
+    \ElsIf{$n' \in f \quad \&\& \quad p < f.get(n').getPriority()$}
+    \State $f.remove(n')$
+    \State $f.push(n')$
+    
+    \ElsIf{$n' \in c \quad \&\& \quad p < c.get(n').getPriority()$}
+    \State $c.remove(n')$
+    \State $f.push(n')$
+    \EndIf
+\EndFor
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+\vspace{1em}
+\end{algorithm}
+    \end{solution}
 
     \begin{enumerate}
-        \item Depth-First 
+        \item Depth-First search
         %\begin{comment}
         %coccu
         %\end{comment}
@@ -161,25 +211,25 @@ Exercises 1: Solving problems by searching}
             \item Heap = \{Goal, E, C\}; Expand(Goal); Path = S -> A -> B -> D -> Goal
         \end{itemize}
         \end{solution}
-        \item Breadth-First
+        \item Breadth-First search
         \begin{solution}
         \\
         Expansion: S, A, B, C, D, E, Goal \\
         Path: S -> B -> D -> Goal \\
         Step-by-step:
         \begin{itemize}
-            \item Heap = \{S\}; Expand(S); Path = S
-            \item Heap = \{A, B, C\}; Expand(A); Path = S -> A
-            \item Heap = \{B(S), C, B(A)\}; Expand(B); Path = S -> B
-            \item Heap = \{C, B(A), D, E\}; Expand(C); Path = S -> C
-            \item Heap = \{B(A), D, E, B(C)\}; Expand(B), B is already expanded so we drop it.
-            \item Heap = \{D, E, B(C)\}; Expand(D); Path = S -> B ->D
-            \item Heap = \{E, B(C), Goal\}; Expand(E); Path = S -> B -> E
-            \item Heap = \{B(C), Goal(D), Goal(E)\}; Expand(B), B is already expanded so we drop it.
-            \item Heap = \{Goal(D), Goal(E)\}; Expand(Goal); Path = S -> B -> D -> Goal
+            \item FIFO = \{S\}; Expand(S); Path = S
+            \item FIFO = \{A, B, C\}; Expand(A); Path = S -> A
+            \item FIFO = \{B(S), C, B(A)\}; Expand(B); Path = S -> B
+            \item FIFO = \{C, B(A), D, E\}; Expand(C); Path = S -> C
+            \item FIFO = \{B(A), D, E, B(C)\}; Expand(B), B is already expanded so we drop it.
+            \item FIFO = \{D, E, B(C)\}; Expand(D); Path = S -> B ->D
+            \item FIFO = \{E, B(C), Goal\}; Expand(E); Path = S -> B -> E
+            \item FIFO = \{B(C), Goal(D), Goal(E)\}; Expand(B), B is already expanded so we drop it.
+            \item FIFO = \{Goal(D), Goal(E)\}; Expand(Goal); Path = S -> B -> D -> Goal
         \end{itemize}
         \end{solution}
-        \item Uniform-Cost
+        \item Uniform-Cost search
         \begin{solution}
         \\
         Expansion: S, A, C, B, D, E, Goal\\
@@ -196,7 +246,7 @@ Exercises 1: Solving problems by searching}
             \item P-Queue = \{Goal(19, D), \blue{Goal(29, B)}\}; Expand(Goal); Path = S -> B -> D -> Goal
         \end{itemize}
         \end{solution}
-        \item Greedy
+        \item Greedy search
         \begin{solution}
         \\
         Expansion: S, C, B, E, Goal\\
@@ -211,7 +261,7 @@ Exercises 1: Solving problems by searching}
             \item P-Queue = \{Goal(0, E), A(20, S), D(25, B)\}; Expand(Goal); Path = S -> B -> E -> Goal
         \end{itemize}
         \end{solution}
-        \item A-Star (Is the heuristic admissible?)
+        \item $\text{A}^\star$ (Is the heuristic admissible?)
         \begin{solution}
         \\
         We notice that the heuristic is not admissible. We can make it so, by changing the heuristic at D by $h=9$.
@@ -229,35 +279,38 @@ Exercises 1: Solving problems by searching}
         \end{itemize}
         \end{solution}
     \end{enumerate}
-   \subsection*{(2) Maze Car ($\approx$ 25 min)}
+   \section*{Exercise 2: Maze Car}
    %The project RAGI aims at building an agent,	
 %meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,	
 %in	a	smart	way. 
    %Imagine a car-like agent wishes to guide a visitor to Professor Louppe's office a maze like the one shown below:
-This exercice is taken from \url{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}.\\
-Imagine a car-like agent wishes to exit a maze like the one shown below:
+This exercice is taken from \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{CS188 Spring 2014}.\\
+Consider a car event which has to exit the following maze:
 \\
-\includegraphics[scale=1]{figures/tp1_maze.png}\\
-The agent is directional and at all times faces some direction d $\in$ (N, S, E, W). With a single action, the agent
-can either move forward at an adjustable velocity v or turn. The turning actions are left and right, which change
+\begin{center}
+   \includegraphics[scale=1]{figures/tp1_maze.png}
+\end{center}
+At all timesteps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent
+can either move forward at an adjustable velocity $v$ or turn. The turning actions are left and right, which change
 the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero).
 The moving actions are fast and slow. Fast increments the velocity by 1 and slow decrements the velocity by 1;
-in both cases the agent then moves a number of squares equal to its NEW adjusted velocity. Any action that
-would result in a collision with a wall crashes the agent and is illegal. Any action that would reduce v below 0
+in both cases the agent then moves a number of squares equal to its \textit{new} adjusted velocity. Any action that
+would result in a collision with a wall crashes the agent and is illegal. Any action that would reduce $v$ below 0
 or above a maximum speed $V_{max}$ is also illegal. The agent’s goal is to find a plan which parks it (stationary)
 on the exit square using as few actions (time steps) as possible.
-As an example: if the agent shown were initially stationary, it might first turn to the east using (right), then
+
+As an example: if the shown agent is initially stationary, it might first turn to the east using (right), then
 move one square east using fast, then two more squares east using fast again. The agent will of course have to
 slow to turn.
 \begin{itemize}
-    \item Quizz ($\approx 15$ minutes):
+    \item Quiz:
     \begin{enumerate}
-    \item If the grid is M by N, what is the size of the state space? You should assume that all configurations are reachable from the start state. 
+    \item For a grid of size $M \times N$, what is the size of the state space? Assume that all configurations are reachable from the starting state. 
     \begin{solution}
     \\
     $N \times M \times 4 \times (V_{max} + 1)$
     \end{solution}
-    \item What is the maximum branching factor of this problem? You may assume that illegal actions are simply not returned by the successor function.
+    \item What is the maximum branching factor of this problem? Assume that illegal actions are simply not returned by the successor function.
     \begin{solution}
     \\
     The maximum branching factor is 3, and this happens when the agent is stationary. While stationary it
@@ -277,9 +330,9 @@ slow to turn.
     Yes, we could stop the search whereas there exists a better solution.
     \end{solution}
     \end{enumerate}
-    \item Discussion (if time permits) ($\approx 10$ minutes):
+    \item Discussion:
     \begin{enumerate}
-        \item State and justify a non-trivial admissible heuristic for this problem.
+        \item State and motivate a non-trivial admissible heuristic for this problem.
         \begin{solution}\\
         Some examples of admissible heuristics are:
         \begin{itemize}
@@ -303,20 +356,19 @@ with finding a suboptimal solution to a search problem.
         \end{solution}
     \end{enumerate}
 \end{itemize}
-\section*{Supplementary exercises}
-\subsection*{(1) Heuristic}
-Consider a search problem where all edges have cost 1 and the optimal solution has cost C. Let h be a heuristic which is max\{$h^* - k$, 0\}, where $h^*$ is the actual cost to the closest goal and k is a nonnegative constant.
+\section*{Exercise 3: Heuristic $\star$}
+Consider a search problem where all edges have a unit cost and the optimal solution has cost $C$. Let $h$ be a heuristic which is max\{$h^\star - k$, 0\}, where $h^\star$ is the actual cost to the closest goal and $k$ is a non-negative constant.
 \begin{enumerate}
     \item Is $h$ admissible?
     \begin{solution}
     \\
     Yes.
     \end{solution}
-    \item Which of the following is the most reasonable description of how much more work will be done (= how many more nodes will be expanded) with heuristic h compared to $h^\star$ , as a function of k?
+    \item Which of the following is the most reasonable description of how much more work will be done (= how many more nodes will be expanded) with heuristic h compared to $h^\star$ , as a function of $k$?
     \begin{enumerate}
-        \item Constant in k
-        \item Linear in k
-        \item Exponential in k
+        \item Constant in $k$
+        \item Linear in $k$
+        \item Exponential in $k$
         \item Unbounded
     \end{enumerate}
     \begin{solution}
@@ -324,8 +376,9 @@ Consider a search problem where all edges have cost 1 and the optimal solution h
     Exponential in k. At k = 0, only the d nodes on an optimal path to the closest goal are expanded for search depth (= optimal path length) d. At k = max(h), the problem reduces to uninformed search and BFS expands b d nodes for branching factor b. In general, all nodes within distance k of the closest goal will have heuristic h = 0 and uninformed search may expand them. Note that search reduces to BFS since A* with h = 0 is UCS and in this search problem all edges have cost 1 so path cost = path length
     \end{solution}
 \end{enumerate}
-\subsection*{(2) Search algorithms}
-\begin{tikzpicture}[
+\subsection*{Exercise 4: Search algorithms $\star$}
+\begin{center}
+    \begin{tikzpicture}[
             -> = stealth, % arrow head style
             %shorten > = 1pt, % don't touch arrow head to node
             auto,
@@ -357,22 +410,24 @@ Consider a search problem where all edges have cost 1 and the optimal solution h
         \path[-] (D) edge node {3} (G);
 
         %\draw[red, dashed] (1, 2) -- (1, -2);
-    \end{tikzpicture}\\
+    \end{tikzpicture}
+\end{center}
+
 For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 \begin{enumerate}
-    \item Depth-First
+    \item Depth-First search
     \begin{solution}
     \\
     Expansion: S-A-B-D-C-G\\
     Path: S->A->B->D->C->G
     \end{solution}
-    \item Breadth-First
+    \item Breadth-First search
     \begin{solution}
     \\
     Expansion: S-A-G\\
     Path: S->G
     \end{solution}
-    \item Uniform-Cost
+    \item Uniform-Cost search
     \begin{solution}
     \\
     Expansion: S-A-C-D-B-G\\
@@ -383,7 +438,7 @@ For each of the following search algorithms, give the order in which states are 
         \centering
         \begin{tabular}{|c|c|c|}
         \hline
-            State & h1 & h2 \\ \hline
+            State & $h_1$ & $h_2$ \\ \hline
             S & 5 & 4\\ \hline
             A & 3 & 2\\ \hline
             B & 6 & 6\\ \hline
@@ -394,37 +449,35 @@ For each of the following search algorithms, give the order in which states are 
         \caption{2 possible heuristics}
         \label{tab:my_label}
     \end{table}
-    Which one is not admissible? Why?
+    which one is not admissible? Why?
     \begin{solution}
     \\
     h1 is not admissible because the real cost from S to G is 4 which smaller than 5.
     \end{solution}
-    \item Use the admissible algorithm to apply A* algorithm
+    \item Use the admissible heuristic to apply A* algorithm.
     \begin{solution}
     \\
     Expansion: S-A-C-G
     Path: S->A->C->G
     \end{solution}
 \end{enumerate}
-\subsection*{(3) The hive}
+\subsection*{Exercise 5: The hive $\star$}
 The hive of insects needs your help. You control an insect in a rectangular maze-like environment
-with dimensions M x N, as shown on \ref{fig:hive}. At each time step,
-the insect can move into a free adjacent square or stay in its current
-location. All actions have cost 1. \\
+of size $M \times N$, as shown on Figure \ref{fig:hive}. At each time-step,
+the insect can move into a free adjacent cell or stay in its current
+location. All actions have a unit cost. \\
 In this particular case, the insect must pass through a series of partially
-flooded tunnels. Flooded squares are lightly shaded in the example map
-shown. The insect can hold its breath for A time steps in a row. Moving
-into a flooded square requires your insect to expend 1 unit of air, while
-moving into a free square refills its air supply.
+flooded tunnels, as illustrated by the grey cells on the map. The insect can hold its breath for $A$ time-steps in a row. Moving
+into a flooded cell requires your insect to consume 1 unit of air, while
+moving into a free cell refills its air supply.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.2 \textwidth]{figures/hive.png}
-    \caption{}
     \label{fig:hive}
 \end{figure}
 \begin{itemize}
-    \item Give a minimal state space for this problem (i.e. do not include extra information). You should
-answer for a general instance of the problem, not the specific map shown
+    \item Give a minimal state space for this problem (i.e., do not include extra information). You should
+answer for a general instance of the problem, not the specific map above.
 \begin{solution}
 \\
 The position of the insect  as well as the number of unit of air it has left. $s = (x, y, u_a) \in \{1, \hdots, M\} \times \{1, \hdots N\} \times \{1, \hdots, A\}$.
@@ -435,7 +488,8 @@ The position of the insect  as well as the number of unit of air it has left. $s
     $M\times N \times A$ 
     \end{solution}
 \end{itemize}
-   \section*{Supplementary material}
-   \url{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}\\
-   \url{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}\\
+   \section*{Supplementary materials}
+   \href{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}{Berkeley 1}\\
+   \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{Berkeley 2}\\
+   Chapter 3 of reference book.
 \end{document}
