@@ -36,7 +36,9 @@ To help you, the implementation of Depth-First Search (DFS) is available in the 
 ```bash
 python run.py --agentfile dfs.py --layout medium
 ```
-When you want to test one of your implementation, just replace the script parameter `dfs.py` by the name of the file of the agent you want to test. Refer to the [Usage section](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#usage) for more details about the game parameters.
+When you want to test one of your implementation, just replace the script parameter `dfs.py` by the name of the file of the agent you want to test. Refer to the [usage section](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#usage) for more details about the game parameters.
+
+Reminder: it is mandatory to use only the [API](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects#api) to retrieve game information.
 
 You are asked to answer the following questions:
  1. **Problem statement**
