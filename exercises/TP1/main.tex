@@ -83,7 +83,7 @@
 
 
 \newif\ifhideproofs
-\hideproofstrue %uncomment to hide proofs
+%\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -109,7 +109,7 @@ Exercises 1: Solving problems by searching}
    \item apply each of these algorithms on search problems defined in fully observable and deterministic environments.
 \end{itemize}
 
-   \section*{Exercises 1: Search algorithms}
+   \section*{Exercise 1: Search algorithms}
    \begin{center}
        \begin{tikzpicture}[
             -> = stealth, % arrow head style
@@ -154,36 +154,36 @@ Exercises 1: Solving problems by searching}
 \begin{algorithm}[H]
 \caption{Graph-Search Algorithm}\label{algo:GS}
 \begin{tabular}{ll}
-    \textit{Input:}  & $f$: The fringe, which is a priority queue for nodes, \textbf{initialised with the starting node}. \\
-     & $c$: A list of closed nodes, \textbf{initially empty}.\\
+    \textit{Input:}  & $\text{fringe}$: The fringe, which is a priority queue for nodes, \textbf{initialised with the starting node}. \\
+     & $\text{closed}$: A list of closed nodes, \textbf{initially empty}.\\
      \textit{Output:}  & $p$: A list of nodes which represents the optimal path.\\
 \end{tabular}
 \small
 \begin{algorithmic}[1]
-\Procedure{Graph-Search}{$f, c$}
+\Procedure{Graph-Search}{$\text{fringe}, \text{closed}$}
 \While{$True$}
-\State $n \gets f.pop()$ %\Comment{Pop the node with highest priority}
-\If{$n == nil$}
+\State $n \gets \text{fringe}.pop()$ %\Comment{Pop the node with highest priority}
+\If{$n \text{ is } nil$}
  \State \Return $nil$
 \EndIf
 \If{$n.isGoal()$}
    \State \Return $n.getPath()$
 \EndIf
-\State $c.append(n)$
+\State $\text{closed}.append(n)$
 \For{$n' \in n.children$}
     \State $p \gets n'.computePriority(n)$
-    \If{$n' \not\in c \quad \&\& \quad n' \not\in f$}
+    \If{$n' \not\in \text{closed} \quad \&\& \quad n' \not\in \text{fringe}$}
     \State $n'.setPriority(p)$
     \State $n'.setParent(n)$
-    \State $f.push(n')$
+    \State $\text{fringe}.push(n')$
     
-    \ElsIf{$n' \in f \quad \&\& \quad p < f.get(n').getPriority()$}
-    \State $f.remove(n')$
-    \State $f.push(n')$
+    \ElsIf{$n' \in \text{fringe} \quad \&\& \quad p < \text{fringe}.get(n').getPriority()$}
+    \State $\text{fringe}.remove(n')$
+    \State $\text{fringe}.push(n')$
     
-    \ElsIf{$n' \in c \quad \&\& \quad p < c.get(n').getPriority()$}
-    \State $c.remove(n')$
-    \State $f.push(n')$
+    \ElsIf{$n' \in \text{closed} \quad \&\& \quad p < \text{closed}.get(n').getPriority()$}
+    \State $\text{closed}.remove(n')$
+    \State $\text{fringe}.push(n')$
     \EndIf
 \EndFor
 \EndWhile
@@ -201,81 +201,81 @@ Exercises 1: Solving problems by searching}
         \begin{solution}
         \\
         Expansion: S, A, B, D, Goal \\
-        Path: S -> A -> B -> D -> G \\
+        Path: S $\rightarrow$ A $\rightarrow$ B $\rightarrow$ D $\rightarrow$ G \\
+        We use a LIFO heap to perform the search. In order to prevent cycles, when we add a node into the heap we replace its previous version if there is one and we never add a node that has already been expanded.\\
         Step-by-step:
         \begin{itemize}
-            \item Heap = \{S\}; Expand(S); Path = S
-            \item Heap = \{A, B, C\}; Expand(A); Path = S -> A
-            \item Heap = \{B(A), B(S), C\}; Expand(B); Path = S -> A -> B
-            \item Heap = \{D, E, C\}; Expand(D); Path = S -> A -> B -> D
-            \item Heap = \{Goal, E, C\}; Expand(Goal); Path = S -> A -> B -> D -> Goal
+            \item Heap = \{S()\}; Expand(S); Visited = \{S()\}
+            \item Heap = \{A(S), B(S), C(S)\}; Expand(A(S)); Visited = \{S(), A(S)\}
+            \item Heap = \{B(A), C(S)\}; Expand(B(A)); Visited = \{S(), A(S), B(A)\}
+            \item Heap = \{C(B), D(B), E(B)\}; Expand(C(B));  Visited = \{S(), A(S), B(A), C(B)\}
+            \item Heap = \{D(B), E(B)\}; Expand(D(B)); Visited = \{S(), A(S), B(A), C(B), D(B)\}
+            \item Heap = \{Goal(D), E(B)\}; Expand(Goal(D)); Visited = \{S(), A(S), B(A), C(B), D(B), Goal(D)\}
         \end{itemize}
         \end{solution}
         \item Breadth-First search
         \begin{solution}
         \\
         Expansion: S, A, B, C, D, E, Goal \\
-        Path: S -> B -> D -> Goal \\
+        Path: S $\rightarrow$ B $\rightarrow$ D $\rightarrow$ Goal \\
+        We use FIFO queue to perform the search. In order to prevent cycles we never add a node that is already in the queue or has already been expanded.\\
         Step-by-step:
         \begin{itemize}
-            \item FIFO = \{S\}; Expand(S); Path = S
-            \item FIFO = \{A, B, C\}; Expand(A); Path = S -> A
-            \item FIFO = \{B(S), C, B(A)\}; Expand(B); Path = S -> B
-            \item FIFO = \{C, B(A), D, E\}; Expand(C); Path = S -> C
-            \item FIFO = \{B(A), D, E, B(C)\}; Expand(B), B is already expanded so we drop it.
-            \item FIFO = \{D, E, B(C)\}; Expand(D); Path = S -> B ->D
-            \item FIFO = \{E, B(C), Goal\}; Expand(E); Path = S -> B -> E
-            \item FIFO = \{B(C), Goal(D), Goal(E)\}; Expand(B), B is already expanded so we drop it.
-            \item FIFO = \{Goal(D), Goal(E)\}; Expand(Goal); Path = S -> B -> D -> Goal
+            \item Queue = \{S()\}; Expand(S()); Visited = S
+            \item Queue = \{A(S), B(S), C(S)\}; Expand(A(S)); Visited = \{S(), A(S)\}
+            \item Queue = \{B(S), C(S)\}; Expand(B(S)); Visited = \{S(), A(S), B(S)\}
+            \item Queue = \{C(S), D(B), E(B)\}; Expand(C(S)); Visited = \{S(), A(S), B(S), C(S)\}
+            \item Queue = \{D(B), E(B)\}; Expand(D(B)); Visited = \{S(), A(S), B(S), C(S), D(B)\}
+            \item Queue = \{E(B), Goal\}; Expand(E(B)); Visited = \{S(), A(S), B(S), C(S), D(B), E(B)\}
+            \item Queue = \{Goal(D)\}; Expand(Goal(D)); Visited = \{S(), A(S), B(S), C(S), D(B), E(B), Goal(D)\}
         \end{itemize}
         \end{solution}
         \item Uniform-Cost search
         \begin{solution}
         \\
+        We use the algorithm presented above to perform the search. The priority of a node is equal to its total path cost (g(N)).\\
         Expansion: S, A, C, B, D, E, Goal\\
-        Path: S -> B -> D -> Goal\\
+        Path: S $\rightarrow$ B $\rightarrow$ D $\rightarrow$ Goal\\
         Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
         \begin{itemize}
-            \item P-Queue = \{S(0, None)\}; Expand(S); Path = S
-            \item P-Queue = \{A(1, S), C(3, S), B(4, S)\}; Expand(A); Path = S -> A
-            \item P-Queue = \{C(3, S), B(4, S), \blue{B(6, A)}\}; Expand(C); Path = S -> C
-            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
-            \item P-Queue = \{B(4, S), \blue{B(5, C)}\}; Expand(B); Path = S -> B
-            \item P-Queue = \{D(9, B), E(9, B)\}; Expand(D); Path = S -> B -> D
-            \item P-Queue = \{E(9, B), Goal(19, D)\}; Expand(E); Path = S -> B -> E
-            \item P-Queue = \{Goal(19, D), \blue{Goal(29, B)}\}; Expand(Goal); Path = S -> B -> D -> Goal
+            \item fringe = \{S(0, None)\}; Expand(S); closed = \{S(0, None)\}
+            \item fringe = \{A(1, S), C(3, S), B(4, S)\}; Expand(A); closed = \{S(0, None), A(1, S)\}
+            \item fringe = \{C(3, S), B(4, S)\}; Expand(C); closed = \{S(0, None), A(1, S), C(3, S)\}
+            \item fringe = \{B(4, S)\}; Expand(B); closed = \{S(0, None), A(1, S), C(3, S), B(4, S)\}
+            \item fringe = \{D(9, B), E(9, B)\}; Expand(D); closed = \{S(0, None), A(1, S), C(3, S), B(4, S), D(9, B)\}
+            \item fringe = \{E(9, B), Goal(19, D)\}; Expand(E); closed = \{S(0, None), A(1, S), C(3, S), B(4, S), D(9, B), E(9, B)\}
+            \item fringe = \{Goal(19, D)\}; Expand(Goal); closed = \{S(0, None), A(1, S), C(3, S), B(4, S), D(9, B), E(9, B), Goal(19, D)\}
         \end{itemize}
         \end{solution}
         \item Greedy search
         \begin{solution}
         \\
+        We use the algorithm presented above to perform the search. The priority of a node is equal to the heuristic cost (h(N)).\\
         Expansion: S, C, B, E, Goal\\
-        Path: S -> B -> E -> Goal\\
+        Path: S $\rightarrow$ B $\rightarrow$ E $\rightarrow$ Goal\\
         Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
         \begin{itemize}
-            \item P-Queue = \{S(inf, None)\}; Expand(S); Path = S
-            \item P-Queue = \{C(10, S), B(12, S), A(20, S)\}; Expand(C); Path = S -> C
-            \item P-Queue = \{B(12, S), A(20, S), \blue{B(12, C)}\}; Expand(B); Path = S -> B
-            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
-            \item P-Queue = \{E(19, B), A(20, S), D(25, B), \blue{A(20, B)}\}; Expand(E); Path = S -> B -> E
-            \item P-Queue = \{Goal(0, E), A(20, S), D(25, B)\}; Expand(Goal); Path = S -> B -> E -> Goal
+            \item fringe = \{S(inf, None)\}; Expand(S); closed = \{S(inf, None)\}
+            \item fringe = \{C(10, S), B(12, S), A(20, S)\}; Expand(C); closed = \{S(inf, None), C(10, S)\}
+            \item fringe = \{B(12, S), A(20, S)\}; Expand(B); closed = \{S(inf, None), C(10, S), B(12, S)\}
+            \item fringe = \{E(19, B), A(20, S), D(25, B)\}; Expand(E); closed = \{S(inf, None), C(10, S), B(12, S), E(19, B)\}
+            \item fringe = \{Goal(0, E), A(20, S), D(25, B)\}; Expand(Goal); closed = \{S(inf, None), C(10, S), B(12, S), E(19, B), Goal(0, E)\}
         \end{itemize}
         \end{solution}
         \item $\text{A}^\star$ (Is the heuristic admissible?)
         \begin{solution}
         \\
-        We notice that the heuristic is not admissible. We can make it so, by changing the heuristic at D by $h=9$.
+        The heuristic is not admissible, by changing the heuristic at D by $h=9$ is enough to make it so.
         \\
         Expansion: S, C, B, D, Goal\\
-        Path: S -> B -> D -> Goal\\
+        Path: S $\rightarrow$ B $\rightarrow$ D $\rightarrow$ Goal\\
         Step-by-step, in the following we will denote a node N as N(g(N), Parent(N)):
         \begin{itemize}
-            \item P-Queue = \{S(inf, None)\}; Expand(S); Path = S
-            \item P-Queue = \{C(13, S), B(16, S), A(21, S)\}; Expand(C); Path = S -> C
-            \item P-Queue = \{B(12, S), A(20, S), \blue{B(17, C)}\}; Expand(B); Path = S -> B
-            (Remark: We denote in blue a node which is not added to the queue because it is already in it with a smaller cost)
-            \item P-Queue = \{D(18, B), E(28, B), A(20, S), \blue{A(29, B)}\}; Expand(D); Path = S -> B -> D
-            \item P-Queue = \{Goal(19, D), E(28, B), A(20, S)\}; Expand(Goal); Path = S -> B -> D -> Goal
+            \item fringe = \{S(inf, None)\}; Expand(S); closed = \{S\}
+            \item fringe = \{C(13, S), B(16, S), A(21, S)\}; Expand(C); closed = \{S, C(13, S)\}
+            \item fringe = \{B(16, S), A(21, S)\}; Expand(B); closed = \{S, C(13, S), B(16, S)\}
+            \item fringe = \{D(18, B), E(28, B), A(21, S)\}; Expand(D); closed = \{S, C(13, S), B(12, S), D(18, B)\}
+            \item fringe = \{Goal(19, D), E(28, B), A(21, S)\}; Expand(Goal); closed = \{S, C(13, S), B(12, S), D(18, B), Goal(19, D)\}
         \end{itemize}
         \end{solution}
     \end{enumerate}
@@ -362,7 +362,7 @@ Consider a search problem where all edges have a unit cost and the optimal solut
     \item Is $h$ admissible?
     \begin{solution}
     \\
-    Yes.
+    Yes, indeed $\text{if} \quad h^\star \geq k: h^\star - k \leq h^\star \quad \text{else} \quad 0 \leq h^\star$.
     \end{solution}
     \item Which of the following is the most reasonable description of how much more work will be done (= how many more nodes will be expanded) with heuristic h compared to $h^\star$ , as a function of $k$?
     \begin{enumerate}
@@ -373,7 +373,7 @@ Consider a search problem where all edges have a unit cost and the optimal solut
     \end{enumerate}
     \begin{solution}
     %\\
-    Exponential in k. At k = 0, only the d nodes on an optimal path to the closest goal are expanded for search depth (= optimal path length) d. At k = max(h), the problem reduces to uninformed search and BFS expands b d nodes for branching factor b. In general, all nodes within distance k of the closest goal will have heuristic h = 0 and uninformed search may expand them. Note that search reduces to BFS since A* with h = 0 is UCS and in this search problem all edges have cost 1 so path cost = path length
+    Exponential in k. At k = 0, only the d nodes on an optimal path to the closest goal are expanded for search depth (= optimal path length) d. At k = max(h), the problem reduces to uninformed search and BFS expands $b \times d$ nodes for branching factor b. In general, all nodes within distance k of the closest goal will have heuristic h = 0 and uninformed search may expand them. Note that search reduces to BFS since A* with h = 0 is UCS and in this search problem all edges have cost 1 so path cost = path length
     \end{solution}
 \end{enumerate}
 \subsection*{Exercise 4: Search algorithms $\star$}
@@ -419,19 +419,19 @@ For each of the following search algorithms, give the order in which states are 
     \begin{solution}
     \\
     Expansion: S-A-B-D-C-G\\
-    Path: S->A->B->D->C->G
+    Path: S$\rightarrow$A$\rightarrow$B$\rightarrow$D$\rightarrow$C$\rightarrow$G
     \end{solution}
     \item Breadth-First search
     \begin{solution}
     \\
     Expansion: S-A-G\\
-    Path: S->G
+    Path: S$\rightarrow$G
     \end{solution}
     \item Uniform-Cost search
     \begin{solution}
     \\
     Expansion: S-A-C-D-B-G\\
-    Path: S->A->C->G
+    Path: S$\rightarrow$A$\rightarrow$C$\rightarrow$G
     \end{solution}
     \item Consider the following heuristics:
     \begin{table}[h]
@@ -452,18 +452,18 @@ For each of the following search algorithms, give the order in which states are 
     which one is not admissible? Why?
     \begin{solution}
     \\
-    h1 is not admissible because the real cost from S to G is 4 which smaller than 5.
+    h1 is not admissible because the real cost from S to G is 4 which is smaller than 5.
     \end{solution}
     \item Use the admissible heuristic to apply A* algorithm.
     \begin{solution}
     \\
     Expansion: S-A-C-G
-    Path: S->A->C->G
+    Path: S$\rightarrow$A$\rightarrow$C$\rightarrow$G
     \end{solution}
 \end{enumerate}
 \subsection*{Exercise 5: The hive $\star$}
 The hive of insects needs your help. You control an insect in a rectangular maze-like environment
-of size $M \times N$, as shown on Figure \ref{fig:hive}. At each time-step,
+of size $M \times N$, as shown on the Figure below. At each time-step,
 the insect can move into a free adjacent cell or stay in its current
 location. All actions have a unit cost. \\
 In this particular case, the insect must pass through a series of partially
