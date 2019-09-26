@@ -42,6 +42,7 @@ source activate pacman
 ```bash
 conda create --name pacman python=3.6.6
 source activate pacman
+```
 
 (Windows) Create a `pacman` environment and activate it:
 ```bash
