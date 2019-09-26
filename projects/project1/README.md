@@ -61,7 +61,7 @@ You are asked to answer the following questions:
 		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
 		 - You must have *h(n)* different from 0 for all *n*.
 		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
-		 - You may want to have a look at the file `util.py` in order find a suitable data structure for the exploration of the game tree.
+		 - You may want to have a look at the file `/pacman_module/util.py` in order find a suitable data structure for the exploration of the game tree.
 
 	  - 2.c. - **1.0 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*. Explain whether your heuristic *h(n)* guarantees the optimality of your A\* implementation.
 	  - 2.d - **0.5 point** - Explain how your choice of *g(n)* preserves the completeness and optimality - with respect to the original score function - of A\* when *h(n)* = 0 for all *n*.
