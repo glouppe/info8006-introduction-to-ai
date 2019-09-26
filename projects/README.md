@@ -33,11 +33,15 @@ We recommend to install a Python (3) environment using the Anaconda distribution
 
 ### Setup
 
-(Linux/MacOS) Create a `pacman` environment and activate it:
+(Linux) Create a `pacman` environment and activate it:
 ```bash
 conda create --name pacman python=3.6
 source activate pacman
 ```
+(MacOS) Create a `pacman` environment and activate it:
+```bash
+conda create --name pacman python=3.6.6
+source activate pacman
 
 (Windows) Create a `pacman` environment and activate it:
 ```bash
