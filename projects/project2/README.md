@@ -75,7 +75,14 @@ You are asked to answer the following questions. For this project, we have delib
 
 ## Evaluation
 
-For each **discussion question** (1.b, 2.c, 2.d, 3.b, 3.c), the evaluation will be performed as follows:
+In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code and report.
+
+For each **implementation question** (2.a, 2.c), the evaluation will be performed as follows:
+ - 100% points: correct implementation of the algorithm and its components.
+ - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem (A\* and BFS) and to the heuristic (A\*).
+ - no point: implementation error of any component of the algorithm.
+
+For each **discussion question** (1.a, 1.b, 2.d, 3.b, 3.c), the evaluation will be performed as follows:
 
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.
