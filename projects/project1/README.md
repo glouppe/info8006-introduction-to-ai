@@ -115,11 +115,10 @@ Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be e
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
 
- - **Code performances** - **2 points** - Your A\* implementation will be tested on the submission platform machines. You will be evaluated with respect to its time performances:
+ - **Code performances** - **2 points** - Your implementation will be tested on the submission platform machines. In order not to get too long executions of the test scripts on the submission platform, your implementation is expected to run in less than 15 seconds. This upper bound should only penalize very poorly optimized code. 
 
-	 - 2 points: fast enough (<3 seconds).
-	 - 1 point: satisfying (3-10 seconds).
-	 - 0 point: too slow (>10 seconds).
+	 - 2 points: fast enough (<=15 seconds).
+	 - 0 point: too slow (>15 seconds).
 
  - **Code style** - **2 points**
 	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code.
