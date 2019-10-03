@@ -115,7 +115,7 @@ Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be e
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
 
- - **Code performances** - **2 points** - Your code will be tested on the submission platform machines. You will be evaluated with respect to its time performances:
+ - **Code performances** - **2 points** - Your A\* will be tested on the submission platform machines. You will be evaluated with respect to its time performances:
 
 	 - 2 points: fast enough (<3 seconds).
 	 - 1 point: satisfying (3-10 seconds).
