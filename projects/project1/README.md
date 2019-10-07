@@ -15,13 +15,14 @@ You are requested to deliver a *tar.gz* archive containing:
  - Your report named `report.pdf`.
 	 - Your report must be at most 5 pages long.
 	 - Fill the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex) to write your report.
+     - In English or French.
  - Your `astar.py` file containing your implementation of A\* algorithm.
 	 - Put the class template defined in `pacmanagent.py` into `astar.py` and fill in the `get_action` function.
  - Your `bfs.py` file containing your implementation of BFS algorithm.
 	 - Put the class template defined in `pacmanagent.py` into `bfs.py` and fill in the `get_action` function.
 	 - Your implementation of BFS should only differ from A\* by its cost function and heuristic.
 
-:warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
+:warning: A penalty of **-2 points** on the final grade will be applied if files are not named based on the instructions above.
 
 ---
 
@@ -115,7 +116,7 @@ Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be e
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
 
- - **Code performances** - **2 points** - Your implementation will be tested on the submission platform machines. In order not to get too long executions of the test scripts on the submission platform, your implementation is expected to run in less than 15 seconds. This upper bound should only penalize very poorly optimized code. 
+ - **Code performances** - **2 points** - Your implementation will be tested on the submission platform machines. In order not to get too long executions of the test scripts on the submission platform, your implementation is expected to run in less than 15 seconds. This upper bound should only penalize very poorly optimized code.
 
 	 - 2 points: fast enough (<=15 seconds).
 	 - 0 point: too slow (>15 seconds).

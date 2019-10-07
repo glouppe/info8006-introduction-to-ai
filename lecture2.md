@@ -77,7 +77,7 @@ Problem-solving agents
 - take decisions based on (hypothesized) consequences of actions;
 - must have a model of how the world evolves in response to actions;
 - formulate a goal, explicitly;
-- consider **how to world would be**.
+- consider **how the world would be**.
 
 .grid[
 .kol-1-2[
@@ -94,6 +94,10 @@ Problem-solving agents
 class: middle
 
 .width-100[![](figures/lec2/problem-solving-agent.png)]
+
+???
+
+Point out this is offline. The execution is executed eyes closed.
 
 ---
 
@@ -244,7 +248,7 @@ The set of acceptable sequences starting at the initial state form a **search tr
 - Nodes correspond to states in the state space, where the initial state is the root node.
 - Branches correspond to applicable actions, with child nodes corresponding to successors.
 
-For most problems, we can never actually build the whole tree.
+For most problems, we can never actually build the whole tree. Yet we want to find some optimal branch!
 
 .center[![](figures/lec2/pacman-tree.png)]
 
@@ -298,6 +302,17 @@ They do not know whether a state looks more promising than some other.
 
 ---
 
+class: middle
+
+.center.width-80[![](figures/lec2/search-properties.png)]
+
+???
+
+<span class="Q">[Q]</span> Number of nodes in a tree?
+Number of nodes = $\frac{b^{d+1}-1}{b-1}$
+
+---
+
 # Depth-first search
 
 <br><br>
@@ -313,17 +328,6 @@ class: middle
 - *Implementation*: fringe is a **LIFO stack**.
 
 .width-80.center[![](figures/lec2/dfs-progress.svg)]
-
----
-
-class: middle
-
-.center.width-80[![](figures/lec2/search-properties.png)]
-
-???
-
-<span class="Q">[Q]</span> Number of nodes in a tree?
-Number of nodes = $\frac{b^{d+1}-1}{b-1}$
 
 ---
 
@@ -771,6 +775,10 @@ class: middle
 ]
 
 ???
+
+First, is h admissible?
+
+Simulate the execution of graph-search using this h.
 
 Node $C$ is expanded too early!
 
