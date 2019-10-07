@@ -69,7 +69,7 @@ You are asked to answer the following questions. For this project, we have delib
 	
 	- 3.b. - **1 point** - **Compare** these results and **justify** their differences referring to the course.
 	
-	- 3.c - **2 points** - **Summarize** (no graph is expected) the performances of your cutoff-test/evaluation function pairs, according to the type of ghosts and to the layout. **Justify** these performances. 
+	- 3.c - **2 points** - **Summarize** (no plot is expected) the performances of your cutoff-test/evaluation function pairs, according to the type of ghosts and to the layout. **Justify** these performances. 
 
 ---
 
@@ -79,7 +79,7 @@ In this section, you can find the criteria according to which the different ques
 
 For each **implementation question** (2.a, 2.c), the evaluation will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
- - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem (A\* and BFS) and to the heuristic (A\*).
+ - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
 
 For each **discussion question** (1.a, 1.b, 2.d, 3.b, 3.c), the evaluation will be performed as follows:
