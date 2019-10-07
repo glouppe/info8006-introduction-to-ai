@@ -51,7 +51,7 @@ You are asked to answer the following questions. For this project, we have delib
  
  	 - 2.a. - **1 points** - Consider the original implementation of Minimax.
 	 	 - Discuss its completeness with respect to the game of Pacman.
-		 - How to guarantee the completeness of Minimax by modifying some its components, while keeping the same set of optimal strategies. 
+		 - How to guarantee the completeness of Minimax by modifying some its components, while keeping the same set of optimal strategies ? 
 		 
 		 **Hint**: observe the behaviour of the score function at the limits. 
 		 
