@@ -81,6 +81,11 @@ python run.py --silentdisplay
 python run.py --layout medium
 ```
 
+`--ghostagent`: Start the game with a user-specifed ghost agent (see [**project II**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2)):
+```bash
+python run.py --ghostagent greedy
+```
+
 `-h`: For further details, check the command-line help section:
 ```bash
 python run.py -h
