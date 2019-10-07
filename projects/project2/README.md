@@ -86,7 +86,7 @@ You are asked to answer the following questions. For this project, we have delib
 
 In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code and report.
 
-For each **implementation question** (2.b, 2.c), the evaluation will be performed as follows:
+For each **implementation question** (2.b, 2.c), provide simply references to your code and to your cutoff-tests and evaluation functions in your report. The evaluation of your code will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
  - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
