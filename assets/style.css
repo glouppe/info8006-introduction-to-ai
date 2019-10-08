@@ -183,7 +183,7 @@ td {
     color: lightgray;
 }
 
-.exercice {
+.exercise {
     background-color: rgba(40,167,69,0.25);
     border: 2px solid rgb(40,167,69);
     border-radius: 5px;
@@ -192,8 +192,8 @@ td {
     padding: 1em;
 }
 
-.exercice:before {
-    content: "Exercice";
+.exercise:before {
+    content: "Exercise";
     font-weight: bold;
     display: block;
 }
@@ -311,7 +311,7 @@ td {
 }
 
 .end-slide {
-    background-color: #20707e; 
+    background-color: #20707e;
     color: white;
     vertical-align: middle;
 }

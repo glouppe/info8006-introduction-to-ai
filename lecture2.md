@@ -149,7 +149,7 @@ A *solution* to a problem is an action sequence that leads from the initial stat
 - A solution quality is measured by the path cost function.
 - An **optimal solution** has the lowest path cost among all solutions.
 
-<span class="Q">[Q]</span> What if the environment is partially observable? non-deterministic?
+.exercise[What if the environment is partially observable? non-deterministic?]
 
 ???
 
@@ -263,7 +263,11 @@ For most problems, we can never actually build the whole tree. Yet we want to fi
 - Expansion
 - Exploration
 
-<span class="Q">[Q]</span> Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?
+---
+
+class: middle
+
+.exercise[Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?]
 
 ---
 
@@ -308,8 +312,7 @@ class: middle
 
 ???
 
-<span class="Q">[Q]</span> Number of nodes in a tree?
-Number of nodes = $\frac{b^{d+1}-1}{b-1}$
+Number of nodes in a tree = $\frac{b^{d+1}-1}{b-1}$
 
 ---
 
@@ -410,9 +413,10 @@ Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
 
 .grid[
 .kol-1-2[
-<span class="Q">[Q]</span> What are the properties of iterative deepening?
-
-<span class="Q">[Q]</span> Isn't this process wastefully redundant?
+.exercise[
+- What are the properties of iterative deepening?
+- Isn't this process wastefully redundant?
+]
 ]
 .kol-1-2[
 .center.width-80[![](figures/lec2/id-properties.png)]
@@ -588,7 +592,7 @@ class: middle
 
 .center.width-80[![](figures/lec2/as-progress2.png)]
 
-<span class="Q">[Q]</span> Why doesn't A* stop at step (e), since Bucharest is in the fringe?
+.exercise[Why doesn't A* stop at step (e), since Bucharest is in the fringe?]
 
 ---
 
