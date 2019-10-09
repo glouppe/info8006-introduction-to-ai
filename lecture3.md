@@ -164,11 +164,11 @@ class: middle
 
 class: middle
 
+.center.width-50[![](figures/lec3/waltz.png)]
+
 ## Example: The Waltz algorithm
 
-.center.width-40[![](figures/lec3/waltz.png)]
-
-The Waltz algorithm is a procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
+Procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
 
 .pull-right.width-70[![](figures/lec3/waltz-inter.png)]
 CSP formulation:
@@ -208,7 +208,7 @@ class: middle
     - e.g., red is better than green.
     - Often representable by a cost for each variable assignment.
     - Results in constraint optimization problems.
-    - (We will ignore those for now.)
+    - (We will ignore those in this course.)
 
 ---
 
@@ -300,7 +300,7 @@ Simulate the execution on blackboard. Highlight two issues:
 
 - Backtracking search is a canonical uninformed algorithm for solving CSPs.
 - Idea 1: **One variable at a time**:
-    - The naive application of search algorithms ignore a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
+    - The naive application of search algorithms ignores a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
         - $\text{WA}=\text{red}$ then $\text{NT}=\text{green}$ is the same as $\text{NT}=\text{green}$ then $\text{WA}=\text{red}$.
     - One only needs to consider assignments to a single variable at each step.
         - $b=d$ and there are $d^n$ leaves.
@@ -605,12 +605,12 @@ class: middle
 # Logical agents
 
 - Most useful in non-episodic, partially observable environments.
-- **Logic (knowledge-based) agents** combine:
+- Logic (knowledge-based) agents combine:
     - A *knowledge base* ($\text{KB}$): a list of facts that are known to the agent.
     - Current *percepts*.
 - Hidden aspects of the current state are **inferred** using rules of inference.
-- **Logic** provides a good formal language for both   
-    - Facts encoded as *axioms*.
+- Logic provides a good formal language for both   
+    - Facts, encoded as *axioms*.
     - Rules of *inference*.
 
 .center.width-80[![](figures/lec3/kb-agent.png)]
@@ -681,6 +681,7 @@ Examples:
     - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
     - $\beta$ is true in all models where $\alpha$ is true.
     - That is, $\beta$ *follows logically* from $\alpha$.
+- In other words, entailment enables **logical inference**.
 
 ---
 
@@ -688,7 +689,7 @@ Examples:
 
 .center.width-30[![](figures/lec3/wumpus-simple.png)]
 
-- Let consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Let us consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
 - We consider the situation after:
     - detecting nothing in $[1,1]$,
     - moving right, sensing breeze in $[2,1]$.
@@ -717,7 +718,10 @@ class: middle
 - $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
 - $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
     - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $\text{KB}$ is true.
-- Entailment can be used to carry out **logical inference**.
+
+???
+
+Entailment can be used to carry out **logical inference**.
 
 ---
 
@@ -765,7 +769,7 @@ SAT into CSPs: http://www.cs.toronto.edu/~fbacchus/csc2512/Lectures/2012Readings
     - The complexity of solving a CSP is strongly related to the structure of its constraint graph.
 - Logical agents:
     - Intelligent agents need knowledge about the world in order to reach good decisions.
-    - Logical inference can be used as tool to reason about the world.
+    - Logical inference can be used as tool to reason about the world, in particular to infer parts that are not observable.
         - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
         - This in turn can be cast as a CSP.
 
