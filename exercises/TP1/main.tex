@@ -25,6 +25,8 @@
     linkcolor=black,
     urlcolor = black
     }
+\usepackage{qrcode}
+
 %-------------------------Mathématiques------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -83,7 +85,7 @@
 
 
 \newif\ifhideproofs
-%\hideproofstrue %uncomment to hide proofs
+\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -489,7 +491,11 @@ The position of the insect  as well as the number of unit of air it has left. $s
     \end{solution}
 \end{itemize}
    \section*{Supplementary materials}
-   \href{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}{Berkeley 1}\\
-   \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{Berkeley 2}\\
-   Chapter 3 of reference book.
+   \begin{tabular}{lc}
+       \href{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}{Berkeley 1}  & \qrcode{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}  \\
+       & \\
+        \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{Berkeley 2} & \qrcode{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}\\
+        & \\
+    Chapter 3 of reference book &
+   \end{tabular}
 \end{document}
