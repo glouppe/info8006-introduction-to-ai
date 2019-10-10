@@ -14,7 +14,7 @@
 
 You are requested to deliver a *tar.gz* archive containing:
  - Your report named `report.pdf`.
-	 - Your report must be at most **TBD** pages long.
+	 - Your report must be at most **5** pages long.
 	 - Fill the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project2/template-project2.tex) to write your report.
 	 - In French or English.
  - Your `minimax.py` file containing your implementation of the Minimax algorithm.
@@ -69,17 +69,15 @@ You are asked to answer the following questions.
 		 - Your evaluation functions need to be **fast** to compute and **generalizable**.
 		 - Evaluation functions can be built by weighting the different characteristics of the game state, but this is not a constraint. 
 		 
-		 N.B.: Although 3 layouts are provided for this project, you remain free to build your own layouts in order to fit the most general cutoff-test/evaluation function pair as possible. If you do so, discuss it in your report.
+		 N.B.: Although 3 layouts are provided for this project, you remain free to build your own layouts in order to fit the most general cutoff-test/evaluation function pair as possible. If you do so, discuss it briefly in your report.
 		 
 	 - 2.d. - **1 point** - Define and describe formally your different cutoff-tests and evaluation functions.
 
  3. **Experiment**
  
-	 - 3.a - **1 point** - Run your H-Minimax agent against `/pacman_module/layouts/large_adv.lay` layout with ghost `smarty`, using your 3 cutoff-test/evaluation function pairs. Report your results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes.
+	 - 3.a - **2 points** - Run your H-Minimax agent against `/pacman_module/layouts/large_adv.lay` layout and all ghosts, using your 3 cutoff-test/evaluation function pairs. Report your results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes.
 	
-	- 3.b. - **1 point** - **Compare** these results and **explain** their differences referring to the course.
-	
-	- 3.c - **2 points** - **Summarize** (no plot is expected) the results of your cutoff-test/evaluation function pairs, according to the type of ghosts and to the layout. **Explain** these results. 
+	- 3.c - **2 points** - **Summarize** (no plot is expected) the results of your cutoff-test/evaluation function pairs, according to the type of ghosts. **Explain** these results referring to the course. 
 	
 	- 3.d. - **1 point** - How would you change your implementation in order to handle several ghosts ? Can the game still be described as a **zero-sum** game ? Justify your answer.
 
