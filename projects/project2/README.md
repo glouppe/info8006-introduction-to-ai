@@ -75,9 +75,9 @@ You are asked to answer the following questions.
 
  3. **Experiment**
  
-	 - 3.a - **2 points** - Run your H-Minimax agent against `/pacman_module/layouts/large_adv.lay` layout and all ghosts, using your 3 cutoff-test/evaluation function pairs. Report your results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes.
-	
-	- 3.c - **2 points** - **Summarize** (no plot is expected) the results of your cutoff-test/evaluation function pairs, according to the type of ghosts. **Explain** these results referring to the course. 
+	 - 3.a - **2 points** - Run your H-Minimax agent against `/pacman_module/layouts/large_adv.lay` layout and all ghosts, using your 3 cutoff-test/evaluation function pairs. Report your results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes. 	 
+		- As the number of pages of the report is limited, we advise you to minimise the number of plots by combining bars whenever possible
+	- 3.c - **2 points** - **Summarize** he results of your cutoff-test/evaluation function pairs, according to the type of ghosts. **Explain** these results referring to the course. 
 	
 	- 3.d. - **1 point** - How would you change your implementation in order to handle several ghosts ? Can the game still be described as a **zero-sum** game ? Justify your answer.
 
