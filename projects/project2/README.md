@@ -19,8 +19,13 @@ You are requested to deliver a *tar.gz* archive containing:
 	 - In French or English.
  - Your `minimax.py` file containing your implementation of the Minimax algorithm.
 	 - Put the class template defined in `pacmanagent.py` into `minimax.py` and fill in the `get_action` function.
- - Your `hminimax0.py`, `hminimax1.py` and `hminimax2.py` files containing your different implementations of the H-Minimax algorithm (more explanation in [Instructions](#instructions) section).
+ - Your `hminimax0.py` which contains your implementation of H-Minimax with your best cut-off/heuristic functions pair.
 	 - Put the class template defined in `pacmanagent.py` into each file and fill in the `get_action` function.
+ - Your `hminimax1.py` which contains your implementation of H-Minimax with your second best cut-off/heuristic functions pair.
+	 - Put the class template defined in `pacmanagent.py` into each file and fill in the `get_action` function.
+ - Your `hminimax2.py` which contains your implementation of H-Minimax with your third best cut-off/heuristic functions pair.
+	 - Put the class template defined in `pacmanagent.py` into each file and fill in the `get_action` function.
+	 
 
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
