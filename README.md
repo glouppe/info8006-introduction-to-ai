@@ -41,7 +41,14 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ### Reading assignment
 
-TBD.
+Your task is to read a major scientific paper in the field of Artificial Intelligence.
+
+> Paper: "Mastering the game of Go with deep neural networks and tree search"<br>
+> David Silver et al, 2016. [[PDF](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf)]
+
+The reading assignment includes the main text (pages 1-6), as well as the methods section (pages 7-9).
+
+Short questions will be asked as part of the written exam. You do not have to produce any summary report.
 
 ## Previous exams
 
