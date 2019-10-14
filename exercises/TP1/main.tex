@@ -85,7 +85,7 @@
 
 
 \newif\ifhideproofs
-\hideproofstrue %uncomment to hide proofs
+%\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -281,12 +281,12 @@ Exercises 1: Solving problems by searching}
         \end{itemize}
         \end{solution}
     \end{enumerate}
-   \section*{Exercise 2: Maze Car}
+   \section*{Exercise 2: Maze Car (Berkeley CS188 Spring 2014 Section 1)}
    %The project RAGI aims at building an agent,	
 %meant	to	recognize	people	entering	a	building, welcome	them	and	guide	them	into Montefiore Institute,	
 %in	a	smart	way. 
    %Imagine a car-like agent wishes to guide a visitor to Professor Louppe's office a maze like the one shown below:
-This exercice is taken from \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{CS188 Spring 2014}.\\
+%This exercice is taken from \href{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}{CS188 Spring 2014}.\\
 Consider a car event which has to exit the following maze:
 \\
 \begin{center}
@@ -358,7 +358,7 @@ with finding a suboptimal solution to a search problem.
         \end{solution}
     \end{enumerate}
 \end{itemize}
-\section*{Exercise 3: Heuristic $\star$}
+\section*{Exercise 3: Heuristic $\star$ (Berkeley CS188 Spring 2019)}
 Consider a search problem where all edges have a unit cost and the optimal solution has cost $C$. Let $h$ be a heuristic which is max\{$h^\star - k$, 0\}, where $h^\star$ is the actual cost to the closest goal and $k$ is a non-negative constant.
 \begin{enumerate}
     \item Is $h$ admissible?
@@ -378,7 +378,7 @@ Consider a search problem where all edges have a unit cost and the optimal solut
     Exponential in k. At k = 0, only the d nodes on an optimal path to the closest goal are expanded for search depth (= optimal path length) d. At k = max(h), the problem reduces to uninformed search and BFS expands $b \times d$ nodes for branching factor b. In general, all nodes within distance k of the closest goal will have heuristic h = 0 and uninformed search may expand them. Note that search reduces to BFS since A* with h = 0 is UCS and in this search problem all edges have cost 1 so path cost = path length
     \end{solution}
 \end{enumerate}
-\subsection*{Exercise 4: Search algorithms $\star$}
+\subsection*{Exercise 4: Search algorithms $\star$ (Berkeley CS188)}
 \begin{center}
     \begin{tikzpicture}[
             -> = stealth, % arrow head style
@@ -463,7 +463,7 @@ For each of the following search algorithms, give the order in which states are 
     Path: S$\rightarrow$A$\rightarrow$C$\rightarrow$G
     \end{solution}
 \end{enumerate}
-\subsection*{Exercise 5: The hive $\star$}
+\subsection*{Exercise 5: The hive $\star$ (Berkeley CS188 Spring 2019)}
 The hive of insects needs your help. You control an insect in a rectangular maze-like environment
 of size $M \times N$, as shown on the Figure below. At each time-step,
 the insect can move into a free adjacent cell or stay in its current
