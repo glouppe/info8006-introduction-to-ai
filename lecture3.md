@@ -14,7 +14,7 @@ class: black-slide, center, middle
 
 .center.width-100[![](figures/lec3/pacman-thinking.png)]
 
-.caption[Hmmm, let me think...]
+Hmmm, let me think...
 
 ---
 
@@ -23,7 +23,7 @@ class: black-slide, center, middle
 
 .center.width-100[![](figures/lec3/pacman-thinking.png)]
 
-.caption[(...)]
+(...)
 
 ---
 
@@ -32,7 +32,7 @@ class: black-slide, center, middle
 
 .center.width-100[![](figures/lec3/pacman-thinking.png)]
 
-.caption[(5 minutes later)]
+(some time later)
 
 ---
 
@@ -41,7 +41,7 @@ class: black-slide, center, middle
 
 .center.width-100[![](figures/lec3/pacman-thinking2.png)]
 
-.caption[Solution found! [Can we do better?]]
+Solution found! [Can we do better?]
 
 ---
 
@@ -76,14 +76,14 @@ In standard search problems:
 
 Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the **efficiency of the search**.
 
-.center.width-80[![](figures/lec3/atomic-factored-structured.svg)]
+.center.width-40[![](figures/lec3/atomic-factored.png)]
 
 
 ---
 
 # Constraint satisfaction problems
 
-- **Constraint satisfaction problem**  algorithms take advantage of factored state representations and use *general-purpose* heuristics to solve complex problems.
+- **Constraint satisfaction problem**  solvers take advantage of factored state representations and use *general-purpose* heuristics to solve complex problems.
 - CSPs are specialized to a family of search sub-problems.
 - Main idea: eliminate large portions of the search space all at once, by identifying combinations of variable/value that violate constraints.
 
@@ -164,11 +164,11 @@ class: middle
 
 class: middle
 
+.center.width-50[![](figures/lec3/waltz.png)]
+
 ## Example: The Waltz algorithm
 
-.center.width-40[![](figures/lec3/waltz.png)]
-
-The Waltz algorithm is a procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
+Procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
 
 .pull-right.width-70[![](figures/lec3/waltz-inter.png)]
 CSP formulation:
@@ -199,16 +199,16 @@ CSP formulation:
 
 class: middle
 
-- *Varieties of constraints*:
+- *Varieties of constraints*
     - Unary constraint involve a single variable.
         - Equivalent to reducing the domain, e.g. $\text{SA} \neq \text{green}$.
     - Binary constraints involve pairs of variables, e.g. $\text{SA} \neq \text{WA}$.
     - Higher-order constraints involve 3 or more variables.
-- *Preferences* (*soft constraints*)
+- *Preferences* (soft constraints)
     - e.g., red is better than green.
     - Often representable by a cost for each variable assignment.
     - Results in constraint optimization problems.
-    - (We will ignore those for now.)
+    - (We will ignore those in this course.)
 
 ---
 
@@ -298,9 +298,9 @@ Simulate the execution on blackboard. Highlight two issues:
 
 # Backtracking search
 
-- Backtracking search is the basic uninformed algorithm for solving CSPs.
+- Backtracking search is a canonical uninformed algorithm for solving CSPs.
 - Idea 1: **One variable at a time**:
-    - The naive application of search algorithms ignore a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
+    - The naive application of search algorithms ignores a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
         - $\text{WA}=\text{red}$ then $\text{NT}=\text{green}$ is the same as $\text{NT}=\text{green}$ then $\text{WA}=\text{red}$.
     - One only needs to consider assignments to a single variable at each step.
         - $b=d$ and there are $d^n$ leaves.
@@ -333,9 +333,12 @@ Choice points:
 
 ---
 
-# Improving backtracking
+class: middle
 
-- Can we improve backtracking using **general-purpose** ideas, without domain-specific knowledge?
+## Improving backtracking
+
+Can we improve backtracking using **general-purpose** ideas, without domain-specific knowledge?
+
 - *Ordering*:
     - Which variable should be assigned next?
     - In what order should its values be tried?
@@ -366,7 +369,7 @@ class: middle
 
 .center.width-100[![](figures/lec3/ordering-lcv.png)]
 
-<span class="Q">[Q]</span> Why should variable selection be fail-first but value selection be fail-last?
+.exercise[Why should variable selection be fail-first but value selection be fail-last?]
 
 ???
 
@@ -417,7 +420,7 @@ class: middle
 
 .center.width-100[![](figures/lec3/ac3.png)]
 
-<span class="Q">[Q]</span> When in backtracking shall this procedure be called?
+.exercise[When in backtracking shall this procedure be called?]
 
 ???
 
@@ -438,10 +441,12 @@ class: middle
 
 class: middle
 
-- Time complexity: Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
-    - E.g., $n=80$, $d=2$, $c=20$.
-    - $2^{80} =$  4 billion years at 10 million nodes/sec.
-    - $4 \times 2^{20} =$ 0.4 seconds at 10 million nodes/sec.
+## Time complexity
+
+Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
+- E.g., $n=80$, $d=2$, $c=20$.
+- $2^{80} =$  4 billion years at 10 million nodes/sec.
+- $4 \times 2^{20} =$ 0.4 seconds at 10 million nodes/sec.
 
 ---
 
@@ -525,6 +530,10 @@ class: middle
 
 .center.width-70[![](figures/lec3/wumpus-world.png)]
 
+???
+
+First example of partially observable environment!
+
 ---
 
 class: smaller, middle
@@ -596,12 +605,12 @@ class: middle
 # Logical agents
 
 - Most useful in non-episodic, partially observable environments.
-- **Logic (knowledge-based) agents** combine:
+- Logic (knowledge-based) agents combine:
     - A *knowledge base* ($\text{KB}$): a list of facts that are known to the agent.
     - Current *percepts*.
 - Hidden aspects of the current state are **inferred** using rules of inference.
-- **Logic** provides a good formal language for both   
-    - Facts encoded as *axioms*.
+- Logic provides a good formal language for both   
+    - Facts, encoded as *axioms*.
     - Rules of *inference*.
 
 .center.width-80[![](figures/lec3/kb-agent.png)]
@@ -612,8 +621,8 @@ class: middle
 
 ## Syntax
 
-The **syntax** of propositional logic defines allowable *sentences*.
-The syntax of propositional logic is formally defined by the following *grammar*:
+- The **syntax** of propositional logic defines allowable *sentences*.
+- The syntax of propositional logic is formally defined by the following *grammar*:
 
 .center.width-80[![](figures/lec3/syntax.png)]
 
@@ -628,7 +637,7 @@ class: middle
 ## Semantics
 
 - In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
-    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=False, P_2=True, P_3=True\\}$.
+    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=\text{False}, P_2=\text{True}, P_3=\text{True}\\}$.
 - The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
     - The truth value of a proposition symbol is specified in $m$.
     - $\lnot P$ is true iff $P$ is false;
@@ -667,11 +676,12 @@ Examples:
 # Entailment
 
 - We say a model $m$ *satisfies* a sentence $\alpha$ if $\alpha$ is true in $m$.
-    - $M(\alpha)$ is the set of all models that satisfy $\alpha$.
+- $M(\alpha)$ is the set of all models that satisfy $\alpha$.
 - $\alpha \vDash \beta$ iff $M(\alpha) \subseteq M(\beta)$.
     - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
     - $\beta$ is true in all models where $\alpha$ is true.
     - That is, $\beta$ *follows logically* from $\alpha$.
+- In other words, entailment enables **logical inference**.
 
 ---
 
@@ -679,12 +689,12 @@ Examples:
 
 .center.width-30[![](figures/lec3/wumpus-simple.png)]
 
-- Let consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
+- Let us consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
 - We consider the situation after:
     - detecting nothing in $[1,1]$,
     - moving right, sensing breeze in $[2,1]$.
 
-<span class="Q">[Q]</span> How many models are there?
+.exercise[How many models are there?]
 
 ???
 
@@ -708,7 +718,10 @@ class: middle
 - $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
 - $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
     - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $\text{KB}$ is true.
-- Entailment can be used to carry out **logical inference**.
+
+???
+
+Entailment can be used to carry out **logical inference**.
 
 ---
 
@@ -756,7 +769,7 @@ SAT into CSPs: http://www.cs.toronto.edu/~fbacchus/csc2512/Lectures/2012Readings
     - The complexity of solving a CSP is strongly related to the structure of its constraint graph.
 - Logical agents:
     - Intelligent agents need knowledge about the world in order to reach good decisions.
-    - Logical inference can be used as tool to reason about the world.
+    - Logical inference can be used as tool to reason about the world, in particular to infer parts that are not observable.
         - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
         - This in turn can be cast as a CSP.
 

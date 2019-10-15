@@ -8,6 +8,10 @@ Lecture 7: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: ragi makes use of a particle filter
+
 ---
 
 # Today

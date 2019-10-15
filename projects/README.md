@@ -33,9 +33,14 @@ We recommend to install a Python (3) environment using the Anaconda distribution
 
 ### Setup
 
-(Linux/MacOS) Create a `pacman` environment and activate it:
+(Linux) Create a `pacman` environment and activate it:
 ```bash
 conda create --name pacman python=3.6
+source activate pacman
+```
+(MacOS) Create a `pacman` environment and activate it:
+```bash
+conda create --name pacman python=3.6.6
 source activate pacman
 ```
 
@@ -79,6 +84,11 @@ python run.py --silentdisplay
 `--layout`: Start the game with a user-specifed layout for the maze (see the `/pacman_module/layouts/` folder):
 ```bash
 python run.py --layout medium
+```
+
+`--ghostagent`: Start the game with a user-specifed ghost agent (see [**project II**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2)):
+```bash
+python run.py --ghostagent greedy
 ```
 
 `-h`: For further details, check the command-line help section:

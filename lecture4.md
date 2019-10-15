@@ -8,6 +8,10 @@ Lecture 4: Games and Adversarial search
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: cycles
+
 ---
 
 class: center, black-slide, middle

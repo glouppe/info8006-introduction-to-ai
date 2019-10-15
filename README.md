@@ -13,11 +13,11 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | Date | Topic |
 | --- | --- |
 | September 19 | [Outline](https://glouppe.github.io/info8006-introduction-to-ai/?p=outline.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/outline.pdf)]<br>Lecture 0: [Introduction to artificial intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf)]<br>Lecture 1: [Intelligent agents](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)]<br>Tutorial: [Introduction to Python](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial) |
-| September 26 | Lecture 2: Solving problems by searching<br>Exercises 1: Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises1.pdf)] <br>Project 1 announcement |
+| September 26 | Lecture 2: [Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)]<br>Exercises 1: Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises1.pdf)] [[Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/solutions1.pdf)]<br>Project 1: [Search algorithms](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects) |
 | October 3 | Q&A and guidance for project 1 |
-| October 10 | Lecture 3: Constraint satisfaction problems<br>Exercises 2: Constraint satisfaction problems |
+| October 10 | Lecture 3: [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)]<br>Exercises 2: Constraint satisfaction problems [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises2.pdf)] [[Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/solutions2.pdf)]|
 | October 13 | Project 1 deadline |
-| October 17 | Lecture 4: Games and adversarial search<br>Exercises 3: Games and adversarial search <br>Project 2 announcement |
+| October 17 | Lecture 4: Games and adversarial search<br>Exercises 3: Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises3.pdf)] <br>Project 2 announcement |
 | October 24 | Lecture 5: Representing uncertain knowledge<br>Exercises 4: Reasoning under uncertainty (part 1) |
 | October 31 | *(no class)* |
 | November 7 | Lecture 6: Inference in Bayesian networks<br>Exercises 5: Reasoning under uncertainty (part 2) |
@@ -34,11 +34,21 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ### Pacman programming projects
 
-TBD.
+- [General instructions](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects)
+- Part 1: [Search algorithms](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1) (due by October 13)
+- Part 2: TBD.
+- Part 3: TBD.
 
 ### Reading assignment
 
-TBD.
+Your task is to read a major scientific paper in the field of Artificial Intelligence.
+
+> Paper: "Mastering the game of Go with deep neural networks and tree search"<br>
+> David Silver et al, 2016. [[PDF](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf)]
+
+The reading assignment includes the main text (pages 1-6), as well as the methods section (pages 7-9).
+
+Short questions will be asked as part of the written exam. You do not have to produce any summary report.
 
 ## Previous exams
 

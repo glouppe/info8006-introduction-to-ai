@@ -8,17 +8,6 @@ Lecture 2: Solving problems by searching
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Check slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
-=> without reopening requires consistency
-=> if re-opening, admissibility is enough
-
-R: prepare solutions for bfs, dfs and astar
-
-R: pacman demo
-insist on the fact that the goal is to have eaten all, not one
-
 ---
 
 # Today
@@ -88,7 +77,7 @@ Problem-solving agents
 - take decisions based on (hypothesized) consequences of actions;
 - must have a model of how the world evolves in response to actions;
 - formulate a goal, explicitly;
-- consider **how to world would be**.
+- consider **how the world would be**.
 
 .grid[
 .kol-1-2[
@@ -105,6 +94,10 @@ Problem-solving agents
 class: middle
 
 .width-100[![](figures/lec2/problem-solving-agent.png)]
+
+???
+
+Point out this is offline. The execution is executed eyes closed.
 
 ---
 
@@ -146,7 +139,7 @@ class: middle
     - A path is a sequence of states connected by actions.
 - A *goal test* which determines whether the solution of the problem is achieved in state $s$.
 - A *path cost* that assigns a numeric value to each path.
-  - In this course, we will also assume that the path cost corresponds to a sum of strictly positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
+  - In this course, we will also assume that the path cost corresponds to a sum of positive *step costs* $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
 
 ---
 
@@ -156,7 +149,7 @@ A *solution* to a problem is an action sequence that leads from the initial stat
 - A solution quality is measured by the path cost function.
 - An **optimal solution** has the lowest path cost among all solutions.
 
-<span class="Q">[Q]</span> What if the environment is partially observable? non-deterministic?
+.exercise[What if the environment is partially observable? non-deterministic?]
 
 ???
 
@@ -255,7 +248,7 @@ The set of acceptable sequences starting at the initial state form a **search tr
 - Nodes correspond to states in the state space, where the initial state is the root node.
 - Branches correspond to applicable actions, with child nodes corresponding to successors.
 
-For most problems, we can never actually build the whole tree.
+For most problems, we can never actually build the whole tree. Yet we want to find some optimal branch!
 
 .center[![](figures/lec2/pacman-tree.png)]
 
@@ -270,7 +263,11 @@ For most problems, we can never actually build the whole tree.
 - Expansion
 - Exploration
 
-<span class="Q">[Q]</span> Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?
+---
+
+class: middle
+
+.exercise[Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?]
 
 ---
 
@@ -309,6 +306,16 @@ They do not know whether a state looks more promising than some other.
 
 ---
 
+class: middle
+
+.center.width-80[![](figures/lec2/search-properties.png)]
+
+???
+
+Number of nodes in a tree = $\frac{b^{d+1}-1}{b-1}$
+
+---
+
 # Depth-first search
 
 <br><br>
@@ -324,17 +331,6 @@ class: middle
 - *Implementation*: fringe is a **LIFO stack**.
 
 .width-80.center[![](figures/lec2/dfs-progress.svg)]
-
----
-
-class: middle
-
-.center.width-80[![](figures/lec2/search-properties.png)]
-
-???
-
-<span class="Q">[Q]</span> Number of nodes in a tree?
-Number of nodes = $\frac{b^{d+1}-1}{b-1}$
 
 ---
 
@@ -401,6 +397,12 @@ class: middle
 
 ---
 
+class: middle, center
+
+Demo comparing DFS against BFS.
+
+---
+
 # Iterative deepening
 
 Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
@@ -411,9 +413,10 @@ Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
 
 .grid[
 .kol-1-2[
-<span class="Q">[Q]</span> What are the properties of iterative deepening?
-
-<span class="Q">[Q]</span> Isn't this process wastefully redundant?
+.exercise[
+- What are the properties of iterative deepening?
+- Isn't this process wastefully redundant?
+]
 ]
 .kol-1-2[
 .center.width-80[![](figures/lec2/id-properties.png)]
@@ -589,7 +592,7 @@ class: middle
 
 .center.width-80[![](figures/lec2/as-progress2.png)]
 
-<span class="Q">[Q]</span> Why doesn't A* stop at step (e), since Bucharest is in the fringe?
+.exercise[Why doesn't A* stop at step (e), since Bucharest is in the fringe?]
 
 ---
 
@@ -740,7 +743,9 @@ class: middle
 
 # Graph search
 
-.center.width-80[![](figures/lec2/redundant.png)]
+<br>
+.center.width-90[![](figures/lec2/redundant.png)]
+<br>
 
 The failure to detect **repeated states** can turn a linear problem into an exponential one. It can also lead to non-terminating searches.
 
@@ -753,23 +758,58 @@ class: middle
 
 .width-100[![](figures/lec2/graph-search.png)]
 
+???
+
+- Completeness is fine.
+- Optimality is tricky. Maybe we found the wrong one!
+
 ---
 
 class: middle
 
+
+
+.grid[
+.kol-1-2[<br><br>
 ## A* graph-search gone wrong?
+- We start at $S$ and $G$ is a goal state.
+- Which path does graph search find?
+]
+.kol-1-2[.width-95[![](figures/lec2/astar-gone-wrong.png)]]
+]
+
+???
+
+First, is h admissible?
+
+Simulate the execution of graph-search using this h.
+
+Node $C$ is expanded too early!
 
 ---
 
 class: middle
 
-## Consistency of heuristics
 
----
 
-class: middle
+.grid[
+.kol-2-3[## Consistent heuristics
+A heuristic $h$ is consistent if for every $n$ and every successor $n'$ generated by any action $a$,
+$$h(n) \leq c(n,a,n') + h(n').$$
+]
+.kol-1-3[.width-95[![](figures/lec2/consistent-heuristic.png)]]
+]
 
-## Optimality of A* (graph-search)
+Consequences of consistent heuristics:
+- $f(n)$ is non-decreasing along any path.
+- $h(n)$ is admissible.
+- With a consistent heuristic, graph-search A* is optimal.
+
+???
+
+Alternative graph-search algorithm: See slide 22 of https://www.ics.uci.edu/~kkask/Fall-2016%20CS271/slides/03-InformedHeuristicSearch.pdf
+=> without reopening requires consistency
+=> if re-opening, admissibility is enough
 
 ---
 
@@ -816,16 +856,12 @@ Comment on the actions taken at any frame (right, jump, speed) shown in red.
 
 # Summary
 
-- Problem formulation usually requires **abstracting away real-world details** to define a state space that can feasibly be explored.
-- Variety of uninformed search strategies (*DFS*, *BFS*, *UCS*, *Iterative deepening*)
-- **Heuristic functions** estimate costs of shortest paths.
-- Good heuristic can dramatically *reduce search cost*.
-- **Greedy best-first search** expands lowest $h$.
-    - incomplete and not always optimal.
-- **A*** search expands lower $f=g+h$
-    - complete* and optimal
-- Admissible heuristics can be derived from exact solutions of relaxed problems or learned from training examples.
-- *Graph search* can be exponentially more efficient than tree search.
+- Problem formulation usually requires abstracting away real-world details to define a state space that can feasibly be explored.
+- Variety of uninformed search strategies (*DFS*, *BFS*, *UCS*, *Iterative deepening*).
+- Heuristic functions estimate costs of shortest paths. Good heuristic can dramatically reduce search cost.
+- Greedy best-first search expands lowest $h$, which shows to be incomplete and not always optimal.
+- **A*** search expands lowest $f=g+h$. This strategy is complete and optimal.
+- Graph search can be exponentially more efficient than tree search.
 
 ---
 
