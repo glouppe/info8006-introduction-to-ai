@@ -14,7 +14,7 @@
 You are requested to deliver a *tar.gz* archive containing:
  - Your report named `report.pdf`.
 	 - Your report must be at most 5 pages long.
-	 - Fill the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex) to write your report.
+	 - Fill in the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex) to write your report.
  - Your `astar.py` file containing your implementation of A\* algorithm.
 	 - Put the class template defined in `pacmanagent.py` into `astar.py` and fill in the `get_action` function.
  - Your `bfs.py` file containing your implementation of BFS algorithm.
