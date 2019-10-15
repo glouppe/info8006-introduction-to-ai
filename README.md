@@ -17,7 +17,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | October 3 | Q&A and guidance for project 1 |
 | October 10 | Lecture 3: [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)]<br>Exercises 2: Constraint satisfaction problems [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises2.pdf)] [[Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/solutions2.pdf)]|
 | October 13 | Project 1 deadline |
-| October 17 | Lecture 4: Games and adversarial search<br>Exercises 3: Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises3.pdf)] <br>Project 2 announcement |
+| October 17 | Lecture 4: Games and adversarial search<br>Exercises 3: Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises3.pdf)] <br>Project 2: [Adversarial search](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects) |
 | October 24 | Lecture 5: Representing uncertain knowledge<br>Exercises 4: Reasoning under uncertainty (part 1) |
 | October 31 | *(no class)* |
 | November 7 | Lecture 6: Inference in Bayesian networks<br>Exercises 5: Reasoning under uncertainty (part 2) |
@@ -36,7 +36,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - [General instructions](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects)
 - Part 1: [Search algorithms](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1) (due by October 13)
-- Part 2: TBD.
+- Part 2: [Adversarial search](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2) (due by November 10).
 - Part 3: TBD.
 
 ### Reading assignment
