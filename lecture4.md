@@ -8,10 +8,6 @@ Lecture 4: Games and Adversarial search
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: cycles
-
 ---
 
 class: center, black-slide, middle
@@ -86,8 +82,8 @@ class: middle
 - A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
     - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
 - Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
-    - *Nodes* are game states.
-    - *Edges* are actions.
+    - Nodes are game states.
+    - Edges are actions.
 
 ---
 
@@ -97,6 +93,7 @@ class: middle
     - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
 - We will call our two players **MAX** and *MIN*. **MAX** moves first.
 
+<br><br><br>
 .center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
@@ -119,9 +116,14 @@ class: middle
 - *Strict competition*.
     - If one wins, the other loses, and vice-versa.
 
+<br>
 .center.width-40[![](figures/lec4/zero-sum-cartoon.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
 
 ---
 
@@ -135,15 +137,14 @@ class: middle
 - Therefore, a player (MAX) must define a contingent **strategy** which specifies
     - its moves in the initial state,
     - its moves in the states resulting from every possible response by MIN,
-    - its moves in the states resulting from every possible response by MIN in those states,
-    - ...
+    - its moves in the states resulting from every possible response by MIN in those states, ...
 ]
 .kol-1-3.width-100[
 ![](figures/lec4/adversarial-search-cartoon.png)
 ]
 ]
 
-<span class="Q">[Q]</span> What is an optimal strategy (or perfect play)? How do we find it?
+What is an optimal strategy (or perfect play)? How do we find it?
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -155,7 +156,7 @@ Analogy with chess, checkers or belotte.
 
 # Minimax
 
-The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an optimal adversary (MIN).
+The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an *optimal adversary* (MIN).
 
 .center.width-100[![](figures/lec4/minimax.png)]
 
@@ -197,7 +198,7 @@ class: middle
         - $O(bm)$, if all actions are generated at once, or
         - $O(m)$, if actions are generated one at a time.
 
-<span class="Q">[Q]</span> Do we need to explore the whole game tree?
+.exercise[Do we need to explore the whole game tree?]
 
 ---
 
@@ -277,6 +278,17 @@ Finding the exact solution is completely **infeasible**.
 
 ---
 
+# Transposition table
+
+- Repeated states occur frequently because of **transpositions**: different permutations of the move sequence end in a same position.
+- Similar to the `closed` set in Graph-Search, it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+
+
+.exercise[What data structure should be used to efficiently store and look-up values of positions?]
+
+
+---
+
 # Imperfect real-time decisions
 
 - Under *time constraints*, searching for the exact solution is not feasible in most realistic games.
@@ -286,7 +298,7 @@ Finding the exact solution is completely **infeasible**.
 
 .center.width-100[![](figures/lec4/hminimax.png)]
 
-<span class="Q">[Q]</span> Can $\alpha-\beta$ search  be adapted to implement H-Minimax?
+.exercise[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
 
 ???
 
@@ -296,18 +308,25 @@ Replace the if-statements with the terminal test with if-statements with the cut
 
 ---
 
-# Evaluation functions
+class: middle
+
+## Evaluation functions
 
 - An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
 - The computation *must be short* (that is the whole point to search faster).
 - Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
     - The evaluation values may be different from the true minimax values, as long as order is preserved.
-- In non-terminal states, the evaluation function should be strongly *correlated with the actual chances of winning*.
-- Like for heuristics in search, evaluation functions can be  *learned* using machine learning algorithms.
+- In non-terminal states, the evaluation function should be strongly *correlated* with the actual chances of winning.
+
+???
+
+- Like for heuristics in search, evaluation functions can be learned using machine learning algorithms.
 
 ---
 
-# Quiescence
+class: middle
+
+## Quiescence
 
 .center.width-70[![](figures/lec4/chess-eval.png)]
 
@@ -353,7 +372,7 @@ class: middle, black-slide
 
 ---
 
-# Multi-agent utilities
+# Multi-agent games
 
 - What if the game is not zero-sum, or has *multiple players*?
 - Generalization of Minimax:
@@ -365,10 +384,6 @@ class: middle, black-slide
 .center.width-70[![](figures/lec4/multi-agent-tree.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Hence explain the origin of zero-sum games.
 
 ---
 
@@ -405,11 +420,11 @@ class: middle
 
 # Stochastic game tree
 
-.center.width-80[![](figures/lec4/stochastic-game-tree.png)]
-
-<span class="Q">[Q]</span> What is the best move?
+.center.width-90[![](figures/lec4/stochastic-game-tree.png)]
 
 ???
+
+<span class="Q">[Q]</span> What is the best move?
 
 The best move cannot be determined anymore, because it depends on chance.
 
@@ -424,18 +439,21 @@ The best move cannot be determined anymore, because it depends on chance.
 
 .center.width-100[![](figures/lec4/expectiminimax.png)]
 
-<span class="Q">[Q]</span> Does taking the rational move mean the agent will be successful?
+.exercise[Does taking the rational move mean the agent will be successful?]
 
 ---
 
-# Evaluation functions
+class: middle
+
+## Evaluation functions
 
 - As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
 be approximated by stopping the recursion early and using an evaluation function.
-- However, to obtain correct move, the evaluation function should be a *positive linear transformation* of the expected utility of the state.
+- However, to obtain correct move, the evaluation function should be a **positive linear transformation** of the expected utility of the state.
     - It is not enough for the evaluation function to just be order-preserving.
 - If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
 
+<br>
 .center.width-70[![](figures/lec4/chance-order-preserving.png)]
 .caption[An order-preserving transformation on leaf values changes the best move.]
 
@@ -461,7 +479,7 @@ The focus of MCTS is the analysis of the most promising moves, as incrementally 
 
 Each node $n$ in the current search tree maintains  two values:
 - the number of wins $Q(n,p)$ of player $p$ for all playouts that passed through $n$;
-- the number $N(n)$ of times it has been visited.
+- the number $N(n)$ of times $n$ has been visited.
 
 ---
 
@@ -481,7 +499,7 @@ class: middle
 
 .center.width-100[![](figures/lec4/mcts1b.png)]
 
-.caption[Black is about to move. Which action should it take?]
+.center[Black is about to move. Which action should it take?]
 
 ---
 

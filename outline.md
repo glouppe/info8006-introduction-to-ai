@@ -77,7 +77,7 @@ Slides are available at [github.com/glouppe/info8006-introduction-to-ai](https:/
 - Posted online the day before the lesson (hopefully).
 - Minor improvements/fixes from previous years.
 
-Some lessons are partially adapted from "[Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html)" (CS188), from UC Berkeley.
+Some lessons and materials are partially adapted from "[Introduction to Artificial Intelligence](http://ai.berkeley.edu/lecture_slides.html)" (CS188), from UC Berkeley.
 
 .center.width-80[![](figures/outline/slides.png)]
 
