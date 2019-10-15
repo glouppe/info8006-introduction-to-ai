@@ -71,6 +71,11 @@ python run.py
 python run.py  --agentfile randomagent.py
 ```
 
+`--ghostagent`: Start the game with a ghost agent (either `dumbyd`, `greedy` or `smarty`):
+```bash
+python run.py  --ghostagent=greedy
+```
+
 `--silentdisplay`: Disable the graphical user interface:
 ```bash
 python run.py --silentdisplay
