@@ -87,26 +87,17 @@ class: middle
 
 ---
 
-# Assumptions
+class: middle
 
-- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
-    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
-- We will call our two players **MAX** and *MIN*. **MAX** moves first.
-
-<br><br><br>
-.center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Game tree
+## Tic-Tac-Toe game tree
 
 .width-100[![](figures/lec4/tictactoe.png)]
 
 ---
 
-# Zero-sum games
+class: middle
+
+## Zero-sum games
 
 - In a **zero-sum** game, the total payoff to all players is *constant* for all games.
     - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
@@ -127,10 +118,28 @@ The term 'zero-sum' is confusing but makes sense if you imagine each player is c
 
 ---
 
+class: middle
+
+.exercise[What is an optimal strategy (or perfect play)? How do we find it?]
+
+---
+
+# Assumptions
+
+- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
+    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
+- We will call our two players **MAX** and *MIN*. **MAX** moves first.
+
+<br><br><br>
+.center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
 # Adversarial search
 
-.grid[
-.kol-2-3[
+.grid[.kol-2-3[
 - In a search problem, the optimal solution is a sequence of actions leading to a goal state.
     - i.e., a terminal state where MAX wins.
 - In a game, the opponent (MIN) may react *arbitrarily* to a move.
@@ -143,8 +152,6 @@ The term 'zero-sum' is confusing but makes sense if you imagine each player is c
 ![](figures/lec4/adversarial-search-cartoon.png)
 ]
 ]
-
-What is an optimal strategy (or perfect play)? How do we find it?
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -232,6 +239,12 @@ We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 .kol-1-3[<br><br>.center.width-100[![](figures/lec4/alpha-beta.png)]]
 ]
 
+???
+
+Go back to the previous slide and the transition from (d) to (e).
+
+If the minimax value $v$ for MIN becomes lower than the best value $\alpha$ for MAX, then $n$ will never be reached.
+
 ---
 
 class: middle
@@ -242,11 +255,19 @@ Similarly, $\beta$ is defined as the best value (i.e., lowest) at any choice poi
 - Updates the values of $\alpha$ and $\beta$ as the path is expanded.
 - Prune the remaining branches (i.e., terminate the recursive calls) as soon as the value of the current node is known to be worse than the current $\alpha$ or $\beta$ value for MAX or MIN, respectively.
 
+???
+
+If the minimax value $v$ for MAX becomes larger the best value $\beta$ for MIN, then $n$ will never be reached.
+
 ---
 
 # $\alpha$-$\beta$  search
 
 .width-90[![](figures/lec4/alpha-beta-impl.png)]
+
+???
+
+Note that MAX plays first, hence the first call to MAX-VALUE in the main function.
 
 ---
 
@@ -341,10 +362,10 @@ class: middle
 
 # The horizon effect
 
-- Evaluations functions are **always imperfect**.
-- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
-- If not looked deep enough, *bad moves may appear as good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
+Evaluations functions are **always imperfect**.
+- If not looked deep enough, *bad moves* may appear as *good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
     - and vice-versa!
+- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
 
 ---
 
@@ -379,7 +400,7 @@ class: middle, black-slide
     - Terminal states are labeled with utility **tuples** (1 value per player).
     - Intermediate states are also labeled with utility tuples.
     - Each player maximizes its own component.
-    - May give rise to cooperation and competition dynamically
+    - May give rise to cooperation and competition dynamically.
 
 .center.width-70[![](figures/lec4/multi-agent-tree.png)]
 
@@ -401,6 +422,7 @@ class: middle
     - unpredictable opponents: ghosts respond randomly;
     - actions may fail: when moving a robot, wheels might slip.
 
+<br>
 .center.width-40[![](figures/lec4/random-opponent-cartoon.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
@@ -418,9 +440,11 @@ class: middle
 
 ---
 
-# Stochastic game tree
+class: middle
 
-.center.width-90[![](figures/lec4/stochastic-game-tree.png)]
+## Stochastic game tree
+
+.center.width-80[![](figures/lec4/stochastic-game-tree.png)]
 
 ???
 
@@ -499,7 +523,13 @@ class: middle
 
 .center.width-100[![](figures/lec4/mcts1b.png)]
 
-.center[Black is about to move. Which action should it take?]
+???
+
+This graph shows the steps involved in one decision, with each node showing the ratio of wins to total playouts from that point in the game tree for the player that node represents. In the Selection diagram, black is about to move. The root node shows there are 11 wins out of 21 playouts for white from this position so far. It complements the total of 10/21 black wins shown along the three black nodes under it, each of which represents a possible black move.
+
+If white loses the simulation, all nodes along the selection incremented their simulation count (the denominator), but among them only the black nodes were credited with wins (the numerator). If instead white wins, all nodes along the selection would still increment their simulation count, but among them only the white nodes would be credited with wins. In games where draws are possible, a draw causes the numerator for both black and white to be incremented by 0.5 and the denominator by 1. This ensures that during selection, each player's choices expand towards the most promising moves for that player, which mirrors the goal of each player to maximize the value of their move.
+
+Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
 
 ---
 
@@ -545,6 +575,10 @@ class: middle, black-slide
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
+???
+
+Assumptions are correct.
+
 ---
 
 class: middle, black-slide
@@ -557,6 +591,10 @@ class: middle, black-slide
 .caption[Minimax Pacman vs. Random ghost]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Assumptions are incorrect. Has the ghost some masterplan?
 
 ---
 
@@ -571,6 +609,10 @@ class: middle, black-slide
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
+???
+
+Assumptions are correct.
+
 ---
 
 class: middle, black-slide
@@ -584,6 +626,10 @@ class: middle, black-slide
 
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Pacman is lucky!
 
 ---
 
