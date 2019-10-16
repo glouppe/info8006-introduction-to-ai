@@ -639,8 +639,6 @@ class: middle
 
 ---
 
-class: smaller
-
 # Checkers
 
 ## 1951
@@ -655,16 +653,16 @@ The computer program *Chinook* ends the 40-year-reign of human champion Marion T
 - A good move evaluation function (based on a linear model);
 - A database for all positions with eight pieces or fewer.
 
-## 2007
-Checkers is **solved**. A weak solution is computationally proven.
-- The number of involved calculations was $10^{14}$, over a period of 18 years.
-- The best an optimal player can achieve against Chinook is a draw.
-
 ---
 
 class: middle
 
-.center.width-70[![](figures/lec4/checkers-proof.png)]
+## 2007
+Checkers is **solved**. A weak solution is computationally proven.
+- The number of involved calculations was $10^{14}$, over a period of 18 years.
+- A draw is always guaranteed provided neither player makes a mistake.
+
+.center.width-50[![](figures/lec4/checkers-proof.png)]
 
 .footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
 
@@ -673,14 +671,15 @@ class: middle
 # Chess
 
 ## 1997
-*Deep Blue* defeats human champion Gary Kasparov.
-- $200000000$ position evulations per second.
-- **Very sophisticated** evaluation function.
-- Undisclosed methods for extending some lines of search up to 40 plies.
 
-Modern programs (e.g., Stockfish) are better, if less historic.
-Chess remains *unsolved* due to the complexity of the game.
+- *Deep Blue* defeats human champion Gary Kasparov.
+    - $200000000$ position evaluations per second.
+    - Very sophisticated evaluation function.
+    - Undisclosed methods for extending some lines of search up to 40 plies.
+- Modern programs (e.g., Stockfish or AlphaZero) are better, if less historic.
+- Chess remains *unsolved* due to the complexity of the game.
 
+<br>
 .center.width-50[![](figures/lec4/deep-blue.jpg)]
 
 ---
@@ -699,7 +698,7 @@ For long, Go was considered as the Holy Grail of AI due to the size of its game 
 class: middle
 
 ## 2010-2014
-Using *Monte Carlo tree search* and *machine learning*, computer players reach low dan levels.
+Using *Monte Carlo tree search* and **machine learning**, computer players reach low dan levels.
 
 ## 2015-2017
 Google Deepmind invents AlphaGo.
@@ -724,7 +723,7 @@ class: middle
 
 ## 2017
 
-AlphaGo Zero combines *Monte Carlo tree search* and *deep learning* with extensive training, with **self-play only**.
+AlphaGo Zero combines *Monte Carlo tree search* and **deep learning** with extensive training, with self-play only
 
 .center.width-70[![](figures/lec4/alphagozero-training.gif)]
 
