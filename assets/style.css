@@ -97,6 +97,10 @@ strong {
     color: #1a7082;
 }
 
+.black-slide  .katex {
+    color: white;
+}
+
 .remark-code {
     font-size: 0.8em;
 }

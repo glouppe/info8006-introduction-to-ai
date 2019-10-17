@@ -566,12 +566,29 @@ What if our assumptions are incorrect?]
 
 class: middle, black-slide
 
+.grid[
+.kol-2-3[
+
+## Setup
+
+- $P_1$: Pacman uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_2$.
+- $P_2$: Ghost uses depth 2 search with an evaluation function that seeks Pacman, while assuming that Pacman follows $P_1$.
+- $P_3$: Pacman  uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_4$
+- $P_4$: Ghost makes random moves.
+]
+.kol-1-3[.width-100[![](figures/lec4/wa-setup.png)]]
+]
+
+---
+
+class: middle, black-slide, center
+
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/minimax-vs-adversarial.mp4" type="video/mp4">
 </video>]
 
-.caption[Minimax Pacman vs. Adversarial ghost]
+Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -581,14 +598,14 @@ Assumptions are correct.
 
 ---
 
-class: middle, black-slide
+class: middle, black-slide, center
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/minimax-vs-random.mp4" type="video/mp4">
 </video>]
 
-.caption[Minimax Pacman vs. Random ghost]
+Minimax Pacman ($P_1$) vs. Random ghost ($P_3$)
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -598,14 +615,14 @@ Assumptions are incorrect. Has the ghost some masterplan?
 
 ---
 
-class: middle, black-slide
+class: middle, black-slide, center
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/expectimax-vs-random.mp4" type="video/mp4">
 </video>]
 
-.caption[Expectiminimax Pacman vs. Random ghost]
+Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -615,14 +632,14 @@ Assumptions are correct.
 
 ---
 
-class: middle, black-slide
+class: middle, black-slide, center
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec4/expectimax-vs-adversarial.mp4" type="video/mp4">
 </video>]
 
-.caption[Expectiminimax Pacman vs. Adversarial ghost]
+Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
 
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
