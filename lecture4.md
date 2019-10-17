@@ -448,9 +448,8 @@ class: middle
 
 ???
 
-<span class="Q">[Q]</span> What is the best move?
-
-The best move cannot be determined anymore, because it depends on chance.
+- This tree corresponds to a game with two dices
+- What is the best move? The best move cannot be determined anymore, because it depends on chance.
 
 ---
 
