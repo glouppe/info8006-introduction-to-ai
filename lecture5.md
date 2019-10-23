@@ -1192,7 +1192,7 @@ class: middle
 - Correlation does not imply causation.
 - Causes cannot be expressed in the language of probability theory.
 ]
-.kol-1-4[.circle.width-100[![](figures/lec5/pearl.jpg)].center[Judeas Pearl]]
+.kol-1-4[.circle.width-100[![](figures/lec5/pearl.jpg)].center[Judea Pearl]]
 ]
 
 ---
