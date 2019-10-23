@@ -8,12 +8,6 @@ Lecture 5: Representing uncertain knowledge
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: https://kuleshov.github.io/cs228-notes/representation/directed/
-R: add a slide on how to "read" a bayesian network (and how to infer some independence properties)
-R: add d-separation https://inst.eecs.berkeley.edu/~cs188/fa18/assets/slides/lec14/FA18_cs188_lecture14_bayes_nets_II_independence_1pp.pdf
-
 ---
 
 # Today
@@ -36,7 +30,7 @@ R: add d-separation https://inst.eecs.berkeley.edu/~cs188/fa18/assets/slides/lec
 ]
 ]
 
-**Do not overlook this lecture!**<br> You will need these concepts a lot. (Now and in future courses)
+.alert[Do not overlook this lecture!]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -53,16 +47,16 @@ class: middle
 .grid[
 .kol-1-2[
 A ghost is *hidden* in the grid somewhere.
-Sensor readings tell how close a square is to the ghost.
+
+Sensor readings tell how close a square is to the ghost:
 - On the ghost: red
 - 1 or 2 away: orange
 - 3 away: yellow
 - 4+ away green
-
-Sensors are **noisy**, but we know the probability $P(\text{color}|\text{distance})$ for all colors and all distances.
 ]
 .kol-1-2[.width-100[![](figures/lec5/gb-grid.png)]]
 ]
+Sensors are **noisy**, but we know the probability values $P(\text{color}|\text{distance})$, for all colors and all distances.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -75,36 +69,43 @@ class: middle, black-slide
   <source src="./figures/lec5/gb-noprob.mp4" type="video/mp4">
 </video>]
 
-<span class="Q">[Q]</span> Could we use a logical agent for this game?
-
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Could we use a logical agent for this game?
 
 ---
 
 # Uncertainty
 
-General situation:
-- *Observed variables* (evidence): agent knows certain things about the state of the world (e.g., sensor readings).
-- *Unobserved variables*: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
+General setup:
+- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
+- **Unobserved** variables: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
 - (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
+
+---
+
+class: middle
 
 How to handle uncertainty?
 - A purely logical approach either:
     - risks falsehood (because of ignorance about the world or laziness in the model), or
     - leads to conclusions that are too weak for decision making.
-- **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
+- **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
 
 ---
 
-# Probability
+# Probabilistic assertions
 
-- Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
+Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
 - Probability values **summarize** effects of
     - *laziness* (failure to enumerate all world states)
     - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
 - (Bayesian subjective) Probabilities relate propositions to one's own state of knowledge (or lack thereof).
     - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
-- These are **not** claims of a "probabilistic tendency" in the current situation (but might be learned from past experience of similar situations).
+
+These are **not** claims of a "frequent tendency" in the current situation (but might be learned from past experience of similar situations).
 
 ---
 
@@ -112,7 +113,7 @@ How to handle uncertainty?
 
 Begin with a set $\Omega$, the **sample space**.
 
-$\omega \in \Omega$ is a *sample point*, possible world or atomic event.
+$\omega \in \Omega$ is a *sample point* or possible world.
 
 A **probability space** is a sample space equipped with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
 - 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$.
@@ -136,15 +137,29 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 
 # Random variables
 
-- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its *outcomes*.
-    - e.g., $Odd: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $Odd(\omega) = (\omega \% 2 = 1)$.
-- $P$ induces a **probability distribution** for any random variable $X$.
+- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its outcomes.
+    - e.g., $\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $\text{Odd}(\omega) = (\omega\,\text{mod}\,2 = 1)$.
+- $P$ induces a *probability distribution* for any random variable $X$.
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
-    - e.g., $P(Odd=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
-- In practice, we will use random variables to *represent aspects of the world* about which we (may) have uncertainty.
+    - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
+- An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n)\_i\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
+- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
     - $R$: Is it raining?
     - $T$: Is it hot or cold?
     - $L$: Where is the ghost?
+
+---
+
+class: middle
+
+## Notations
+
+- Random variables are written in upper roman letters: $X$, $Y$, etc.
+- Realizations of a random variable are written in corresponding lower case letters.
+   E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
+- The probability value of the realization $x$ is written as $P(X=x)$.
+- When clear from context, this will be abbreviated as $P(x)$.
+- The probability distribution of the random variable $X$ is denoted as ${\bf{P}}(X)$. This corresponds e.g. to a vector of numbers, one for each of the probability values $P(X=x\_i)$ (and not to a single scalar value!).
 
 ---
 
@@ -153,12 +168,12 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 For discrete variables, the **probability distribution** can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
 
 One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
-- This table can be infinite!
-- By construction, probability values are *normalized* (i.e., sum to $1$).
+
+<br>
 
 .grid[
 .center.kol-1-2[
-$P(W)$
+${\bf P}(W)$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -173,29 +188,25 @@ $P(W)$
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
----
+???
 
-# Notations
-
-- Random variables are written in upper roman letters: $X$, $Y$, etc.
-- Realizations of a random variable are written in corresponding lower case letters.
-   E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
-- The probability value of the realization $x$ is written as $P(X=x)$.
-- When clear from context, this will be abbreviated as $P(x)$.
-- The probability distribution of the random variable $X$ is denoted as $P(X)$. This corresponds e.g. to a full probability table (and not to a single scalar value!).
+- This table can be infinite!
+- By construction, probability values are *normalized* (i.e., sum to $1$).
 
 ---
 
-# Joint distributions
+class: middle
 
- A **joint probability distribution** over a set of random variables $X_1, ..., X_n$ specifies
+## Joint distributions
+
+ A **joint** probability distribution over a set of random variables $X_1, ..., X_n$ specifies
 the probability of each (combined) outcome:
 
 $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
 
-## Example
+<br>
 
-.center[$P(T,W)$]
+.center[${\bf P}(T,W)$]
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -206,28 +217,26 @@ $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(
 
 ---
 
-# Events
+class: middle
 
-An **event** is a set $E$ of outcomes.
-- $P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n)$
-
-From a joint distribution, the probability of *any event* can be calculated.
+From a joint distribution, the probability of any event can be calculated.
 - Probability that it is hot and sunny?
 - Probability that it is hot?
 - Probability that it is hot or sunny?
 
-Interesting events often correspond to *partial assignments*.
-- e.g., $P(T=\text{hot})$
+Interesting events often correspond to **partial assignments**, e.g. $P(\text{hot})$.
 
 ---
 
-# Marginal distributions
+class: middle
+
+## Marginal distributions
 
 The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
 
 .center.grid[
 .kol-1-3[
-$P(T,W)$
+${\bf P}(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -237,7 +246,7 @@ $P(T,W)$
 | $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
 .kol-1-3[
-$P(T)$
+${\bf P}(T)$
 
 | $T$ | $P$ |
 | --- | --- |
@@ -247,7 +256,7 @@ $P(T)$
 $P(t) = \sum_w P(t, w)$
 ]
 .kol-1-3[
-$P(W)$
+${\bf P}(W)$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -260,45 +269,32 @@ $P(w) = \sum_t P(t, w)$
 
 Intuitively, marginal distributions are sub-tables which eliminate variables.
 
-<span class="Q">[Q]</span> To what events are marginal probabilities associated?
-
----
-
-# Conditional probability
-
-**Prior** or unconditional probabilities of an event correspond to some initial belief,
-prior to arrival of any evidence.
-- e.g., $P(W=\text{sun}) = 0.6$.
-
-**Posterior** or conditional probabilities correspond to the probability of an event, given some observed evidence.
-Formally,
-$$P(A=a|B=b) = \frac{P(A=a,B=b)}{P(B=b)}.$$
-
 ???
 
-Draw the Venn diagram of
-p(a), p(b), p(a,b) and explain p(a|b).
-^ add that plot
-
-(A and B are boolean rvs defined on Omega)
+To what events are marginal probabilities associated?
 
 ---
 
 class: middle
 
-## Example
+## Conditional distributions
 
-$$P(W=\text{sun}|T=\text{cold}) = \frac{P(W=\text{sun},T=\text{cold})}{P(T=\text{cold})} = \frac{0.2}{0.2 + 0.3} = 0.4$$
+The **conditional probability** of a realization $a$ given the realization $b$ is defined as the ratio of the probability of the joint realization $a$ and $b$, and the probability of $b$:
+$$P(a|b) = \frac{P(a,b)}{P(b)}.$$
+
+Indeed, observing $B=b$ rules out all those possible
+worlds where $B \neq b$, leaving a set whose total probability is just $P(b)$. Within that set, the worlds for which $A=a$ satisfy $A=a \wedge B=b$ and constitute a fraction $P(a,b)/ P(b)$.
+
+.center.width-35[![](figures/lec5/conditional_b.png)]
 
 ---
 
-# Conditional distributions
+class: middle
 
- Conditional distributions are probability distributions over some variables, given **fixed** values for others.
-
+Conditional distributions are probability distributions over some variables, given *fixed* values for others.
 .center.grid[
 .kol-1-3[
-$P(T,W)$
+${\bf P}(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -308,7 +304,7 @@ $P(T,W)$
 | $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
 .kol-1-3[
-$P(W|T=\text{hot})$
+${\bf P}(W|T=\text{hot})$
 
 | $T$ | $P$ |
 | --- | --- |
@@ -316,7 +312,7 @@ $P(W|T=\text{hot})$
 | $\text{rain}$ | $0.2$ |
 ]
 .kol-1-3[
-$P(W|T=\text{cold})$
+${\bf P}(W|T=\text{cold})$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -325,9 +321,11 @@ $P(W|T=\text{cold})$
 ]
 ]
 
-<span class="Q">[Q]</span> To what events are conditional probabilities associated?
+???
 
-<span class="Q">[Q]</span> Is a conditional distribution defined on the same sample and probability space than the joint?
+R: check book
+
+Is a conditional distribution defined on the same sample and probability space than the joint?
 
 ---
 
@@ -337,7 +335,7 @@ class: middle
 
 .center.grid[
 .kol-1-3[
-$P(T,W)$
+${\bf P}(T,W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -347,7 +345,7 @@ $P(T,W)$
 | $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
 .kol-1-3[
-$\rightarrow P(T=\text{cold},W)$
+$\rightarrow {\bf P}(T=\text{cold},W)$
 
 | $T$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -358,7 +356,7 @@ $\rightarrow P(T=\text{cold},W)$
 
 ]
 .kol-1-3[
-$\rightarrow P(W|T=\text{cold})$
+$\rightarrow {\bf P}(W|T=\text{cold})$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -369,8 +367,6 @@ $\rightarrow P(W|T=\text{cold})$
 
 ]
 ]
-
-<span class="Q">[Q]</span> Why does this work?
 
 ---
 
@@ -401,22 +397,22 @@ class: middle
 - *Hidden* variables: $H_1, ..., H_r$
 - $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
 
-**Inference** is the problem of computing **$P(Q|e_1, ..., e_k)$**.
+**Inference** is the problem of computing **${\bf P}(Q|e_1, ..., e_k)$**.
 
 ---
 
 # Inference by enumeration
 
-Start from the joint distribution $P(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+Start from the joint distribution ${\bf P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
 
 1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
 2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
-$$P(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} P(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
+$${\bf P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} {\bf P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
 3. Normalize:
 <br>
 $$\begin{aligned}
 Z &= \sum_q P(q,e_1,...,e_k) \\\\
-P(Q|e_1, ..., e_k) &= \frac{1}{Z} P(Q,e_1,...,e_k)
+{\bf P}(Q|e_1, ..., e_k) &= \frac{1}{Z} {\bf P}(Q,e_1,...,e_k)
 \end{aligned}$$
 
 ---
@@ -428,9 +424,9 @@ class: middle
 .grid[
 .kol-1-2[
 
-- $P(W)$?
-- $P(W|\text{winter})$?
-- $P(W|\text{winter},\text{hot})$?
+- ${\bf P}(W)$?
+- ${\bf P}(W|\text{winter})$?
+- ${\bf P}(W|\text{winter},\text{hot})$?
 
 ]
 .center.kol-1-2[
@@ -460,19 +456,20 @@ class: middle
     - Assume a domain described by $n$ variables taking at most $d$ values.
     - Space complexity: $O(d^n)$
     - Time complexity: $O(d^n)$
-- Can we reduce the size of the representation of the joint distribution?
+
+.exercise[Can we reduce the size of the representation of the joint distribution?]
 
 ---
 
-# The product rule
+# Product rule
 
-$$P(b)P(a|b) = P(a,b)$$
+$$P(a, b) = P(b)P(a|b)$$
 
 ## Example
 
 .center.grid[
 .kol-1-3[
-$P(W)$
+${\bf P}(W)$
 
 | $W$ | $P$ |
 | --- | --- |
@@ -480,7 +477,7 @@ $P(W)$
 | $\text{rain}$ | $0.2$ |
 ]
 .kol-1-3[
-$P(D|W)$
+${\bf P}(D|W)$
 
 | $D$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -491,7 +488,7 @@ $P(D|W)$
 
 ]
 .kol-1-3[
-$P(D,W)$
+${\bf P}(D,W)$
 
 | $D$ | $W$ | $P$ |
 | --- | --- | --- |
@@ -505,7 +502,7 @@ $P(D,W)$
 
 ---
 
-# The chain rule
+# Chain rule
 
 More generally, any joint distribution can always be written as an incremental product of conditional distributions:
 
@@ -516,8 +513,6 @@ P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})
 \end{aligned}
 $$
 
-<span class="Q">[Q]</span> Why is this always true?
-
 ---
 
 # Independence
@@ -527,7 +522,7 @@ $A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
 - $P(b|a) = P(b)$, or
 - $P(a,b) = P(a)P(b)$
 
-Independence is also written as $A \perp B$.
+Independence is denoted as $A \perp B$.
 
 ---
 
@@ -535,9 +530,13 @@ class: middle
 
 ## Example 1
 
-.center.width-50[![](figures/lec5/weather-independence.svg)]
+.center.width-40[![](figures/lec5/weather-independence.svg)]
 
-$P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather})$ $ = P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})$
+$$
+\begin{aligned}
+&P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather}) \\\\
+&= P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})
+\end{aligned}$$
 
 The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
 
@@ -550,8 +549,6 @@ class: middle
 For $n$ independent coin flips, the joint distribution can be fully **factored** and represented as the product of $n$ 1-entry tables.
 - **$2^n \to n$**
 
-<span class="Q">[Q]</span> In practice, absolute independence is rare. What can we do?
-
 ---
 
 # Conditional independence
@@ -561,7 +558,7 @@ $A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$
 - $P(b|a,c) = P(b|c)$, or
 - $P(a,b|c) = P(a|c)P(b|c)$
 
-Conditional independence is also written as $A \perp B | C$.
+Conditional independence is denoted as $A \perp B | C$.
 
 ---
 
@@ -575,18 +572,26 @@ class: middle
 
 class: middle
 
+.center.width-35[![](figures/lec5/tooth.png)]
+
 ## Example 1
 
-- Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
-- $\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
+Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
 
+$\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
 Therefore, we can write:
 
-$P(\text{toothache}, \text{catch}, \text{cavity})$
-$= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})$
-$= P(\text{toothache}|\text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})$
+$$
+\begin{aligned}
+&P(\text{toothache}, \text{catch}, \text{cavity}) \\\\
+&= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity}) \\\\
+&= P(\text{toothache}|\text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})
+\end{aligned}
+$$
 
 In this case, the representation of the joint distribution reduces to $2+2+1$ independent numbers (instead of $2^n-1$).
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -594,20 +599,22 @@ class: middle
 
 ## Example 2 (Naive Bayes)
 
-- More generally, from the product rule, we have:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$
-- Assuming *pairwise conditional independence* between the effects given the cause, it comes:
-    - $P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|\text{cause}) $
-- This probabilistic model is called a **naive Bayes** model.
-    - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
-    - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
+More generally, from the product rule, we have
+$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$$
+
+Assuming *pairwise conditional independence* between the effects given the cause, it comes:
+$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|\text{cause}) $$
+
+This probabilistic model is called a **naive Bayes** model.
+- The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
+- Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
 
 ---
 
 class: middle, center, red-slide
 count: false
 
-The next slide is .bold[super] important.
+Study the next slide. .bold[Twice].
 
 ---
 
@@ -635,13 +642,11 @@ Therefore,
 
 class: middle
 
-$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}$$
-
 Why is this helpful?
 - The Bayes rule let us build one conditional from its reverse.
 - Often one conditional is tricky, but the other is simple.
 
-This equation is the **foundation of many AI systems**.
+This equation is the **foundation** of many AI systems.
 
 ---
 
@@ -650,27 +655,22 @@ class: middle
 ## Example: diagnostic probability from causal probability.
 
 $$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
-
-- $P(\text{effect}|\text{cause})$ quantifies the relationship in the *causal direction*.
-- $P(\text{cause}|\text{effect})$ describes the *diagnostic direction*.
+where
+- $P(\text{effect}|\text{cause})$ quantifies the relationship in the *causal* direction.
+- $P(\text{cause}|\text{effect})$ describes the **diagnostic** direction.
 
 Let $S$=stiff neck and $M$=meningitis.
-Given
-- $P(s|m) = 0.7$
-- $P(m) = 1/50000$
-- $P(s) = 0.01,$
-
+Given $P(s|m) = 0.7$, $P(m) = 1/50000$, $P(s) = 0.01,$
 it comes
-- $P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$
+$$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
 
 ---
 
 # Ghostbusters, revisited
 
-- Let assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
-- We define a **prior distribution** $P(G)$ over ghost locations.
-    - Assume it is uniform.
-- We assume a sensor *reading model* $P(R\_{i,j} |G)$.
+- Let us assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
+- We start with a uniform **prior distribution** ${\bf P}(G)$ over ghost locations.
+- We assume a sensor *reading model* ${\bf P}(R\_{i,j}|G)$.
     - That is, we know what the sensors do.
     - $R_{i,j}$ = reading color measured at $[i,j]$
         - e.g., $P(R_{1,1}=\text{yellow}|G=[1,1])=0.1$
@@ -680,8 +680,8 @@ it comes
 
 class: middle
 
-- We can calculate the **posterior distribution** $P(G|R\_{i,j})$ using Bayes' rule:
-$$P(G|R\_{i,j}) = \frac{P(R\_{i,j}|G)P(G)}{P(R\_{i,j})}.$$
+- We can calculate the **posterior distribution** ${\bf P}(G|R\_{i,j})$ using Bayes' rule:
+$${\bf P}(G|R\_{i,j}) = \frac{{\bf P}(R\_{i,j}|G){\bf P}(G)}{{\bf P}(R\_{i,j})}.$$
 - For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
 
 ---
@@ -693,21 +693,23 @@ class: middle, black-slide
   <source src="./figures/lec5/gb-prob.mp4" type="video/mp4">
 </video>]
 
-<span class="Q">[Q]</span> What if we had chosen a different prior?
-
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+What if we had chosen a different prior?
 
 ---
 
 # Frequentism vs. Bayesianism
 
 What do probability values represent?
-- The objectivist **frequentist** view is that probabilities are real aspects of the universe.
+- The objectivist *frequentist* view is that probabilities are real aspects of the universe.
     - i.e., propensities of objects to behave in certain ways.
     - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
 - The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
     - i.e., probabilities do not have external physical significance.
-    - *This is the interpretation of probabilities that we will use!*
+    - This is the interpretation of probabilities that we will use!
 
 ---
 
@@ -717,7 +719,9 @@ class: middle
 
 ---
 
-# Representing knowledge
+class: middle
+
+## Representing knowledge
 
 - The joint probability distribution can answer any question about the domain.
 - However, its representation can become **intractably large** as the number of variable grows.
@@ -728,48 +732,68 @@ class: middle
 
 # Bayesian networks
 
-A **Bayesian network** is a *directed graph* in which:
+A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
 - Each *node* corresponds to a *random variable*.
     - Can be observed or unobserved.
     - Can be discrete or continuous.
-- Each *edge* indicates "direct influence" between variables.
+- Each *edge* indicate dependency relationships.
     - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
-    - The graph has no directed cycle (i.e., the graph is a DAG).
-- Each node $X_i$ is annotated with a **conditional probability distribution** $P(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
-    - In the simplest case, conditional distributions are represented as conditional probability table (CTP).
+- Each node $X_i$ is annotated with a **conditional probability distribution** ${\bf P}(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+    - In the simplest case, conditional distributions are represented as conditional probability tables (CTPs).
+
+---
+
+# Semantics
+
+A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
+
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+
+## Example
+
+$$
+\begin{aligned}
+P(j, m, a, \lnot b, \lnot e) &= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
+&= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998 \\\\
+&\approx 0.00063
+\end{aligned}
+$$
 
 ---
 
 class: middle
+
+Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in the proper joint probability?
+- By the *chain rule*, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
+- Provided that we assume **conditional independence** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
+$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
+- Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[.width-90[![](figures/lec5/tooth.png)]]
+.kol-1-2[.width-100[![](figures/lec5/dentist-network.svg)]]
+]
+<br>
 
 ## Example 1
 
 The topology of the network encodes conditional independence assertions:
-
-.center.width-60[![](figures/lec5/dentist-network.svg)]
-
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
-<span class="Q">[Q]</span> What is the BN for $n$ independent coin flips?
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
 class: middle
 
-## Example 2 (Naive Bayes)
+.center.width-45[![](figures/lec5/alarm.png)]
 
-In a Naive Bayes model, we assume pairwise conditional independence between the effects given the cause:
-
-.center.width-60[![](figures/lec5/naive.png)]
-
----
-
-class: middle
-
-## Example 3
-
-.center.width-40[![](figures/lec5/alarm.png)]
+## Example 2
 
 I am at work, neighbor John calls to say my alarm is ringing, but neighbor
 Mary does not call. Sometimes it's set off by minor earthquakes.
@@ -792,43 +816,70 @@ class: middle
 
 ---
 
-# Semantics
+class: middle
 
-A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
+.grid.center[
+.kol-1-3[.width-80[![](figures/lec5/traffic1.png)]]
+.kol-2-3[.width-90[![](figures/lec5/traffic2.png)]<br><br>]
+]
 
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+## Example 3
 
-## Example
-$P(j, m, a, \lnot b, \lnot e)$<br>
-$= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)$<br>
-$= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998$<br>
-$\approx 0.00063$
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
+.kol-2-5[
+${\bf P}(R)$
+
+| $R$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $0.25$ |
+| $\lnot\text{r}$ | $0.75$ |
+]
+.kol-2-5[
+${\bf P}(T|R)$
+
+| $R$ | $T$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $\text{t}$ | $0.75$ |
+| $\text{r}$ | $\lnot\text{t}$ | $0.25$ |
+| $\lnot\text{r}$ | $\text{t}$ | $0.5$ |
+| $\lnot\text{r}$ | $\lnot\text{t}$ | $0.5$ |
+]
+]
 
 ---
 
 class: middle
 
-Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in a proper joint distribution?
-- By the *chain rule*, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
-- Assume **conditional independencies** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
-$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
-- Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+.center.width-60[![](figures/lec5/traffic3.png)]
 
----
+## Example 3 (bis)
 
-# Local semantics
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
+.kol-2-5[
+${\bf P}(T)$
 
-.center.width-60[![](figures/lec5/nondescendants.svg)]
+| $T$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $9/16$ |
+| $\lnot\text{r}$ | $7/16$ |
+]
+.kol-2-5[
+${\bf P}(R|T)$
 
-A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
+| $T$ | $R$ | $P$ |
+| --- | --- | --- |
+| $\text{t}$ | $\text{r}$ | $1/3$ |
+| $\text{t}$ | $\lnot\text{r}$ | $2/3$ |
+| $\lnot\text{t}$ | $\text{r}$ | $1/7$ |
+| $\lnot\text{t}$ | $\lnot\text{r}$ | $6/7$ |
+]
+]
 
----
-
-# Global semantics
-
-.center.width-60[![](figures/lec5/markov-blanket.svg)]
-
-A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -836,28 +887,24 @@ A node $X$ is conditionally independent of all other nodes in the network given 
 
 Bayesian networks are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
 
-This suggests the following methodology for *building* Bayesian networks:
+## Construction algorithm
 
 1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
 2. For $i=1$ to $n$:
-    - Add $X\_i$ to the network.
-    - Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
-    - For each parent, insert a link from the parent to $X\_i$.
-    - Write down the CPT.
+    1. Add $X\_i$ to the network.
+    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    3. For each parent, insert a link from the parent to $X\_i$.
+    4. Write down the CPT.
 
 ---
 
 class: middle
 
-## Examples
-
 .center.width-100[
 ![](figures/lec5/burglary-mess.svg)
-
-These networks are alternatives to Example 3.
 ]
 
-<span class="Q">[Q]</span> What do you think of these BNs?
+.exercise[Do these networks represent the same distribution?]
 
 ???
 
@@ -872,16 +919,250 @@ For the left network:
 
 ---
 
-# Compactness
+class: middle
+
+## Compactness
 
 - A CPT for boolean $X_i$ with $k$ boolean parents has $2^k$ rows for the combinations of parent values.
-- Each row requires one number $p$ for $X_i = true$.
-    - The number of $X_i=false$ is just $1-p$.
+- Each row requires one number $p$ for $X_i = \text{true}$.
+    - The number for $X_i=\text{false}$ is just $1-p$.
 - If each variable has no more than $k$ parents, the complete network requires $O(n \times 2^k)$ numbers.
     - i.e., grows **linearly with $n$**, vs. $O(2^n)$ for the full joint distribution.
 - For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
 - Compactness depends on the *node ordering*.
-    - Compare the three networks representing the same joint distribution.
+
+---
+
+# Independence
+
+Important question: Are two nodes independent given certain evidence?
+- If yes, this can be proved using algebra (tedious).
+- If no, this can be proved with a counter example.
+
+<br>
+
+.center.width-45[![](figures/lec5/xyz.png)]
+
+.center[Example: Are $X$ and $Z$ necessarily independent?]
+
+---
+
+class: middle
+
+## Cascades
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
+- In numbers:
+    - $P(y|x)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot y|\lnot x)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes.
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(x)P(y|x)P(z|y)}{P(x)P(y|x)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+We say that the evidence along the cascade **"blocks"** the influence.
+
+]
+.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## Common parent
+
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Project due causes both forums busy and lab full.
+- In numbers:
+    - $P(x|y)=1$,
+    - $P(\lnot x|\lnot y)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(y)P(x|y)P(z|y)}{P(y)P(x|y)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+Observing the parent blocks the influence between the children.
+]
+.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## v-structures
+
+Are $X$ and $Z$ independent? Yes.
+- The ballgame and the rain cause traffic, but they are not correlated.
+- (Prove it!)
+
+Are $X$ and $Z$ independent given $Y$? No!
+- Seeing traffic puts the rain and the ballgame in competition as explanation.
+- This is **backwards** from the previous cases. Observing an effect *activates* influence between possible causes.
+]
+.kol-1-2.center[.width-80[![](figures/lec5/v-structure.png)]
+
+$X$: rain,
+$Y$: ballgame,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y)P(z|x,y)$]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+
+---
+
+class: middle
+
+## d-separation
+
+Let us assume a complete Bayesian network.
+Are $X\_i$ and $X\_j$ conditionally independent given evidence $Z\_1=z\_1, ..., Z\_m=z\_m$?
+
+Consider all (undirected) paths from $X\_i$ to $X\_j$:
+- If one or more active path, then independence is not guaranteed.
+- Otherwise (i.e., all paths are inactive), then independence is guaranteed.
+
+
+---
+
+class: middle
+
+.grid[
+.kol-2-3[
+
+A path is **active** if each triple is active:
+- Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
+- Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
+- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
+
+]
+.kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
+]
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## Example
+
+- $L \perp T' | T$?
+- $L \perp B$?
+- $L \perp B|T$?
+- $L \perp B|T'$?
+- $L \perp B|T, R$?
+
+]
+.kol-1-2.width-80.center[![](figures/lec5/example-d.png)]
+]
+
+???
+
+- Yes
+- Yes
+- (maybe)
+- (maybe)
+- Yes
+
+---
+
+class: middle
+
+## Local semantics
+
+.center.width-60[![](figures/lec5/nondescendants.svg)]
+
+A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
+
+---
+
+class: middle
+
+## Global semantics
+
+.center.width-60[![](figures/lec5/markov-blanket.svg)]
+
+A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
 
 ---
 
@@ -904,27 +1185,26 @@ For the left network:
 
 ---
 
-class: middle, center
+class: middle
 
-.center.circle.width-30[![](figures/lec5/pearl.jpg)]
-.caption[Judeas Pearl]
-
-Correlation does not imply causation.
-
-Causes cannot be expressed in the language of probability theory.
-
-
+.grid[
+.kol-3-4[<br>
+- Correlation does not imply causation.
+- Causes cannot be expressed in the language of probability theory.
+]
+.kol-1-4[.circle.width-100[![](figures/lec5/pearl.jpg)].center[Judeas Pearl]]
+]
 
 ---
 
 class: middle
 
-Philosophers have tried to define causation in terms of probability: $X$ causes $Y$ if $X$ raises the probability of $Y$.
+Philosophers have tried to define causation in terms of probability: $X=x$ causes $Y=y$ if $X=x$ raises the probability of $Y=y$.
 
 However, the inequality
-$$P(Y|X) > P(Y)$$
-fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X$ over $Y$.
-- Instead, the expression means that if we observe $X$, then the probability of $Y$ increases.
+$$P(y|x) > P(y)$$
+fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X=x$ over $Y=y$.
+- Instead, the expression means that if we observe $X=x$, then the probability of $Y=y$ increases.
 - But this increase may come about for other reasons!
 
 ---
@@ -932,8 +1212,8 @@ fails to capture the intuition behind "probability raising", which is fundamenta
 class: middle
 
 The correct formulation should read
-$$P(Y|do(X=x)) > P(Y),$$
-where $do(X=x)$ stands for an external intervention where $X$ is set to the value $x$ instead of being observed.
+$$P(y|\text{do}(X=x)) > P(y),$$
+where $\text{do}(X=x)$ stands for an external intervention where $X$ is **set to** the value $x$ instead of being observed.
 
 ---
 
@@ -951,10 +1231,10 @@ $$P(\text{rain}|\text{Barometer hacked to high}) = P(\text{rain}|\text{Barometer
 # Summary
 
 - Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
-- **Probabilistic reasoning** provides a framework for managing our knowledge and *beliefs*.
-- Bayesian networks are DAGs whose nodes correspond to random variables; each node has a conditional distribution for the node, given its parents.
+- Probabilistic reasoning provides a framework for managing our knowledge and *beliefs*.
+- **Bayesian networks** are DAGs whose nodes correspond to random variables; each node has a conditional distribution for the node, given its parents.
 - A Bayesian Network specifies a full joint distribution.
-    - They are often **exponentially** smaller than an explicitly enumerated joint distribution.
+    - They are often exponentially smaller than an explicitly enumerated joint distribution.
 
 ---
 
