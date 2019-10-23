@@ -1066,13 +1066,13 @@ class: middle
 .kol-1-2[
 ## v-structures
 
-Are $X$ and $Z$ independent? Yes.
+Are $X$ and $Y$ independent? Yes.
 - The ballgame and the rain cause traffic, but they are not correlated.
 - (Prove it!)
 
-Are $X$ and $Z$ independent given $Y$? No!
+Are $X$ and $Y$ independent given $Z$? No!
 - Seeing traffic puts the rain and the ballgame in competition as explanation.
-- This is **backwards** from the previous cases. Observing an effect *activates* influence between possible causes.
+- This is **backwards** from the previous cases. Observing a child node *activates* influence between parents.
 ]
 .kol-1-2.center[.width-80[![](figures/lec5/v-structure.png)]
 
