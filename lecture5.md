@@ -681,7 +681,7 @@ $$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
 class: middle
 
 - We can calculate the **posterior distribution** ${\bf P}(G|R\_{i,j})$ using Bayes' rule:
-$${\bf P}(G|R\_{i,j}) = \frac{{\bf P}(R\_{i,j}|G){\bf P}(G)}{{\bf P}(R\_{i,j})}.$$
+$${\bf P}(G|R\_{i,j}) = \frac{ {\bf P}(R\_{i,j}|G){\bf P}(G)}{ {\bf P}(R\_{i,j})}.$$
 - For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
 
 ---
