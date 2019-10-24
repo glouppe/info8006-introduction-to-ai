@@ -216,8 +216,16 @@ class GameState:
             raise Exception("Pacman's index passed to getGhostPosition")
         return self.data.agentStates[agentIndex].getPosition()
 
+    def getGhostDirection(self, agentIndex):
+        if agentIndex == 0:
+            raise Exception("Pacman's index passed to getGhostPosition")
+        return self.data.agentStates[agentIndex].getDirection()
+
     def getGhostPositions(self):
         return [tuple(map(int,s.getPosition())) for s in self.getGhostStates()]
+
+    def getGhostDirections(self):
+        return [tuple(map(int,s.getDirection())) for s in self.getGhostStates()]
 
     def getGhostBeliefStates(self):
         return np.copy(self.data.beliefStates)
