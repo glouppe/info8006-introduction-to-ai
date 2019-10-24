@@ -8,6 +8,10 @@ Lecture 5: Representing uncertain knowledge
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: remove/summarize some of the too verbose slides
+
 ---
 
 # Today
@@ -90,9 +94,15 @@ class: middle
 
 How to handle uncertainty?
 - A purely logical approach either:
-    - risks falsehood (because of ignorance about the world or laziness in the model), or
+    - risks falsehood, or
     - leads to conclusions that are too weak for decision making.
 - **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
+
+???
+
+Falsehood: because of ignorance about the world or laziness in the model.
+
+Weak conclusions: remember the Wumpus example.
 
 ---
 
@@ -609,6 +619,10 @@ This probabilistic model is called a **naive Bayes** model.
 - The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
 - Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
 
+???
+
+This is an important model you should know about!
+
 ---
 
 class: middle, center, red-slide
@@ -675,6 +689,10 @@ $$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
     - $R_{i,j}$ = reading color measured at $[i,j]$
         - e.g., $P(R_{1,1}=\text{yellow}|G=[1,1])=0.1$
     - Two readings are conditionally independent, given the ghost position.
+
+???
+
+This is a Naive Bayes model!
 
 ---
 
@@ -743,6 +761,33 @@ A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
 
 ---
 
+class: middle
+
+.center.width-45[![](figures/lec5/alarm.png)]
+
+## Example 1
+
+I am at work, neighbor John calls to say my alarm is ringing, but neighbor
+Mary does not call. Sometimes it's set off by minor earthquakes.
+Is there a burglar?
+
+- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
+- Network topology from "causal" knowledge:
+    - A burglar can set the alarm off
+    - An earthquake can set the alaram off
+    - The alarm can cause Mary to call
+    - The alarm can cause John to call
+
+.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec5/burglary2.svg)]
+
+---
+
 # Semantics
 
 A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
@@ -779,40 +824,13 @@ class: middle
 ]
 <br>
 
-## Example 1
+## Example 2
 
 The topology of the network encodes conditional independence assertions:
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-45[![](figures/lec5/alarm.png)]
-
-## Example 2
-
-I am at work, neighbor John calls to say my alarm is ringing, but neighbor
-Mary does not call. Sometimes it's set off by minor earthquakes.
-Is there a burglar?
-
-- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
-- Network topology from "causal" knowledge:
-    - A burglar can set the alarm off
-    - An earthquake can set the alaram off
-    - The alarm can cause Mary to call
-    - The alarm can cause John to call
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec5/burglary2.svg)]
 
 ---
 
