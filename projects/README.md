@@ -188,14 +188,15 @@ Useful methods of the state are specified below:
 
  - ```s.generatePacmanSuccessors()``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the pacman agent.
     * This method **must** be called for any node expansion for pacman agent.
- - ```s.generateGhostSuccessors(agentIndex)``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the agent indexed by ```agentIndex>0```.
+ - ```s.generateGhostSuccessors(agentIndex)``` : Returns a list of pairs of successor states and moves given the current state ```s``` for the ghost agent indexed by ```agentIndex>0```.
     * This method **must** be called for any node expansion for ghost agent.
  - ```s.getLegalActions(agentIndex)``` : Returns a list of legal moves given the state ```s``` and the agent indexed by ```agentIndex```. 0 is always the Pacman agent.
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state (as defined above).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
  - ```s.getWalls()``` : Returns a boolean matrix which gives the position of all walls.
- - ```s.getGhostPositions()``` : Returns the position of all ghosts in the maze.
+ - ```s.getGhostPosition(agentIndex)``` : Returns the position of the ghost agent indexed by ```agentIndex>0```.
+ - ```s.getGhostDirection(agentIndex)``` : Returns the direction of the ghost agent indexed by ```agentIndex>0```.
  - ```s.getCapsules()``` : Returns a list of positions of the remaining capsules in the maze.
  - ```s.isWin()``` : Returns True if the state is in a *winning end*.
  - ```s.isLose()``` : Returns True if the state is in a *losing end*.
