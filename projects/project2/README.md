@@ -108,8 +108,8 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 
  - **Code performance** - **2 points** - Your code will be tested on the submission platform machines. After each submission, you will receive a feedback which will contain information about the accuracy of your results and the time performances of your code.  
 
-	 - 2 points: <= 1 minute
-	 - 0 point: > 1 minute
+	 - 2 points: <= 30 seconds
+	 - 0 point: > 30 seconds
 
  - **Code style** - **2 points**
 	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code.
