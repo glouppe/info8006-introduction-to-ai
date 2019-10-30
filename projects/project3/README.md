@@ -41,9 +41,9 @@ You are asked to answer the following questions.
  1. **Filter Components**
 
 	 - 1.a. - **1 point** - Describe the model of the rusty sensor which is implemented inside the method `_getEvidence` of the `BeliefStateAgent` class.
-         - 1.b. - **1 point** - Describe the transition model of `aafraid`
-         - 1.c. - **1 point** - Describe the transition model of `afraid`
-         - 1.d. - **1 point** - Describe the transition model of `confused`
+         - 1.b. - **1 point** - Describe the transition model of `aafraid` (see `/pacman_module/ghostAgents.py`)
+         - 1.c. - **1 point** - Describe the transition model of `afraid` (see `/pacman_module/ghostAgents.py`)
+         - 1.d. - **1 point** - Describe the transition model of `confused` (see `/pacman_module/ghostAgents.py`)
          - 1.e. - **1 point** - Provide a parametrized transition model which is capable to describe `aafraid`, `afraid` and `confused` by only picking a value for the unique parameter.  
          - 1.f. - **1 point** - How does the parameter affects the behavior of the transition model ?
 
