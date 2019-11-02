@@ -28,7 +28,7 @@ You are requested to deliver a *tar.gz* archive containing:
 
 This part is due by **November 10, 2019 at 23:59**. This is a **hard** deadline.
 
-In this third part of the project, Pacman got tired of these ghosts wandering around him. So he has decided to buy a laser gun which transforms them into cookies. Unfortunately, he didn't know that the gun had the unpleasant side effect to make them invisible at the same time! Fortunately, as it was part of a box that he bought from a flea market, he had also discovered a rusty sensor, which still works but is subject to a measure error which is described in the user manual. 
+In this third part of the project, Pacman got tired of ghosts wandering around him. So he has decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun have instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he had also discovered a rusty sensor, which still works but is subject to a measure error which is described in the user manual. 
 
 A lot of confusion arised since Pacman shot them. He has no idea where they can currently be in the maze. However, he knows that the ghosts are confused and should be willing to escape from him.
 
