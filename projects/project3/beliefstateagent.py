@@ -22,10 +22,9 @@ class BeliefStateAgent(Agent):
         self.beliefGhostStates = None
         # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
-        # Absolute perturbation N
-        self.N = self.args.N
-        # Probability p to get the real distance
-        self.p = self.args.p
+        # Parameter lambda to get the real distance
+        self.lmbda = self.args.lmbda
+        self.exp_mlmbda = np.exp(-self.lmbda)
 
     def updateAndGetBeliefStates(self, evidences):
         """
@@ -34,7 +33,7 @@ class BeliefStateAgent(Agent):
 
         Arguments:
         ----------
-        - `evidences`: list of distances between 
+        - `evidences`: list of distances between
           pacman and ghosts at state x_{t}
           where 't' is the current time step
 
@@ -66,14 +65,17 @@ class BeliefStateAgent(Agent):
         noisy_distances = []
         for p in positions:
             true_distance = util.manhattanDistance(p, pacman_position)
-            minus_distance = true_distance - self.N
-            plus_distance = true_distance + self.N
-            dist = util.Counter()
-            dist[true_distance] = self.p
-            dist[minus_distance] = (1-self.p)/2.0
-            dist[plus_distance] = (1-self.p)/2.0
-            dist.normalize()
-            noisy_distances.append(util.chooseFromDistribution(dist))
+            # Uniformly sample the direction of the perturbation
+            sign = np.random.choice([-1, 1])
+            # Simulate a probability distribution of parameter lambda
+            k = 0
+            p = 1
+            while p > self.exp_mlmbda:
+                u = np.random.random()
+                p *= u
+                k += 1
+            k -= 1
+            noisy_distances.append(true_distance + sign * k)
         return noisy_distances
 
     def get_action(self, state):

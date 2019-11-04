@@ -7,15 +7,22 @@ from pacman_module.ghostAgents import\
     ConfusedGhost, AfraidGhost, AafraidGhost
 
 
-
 def proba_float(x):
     x = float(x)
     if x < 0 or x > 1:
         raise ArgumentTypeError("%r is not between 0 and 1" % (x,))
     return x
 
+
 def strictly_positive_integer(x):
     x = int(x)
+    if x <= 0:
+        raise ArgumentTypeError("%r is not > 0" % (x,))
+    return x
+
+
+def strictly_positive_float(x):
+    x = float(x)
     if x <= 0:
         raise ArgumentTypeError("%r is not > 0" % (x,))
     return x
@@ -79,8 +86,9 @@ if __name__ == '__main__':
         default=False, action="store_true")
     parser.add_argument(
         '--edibleghosts',
-        help='Whether the ghost can be eaten - should not be changed for Project Part 3.',
-        default=False, action="store_true")
+        help='Whether the ghost can be eaten - necessary for Project III.',
+        default=False,
+        action="store_true")
     parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
@@ -91,13 +99,10 @@ if __name__ == '__main__':
         help='Python file containing a `BeliefStateAgent` class.',
         default=None)
     parser.add_argument(
-        '--N',
-        help='Integer N > 0 as specified in instructions for Project Part 3.',
-        type=strictly_positive_integer, default=1)
-    parser.add_argument(
-        '--p',
-        help='Float 0 <= p <= 1 as specified in instructions for Project Part 3.',
-        type=proba_float, default=0.5)
+        '--lmbda',
+        help='Float lmbda > 0 - Sensor model parameter (see Project III).',
+        type=strictly_positive_float,
+        default=1)
 
     args = parser.parse_args()
 
@@ -119,8 +124,8 @@ if __name__ == '__main__':
             args.bsagentfile, "BeliefStateAgent")(args)
 
     total_score, total_computation_time, total_expanded_nodes = runGame(
-        layout, agent, gagts, bsagt, not args.silentdisplay,
-        expout=0, hiddenGhosts=args.hiddenghosts, edibleGhosts=args.edibleghosts)
+        layout, agent, gagts, bsagt, not args.silentdisplay, expout=0,
+        hiddenGhosts=args.hiddenghosts, edibleGhosts=args.edibleghosts)
 
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
