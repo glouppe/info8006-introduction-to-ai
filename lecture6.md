@@ -10,7 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: draw the BN's with draw.io to have a consistent style.
+R: draw the BN's with draw.io to have a consistent style. 
 
 ---
 

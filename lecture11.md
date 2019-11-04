@@ -10,6 +10,8 @@ Prof. Gilles Louppe<br>
 
 ???
 
+https://twitter.com/strategies_ai/status/1189489486318751744?s=03
+
 human centered ai, ai concerns more than engineers
 ai for what? climate, energy, science, etc
 
