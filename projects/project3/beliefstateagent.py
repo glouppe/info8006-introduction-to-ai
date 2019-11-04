@@ -15,7 +15,7 @@ class BeliefStateAgent(Agent):
         """
         self.args = args
         """
-            Variables to use in 'updateAndFetBeliefStates' method.
+            Variables to use in 'updateBeliefStates' method.
             Initialization occurs in 'get_action' method.
         """
         # Current list of belief states over ghost positions
@@ -26,7 +26,7 @@ class BeliefStateAgent(Agent):
         self.lmbda = self.args.lmbda
         self.exp_mlmbda = np.exp(-self.lmbda)
 
-    def updateAndGetBeliefStates(self, evidences):
+    def updateBeliefStates(self, evidences):
         """
         Given a list of (noised) distances from pacman to ghosts,
         returns a list of belief states about ghosts positions
@@ -78,6 +78,13 @@ class BeliefStateAgent(Agent):
             noisy_distances.append(true_distance + sign * k)
         return noisy_distances
 
+    def _recordMetrics(self, belief_state, state):
+        """
+            Use this function to record your metrics
+            related to true and belief states.
+            Won't be part of specification grading.
+        """
+
     def get_action(self, state):
         """
         Given a pacman game state, returns a legal move.
@@ -103,5 +110,7 @@ class BeliefStateAgent(Agent):
             self.beliefGhostStates = state.getGhostBeliefStates()
         if self.walls is None:
             self.walls = state.getWalls()
-        return self.updateAndGetBeliefStates(
+        newBeliefStates = self.updateBeliefStates(
             self._getEvidence(state))
+        self._recordMetrics(self, state)
+        return newBeliefStates
