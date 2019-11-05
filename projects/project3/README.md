@@ -40,7 +40,7 @@ You are asked to answer the following questions.
 
  1. **Filter Components**
 
-	- 1.a. - **2 points** - Describe the parametrized model of the rusty sensor (see `_getEvidence` of the `BeliefStateAgent` class).
+	- 1.a. - **2 points** - Describe the parametrized model of the rusty sensor (see `_get_evidence` of the `BeliefStateAgent` class).
 	- 1.b. - **1 point** - Describe the belief state structure related to the ghost position. 
 	- 1.c. - **1 point** - Describe the transition model of `aafraid` (see `/pacman_module/ghostAgents.py`).
 	- 1.d. - **1 point** - Describe the transition model of `afraid` (see `/pacman_module/ghostAgents.py`).
