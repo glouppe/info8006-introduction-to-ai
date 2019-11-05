@@ -17,8 +17,8 @@ You are requested to deliver a *tar.gz* archive containing:
 	 - Your report must be at most **?** pages long.
 	 - Fill in the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project3/template-project3.tex) to write your report.
 	 - In French or English.
- - Your `bayerfilter.py` file containing your implementation of the Bayes Filter algorithm.
-	 - Put the class template defined in `beliefstateagent.py` into `bayerfilter.py` and fill in the `forward_pass` function.
+ - Your `bayesfilter.py` file containing your implementation of the Bayes filter algorithm.
+	 - Put the class template defined in `beliefstateagent.py` into `bayerfilter.py` and fill in the `update_belief_state` function.
 
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
@@ -34,7 +34,7 @@ A lot of confusion arised since Pacman shot them. He has no idea where they can 
 
 More precisely, he knows that `aafraid` is more fearful than `afraid` who is more fearful than `confused`.
 
-Your task is to design an intelligent agent based on bayes filtering algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for localizing all the ghosts in the maze.
+Your task is to design an intelligent agent based on Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for localizing all the ghosts in the maze.
 
 You are asked to answer the following questions.
 
@@ -49,7 +49,7 @@ You are asked to answer the following questions.
 
 
  2. **Implementation**
- 	- 2.a. - **4 points** - Implement the **Bayes filtering** algorithm. This should be done in the `updateBeliefStates` function of `filter.py`, following the template of `beliefstateagent.py`.
+ 	- 2.a. - **4 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts.
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost. 
 	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does they influence the behavior of your filter implementation ? Justify your answer.
@@ -58,14 +58,14 @@ You are asked to answer the following questions.
  	- 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
 	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s).
 	- 3.c. - **2 points** - Run your filter implementation several times against `/pacman_module/layouts/large_filter.lay` layout, all ghosts and 5 carefully chosen parameters of the rusty sensor. 
-		 - Record the two aforementioned measures (see `_recordMetrics` function in `beliefstateagent.py`) over trials and time.
+		 - Record the two aforementioned measures (see `_record_metrics` function in `beliefstateagent.py`) over trials and time.
 		 - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining curves whenever possible.
 		 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
 		 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
 	- 3.d. - **1 point** - How does the ghost transition model parameters affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
 	- 3.e. - **1 point** - How does the rusty sensor parameter affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
 	- 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
-                 - You do not need to provide a pseudo-code algorithm, only to explain intuitively and in a few lines your implementation strategy.
+                 - You do not need to provide a pseudo-code algorithm, just explain intuitively and in a few lines your implementation strategy.
 
 
 ---
