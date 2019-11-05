@@ -90,7 +90,10 @@ In this section, you can find the criteria according to which the different ques
 For each **implementation question** (2.b, 2.c), provide simply references to your code and to your cutoff-tests and evaluation functions in your report. The evaluation of your code will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
  - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
+ - 50% points (only for 2.c): correct implementation w.r.t the pseudo-code but hminimax0 does not win against all pairs of ghosts and layouts OR the three evaluation/cutoff functions pairs are correctly assigned to their files according to their performances (see [Deliverables](#deliverables)). 
+ - 25% points (only for 2.c): correct implementation w.r.t the pseudo-code but hminimax0 does not win against all pairs of ghosts and layouts AND the three evaluation/cutoff functions pairs are correctly assigned to their files according to their performances (see [Deliverables](#deliverables)). 
  - no point: implementation error of any component of the algorithm.
+
 
 For each **discussion question** (1.a, 1.b, 2.a, 2.d, 3.b, 3.c, 3.d), the evaluation will be performed as follows:
 
