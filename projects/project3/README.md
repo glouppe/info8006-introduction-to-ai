@@ -26,7 +26,7 @@ You are requested to deliver a *tar.gz* archive containing:
 
 ## Instructions
 
-This part is due by **November 10, 2019 at 23:59**. This is a **hard** deadline.
+This part is due by **December 8, 2019 at 23:59**. This is a **hard** deadline.
 
 In this third part of the project, Pacman got tired of ghosts wandering around him. So he has decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun have instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he had also discovered a rusty sensor, which still works but is subject to a measure error which is described in the user manual. 
 
@@ -40,30 +40,31 @@ You are asked to answer the following questions.
 
  1. **Filter Components**
 
-	 - 1.a. - **2 points** - Describe the parametrized model of the rusty sensor (see `_getEvidence` of the `BeliefStateAgent` class).
-         - 1.b. - **1 point** - Describe the belief state structure related to the ghost position. 
-         - 1.c. - **1 point** - Describe the transition model of `aafraid` (see `/pacman_module/ghostAgents.py`).
-         - 1.d. - **1 point** - Describe the transition model of `afraid` (see `/pacman_module/ghostAgents.py`).
-         - 1.e. - **1 point** - Describe the transition model of `confused` (see `/pacman_module/ghostAgents.py`).
-         - 1.f. - **1 point** - Provide a parametrized transition model which is capable to describe `aafraid`, `afraid` and `confused` by only picking a value for the unique parameter.  
+	- 1.a. - **2 points** - Describe the parametrized model of the rusty sensor (see `_getEvidence` of the `BeliefStateAgent` class).
+	- 1.b. - **1 point** - Describe the belief state structure related to the ghost position. 
+	- 1.c. - **1 point** - Describe the transition model of `aafraid` (see `/pacman_module/ghostAgents.py`).
+	- 1.d. - **1 point** - Describe the transition model of `afraid` (see `/pacman_module/ghostAgents.py`).
+	- 1.e. - **1 point** - Describe the transition model of `confused` (see `/pacman_module/ghostAgents.py`).
+	- 1.f. - **1 point** - Provide a parametrized transition model which is capable to describe `aafraid`, `afraid` and `confused` by only picking a value for the unique parameter.  
 
 
  2. **Implementation**
-         - 2.a. - **4 points** - Implement the **Bayes filtering** algorithm. This should be done in the `updateBeliefStates` function of `filter.py`, following the template of `beliefstateagent.py`.
+ 	- 2.a. - **4 points** - Implement the **Bayes filtering** algorithm. This should be done in the `updateBeliefStates` function of `filter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts.
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost. 
-         - 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does they influence the behavior of your filter implementation ? Justify your answer.
+	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does they influence the behavior of your filter implementation ? Justify your answer.
 
  3. **Experiment**
-         - 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
-         - 3.b. - **1 point** - Provide a measure of the quality of the belief state(s).
-	 - 3.c. - **2 points** - Run your filter implementation several times against `/pacman_module/layouts/large_filter.lay` layout, all ghosts and 5 parameters of the rusty sensor. Record the two aforementioned measures (see `_recordMetrics` function in `beliefstateagent.py`) over trials and time.
+ 	- 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
+	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s).
+	- 3.c. - **2 points** - Run your filter implementation several times against `/pacman_module/layouts/large_filter.lay` layout, all ghosts and 5 carefully chosen parameters of the rusty sensor. 
+		 - Record the two aforementioned measures (see `_recordMetrics` function in `beliefstateagent.py`) over trials and time.
 		 - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining curves whenever possible.
-                 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
-                 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
-         - 3.d. - **1 point** - How does the ghost transition model parameters affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
-         - 3.e. - **1 point** - How does the rusty sensor parameter affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
-         - 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
+		 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
+		 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
+	- 3.d. - **1 point** - How does the ghost transition model parameters affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
+	- 3.e. - **1 point** - How does the rusty sensor parameter affects its behavior and its impact on the belief state updates? Justify your answer by using your measures and the model itself.
+	- 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
                  - You do not need to provide a pseudo-code algorithm, only to explain intuitively and in a few lines your implementation strategy.
 
 
