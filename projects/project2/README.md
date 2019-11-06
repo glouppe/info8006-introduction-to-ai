@@ -90,7 +90,10 @@ In this section, you can find the criteria according to which the different ques
 For each **implementation question** (2.b, 2.c), provide simply references to your code and to your cutoff-tests and evaluation functions in your report. The evaluation of your code will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
  - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
+ - 50% points (only for 2.c): correct implementation w.r.t the pseudo-code but at least one of the constraints is violated (see [Deliverables](#deliverables) and [Instructions](#instructions)). 
+ - 25% points (only for 2.c): correct implementation w.r.t the pseudo-code but at least two of the constraints are violated (see [Deliverables](#deliverables) and [Instructions](#instructions)). 
  - no point: implementation error of any component of the algorithm.
+
 
 For each **discussion question** (1.a, 1.b, 2.a, 2.d, 3.b, 3.c, 3.d), the evaluation will be performed as follows:
 
