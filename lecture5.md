@@ -11,7 +11,6 @@ Prof. Gilles Louppe<br>
 ???
 
 R: remove/summarize some of the too verbose slides
-R: rewrite the summary, add the Bayes rule there and stuff on BNs
 
 ---
 
@@ -1250,8 +1249,9 @@ $$P(\text{rain}|\text{Barometer hacked to high}) = P(\text{rain}|\text{Barometer
 # Summary
 
 - Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
-- Probabilistic reasoning provides a framework for managing our knowledge and *beliefs*.
+- Probabilistic reasoning provides a framework for managing our knowledge and *beliefs*, with the Bayes' rule acting as the workhorse for inference.
 - A **Bayesian Network** specifies a full joint distribution. They are often exponentially smaller than an explicitly enumerated joint distribution.
+- The structure of a Bayesian network encodes conditional independence assumptions between random variables.
 
 
 ---

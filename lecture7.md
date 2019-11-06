@@ -12,6 +12,8 @@ Prof. Gilles Louppe<br>
 
 R: ragi makes use of a particle filter
 
+R: replace P with {\bf P}
+
 ---
 
 # Today
@@ -678,9 +680,80 @@ We assume *discrete* time steps.
 
 ---
 
+# Continuous variables
+
+Let $X: \Omega \to D\_X$ be a random variable.
+- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a *continuous random variable*.
+- If $X$ is absolutely continuous, its probability distribution is described by a **density function** $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
+$$P(a < X \leq b) = \int\_a^b p(x) dx,$$
+where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
+
+???
+
+RVs and densities are a layer of abstraction
+http://ai.stanford.edu/~paskin/gm-short-course/lec1.pdf
+
+---
+
 class: middle
 
-The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals:
+## Uniform
+
+.center.width-60[![](figures/lec6/uniform.png)]
+
+The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
+$$
+p(x) = \begin{cases}
+\frac{1}{b-a} & \text{if } x \in \[a,b\]\\\\
+0 & \text{otherwise}
+\end{cases}$$
+where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
+
+
+---
+
+class: middle
+
+## Normal
+
+.center.width-60[![](figures/lec6/normal.png)]
+
+The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
+$$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
+
+---
+
+class: middle
+
+## Multivariate normal
+
+.center.width-60[![](figures/lec6/mvn.png)]
+
+The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
+where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
+
+---
+
+class: middle
+
+- The (multivariate) Normal density is the only density for real random variables that is
+**closed under marginalization and multiplication**.
+- Also, a linear (or affine) function of a Normal random variable is
+Normal; and, a sum of Normal variables is Normal.
+- For these reasons, most algorithms discussed in this course are tractable only for
+finite random variables or Normal random variables.
+
+???
+
+Be more precise and cite Bishop pg 93?
+
+---
+
+# Continuous Bayes filter
+
+The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
 $$
 \begin{aligned}
 p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &= \alpha\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
