@@ -8,10 +8,6 @@ Lecture 6: Inference in Bayesian networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: Why Gibbs sampling work? See book, maybe too technical?
-
 ---
 
 # Today
@@ -56,6 +52,10 @@ A Bayesian network implicitly encodes the full joint distribution as the product
 ]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Reminder: the topology encodes conditional independence assumptions!
 
 ---
 
@@ -105,6 +105,10 @@ Inference is concerned with the problem *computing a marginal and/or a condition
 .center.width-30[![](figures/lec6/query-cartoon.png)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+
+???
+
+Explain what $\arg \max$ means.
 
 ---
 
@@ -172,6 +176,11 @@ class: middle
 
 Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
 
+???
+
+- $n$ is the number of variables.
+- $d$ is the size of their domain.
+
 ---
 
 class: middle
@@ -184,11 +193,15 @@ Enumeration is still **inefficient**: there are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
 - These can be avoided by storing *intermediate results*.
 
+???
+
+Inefficient because the product is evaluated left-to-right, in a DFS manner.
+
 ---
 
 # Inference by variable elimination
 
-The **variable elimination** (VE) algorithm carries out summations right-to-left and stores intermediate results (called **factors**) to avoid recomputations.
+The **variable elimination** (VE) algorithm carries out summations right-to-left and stores intermediate results (called *factors*) to avoid recomputations.
 The algorithm interleaves:
 - Joining sub-tables
 - Eliminating hidden variables
@@ -333,10 +346,6 @@ Work through the two elimination orderings:
 What is the size of the maximum factor generated for each of the orderings?
 - Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
 
-???
-
-R: prepare that
-
 ---
 
 class: middle
@@ -344,9 +353,10 @@ class: middle
 The computational and space complexity of variable elimination is determined by the **largest factor**.
 - The elimination *ordering* can greatly affect the size of the largest factor.
 - Does there always exist an ordering that only results in small factors? **No!**
-- Singly connected networks (polytrees):
-    - Any two nodes are connected by at most one (undirected path).
-    - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
+    - Greedy heuristic: eliminate whichever variable minimizes the size of the factor to be constructed.
+    - Singly connected networks (polytrees):
+        - Any two nodes are connected by at most one (undirected path).
+        - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
 
 ---
 
@@ -363,6 +373,10 @@ class: middle
 - $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
 - $Y = D\_2 \wedge C\_3$
 
+???
+
+3SAT is the problem of determining the satisfiability of a formula in conjunctive normal form, where each clause is limited to a most three literals.
+
 ---
 
 class: middle
@@ -373,7 +387,7 @@ If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
 
 ???
 
-R: explain what is reduction (oral)
+Proof by reduction: transforming a problem (here inference) into another (here checking the satisfiability of a formula).
 
 ---
 
@@ -613,7 +627,7 @@ Therefore, rejection sampling returns *consistent* posterior estimates.
 # Likelihood weighting
 
 Idea: *clamp* the evidence variables, sample the rest.
-- Problem: the resulting sampling distribution is not consisent.
+- Problem: the resulting sampling distribution is not consistent.
 - Solution: **weight** by probability of evidence given parents.
 
 <br><br><br>
@@ -626,6 +640,10 @@ Idea: *clamp* the evidence variables, sample the rest.
 class: middle
 
 .center.width-100[![](figures/lec6/importance-sampling.png)]
+
+???
+
+Probability estimates are built by summing up weights instead of ones and normalizing.
 
 ---
 
@@ -682,15 +700,9 @@ S\_\text{WS}(x,e) w(x,e) &= \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)) \prod\_{
 \end{aligned}
 $$
 
-???
-
-R: improve the description of how probability estimates are built.
-
 ---
 
 class: middle
-
-
 
 The estimated joint probability is computed as follows:
 
@@ -712,7 +724,7 @@ Hence likelihood weighting returns *consistent* estimates.
 
 class: middle
 
-- Likelihood weighting is *efficient*:
+- Likelihood weighting is *helpful*:
     - The evidence is taken into account to generate a sample.
     - More samples will reflect the state of the world suggested by the evidence.
 - Likelihood weighting **does not solve all problems**:
