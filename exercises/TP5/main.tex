@@ -88,7 +88,7 @@
   {\left.\begin{aligned}}
   {\end{aligned}\right\rbrace}
 \newif\ifhideproofs
-\hideproofstrue %uncomment to hide proofs
+%\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -167,8 +167,9 @@ flips come out heads twice and tails once.
 \begin{solution}
 \begin{align*}
     \hat{y} &= \arg\max_y P(y|h, h, t)\\
-    &= \arg\max_y 3\times P(y|X_1 = h, X_2 = h, X_3 = t)\\
-    &= \arg\max_y \frac{P(y, X_1 = h, X_2 = h, X_3 = t)}{P(X_1 = h, X_2 = h, X_3 = t)}\\
+    &= \arg\max_y \frac{P(y, h, h, t)}{P(h, h, t)}\\
+    &= \arg\max_y P(y, h, h, t)\\
+    &= \arg\max_y 3 \times P(y, X_1 = h, X_2 = h, X_3 = t)\\
     &= \arg\max_y P(y, X_1 = h, X_2 = h, X_3 = t)\\
      &= \arg\max_y P(X_1 = h|y) P(X_2 = h|y) P(X_3 = t|y)P(y)\\
      &=\arg\max_y P(X_1 = h|y) P(X_2 = h|y) P(X_3 = t|y)\\
@@ -256,7 +257,7 @@ $P(G_{child} = l) = P(G_{mother} = l) = P(G_{father} = l) \Leftrightarrow q = q 
 \label{fig:sub1}
 \end{subfigure}%
 \caption{Possible Bayesian Networks of handedness inheritance}
-\label{fig:test}
+\label{fig:b_net}
 \end{figure}
 
 \section*{Exercise 3: D-separation}
