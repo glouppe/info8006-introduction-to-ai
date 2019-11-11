@@ -39,46 +39,58 @@ class GhostAgent(Agent):
            over actions from the provided state."""
         util.raiseNotDefined()
 
+
 class ConfusedGhost(GhostAgent):
-    "A stochastic ghost which goes anywhere with equal probability"
+    """A stochastic ghost which goes anywhere with equal probability."""
 
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-        len_legal = len(legal)
+
         for a in legal:
             dist[a] = 1.0
         dist.normalize()
+
         return dist
+
 
 class AfraidGhost(GhostAgent):
-    "A stochastic ghost which favors actions that makes him move away from Pacman"
+    """A stochastic ghost which favors actions that makes him move away from
+       Pacman."""
 
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-        len_legal = len(legal)
         pacman_position = state.getPacmanPosition()
+
         for a in legal:
-            mdistance = manhattanDistance(state.generateSuccessor(self.index, a).getGhostPosition(1), pacman_position)
+            mdistance = manhattanDistance(
+                state.generateSuccessor(self.index, a).getGhostPosition(1),
+                pacman_position)
             dist[a] = mdistance
         dist.normalize()
+
         return dist
 
-class AafraidGhost(GhostAgent):
-    "A stochastic ghost which favors actions that makes him move AWAY from Pacman"
+
+class ScaredGhost(GhostAgent):
+    """A stochastic ghost which favors actions that makes him move AWAY from
+       Pacman."""
 
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-        len_legal = len(legal)
         pacman_position = state.getPacmanPosition()
+
         for a in legal:
-            mdistance = manhattanDistance(state.generateSuccessor(self.index, a).getGhostPosition(1), pacman_position)
+            mdistance = manhattanDistance(
+                state.generateSuccessor(self.index, a).getGhostPosition(1),
+                pacman_position)
             dist[a] = mdistance**10
         dist.normalize()
-        print(dist)
+
         return dist
+
 
 class DumbyGhost(GhostAgent):
     "A dumb ghost."
@@ -99,6 +111,7 @@ class DumbyGhost(GhostAgent):
         elif Directions.LEFT[left] in legal:
             dist[Directions.LEFT[left]] = 1.0
         dist.normalize()
+
         return dist
 
 

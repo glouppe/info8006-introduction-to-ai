@@ -4,7 +4,7 @@ from argparse import ArgumentParser, ArgumentTypeError
 
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import\
-    ConfusedGhost, AfraidGhost, AafraidGhost
+    ConfusedGhost, AfraidGhost, ScaredGhost
 
 
 def proba_float(x):
@@ -48,7 +48,7 @@ def load_agent_from_file(filepath, class_module):
 ghosts = {}
 ghosts["confused"] = ConfusedGhost
 ghosts["afraid"] = AfraidGhost
-ghosts["aafraid"] = AafraidGhost
+ghosts["scared"] = ScaredGhost
 
 if __name__ == '__main__':
     usage = """
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["confused", "afraid", "aafraid"], default="confused")
+        choices=["confused", "afraid", "scared"], default="confused")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',

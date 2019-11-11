@@ -1,7 +1,6 @@
 # Complete this class for all parts of the project
 
 from pacman_module.game import Agent
-from pacman_module.pacman import Directions, GhostRules
 import numpy as np
 from pacman_module import util
 
@@ -20,8 +19,10 @@ class BeliefStateAgent(Agent):
         """
         # Current list of belief states over ghost positions
         self.beliefGhostStates = None
+
         # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
+
         # Parameter lambda to get the real distance
         self.lmbda = self.args.lmbda
         self.exp_mlmbda = np.exp(-self.lmbda)
@@ -48,25 +49,31 @@ class BeliefStateAgent(Agent):
         """
 
         beliefStates = self.beliefGhostStates
+
         # XXX: Your code here
         pass
         # XXX: End of your code
+
         self.beliefGhostStates = beliefStates
+
         return beliefStates
 
     def _get_evidence(self, state):
         """
-            Computes noisy distances between pacman and ghosts.
-            XXX: DO NOT MODIFY THAT FUNCTION !!!
-            Doing so will result in a 0 grade.
+        Computes noisy distances between pacman and ghosts.
+        XXX: DO NOT MODIFY THIS FUNCTION !!!
+        Doing so will result in a 0 grade.
         """
         positions = state.getGhostPositions()
         pacman_position = state.getPacmanPosition()
         noisy_distances = []
+
         for p in positions:
             true_distance = util.manhattanDistance(p, pacman_position)
+
             # Uniformly sample the direction of the perturbation
             sign = np.random.choice([-1, 1])
+
             # Simulate a probability distribution of parameter lambda
             k = 0
             p = 1
@@ -75,15 +82,18 @@ class BeliefStateAgent(Agent):
                 p *= u
                 k += 1
             k -= 1
+
             noisy_distances.append(true_distance + sign * k)
+
         return noisy_distances
 
     def _record_metrics(self, belief_state, state):
         """
-            Use this function to record your metrics
-            related to true and belief states.
-            Won't be part of specification grading.
+        Use this function to record your metrics
+        related to true and belief states.
+        Won't be part of specification grading.
         """
+        pass
 
     def get_action(self, state):
         """
@@ -103,14 +113,15 @@ class BeliefStateAgent(Agent):
            XXX: DO NOT MODIFY THAT FUNCTION !!!
                 Doing so will result in a 0 grade.
         """
-
         # XXX : You shouldn't care on what is going on below.
+
         # Variables are specified in constructor.
         if self.beliefGhostStates is None:
             self.beliefGhostStates = state.getGhostBeliefStates()
         if self.walls is None:
             self.walls = state.getWalls()
-        newBeliefStates = self.update_belief_state(
-            self._get_evidence(state))
+
+        newBeliefStates = self.update_belief_state(self._get_evidence(state))
         self._record_metrics(self, state)
+
         return newBeliefStates
