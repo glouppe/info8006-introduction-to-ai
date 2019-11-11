@@ -49,7 +49,7 @@ You are asked to answer the following questions:
 
  2. **Implementation**
  	- 2.a. - **3 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
-		 - Your implementation must work with multiple ghosts.
+		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts. 
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
 	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
 

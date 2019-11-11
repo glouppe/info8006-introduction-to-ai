@@ -27,7 +27,7 @@ class BeliefStateAgent(Agent):
         self.lmbda = self.args.lmbda
         self.exp_mlmbda = np.exp(-self.lmbda)
 
-    def update_belief_state(self, evidences):
+    def update_belief_state(self, evidences, pacman_position):
         """
         Given a list of (noised) distances from pacman to ghosts,
         returns a list of belief states about ghosts positions
@@ -36,6 +36,9 @@ class BeliefStateAgent(Agent):
         ----------
         - `evidences`: list of distances between
           pacman and ghosts at state x_{t}
+          where 't' is the current time step
+        - `pacman_position`: 2D coordinates position
+          of pacman at state x_{t}
           where 't' is the current time step
 
         Return:
@@ -75,6 +78,16 @@ class BeliefStateAgent(Agent):
             sign = np.random.choice([-1, 1])
 
             # Simulate a probability distribution of parameter lambda
+            # Hint : The cumulative distribution function (CDF)
+            # is described by the following equation : 
+            # F(k) = e^{-lambda}sum_{i=0}^{Lk⅃}{lambda^i/i!}
+            # The direct sampling from inverse CDF
+            # would require heavy computation
+            # The following algorithm makes use of two properties :
+            # 1 - each Xi is iid with an exponential distribution
+            # 2 - The process should stop as soon as  
+            #     the cumulative product of uniform r.v.s
+            #     falls below e^-lambda
             k = 0
             p = 1
             while p > self.exp_mlmbda:
