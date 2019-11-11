@@ -51,6 +51,7 @@ You are asked to answer the following questions:
  	- 2.a. - **3 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts. 
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
+		 - You may assume access to the Pacman's position.
 	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
 
  3. **Experiment**
@@ -61,6 +62,7 @@ You are asked to answer the following questions:
 		 - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining curves whenever possible.
 		 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
 		 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
+		 - Your number of simulations needs to be high enough and their duration long enough so that the two aforementioned measures have eventually converged, in terms of mean and variance, over time and for each timestep.  
 	- 3.d. - **1 point** - How does the ghost transition model parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
 	- 3.e. - **1 point** - How does the rusty sensor parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
 	- 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
