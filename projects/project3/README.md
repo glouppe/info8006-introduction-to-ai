@@ -35,6 +35,12 @@ More precisely, he knows that `scared` is more fearful than `afraid` who is more
 
 Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for locating all the ghosts in the maze.
 
+You may the following command line which launchs a game where the sole, eadible and invisible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
+```bash
+python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleGhosts --hiddenghosts --lmbda 100 --seed -1
+```
+Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
+
 You are asked to answer the following questions:
 
  1. **Filter Components**
@@ -62,7 +68,8 @@ You are asked to answer the following questions:
 		 - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining curves whenever possible.
 		 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
 		 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
-		 - Your number of simulations needs to be high enough and their duration long enough so that the two aforementioned measures have eventually converged, in terms of mean and variance, over time and for each timestep.  
+		 - Your number of simulations needs to be high enough and their duration long enough so that the two aforementioned measures have eventually converged, in terms of mean and variance, over time and for each timestep.
+			 - Each curve that does not fulfill the abovementioned condition will be considered as not provided.   
 	- 3.d. - **1 point** - How does the ghost transition model parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
 	- 3.e. - **1 point** - How does the rusty sensor parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
 	- 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?

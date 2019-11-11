@@ -1,10 +1,11 @@
 import imp
 import os
 from argparse import ArgumentParser, ArgumentTypeError
-
+import random
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import\
     ConfusedGhost, AfraidGhost, ScaredGhost
+import numpy as np
 
 
 def proba_float(x):
@@ -63,7 +64,7 @@ if __name__ == '__main__':
         '--seed',
         help='Seed for random number generator',
         type=int,
-        default=1)
+        default=-1)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a `PacmanAgent` class.',
@@ -75,7 +76,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
-        default="small_adv")
+        default="large_filter")
     parser.add_argument(
         '--nghosts',
         help='Maximum number of ghosts in a maze.',
@@ -106,6 +107,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    if args.seed >= 0: 
+        np.random.seed(args.seed)
+        random.seed(args.seed)
+        
     if (args.agentfile == "humanagent.py" and args.silentdisplay):
         print("Human agent cannot play without graphical display")
         exit()

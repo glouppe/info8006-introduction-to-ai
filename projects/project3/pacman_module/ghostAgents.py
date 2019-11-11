@@ -46,7 +46,7 @@ class ConfusedGhost(GhostAgent):
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-
+        legal.remove(Directions.STOP)
         for a in legal:
             dist[a] = 1.0
         dist.normalize()
@@ -61,6 +61,7 @@ class AfraidGhost(GhostAgent):
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
+        legal.remove(Directions.STOP)
         pacman_position = state.getPacmanPosition()
 
         for a in legal:
@@ -80,13 +81,14 @@ class ScaredGhost(GhostAgent):
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
+        legal.remove(Directions.STOP)
         pacman_position = state.getPacmanPosition()
 
         for a in legal:
             mdistance = manhattanDistance(
                 state.generateSuccessor(self.index, a).getGhostPosition(1),
                 pacman_position)
-            dist[a] = mdistance**10
+            dist[a] = np.cumprod([mdistance]*10)[-1]
         dist.normalize()
 
         return dist
