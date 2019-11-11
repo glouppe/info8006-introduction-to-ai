@@ -134,7 +134,7 @@ class BeliefStateAgent(Agent):
         if self.walls is None:
             self.walls = state.getWalls()
 
-        newBeliefStates = self.update_belief_state(self._get_evidence(state))
+        newBeliefStates = self.update_belief_state(self._get_evidence(state), state.getPacmanPosition())
         self._record_metrics(self, state)
 
         return newBeliefStates
