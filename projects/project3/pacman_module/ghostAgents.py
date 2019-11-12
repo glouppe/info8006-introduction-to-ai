@@ -68,7 +68,7 @@ class AfraidGhost(GhostAgent):
 
         for a in legal:
             mdistance = manhattanDistance(
-                state.generateSuccessor(self.index, a).getGhostPosition(1),
+                state.generateSuccessor(self.index, a).getGhostPosition(self.index),
                 pacman_position)
             dist[a] = mdistance
         dist.normalize()
@@ -89,7 +89,7 @@ class ScaredGhost(GhostAgent):
 
         for a in legal:
             mdistance = manhattanDistance(
-                state.generateSuccessor(self.index, a).getGhostPosition(1),
+                state.generateSuccessor(self.index, a).getGhostPosition(self.index),
                 pacman_position)
             dist[a] = mdistance**10
         dist.normalize()
