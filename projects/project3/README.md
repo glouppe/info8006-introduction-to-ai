@@ -58,6 +58,8 @@ You are asked to answer the following questions:
 		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts. 
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
 		 - You may assume access to the Pacman's position.
+		 - You may assume access to the Ghost's policy (see `ghost_type` of the `BeliefStateAgent` class).
+		 
 	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
 
  3. **Experiment**
