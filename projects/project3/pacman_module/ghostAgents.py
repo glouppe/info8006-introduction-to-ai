@@ -81,7 +81,8 @@ class ScaredGhost(GhostAgent):
     def getDistribution(self, state):
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
-        legal.remove(Directions.STOP)
+        if Directions.STOP in legal:
+            legal.remove(Directions.STOP)
         pacman_position = state.getPacmanPosition()
 
         for a in legal:
