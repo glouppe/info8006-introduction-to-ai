@@ -18,7 +18,7 @@ You are requested to deliver a *tar.gz* archive containing:
 	 - Fill in the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project3/template-project3.tex) to write your report.
 	 - In French or English.
  - A file named `bayesfilter.py` containing your implementation of the Bayes filter algorithm.
-	 - Put the class template defined in `beliefstateagent.py` into `bayerfilter.py` and fill in the `update_belief_state` function.
+	 - Put the class template defined in `beliefstateagent.py` into `bayesfilter.py` and fill in the `update_belief_state` function.
 
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
