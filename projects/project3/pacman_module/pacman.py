@@ -565,7 +565,7 @@ class GhostRules:
 
         ghostState = state.data.agentStates[ghostIndex]
         speed = GhostRules.GHOST_SPEED
-        if ghostState.scaredTimer > 0:
+        if ghostState.scaredTimer > 0 and "beliefStates" not in dir(state.data):
             speed /= 2.0
         vector = Actions.directionToVector(action, speed)
         ghostState.configuration = ghostState.configuration.generateSuccessor(
