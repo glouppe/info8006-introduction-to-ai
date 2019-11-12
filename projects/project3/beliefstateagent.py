@@ -25,7 +25,9 @@ class BeliefStateAgent(Agent):
 
         # Parameter lambda to get the real distance
         self.lmbda = self.args.lmbda
-        self.exp_mlmbda = np.exp(-self.lmbda)
+
+        # Ghost type
+        self.ghost_type = self.args.ghostagent
 
     def update_belief_state(self, evidences, pacman_position):
         """
@@ -50,11 +52,10 @@ class BeliefStateAgent(Agent):
 
         N.B. : [0,0] is the bottom left corner of the maze
         """
-
         beliefStates = self.beliefGhostStates
 
         # XXX: Your code here
-        pass
+
         # XXX: End of your code
 
         self.beliefGhostStates = beliefStates
@@ -74,9 +75,6 @@ class BeliefStateAgent(Agent):
         for p in positions:
             true_distance = util.manhattanDistance(p, pacman_position)
 
-            # Uniformly sample the direction of the perturbation
-            sign = np.random.choice([-1, 1])
-
             # Simulate a probability distribution of parameter lambda
             # Hint : The cumulative distribution function (CDF)
             # is described by the following equation : 
@@ -90,13 +88,13 @@ class BeliefStateAgent(Agent):
             #     falls below e^-lambda
             k = 0
             p = 1
-            while p > self.exp_mlmbda:
+            while p > np.exp(-self.lmbda * true_distance):
                 u = np.random.random()
                 p *= u
                 k += 1
             k -= 1
 
-            noisy_distances.append(true_distance + sign * k)
+            noisy_distances.append(k)
 
         return noisy_distances
 
@@ -134,7 +132,8 @@ class BeliefStateAgent(Agent):
         if self.walls is None:
             self.walls = state.getWalls()
 
-        newBeliefStates = self.update_belief_state(self._get_evidence(state), state.getPacmanPosition())
-        self._record_metrics(self, state)
+        newBeliefStates = self.update_belief_state(self._get_evidence(state),
+                                                   state.getPacmanPosition())
+        self._record_metrics(self.beliefGhostStates, state)
 
         return newBeliefStates

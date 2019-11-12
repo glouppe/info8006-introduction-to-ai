@@ -37,7 +37,7 @@ Your task is to design an intelligent agent based on the Bayes filter algorithm 
 
 You may the following command line which launchs a game where the sole, eadible and invisible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
 ```bash
-python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleGhosts --hiddenghosts --lmbda 100 --seed -1
+python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleghosts --hiddenghosts --lmbda 100 --seed -1
 ```
 Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
 
