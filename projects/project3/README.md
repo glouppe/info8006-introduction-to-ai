@@ -28,30 +28,30 @@ You are requested to deliver a *tar.gz* archive containing:
 
 This part is due by **December 8, 2019 at 23:59**. This is a **hard** deadline.
 
-In this third part of the project, Pacman got tired of ghosts wandering around him. So he has decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he had also discovered a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
+In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
 
-A lot of confusion arose since Pacman shot them. He has no idea where they can currently be in the maze. However, he knows that the ghosts are confused and should be willing to escape from him.
+A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are confused and should be willing to escape from him.
 More precisely, he knows that `scared` is more fearful than `afraid` who is more fearful than `confused`.
 
 Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for locating all the ghosts in the maze.
 
 You are asked to answer the following questions:
 
- 1. **Filter Components**
+ 1. **Bayes filter**
 
-	- 1.a. - **1 point** - Describe the parametrized model of the rusty sensor (see `_get_evidence` of the `BeliefStateAgent` class).
+	- 1.a. - **1 point** - Describe the sensor model of the rusty sensor (see `_get_evidence` of the `BeliefStateAgent` class).
 	- 1.b. - **1 point** - Describe the belief state structure related to the ghost position.
 	- 1.c. - **1 point** - Describe the transition model of `scared` (see `/pacman_module/ghostAgents.py`).
 	- 1.d. - **1 point** - Describe the transition model of `afraid` (see `/pacman_module/ghostAgents.py`).
 	- 1.e. - **1 point** - Describe the transition model of `confused` (see `/pacman_module/ghostAgents.py`).
-	- 1.f. - **1 point** - Provide a single parametrized transition model which describes `scared`, `afraid` and `confused` by only picking a value for the unique parameter.  
+	- 1.f. - **1 point** - Provide a generic parametrized transition model, for which `scared`, `afraid` and `confused` are special cases.  
 
 
  2. **Implementation**
  	- 2.a. - **3 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts.
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
-	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
+	- 2.b. - **1 point** - Could the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
 
  3. **Experiment**
  	- 3.a. - **2 points** - Provide a measure of the uncertainty of the belief state(s).
