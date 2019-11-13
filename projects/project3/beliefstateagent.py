@@ -45,8 +45,8 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        - A list of Z belief states at state x_{t} about ghost positions
-          as N*M numpy matrices of probabilities
+        - A list of Z belief states at state x_{t}
+          as N*M numpy mass probability matrices
           where N and M are respectively width and height
           of the maze layout and Z is the number of ghosts.
 
@@ -65,6 +65,21 @@ class BeliefStateAgent(Agent):
     def _get_evidence(self, state):
         """
         Computes noisy distances between pacman and ghosts.
+
+        Arguments:
+        ----------
+        - `state`: The current game state s_t
+                   where 't' is the current time step.
+                   See FAQ and class `pacman.GameState`.
+
+
+        Return:
+        -------
+        - A list of Z belief states at state x_{t}
+          as N*M numpy mass probability matrices
+          where N and M are respectively width and height
+          of the maze layout and Z is the number of ghosts.
+
         XXX: DO NOT MODIFY THIS FUNCTION !!!
         Doing so will result in a 0 grade.
         """
@@ -77,13 +92,13 @@ class BeliefStateAgent(Agent):
 
             # Simulate a probability distribution of parameter lambda
             # Hint : The cumulative distribution function (CDF)
-            # is described by the following equation : 
+            # is described by the following equation :
             # F(k) = e^{-lambda}sum_{i=0}^{Lk⅃}{lambda^i/i!}
             # The direct sampling from inverse CDF
             # would require heavy computation
             # The following algorithm makes use of two properties :
             # 1 - each Xi is iid with an exponential distribution
-            # 2 - The process should stop as soon as  
+            # 2 - The process should stop as soon as
             #     the cumulative product of uniform r.v.s
             #     falls below e^-lambda
             k = 0
@@ -98,11 +113,23 @@ class BeliefStateAgent(Agent):
 
         return noisy_distances
 
-    def _record_metrics(self, belief_state, state):
+    def _record_metrics(self, belief_states, state):
         """
         Use this function to record your metrics
         related to true and belief states.
         Won't be part of specification grading.
+
+        Arguments:
+        ----------
+        - `state`: The current game state s_t
+                   where 't' is the current time step.
+                   See FAQ and class `pacman.GameState`.
+        - `belief_states`: A list of Z
+           N*M numpy matrices of probabilities
+           where N and M are respectively width and height
+           of the maze layout and Z is the number of ghosts.
+
+        N.B. : [0,0] is the bottom left corner of the maze
         """
         pass
 
@@ -112,8 +139,8 @@ class BeliefStateAgent(Agent):
 
         Arguments:
         ----------
-        - `state`: the current game state. See FAQ and class
-                   `pacman.GameState`.
+        - `state`: the current game state.
+                   See FAQ and class `pacman.GameState`.
 
         Return:
         -------

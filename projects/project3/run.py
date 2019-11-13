@@ -107,10 +107,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.seed >= 0: 
+    if args.seed >= 0:
         np.random.seed(args.seed)
         random.seed(args.seed)
-        
+
     if (args.agentfile == "humanagent.py" and args.silentdisplay):
         print("Human agent cannot play without graphical display")
         exit()
