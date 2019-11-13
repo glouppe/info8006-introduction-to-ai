@@ -37,7 +37,7 @@ Your task is to design an intelligent agent based on the Bayes filter algorithm 
 
 You may the following command line which launchs a game where the sole, eadible and invisible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
 ```bash
-python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleghosts --hiddenghosts --lmbda 100 --seed -1
+python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleghosts --seed -1
 ```
 Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
 
@@ -54,7 +54,7 @@ You are asked to answer the following questions:
 
 
  2. **Implementation**
- 	- 2.a. - **3 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
+ 	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts. 
 		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
 		 - You may assume access to the Pacman's position.
@@ -63,18 +63,16 @@ You are asked to answer the following questions:
 	- 2.b. - **1 point** - Might the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
 
  3. **Experiment**
- 	- 3.a. - **2 points** - Provide a measure of the uncertainty of the belief state(s).
-	- 3.b. - **2 points** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth.
-	- 3.c. - **3 points** - Run your filter implementation several times on the `/pacman_module/layouts/large_filter.lay` layout, against all ghosts and 5 carefully chosen parameters of the rusty sensor.
+ 	- 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
+	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth.
+	- 3.c. - **4 points** - Run your filter implementation several times on the `/pacman_module/layouts/large_filter.lay` layout, against all ghosts.
 		 - Record the two aforementioned measures (see `_record_metrics` function in `beliefstateagent.py`) over trials and time.
 		 - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining curves whenever possible.
-		 - You need to mention the 5 parameters that you have chosen for the rusty sensor. Otherwise, your curves will be considered as not provided.
 		 - Each curve that does not correctly plot a mean and a variance through several simulations will be considered as not provided.
 		 - Your number of simulations needs to be high enough and their duration long enough so that the two aforementioned measures have eventually converged, in terms of mean and variance, over time and for each timestep.
-			 - Each curve that does not fulfill the abovementioned condition will be considered as not provided.   
+			 - Each curve that does not fulfill the abovementioned condition will be considered as not provided.
 	- 3.d. - **1 point** - How does the ghost transition model parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
-	- 3.e. - **1 point** - How does the rusty sensor parameter affect its behavior and impact the belief state updates? Motivate your answer by using your measures and the model itself.
-	- 3.f. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
+	- 3.e. - **1 point** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
 		- You do not need to provide a pseudo-code algorithm, just explain intuitively and in a few lines your implementation strategy.
 
 
@@ -89,7 +87,7 @@ For each **implementation question** (2.a), provide simply references to your co
  - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
 
-For each **discussion question** (1.a, 1.b, 1.c, 1.d, 1.e, 1.f, 2.b, 3.a, 3.b, 3.d, 3.e, 3.f), the evaluation will be performed as follows:
+For each **discussion question** (1.a, 1.b, 1.c, 1.d, 1.e, 1.f, 2.b, 3.a, 3.b, 3.d, 3.e), the evaluation will be performed as follows:
 
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.

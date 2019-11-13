@@ -23,9 +23,6 @@ class BeliefStateAgent(Agent):
         # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
 
-        # Parameter lambda to get the real distance
-        self.lmbda = self.args.lmbda
-
         # Ghost type
         self.ghost_type = self.args.ghostagent
 
@@ -103,7 +100,7 @@ class BeliefStateAgent(Agent):
             #     falls below e^-lambda
             k = 0
             p = 1
-            while p > np.exp(-self.lmbda * true_distance):
+            while p > np.exp(-true_distance):
                 u = np.random.random()
                 p *= u
                 k += 1
