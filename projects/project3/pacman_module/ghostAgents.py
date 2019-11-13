@@ -37,7 +37,7 @@ class GhostAgent(Agent):
 
     def get_action(self, state):
         """
-        Given an ghost game state, returns a legal move
+        Given a ghost game state, returns a legal move
 
         Arguments:
         ----------
@@ -57,7 +57,7 @@ class GhostAgent(Agent):
 
     def getDistribution(self, state):
         """
-        Given an ghost game state,
+        Given a ghost game state,
         returns a discrete probability distribution over legal moves
 
         Arguments:
@@ -77,6 +77,20 @@ class ConfusedGhost(GhostAgent):
     """A stochastic ghost which goes anywhere with equal probability."""
 
     def getDistribution(self, state):
+        """
+        Given a ghost game state,
+        returns a discrete probability distribution over legal moves
+
+        Arguments:
+        ----------
+        - `state`: the current game state.
+                   See FAQ and class `pacman.GameState`.
+
+        Return:
+        -------
+        - A `util.Counter` object which represents a discrete
+          probability distribution over legal moves.
+        """
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
         if Directions.STOP in legal:
@@ -93,6 +107,20 @@ class AfraidGhost(GhostAgent):
        Pacman."""
 
     def getDistribution(self, state):
+        """
+        Given a ghost game state,
+        returns a discrete probability distribution over legal moves
+
+        Arguments:
+        ----------
+        - `state`: the current game state.
+                   See FAQ and class `pacman.GameState`.
+
+        Return:
+        -------
+        - A `util.Counter` object which represents a discrete
+          probability distribution over legal moves.
+        """
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
         if Directions.STOP in legal:
@@ -117,6 +145,20 @@ class ScaredGhost(GhostAgent):
        Pacman."""
 
     def getDistribution(self, state):
+        """
+        Given a ghost game state,
+        returns a discrete probability distribution over legal moves
+
+        Arguments:
+        ----------
+        - `state`: the current game state.
+                   See FAQ and class `pacman.GameState`.
+
+        Return:
+        -------
+        - A `util.Counter` object which represents a discrete
+          probability distribution over legal moves.
+        """
         dist = util.Counter()
         legal = state.getLegalActions(self.index)
         if Directions.STOP in legal:

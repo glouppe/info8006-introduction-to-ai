@@ -99,11 +99,6 @@ if __name__ == '__main__':
         '--bsagentfile',
         help='Python file containing a `BeliefStateAgent` class.',
         default=None)
-    parser.add_argument(
-        '--lmbda',
-        help='Float lmbda > 0 - Sensor model parameter (see Project III).',
-        type=strictly_positive_float,
-        default=1)
 
     args = parser.parse_args()
 
