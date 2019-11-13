@@ -22,7 +22,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | October 31 | *(no class)* |
 | November 7 | Lecture 6: [Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)]<br>Exercises 5: Reasoning under uncertainty (part 2) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises5.pdf)] [[Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/solutions5.pdf)]|
 | November 10 | Project 2 deadline |
-| November 14 | Lecture 7: [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)]<br>Exercises 6: Reasoning over time<br>Project 3 announcement |
+| November 14 | Lecture 7: [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)]<br>Exercises 6: Reasoning over time [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises6.pdf)]<br>Project 3 announcement |
 | November 21 | Lecture 8: Making decisions<br>Exercises 7: Making decisions (part 1)|
 | November 28 | Lecture 9: Learning<br>Exercises 8: Making decisions (part 2) |
 | December 5 | Lecture 10: Communication<br>Exercises 9: Learning |

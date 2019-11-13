@@ -1,8 +1,9 @@
-\documentclass[a4paper, 10pt]{article}
+\documentclass[9pt,a4paper]{extarticle}
 
-\usepackage{vmargin}
 
-\setmarginsrb{2cm}{0cm}{2cm}{0,2cm}{1cm}{1,5cm}{1cm}{1,5cm}
+	\usepackage[margin=5em,bottom=8em]{geometry}
+
+
 %1 est la marge gauche
 %2 est la marge en haut
 %3 est la marge droite
@@ -18,8 +19,13 @@
 \usepackage{ae}
 \usepackage[utf8]{inputenc}
 \usepackage{scrextend}
+\usepackage{diagbox}
 \usepackage{hyperref}
-
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
 %-------------------------Mathématiques------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -28,10 +34,17 @@
 \usepackage{eucal}
 \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 %-----------------------Codes et algorithmes--------------------------
 \usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{clrscode3e}
+%\usepackage{algorithmic}
+%\usepackage{clrscode3e}
+\usepackage[noend]{algpseudocode}
+%\newcommand{\pushline}{\Indp}% Indent
+%\newcommand{\popline}{\Indm\dosemic}% Undent
+%\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}%
+
 
 %------------------------------Graphics------------------------------
 
@@ -42,63 +55,21 @@
 \usepackage{pgf, tikz}
 \usetikzlibrary{arrows, automata}
 %\usepackage{slashbox}
-%------------------------------Syntaxe------------------------------
 
-\usepackage{listings}
-\lstloadlanguages{Matlab}
-
-\def\refmark#1{\hbox{$^{\ref{#1}}$}}
-\DeclareSymbolFont{cmmathcal}{OMS}{cmsy}{m}{n} %Mathcal correcte
-\DeclareSymbolFontAlphabet{\mathcal}{cmmathcal}
-
-%------------------------------Inclure code MatLab------------------------------
-
-\usepackage{listings}
-\newcommand*\styleC{\fontsize{9}{10pt}\usefont{T1}{ptm}{m}{n}\selectfont }
-\newcommand*\styleD{\fontsize{9}{10pt}\usefont{OT1}{pag}{m}{n}\selectfont }
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
 %------------------Sub-sections--------%
 \usepackage{titlesec}
 \usepackage{hyperref}
-
-\renewcommand\thesubsubsection{\alph{subsubsection}}
-
-\titleclass{\subsubsubsection}{straight}[\subsubsection]
-
-\newcounter{subsubsubsection}[subsubsection]
-\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
-
-\titleformat{\subsubsubsection}
-  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
-\titlespacing*{\subsubsubsection}
-{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
-
-\makeatletter
-% on fixe le langage utilisé
-\lstset{language=matlab}
-\edef\Motscle{emph={\lst@keywords}}
-\expandafter\lstset\expandafter{%
-  \Motscle}
-\makeatother
-
-
-\definecolor{Ggris}{rgb}{0.45,0.48,0.45}
-
-\lstset{emphstyle=\rmfamily\color{blue}, % les mots réservés de matlab en bleu
-basicstyle=\styleC,
-keywordstyle=\ttfamily,
-commentstyle=\color{Ggris}\styleD, % commentaire en gris
-numberstyle=\tiny\color{red},
-numbers=left,
-numbersep=10pt,
-lineskip=0.7pt,
-showstringspaces=false}
-%  % inclure le fichier source
-\newcommand{\FSource}[1]{%
-\lstinputlisting[texcl=true]{#1}
-}
+\usepackage{comment}
+\usepackage{qrcode}
+\usepackage{subcaption}
+\usepackage{hyperref}
+               
+ \hypersetup{
+    colorlinks = true,
+    linkcolor=black,
+    urlcolor = black
+    }
+    
 \newenvironment{solution}
     {%\begin{center}
     %\begin{tabular}{|p{0.9\textwidth}|}
@@ -111,21 +82,30 @@ showstringspaces=false}
     %\end{center}
     \color{black}
     }
-\usepackage[section]{placeins}
-
-\let\cleardoublepage\clearpage
-
-\usepackage{hyperref}
-               
- \hypersetup{
-    colorlinks = true,
-    linkcolor=black,
-    urlcolor = black
-    }
     
-\renewcommand{\arraystretch}{1.2}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\newenvironment{rcases}
+  {\left.\begin{aligned}}
+  {\end{aligned}\right\rbrace}
+\newif\ifhideproofs
+%\hideproofstrue %uncomment to hide proofs
+
+\ifhideproofs
+\usepackage{environ}
+\NewEnviron{hide}{}
+\let\solution\hide
+\let\endsolution\endhide
+\fi
+
+\title{{\bf INFO8006 Introduction to Artificial Intelligence}\\[1em]
+Reasoning over time}
+\date{}
 %------------------------------Début du document------------------------------
 \begin{document}
+\maketitle
+\vspace{-4em}
 %------------------------------Page de garde------------------------------
 
 
@@ -133,33 +113,294 @@ showstringspaces=false}
   %\tableofcontents
    \setcounter{page}{1}
 %%%%%%%%% TP 6 %%%%%%%%%%%
-   \section{Reasoning over time (22/11/2018)}
-   
-   \subsection{Objectives}
-   At the end of this repetition you should be able to:
-   \begin{itemize}
+
+  \section*{Learning outcomes} 
+      At the end of this exercise session you should be able to:
+      \begin{itemize}
        \item Define a Markov Model
        \item Define what is Filtering/Prediction/Smoothing/Most Likely Explanation in general and how it is done in the context of Markov Model
        \item Explain the simplified matrix representation of HMM (Hidden Markov Model).
        \item Define what is a Kalman filter and be able to use it in the context of a dynamic random process.
    \end{itemize}
-   \subsection{Exercises }
-   \subsubsection{The coin ($\approx 30$ minutes)}
-   You are in a room containing a table, on this table are placed 3 very precious biased coins (named A, B and C). Suddenly another person enters the room and takes the coins. He decides to throw 4 times a coin and then asks you 4 questions, before that he provides you the following information. First he tells you that he has selected the first coin uniformly at random. Then, to chose the next coins he has kept the same coin with a probability 2/3 or he has replaced it by another coin with equal probabilities, afterward he has thrown the selected coin. When you entered the room you inspected the coins and noticed that the coin A has a head probability of 80\%, the B 50\% and the C 20\%. The result of the throws are head, head, tail and head. 
-   If you answer right to his questions he will give you the coins. The questions are the following:
+   \section{Exercise 1: Umbrella World (AIMA, Ex 15.2)}
+   In this exercise, we examine what happens to the probabilities in the umbrella world in the limit of long time sequences.
+   \begin{table}[H]
+       \centering
+       \begin{tabular}{|l|l|}
+       \hline
+            $R_{t-1}$ & $P(r_t|R_{t-1})$  \\
+            \hline
+            $T$ & $0.7$\\
+            $F$ & $0.3$\\\hline
+       \end{tabular}
+       \quad
+       \begin{tabular}{|l|l|}
+       \hline
+            $R_{t}$ & $P(u_t|R_t)$  \\
+            \hline
+            $T$ & $0.9$\\
+            $F$ & $0.2$\\\hline
+       \end{tabular}
+       \caption{Transition and Observation probability tables.}
+       \label{tab:umbrella}
+   \end{table}
+    \begin{enumerate}
+        \item Suppose we observe an unending sequence of days on which the umbrella appears. Show that, as the days go by, the probability of rain on the current day increases monotonically toward a fixed point. Calculate this fixed point.
+        \begin{solution}\\
+        For all $t$, we have the filtering formula
+        \begin{align}
+            P(R_t|u_{1:t}) &= \alpha P(u_t|R_t) \sum_{R_{t-1}} P(R_{t-1}|u_{1:t-1}) P(R_t|R_{t-1})\\
+            &= \alpha \left<0.9, 0.2\right> (P(r_{t-1}|u_{1:t-1})\left<0.7, 0.3\right> + (1 - P(r_{t-1}|u_{1:t-1}))\left<0.3, 0.7\right>)\\
+            &=\alpha \left<0.9\times (0.4P(r_{t-1}|u_{1:t-1}) + 0.3), 0.2\times(-0.4P(r_{t-1}|u_{1:t-1}) + 0.7)\right>\\
+            &= \frac{\left<0.36 P(r_{t-1}|u_{1:t-1}) + 0.27, -0.08P(r_{t-1}|u_{1:t-1}) + 0.14\right>}{.41 + 0.28P(r_{t-1}|u_{1:t-1}) }
+        \end{align}
+        We observe that $0.36 P(r_{t-1}|u_{1:t-1}) + 0.27 > -0.08P(r_{t-1}|u_{1:t-1}) + 0.14$, so the probability of rain monotonically increases.
+        The fixed point can be computed by assuming solving the equation for $P(r_{t-1}|u_{1:t-1}) = P(r_{t}|u_{1:t})$, we have:
+        \begin{align}
+            \left<\rho, 1-\rho\right> &= \frac{\left<0.36 \rho + 0.27, -0.08\rho + 0.14\right>}{.41 + 0.28\rho }\\
+            \rho (0.41 + 0.28 \rho)&= 0.36 \rho + 0.27\\
+            0 &= 0.28\rho^2 + 0.05\rho - 0.27\\
+            \rho &= \frac{-0.05 \pm \sqrt{0.05^2 + 4 \times 0.27 \times 0.28}}{2 \times 0.28},
+        \end{align}
+        $\rho$ being strictly positive we find, $\rho \approx 0.89$.
+        \end{solution}
+        \item Now consider forecasting further and further into the future, given just the first two umbrella observations. Compute the exact value of this fixed point is $0.5$.
+        \begin{solution}
+        We easily find:
+        \begin{align}
+            P(R_{2+k}|U_1, U_2) &= \sum_{R_{2+k-1}}P(R_{2+k}|R_{2+k-1})P(R_{2+k-1}|U_1, U_2)\\
+            &=\left<0.7, 0.3\right>P(r_{2+k-1}|U_1, U_2) + \left<0.3, 0.7\right>(1-P(r_{2+k-1}|U_1, U_2)).
+        \end{align}
+        The fixed point is computed by assuming $P(R_{2+k}|U_1, U_2) = P(R_{2+k-1}|U_1, U_2)$:
+        \begin{align}
+            \rho &= 0.7\rho + 0.3 - 0.3\rho\\
+            \rho &= \frac{0.3}{0.6} = 0.5
+        \end{align}
+        \end{solution}
+    \end{enumerate}
+   \section*{Exercise 2: The coin}
+   You are in a room containing a table, on this table are placed 3 very precious biased coins (named $A$, $B$ and $C$). Suddenly another person enters the room and takes the coins. He throws a coin 4 times and then tells you the following information:
+    First he tells you that he drew the first coin uniformly at random and did not throw it.
+    Then, to select the next coin for each following throw, he either kept the same coin with a probability $2/3$ or  replaced it by another coin with equal probabilities.
+   When you entered the room you inspected the coins and noticed that the coins $A$, $B$ and $C$ have a head probability of $80\%$, $50\%$ and $20\%$ respectively. The result of the throws are head, head, tail and head. 
+   If you answer right to his questions he will give you the coins. His four questions are as follows:
    \begin{enumerate}
-       \item Give the hidden Markov model of this statement.
+       \item Provide a hidden Markov model that describes the sequence of throws.
+              \begin{solution}
+       \begin{itemize}
+           \item The hidden state at time $t$ is $X_t \in D_{X_t} = \{A, B, C\} = \{1, 2, 3\} $, it represents the coin chosen.
+           \item The evidence at time $t$ is $E_t \in D_{E_t} = \{Head, Tail\} = \{1, 2\}$, it represents the result of the throw.
+           \item The prior matrix 
+            $$
+           f_0 = P(X_0) = 
+           \begin{bmatrix}
+           \frac{1}{3} & \frac{1}{3} & \frac{1}{3}
+           \end{bmatrix}^T
+           $$.
+           \item The transition matrix 
+           $$
+           T = P(X_t|X_{t-1}) = 
+           \begin{bmatrix}
+           \frac{2}{3} & \frac{1}{6} & \frac{1}{6}\\
+           \frac{1}{6} & \frac{2}{3} & \frac{1}{6}\\
+           \frac{1}{6} & \frac{1}{6} & \frac{2}{3}\\
+           \end{bmatrix} \quad \text{where} \quad T_{ij} = P(X_t=j|X_{t-1}=i)
+           $$.
+           \item The sensor matrix 
+           $$
+           B = P(E_t|X_t) = 
+           \begin{bmatrix}
+           0.8 & 0.2\\
+           0.5 & 0.5\\
+           0.2 & 0.8\\
+           \end{bmatrix}
+           \quad \text{where} \quad B_{ij} = P(E_t=j|X_{t}=i)
+           $$.
+       \end{itemize}
+       \end{solution}
        \item What are the probabilities of the last coin given the sequence of evidence ?
-       \item What are the probabilities of the first coin chosen given the sequence evidence ? And of the first coin thrown ?
-       \item What is the most likely sequence of coins thrown ?
+       \begin{solution}
+       Let's first define the observation matrices:
+       $$ O_1 = O_2 = O_4 = 
+       \begin{bmatrix}
+       0.8 & 0 & 0\\
+       0 & 0.5 & 0\\
+       0 & 0 & 0.2
+       \end{bmatrix} \quad O_3 = \begin{bmatrix}
+       0.2 & 0 & 0\\
+       0 & 0.5 & 0\\
+       0 & 0 & 0.8
+       \end{bmatrix}
+       $$
+       We apply a forward pass to filter and to derive the following equalities:
+       \begin{align}
+           f_{1} &= P(X_1|e_1) = \alpha_1 P(X_1)P(e_1|X_1) \nonumber \\
+           &= \alpha_1 \sum_{X_0}P(X_0)P(X_1|X_0)P(e_1|X_1) = \alpha_1 O_{1} T^T f_0  \\
+           f_{2} &= P(X_2|e_{1:2}) = \alpha_2 \sum_{X_1} P(X_{1:2}, e_{2}|e_1) \nonumber \\
+           &= \alpha_2 \sum_{X_1} P(e_2| X_2, \textcolor{blue}{X_1, e_1})P(X_2|X_1, \textcolor{blue}{e_1})P(X_1|e_1) = \alpha_2 O_2T^Tf_1\\
+           f_{3} &= P(X_3|e_{1:3}) = \alpha_3 O_3 T^T f_2\\
+           f_{4} &= P(X_4|e_{1:4}) = \alpha_4 O_4 T^T f_3 \approx \begin{bmatrix} 0.472 & 0.374 & 0.154 \end{bmatrix}^T
+       \end{align}.
        
+       \end{solution}
+       \item What are the probabilities of the first coin chosen given the sequence evidence? And of the first coin thrown?
+       \begin{solution}
+       We apply a backward pass to smooth and to derive the following equalities:
+       \begin{align}
+           b_{4} &= P(e_4|X_3) = \sum_{X_4} P(e_4, X_4|X_3)\nonumber\\
+           &= \sum_{X_4} P(e_4|\textcolor{blue}{X_3}, X_4)P(X_4| X_3) = \sum_{X_4} P(e_4| X_4)P(X_4| X_3)\nonumber\\
+           &=TO_4\begin{bmatrix}1 \\ \vdots \\ 1\end{bmatrix}\\
+           b_{3} &= P(e_{3:4}|X_2) = \sum_{X_3}P(e_{3:4}, X_3|X_2)\nonumber\\
+           &= \sum_{X_3}P(e_{3:4}|\textcolor{blue}{X_2}, X_3)P(X_3|X_2) =
+           \sum_{X_3}P(e_{4}| X_3)P(e_{3}| X_3, \textcolor{blue}{e_4})P(X_3|X_2)\nonumber\\
+           &= TO_3b_{4}\\
+           b_{2} &= P(e_{2:4}|X_1) = \sum_{X_2} P(e_{2:4}, X_2|X_1)\nonumber\\
+           &= \sum_{X_2} P(e_{2:4}|\textcolor{blue}{X_1}, X_2)P(X_2|X_1) = \sum_{X_2} P(e_2|X_2, \textcolor{blue}{e_{3:4}})P(e_{3:4}|X_2)P(X_2|X_1)\nonumber\\
+           &= TO_2b_{3}\\
+           b_{1} &= P(e_{1:4}|X_0) = T O_1 b_2
+           \end{align}
+           The probability of the first coin given the evidence selected is:
+           \begin{align}
+           P(X_0|e_{1:4}) &= \alpha P(X_0, e_{1:4}) = \alpha f_0 \times b_1 \approx 
+           \begin{bmatrix}
+           0.457 & 0.331 & 0.212
+           \end{bmatrix}^T
+           \end{align}
+           The probability of the first coin thrown given the evidence selected is:
+           \begin{align}
+           P(X_1|e_{1:4}) &= \alpha P(X_1, e_{2:4}|e_1) = \alpha P(X_1| e_1)P(e_{2:4}|X_1, \textcolor{blue}{e_1}) \nonumber\\
+           &= \alpha f_1\times b_2  \approx 
+           \begin{bmatrix}
+           0.580 & 0.329 & 0.091
+           \end{bmatrix}^T
+       \end{align}
+       \end{solution}
+       \item What is the most likely sequence of coins thrown?
+       \begin{solution}
+       The most likely sequence given the evidence is:
+       \begin{align}
+           x^{ML}_{1:4} &= \argmax_{x_{1:4}} P(x_{1:4}|e_{1:4})\\
+       \end{align}.
+       It can be computed efficiently by using the Viterbi algorithm. Let us define the vector $m_i \in \mathbb{R}^3_+$ such that $m_i(j)$ gives the probability of the most likely path to the $i^{th}$ state with value $j$. It can be computed recursively with the following equations:
+       \begin{align}
+           m_1 &= P(X_1|e_1) = f_1\\
+           m_t &= \max_{x_{1:t-1}}P(X_t, x_{1:t-1}|e_{1:t})\\
+           &= \max_{x_{1:t-1}} \alpha P(X_t, x_{1:t-1}, e_{t}|e_{1:t-1})\\
+           &= \max_{x_{1:t-1}} \alpha P(e_t|X_t, \textcolor{blue}{x_{1:t-1}, e_{1:t-1}})P(X_t|x_{t-1}, \textcolor{blue}{x_{1:t-2}, e_{1:t-1}})P(x_{1:t-1}|e_{1:t-1})\\
+           &=\alpha P(e_t|X_t)\max_{x_{t-1}}P(X_t|x_{t-1})\max_{x_{1:t-2}}P(x_{1:t-1}|e_{1:t-1})\\
+           &=\alpha P(e_t|X_t)\max_{x_{t-1}}P(X_t|x_{t-1})m_{t-1}(x_{t-1})
+       \end{align}
+    %   We have:
+    %   \begin{align}
+    %       m_0 = 
+    %       \begin{bmatrix}
+    %       \frac{1}{3} & \frac{1}{3} & \frac{1}{3}
+    %       \end{bmatrix}
+    %       m_1 = \alpha_1 P(e_1|X_1) \max_{x_0}P(X_{1}|x_0)m_0\\
+    %       m_2 = \alpha_2 P(e_2|X_2) \max_{x_{0:1}}P(X_{2}|x_1)m_1\\
+    %       m_3 = \alpha_3 P(e_3|X_3) \max_{x_{0:2}}P(X_{3}|x_2)m_2\\
+    %       m_4 = \alpha_4 P(e_4|X_4) \max_{x_{0:3}}P(X_{4}|x_3)m_3\\
+    %   \end{align}
+       \end{solution}
    \end{enumerate}
-   \subsubsection{Hyperloop($\approx 25$ minutes)}
-   This year ULiège has decided to get into the hyperloop competition\footnote{https://www.spacex.com/hyperloop}. Briefly, what you should do to win this competition is to build the fastest and most reliable autonomous pod. 
    
-   One of the most important engineering problem to build the pod is to be able to compute a robust estimation of the state of the pod (position, speed) given many noisy sensors. 
+   \section*{Exercise 3: Hyperloop}
+   This year ULiège has decided to get into the Hyperloop competition (\url{https://www.spacex.com/hyperloop}). Briefly, what you should do to win this competition is to build the fastest and most reliable autonomous pod. 
+   One of the most important engineering problem to build the pod is to be able to compute a robust estimation of the state of the pod (its position and speed) given many noisy sensors. 
    
-   This morning you received a mail asking you what would be your solution to this estimation problem. The mail contains information about the sensors they plan to put in the pod. They say that they will use 3 unbiased speed sensors with a 99.7\% accuracy\footnote{It means that 99.7\% of the value measured will get a smaller error. e.g. (\url{https://math.stackexchange.com/questions/1412683/3-sigma-approximation})} of 0.1m/s and a GPS sensor (also unbiased) which provides the pod's position (in one dimension) with a 99.7\% precision of 1 meter. After some research on the web you found out that you should use a Kalman filter to solve this task. Thus you have to define the key elements of the Kalman filter in the context of the state estimation of the ULiège's pod. Please define below these elements, you can assume that the acceleration $a$ is distributed normally around $\mu_a m/s^2$ with a variance equal to $\sigma_a^2$.
-   \subsection{Supplementary material}
-   \url{http://ai.berkeley.edu/sections/section_6.pdf}
+   This morning you received an email asking you what would be your solution to this estimation problem. The message contains information about the sensors they plan to put in the pod. They say that they will use 3 unbiased speed sensors with a 99.7\% accuracy\footnote{It means that 99.7\% of the value measured will get a smaller error. e.g. (\url{https://math.stackexchange.com/questions/1412683/3-sigma-approximation})} of 0.1m/s and a GPS sensor (also unbiased) which provides the pod  position (in one dimension) with a 99.7\% precision of 1 meter. After some research on the web you find out that you should use a Kalman filter to solve this task. 
+   
+   Define the components of your Kalman filter in the context of the state estimation of the pod. You can assume that the acceleration $a$ is distributed normally around $\mu_a m/s^2$ with a variance equal to $\sigma_a^2$.
+   \begin{solution}
+   \\
+   To define the Kalman filter we have to define the following 3 elements:
+   \begin{enumerate}
+       \item The prior (which is assumed to be Gaussian): 
+       $$ p(x_0) = \mathcal{N}(x_0|\mu_{x_0}, \Sigma_{x_0}) $$.
+       \item The transition model (which is assumed to be Gaussian): 
+       $$ p(x_t|x_{t-1}) = \mathcal{N}(x_t|Ax_{t-1}+b, \Sigma_{x}) $$.
+       \item The measurement model:
+       $$ p(e_t|x_t) =  \mathcal{N}(e_t|Cx_{t} + d, \Sigma_{e})$$.
+   \end{enumerate}
+   In this case we can assume the initial position and speed of the pod are known with the same accuracy as the sensors gives, so we have the following definition for $\mu_{x_0}$ and $\Sigma_{x_0}$:\\
+   $$\mu_{x_0} = \begin{bmatrix}x_0 \\ \dot{x_0}\end{bmatrix}$$ and
+   $$\Sigma_{x_0} = 
+   \begin{bmatrix} 
+    (\frac{1}{3})^2 &0\\
+   0 & (\frac{0.1}{3\sqrt{3}})^2
+   \end{bmatrix},$$
+   where $x_0$ and $\dot{x_0}$ respectively denote the initial position and speed of the pod. The covariance matrix values come from the fact that the 99.7\% precision is equal to $3\sigma$ and that the variance of the mean of $n$ random variables is equal to the sum of each variance divided by $n^2$.
+   
+   Then to derive the transition model we use the laws of physics and we easily get:
+   $$ A = 
+   \begin{bmatrix} 
+   1 & \Delta_t\\
+   0 & 1
+   \end{bmatrix} \quad \text{and} \quad b = 
+   \begin{bmatrix}
+   \frac{\mu_a}{2}\Delta_t^2\\
+   \mu_a \Delta_t
+   \end{bmatrix}
+   $$ where $\Delta_t$ denotes the time elapsed between two measurements.
+   The covariance matrix of the transition model can be computed by the affine transformation formula of a multivariate Gaussian which tells that if $y\sim \mathcal{N}(\mu_y, \Sigma_y)$ then $x = Qy+m \sim \mathcal{N}(\mu_x, \Sigma_x)$ where $\mu_x = Q\mu_y+m $ and $\Sigma_x = Q\Sigma_y Q^T$. Here we have $a\sim\mathcal{N}\mu_a, \sigma_a)$ which yields to :
+   $$\Sigma_x =  \begin{bmatrix}
+   \frac{1}{2}\Delta_t^2\\
+    \Delta_t
+   \end{bmatrix} \sigma_a^2 \begin{bmatrix}
+   \frac{1}{2}\Delta_t^2&
+    \Delta_t
+   \end{bmatrix} = \sigma_a^2 \begin{bmatrix}
+   \frac{1}{4}\Delta_t^4 & \frac{1}{2}\Delta_t^3\\
+    \frac{1}{2}\Delta_t^3 & \Delta_t^2
+   \end{bmatrix}.$$
+   Finally we can easily get that the mean of the sensors is given by:
+   $$
+   C = 
+   \begin{bmatrix}
+   1 & 0\\
+   0 & 1\\
+   0 & 1\\
+   0 & 1\\
+   \end{bmatrix} \quad \text{and} \quad 
+   d = 0.
+   $$
+   The covariance matrix is similarly computed and is equal to:
+   $$
+   \Sigma_e = 
+   \begin{bmatrix}
+   (\frac{1}{3})^2 & 0 & 0 & 0\\
+   0 & (\frac{0.1}{3})^2 & 0 & 0\\
+   0 & 0 & (\frac{0.1}{3})^2 & 0\\
+   0 & 0 & 0 & (\frac{0.1}{3})^2\\
+   \end{bmatrix}
+   $$
+   \end{solution}
+   \section*{$\star$ Exercise 4: September 2019 (AIMA, Ex: 15.13 + 15.14)}
+   A professor wants to know if students are getting enough sleep. Each day, the professor
+observes whether the students sleep in class, and whether they have red eyes. The
+professor has the following domain theory:
+\begin{itemize}
+    \item The prior probability of getting enough sleep, with no observations, is 0.7.
+    \item The probability of getting enough sleep on night $t$ is 0.8 given that the student got enough sleep the previous night, and 0.3 if not.
+    \item The probability of having red eyes is 0.2 if the student got enough sleep, and 0.7 if not.
+    \item The probability of sleeping in class is 0.1 if the student got enough sleep, and 0.3 if not.
+\end{itemize}
+Answer the following questions:
+\begin{enumerate}
+    \item Formulate this information as a dynamic Bayesian network that the professor could use to filter or predict from a sequence of observations. Provide the conditional probability tables.
+    \item Then reformulate the dynamic Bayesian network as a hidden Markov model that has only a single observation variable. Give the complete probability tables for the model.
+    \item For the evidence values
+$e_1$ = `not red eyes, not sleeping in class',
+$e_2$ = `red eyes, not sleeping in class' and
+$e_3$ = `red eyes, sleeping in class'
+compute the following conditional probability distributions:
+\begin{enumerate}
+    \item $P(\text{EnoughSleep}_t|e_{1:t})$ for $t$ = 1, 2, 3.
+    \item $P(\text{EnoughSleep}_t|e_{1:3})$ for $t$ = 1, 2, 3.
+\end{enumerate}
+\end{enumerate}
+      \section*{Supplementary materials}
+   \begin{tabular}{c c}
+      \href{http://ai.berkeley.edu/sections/section_6.pdf}{Berkeley Handout 6}  & \qrcode{http://ai.berkeley.edu/sections/section_6.pdf} 
+   \end{tabular}
 \end{document}
