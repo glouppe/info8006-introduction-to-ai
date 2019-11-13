@@ -26,6 +26,9 @@ class BeliefStateAgent(Agent):
         # Ghost type
         self.ghost_type = self.args.ghostagent
 
+        # Constant parameter for evidence model
+        self.v = 1
+
     def update_belief_state(self, evidences, pacman_position):
         """
         Given a list of (noised) distances from pacman to ghosts,
@@ -86,27 +89,10 @@ class BeliefStateAgent(Agent):
 
         for p in positions:
             true_distance = util.manhattanDistance(p, pacman_position)
-
-            # Simulate a probability distribution of parameter lambda
-            # Hint : The cumulative distribution function (CDF)
-            # is described by the following equation :
-            # F(k) = e^{-lambda}sum_{i=0}^{Lk⅃}{lambda^i/i!}
-            # The direct sampling from inverse CDF
-            # would require heavy computation
-            # The following algorithm makes use of two properties :
-            # 1 - each Xi is iid with an exponential distribution
-            # 2 - The process should stop as soon as
-            #     the cumulative product of uniform r.v.s
-            #     falls below e^-lambda
-            k = 0
-            p = 1
-            while p > np.exp(-true_distance):
-                u = np.random.random()
-                p *= u
-                k += 1
-            k -= 1
-
-            noisy_distances.append(k)
+            noisy_distances.append(
+                np.random.normal(
+                    true_distance,
+                    scale=np.sqrt(1)))
 
         return noisy_distances
 

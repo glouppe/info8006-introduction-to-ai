@@ -60,11 +60,11 @@ You are asked to answer the following questions:
  3. **Experiment**
  	- 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
 	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth.
-	- 3.c. - **3 points** - Run your filter implementation several times on the `/pacman_module/layouts/large_filter.lay` layout against each type of ghost. Report your results graphically.
+	- 3.c. - **3 points** - Run your filter implementation on the `/pacman_module/layouts/large_filter.lay` and the `/pacman_module/layouts/large_filter_walls.lay` layouts against each type of ghost. Report your results graphically.
 		 - Record the two aforementioned measures (see `_record_metrics` function in `beliefstateagent.py`) over several trials.
 		 - Your results should come with error bars.
 		 - The number of trials must be high enough and their duration long enough so that the two aforementioned measures have eventually converged.
-	- 3.d. - **3 points** - How does the ghost transition model parameter affect its own behavior and impact the belief state? Motivate your answer by using your measures and the model itself.
+	- 3.d. - **3 points** - How does the ghost transition model parameter affect its own behavior and impact the belief state on each layout? Motivate your answer by using your measures and the model itself.
 	- 3.e. - **2 points** - How would you implement a stochastic Pacman controller eager to eat ghosts using only its current position, the set of legal actions and the current belief state?
 
 
@@ -76,7 +76,7 @@ In this section, you can find the criteria according to which the different ques
 
 For each **implementation question** (2.a), provide simply references to your code in your report. The evaluation of your code will be performed as follows:
  - 100% points: correct implementation of the algorithm and its components.
- - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
+ - 50% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
 
 For each **discussion question** (1.a, 1.b, 2.b, 3.a, 3.b, 3.d, 3.e), the evaluation will be performed as follows:
