@@ -134,7 +134,7 @@ class BeliefStateAgent(Agent):
            XXX: DO NOT MODIFY THAT FUNCTION !!!
                 Doing so will result in a 0 grade.
         """
-        # XXX : You shouldn't care on what is going on below.
+        # XXX : You shouldn't care about what is going on below.
 
         # Variables are specified in constructor.
         if self.beliefGhostStates is None:
