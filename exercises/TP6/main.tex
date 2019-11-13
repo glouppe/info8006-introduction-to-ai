@@ -90,7 +90,7 @@
   {\left.\begin{aligned}}
   {\end{aligned}\right\rbrace}
 \newif\ifhideproofs
-%\hideproofstrue %uncomment to hide proofs
+\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -154,24 +154,24 @@ Reasoning over time}
             &=\alpha \left<0.9\times (0.4P(r_{t-1}|u_{1:t-1}) + 0.3), 0.2\times(-0.4P(r_{t-1}|u_{1:t-1}) + 0.7)\right>\\
             &= \frac{\left<0.36 P(r_{t-1}|u_{1:t-1}) + 0.27, -0.08P(r_{t-1}|u_{1:t-1}) + 0.14\right>}{.41 + 0.28P(r_{t-1}|u_{1:t-1}) }
         \end{align}
-        We observe that $0.36 P(r_{t-1}|u_{1:t-1}) + 0.27 > -0.08P(r_{t-1}|u_{1:t-1}) + 0.14$, so the probability of rain monotonically increases.
-        The fixed point can be computed by assuming solving the equation for $P(r_{t-1}|u_{1:t-1}) = P(r_{t}|u_{1:t})$, we have:
+        Let $x_t = P(r_t|u_{1:t})$, then
         \begin{align}
-            \left<\rho, 1-\rho\right> &= \frac{\left<0.36 \rho + 0.27, -0.08\rho + 0.14\right>}{.41 + 0.28\rho }\\
-            \rho (0.41 + 0.28 \rho)&= 0.36 \rho + 0.27\\
-            0 &= 0.28\rho^2 + 0.05\rho - 0.27\\
-            \rho &= \frac{-0.05 \pm \sqrt{0.05^2 + 4 \times 0.27 \times 0.28}}{2 \times 0.28},
+            x_t - x_{t-1} &= \frac{0.36x_{t-1} + 0.27}{0.41 + 0.28x_{t-1}} - x_{t-1}\\
+            &= 0.36x_{t-1} + 0.27 - 0.41 x_{t-1} - 0.28x_{t-1}^2\\
+            &= - 0.28x_{t-1}^2 - 0.05x_{t-1} + 0.27\\
+            &> 0, \quad \forall x_{t-1} \in \left]-1.08, 0.9\right[
         \end{align}
-        $\rho$ being strictly positive we find, $\rho \approx 0.89$.
+        where the two bounds are obtained by solving the second order equation as $x_{1,2}^0 = \frac{-0.05 \pm \sqrt{0.05^2 + 4 \times 0.27 \times 0.28}}{2 \times 0.28}$ and the upper bound gives the value of the fixed point.
+        Careful students will notice that the demonstration is not complete, indeed to be rigorous we should also prove that $\left|x_t - x_{t-1}\right| < \left|x_{t-1} - x_{t-2}\right|$, this is let as an exercise for the motivated students.
         \end{solution}
-        \item Now consider forecasting further and further into the future, given just the first two umbrella observations. Compute the exact value of this fixed point is $0.5$.
+        \item Now consider forecasting further and further into the future, given just the first two umbrella observations. Compute the exact value of this fixed point.
         \begin{solution}
         We easily find:
         \begin{align}
             P(R_{2+k}|U_1, U_2) &= \sum_{R_{2+k-1}}P(R_{2+k}|R_{2+k-1})P(R_{2+k-1}|U_1, U_2)\\
             &=\left<0.7, 0.3\right>P(r_{2+k-1}|U_1, U_2) + \left<0.3, 0.7\right>(1-P(r_{2+k-1}|U_1, U_2)).
         \end{align}
-        The fixed point is computed by assuming $P(R_{2+k}|U_1, U_2) = P(R_{2+k-1}|U_1, U_2)$:
+        The fixed point is computed by assuming $P(R_{2+k}|U_1, U_2) = P(R_{2+k-1}|U_1, U_2) = \rho$:
         \begin{align}
             \rho &= 0.7\rho + 0.3 - 0.3\rho\\
             \rho &= \frac{0.3}{0.6} = 0.5
