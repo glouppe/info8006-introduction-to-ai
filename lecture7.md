@@ -8,6 +8,10 @@ Lecture 7: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: b_t:t
+
 ---
 
 # Today
@@ -58,10 +62,13 @@ class: middle
 # Reasoning over time
 
 Often, we want to *reason about a sequence* of observations:
-- Speech recognition
 - Robot localization
-- User attention
-- Medical monitoring.
+- Speech recognition
+- Medical monitoringn
+- Machine translation
+- Part-of-speech tagging
+- Handwriting recognition
+- ...
 
 For this reason, we need to introduce **time** (or space) in our model.
 
@@ -71,7 +78,7 @@ class: middle
 
 ## Modelling the passage of time
 
-Consider the world as a *discrete* series of time slices, each of which contains a set of random variables:
+We will consider the world as a *discrete* series of time slices, each of which contains a set of random variables:
 - $\mathbf{X}\_t$ denotes the set of **unobservable** state variables at time $t$.
 - $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
 
@@ -174,11 +181,11 @@ The transition model ${\bf P}(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivale
 
 # Inference tasks
 
+- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
 - *Prediction*: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
     - Computing the posterior distribution over future states.
     - Used for evaluation of possible action sequences.
-- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
 - *Smoothing*: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
     - Computing the posterior distribution over past states.
     - Used for building better estimates, since it incorporates more evidence.
@@ -224,7 +231,7 @@ $\begin{aligned}
 
 To predict the future  ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
 - **Push** the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) {\bf P}(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
+$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
 
 - Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
 
@@ -239,7 +246,7 @@ class: middle, black-slide
   <source src="./figures/lec7/gb-basics.mp4" type="video/mp4">
 </video>]
 
-.center[Basic dynamics (Ghostbusters)]
+.center[Random dynamics (Ghostbusters)]
 
 .footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
@@ -356,8 +363,8 @@ $$
 {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
 &= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
 &= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) {\bf P}(\mathbf{x}\_t | \mathbf{e}\_{1:t})
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
 \end{aligned}
 $$
 
@@ -524,6 +531,10 @@ where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to st
 - The update has its sum replaced by max, resulting in the **Viterbi algorithm**:
 $$\mathbf{m}\_{1:t+1} = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$$
 
+???
+
+Naive procedure: use smoothing to compute $P(X\_k|e\_{1:t})$, then output the sequence of the most likely value for each $k$.
+
 ---
 
 class: middle
@@ -556,7 +567,7 @@ Some authors instead divide Markov models into two classes, depending on the obs
 - Observable system state: Markov chains
 - Partially-observable system state: Hidden Markov models.
 
-We follow here the terminology of the textbook.
+We follow here instead the terminology of the textbook.
 
 
 ---
@@ -565,9 +576,9 @@ class: middle
 
 ## Simplified matrix algorithms
 
-- The prior $P(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
-- The transition model $P(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model $P(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
+- The prior ${\bf P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
+- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
+- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
 $$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
 
 ---
@@ -625,26 +636,6 @@ The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
 $$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
 Therefore, the stationary distribution corresponds to the (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
 
-
-
----
-
-class: middle
-
-## Applications
-
-HMMs are used in many fields where the goal is to recover a data sequence that is not immediately observable, but other data that depend on the sequence are.
-
-- Speech recognition (see Lecture 10)
-- Speech synthesis
-- Part-of-speech tagging
-- Machine translation
-- Robotics
-- Computational finance
-- Handwriting recognition
-- Time series analysis
-- Activity recognition
-
 ---
 
 class: middle
@@ -657,7 +648,7 @@ class: middle
 
 .center.width-50[![](figures/lec7/robot-helicopter.png)]
 
-Suppose we want track the position and velocity of a robot from noisy observations collected over time.
+Suppose we want to track the position and velocity of a robot from noisy observations collected over time.
 
 Formally, we want to estimate **continuous** state variables such as
 - the position $\mathbf{X}\_t$ of the robot at time $t$,
@@ -710,6 +701,12 @@ The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by 
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
 where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
 
+???
+
+Comment that
+- $\mu$ is the location
+- $\sigma$ is the width of the normal
+
 ---
 
 class: middle
@@ -726,11 +723,14 @@ where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive
 
 class: middle
 
-- The (multivariate) Normal density is the only density for real random variables that is
+The (multivariate) Normal density is the only density for real random variables that is
 **closed under marginalization and multiplication**.
-- Also, a linear (or affine) function of a Normal random variable is
-Normal; and, a sum of Normal variables is Normal.
-- For these reasons, most algorithms discussed in this course are tractable only for
+Also
+- a linear (or affine) function of a Normal random variable is
+Normal;
+- a sum of Normal variables is Normal.
+
+For these reasons, most algorithms discussed in this course are tractable only for
 discrete random variables or Normal random variables.
 
 ???
@@ -825,6 +825,10 @@ If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the
 $$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
+???
+
+Explain how this is consistent with the previous slide.
+
 ---
 
 class: middle
@@ -904,6 +908,7 @@ the calculation for the new mean $\mu\_{t+1}$ as simply a weighted mean of the n
 $e\_{t+1}$ and the old mean $\mu\_t$ .
 - If the observation is unreliable, then $\sigma\_e^2$ is large and we pay more
 attention to the old mean;
+- If the observation is reliable, then we pay more attention to the evidence and less to the old mean.
 - if the old mean is unreliable ($\sigma\_t^2$ is large) or the process is highly
 unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
 
@@ -954,6 +959,10 @@ class: middle
 ## 2D tracking: filtering
 
 .center.width-90[![](figures/lec7/kf-filtering.png)]
+
+???
+
+In this example, $\mathbf{X}$ includes the X-Y positions and the X-Y velocities.
 
 ---
 
@@ -1081,9 +1090,16 @@ class: middle, black-slide, center
 
 .width-50[![](figures/lec7/ragi.jpg)]
 
-The RAGI robot makes use of a particle filter to locate itself within Montefiore.
+The RAGI robot makes use of a particle filter to locate itself within Montefiore.<br>
+(See [RTBF, mars 2019](https://www.rtbf.be/info/regions/liege/detail_liege-l-intelligence-artificielle-vous-accueille-a-l-universite?id=10183022).)
 
-[L'intelligence artificielle vous accueille à l'université](https://www.rtbf.be/info/regions/liege/detail_liege-l-intelligence-artificielle-vous-accueille-a-l-universite?id=10183022) (Mars 2019, RTBF)
+---
+
+class: middle
+
+.width-100[![](figures/lec7/ragi-localization.png)]
+
+.footnote[Credits: Tom Ewbank, RAGI.]
 
 ---
 
