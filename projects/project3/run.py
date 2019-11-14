@@ -93,7 +93,7 @@ if __name__ == '__main__':
         default=None)
     parser.add_argument(
         '--edibleghosts',
-        help='Whether the ghost can be eaten - necessary for Project III.',
+        help='Whether the ghost can be eaten.',
         default=True,
         action="store_true")
     parser.add_argument(
