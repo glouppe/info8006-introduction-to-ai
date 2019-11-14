@@ -47,7 +47,7 @@ You are asked to answer the following questions:
 	- 1.a. - **2 point** - Define the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
 	- 1.b. - **2 point** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations defined in `/pacman_module/ghostAgents.py`. Your model should have a single free parameter.
 	
-	Any of the abovementioned questions that either makes a **reference to the API** or provides a pseudo-code will be considered as wrong.
+	Any of the abovementioned questions that either makes a **reference to the API** or provides a pseudo-code will be considered as **wrong**.
  2. **Implementation**
  	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts.
