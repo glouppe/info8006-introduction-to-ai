@@ -92,7 +92,7 @@ class BeliefStateAgent(Agent):
             noisy_distances.append(
                 np.random.normal(
                     true_distance,
-                    scale=np.sqrt(1)))
+                    scale=np.sqrt(self.v)))
 
         return noisy_distances
 
