@@ -82,23 +82,30 @@ if __name__ == '__main__':
         help='Maximum number of ghosts in a maze.',
         type=int, default=1)
     parser.add_argument(
-        '--hiddenghosts',
-        help='Whether the ghosts are graphically hidden or not.',
-        default=False, action="store_true")
-    parser.add_argument(
-        '--edibleghosts',
-        help='Whether the ghost can be eaten - necessary for Project III.',
-        default=False,
-        action="store_true")
-    parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
         action="store_true")
+
     # Specific to Project III
     parser.add_argument(
         '--bsagentfile',
         help='Python file containing a `BeliefStateAgent` class.',
         default=None)
+    parser.add_argument(
+        '--edibleghosts',
+        help='Whether the ghost can be eaten - necessary for Project III.',
+        default=True,
+        action="store_true")
+    parser.add_argument(
+        '--hiddenghosts',
+        help='Whether the ghosts are graphically hidden or not.',
+        default=False,
+        action="store_true")
+    parser.add_argument(
+        '--sensorvariance',
+        help='The variance of the sensor estimates.',
+        default=1.0,
+        type=float)
 
     args = parser.parse_args()
 
@@ -123,14 +130,13 @@ if __name__ == '__main__':
         bsagt = load_agent_from_file(
             args.bsagentfile, "BeliefStateAgent")(args)
 
-    total_score, total_computation_time, total_expanded_nodes = runGame(
+    total_score, total_computation_time, _ = runGame(
         layout, agent, gagts, bsagt, not args.silentdisplay, expout=0,
         hiddenGhosts=args.hiddenghosts, edibleGhosts=args.edibleghosts)
 
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
-    print("Total expanded nodes : " + str(total_expanded_nodes))
     f = open("temp", "w+")
-    s, c, e = total_score, total_computation_time, total_expanded_nodes
-    f.write(str(s) + ";" + str(c) + ";" + str(e))
+    s, c = total_score, total_computation_time
+    f.write(str(s) + ";" + str(c))
     f.close()

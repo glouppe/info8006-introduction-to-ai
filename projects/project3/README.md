@@ -37,33 +37,33 @@ Your task is to design an intelligent agent based on the Bayes filter algorithm 
 
 You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
 ```bash
-python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --edibleghosts --seed -1
+python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --seed -1
 ```
 Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
 
 You are asked to answer the following questions:
 
  1. **Bayes filter**
-	- 1.a. - **2 point** - Define the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
-	- 1.b. - **2 point** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations defined in `/pacman_module/ghostAgents.py`. Your model should have a single free parameter.
+	- 1.a. - **1 point** - Describe the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
+	- 1.b. - **2 points** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py`. Your model should specify a single free parameter.
+
+    Answers to the previous questions should not make any reference to the API nor include pseudo-code.
 
  2. **Implementation**
- 	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
-		 - Your implementation must work with multiple ghosts. You may assume that the multiple ghosts are actually copycats of one of the abovementioned ghosts.
-		 - The belief state updated by your implementation must eventually converge to an uncertainty area for each ghost.
-	- 2.b. - **2 point** - Could the sensor return abnormal data? If so, how does it affect the behavior of your filter implementation? Motivate your answer.
-		 - You may assume access to the Pacman's position.
-		 - You may assume access to the Ghost's policy (see `ghost_type` of the `BeliefStateAgent` class).
+ 	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
+		 - Your implementation must work with multiple ghosts (all running the same policy).
+		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
 
  3. **Experiment**
- 	- 3.a. - **1 point** - Provide a measure of the uncertainty of the belief state(s).
+ 	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
 	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth.
 	- 3.c. - **4 points** - Run your filter implementation on the `/pacman_module/layouts/large_filter.lay` and the `/pacman_module/layouts/large_filter_walls.lay` layouts, against each type of ghost. Report your results graphically.
-		 - Record the two aforementioned measures (see `_record_metrics` function in `beliefstateagent.py`) over several trials.
+		 - Record your measures (see `_record_metrics` function in `beliefstateagent.py`) over several trials.
 		 - Your results should come with error bars.
-		 - The number of trials must be high enough and their duration long enough so that the two aforementioned measures have eventually converged.
-	- 3.d. - **2 points** - How does the ghost transition model parameter affect its own behavior and impact the belief state on each layout? Motivate your answer by using your measures and the model itself.
-	- 3.e. - **1 point** - How would you implement a stochastic Pacman controller to eat ghosts using only its current position, the set of legal actions and the current belief state?
+		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
+	- 3.d. - **2 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself.
+	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
+	- 3.f. - **2 points** - How would you implement a stochastic Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
 
 
 ---
@@ -77,7 +77,7 @@ For each **implementation question** (2.a), provide simply references to your co
  - 50% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
 
-For each **discussion question** (1.a, 1.b, 2.b, 3.a, 3.b, 3.d, 3.e), the evaluation will be performed as follows:
+For each **discussion question** (1.a, 1.b, 2.b, 3.a, 3.b, 3.d, 3.e, 3.f), the evaluation will be performed as follows:
 
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.

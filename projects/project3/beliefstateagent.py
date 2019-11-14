@@ -23,11 +23,9 @@ class BeliefStateAgent(Agent):
         # Grid of walls (assigned with 'state.getWalls()' method)
         self.walls = None
 
-        # Ghost type
+        # Hyper-parameters
         self.ghost_type = self.args.ghostagent
-
-        # Constant parameter for evidence model
-        self.v = 1
+        self.sensor_variance = self.args.sensorvariance
 
     def update_belief_state(self, evidences, pacman_position):
         """
@@ -90,9 +88,8 @@ class BeliefStateAgent(Agent):
         for p in positions:
             true_distance = util.manhattanDistance(p, pacman_position)
             noisy_distances.append(
-                np.random.normal(
-                    true_distance,
-                    scale=np.sqrt(1)))
+                np.random.normal(loc=true_distance,
+                                 scale=np.sqrt(self.sensor_variance)))
 
         return noisy_distances
 
@@ -134,8 +131,6 @@ class BeliefStateAgent(Agent):
            XXX: DO NOT MODIFY THAT FUNCTION !!!
                 Doing so will result in a 0 grade.
         """
-        # XXX : You shouldn't care about what is going on below.
-
         # Variables are specified in constructor.
         if self.beliefGhostStates is None:
             self.beliefGhostStates = state.getGhostBeliefStates()
