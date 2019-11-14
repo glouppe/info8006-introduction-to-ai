@@ -53,6 +53,7 @@ You are asked to answer the following questions:
  	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts (all running the same policy).
 		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
+		 - Your filter should consider the Pacman position.
 
  3. **Experiment**
  	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
