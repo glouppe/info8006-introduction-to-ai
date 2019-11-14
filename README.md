@@ -36,8 +36,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - [General instructions](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects)
 - Part 1: [Search algorithms](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1) (due by October 13)
-- Part 2: [Adversarial search](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2) (due by November 10).
-- Part 3: TBD.
+- Part 2: [Adversarial search](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2) (due by November 10)
+- Part 3: [Bayes filter](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project3) (due by December 8)
 
 ### Reading assignment
 
