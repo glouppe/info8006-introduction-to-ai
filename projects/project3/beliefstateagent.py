@@ -73,10 +73,8 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        - A list of Z belief states at state x_{t}
-          as N*M numpy mass probability matrices
-          where N and M are respectively width and height
-          of the maze layout and Z is the number of ghosts.
+        - A list of Z noised distances in real numbers
+          where Z is the number of ghosts.
 
         XXX: DO NOT MODIFY THIS FUNCTION !!!
         Doing so will result in a 0 grade.
