@@ -8,10 +8,6 @@ Lecture 7: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: b_t:t
-
 ---
 
 # Today
@@ -591,7 +587,7 @@ class: middle
 - If we use column vectors to represent forward and backward messages, then we have
 $$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
-where $\mathbf{b}\_{t:t}$ is an all-one vector of size $S$.
+where $\mathbf{b}\_{t+1:t}$ is an all-one vector of size $S$.
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
 ---
 
@@ -755,10 +751,6 @@ $$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+
 ---
 
 # Kalman filter
-
-<br>
-
-.center.width-50[![](figures/lec7/kalman-network.png)]
 
 The **Kalman filter** is a special case of the Bayes filter, which assumes:
 - Gaussian prior

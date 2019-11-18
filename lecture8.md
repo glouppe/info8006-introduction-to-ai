@@ -200,7 +200,7 @@ class: middle
 ## Theorem
 
 If we assume **stationary** preferences over reward sequences, i.e. such that
-$$[r\_0, r\_1, r\_2, ...] \succ [r\_0, r\_1', r\_2', ...] \Leftrightarrow [r\_1, r\_2, ...] \succ [r\_1', r\_2', ...],$$
+$$[r\_0, r\_1, r\_2, ...] \succ [r\_0, r\_1', r\_2', ...] \Rightarrow [r\_1, r\_2, ...] \succ [r\_1', r\_2', ...],$$
 then there are only two coherent ways to assign utilities to sequences:
 
 .grid[
@@ -499,8 +499,6 @@ The game 2048 is a Markov decision process!
 ]
 ]
 
-<span class="Q">[Q]</span> For $\gamma<1$, is the optimal solution also the shortest?
-
 ---
 
 class: middle
@@ -544,7 +542,7 @@ What if the environment is only **partially observable**?
 class: middle
 
 We will assume that the agent maintains a belief state $b$.
-- $b$ represents a probability distribution $P(S)$ of the current agent's beliefs over  its state;
+- $b$ represents a probability distribution ${\bf P}(S)$ of the current agent's beliefs over  its state;
 - $b(s)$  denotes the probability $P(S=s)$ under the current belief state;
 - the belief state $b$ is updated as evidence $e$ are collected.
 
@@ -586,7 +584,7 @@ In other words, POMDPs can be reduced to an MDP in belief-state space, provided 
 class: middle
 
 If $b$ was the previous belief state and the agent does action $a$ and perceives $e$, then the new belief state over $S'$ is given by
-$$b' = \alpha P(e|S') \sum\_{s} P(S'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$$
+$$b' = \alpha {\bf P}(e|S') \sum\_{s} {\bf P}(S'|s,a)b(s) = \alpha\, \text{forward}(b,a,e).$$
 
 Therefore,
 $$
@@ -663,9 +661,12 @@ At time $t$, the agent must decide what to do.
 
 class: middle
 
-.center.width-80[![](figures/lec8/pomdp-tree.svg)]
+.center.width-60[![](figures/lec8/pomdp-tree.svg)]
 
 Part of the look-ahead solution of the previous decision network.
+- Each triangular node is a belief state in which the agent makes a decision.
+    - The belief state at each node can be computed by applying a filtering algorithm to the sequence of percepts and actions leading to it.
+- The round nodes correspond to choices by the environment.
 
 A decision can be extracted from the search tree by backing up the (estimated) utility values from the leaves, taking the average at the chance nodes and taking the maximum at the decision nodes.
 
