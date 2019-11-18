@@ -464,8 +464,8 @@ This backward message can be computed using backwards recursion:
 $$
 \begin{aligned}
 {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k)
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k)
 \end{aligned}
 $$
 
