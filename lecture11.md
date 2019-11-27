@@ -25,6 +25,8 @@ R: consciousness, self-awareness
 
 R: chinese room argument https://plato.stanford.edu/entries/chinese-room/
 
+R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-who-like-ai/
+
 ---
 
 # Today$^\*$

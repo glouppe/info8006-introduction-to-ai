@@ -663,7 +663,7 @@ class: middle
 
 .center.width-60[![](figures/lec8/pomdp-tree.svg)]
 
-Part of the look-ahead solution of the previous decision network.
+Part of the look-ahead solution of the previous decision network:
 - Each triangular node is a belief state in which the agent makes a decision.
     - The belief state at each node can be computed by applying a filtering algorithm to the sequence of percepts and actions leading to it.
 - The round nodes correspond to choices by the environment.
