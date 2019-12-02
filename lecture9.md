@@ -52,7 +52,7 @@ class: middle
 
 What if the environment is **unknown**?
 - Learning can be used as a system construction method.
-- Expose the agent to reality rather trying to hardcode reality into the agent's program.
+- Expose the agent to reality rather than trying to hardcode reality into the agent's program.
 - Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 
 ---
@@ -199,7 +199,7 @@ class: middle
 - Write down the log-likelihood $L$ of the data as a function of the parameters.
     - may require summing over hidden variables, i.e., inference.
 - Write down the derivative of the log likelihood w.r.t. each parameter $\theta$.
-- Find the parameter values $\theta$ such that the derivatives are zero.
+- Find the parameter values $\theta$ such that the derivatives are zero and check whether the Hessian is negative definite.
     - may be hard; modern optimization techniques help.
 
 ---
@@ -418,7 +418,7 @@ class: middle
 .center.width-30[![](figures/lec9/linear-classifier.png)]
 
 - Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{d+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
-- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to the $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
+- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
 - The family $\mathcal{H}$ of hypothesis is induced from the set $\mathbb{R}^{d+1}$ of possible parameters values $\mathbf{w}$ . Learning consists in finding a good vector $\mathbf{w}$ in this space.
 
 ---
