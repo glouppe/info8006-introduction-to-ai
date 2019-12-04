@@ -67,7 +67,7 @@ class: middle
 
 Automatic translation of text from one natural language (the source) to another (the target), while preserving the intended meaning.
 
-<span class="Q">[Q]</span> How would you engineer a machine translation system?
+.exercise[How would you engineer a machine translation system?]
 
 ???
 
@@ -257,14 +257,6 @@ Translating sentences:
 
 class: middle
 
-.center.width-100[![](figures/lec10/GermanA.png)]
-
-.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
-
----
-
-class: middle
-
 # Speech recognition
 
 ---
@@ -336,7 +328,7 @@ MFCCs calculation.]
 
 ???
 
-- Pre-emphasis: amply the high frequencies.
+- Pre-emphasis: amplify the high frequencies.
 - Windowing: split the signal into short-time frames.
 - FFT: calculate the frequency spectrum and compute the power spectrum (periodogram).
 - Filter banks: apply triangular filter (around 40) on a Mel-scale to the power spectrum to extract frequency bands.
@@ -364,9 +356,11 @@ class: middle
 ## Acoustic model
 
 A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *base phones* (such as vowels or consonants).
-
 - This sequence is called its pronunciation $\mathbf{q}^{w}\_{1:K\_w} = q\_1, ..., q\_{K\_w}$.
 - Pronunciations are related to words through **pronunciations models** defined for each word.
+- e.g. "Artificial intelligence" is pronounced `/ɑːtɪˈfɪʃ(ə)l ɪnˈtɛlɪdʒ(ə)ns/`.
+
+
 
 ---
 
