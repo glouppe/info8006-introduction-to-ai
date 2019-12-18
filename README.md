@@ -28,7 +28,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | December 5 | Lecture 9: [Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)]<br>Lecture 10: [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)]<br>Exercises 9: Making decisions (part 2) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises8.pdf)] <br>Exercises 10: Learning [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises9.pdf)]|
 | December 8 | Project 3 deadline |
 | December 12 | Crash test exam |
-| December 19 | Lecture 11: Artificial general intelligence and beyond<br>Grading of the crash test exam |
+| December 19 | Lecture 11: [Artificial general intelligence and beyond](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf)]<br>Grading of the crash test exam |
+| --- | All lectures [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec-all.pdf)] |
 
 ## Projects
 
@@ -53,6 +54,7 @@ Short questions will be asked as part of the written exam. You do not have to pr
 ## Previous exams
 
 - [January 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019.pdf) ([Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019-solutions.pdf))
+- [August 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2019.pdf)
 
 ## Archives
 
