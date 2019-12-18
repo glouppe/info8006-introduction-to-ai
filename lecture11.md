@@ -10,8 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-https://twitter.com/strategies_ai/status/1189489486318751744?s=03
-
 human centered ai, ai concerns more than engineers
 ai for what? climate, energy, science, etc
 
@@ -33,15 +31,13 @@ R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-
 
 .center.width-30[![](figures/lec11/agi.png)]
 
-Towards *generally intelligent* agents?
+Towards generally intelligent agents?
 - Artificial general intelligence
 - AIXI
 - Artifical life
 
 
-
-.footnote[$^\*$: Take today's lecture with a grain of salt.
-Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[$^\*$: Take today's lecture with a grain of salt. Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
 
 ---
 
@@ -74,6 +70,38 @@ class: middle
 
 ---
 
+
+
+class: middle
+
+.center.circle.width-20[![](figures/lec11/good.jpg)]
+.caption[Irving John Good (1965)]
+
+## Singularity
+
+- Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
+- Since the design of machines is one of these intellectual activities, an ultraintelligent machine could *design even better machines*.
+- There would then unquestionably be an **intelligence explosion**.
+- Thus the first ultraintelligent machine is the *last invention* that man need ever make, provided that the machine is docile enough to tell us how to keep it under control.
+
+???
+
+- Good worked as a cryptologist with Alan Turing.
+- Note that human is also capable of self-improvement, with medicine (from macro to gene).
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/MnT1xgZgkpk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+What happens when our computers get smarter than we are? (Nick Bostrom)
+]
+
+
+---
+
 class: middle
 
 .center.width-40[![](figures/lec11/washing-machine.png)]
@@ -81,13 +109,14 @@ class: middle
 ## Artificial narrow intelligence
 
 Artificial intelligence today remains **narrow**:
-- Modern AI systems often reach super-human level performance.
-- ... but only at *very specific problems*!
+- Modern AI systems often reach super-human level performance, ... but only at *very specific problems*!
 - They **do not generalize** to the real world nor to arbitrary tasks.
 
 ---
 
-# The case of AlphaGo
+class: middle
+
+## The case of AlphaGo
 
 Convenient properties of the game of Go:
 - Deterministic (no noise in the game).
@@ -108,9 +137,7 @@ class: middle
 
 .center[Can we run AlphaGo on a robot for the Amazon Picking Challenge?]
 
----
-
-class: middle
+???
 
 - Deterministic: Yes.
 - Fully observed: **Almost.**
@@ -122,11 +149,9 @@ class: middle
 
 ---
 
-# Artificial general intelligence
+# AGI
 
-**Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
-
-- No clear and definitive definition.
+- **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
 - Agreement that AGI is required to do the following:
     - reason, use strategy, solve puzzle, plan,
     - make judgments under uncertainty,
@@ -140,36 +165,7 @@ class: middle
 
 class: middle
 
-.center.circle.width-20[![](figures/lec11/good.jpg)]
-.caption[Irving John Good (1965)]
-
-## Singularity
-
-- Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
-- Since the design of machines is one of these intellectual activities, an ultraintelligent machine could *design even better machines*.
-- There would then unquestionably be an **intelligence explosion**, and the intelligence of man would be left far behind.
-- Thus the first ultraintelligent machine is the *last invention* that man need ever make, provided that the machine is docile enough to tell us how to keep it under control.
-
-???
-
-- Good worked as a cryptologist with Alan Turing.
-- Note that human is also capable of self-improvement, with medicine (from macro to gene).
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/MnT1xgZgkpk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-What happens when our computers get smarter than we are? (Nick Bostrom)
-]
-
----
-
-class: middle
-
-## Roads towards Artificial General Intelligence
+## Roads towards AGI
 
 Several working **hypothesis**:
 - Supervised learning
@@ -177,8 +173,7 @@ Several working **hypothesis**:
 - *AIXI*
 - *Artificial life*
 - Brain simulation
-
-Or maybe (certainly) something else?
+- ... or something else?
 
 ---
 
@@ -194,12 +189,14 @@ Mathematical formalism for AGI.
 
 class: middle
 
-In which environment is the agent?
-- In general, we do not know!
-- Solution:
-    - maintain a prior over environments,
-    - update it as evidence is collected,
-    - follow the Bayes-optimal  solution.
+.exercise[How to act rationally in an unknown environment?]
+
+???
+
+The Bayesian solution:
+- maintain a prior over environments,
+- update it as evidence is collected,
+- follow the Bayes-optimal  solution.
 
 ---
 
@@ -211,30 +208,26 @@ class: middle, center
 ]
 .grid[
 .kol-1-6[.width-100.circle[![](figures/lec11/epicurus.jpg)]]
-.kol-3-4[<br>Epicurus: Keep all consitent hypotheses.]
+.kol-3-4[<br>Epicurus: Keep all consistent hypotheses.]
 ]
 .grid[
 .kol-1-6[.width-100.circle[![](figures/lec11/thomas.png)]]
 .kol-3-4[<br>Bayes: $P(h|d) = \frac{P(d|h)P(h)}{P(d)}$]
 ]
+
+---
+
+class: middle, center
+
 .grid[
 .kol-1-6[.width-100.circle[![](figures/lec11/turing.jpg)]]
 .kol-3-4[<br>Turing: It is possible to invent a single machine which can be used to compute any computable sequence.]
 ]
-
----
-
-class: middle
-
 .grid[
-.kol-3-4[
-## Solomonoff induction
+.kol-1-6[.width-100.circle[![](figures/lec11/solo.jpg)]]
+.kol-3-4[Solomonoff: Use computer programs $\mu$ as hypotheses/environments. Make a weighted prediction based on all consistent programs, with short programs weighted higher.]
+]
 
-- Use computer programs $\mu$ as hypotheses/environments.
-- Make a weighted prediction based on all consistent programs, with short programs weighted higher.
-]
-.kol-1-4[.width-100.circle[![](figures/lec11/solo.jpg)]]
-]
 
 ---
 
@@ -322,14 +315,6 @@ class: middle
 
 class: middle
 
-## Monte Carlo approximation
-
-.center.width-100[![](figures/lec11/mc-aixi.png)]
-
----
-
-class: middle
-
 ## Benefits of a foundational theory of AI
 
 AIXI provides
@@ -347,17 +332,19 @@ class: middle
 
 ---
 
-class: middle
+# Artificial life
 
+**Artificial life** is the study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
+
+<br>
 .center.width-100[![](figures/lec11/tree.gif)]
 
 .caption[How did intelligence arise in Nature?]
 
 ---
 
-# Artificial life
+class: middle
 
-- **Artificial life** is the study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
 - One of its goals is to *synthesize* life in order to understand its origins, development and organization.
 - There are three main kinds of artificial life, named after their approaches:
     - Software approaches (soft)
@@ -386,6 +373,11 @@ Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
 - Using software simulation, we can work at a high level of abstraction.
     - We don't have to simulate physics or chemistry to simulate evolution.
     - We can also bootstrap the system with agents that are better than random.
+
+<br>
+
+.center.width-50[![](figures/lec11/conway.gif)]
+.caption[Conway's game of life]
 
 ---
 
@@ -460,7 +452,7 @@ For the emergence of generally intelligent creatures, we presumably need environ
 
 class: middle
 
-**Multi-agent** environments are certainly better because of:
+Multi-agent environments are certainly better because of:
 - Variety: the environment is parameterized by its agent  population. The optimal strategy must be derived dynamically.
 - Natural curriculum: the difficulty of the environment is determined by the skill of the other agents.
 
@@ -472,17 +464,22 @@ class: middle
 
 ---
 
-# Roads towards AGI
+class: middle 
 
-In order of (subjective) promisingness
-- Artificial life
-- Something not on our radar
-- Supervised learning
-- Unsupervised learning
-- AIXI
-- Brain simulation
+.center.width-70[![](figures/lec11/ai-danger.png)]
 
-What do you think?
+---
+
+class: middle
+
+## Beyond Pacman
+
+Artificial intelligence algorithms are transforming science, engineering and society.
+
+As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges.
+
+.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/)]
+
 
 ---
 
@@ -531,9 +528,9 @@ This course is designed as an introduction to the many other courses available a
 # Research opportunities
 
 Feel free to contact us
-- for research Summer internship opportunities (locally or abroad),
-- MSc thesis opportunities,
-- PhD thesis opportunities.
+- for research Summer internship opportunities
+- MSc thesis opportunities
+- PhD thesis opportunities
 
 ---
 
@@ -547,6 +544,8 @@ count: false
 Thanks for following Introduction to Artificial Intelligence!
 
 ---
+
+count: false
 
 # References
 
