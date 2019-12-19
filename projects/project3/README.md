@@ -50,7 +50,7 @@ You are asked to answer the following questions:
     Answers to the previous questions should not make any reference to the API nor include pseudo-code.
 
  2. **Implementation**
- 	- 2.a. - **5 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
+ 	- 2.a. - **4 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts (all running the same policy).
 		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
 		 - Your filter should consider the Pacman position.
@@ -58,7 +58,7 @@ You are asked to answer the following questions:
  3. **Experiment**
  	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
 	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth.
-	- 3.c. - **4 points** - Run your filter implementation on the `/pacman_module/layouts/large_filter.lay` and the `/pacman_module/layouts/large_filter_walls.lay` layouts, against each type of ghost. Report your results graphically.
+	- 3.c. - **3 points** - Run your filter implementation on the `/pacman_module/layouts/large_filter.lay` and the `/pacman_module/layouts/large_filter_walls.lay` layouts, against each type of ghost. Report your results graphically.
 		 - Record your measures (see `_record_metrics` function in `beliefstateagent.py`) over several trials.
 		 - Your results should come with error bars.
 		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
