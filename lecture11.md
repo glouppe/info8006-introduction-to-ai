@@ -464,24 +464,6 @@ class: middle
 
 ---
 
-class: middle 
-
-.center.width-70[![](figures/lec11/ai-danger.png)]
-
----
-
-class: middle
-
-## Beyond Pacman
-
-Artificial intelligence algorithms are transforming science, engineering and society.
-
-As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges.
-
-.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/)]
-
-
----
 
 class: middle, black-slide
 
@@ -494,7 +476,26 @@ work with them (Garry Kasparov).
 
 ---
 
-# Outline
+class: middle 
+
+.center.width-70[![](figures/lec11/ai-danger.png)]
+
+---
+
+class: middle
+
+## Beyond Pacman
+
+Artificial intelligence algorithms are transforming science, engineering and society.
+
+As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges. Seize them!
+
+.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/)]
+
+
+---
+
+# Recap
 
 - Lecture 1: Foundations
 - Lecture 2: Solving problems by searching
