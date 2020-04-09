@@ -8,6 +8,10 @@ Fall 2019
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: add overview maps for each lecture, as in INFO8002
+
 ---
 
 # Logistics
