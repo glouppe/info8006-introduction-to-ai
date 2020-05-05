@@ -12,6 +12,8 @@ Prof. Gilles Louppe<br>
 
 R: add overview maps for each lecture, as in INFO8002
 
+R: projects -> use github classroom https://classroom.github.com/
+
 ---
 
 # Logistics
