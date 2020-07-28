@@ -16,6 +16,8 @@ R: expose the plan and structure of the next lectures on probability
 R: motivate why this is important in AI (and this is not just one more probability theory class)
 R: trim some stuff less directly important for AI?
 
+R: Bayes rule/inference -> emphasis that is like Sherlock Holm. Start from a set of possibilities (prior) and discard/weigh down those not compatible with the observations/evidence.
+
 ---
 
 # Today
