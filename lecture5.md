@@ -17,6 +17,7 @@ R: motivate why this is important in AI (and this is not just one more probabili
 R: trim some stuff less directly important for AI?
 
 R: Bayes rule/inference -> emphasis that is like Sherlock Holm. Start from a set of possibilities (prior) and discard/weigh down those not compatible with the observations/evidence.
+R: https://neilkakkar.com/Bayes-Theorem-Framework-for-Critical-Thinking.html?s=09 check this
 
 ---
 
