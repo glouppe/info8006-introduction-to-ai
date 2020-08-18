@@ -615,7 +615,7 @@ $$
 0.9 & 0.0 \\\\
 0.0 & 0.2
 \end{matrix}\right) \\\\
-\mathbf{O}\_2 &= \left(\begin{matrix}
+\mathbf{O}\_3 &= \left(\begin{matrix}
 0.1 & 0.0 \\\\
 0.0 & 0.8
 \end{matrix}\right)
