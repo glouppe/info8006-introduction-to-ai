@@ -25,6 +25,8 @@ R: chinese room argument https://plato.stanford.edu/entries/chinese-room/
 
 R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-who-like-ai/
 
+R: extend on genetic algorithms?
+
 ---
 
 # Today$^\*$
@@ -37,7 +39,7 @@ Towards generally intelligent agents?
 - Artifical life
 
 
-.footnote[$^\*$: Take today's lecture with a grain of salt. Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[$^\*$: Take today's lecture with a grain of salt. Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

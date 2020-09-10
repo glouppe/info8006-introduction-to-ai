@@ -17,7 +17,7 @@ body {
 
 .remark-slide-content {
     font-size: 1.4em;
-    border-top: solid 5px #20707e;
+    border-top: solid 5px #00707f;
 }
 
 .remark-slide-content h1 {
@@ -48,7 +48,7 @@ body {
 /* Styles ------------------------------------------------------------------- */
 
 .footnote:before {
-    content: "\2015\2015\2015";
+    content: "\2015";
     display: block;
 }
 
@@ -88,21 +88,32 @@ strong {
     font-weight: normal;
 }
 
+.highlight{ 
+    background-color: #FFFF00; 
+}
 
 .smaller {
     font-size: 1.2em;
+}
+
+.smaller-x {
+    font-size: 0.8em;
+}
+
+.smaller-xx {
+    font-size: 0.5em;
 }
 
 .katex {
     color: #1a7082;
 }
 
-.black-slide  .katex {
+.black-slide .katex, .black-slide h1, .black-slide a {
     color: white;
 }
 
-.remark-code {
-    font-size: 0.8em;
+.remark-code, .remark-inline-code {
+    font-size: 0.9em;
 }
 
 ul > li, ol > li {
@@ -169,6 +180,14 @@ td {
 .stretch img {
     width: 100%;
     height: auto;
+}
+
+.solid {
+  border-style: solid;
+}
+
+.dashed {
+  border-style: dashed;
 }
 
 .footnote {
@@ -400,12 +419,12 @@ td {
     display: inline-block;
 }
 
-.title-slide {
+.title-slide, .section {
     vertical-align: middle;
 }
 
 .end-slide {
-    background-color: #20707e;
+    background-color: #00707f;
     color: white;
     vertical-align: middle;
 }

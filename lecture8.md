@@ -8,6 +8,11 @@ Lecture 8: Making decisions
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: see CS188
+R: restructure the content together with Lec7 and Lec8
+
 ---
 
 # Today
@@ -22,7 +27,7 @@ Reasoning under uncertainty and **taking decisions**:
     - Policy iteration
 - Partially observable Markov decision processes
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -44,7 +49,7 @@ Goal: maximize sum of rewards.
 .kol-1-3[<br><br><br><br><br>.width-100[![](figures/lec8/grid-world.png)]]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -63,7 +68,7 @@ Stochastic actions<br><br>
 ]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -125,7 +130,7 @@ R(s) = \begin{cases}
 \end{cases}
 $$
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -164,7 +169,7 @@ This is similar to search problems, where the successor function could only depe
 ]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -191,7 +196,7 @@ What preferences should an agent have over state or reward sequences?
 - More or less? $[2,3,4]$ or $[1, 2, 2]$?
 - Now or later? $[1,0,0]$ or $[0,0,1]$?
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -238,7 +243,7 @@ Example: discount $\gamma=0.5$<br>
 - $V([1,2,3]) = 1 + 0.5\times 2 + 0.25 \times 3$<br>
 - $V([1,2,3]) < V([3,2,1])$
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -269,7 +274,7 @@ The expected utility obtained by executing $\pi$ starting in $s$ is given by
 $$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\rvert\_{s\_0=s}$$
 where the expectation is with respect to the probability distribution over state sequences determined by $s$ and $\pi$.
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -314,7 +319,7 @@ $$\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 
 Therefore, we can extract the optimal policy provided we can estimate the utilities of states.
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -326,7 +331,7 @@ class: middle
 
 .center.width-90[![](figures/lec8/how-to.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -535,7 +540,7 @@ What if the environment is only **partially observable**?
 
 .center.width-60[![](figures/lec8/pomdp.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -693,7 +698,7 @@ $\Rightarrow$ This is **reinforcement learning**.
 <br>
 .center.width-80[![](figures/lec8/rl.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

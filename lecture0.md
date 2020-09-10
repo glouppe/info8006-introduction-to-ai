@@ -18,6 +18,66 @@ Prof. Gilles Louppe<br>
 
 ---
 
+# Outline
+
+- Lecture 0: Artificial intelligence
+- Lecture 1: Intelligent agents
+- Lecture 2: Solving problems by searching
+- .inactive[Lecture 2b: Constraint satisfaction problems (optional)]
+- Lecture 3: Adversarial search
+- Lecture 4: Representing uncertain knowledge
+- Lecture 5: Inference in Bayesian networks
+- Lecture 6: Reasoning over time
+- Lecture 7: Learning
+- Lecture 8: Making decisions
+- Lecture 9: Reinforcement learning
+- Lecture 10: Communication 
+- Lecture 11: Artificial General Intelligence and beyond 
+
+---
+
+class: middle, center
+
+.width-50[![](figures/lec0/map.jpg)]
+
+---
+
+class: middle
+
+## My mission
+
+By the end of this course, you will have built autonomous agents that efficiently make decisions in fully informed, partially observable and adversarial settings. Your agents will draw inferences in uncertain environments and optimize actions for arbitrary reward structures. 
+
+The techniques you learn in this course apply to a wide variety of artificial intelligence problems and will serve as the foundation for further study in any application area you choose to pursue.
+
+---
+
+class: middle
+
+## Going further
+
+This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
+
+- **INFO8006: Introduction to Artificial Intelligence $\leftarrow$ you are there**
+- ELEN0062: Introduction to Machine Learning
+- INFO8004: Advanced Machine Learning
+- INFO8010: Deep Learning
+- INFO8003: Optimal decision making for complex problems
+- INFO0948: Introduction to Intelligent Robotics
+- INFO0049: Knowledge representation
+- ELEN0016: Computer vision
+- ELEN0060: Information and coding theory
+- MATH2022: Large-sample analysis: theory and practice
+- DROI8031: Introduction to the law of robots
+
+???
+
+Mention pre-requisites:
+- programming experience
+- probability theory
+
+---
+
 class: middle
 
 # Artificial intelligence
@@ -118,7 +178,7 @@ Artificial intelligence is the science of making machines or programs that:
 ]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -163,6 +223,14 @@ An agent would not pass the Turing test without the following **requirements**:
 
 Despite being proposed almost 70 years ago, the Turing test is *still relevant*
 today.
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/V-M5SVta2uw" frameborder="0" allowfullscreen></iframe>
+
+A conversation with GPT-3 (2020)
 
 ---
 
@@ -226,8 +294,9 @@ Study of the anatomy and physiology of neural tissue.
 - Neurobiology is concerned with the the *anatomy and physiology of the brain*, from major structures down to neurons and molecules.
 - Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
 
-.center.width-50[![](figures/lec0/brain.png)]
-.caption[Can we build a computer model of the brain?]
+.center.width-70[![](figures/lec0/latent.png)]
+
+.footnote[Image credits: M et al. 2018.]
 
 ???
 
@@ -277,11 +346,13 @@ formally **provable** from inputs and prior knowledge.
 Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
 
+
+
 ---
 
 class: middle
 
-## The Zebra puzzle
+## Who owns the zebra?
 
 .grid[
 .kol-1-2[
@@ -308,13 +379,7 @@ class: middle
 
 ---
 
-class: middle, center
-
-Who owns the zebra?
-
----
-
-class: middle
+class: middle, smaller
 
 ```prolog
 select([A|As],S):- select(A,S,S1),select(As,S1).
@@ -338,14 +403,7 @@ zebra(Owns, HS):-  % color,nation,pet,drink,smokes
 
 :- ?- time(( zebra(Who, HS), maplist(writeln,HS), nl, write(Who), nl, nl, fail
              ; write('No more solutions.') )).
-```
 
----
-
-class: middle
-
-Output =
-```prolog
 h(yellow,norwegian, cats,  water, dunhill)
 h(blue,  dane,      horse, tea,   blend)
 h(red,   englishman,birds, milk,  pallmall)
@@ -353,9 +411,6 @@ h(green, german,    zebra, coffee,prince)
 h(white, swede,     dog,   beer,  bluemaster)
 
 german
-
-No more solutions.
-% 5,959 inferences, 0.000 CPU in 0.060 seconds (0% CPU, Infinite Lips)
 ```
 
 ---
@@ -402,7 +457,7 @@ class: middle
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -567,7 +622,7 @@ Driving a car (NVIDIA, 2016)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/DuIrjRAzNPQ" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/RCahWWOSxaw" frameborder="0" allowfullscreen></iframe>
 
 ... and preventing accidents.
 
@@ -575,9 +630,9 @@ class: middle, center, black-slide
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/qWl9idsCuLQ" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/5kpsZoKjPgQ" frameborder="0" allowfullscreen></iframe>
 
-Semantic segmentation (2017)
+Object detection, pose estimation, segmentation (2019)
 
 ---
 
@@ -594,14 +649,6 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
 
 Detecting skin cancer (2017)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/gy5g33S0Gzo" frameborder="0" allowfullscreen></iframe>
-
-Folding laundry (2010)
 
 ---
 

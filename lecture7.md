@@ -2,36 +2,510 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 7: Reasoning over time
+Lecture 7: Learning
 
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+- R: make sure to properly cover least squares => see https://inst.eecs.berkeley.edu/~cs188/fa20/assets/slides/archive/lec11.pdf 37+    
+  (this will be needed for RL)
+
+R: see CS188
+R: restructure the content together with Lec7 and Lec8
+
 ---
 
 # Today
 
-Maintain a **belief state** about the world, and update it as time passes and evidence is collected.
+.center.width-50[![](figures/lec7/sl-cartoon.png)]
+
+Make our agents capable of self-improvement through a **learning** mechanism.
+- Bayesian learning
+- Supervised learning
+- Unsupervised learning (Bonus)
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Intelligence?
+
+What we covered so far:
+- Search algorithms, using a state space specified by domain knowledge.
+- Constraint satisfaction problems, by exploiting a known structure of the states.
+- Logical inference, using well-specified facts and inference rules.
+- Adversarial search, for known and fully observable games.
+- Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
+- Taking optimal decisions, under uncertainty and possibly under partial observation.
+
+Sufficient to implement complex and rational behaviors, in some situations.
+
+.alert[Aren't we missing something?]
+
+???
+
+Is that intelligence? Aren't we missing a critical component?
+=> Learning component
+
+The auestion is then to determine what should be pre-defined from what should be learned.
+
+---
+
+class: middle
+
+## Learning agents
+
+What if the environment is **unknown**?
+- Learning can be used as a system construction method.
+- Expose the agent to reality rather than trying to hardcode reality into the agent's program.
+- Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
+
+---
+
+class: middle
+
+.center.width-80[![](figures/lec7/learning-agent.svg)]
+
+???
+
+- Performance element:
+    - The current system for selecting actions.
+- The *critic* observes the world and passes information to the *learning element*.
+    - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
+- The problem generator identifies certain areas of behavior in need of improvement and suggest experiments.
+
+---
+
+class: middle
+
+The design of the **learning element** is dictated by:
+- What type of performance element is used.
+- Which functional component is to be learned.
+- How that functional component is represented.
+- What kind of feedback is available.
+
+<br><br>
+.center.width-80[![](figures/lec7/table-components.png)]
+
+---
+
+class: middle
+
+# Bayesian learning
+
+---
+
+# Bayesian learning
+
+Frame **learning** as a Bayesian update of a probability distribution ${\bf P}(H)$ over a hypothesis space, where
+- $H$ is the hypothesis variable
+- values are $h\_1$, $h\_2$, ...
+- the prior is ${\bf P}(H)$,
+- $\mathbf{d}$ is the observed data.
+
+Given data, each hypothesis has a posterior probability
+$$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is called the likelihood.
+
+---
+
+class: middle
+
+Predictions use a likelihood-weighted average over the hypotheses:
+$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i P(X|h\_i) P(h\_i | \mathbf{d})$$
+No need to pick one best-guess hypothesis!
+
+---
+
+class: middle
+
+## Example
+
+Suppose there are five kinds of bags of candies. Assume a prior ${\bf P}(H)$:
+- $P(h\_1)=0.1$, with $h\_1$: 100% cherry candies
+- $P(h\_2)=0.2$, with $h\_2$: 75% cherry candies + 25% lime candies
+- $P(h\_3)=0.4$, with $h\_3$: 50% cherry candies + 50% lime candies
+- $P(h\_4)=0.2$, with $h\_4$: 25% cherry candies + 75% lime candies
+- $P(h\_5)=0.1$, with $h\_5$: 100% lime candies
+
+<br>
+.center.width-70[![](figures/lec7/candies.png)]
+
+---
+
+class: middle
+
+
+Then we observe candies drawn from some bag:
+
+.center.width-40[![](figures/lec7/all-limes.png)]
+
+- What kind of bag is it?
+- What flavor will the next candy be?
+
+---
+
+class: middle
+
+## Posterior probability of hypotheses
+
+.center.width-60[![](figures/lec7/posterior-candies.png)]
+
+---
+
+class: middle
+
+## Prediction probability
+
+.center.width-60[![](figures/lec7/prediction-candies.png)]
+
+- This example illustrates the fact that the Bayesian prediction eventually agrees with the true hypothesis.
+- The posterior probability of any false hypothesis eventually vanishes (under weak assumptions).
+
+---
+
+# Maximum a posteriori
+
+Summing over the hypothesis space is often *intractable*.
+
+Instead,
+**maximum a posteriori** (MAP)  estimation consists in using the hypothesis
+$$
+\begin{aligned}
+h\_\text{MAP} &= \arg \max\_{h\_i} P(h\_i | \mathbf{d}) \\\\
+&= \arg \max\_{h\_i} P(\mathbf{d}|h\_i) P(h\_i) \\\\
+&= \arg \max\_{h\_i} \log P(\mathbf{d}|h\_i) + \log P(h\_i)
+\end{aligned}$$
+
+- Log terms can be be viewed as (the negative number of) bits to encode data given hypothesis + bits to encode hypothesis.
+    - This is the basic idea of minimum description length learning, i.e., Occam's razor.
+- Finding the MAP hypothesis is often much easier than Bayesian learning.
+    - It requires solving an optimization problem instead of a large summation problem.
+
+---
+
+# Maximum likelihood
+
+For large data sets, the prior ${\bf P(}H)$ becomes *irrelevant*.
+
+In this case, **maximum likelihood estimation** (MLE) consists in using the hypothesis
+$$h\_\text{MLE} = \arg \max\_{h\_i} P(\mathbf{d} | h\_i).$$
+
+- Identical to MAP for uniform prior.
+- Maximum likelihood estimation is the standard (non-Bayesian) statistical learning method.
+
+---
+
+class: middle
+
+## Recipe
+
+- Choose a **parameterized** family of models to describe the data (e.g., a Bayesian network).
+    - requires substantial insight and sometimes new models.
+- Write down the log-likelihood $L$ of the data as a function of the parameters.
+    - may require summing over hidden variables, i.e., inference.
+- Write down the derivative of the log likelihood w.r.t. each parameter $\theta$.
+- Find the parameter values $\theta$ such that the derivatives are zero and check whether the Hessian is negative definite.
+    - may be hard; modern optimization techniques help.
+
+---
+
+# Parameter learning in Bayesian networks
+
+.center.width-100[![](figures/lec7/parameterized-bn.png)]
+
+---
+
+class: middle
+
+## MLE, case (a)
+
+What is the fraction $\theta$ of cherry candies?
+- Any $\theta \in [0,1]$ is possible: continuum of hypotheses $h\_\theta$.
+- $\theta$ is a **parameter** for this binomial family of models.
+
+Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
+These are i.i.d. observations, therefore
+$$P(\mathbf{d}|h\_\theta) = \prod\_{j=1}^N P(d\_j | h\_\theta) = \theta^c (1-\theta)^l.$$
+Maximize this w.r.t. $\theta$, which is easier for the log-likelihood:
+$$\begin{aligned}
+L(\mathbf{d}|h\_\theta) &= \log P(\mathbf{d}|h\_\theta) = c \log \theta + l \log(1-\theta) \\\\
+\frac{d L(\mathbf{d}|h\_\theta)}{d \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
+\end{aligned}$$
+Hence $\theta=\frac{c}{N}$.
+
+???
+
+Highlight that using the empirical estimate as an estimator of the mean can be viewed as consequence of
+- deciding on a probabilistic model
+- maximum likelihood estimation under this model
+
+Seems sensible, but causes problems with $0$ counts!
+
+---
+
+class: middle
+
+## MLE, case (b)
+
+Red and green wrappers depend probabilistically on flavor.
+E.g., the likelihood for a cherry candy in green wrapper:
+$$\begin{aligned}
+&P(\text{cherry}, \text{green}|h\_{\theta,\theta\_1, \theta\_2}) \\\\
+&= P(\text{cherry}|h\_{\theta,\theta\_1, \theta\_2}) P(\text{green}|\text{cherry}, h\_{\theta,\theta\_1, \theta\_2}) \\\\
+&= \theta (1-\theta\_1).
+\end{aligned}$$
+
+The likelihood for the data, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc., is:
+$$\begin{aligned}
+P(\mathbf{d}|h\_{\theta,\theta\_1, \theta\_2}) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
+L =&\,\, c \log \theta + l \log(1-\theta)  +  \\\\
+   &\,\, r\_c \log \theta\_1 + g\_c \log(1-\theta\_1) + \\\\
+   &\,\, r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)
+\end{aligned}$$
+
+---
+
+class: middle
+
+Derivatives of $L$ contain only the relevant parameter:
+$$\begin{aligned}
+\frac{\partial L}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta} = 0 \Rightarrow \theta = \frac{c}{c+l} \\\\
+\frac{\partial L}{\partial \theta\_1} &= \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 \Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
+\frac{\partial L}{\partial \theta\_2} &= \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 \Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}
+\end{aligned}$$
+
+???
+
+Again, results coincide with intuition.
+
+---
+
+class: middle
+
+# Supervised learning
+
+(mostly neural networks)
+
+---
+
+class: middle
+
+.center[
+.width-40[![](figures/lec7/cat.jpg)] &nbsp; &nbsp;
+.width-40[![](figures/lec7/dog.jpg)]
+]
+
+.exercise[How would you write a computer program that recognizes cats from dogs?]
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec7/cat1.png)]
+
+---
+
+count: false
+class: black-slide, middle
+
+.center.width-50[![](figures/lec7/cat2.png)]
+
+.center[The good old-fashioned approach.]
+
+---
+
+count: false
+class: black-slide, middle
+
+.center.width-80[![](figures/lec7/cat3.png)]
+
+---
+
+count: false
+class: black-slide, middle
+
+.center.width-80[![](figures/lec7/cat4.png)]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/catordog-flow.gif)]
+
+.center[The deep learning approach.]
+
+---
+
+# Problem statement
+
+Let us assume data $\mathbf{d} \sim p(\mathbf{x}, y)$ of $N$ example input-output pairs
+    $$\mathbf{d} = \\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\},$$
+where
+$\mathbf{x}\_i$ are the input data and
+$y_i$ was generated by an unknown function $y\_i=f(\mathbf{x}\_i)$.
+
+From this data, we want to find a function $h \in \mathcal{H}$ that approximates the true function $f$.
+
+???
+
+$\mathcal{H}$ is huge! How do we find a good hypothesis?
+
+---
+
+class: middle
+
+.center.width-10[![](figures/lec7/latent.svg)]
+
+In general, $f$ will be **stochastic**. In this case, $y$ is not strictly a function $x$, and we wish to learn the conditional $p(y|\mathbf{x})$.
+
+Most of supervised learning is actually (approximate) maximum likelihood estimation on (huge) parametric models.
+
+---
+
+class: middle
+
+## Feature vectors
+
+- Input samples $\mathbf{x} \in \mathbb{R}^d$ are described as real-valued vectors of $d$ attributes or features values.
+- If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
+.center.width-90[![](figures/lec7/features.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Linear regression
+
+.grid[
+.kol-1-5[.center.width-50[![](figures/lec7/latent.svg)]]
+.kol-4-5[.center.width-100[![](figures/lec7/lg.png)]]
+]
+
+Let us first assume that $y \in \mathbb{R}$.
+
+Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y|\\mathbf{x})$, that is
+$$p(y|\mathbf{x}) = \mathcal{N}(y | \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
+where $\mathbf{w}$ and $b$ are parameters to determine.
+
+---
+
+<br><br>
+
+To learn the conditional distribution $p(y|\mathbf{x})$, we maximize
+$$p(y|\mathbf{x}) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{2\sigma^2}\right)$$
+w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$.
+
+--
+
+count: false
+
+
+By constraining the derivatives of the log-likelihood to $0$, we arrive to the problem of minimizing
+$$\sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
+Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance.
+
+---
+
+# Linear classification
+
+Let us now assume $y \in \\{0,1\\}$.
+
+The linear classifier model is a squashed linear function of its inputs:
+$$h(\mathbf{x}; \mathbf{w}, b) = \text{sign}(\mathbf{w}^T \mathbf{x} + b)$$
+
+
+.center.width-60[![](figures/lec7/activation-sign.png)]
+
+---
+
+class: middle
+
+.center.width-30[![](figures/lec7/linear-classifier.png)]
+
+- Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{d+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
+- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
+- The family $\mathcal{H}$ of hypothesis is induced from the set $\mathbb{R}^{d+1}$ of possible parameters values $\mathbf{w}$ . Learning consists in finding a good vector $\mathbf{w}$ in this space.
+
+---
+
+# Perceptron
 
 .grid[
 .kol-1-2[
-- Markov models
-    - Markov processes
-    - Inference tasks
-    - Hidden Markov models
-- Filters
-    - Kalman filter
-    - Particle filter
+- Start with $\mathbf{w}=0$.
+- For each training example $(\mathbf{x},y)$:
+    - Classify with current weights: $\hat{y} = \text{sign}(\mathbf{w}^T \mathbf{x})$
+    - If $y=\hat{y}$, do nothing.
+    - Otherwise, update parameters: $\mathbf{w} = \mathbf{w} + y\mathbf{x} - (1-y)\mathbf{x}$
+
+.center.width-70[![](figures/lec7/perceptron-update.png)]
 ]
-.kol-1-2[.width-100[![](figures/lec7/outline-cartoon.png)]
-]
+.kol-1-2[.width-100[![](figures/lec7/perceptron-cartoon.png)]]
 ]
 
-.alert[Do not overlook this lecture!]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+---
 
+class: middle
+
+
+
+## Multiclass perceptron
+
+.grid[
+.kol-2-3[
+
+- If we have more than $2$ classes, then
+    - Define a weight vector $\mathbf{w}\_c$ for each class $c$.
+    - The activation for class $c$ is $\mathbf{w}\_c^T \mathbf{x}$.
+- Learning:
+    - Start with $\mathbf{w}\_c=0$ for all $c$.
+    - For each training example $(\mathbf{x},y)$:
+        - Classify with current weights: $\hat{y} = \arg \max\_{c}\, \mathbf{w}\_c^T \mathbf{x}$
+        - If $y=\hat{y}$, do nothing.
+        - Otherwise, update parameters:
+            - $\mathbf{w}\_y = \mathbf{w}\_y + \mathbf{x}$ (raise score of right answer)
+            - $\mathbf{w}\\\_{\hat{y}} = \mathbf{w}\_{\hat{y}} - \mathbf{x}$ (lower score of wrong answer).
+
+
+]
+.kol-1-3[.center.width-100[![](figures/lec7/multiclass.png)]]
+]
+
+---
+
+class: middle
+
+.center[
+<video controls preload="auto" height="500" width="700">
+  <source src="./figures/lec7/multiclass-perceptron.mp4" type="video/mp4">
+</video>]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+
+---
+
+# Apprenticeship
+
+Can we learn to play Pacman only from observations?
+- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
+- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
+- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
+- This is a multiclass classification problem.
+
+<br>
+.center.width-70[![](figures/lec7/pacman.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+<span class="Q">[Q]</span> How is this (very) different from reinforcement learning?
 
 ---
 
@@ -39,199 +513,13 @@ class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/pacman-no-beliefs.mp4" type="video/mp4">
+  <source src="./figures/lec7/training1.mp4" type="video/mp4">
 </video>
 
-.bold[Pacman revenge]: How to make good use of the sonar readings?
+The Perceptron agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-# Markov models
-
----
-
-# Reasoning over time
-
-Often, we want to *reason about a sequence* of observations:
-- Robot localization
-- Speech recognition
-- Medical monitoringn
-- Machine translation
-- Part-of-speech tagging
-- Handwriting recognition
-- ...
-
-For this reason, we need to introduce **time** (or space) in our model.
-
----
-
-class: middle
-
-## Modelling the passage of time
-
-We will consider the world as a *discrete* series of time slices, each of which contains a set of random variables:
-- $\mathbf{X}\_t$ denotes the set of **unobservable** state variables at time $t$.
-- $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
-
----
-
-class: middle
-
-We specify:
-- a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables.
-- a **transition model** ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values.
-- a **sensor model** ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
-
----
-
-# Markov processes
-
-## Markov assumption
-- The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
-- Random processes that satisfy this assumption are called **Markov processes**.
-
----
-
-class: middle
-
-## First-order Markov processes
-
-- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-1}).$$
-- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
-
-<br>
-.center.width-100[![](figures/lec7/markov-process.png)]
-
----
-
-class: middle
-
-## Second-order Markov processes
-
-- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1}).$$
-- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-3}$ are conditionally independent given $\mathbf{X}\_{t-1}$ and $\mathbf{X}\_{t-2}$.
-
-<br>
-.center.width-100[![](figures/lec7/markov-process-2.png)]
-
----
-
-class: middle
-
-## Sensor Markov assumption
-
-- Additionally, we make a (first-order) **sensor Markov assumption**: $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t})$$
-
-## Stationarity assumption
-
--  The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
-
----
-
-# Joint distribution
-
-<br>
-.center.width-100[![](figures/lec7/smoothing-dbn.svg)]
-<br>
-
-A Markov process can be described as a *growable* Bayesian network, unrolled infinitely through time, with a specified **restricted structure** between time steps.
-
-Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is
-    $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
-
----
-
-class: middle
-
-## Example: Will you take your umbrella today?
-
-
-.center.width-80[![](figures/lec7/weather-bn.svg)]
-
-.grid[
-.kol-1-2[
-.center.width-100[![](figures/lec7/weather-forecast.png)]
-]
-.kol-1-2[
-- ${\bf P}(\text{Umbrella}\_t | \text{Rain}\_t)$?
-- ${\bf P}(\text{Rain}\_t | \text{Umbrella}\_{0:t-1})$?
-- ${\bf P}(\text{Rain}\_{t+2} | \text{Rain}\_{t})$?
-]]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-60[![](figures/lec7/weather-transition.png)]
-
-The transition model ${\bf P}(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently be represented by a state transition diagram.
-
----
-
-# Inference tasks
-
-- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
-- *Prediction*: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
-    - Computing the posterior distribution over future states.
-    - Used for evaluation of possible action sequences.
-- *Smoothing*: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
-    - Computing the posterior distribution over past states.
-    - Used for building better estimates, since it incorporates more evidence.
-    - Essential for learning.    
-- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
-    - Decoding with a noisy channel, speech recognition, etc.
-
----
-
-# Base cases
-
-.grid[
-.kol-1-2.center[
-.width-80[![](figures/lec7/base-case2.png)]
-
-$\begin{aligned}
-{\bf P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} {\bf P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
-&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) {\bf P}(\mathbf{X}\_2 | \mathbf{x}\_1)
-\end{aligned}$
-
-(Predict) Push ${\bf P}(\mathbf{X}\_1)$ forward through the transition model.
-]
-.kol-1-2.center[
-.width-80[![](figures/lec7/base-case1.png)]
-
-$\begin{aligned}
-{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &= \frac{ {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1)}{P(\mathbf{e}\_1)} \\\\
-&\propto {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1) \\\\
-&= {\bf P}(\mathbf{X}\_1) {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1)
-\end{aligned}$
-
-(Update) Update ${\bf P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
-]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Prediction
-
-.center.width-50[![](figures/lec7/stationary-cartoon.png)]
-
-To predict the future  ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
-- **Push** the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
-
-- Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -239,875 +527,305 @@ class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/gb-basics.mp4" type="video/mp4">
-</video>]
-
-.center[Random dynamics (Ghostbusters)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/gb-circular.mp4" type="video/mp4">
-</video>]
-
-.center[Circular dynamics (Ghostbusters)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/gb-whirlpool.mp4" type="video/mp4">
-</video>]
-
-.center[Whirlpool dynamics (Ghostbusters)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center[
-.width-100[![](figures/lec7/prediction.png)]
-
-.width-100[![](figures/lec7/uncertainty.png)]
-
-As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Stationary distributions
-
-What if $t \to \infty$?
-- For most chains, the influence of the initial distribution gets lesser and lesser over time.
-- Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
-- This distribution is such that
-$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) {\bf P}(\mathbf{x}\_\infty) $$
-
----
-
-class: middle
-
-| $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
-| --- | --- | --- |
-| $sun$ | $sun$ | 0.9 |
-| $sun$ | $rain$ | 0.1 |
-| $rain$ | $sun$ | 0.3 |
-| $rain$ | $rain$ | 0.7 |
-
-## Example
-
-$
-\begin{aligned}
-P(\mathbf{X}\_\infty = \text{sun}) =&\, P(\mathbf{X}\_{\infty+1} = \text{sun}) \\\\
-=&\, P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{sun}) P(\mathbf{X}\_{\infty}=\text{sun})\\\\
- & + P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{rain}) P(\mathbf{X}\_{\infty}=\text{rain})\\\\
-=&\, 0.9 P(\mathbf{X}\_{\infty}=\text{sun}) + 0.3 P(\mathbf{X}\_{\infty}=\text{rain})
-\end{aligned}
-$
-
-Therefore, $P(\mathbf{X}\_\infty=\text{sun}) = 3 P(\mathbf{X}\_\infty=\text{rain})$.
-
-Which implies that
-$P(\mathbf{X}\_\infty=\text{sun}) = \frac{3}{4}$ and
-$P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
-
-
-
----
-
-# Filtering
-
-<br>
-.center.width-90[![](figures/lec7/observation.png)]
-<br>
-
-What if we collect new observations?
-Beliefs get reweighted, and uncertainty "decreases":
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
-
----
-
-class: middle
-
-## Bayes filter
-
-An agent maintains a **belief state** estimate ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
-
-Recursive Bayesian estimation: ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, {\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
-- (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
-- (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
-
----
-
-class: middle
-
-$$
-\begin{aligned}
-{\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
-\end{aligned}
-$$
-
-where
-- the normalization constant $$\alpha = \frac{1}{P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t})} = 1 / \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
-- in the last expression, the first and second terms are given by the model while the third is obtained recursively.
-
-<!-- $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \quad $<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t})$<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $ -->
-
----
-
-class: middle
-
-We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
-- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
-- The complexity of a forward update is constant (in time and space) with $t$.
-
----
-
-class: middle
-
-## Example
-
-.center.width-80[![](figures/lec7/filtering.png)]
-
-<br>
-
-.grid[
-.kol-1-4[]
-.kol-1-4.center[
-
-| $R\_{t-1}$ | $P(R\_t)$ |
-| ---------- | --------- |
-| $true$ | $0.7$ |
-| $false$ | $0.3$ |
-
-]
-.kol-1-4.center[
-
-| $R\_{t}$ | $P(U\_t)$ |
-| ---------- | --------- |
-| $true$ | $0.9$ |
-| $false$ | $0.2$ |
-
-]
-]
-
-???
-
-Solve on blackboard.
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec7/pacman-with-beliefs.mp4" type="video/mp4">
+  <source src="./figures/lec7/training2.mp4" type="video/mp4">
 </video>
 
-Ghostbusters with a Bayes filter
-]
+<br><br>]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Smoothing
-
-We want to compute ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
-
-Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$. Then,
-
-$$
-\begin{aligned}
-{\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
-\end{aligned}
-$$
-
----
-
-class: middle
-
-Let the **backward** message $\mathbf{b}\_{k+1:t}$ correspond to ${\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
-$${\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
-where $\times$ is a pointwise multiplication of vectors.
-
-
-This backward message can be computed using backwards recursion:
-
-$$
-\begin{aligned}
-{\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k)
-\end{aligned}
-$$
-
-The first and last factors are given by the model. The second factor is obtained recursively. Therefore,
-$$\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} ).$$
-
----
-
-class: middle
-
-## Forward-backward algorithm
-
-.center.width-100[![](figures/lec7/forward-backward.png)]
-
-Complexity:
-- Smoothing for a particular time step $k$ takes: $O(t)$
-- Smoothing a whole sequence (because of caching):  $O(t)$
-
----
-
-class: middle
-
-## Example
-
-.center.width-80[![](figures/lec7/smoothing.png)]
-
-???
-
-Solve on blackboard.
-
----
-
-.pull-right.width-80[![](figures/lec7/weather.png)]
-
-# Most likely explanation
-
-Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
-
-What is the weather sequence that is the most likely to explain this?
-- Does the absence of umbrella at day 3 means it wasn't raining?
-- Or did the director forget to bring it?
-- If it didn't rain on day 3, perhaps it didn't rain on day 4 either, but the director brought the umbrella just in case?
-
-Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-- The most likely sequence  **is not** the sequence of the most likely states!
-- The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
-$$
-\begin{aligned}
-&\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
-\end{aligned}
-$$
-- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
-$$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t}),$$
-where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
-- The update has its sum replaced by max, resulting in the **Viterbi algorithm**:
-$$\mathbf{m}\_{1:t+1} = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$$
-
-???
-
-Naive procedure: use smoothing to compute $P(X\_k|e\_{1:t})$, then output the sequence of the most likely value for each $k$.
-
-R: prepare a counter-example
-
----
-
-class: middle
-
-## Example
-
-.center.width-90[![](figures/lec7/viterbi.png)]
-
-???
-
-<span class="Q">[Q]</span> How do you retrieve the path, in addition to its likelihood?
-
----
-
-# Hidden Markov models
-
-So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
-- A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
-    - $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$
-    - $\mathbf{E}\_t = E\_t$, with domain $D\_{E\_t} = \\\{1, ..., R\\\}$
-- This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
-
----
-
-class: middle
-
-## Note on terminology
-
-Some authors instead divide Markov models into two classes, depending on the observability of the system state:
-- Observable system state: Markov chains
-- Partially-observable system state: Hidden Markov models.
-
-We follow here instead the terminology of the textbook.
-
-
----
-
-class: middle
-
-## Simplified matrix algorithms
-
-- The prior ${\bf P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
-- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
-$$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
-
----
-
-class: middle
-
-- Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
-- If we use column vectors to represent forward and backward messages, then we have
-$$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
-$$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
-where $\mathbf{b}\_{t+1:t}$ is an all-one vector of size $S$.
-- Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
----
-
-class: middle
-
-## Example
-
-Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
-
-$$
-\begin{aligned}
-\mathbf{f}\_0 &= \left(\begin{matrix}
-    0.5 \\\\
-    0.5
-\end{matrix}\right)\\\\
-\mathbf{T} &= \left(\begin{matrix}
-0.7 & 0.3 \\\\
-0.3 & 0.7
-\end{matrix}\right)\\\\
-\mathbf{B} &= \left(\begin{matrix}
-0.9 & 0.1 \\\\
-0.2 & 0.8
-\end{matrix}\right)\\\\
-\mathbf{O}\_1 = \mathbf{O}\_2 = \mathbf{O}\_4 = \mathbf{O}\_5 &= \left(\begin{matrix}
-0.9 & 0.0 \\\\
-0.0 & 0.2
-\end{matrix}\right) \\\\
-\mathbf{O}\_3 &= \left(\begin{matrix}
-0.1 & 0.0 \\\\
-0.0 & 0.8
-\end{matrix}\right)
-\end{aligned}
-$$
-
-See `code/lecture7-forward-backward.ipynb` for the execution.
-
----
-
-class: middle
-
-## Stationary distribution
-
-The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
-$$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
-Therefore, the stationary distribution corresponds to the (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
-
----
-
-class: middle
-
-# Filters
-
----
-
-class: middle
-
-.center.width-50[![](figures/lec7/robot-helicopter.png)]
-
-Suppose we want to track the position and velocity of a robot from noisy observations collected over time.
-
-Formally, we want to estimate **continuous** state variables such as
-- the position $\mathbf{X}\_t$ of the robot at time $t$,
-- the velocity $\mathbf{\dot{X}}\_t$ of the robot at time $t$.
-
-We assume *discrete* time steps.
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Continuous variables
-
-Let $X: \Omega \to D\_X$ be a random variable.
-- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a *continuous random variable*.
-- If $X$ is absolutely continuous, its probability distribution is described by a **density function** $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
-$$P(a < X \leq b) = \int\_a^b p(x) dx,$$
-where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
-
-???
-
-Ref: http://ai.stanford.edu/~paskin/gm-short-course/lec1.pdf
-
----
-
-class: middle
-
-## Uniform
-
-.center.width-60[![](figures/lec6/uniform.png)]
-
-The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
-$$
-p(x) = \begin{cases}
-\frac{1}{b-a} & \text{if } x \in \[a,b\]\\\\
-0 & \text{otherwise}
-\end{cases}$$
-where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
-
-
----
-
-class: middle
-
-## Normal
-
-.center.width-60[![](figures/lec6/normal.png)]
-
-The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
-$$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
-where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
-
-???
-
-Comment that
-- $\mu$ is the location
-- $\sigma$ is the width of the normal
-
----
-
-class: middle
-
-## Multivariate normal
-
-.center.width-60[![](figures/lec6/mvn.png)]
-
-The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
-$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
-where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
-
----
-
-class: middle
-
-The (multivariate) Normal density is the only density for real random variables that is
-**closed under marginalization and multiplication**.
-Also
-- a linear (or affine) function of a Normal random variable is
-Normal;
-- a sum of Normal variables is Normal.
-
-For these reasons, most algorithms discussed in this course are tractable only for
-discrete random variables or Normal random variables.
-
-???
-
-Be more precise and cite Bishop pg 93?
-
----
-
-# Continuous Bayes filter
-
-The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
-$$
-\begin{aligned}
-p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &= \alpha\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
-\end{aligned}
-$$
-where the normalization constant is
-$$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
-
----
-
-# Kalman filter
-
-The **Kalman filter** is a special case of the Bayes filter, which assumes:
-- Gaussian prior
-- Linear Gaussian transition model
-- Linear Gaussian sensor model
-
----
-
-class: middle
-
-## Linear Gaussian models
-
-.grid[
-.kol-1-2.center[
-<br><br><br>
-![](figures/lec7/lg-model1.png)
-
-$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{\Sigma}\_{\mathbf{x}})$
-
-Transition model
-
-]
-.kol-1-2.center[
-![](figures/lec7/lg-model2.png)
-
-$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{C} \mathbf{x}\_t + \mathbf{d}, \mathbf{\Sigma}\_{\mathbf{e}})$
-
-Sensor model
-]
-]
-
----
-
-class: middle
-
-## Cheat sheet for Gaussian models (Bishop, 2006)
-
-Given a marginal Gaussian distribution for $\mathbf{x}$ and a linear Gaussian distribution for $\mathbf{y}$ given $\mathbf{x}$ in the form
-$$
-\begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mu, \mathbf{\Lambda}^{-1}) \\\\
-p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{x}+\mathbf{b}, \mathbf{L}^{-1})
-\end{aligned}
-$$
-the marginal distribution of $\mathbf{y}$ and the conditional distribution of $\mathbf{x}$ given $\mathbf{y}$ are given by
-$$
-\begin{aligned}
-p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mu + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A}\mathbf{\Lambda}^{-1}\mathbf{A}^T) \\\\
-p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{\Sigma}\left(\mathbf{A}^T\mathbf{L}(\mathbf{y}-\mathbf{b}) + \mathbf{\Lambda}\mu\right), \mathbf{\Sigma})
-\end{aligned}$$
-where
-$$\mathbf{\Sigma} = (\mathbf{\Lambda} + \mathbf{A}^T \mathbf{L}\mathbf{A})^{-1}.$$
-
----
-
-class: middle
-
-## Filtering Gaussian distributions
-
-- .italic[Prediction step:]<br><br>
-If the distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
-is also a Gaussian distribution.
-- .italic[Update step:]<br><br>
-If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
-is also a Gaussian distribution.
-
-???
-
-Explain how this is consistent with the previous slide.
-
----
-
-class: middle
-
-Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{x}\_t | \mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
-
-- Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
-- By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
-
----
-
-class: middle
-
-## 1D example
-
-Gaussian random walk:
-- Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 | \mu\_0, \sigma\_0^2) $$
-- The transition model adds random perturbations of constant variance:
-    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_{t+1}|x\_t, \sigma\_x^2)$$
-- The sensor model yields measurements with Gaussian noise of constant variance:
-    $$p(e\_{t}|x\_t) =  \mathcal{N}(e\_t | x\_t, \sigma\_e^2)$$
-
----
-
-class: middle
-
-The one-step predicted distribution is given by
-$$
-\begin{aligned}
-p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
-&= \alpha \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
-&= \alpha \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
-&... \,\, \text{(simplify by completing the square)} \\\\
-&= \alpha \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
-&= \mathcal{N}(x\_1 | \mu\_0, \sigma\_0^2 + \sigma\_x^2)
-\end{aligned}
-$$
-
-Note that the same result can be obtained by using instead the Gaussian models identities.
-
-???
-
-Check Bishop page 93 for another derivation.
-
----
-
-class: middle
-
-For the update step, we need to condition on the observation at the first time step:
-$$
-\begin{aligned}
-p(x\_1 | e\_1) &= \alpha p(e\_1 | x\_1) p(x\_1) \\\\
-&= \alpha \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
-&= \alpha \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
-&= \mathcal{N}\left(x\_1 \bigg\vert \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
-\end{aligned}
-$$
-
----
-
-class: middle
-
-.center.width-70[![](figures/lec7/walk.png)]
-
-In summary, the update equations given a new evidence $e\_{t+1}$ are:
-$$
-\begin{aligned}
-\mu\_{t+1} &= \frac{(\sigma\_t^2 + \sigma\_x^2) e\_{t+1} + \sigma\_e^2 \mu\_t }{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2} \\\\
-\sigma\_{t+1}^2 &= \frac{(\sigma_t^2 + \sigma\_x^2) \sigma\_e^2}{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2}
-\end{aligned}
-$$
-
-???
-
-We can interpret
-the calculation for the new mean $\mu\_{t+1}$ as simply a weighted mean of the new observation
-$e\_{t+1}$ and the old mean $\mu\_t$ .
-- If the observation is unreliable, then $\sigma\_e^2$ is large and we pay more
-attention to the old mean;
-- If the observation is reliable, then we pay more attention to the evidence and less to the old mean.
-- if the old mean is unreliable ($\sigma\_t^2$ is large) or the process is highly
-unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
-
----
-
-class: middle
-
-## General Kalman update
-
-The same derivations generalize to multivariate normal distributions.
-
-Assuming the transition and sensor models
-$$
-\begin{aligned}
-p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}}) \\\\
-p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}}),
-\end{aligned}
-$$
-we arrive at the following general update equations:
-$$
-\begin{aligned}
-\mu\_{t+1} &= \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t) \\\\
-\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \\\\
-\mathbf{K}\_{t+1} &= (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_e)^{-1}
-\end{aligned}$$
-where $\mathbf{K}\_{t+1}$ is the Kalman gain matrix.
-
-???
-
-Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
-
-These equations intuitively make sense.
-
-Consider
-the update for the mean state estimate $\mu\_{t+1}$.
-- The term  $\mathbf{F}\mathbf{\mu}\_t$ is the predicted state at $t + 1$,
-- so
-$\mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ is the predicted observation.
-- Therefore, the term $\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
-the predicted observation.
-- This is multiplied by $ \mathbf{K}\_{t+1}$ to correct the predicted state; hence,
-$ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation relative to the prediction.
-
----
-
-class: middle
-
-## 2D tracking: filtering
-
-.center.width-90[![](figures/lec7/kf-filtering.png)]
-
-???
-
-In this example, $\mathbf{X}$ includes the X-Y positions and the X-Y velocities.
-
----
-
-class: middle
-
-## 2D tracking: smoothing
-
-.center.width-90[![](figures/lec7/kf-smoothing.png)]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle, black-slide
 
-## Apollo guidance computer
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
+</video>
 
-- The Kalman filter put man on the Moon, literally!
-- The onboard guidance software of Saturn-V used a Kalman filter to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
-
-.grid[
-.kol-1-6[]
-.kol-1-3[.width-100[![](figures/lec7/saturn-v.jpg)]]
-.kol-1-3[.width-100[![](figures/lec7/agc.jpg)]]
+After two training episodes, the Perceptron agents plays.<br>
+No more Minimax!
 ]
 
-
-.footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
-
----
-
-class: center, black-slide, middle
-
-<iframe width="640" height="400" src="https://www.youtube.com/embed/aNzGCMRnvXQ?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-# Dynamic Bayesian networks
+# Logistic regression
 
-.grid[
-.kol-2-3[.center.width-100[![](figures/lec7/dbn-cartoon.png)]]
-.kol-1-3[.center.width-80[![](figures/lec7/robot-dbn1.svg)]]
+An alternative model to the classification model based on the $\text{sign}$ function is to consider that $P(Y=1|\mathbf{x})$ varies smoothly with $\mathbf{x}$.
+
+**Logistic regression** models the conditional as
+$$P(Y=1|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
+where the sigmoid activation function
+$\sigma(x) = \frac{1}{1 + \exp(-x)}$
+looks like a soft heavyside:
+.center.width-60[![](figures/lec7/activation-sigmoid.png)]
+
+???
+
+This model is core building block of deep neural networks!
+
+---
+
+class: middle
+
+Following the principle of maximum likelihood estimation, we have
+
+$$\begin{aligned}
+&\arg \max\_{\mathbf{w},b} P(\mathbf{d}|\mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i|\mathbf{x}\_i, \mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_i + b)^{y\_i}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))^{1-y\_i}  \\\\
+&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
+\end{aligned}$$
+
+This loss is an instance of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y|\mathbf{x}\_i$ and $q=\hat{Y}|\mathbf{x}\_i$.
+
+---
+
+# Gradient descent
+
+Let $\mathcal{L}(\theta)$ denote a loss function defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
+
+To minimize $\mathcal{L}(\theta)$, **gradient descent** uses local linear information to iteratively move towards a (local) minimum.
+
+For $\theta\_0 \in \mathbb{R}^d$, a first-order approximation around $\theta\_0$ can be defined as
+$$\hat{\mathcal{L}}(\epsilon; \theta\_0) = \mathcal{L}(\theta\_0) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{2\gamma}||\epsilon||^2.$$
+
+.center.width-50[![](figures/lec7/gd-good-0.png)]
+
+---
+
+class: middle
+
+A minimizer of the approximation $\hat{\mathcal{L}}(\epsilon; \theta\_0)$ is given for
+$$\begin{aligned}
+\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta\_0) &= 0 \\\\
+ &= \nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{\gamma} \epsilon,
+\end{aligned}$$
+which results in the best improvement for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta\_0)$.
+
+Therefore, model parameters can be updated iteratively using the update rule
+$$\theta\_{t+1} = \theta\_t -\gamma \nabla\_\theta \mathcal{L}(\theta\_t),$$
+where
+- $\theta_0$ are the initial parameters of the model,
+- $\gamma$ is the learning rate.
+
+---
+
+class: center, middle
+
+![](figures/lec7/gd-good-0.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-1.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-2.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-3.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-4.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-5.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-6.png)
+
+---
+
+count: false
+class: center, middle
+
+![](figures/lec7/gd-good-7.png)
+
+---
+
+# Layers
+
+So far we considered the logistic unit $h=\sigma\left(\mathbf{w}^T \mathbf{x} + b\right)$, where $h \in \mathbb{R}$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{w} \in \mathbb{R}^d$ and $b \in \mathbb{R}$.
+
+These units can be composed *in parallel* to form a **layer** with $q$ outputs:
+$$\mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})$$
+where  $\mathbf{h} \in \mathbb{R}^q$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{W} \in \mathbb{R}^{d\times q}$, $b \in \mathbb{R}^d$ and where $\sigma(\cdot)$ is upgraded to the element-wise sigmoid function.
+
+---
+
+# Multi-layer perceptron
+
+Similarly, layers can be composed *in series*, such that:
+$$\begin{aligned}
+\mathbf{h}\_0 &= \mathbf{x} \\\\
+\mathbf{h}\_1 &= \sigma(\mathbf{W}\_1^T \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
+... \\\\
+\mathbf{h}\_L &= \sigma(\mathbf{W}\_L^T \mathbf{h}\_{L-1} + \mathbf{b}\_L) \\\\
+f(\mathbf{x}; \theta) &= \mathbf{h}\_L
+\end{aligned}$$
+where $\theta$ denotes the model parameters $\\{ \mathbf{W}\_k, \mathbf{b}\_k, ... | k=1, ..., L\\}$ and can be determined through gradient descent.
+
+- This model is the **multi-layer perceptron**, also known as the fully connected *feedforward network*.
+- Optionally, the last activation $\sigma$ can be skipped to produce unbounded output values $\hat{y} \in \mathbb{R}$.
+
+---
+
+class: middle, center
+
+.width-90[![](figures/lec7/mlp.png)]
+
+---
+
+# Convolutional networks
+
+- Fully connected feedforward networks can be adapted to efficiently process **spatially structured** data (e.g., images, sequences) with known shift invariance.
+- Convolutional neural networks extend fully connected architectures with
+    - *Convolutional* layers: cross-correlation of the input through learnable kernels.
+    - *Pooling* layers: reduce the input dimension by pooling (e.g., averaging) clusters of input values.
+
+.width-55[![](figures/lec7/3d-conv.gif)] .width-40[![](figures/lec7/3d-pooling.gif)]
+.center[Convolution &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pooling]
+
+.footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
+
+---
+
+class: middle, center
+
+.center.width-80[![](figures/lec7/lenet.png)]
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/zj_JlVqWK1M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Deep neural networks learn a hierarchical composition of features.
 ]
 
+---
 
-Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables over time, using multiple sources of evidence. Idea:
-- Repeat a fixed Bayes net structure at each time $t$.
-- Variables from time $t$ condition on those from $t-1$.
+class: middle, black-slide
 
-DBNs are a generalization of HMMs and of the Kalman filter.
+.center[
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+<iframe width="640" height="480" src="https://www.youtube.com/embed/FwFduRA_L6Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+]
+
+.center[LeNet-1, LeCun et al, 1993.]
+
+---
+
+# Recurrent networks
+
+When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states, where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
+
+For example,
+$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x} + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
+where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
 
 ---
 
 class: middle
 
-## Exact inference
-
-.center.width-100[![](figures/lec7/dbn-unrolling.svg)]
-
-Unroll the network through time and run any exact inference algorithm (e.g., variable elimination)
-- Problem: inference cost for each update grows with $t$.
-- Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
-    - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
-    - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
+Notice how this is similar to filtering and dynamic decision networks:
+- $\mathbf{h}\_t$ can be viewed as some current belief state;
+- $\mathbf{x}\_{1:T}$ is a sequence of observations;
+- $\mathbf{h}\_{t+1}$ is computed from the current belief state $\mathbf{h}\_t$ and the latest evidence $\mathbf{x}\_t$ through some fixed computation (in this case a neural network, instead of being inferred from the assumed dynamics).
+- $\mathbf{h}\_t$ can also be used to decide on some action, through another network $f$ such that $a\_t = f(\mathbf{h}\_t;\theta)$.
 
 ---
 
-class: middle
+class: middle, black-slide
 
-## Approximate inference
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/Ipi40cb_RsI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-If exact inference in DBNs intractable, then let's use *approximate inference* instead.
-- Likelihood weighting? Generated samples **pay no attention** to the evidence!
-- The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
-
-$\Rightarrow$ We need a better solution!
+A recurrent network playing Mario Kart.
+]
 
 ---
 
-# Particle filter
+# Applications
 
- Basic idea:
-- Maintain a finite population of samples, called **particles**.
-    - The representation of our beliefs is a list of $N$ particles.
-- Ensure the particles track the high-likelihood regions of the
-state space.
-- Throw away samples that have very low weight, according to the evidence.
-- Replicate those that have high weight.
+Neural networks are now at the core of many **state-of-the-art systems**, including:
+- Image recognition
+- Speech recognition and synthesis
+- Natural language processing
+- Scientific studies
+- Reinforcement learning
+- Autonomous agents
 
-This scales to high dimensions!
-
-.center.width-50[![](figures/lec7/robot.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+... and many many many others.
 
 ---
 
-class: middle
+class: middle, black-slide
 
-## Update cycle
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/H7Ym3DMSGms?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-.center.width-100[![](figures/lec7/particle-filter.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec7/pf-algorithm.png)]
+Autonomous drone navigation with deep learning
+]
 
 ---
 
-class: middle
+class: middle, black-slide
 
-## Robot localization
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/wR2OlsF1CEY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-.center.width-70[![](figures/lec7/pf-demo.png)]
-
-.center[(See demo)]
-
----
-
-class: middle, black-slide, center
-
-.width-50[![](figures/lec7/ragi.jpg)]
-
-The RAGI robot makes use of a particle filter to locate itself within Montefiore.<br>
-(See [RTBF, mars 2019](https://www.rtbf.be/info/regions/liege/detail_liege-l-intelligence-artificielle-vous-accueille-a-l-universite?id=10183022).)
+Deep learning for medicine
+]
 
 ---
 
-class: middle
+class: middle, black-slide
 
-.width-100[![](figures/lec7/ragi-localization.png)]
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/nhtNEckbQws?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-.footnote[Credits: Tom Ewbank, RAGI.]
+Deep learning and AI at NVIDIA
+]
 
 ---
 
 # Summary
 
-- Temporal models use state and sensor variables replicated over time.
-    - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
-- The Markov and stationarity assumptions imply that we only need to specify
-    - a transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
-    - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
-- Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
-- Filter algorithms are all based on the core of idea of
-    - projecting the current belief state through the transition model,
-    - updating the prediction according to the new evidence.
+- Learning is (supposedly) a key element of intelligence.
+- Statistical learning aims at learning probabilistic models (their parameters or structures) automatically from data.
+- Supervised learning is used to learn functions from a set of training examples.
+    - Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
+    - Neural networks are defined as a composition of squashed linear models.
+- Reinforcement learning = learning to behave in an unknown environment from sparse rewards.
+- Unsupervised learning = learning a model of the world by observing it.
 
 ---
 
@@ -1118,7 +836,128 @@ The end.
 
 ---
 
-# References
+count: false
 
-- Kalman, Rudolph Emil. "A new approach to linear filtering and prediction problems." Journal of basic Engineering 82.1 (1960): 35-45.
-- Bishop, Christopher "Pattern Recognition and Machine Learning" (2006).
+# Chomsky vs. Piaget
+
+.grid[
+.kol-2-3[
+- Noam Chomsky's *innatism*:
+    - State that humans possess a genetically determined faculty for thought and language.
+    - The structures of language and thought are set in motion through interaction with the environment.
+- Jean Piaget's **constructivism**:
+    - Deny the existence of innate cognitive structure specific for thought and language.
+    - Postulate instead all cognitive acquisitions, including language, to be the outcome of a gradual process of construction, i.e., a learning procedure.
+]
+.kol-1-3[.center.width-80[![](figures/lec7/piaget-chomsky.jpg)]]
+]
+
+
+What about AI?
+- Should it be a pre-wired efficient machine?
+- Or a machine that can learn and improve?
+- or maybe a bit of both?
+
+---
+
+class: middle, black-slide
+count: false
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/aCCotxqxFsk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+The debate continues...
+]
+
+---
+
+class: middle
+count: false
+
+# Unsupervised learning
+
+---
+
+class: middle
+count: false
+
+-  Most of the learning performed by animals and humans is **unsupervised**.
+    - Without labeled examples nor rewards.
+- We learn how the world works through observation:
+    - We learn that the world is 3-dimensional.
+    - We learn that objects can move independently of each other.
+    - We learn *object permanence*.
+    - We learn to predict what the world will look one second or one hour from now.
+
+.footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
+
+---
+
+class: middle, black-slide
+count: false
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/-gWJrZ7MHpY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Object permanence in infants (part 1)
+]
+
+---
+
+class: middle, black-slide
+count: false
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/kV0o6RK54-M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Object permanence in infants (part 2)
+]
+
+
+---
+
+class: middle, black-slide
+count: false
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/OLrYzY3jVPY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+In animals
+]
+
+
+---
+
+class: middle
+count: false
+
+## Common sense
+
+We build a model of the world through *predictive unsupervised learning*.
+- This predictive model gives us **common sense**.
+- Unsupervised learning discovers regularities in the world.
+
+---
+
+class: middle
+count: false
+
+If I say: "Bernard picks up his bag and leaves the room".
+
+You can **infer**:
+- Bernard stood up, extended his arm to pick the bag, walked towards the door, opened the door, walked out.
+- He and his bag are not in the room anymore.
+- He probably did not dematerialized or flied out.
+
+.center.width-50[![](figures/lec7/bernard.png)]
+
+.footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
+
+---
+
+class: middle, center
+count: false
+
+How do we do that?
+
+We have no clue! (mostly)

@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 6: Inference in Bayesian networks
+Lecture 6: Reasoning over time
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -12,530 +12,375 @@ Prof. Gilles Louppe<br>
 
 # Today
 
+Maintain a **belief state** about the world, and update it as time passes and evidence is collected.
+
 .grid[
 .kol-1-2[
-- Exact inference
-    - Inference by enumeration
-    - Inference by variable elimination
-- Approximate inference
-    - Ancestral sampling
-    - Rejection sampling
-    - Likelihood weighting
-    - Gibbs sampling
+- Markov models
+    - Markov processes
+    - Inference tasks
+    - Hidden Markov models
+- Filters
+    - Kalman filter
+    - Particle filter
+]
+.kol-1-2[.width-100[![](figures/lec6/outline-cartoon.png)]
+]
+]
+
+.alert[Do not overlook this lecture!]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec6/pacman-no-beliefs.mp4" type="video/mp4">
+</video>
+
+.bold[Pacman revenge]: How to make good use of the sonar readings?
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Markov models
+
+---
+
+# Reasoning over time
+
+Often, we want to *reason about a sequence* of observations:
+- Robot localization
+- Speech recognition
+- Medical monitoringn
+- Machine translation
+- Part-of-speech tagging
+- Handwriting recognition
+- ...
+
+For this reason, we need to introduce **time** (or space) in our model.
+
+---
+
+class: middle
+
+## Modelling the passage of time
+
+We will consider the world as a *discrete* series of time slices, each of which contains a set of random variables:
+- $\mathbf{X}\_t$ denotes the set of **unobservable** state variables at time $t$.
+- $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
+
+---
+
+class: middle
+
+We specify:
+- a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables.
+- a **transition model** ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values.
+- a **sensor model** ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
+
+---
+
+# Markov processes
+
+## Markov assumption
+- The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
+- Random processes that satisfy this assumption are called **Markov processes**.
+
+---
+
+class: middle
+
+## First-order Markov processes
+
+- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-1}).$$
+- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
+
+<br>
+.center.width-100[![](figures/lec6/markov-process.png)]
+
+---
+
+class: middle
+
+## Second-order Markov processes
+
+- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1}).$$
+- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-3}$ are conditionally independent given $\mathbf{X}\_{t-1}$ and $\mathbf{X}\_{t-2}$.
+
+<br>
+.center.width-100[![](figures/lec6/markov-process-2.png)]
+
+---
+
+class: middle
+
+## Sensor Markov assumption
+
+- Additionally, we make a (first-order) **sensor Markov assumption**: $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t})$$
+
+## Stationarity assumption
+
+-  The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
+
+---
+
+# Joint distribution
+
+<br>
+.center.width-100[![](figures/lec6/smoothing-dbn.svg)]
+<br>
+
+A Markov process can be described as a *growable* Bayesian network, unrolled infinitely through time, with a specified **restricted structure** between time steps.
+
+Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is
+    $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
+
+---
+
+class: middle
+
+## Example: Will you take your umbrella today?
+
+
+.center.width-80[![](figures/lec6/weather-bn.svg)]
+
+.grid[
+.kol-1-2[
+.center.width-100[![](figures/lec6/weather-forecast.png)]
 ]
 .kol-1-2[
-<br><br>
-.width-100[![](figures/lec6/bn-cartoon.png)]
-]
-]
+- ${\bf P}(\text{Umbrella}\_t | \text{Rain}\_t)$?
+- ${\bf P}(\text{Rain}\_t | \text{Umbrella}\_{0:t-1})$?
+- ${\bf P}(\text{Rain}\_{t+2} | \text{Rain}\_{t})$?
+]]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Bayesian networks
-
-.grid[
-.kol-2-3[
-A Bayesian network is a directed acyclic graph in which:
-- Each node corresponds to a *random variable* $X\_i$.
-- Each node $X\_i$ is annotated with a **conditional probability distribution** ${\bf P}(X\_i | \text{parents}(X\_i))$ that quantifies the effect of the parents on the node.
-
-A Bayesian network implicitly encodes the full joint distribution as the product of the local distributions:
-    $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
-]
-.kol-1-3.center[.width-100[![](figures/lec6/bn-cartoon2.png)]
-
-<br>
-
-.width-70[![](figures/lec6/bn-cartoon3.png)]]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Reminder: the topology encodes conditional independence assumptions!
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
-.grid[
-.kol-3-4[.center.width-100[![](figures/lec5/burglary2.svg)]]
-.kol-1-4[.center.width-100[![](figures/lec5/alarm.png)]]
-]
+.center.width-60[![](figures/lec6/weather-transition.png)]
 
-<br>
-$$
-\begin{aligned}
-P(b,\lnot e, a, \lnot j, m) &= P(b)P(\lnot e)P(a|b, \lnot e)P(\lnot j|a)P(m, a) \\\\
-&= 0.001 \times 0.998 \times 0.94 \times 0.1 \times 0.7
-\end{aligned}$$
+The transition model ${\bf P}(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently be represented by a state transition diagram.
 
 ---
 
-class: middle
+# Inference tasks
 
-# Exact inference
-
----
-
-# Inference
-
-Inference is concerned with the problem *computing a marginal and/or a conditional probability distribution* from a joint probability distribution:
-
-.grid[
-.kol-1-3.center[Simple queries:]
-.kol-2-3[${\bf P}(X\_i|e)$]
-]
-.grid[
-.kol-1-3.center[Conjunctive queries:]
-.kol-2-3[${\bf P}(X\_i,X\_j|e)={\bf P}(X\_i|e){\bf P}(X\_j|X\_i,e)$]
-]
-.grid[
-.kol-1-3.center[Most likely explanation:]
-.kol-2-3[$\arg \max_q P(q|e)$]
-]
-.grid[
-.kol-1-3.center[Optimal decisions:]
-.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
-]
-
-.center.width-30[![](figures/lec6/query-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Explain what $\arg \max$ means.
+- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
+- *Prediction*: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
+    - Computing the posterior distribution over future states.
+    - Used for evaluation of possible action sequences.
+- *Smoothing*: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
+    - Computing the posterior distribution over past states.
+    - Used for building better estimates, since it incorporates more evidence.
+    - Essential for learning.    
+- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
+    - Decoding with a noisy channel, speech recognition, etc.
 
 ---
 
-# Inference by enumeration
+# Base cases
 
-Start from the joint distribution ${\bf P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+.grid[
+.kol-1-2.center[
+.width-80[![](figures/lec6/base-case2.png)]
 
-1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
-2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
-$${\bf P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} {\bf P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
-3. Normalize:
-<br>
-$$\begin{aligned}
-Z &= \sum_q P(q,e_1,...,e_k) \\\\
-{\bf P}(Q|e_1, ..., e_k) &= \frac{1}{Z} {\bf P}(Q,e_1,...,e_k)
-\end{aligned}$$
-
----
-
-class: middle
-
-.pull-right[![](figures/lec6/bn-burglar.png)]
-
-Consider the alarm network and the query ${\bf P}(B|j,m)$:<br><br>
 $\begin{aligned}
-{\bf P}(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a {\bf P}(B,j,m,e,a) \\\\
-&\propto \sum\_e \sum\_a {\bf P}(B,j,m,e,a)
+{\bf P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} {\bf P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
+&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) {\bf P}(\mathbf{X}\_2 | \mathbf{x}\_1)
 \end{aligned}$
 
-Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
+(Predict) Push ${\bf P}(\mathbf{X}\_1)$ forward through the transition model.
+]
+.kol-1-2.center[
+.width-80[![](figures/lec6/base-case1.png)]
+
 $\begin{aligned}
-{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a)
+{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &= \frac{ {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1)}{P(\mathbf{e}\_1)} \\\\
+&\propto {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1) \\\\
+&= {\bf P}(\mathbf{X}\_1) {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1)
 \end{aligned}$
 
-???
+(Update) Update ${\bf P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
+]
+]
 
-&\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Prediction
+
+.center.width-50[![](figures/lec6/stationary-cartoon.png)]
+
+To predict the future  ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
+- **Push** the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
+$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
+
+- Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec6/gb-basics.mp4" type="video/mp4">
+</video>]
+
+.center[Random dynamics (Ghostbusters)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec6/gb-circular.mp4" type="video/mp4">
+</video>]
+
+.center[Circular dynamics (Ghostbusters)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec6/gb-whirlpool.mp4" type="video/mp4">
+</video>]
+
+.center[Whirlpool dynamics (Ghostbusters)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
-.center.width-80[![](figures/lec6/enumeration.png)]
+.center[
+.width-100[![](figures/lec6/prediction.png)]
 
-Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
+.width-100[![](figures/lec6/uncertainty.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Stationary distributions
+
+What if $t \to \infty$?
+- For most chains, the influence of the initial distribution gets lesser and lesser over time.
+- Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
+- This distribution is such that
+$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) {\bf P}(\mathbf{x}\_\infty) $$
 
 ---
 
 class: middle
 
-Notice that factors that do not depend on the variables in the summations can be factored out, which means that marginalization does not necessarily have to be done at the end:
-
-$$\begin{aligned}
-{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a) \\\\
-&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a)
-\end{aligned}$$
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/inference-enumeration.png)]
-
-Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
-
-???
-
-- $n$ is the number of variables.
-- $d$ is the size of their domain.
-
----
-
-class: middle
-
-## Evaluation tree for $P(b|j,m)$
-
-.center.width-80[![](figures/lec6/enumeration-tree.png)]
-
-Enumeration is still **inefficient**: there are repeated computations!
-- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
-- These can be avoided by storing *intermediate results*.
-
-???
-
-Inefficient because the product is evaluated left-to-right, in a DFS manner.
-
----
-
-# Inference by variable elimination
-
-The **variable elimination** (VE) algorithm carries out summations right-to-left and stores intermediate results (called *factors*) to avoid recomputations.
-The algorithm interleaves:
-- Joining sub-tables
-- Eliminating hidden variables
-
-.center.width-80[![](figures/lec6/elimination.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-30[![](figures/lec6/bn-burglar.png)]
+| $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
+| --- | --- | --- |
+| $sun$ | $sun$ | 0.9 |
+| $sun$ | $rain$ | 0.1 |
+| $rain$ | $sun$ | 0.3 |
+| $rain$ | $rain$ | 0.7 |
 
 ## Example
 
-$$\begin{aligned}
-{\bf P}(B|j, m) &\propto {\bf P}(B,j,m) \\\\
-&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a) \\\\
-&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \sum\_a \mathbf{f}\_3(a,B,e) \times \mathbf{f}\_4(a) \times \mathbf{f}\_5(a) \\\\
-&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
-&= \mathbf{f}\_1(B) \times \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
-\end{aligned}$$
+$
+\begin{aligned}
+P(\mathbf{X}\_\infty = \text{sun}) =&\, P(\mathbf{X}\_{\infty+1} = \text{sun}) \\\\
+=&\, P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{sun}) P(\mathbf{X}\_{\infty}=\text{sun})\\\\
+ & + P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{rain}) P(\mathbf{X}\_{\infty}=\text{rain})\\\\
+=&\, 0.9 P(\mathbf{X}\_{\infty}=\text{sun}) + 0.3 P(\mathbf{X}\_{\infty}=\text{rain})
+\end{aligned}
+$
+
+Therefore, $P(\mathbf{X}\_\infty=\text{sun}) = 3 P(\mathbf{X}\_\infty=\text{rain})$.
+
+Which implies that
+$P(\mathbf{X}\_\infty=\text{sun}) = \frac{3}{4}$ and
+$P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
+
+
+
+---
+
+# Filtering
+
+<br>
+.center.width-90[![](figures/lec6/observation.png)]
+<br>
+
+What if we collect new observations?
+Beliefs get reweighted, and uncertainty "decreases":
+$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
 
 ---
 
 class: middle
 
-## Factors
+## Bayes filter
 
-- Each **factor $\mathbf{f}_i$** is a multi-dimensional array indexed by the values of its argument variables. E.g.:
-.grid[
-.kol-1-2[
+An agent maintains a **belief state** estimate ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
+
+Recursive Bayesian estimation: ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, {\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
+- (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
+- (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+
+---
+
+class: middle
+
 $$
 \begin{aligned}
-\mathbf{f}\_4 &= \mathbf{f}\_4(A) = \left(\begin{matrix}
-P(j|a) \\\\
-P(j|\lnot a) \end{matrix}\right)
-= \left(\begin{matrix}
-0.90 \\\\
-0.05 \end{matrix}\right) \\\\
-\mathbf{f}\_4(a) &= 0.90 \\\\
-\mathbf{f}\_4(\lnot a) &= 0.5
-\end{aligned}$$
-]
-]
-- Factors are initialized with the CPTs annotating the nodes of the Bayesian network, conditioned on the evidence.
+{\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
+\end{aligned}
+$$
+
+where
+- the normalization constant $$\alpha = \frac{1}{P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t})} = 1 / \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
+- in the last expression, the first and second terms are given by the model while the third is obtained recursively.
+
+<!-- $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \quad $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $ -->
 
 ---
 
 class: middle
 
-## Join
-
-The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}\_3$.
-- Exactly like a **database join**!
-- The variables of $\mathbf{f}\_3$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
-- The elements of $\mathbf{f}\_3$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
-
-.center.width-100[![](figures/lec6/ve-product.png)]
-
----
-
-class: middle
-
-## Elimination
-
-*Summing out*, or **eliminating**, a variable from a factor is done by adding up the submatrices formed by fixing the variable to each of its values in turn.
-
-For example, to sum out $A$ from $\mathbf{f}\_3(A, B, C)$, we write:
-
-$$\begin{aligned}
-\mathbf{f}(B,C) &= \sum\_a \mathbf{f}\_3(a, B, C) = \mathbf{f}\_3(a, B, C) + \mathbf{f}\_3(\lnot a, B, C) \\\\
-&= \left(\begin{matrix}
-0.06 & 0.24 \\\\
-0.42 & 0.28
-\end{matrix}\right) + \left(\begin{matrix}
-0.18 & 0.72 \\\\
-0.06 & 0.04
-\end{matrix}\right) = \left(\begin{matrix}
-0.24 & 0.96 \\\\
-0.48 & 0.32
-\end{matrix}\right)
-\end{aligned}$$
-
----
-
-class: middle
-
-## General Variable Elimination algorithm
-
-Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
-
-1. Start with the initial factors (the local CPTs, instantiated by the evidence).
-2. While there are still hidden variables:
-    1. Pick a hidden variable $H$
-    2. Join all factors mentioning $H$
-    3. Eliminate H
-3. Join all remaining factors
-4. Normalize
-
----
-
-class: middle, center
-
-(blackboard example)
-
-???
-
-Prepare this for $P(B|j,m)$.
-
----
-
-class: middle
-
-
-## Relevance
-
-Consider the query ${\bf P}(J|b)$:
-$${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
-- $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
-- In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
-
-.pull-right[![](figures/lec6/bn-burglar.png)]
-
-.italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
-
----
-
-class: middle
-
-## Complexity
-
-.center.width-50[![](figures/lec6/ve-ordering.png)]
-
-Consider the query ${\bf P}(X\_n|y\_1,...,y\_n)$.
-
-Work through the two elimination orderings:
-- $Z, X\_1, ..., X\_{n-1}$
-- $X\_1, ..., X\_{n-1}, Z$
-
-What is the size of the maximum factor generated for each of the orderings?
-- Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
-
----
-
-class: middle
-
-The computational and space complexity of variable elimination is determined by the **largest factor**.
-- The elimination *ordering* can greatly affect the size of the largest factor.
-- Does there always exist an ordering that only results in small factors? **No!**
-    - Greedy heuristic: eliminate whichever variable minimizes the size of the factor to be constructed.
-    - Singly connected networks (polytrees):
-        - Any two nodes are connected by at most one (undirected path).
-        - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
-
----
-
-class: middle
-
-## Worst-case complexity?
-
-.center.width-80[![](figures/lec6/3sat.png)]
-
-3SAT is a special case of inference:
-- CSP: $(u\_1 \lor u\_2 \lor u\_3) \wedge (\lnot u\_1 \lor \lnot u\_2 \lor u\_3) \wedge (u\_2 \lor \lnot u\_3 \lor u\_4)$
-- $P(U\_i=0)=P(U\_i=1)=0.5$
-- $C\_1 = U\_1 \lor U\_2 \lor U\_3$; $C\_2 = \lnot U\_1 \lor \lnot  U\_2 \lor U\_3$; $C\_3 = U\_2 \lor \lnot  U\_3 \lor U\_4$
-- $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
-- $Y = D\_2 \wedge C\_3$
-
-???
-
-3SAT is the problem of determining the satisfiability of a formula in conjunctive normal form, where each clause is limited to a most three literals.
-
----
-
-class: middle
-
-If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
-- By reduction, inference in Bayesian networks is therefore **NP-complete**.
-- There is no known efficient probabilistic inference algorithm in general.
-
-???
-
-Proof by reduction: transforming a problem (here inference) into another (here checking the satisfiability of a formula).
-
----
-
-class: middle
-
-# Approximate inference
-
-a.k.a. Monte Carlo methods
-
----
-
-class: middle
-
-Exact inference is **intractable** for most probabilistic models of practical interest.
-(e.g., involving many variables, continuous and discrete, undirected cycles, etc).
-
-## Solution
-
-Abandon exact inference and develop  **approximate** but *faster* inference algorithms:
-- *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
-- *Variational methods*: formulate inference as an optimization problem.
-- *Belief propagation methods*: formulate inference as a message-passing algorithm.
-
----
-
-# Sampling methods
-
-Basic idea:
-- Draw $N$ samples from a sampling distribution $S$.
-- Compute an approximate posterior probability $\hat{P}$.
-- Show this approximate converges to the true probability distribution $P$.
-
-## Why sampling?
-
-Generating samples is often much faster than computing the right answer (e.g., with variable elimination).
-
-.center.width-70[![](figures/lec6/sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Sampling
-
-How to sample from the distribution of a discrete variable $X$?
-- Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
-- Assume sampling from the uniform $\mathcal{U}(0,1)$ is possible.
-    - e.g., as enabled by a standard `rand()` function.
-- Divide the $[0,1]$ interval into $k$ regions, with region $i$ having size $P(x_i)$.
-- Sample $u \sim \mathcal{U}(0,1)$ and return the value associated to the region in which $u$ falls.
-
-<br>
-.center.width-60[![](figures/lec6/sampling.png)]
-
----
-
-class: middle
-
-.grid[
-.kol-1-3.center[
-$P(C)$
-
-| $C$ | $P$ |
-| --- | --- |
-| $\text{red}$ | $0.6$ |
-| $\text{green}$ | $0.1$ |
-| $\text{blue}$ | $0.3$ |
-]
-.kol-2-3[<br>
-$$\begin{aligned}
-0 \leq u < 0.6 &\to C = \text{red} \\\\
-0.6 \leq u < 0.7 &\to C = \text{green} \\\\
-0.7 \leq u < 1 &\to C = \text{blue} \\\\
-\end{aligned}$$
-]
-]
-
-.center.width-70[![](figures/lec6/sampling-colors.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Prior sampling
-
-Sampling from a Bayesian network, *without* observed evidence:
-- Sample each variable in turn, **in topological order**.
-- The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/ancestral-sampling.png)]
-
-<br>
-
-.center.width-100[![](figures/lec6/ancestral-sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec6/as1.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as2.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as3.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as4.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as5.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as6.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec6/as7.png)]
+We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
+- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
+- The complexity of a forward update is constant (in time and space) with $t$.
 
 ---
 
@@ -543,160 +388,61 @@ class: middle
 
 ## Example
 
-We will collect a bunch of samples from the Bayesian network:
+.center.width-80[![](figures/lec6/filtering.png)]
 
-$c, \lnot s, r, w$<br>
-$c, s, r, w$<br>
-$\lnot c, s, r, \lnot w$<br>
-$c, \lnot s, r, w$<br>
-$\lnot c, \lnot s, \lnot r, w$
+<br>
 
-If we want to know ${\bf P}(W)$:
-- We have counts $\langle w:4, \lnot w:1 \rangle$
-- Normalize to obtain $\hat{{\bf P}}(W) = \langle w:0.8, \lnot w:0.2 \rangle$
-- $\hat{{\bf P}}(W)$ will get closer to the true distribution ${\bf P}(W)$ as we generate more samples.
+.grid[
+.kol-1-4[]
+.kol-1-4.center[
 
----
+| $R\_{t-1}$ | $P(R\_t)$ |
+| ---------- | --------- |
+| $true$ | $0.7$ |
+| $false$ | $0.3$ |
 
-class: middle
+]
+.kol-1-4.center[
 
-## Analysis
+| $R\_{t}$ | $P(U\_t)$ |
+| ---------- | --------- |
+| $true$ | $0.9$ |
+| $false$ | $0.2$ |
 
-The probability that prior sampling generates a particular event is
-$$S\_\text{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
-i.e., the Bayesian network's joint probability.
-
-Let $N\_\text{PS}(x\_1, ..., x\_n)$ denote the number of samples of an event. We
-define the probability **estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_\text{PS}(x\_1, ..., x\_n) / N.$$
-
----
-
-class: middle
-
-Then,
-$$\begin{aligned}
-\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) &= \lim\_{N \to \infty} N\_\text{PS}(x\_1, ..., x\_n) / N \\\\
-&= S\_\text{PS}(x\_1, ..., x\_n) \\\\
-&= P(x\_1, ..., x\_n)
-\end{aligned}$$
-Therefore, prior sampling is *consistent*:
-$$P(x\_1, ..., x\_n) \approx N\_\text{PS}(x\_1, ..., x\_n) / N$$
-
----
-
-# Rejection sampling
-
-Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the proportion of samples $x$ **agreeing with the evidence** $e$ among all samples agreeing with the evidence.
-
-<br><br><br>
-.center.width-100[![](figures/lec6/rejection-sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/rejection-sampling.png)]
-
----
-
-class: middle
-
-
-## Analysis
-
-Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejection sampling:
-
-$$\begin{aligned}
-\hat{P}(x|e) &= N\_\text{PS}(x,e) / N\_\text{PS}(e) \\\\
-&= \frac{N\_\text{PS}(x,e)}{N} / \frac{N\_\text{PS}(e)}{N} \\\\
-&\approx P(x,e) / P(e) \\\\
-&= P(x|e)
-\end{aligned}$$
-
-Therefore, rejection sampling returns *consistent* posterior estimates.
-
-- The standard deviation of the error in each probability is $O(1/\sqrt{n})$, where $n$ is the number of samples used in the estimate.
-- **Problem**: many samples are rejected!
-    - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
-    - Evidence is not exploited when sampling.
-
----
-
-# Likelihood weighting
-
-Idea: *clamp* the evidence variables, sample the rest.
-- Problem: the resulting sampling distribution is not consistent.
-- Solution: **weight** by probability of evidence given parents.
-
-<br><br><br>
-.center.width-100[![](figures/lec6/likelihood-weighting-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/importance-sampling.png)]
+]
+]
 
 ???
 
-Probability estimates are built by summing up weights instead of ones and normalizing.
+Solve on blackboard.
 
 ---
 
-class: middle
+class: middle, black-slide
 
-.center.width-100[![](figures/lec6/lw1.png)]
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec6/pacman-with-beliefs.mp4" type="video/mp4">
+</video>
 
----
+Ghostbusters with a Bayes filter
+]
 
-class: middle
-count: false
-
-.center.width-100[![](figures/lec6/lw2.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-100[![](figures/lec6/lw3.png)]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-class: middle
-count: false
+# Smoothing
 
-.center.width-100[![](figures/lec6/lw4.png)]
+We want to compute ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
 
----
+Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$. Then,
 
-class: middle
-count: false
-
-.center.width-100[![](figures/lec6/lw5.png)]
-
----
-
-class: middle
-
-## Analysis
-
-The sampling probability for an event with likelihood weighting is
-$$S\_\text{WS}(x,e) = \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)),$$
-where the product is over the non-evidence variables.
-The weight for a given sample $x,e$ is
-$$w(x,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
-where the product is over the evidence variables.
-
-The weighted sampling probability is
 $$
 \begin{aligned}
-S\_\text{WS}(x,e) w(x,e) &= \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
-&= P(x,e)
+{\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
+&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
+&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -704,62 +450,35 @@ $$
 
 class: middle
 
-The estimated joint probability is computed as follows:
+Let the **backward** message $\mathbf{b}\_{k+1:t}$ correspond to ${\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
+$${\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
+where $\times$ is a pointwise multiplication of vectors.
 
-$$\begin{aligned}
-\hat{P}(x,e) &= N\_\text{WS}(x,e) w(x,e) / N \\\\
-&\approx S\_\text{WS}(x,e) w(x,e) \\\\
-&= P(x,e)
-\end{aligned}$$
 
-From this, the estimated posterior probability is given by:
-$$\begin{aligned}
-\hat{P}(x|e) &= \hat{P}(x,e) / \hat{P}(e) \\\\
-&\approx P(x,e) / P(e) = P(x|e).
-\end{aligned}$$
+This backward message can be computed using backwards recursion:
 
-Hence likelihood weighting returns *consistent* estimates.
+$$
+\begin{aligned}
+{\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k)
+\end{aligned}
+$$
 
----
-
-class: middle
-
-- Likelihood weighting is *helpful*:
-    - The evidence is taken into account to generate a sample.
-    - More samples will reflect the state of the world suggested by the evidence.
-- Likelihood weighting **does not solve all problems**:
-    - Performance degrades as the number of evidence variable increases.
-    - The evidence influences the choice of downstream variables, but not upstream ones.
-        - Ideally, we would like to consider the evidence when we sample each and every variable.
-
----
-
-# Inference by Markov chain simulation
-
-- **Markov chain Monte Carlo** (MCMC) algorithms are a family of sampling algorithms that generate samples through a Markov chain.
-- They generate a sequence of samples by making random changes to a preceding sample, instead of generating each sample from scratch.
-- Helpful to think of a Bayesian network as being in a particular *current state* specifying a value for each variable and generating a *next state* by making random changes to the current state.
-- Metropolis-Hastings is one of the most famous MCMC methods, of which **Gibbs sampling** is a special case.
+The first and last factors are given by the model. The second factor is obtained recursively. Therefore,
+$$\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} ).$$
 
 ---
 
 class: middle
 
-## Gibbs sampling
+## Forward-backward algorithm
 
-- Start with an arbitrary instance $x\_1, ..., x\_n$ consistent with the evidence.
-- Sample one variable at a time, conditioned on all the rest, but keep the evidence fixed.
-- Keep repeating this for a long time.
+.center.width-100[![](figures/lec6/forward-backward.png)]
 
-<br>
-.center.width-100[![](figures/lec6/gibbs-sampling.png)]
-
----
-
-class: middle
-
-- Both upstream and downstream variables condition on evidence.
-- In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
+Complexity:
+- Smoothing for a particular time step $k$ takes: $O(t)$
+- Smoothing a whole sequence (because of caching):  $O(t)$
 
 ---
 
@@ -767,55 +486,628 @@ class: middle
 
 ## Example
 
+.center.width-80[![](figures/lec6/smoothing.png)]
+
+???
+
+Solve on blackboard.
+
+---
+
+.pull-right.width-80[![](figures/lec6/weather.png)]
+
+# Most likely explanation
+
+Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+
+What is the weather sequence that is the most likely to explain this?
+- Does the absence of umbrella at day 3 means it wasn't raining?
+- Or did the director forget to bring it?
+- If it didn't rain on day 3, perhaps it didn't rain on day 4 either, but the director brought the umbrella just in case?
+
+Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+- The most likely sequence  **is not** the sequence of the most likely states!
+- The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
+$$
+\begin{aligned}
+&\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
+&= \alpha {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
+\end{aligned}
+$$
+- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
+$$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t}),$$
+where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
+- The update has its sum replaced by max, resulting in the **Viterbi algorithm**:
+$$\mathbf{m}\_{1:t+1} = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$$
+
+???
+
+Naive procedure: use smoothing to compute $P(X\_k|e\_{1:t})$, then output the sequence of the most likely value for each $k$.
+
+R: prepare a counter-example
+
+---
+
+class: middle
+
+## Example
+
+.center.width-90[![](figures/lec6/viterbi.png)]
+
+???
+
+<span class="Q">[Q]</span> How do you retrieve the path, in addition to its likelihood?
+
+---
+
+# Hidden Markov models
+
+So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
+- A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
+    - $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$
+    - $\mathbf{E}\_t = E\_t$, with domain $D\_{E\_t} = \\\{1, ..., R\\\}$
+- This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
+
+---
+
+class: middle
+
+## Note on terminology
+
+Some authors instead divide Markov models into two classes, depending on the observability of the system state:
+- Observable system state: Markov chains
+- Partially-observable system state: Hidden Markov models.
+
+We follow here instead the terminology of the textbook.
+
+
+---
+
+class: middle
+
+## Simplified matrix algorithms
+
+- The prior ${\bf P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
+- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
+- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
+$$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
+
+---
+
+class: middle
+
+- Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
+- If we use column vectors to represent forward and backward messages, then we have
+$$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
+$$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
+where $\mathbf{b}\_{t+1:t}$ is an all-one vector of size $S$.
+- Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
+---
+
+class: middle
+
+## Example
+
+Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+
+$$
+\begin{aligned}
+\mathbf{f}\_0 &= \left(\begin{matrix}
+    0.5 \\\\
+    0.5
+\end{matrix}\right)\\\\
+\mathbf{T} &= \left(\begin{matrix}
+0.7 & 0.3 \\\\
+0.3 & 0.7
+\end{matrix}\right)\\\\
+\mathbf{B} &= \left(\begin{matrix}
+0.9 & 0.1 \\\\
+0.2 & 0.8
+\end{matrix}\right)\\\\
+\mathbf{O}\_1 = \mathbf{O}\_2 = \mathbf{O}\_4 = \mathbf{O}\_5 &= \left(\begin{matrix}
+0.9 & 0.0 \\\\
+0.0 & 0.2
+\end{matrix}\right) \\\\
+\mathbf{O}\_3 &= \left(\begin{matrix}
+0.1 & 0.0 \\\\
+0.0 & 0.8
+\end{matrix}\right)
+\end{aligned}
+$$
+
+See `code/lecture7-forward-backward.ipynb` for the execution.
+
+---
+
+class: middle
+
+## Stationary distribution
+
+The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
+$$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
+Therefore, the stationary distribution corresponds to the (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
+
+---
+
+class: middle
+
+# Filters
+
+---
+
+class: middle
+
+.center.width-50[![](figures/lec6/robot-helicopter.png)]
+
+Suppose we want to track the position and velocity of a robot from noisy observations collected over time.
+
+Formally, we want to estimate **continuous** state variables such as
+- the position $\mathbf{X}\_t$ of the robot at time $t$,
+- the velocity $\mathbf{\dot{X}}\_t$ of the robot at time $t$.
+
+We assume *discrete* time steps.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Continuous variables
+
+Let $X: \Omega \to D\_X$ be a random variable.
+- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a *continuous random variable*.
+- If $X$ is absolutely continuous, its probability distribution is described by a **density function** $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
+$$P(a < X \leq b) = \int\_a^b p(x) dx,$$
+where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
+
+???
+
+Ref: http://ai.stanford.edu/~paskin/gm-short-course/lec1.pdf
+
+---
+
+class: middle
+
+## Uniform
+
+.center.width-60[![](figures/lec6/uniform.png)]
+
+The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
+$$
+p(x) = \begin{cases}
+\frac{1}{b-a} & \text{if } x \in \[a,b\]\\\\
+0 & \text{otherwise}
+\end{cases}$$
+where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
+
+
+---
+
+class: middle
+
+## Normal
+
+.center.width-60[![](figures/lec6/normal.png)]
+
+The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
+$$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
+
+???
+
+Comment that
+- $\mu$ is the location
+- $\sigma$ is the width of the normal
+
+---
+
+class: middle
+
+## Multivariate normal
+
+.center.width-60[![](figures/lec6/mvn.png)]
+
+The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
+where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
+
+---
+
+class: middle
+
+The (multivariate) Normal density is the only density for real random variables that is
+**closed under marginalization and multiplication**.
+Also
+- a linear (or affine) function of a Normal random variable is
+Normal;
+- a sum of Normal variables is Normal.
+
+For these reasons, most algorithms discussed in this course are tractable only for
+discrete random variables or Normal random variables.
+
+???
+
+Be more precise and cite Bishop pg 93?
+
+---
+
+# Continuous Bayes filter
+
+The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
+$$
+\begin{aligned}
+p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &= \alpha\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
+\end{aligned}
+$$
+where the normalization constant is
+$$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
+
+---
+
+# Kalman filter
+
+The **Kalman filter** is a special case of the Bayes filter, which assumes:
+- Gaussian prior
+- Linear Gaussian transition model
+- Linear Gaussian sensor model
+
+---
+
+class: middle
+
+## Linear Gaussian models
+
 .grid[
-.kol-1-4[
-1) Fix the evidence
-]
-.kol-1-4.width-100[![](figures/lec6/gibbs-init.png)]
-.kol-1-4[
-2) Randomly initialize the other variables
-]
-.kol-1-4.width-100[![](figures/lec6/gibbs-init2.png)]
-]
+.kol-1-2.center[
+<br><br><br>
+![](figures/lec6/lg-model1.png)
 
-3) Repeat
-- Choose a non-evidence variable $X$.
-- Resample $X$ from ${\bf P}(X|\text{all other variables})$.
+$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{\Sigma}\_{\mathbf{x}})$
 
-.center.width-100[![](figures/lec6/gibbs-process.png)]
+Transition model
+
+]
+.kol-1-2.center[
+![](figures/lec6/lg-model2.png)
+
+$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{C} \mathbf{x}\_t + \mathbf{d}, \mathbf{\Sigma}\_{\mathbf{e}})$
+
+Sensor model
+]
+]
 
 ---
 
 class: middle
 
-## Demo
+## Cheat sheet for Gaussian models (Bishop, 2006)
 
-See `code/lecture6-gibbs.ipynb`.
+Given a marginal Gaussian distribution for $\mathbf{x}$ and a linear Gaussian distribution for $\mathbf{y}$ given $\mathbf{x}$ in the form
+$$
+\begin{aligned}
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mu, \mathbf{\Lambda}^{-1}) \\\\
+p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{x}+\mathbf{b}, \mathbf{L}^{-1})
+\end{aligned}
+$$
+the marginal distribution of $\mathbf{y}$ and the conditional distribution of $\mathbf{x}$ given $\mathbf{y}$ are given by
+$$
+\begin{aligned}
+p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mu + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A}\mathbf{\Lambda}^{-1}\mathbf{A}^T) \\\\
+p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{\Sigma}\left(\mathbf{A}^T\mathbf{L}(\mathbf{y}-\mathbf{b}) + \mathbf{\Lambda}\mu\right), \mathbf{\Sigma})
+\end{aligned}$$
+where
+$$\mathbf{\Sigma} = (\mathbf{\Lambda} + \mathbf{A}^T \mathbf{L}\mathbf{A})^{-1}.$$
 
 ---
 
 class: middle
 
+## Filtering Gaussian distributions
 
-## Rationale
+- .italic[Prediction step:]<br><br>
+If the distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
+is also a Gaussian distribution.
+- .italic[Update step:]<br><br>
+If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
+is also a Gaussian distribution.
 
-The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
+???
 
-See 14.5.2 for a technical proof.
+Explain how this is consistent with the previous slide.
 
+---
+
+class: middle
+
+Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{x}\_t | \mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
+
+- Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
+- By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
+
+---
+
+class: middle
+
+## 1D example
+
+Gaussian random walk:
+- Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 | \mu\_0, \sigma\_0^2) $$
+- The transition model adds random perturbations of constant variance:
+    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_{t+1}|x\_t, \sigma\_x^2)$$
+- The sensor model yields measurements with Gaussian noise of constant variance:
+    $$p(e\_{t}|x\_t) =  \mathcal{N}(e\_t | x\_t, \sigma\_e^2)$$
+
+---
+
+class: middle
+
+The one-step predicted distribution is given by
+$$
+\begin{aligned}
+p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
+&= \alpha \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
+&= \alpha \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
+&... \,\, \text{(simplify by completing the square)} \\\\
+&= \alpha \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&= \mathcal{N}(x\_1 | \mu\_0, \sigma\_0^2 + \sigma\_x^2)
+\end{aligned}
+$$
+
+Note that the same result can be obtained by using instead the Gaussian models identities.
+
+???
+
+Check Bishop page 93 for another derivation.
+
+---
+
+class: middle
+
+For the update step, we need to condition on the observation at the first time step:
+$$
+\begin{aligned}
+p(x\_1 | e\_1) &= \alpha p(e\_1 | x\_1) p(x\_1) \\\\
+&= \alpha \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&= \alpha \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
+&= \mathcal{N}\left(x\_1 \bigg\vert \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
+\end{aligned}
+$$
+
+---
+
+class: middle
+
+.center.width-70[![](figures/lec6/walk.png)]
+
+In summary, the update equations given a new evidence $e\_{t+1}$ are:
+$$
+\begin{aligned}
+\mu\_{t+1} &= \frac{(\sigma\_t^2 + \sigma\_x^2) e\_{t+1} + \sigma\_e^2 \mu\_t }{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2} \\\\
+\sigma\_{t+1}^2 &= \frac{(\sigma_t^2 + \sigma\_x^2) \sigma\_e^2}{\sigma\_t^2 + \sigma\_x^2 + \sigma\_e^2}
+\end{aligned}
+$$
+
+???
+
+We can interpret
+the calculation for the new mean $\mu\_{t+1}$ as simply a weighted mean of the new observation
+$e\_{t+1}$ and the old mean $\mu\_t$ .
+- If the observation is unreliable, then $\sigma\_e^2$ is large and we pay more
+attention to the old mean;
+- If the observation is reliable, then we pay more attention to the evidence and less to the old mean.
+- if the old mean is unreliable ($\sigma\_t^2$ is large) or the process is highly
+unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
+
+---
+
+class: middle
+
+## General Kalman update
+
+The same derivations generalize to multivariate normal distributions.
+
+Assuming the transition and sensor models
+$$
+\begin{aligned}
+p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}}) \\\\
+p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}}),
+\end{aligned}
+$$
+we arrive at the following general update equations:
+$$
+\begin{aligned}
+\mu\_{t+1} &= \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t) \\\\
+\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \\\\
+\mathbf{K}\_{t+1} &= (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_e)^{-1}
+\end{aligned}$$
+where $\mathbf{K}\_{t+1}$ is the Kalman gain matrix.
+
+???
+
+Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
+
+These equations intuitively make sense.
+
+Consider
+the update for the mean state estimate $\mu\_{t+1}$.
+- The term  $\mathbf{F}\mathbf{\mu}\_t$ is the predicted state at $t + 1$,
+- so
+$\mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ is the predicted observation.
+- Therefore, the term $\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
+the predicted observation.
+- This is multiplied by $ \mathbf{K}\_{t+1}$ to correct the predicted state; hence,
+$ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation relative to the prediction.
+
+---
+
+class: middle
+
+## 2D tracking: filtering
+
+.center.width-90[![](figures/lec6/kf-filtering.png)]
+
+???
+
+In this example, $\mathbf{X}$ includes the X-Y positions and the X-Y velocities.
+
+---
+
+class: middle
+
+## 2D tracking: smoothing
+
+.center.width-90[![](figures/lec6/kf-smoothing.png)]
+
+---
+
+class: middle, black-slide
+
+## Apollo guidance computer
+
+- The Kalman filter put man on the Moon, literally!
+- The onboard guidance software of Saturn-V used a Kalman filter to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+
+.grid[
+.kol-1-6[]
+.kol-1-3[.width-100[![](figures/lec6/saturn-v.jpg)]]
+.kol-1-3[.width-100[![](figures/lec6/agc.jpg)]]
+]
+
+
+.footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
+
+---
+
+class: center, black-slide, middle
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/aNzGCMRnvXQ?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+
+---
+
+# Dynamic Bayesian networks
+
+.grid[
+.kol-2-3[.center.width-100[![](figures/lec6/dbn-cartoon.png)]]
+.kol-1-3[.center.width-80[![](figures/lec6/robot-dbn1.svg)]]
+]
+
+
+Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables over time, using multiple sources of evidence. Idea:
+- Repeat a fixed Bayes net structure at each time $t$.
+- Variables from time $t$ condition on those from $t-1$.
+
+DBNs are a generalization of HMMs and of the Kalman filter.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## Exact inference
+
+.center.width-100[![](figures/lec6/dbn-unrolling.svg)]
+
+Unroll the network through time and run any exact inference algorithm (e.g., variable elimination)
+- Problem: inference cost for each update grows with $t$.
+- Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
+    - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
+    - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
+
+---
+
+class: middle
+
+## Approximate inference
+
+If exact inference in DBNs intractable, then let's use *approximate inference* instead.
+- Likelihood weighting? Generated samples **pay no attention** to the evidence!
+- The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
+
+$\Rightarrow$ We need a better solution!
+
+---
+
+# Particle filter
+
+ Basic idea:
+- Maintain a finite population of samples, called **particles**.
+    - The representation of our beliefs is a list of $N$ particles.
+- Ensure the particles track the high-likelihood regions of the
+state space.
+- Throw away samples that have very low weight, according to the evidence.
+- Replicate those that have high weight.
+
+This scales to high dimensions!
+
+.center.width-50[![](figures/lec6/robot.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## Update cycle
+
+.center.width-100[![](figures/lec6/particle-filter.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec6/pf-algorithm.png)]
+
+---
+
+class: middle
+
+## Robot localization
+
+.center.width-70[![](figures/lec6/pf-demo.png)]
+
+.center[(See demo)]
+
+---
+
+class: middle, black-slide, center
+
+.width-50[![](figures/lec6/ragi.jpg)]
+
+The RAGI robot makes use of a particle filter to locate itself within Montefiore.<br>
+(See [RTBF, mars 2019](https://www.rtbf.be/info/regions/liege/detail_liege-l-intelligence-artificielle-vous-accueille-a-l-universite?id=10183022).)
+
+---
+
+class: middle
+
+.width-100[![](figures/lec6/ragi-localization.png)]
+
+.footnote[Credits: Tom Ewbank, RAGI.]
 
 ---
 
 # Summary
 
-- Exact inference by variable elimination .
-    - NP-complete on general graphs, but polynomial on polytrees.
-    - space = time, very sensitive to topology.
-- Approximate inference gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
-    - Likelihood weighting does poorly when there is lots of evidence.
-    - Likelihood weighting and Gibbs sampling are generally insensitive to topology.
-    - Convergence can be slow with probabilities close to 1 or 0.
-    - Can handle arbitrary combinations of discrete and continuous variables.
+- Temporal models use state and sensor variables replicated over time.
+    - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
+- The Markov and stationarity assumptions imply that we only need to specify
+    - a transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
+    - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
+- Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
+- Filter algorithms are all based on the core of idea of
+    - projecting the current belief state through the transition model,
+    - updating the prediction according to the new evidence.
 
 ---
 
@@ -828,4 +1120,5 @@ The end.
 
 # References
 
-- Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.
+- Kalman, Rudolph Emil. "A new approach to linear filtering and prediction problems." Journal of basic Engineering 82.1 (1960): 35-45.
+- Bishop, Christopher "Pattern Recognition and Machine Learning" (2006).

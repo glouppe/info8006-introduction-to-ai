@@ -2,226 +2,1128 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 4: Games and Adversarial search
+Lecture 4: Representing uncertain knowledge
 
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
----
+???
 
-class: center, black-slide, middle
+R: remove/summarize some of the too verbose slides
 
-<iframe width="640" height="400" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+R: expose the plan and structure of the next lectures on probability
+R: motivate why this is important in AI (and this is not just one more probability theory class)
+R: trim some stuff less directly important for AI?
+
+R: Bayes rule/inference -> emphasis that is like Sherlock Holm. Start from a set of possibilities (prior) and discard/weigh down those not compatible with the observations/evidence.
+R: https://neilkakkar.com/Bayes-Theorem-Framework-for-Critical-Thinking.html?s=09 check this
 
 ---
 
 # Today
 
-- How to act rationally in a *multi-agent* environment?
-- How to anticipate and respond to the **arbitrary behavior** of other agents?
-- Adversarial search
-    - Minimax
-    - $\alpha-\beta$ pruning
-    - H-Minimax
-    - Expectiminimax
-    - Monte Carlo Tree Search
-- Modeling assumptions
-- State-of-the-art agents.
+.grid[
+.kol-1-2[
+- Probability:
+    - Random variables
+    - Joint and marginal distributions
+    - Conditional distributions
+    - Product rule, Chain rule, Bayes' rule
+    - Inference
+- Bayesian networks:
+    - Representing uncertain knowledge
+    - Semantics
+    - Construction
+]
+.kol-1-2[
+.width-90[![](figures/lec4/proba-cartoon.png)]
+]
+]
+
+.alert[Do not overlook this lecture!]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
-# Minimax
+# Quantifying uncertainty
 
 ---
 
-# Games
+# Ghostbusters
 
-- A **game** is a multi-agent environment where agents may have either *conflicting* or *common* interests.
-- Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
-    - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
-    - This is different from search where a solution is a *fixed sequence*.
-- Time **limits**.
-    - Branching factor is often very large.
-    - Unlikely to find goal with standard search algorithms, we need to *approximate*.
+.grid[
+.kol-1-2[
+A ghost is *hidden* in the grid somewhere.
+
+Sensor readings tell how close a square is to the ghost:
+- On the ghost: red
+- 1 or 2 away: orange
+- 3 away: yellow
+- 4+ away green
+]
+.kol-1-2[.width-100[![](figures/lec4/gb-grid.png)]]
+]
+Sensors are **noisy**, but we know the probability values $P(\text{color}|\text{distance})$, for all colors and all distances.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec4/gb-noprob.mp4" type="video/mp4">
+</video>]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-A game is a mathematical model of strategic interaction between rational decision makers.
+Could we use a logical agent for this game?
+
+---
+
+# Uncertainty
+
+General setup:
+- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
+- **Unobserved** variables: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
+- (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
 
 ---
 
 class: middle
 
-## Types of games
+How to handle uncertainty?
+- A purely logical approach either:
+    - risks falsehood, or
+    - leads to conclusions that are too weak for decision making.
+- **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
 
-- **Deterministic** or *stochastic*?
-- **Perfect** or *imperfect* information?
-- **Two** or *more* players?
+???
 
+Falsehood: because of ignorance about the world or laziness in the model.
+
+Weak conclusions: remember the Wumpus example.
+
+---
+
+# Probabilistic assertions
+
+Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
+- Probability values **summarize** effects of
+    - *laziness* (failure to enumerate all world states)
+    - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
+- (Bayesian subjective) Probabilities relate propositions to one's own state of knowledge (or lack thereof).
+    - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
+
+These are **not** claims of a "frequent tendency" in the current situation (but might be learned from past experience of similar situations).
+
+---
+
+# Kolmogorov's probability theory
+
+Begin with a set $\Omega$, the **sample space**.
+
+$\omega \in \Omega$ is a *sample point* or possible world.
+
+A **probability space** is a sample space equipped with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
+- 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$.
+- 2nd axiom: $P(\Omega) = 1$.
+- 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples.
+
+where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
 
 ---
 
 class: middle
 
-## Formal definition
+## Example
 
-A **game** is formally defined as a kind of search problem with the following components:
-- The *initial state* $s_0$ of the game.
-- A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
-- A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.
-- A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
-- A *terminal test* which determines whether the game is over.
+- $\Omega$ = the 6 possible rolls of a die.
+- $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding than an outcome of the die.
+- Assignment $P$ for a fair die:
+$$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
+
+---
+
+# Random variables
+
+- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its outcomes.
+    - e.g., $\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $\text{Odd}(\omega) = (\omega\,\text{mod}\,2 = 1)$.
+- $P$ induces a *probability distribution* for any random variable $X$.
+    - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
+    - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
+- An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n)\_i\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
+- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
+    - $R$: Is it raining?
+    - $T$: Is it hot or cold?
+    - $L$: Where is the ghost?
 
 ---
 
 class: middle
 
-- A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
-    - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
-- Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
-    - Nodes are game states.
-    - Edges are actions.
+## Notations
+
+- Random variables are written in upper roman letters: $X$, $Y$, etc.
+- Realizations of a random variable are written in corresponding lower case letters.
+   E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
+- The probability value of the realization $x$ is written as $P(X=x)$.
+- When clear from context, this will be abbreviated as $P(x)$.
+- The probability distribution of the random variable $X$ is denoted as ${\bf{P}}(X)$. This corresponds e.g. to a vector of numbers, one for each of the probability values $P(X=x\_i)$ (and not to a single scalar value!).
 
 ---
 
-class: middle
+# Probability distributions
 
-## Tic-Tac-Toe game tree
+For discrete variables, the **probability distribution** can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
 
-.width-100[![](figures/lec4/tictactoe.png)]
-
----
-
-class: middle
-
-## Zero-sum games
-
-- In a **zero-sum** game, the total payoff to all players is *constant* for all games.
-    - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
-- For two-player games, agents share the **same utility** function, but one wants to *maximize* it while the other wants to *minimize* it.
-    - MAX maximizes the game's $\text{utility}$ function.
-    - MIN minimizes the game's $\text{utility}$ function.
-- *Strict competition*.
-    - If one wins, the other loses, and vice-versa.
+One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
 
 <br>
-.center.width-40[![](figures/lec4/zero-sum-cartoon.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.grid[
+.center.kol-1-2[
+${\bf P}(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.6$ |
+| $\text{rain}$ | $0.1$ |
+| $\text{fog}$ | $0.3$ |
+| $\text{meteor}$ | $0.0$ |
+
+]
+.kol-1-2[.width-100[![](figures/lec4/pw.png)]]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
+- This table can be infinite!
+- By construction, probability values are *normalized* (i.e., sum to $1$).
 
 ---
 
 class: middle
 
-.exercise[What is an optimal strategy (or perfect play)? How do we find it?]
+## Joint distributions
+
+ A **joint** probability distribution over a set of random variables $X_1, ..., X_n$ specifies
+the probability of each (combined) outcome:
+
+$$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
+
+<br>
+
+.center[${\bf P}(T,W)$]
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 
 ---
 
-# Assumptions
+class: middle
 
-- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
-    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
-- We will call our two players **MAX** and *MIN*. **MAX** moves first.
+From a joint distribution, the probability of any event can be calculated.
+- Probability that it is hot and sunny?
+- Probability that it is hot?
+- Probability that it is hot or sunny?
 
-<br><br><br>
-.center.width-50[![](figures/lec4/tictactoe-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+Interesting events often correspond to **partial assignments**, e.g. $P(\text{hot})$.
 
 ---
 
-# Adversarial search
+class: middle
 
-.grid[.kol-2-3[
-- In a search problem, the optimal solution is a sequence of actions leading to a goal state.
-    - i.e., a terminal state where MAX wins.
-- In a game, the opponent (MIN) may react *arbitrarily* to a move.
-- Therefore, a player (MAX) must define a contingent **strategy** which specifies
-    - its moves in the initial state,
-    - its moves in the states resulting from every possible response by MIN,
-    - its moves in the states resulting from every possible response by MIN in those states, ...
+## Marginal distributions
+
+The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
+
+.center.grid[
+.kol-1-3[
+${\bf P}(T,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
 ]
-.kol-1-3.width-100[
-![](figures/lec4/adversarial-search-cartoon.png)
+.kol-1-3[
+${\bf P}(T)$
+
+| $T$ | $P$ |
+| --- | --- |
+| $\text{hot}$ | $0.5$ |
+| $\text{cold}$ | $0.5$ |
+
+$P(t) = \sum_w P(t, w)$
+]
+.kol-1-3[
+${\bf P}(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.6$ |
+| $\text{rain}$ | $0.4$ |
+
+$P(w) = \sum_t P(t, w)$
 ]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+Intuitively, marginal distributions are sub-tables which eliminate variables.
 
 ???
 
-Analogy with chess, checkers or belotte.
-
----
-
-# Minimax
-
-The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an *optimal adversary* (MIN).
-
-.center.width-100[![](figures/lec4/minimax.png)]
-
-The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
-- Assuming that MIN is an optimal adversary that maximizes the *worst-case outcome* for MAX.
-- This is equivalent to not making an assumption about the strength of the opponent.
+To what events are marginal probabilities associated?
 
 ---
 
 class: middle
 
-.width-100[![](figures/lec4/minimax-example.png)]
+## Conditional distributions
+
+The **conditional probability** of a realization $a$ given the realization $b$ is defined as the ratio of the probability of the joint realization $a$ and $b$, and the probability of $b$:
+$$P(a|b) = \frac{P(a,b)}{P(b)}.$$
+
+Indeed, observing $B=b$ rules out all those possible
+worlds where $B \neq b$, leaving a set whose total probability is just $P(b)$. Within that set, the worlds for which $A=a$ satisfy $A=a \wedge B=b$ and constitute a fraction $P(a,b)/ P(b)$.
+
+.center.width-35[![](figures/lec4/conditional_b.png)]
 
 ---
 
 class: middle
 
-## Properties of Minimax
+Conditional distributions are probability distributions over some variables, given *fixed* values for others.
+.center.grid[
+.kol-1-3[
+${\bf P}(T,W)$
 
-- *Completeness*:
-    - Yes, if tree is finite.
-- *Optimality*:
-    - Yes, if MIN is an optimal opponent.
-    - What if MIN is suboptimal?
-        - Show that MAX will do even better.
-    - What if MIN is suboptimal and predictable?
-        - Other strategies might do better than Minimax. However they will do worse on an optimal opponent.
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+]
+.kol-1-3[
+${\bf P}(W|T=\text{hot})$
+
+| $T$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.8$ |
+| $\text{rain}$ | $0.2$ |
+]
+.kol-1-3[
+${\bf P}(W|T=\text{cold})$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.4$ |
+| $\text{rain}$ | $0.6$ |
+]
+]
+
+???
+
+R: check book
+
+Is a conditional distribution defined on the same sample and probability space than the joint?
 
 ---
 
 class: middle
 
-## Minimax efficiency
+## Normalization trick
 
-- Assume $\text{minimax}(s)$ is implemented using its recursive definition.
-- How *efficient* is minimax?
-    - Time complexity: same as DFS, i.e., $O(b^m)$.
-    - Space complexity:
-        - $O(bm)$, if all actions are generated at once, or
-        - $O(m)$, if actions are generated one at a time.
+.center.grid[
+.kol-1-3[
+${\bf P}(T,W)$
 
-.exercise[Do we need to explore the whole game tree?]
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+]
+.kol-1-3[
+$\rightarrow {\bf P}(T=\text{cold},W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+
+*Select* the joint probabilities matching the evidence $T=\text{cold}$.
+
+]
+.kol-1-3[
+$\rightarrow {\bf P}(W|T=\text{cold})$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.4$ |
+| $\text{rain}$ | $0.6$ |
+
+*Normalize* the selection (make it sum to $1$).
+
+]
+]
 
 ---
 
-# Pruning
+# Probabilistic inference
 
-.center.width-70[![](figures/lec4/minimax-incomplete-tree.png)]
+Probabilistic **inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
 
-.width-100[![](figures/lec4/minimax-incomplete-formula.png)]
+- We generally compute conditional probabilities.
+    - e.g., $P(\text{on time} | \text{no reported accidents}) = 0.9$
+    - These represent the agent's *beliefs* given the evidence.
+- Probabilities change with new evidence:
+    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{5AM}) = 0.95$
+    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{rain}) = 0.8$
+    - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
+    - Observing new evidence causes *beliefs to be updated*.
 
-Therefore, it is possible to compute the **correct** minimax decision *without looking at every node* in the tree.
+.center.width-20[![](figures/lec4/inference-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
-.center.width-80[![](figures/lec4/minimax-incomplete-stepbystep.png)]
+## General case
+- *Evidence* variables: $E_1, ..., E_k = e_1, ..., e_k$
+- *Query* variables: $Q$
+- *Hidden* variables: $H_1, ..., H_r$
+- $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
+
+**Inference** is the problem of computing **${\bf P}(Q|e_1, ..., e_k)$**.
+
+---
+
+# Inference by enumeration
+
+Start from the joint distribution ${\bf P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+
+1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
+2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
+$${\bf P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} {\bf P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
+3. Normalize:
+<br>
+$$\begin{aligned}
+Z &= \sum_q P(q,e_1,...,e_k) \\\\
+{\bf P}(Q|e_1, ..., e_k) &= \frac{1}{Z} {\bf P}(Q,e_1,...,e_k)
+\end{aligned}$$
+
+---
+
+class: middle
+
+## Example
+
+.grid[
+.kol-1-2[
+
+- ${\bf P}(W)$?
+- ${\bf P}(W|\text{winter})$?
+- ${\bf P}(W|\text{winter},\text{hot})$?
+
+]
+.center.kol-1-2[
+
+| $S$ | $T$ | $W$ | $P$ |
+| --- | --- | --- | --- |
+| $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
+| $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{sun}$ | $0.1$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{sun}$ | $0.1$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{sun}$ | $0.15$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{rain}$ | $0.2$ |
+
+]
+]
+
+---
+
+class: middle
+
+## Complexity
+
+- Inference by enumeration can be used to answer probabilistic queries for *discrete variables* (i.e., with a finite number of values).
+- However, enumeration **does not scale**!
+    - Assume a domain described by $n$ variables taking at most $d$ values.
+    - Space complexity: $O(d^n)$
+    - Time complexity: $O(d^n)$
+
+.exercise[Can we reduce the size of the representation of the joint distribution?]
+
+---
+
+# Product rule
+
+$$P(a, b) = P(b)P(a|b)$$
+
+## Example
+
+.center.grid[
+.kol-1-3[
+${\bf P}(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.8$ |
+| $\text{rain}$ | $0.2$ |
+]
+.kol-1-3[
+${\bf P}(D|W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{wet}$ | $\text{sun}$ | $0.1$ |
+| $\text{dry}$ | $\text{sun}$ | $0.9$ |
+| $\text{wet}$ | $\text{rain}$ | $0.7$ |
+| $\text{dry}$ | $\text{rain}$ | $0.3$ |
+
+]
+.kol-1-3[
+${\bf P}(D,W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{wet}$ | $\text{sun}$ | ? |
+| $\text{dry}$ | $\text{sun}$ | ? |
+| $\text{wet}$ | $\text{rain}$ | ? |
+| $\text{dry}$ | $\text{rain}$ | ? |
+
+]
+]
+
+---
+
+# Chain rule
+
+More generally, any joint distribution can always be written as an incremental product of conditional distributions:
+
+$$
+\begin{aligned}
+P(x\_1,x\_2,x\_3) &= P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2) \\\\
+P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})
+\end{aligned}
+$$
+
+---
+
+# Independence
+
+$A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
+- $P(a|b) = P(a)$, or
+- $P(b|a) = P(b)$, or
+- $P(a,b) = P(a)P(b)$
+
+Independence is denoted as $A \perp B$.
+
+---
+
+class: middle
+
+## Example 1
+
+.center.width-40[![](figures/lec4/weather-independence.svg)]
+
+$$
+\begin{aligned}
+&P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather}) \\\\
+&= P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})
+\end{aligned}$$
+
+The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
+
+---
+
+class: middle
+
+## Example 2
+
+For $n$ independent coin flips, the joint distribution can be fully **factored** and represented as the product of $n$ 1-entry tables.
+- **$2^n \to n$**
+
+---
+
+# Conditional independence
+
+$A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$, $b \in D_B$ and $c \in D_C$,
+- $P(a|b,c) = P(a|c)$, or
+- $P(b|a,c) = P(b|c)$, or
+- $P(a,b|c) = P(a|c)P(b|c)$
+
+Conditional independence is denoted as $A \perp B | C$.
+
+---
+
+class: middle
+
+- Using the chain rule, the join distribution can be factored as a product of conditional distributions.
+- Each conditional distribution may potentially be *simplified by conditional independence*.
+- Conditional independence assertions allow probabilistic models to **scale up**.
+
+---
+
+class: middle
+
+.center.width-35[![](figures/lec4/tooth.png)]
+
+## Example 1
+
+Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
+
+$\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
+Therefore, we can write:
+
+$$
+\begin{aligned}
+&P(\text{toothache}, \text{catch}, \text{cavity}) \\\\
+&= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity}) \\\\
+&= P(\text{toothache}|\text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})
+\end{aligned}
+$$
+
+In this case, the representation of the joint distribution reduces to $2+2+1$ independent numbers (instead of $2^n-1$).
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## Example 2 (Naive Bayes)
+
+More generally, from the product rule, we have
+$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$$
+
+Assuming *pairwise conditional independence* between the effects given the cause, it comes:
+$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|\text{cause}) $$
+
+This probabilistic model is called a **naive Bayes** model.
+- The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
+- Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
+
+???
+
+This is an important model you should know about!
+
+---
+
+class: middle, center, red-slide
+count: false
+
+Study the next slide. .bold[Twice].
+
+---
+
+# The Bayes' rule
+
+.grid[
+.kol-2-3[
+
+The product rule defines two ways to factor the joint distribution of two random variables.
+    $$P(a,b) = P(a|b)P(b) = P(b|a)P(a)$$
+Therefore,
+**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}.$$**
+]
+.kol-1-3[
+.circle.width-100[![](figures/lec4/thomas.png)]
+]
+]
+
+- $P(a)$ is the prior belief on $a$.
+- $P(b)$ is the probability of the evidence $b$.
+- $P(a|b)$ is the posterior belief on $a$, given the evidence $b$.
+- $P(b|a)$ is the conditional probability of $b$ given $a$. Depending on the context, this term is called the likelihood.
+
+---
+
+class: middle
+
+Why is this helpful?
+- The Bayes rule let us build one conditional from its reverse.
+- Often one conditional is tricky, but the other is simple.
+
+This equation is the **foundation** of many AI systems.
+
+---
+
+class: middle
+
+## Example: diagnostic probability from causal probability.
+
+$$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
+where
+- $P(\text{effect}|\text{cause})$ quantifies the relationship in the *causal* direction.
+- $P(\text{cause}|\text{effect})$ describes the **diagnostic** direction.
+
+Let $S$=stiff neck and $M$=meningitis.
+Given $P(s|m) = 0.7$, $P(m) = 1/50000$, $P(s) = 0.01,$
+it comes
+$$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
+
+---
+
+# Ghostbusters, revisited
+
+- Let us assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
+- We start with a uniform **prior distribution** ${\bf P}(G)$ over ghost locations.
+- We assume a sensor *reading model* ${\bf P}(R\_{i,j}|G)$.
+    - That is, we know what the sensors do.
+    - $R_{i,j}$ = reading color measured at $[i,j]$
+        - e.g., $P(R_{1,1}=\text{yellow}|G=[1,1])=0.1$
+    - Two readings are conditionally independent, given the ghost position.
+
+???
+
+This is a Naive Bayes model!
+
+---
+
+class: middle
+
+- We can calculate the **posterior distribution** ${\bf P}(G|R\_{i,j})$ using Bayes' rule:
+$${\bf P}(G|R\_{i,j}) = \frac{ {\bf P}(R\_{i,j}|G){\bf P}(G)}{ {\bf P}(R\_{i,j})}.$$
+- For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec4/gb-prob.mp4" type="video/mp4">
+</video>]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+What if we had chosen a different prior?
+
+---
+
+# Frequentism vs. Bayesianism
+
+What do probability values represent?
+- The objectivist *frequentist* view is that probabilities are real aspects of the universe.
+    - i.e., propensities of objects to behave in certain ways.
+    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
+- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
+    - i.e., probabilities do not have external physical significance.
+    - This is the interpretation of probabilities that we will use!
+
+---
+
+class: middle
+
+# Probabilistic reasoning
+
+---
+
+class: middle
+
+## Representing knowledge
+
+- The joint probability distribution can answer any question about the domain.
+- However, its representation can become **intractably large** as the number of variable grows.
+- *Independence* and *conditional independence* reduce the number of probabilities that need to be specified in order to define the full joint distribution.
+- These relationships can be represented explicitly in the form of a **Bayesian network**.
+
+---
+
+# Bayesian networks
+
+A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
+- Each *node* corresponds to a *random variable*.
+    - Can be observed or unobserved.
+    - Can be discrete or continuous.
+- Each *edge* indicate dependency relationships.
+    - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
+- Each node $X_i$ is annotated with a **conditional probability distribution** ${\bf P}(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
+    - In the simplest case, conditional distributions are represented as conditional probability tables (CTPs).
+
+---
+
+class: middle
+
+.center.width-45[![](figures/lec4/alarm.png)]
+
+## Example 1
+
+I am at work, neighbor John calls to say my alarm is ringing, but neighbor
+Mary does not call. Sometimes it's set off by minor earthquakes.
+Is there a burglar?
+
+- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
+- Network topology from "causal" knowledge:
+    - A burglar can set the alarm off
+    - An earthquake can set the alaram off
+    - The alarm can cause Mary to call
+    - The alarm can cause John to call
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec4/burglary2.svg)]
+
+---
+
+# Semantics
+
+A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
+
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+
+## Example
+
+$$
+\begin{aligned}
+P(j, m, a, \lnot b, \lnot e) &= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
+&= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998 \\\\
+&\approx 0.00063
+\end{aligned}
+$$
+
+---
+
+class: middle
+
+Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in the proper joint probability?
+- By the *chain rule*, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
+- Provided that we assume **conditional independence** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
+$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
+- Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[.width-90[![](figures/lec4/tooth.png)]]
+.kol-1-2[.width-100[![](figures/lec4/dentist-network.svg)]]
+]
+<br>
+
+## Example 2
+
+The topology of the network encodes conditional independence assertions:
+- $\text{Weather}$ is independent of the other variables.
+- $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid.center[
+.kol-1-3[.width-80[![](figures/lec4/traffic1.png)]]
+.kol-2-3[.width-90[![](figures/lec4/traffic2.png)]<br><br>]
+]
+
+## Example 3
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec4/traffic1-bn.png)]]
+.kol-2-5[
+${\bf P}(R)$
+
+| $R$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $0.25$ |
+| $\lnot\text{r}$ | $0.75$ |
+]
+.kol-2-5[
+${\bf P}(T|R)$
+
+| $R$ | $T$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $\text{t}$ | $0.75$ |
+| $\text{r}$ | $\lnot\text{t}$ | $0.25$ |
+| $\lnot\text{r}$ | $\text{t}$ | $0.5$ |
+| $\lnot\text{r}$ | $\lnot\text{t}$ | $0.5$ |
+]
+]
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec4/traffic3.png)]
+
+## Example 3 (bis)
+
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec4/traffic2-bn.png)]]
+.kol-2-5[
+${\bf P}(T)$
+
+| $T$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $9/16$ |
+| $\lnot\text{r}$ | $7/16$ |
+]
+.kol-2-5[
+${\bf P}(R|T)$
+
+| $T$ | $R$ | $P$ |
+| --- | --- | --- |
+| $\text{t}$ | $\text{r}$ | $1/3$ |
+| $\text{t}$ | $\lnot\text{r}$ | $2/3$ |
+| $\lnot\text{t}$ | $\text{r}$ | $1/7$ |
+| $\lnot\text{t}$ | $\lnot\text{r}$ | $6/7$ |
+]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Construction
+
+Bayesian networks are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
+
+## Construction algorithm
+
+1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
+2. For $i=1$ to $n$:
+    1. Add $X\_i$ to the network.
+    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    3. For each parent, insert a link from the parent to $X\_i$.
+    4. Write down the CPT.
+
+---
+
+class: middle
+
+.center.width-100[
+![](figures/lec4/burglary-mess.svg)
+]
+
+.exercise[Do these networks represent the same distribution?]
+
+???
+
+For the left network:
+
+- P (J|M ) = P (J)? No
+- P (A|J, M ) = P (A|J)? P (A|J, M ) = P (A)? No
+- P (B|A, J, M ) = P (B|A)? Yes
+- P (B|A, J, M ) = P (B)? No
+- P (E|B, A, J, M ) = P (E|A)? No
+- P (E|B, A, J, M ) = P (E|A, B)? Yes
+
+---
+
+class: middle
+
+## Compactness
+
+- A CPT for boolean $X_i$ with $k$ boolean parents has $2^k$ rows for the combinations of parent values.
+- Each row requires one number $p$ for $X_i = \text{true}$.
+    - The number for $X_i=\text{false}$ is just $1-p$.
+- If each variable has no more than $k$ parents, the complete network requires $O(n \times 2^k)$ numbers.
+    - i.e., grows **linearly with $n$**, vs. $O(2^n)$ for the full joint distribution.
+- For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
+- Compactness depends on the *node ordering*.
+
+---
+
+# Independence
+
+Important question: Are two nodes independent given certain evidence?
+- If yes, this can be proved using algebra (tedious).
+- If no, this can be proved with a counter example.
+
+<br>
+
+.center.width-45[![](figures/lec4/xyz.png)]
+
+.center[Example: Are $X$ and $Z$ necessarily independent?]
+
+---
+
+class: middle
+
+## Cascades
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
+- In numbers:
+    - $P(y|x)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot y|\lnot x)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-100[![](figures/lec4/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes.
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(x)P(y|x)P(z|y)}{P(x)P(y|x)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+We say that the evidence along the cascade **"blocks"** the influence.
+
+]
+.kol-1-2.center[.width-100[![](figures/lec4/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## Common parent
+
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Project due causes both forums busy and lab full.
+- In numbers:
+    - $P(x|y)=1$,
+    - $P(\lnot x|\lnot y)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-80[![](figures/lec4/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(y)P(x|y)P(z|y)}{P(y)P(x|y)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+Observing the parent blocks the influence between the children.
+]
+.kol-1-2.center[.width-80[![](figures/lec4/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## v-structures
+
+Are $X$ and $Y$ independent? Yes.
+- The ballgame and the rain cause traffic, but they are not correlated.
+- (Prove it!)
+
+Are $X$ and $Y$ independent given $Z$? No!
+- Seeing traffic puts the rain and the ballgame in competition as explanation.
+- This is **backwards** from the previous cases. Observing a child node *activates* influence between parents.
+]
+.kol-1-2.center[.width-80[![](figures/lec4/v-structure.png)]
+
+$X$: rain,
+$Y$: ballgame,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y)P(z|x,y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+
+---
+
+class: middle
+
+## d-separation
+
+Let us assume a complete Bayesian network.
+Are $X\_i$ and $X\_j$ conditionally independent given evidence $Z\_1=z\_1, ..., Z\_m=z\_m$?
+
+Consider all (undirected) paths from $X\_i$ to $X\_j$:
+- If one or more active path, then independence is not guaranteed.
+- Otherwise (i.e., all paths are inactive), then independence is guaranteed.
+
 
 ---
 
@@ -229,535 +1131,135 @@ class: middle
 
 .grid[
 .kol-2-3[
-We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
-- We loop over $n$'s children.
-- The minimax values are being computed one at a time and $v$ is updated iteratively.
-- Let $\alpha$ be the best value (i.e., the highest) at any choice point along the path for MAX.
-- If $v$ becomes lower than $\alpha$, then **$n$ will never be reached** in actual play.
-- Therefore, we can *stop iterating* over the remaining $n$'s other children.
+
+A path is **active** if each triple is active:
+- Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
+- Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
+- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
+
 ]
-.kol-1-3[<br><br>.center.width-100[![](figures/lec4/alpha-beta.png)]]
+.kol-1-3.width-100[![](figures/lec4/active-inactive.png)]
 ]
 
-???
-
-Go back to the previous slide and the transition from (d) to (e).
-
-If the minimax value $v$ for MIN becomes lower than the best value $\alpha$ for MAX, then $n$ will never be reached.
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
-
-Similarly, $\beta$ is defined as the best value (i.e., lowest) at any choice point along the path for MIN. We can halt the expansion of a MAX node as soon as $v$ becomes larger than $\beta$.
-
-## $\alpha$-$\beta$ pruning
-- Updates the values of $\alpha$ and $\beta$ as the path is expanded.
-- Prune the remaining branches (i.e., terminate the recursive calls) as soon as the value of the current node is known to be worse than the current $\alpha$ or $\beta$ value for MAX or MIN, respectively.
-
-???
-
-If the minimax value $v$ for MAX becomes larger the best value $\beta$ for MIN, then $n$ will never be reached.
-
----
-
-# $\alpha$-$\beta$  search
-
-.width-90[![](figures/lec4/alpha-beta-impl.png)]
-
-???
-
-Note that MAX plays first, hence the first call to MAX-VALUE in the main function.
-
----
-
-class: middle
-
-## Properties of $\alpha$-$\beta$ search
-
-- Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
-- *Time complexity*:
-    - The effectiveness depends on the order in which the states are examined.
-    - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
-        - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
-        - Equivalent to an effective branching factor $\sqrt{b}$.
-- *Space complexity*: $O(m)$, as for Minimax.
-
----
-
-# Game tree size
-
-.center.width-30[![](figures/lec4/chess.jpg)]
-
-Chess:
-- $b \approx 35$ (approximate average branching factor)
-- $d \approx 100$ (depth of a game tree for typical games)
-- $b^d \approx 35^{100} \approx 10^{154}$.
-- For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
-
-Finding the exact solution is completely **infeasible**.
-
----
-
-# Transposition table
-
-- Repeated states occur frequently because of **transpositions**: different permutations of the move sequence end in a same position.
-- Similar to the `closed` set in Graph-Search, it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
-
-
-.exercise[What data structure should be used to efficiently store and look-up values of positions?]
-
-
----
-
-# Imperfect real-time decisions
-
-- Under *time constraints*, searching for the exact solution is not feasible in most realistic games.
-- Solution: cut the search earlier.
-    - Replace the $\text{utility}(s)$ function with a heuristic **evaluation function** $\text{eval}(s)$ that estimates the state utility.
-    - Replace the terminal test by a **cutoff test** that decides when to stop expanding a state.
-
-.center.width-100[![](figures/lec4/hminimax.png)]
-
-.exercise[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
-
-???
-
-Yes.
-
-Replace the if-statements with the terminal test with if-statements with the cutoff test.
-
----
-
-class: middle
-
-## Evaluation functions
-
-- An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
-- The computation *must be short* (that is the whole point to search faster).
-- Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
-    - The evaluation values may be different from the true minimax values, as long as order is preserved.
-- In non-terminal states, the evaluation function should be strongly *correlated* with the actual chances of winning.
-
-???
-
-- Like for heuristics in search, evaluation functions can be learned using machine learning algorithms.
-
----
-
-class: middle
-
-## Quiescence
-
-.center.width-70[![](figures/lec4/chess-eval.png)]
-
-- These states only differ in the position of the rook at lower right.
-- However, Black has advantage in (a), but not in (b).
-- If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- Cutoff should only be applied to positions that are **quiescent**.
-    - i.e., states that are unlikely to exhibit wild swings in value in the near future.
-
-
----
-
-# The horizon effect
-
-Evaluations functions are **always imperfect**.
-- If not looked deep enough, *bad moves* may appear as *good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
-    - and vice-versa!
-- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
-
----
-
-class: middle, black-slide
-
-.center[<video controls preload="auto" height="480" width="640">
-  <source src="./figures/lec4/depth2.mp4" type="video/mp4">
-</video>]
-
-.caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[<video controls preload="auto" height="480" width="640">
-  <source src="figures/lec4/depth10.mp4" type="video/mp4">
-</video>]
-
-.caption[Cutoff at depth 10, evaluation = the closer to the dot, the better.]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Multi-agent games
-
-- What if the game is not zero-sum, or has *multiple players*?
-- Generalization of Minimax:
-    - Terminal states are labeled with utility **tuples** (1 value per player).
-    - Intermediate states are also labeled with utility tuples.
-    - Each player maximizes its own component.
-    - May give rise to cooperation and competition dynamically.
-
-.center.width-70[![](figures/lec4/multi-agent-tree.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-# Stochastic games
-
----
-
-# Stochastic games
-
-- In real life, many unpredictable external events can put us into unforeseen situations.
-- Games that mirror this unpredictability are called **stochastic games**. They include a random element, such as:
-    - explicit randomness: rolling a dice;
-    - unpredictable opponents: ghosts respond randomly;
-    - actions may fail: when moving a robot, wheels might slip.
-
-<br>
-.center.width-40[![](figures/lec4/random-opponent-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
-- This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
-
-.center.width-30[![](figures/lec4/random-player.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-## Stochastic game tree
-
-.center.width-80[![](figures/lec4/stochastic-game-tree.png)]
-
-???
-
-- This tree corresponds to a game with two dices
-- What is the best move? The best move cannot be determined anymore, because it depends on chance.
-
----
-
-# Expectiminimax
-
-- Because of the uncertainty in the action outcomes, states no longer have a *definite* $\text{minimax}$ value.
-- We can only calculate the **expected** value of a state under optimal play by the opponent.
-    - i.e., the average over all possible outcomes of the chance nodes.
-    - $\text{minimax}$ values correspond instead to the worst-case outcome.
-
-.center.width-100[![](figures/lec4/expectiminimax.png)]
-
-.exercise[Does taking the rational move mean the agent will be successful?]
-
----
-
-class: middle
-
-## Evaluation functions
-
-- As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
-be approximated by stopping the recursion early and using an evaluation function.
-- However, to obtain correct move, the evaluation function should be a **positive linear transformation** of the expected utility of the state.
-    - It is not enough for the evaluation function to just be order-preserving.
-- If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
-
-<br>
-.center.width-70[![](figures/lec4/chance-order-preserving.png)]
-.caption[An order-preserving transformation on leaf values changes the best move.]
-
----
-
-# Monte Carlo Tree Search
-
-## Random playout evaluation
-
-- To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
-- The sequence of random moves is called a *random playout*.
-- Use the proportion of wins as the state evaluation.
-- This strategy does **not require domain knowledge**!
-    - The game engine is all that is needed.
-
----
-
-class: middle
-
-## Monte Carlo Tree Search
-
-The focus of MCTS is the analysis of the most promising moves, as incrementally evaluated with random playouts.
-
-Each node $n$ in the current search tree maintains  two values:
-- the number of wins $Q(n,p)$ of player $p$ for all playouts that passed through $n$;
-- the number $N(n)$ of times $n$ has been visited.
-
----
-
-class: middle
-
-The algorithm searches the game tree as follows:
-1. *Selection*: start from root, select successive child nodes down to a node $n$ that is not fully expanded.
-2. *Expansion*: unless $n$ is a terminal state, create a new child node $n'$.
-3. *Simulation*: play a random playout from $n'$.
-4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $n'$ to the root.
-
-Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec4/mcts1b.png)]
-
-???
-
-This graph shows the steps involved in one decision, with each node showing the ratio of wins to total playouts from that point in the game tree for the player that node represents. In the Selection diagram, black is about to move. The root node shows there are 11 wins out of 21 playouts for white from this position so far. It complements the total of 10/21 black wins shown along the three black nodes under it, each of which represents a possible black move.
-
-If white loses the simulation, all nodes along the selection incremented their simulation count (the denominator), but among them only the black nodes were credited with wins (the numerator). If instead white wins, all nodes along the selection would still increment their simulation count, but among them only the white nodes would be credited with wins. In games where draws are possible, a draw causes the numerator for both black and white to be incremented by 0.5 and the denominator by 1. This ensures that during selection, each player's choices expand towards the most promising moves for that player, which mirrors the goal of each player to maximize the value of their move.
-
-Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
-
----
-
-class: middle
-
-## Exploration and exploitation
-
-Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
-
-At a node $n$ during the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
-$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}}.$$
-- The first term  encourages the *exploitation* of higher-reward nodes.
-- The second term encourages the **exploration** of less-visited nodes.
-- The constant $c>0$ controls the trade-off between exploitation and exploration.
-
----
-
-class: middle
-
-# Modeling assumptions
-
----
-
-class: middle
-
-.center[
-![](figures/lec2/search-problems-models.png)
-
-What if our assumptions are incorrect?]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle, black-slide
 
 .grid[
-.kol-2-3[
+.kol-1-2[
+## Example
 
-## Setup
+- $L \perp T' | T$?
+- $L \perp B$?
+- $L \perp B|T$?
+- $L \perp B|T'$?
+- $L \perp B|T, R$?
 
-- $P_1$: Pacman uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_2$.
-- $P_2$: Ghost uses depth 2 search with an evaluation function that seeks Pacman, while assuming that Pacman follows $P_1$.
-- $P_3$: Pacman  uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_4$
-- $P_4$: Ghost makes random moves.
 ]
-.kol-1-3[.width-100[![](figures/lec4/wa-setup.png)]]
+.kol-1-2.width-80.center[![](figures/lec4/example-d.png)]
+]
+
+???
+
+- Yes
+- Yes
+- (maybe)
+- (maybe)
+- Yes
+
+---
+
+class: middle
+
+## Local semantics
+
+.center.width-60[![](figures/lec4/nondescendants.svg)]
+
+A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
+
+---
+
+class: middle
+
+## Global semantics
+
+.center.width-60[![](figures/lec4/markov-blanket.svg)]
+
+A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
+
+---
+
+# Causality?
+
+- When the network reflects the true causal patterns:
+    - Often more compact (nodes have fewer parents).
+    - Often easier to think about.
+    - Often easier to elicit from experts.
+- But, Bayesian networks **need not be causal**.
+    - Sometimes no causal network exists over the domain (e.g., if variables are missing).
+    - Edges reflect **correlation**, not causation.
+- What do the edges really mean then?
+    - Topology *may* happen to encode causal structure.
+    - **Topology really encodes conditional independence.**
+
+.center.width-50[![](figures/lec4/causality.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-3-4[<br>
+- Correlation does not imply causation.
+- Causes cannot be expressed in the language of probability theory.
+]
+.kol-1-4[.circle.width-100[![](figures/lec4/pearl.jpg)].center[Judea Pearl]]
 ]
 
 ---
 
-class: middle, black-slide, center
+class: middle
 
-.center[
-<video controls preload="auto" height="400" width="300">
-  <source src="figures/lec4/minimax-vs-adversarial.mp4" type="video/mp4">
-</video>]
+Philosophers have tried to define causation in terms of probability: $X=x$ causes $Y=y$ if $X=x$ raises the probability of $Y=y$.
 
-Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Assumptions are correct.
-
----
-
-class: middle, black-slide, center
-
-.center[
-<video controls preload="auto" height="400" width="300">
-  <source src="figures/lec4/minimax-vs-random.mp4" type="video/mp4">
-</video>]
-
-Minimax Pacman ($P_1$) vs. Random ghost ($P_3$)
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Assumptions are incorrect. Has the ghost some masterplan?
-
----
-
-class: middle, black-slide, center
-
-.center[
-<video controls preload="auto" height="400" width="300">
-  <source src="figures/lec4/expectimax-vs-random.mp4" type="video/mp4">
-</video>]
-
-Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Assumptions are correct.
-
----
-
-class: middle, black-slide, center
-
-.center[
-<video controls preload="auto" height="400" width="300">
-  <source src="figures/lec4/expectimax-vs-adversarial.mp4" type="video/mp4">
-</video>]
-
-Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
-
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Pacman is lucky!
+However, the inequality
+$$P(y|x) > P(y)$$
+fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X=x$ over $Y=y$.
+- Instead, the expression means that if we observe $X=x$, then the probability of $Y=y$ increases.
+- But this increase may come about for other reasons!
 
 ---
 
 class: middle
 
-# State-of-the-art game programs
-
----
-
-# Checkers
-
-## 1951
-
-First computer player by Christopher Strachey.
-
-## 1994
-
-The computer program *Chinook* ends the 40-year-reign of human champion Marion Tinsley.
-- Library of opening moves from grandmasters;
-- A deep search algorithm;
-- A good move evaluation function (based on a linear model);
-- A database for all positions with eight pieces or fewer.
+The correct formulation should read
+$$P(y|\text{do}(X=x)) > P(y),$$
+where $\text{do}(X=x)$ stands for an external intervention where $X$ is **set to** the value $x$ instead of being observed.
 
 ---
 
 class: middle
 
-## 2007
-Checkers is **solved**. A weak solution is computationally proven.
-- The number of involved calculations was $10^{14}$, over a period of 18 years.
-- A draw is always guaranteed provided neither player makes a mistake.
+## Observing vs. intervening
 
-.center.width-50[![](figures/lec4/checkers-proof.png)]
-
-.footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
-
----
-
-# Chess
-
-## 1997
-
-- *Deep Blue* defeats human champion Gary Kasparov.
-    - $200000000$ position evaluations per second.
-    - Very sophisticated evaluation function.
-    - Undisclosed methods for extending some lines of search up to 40 plies.
-- Modern programs (e.g., Stockfish or AlphaZero) are better, if less historic.
-- Chess remains *unsolved* due to the complexity of the game.
-
-<br>
-.center.width-50[![](figures/lec4/deep-blue.jpg)]
-
----
-
-# Go
-
-For long, Go was considered as the Holy Grail of AI due to the size of its game tree.
-- On a 19x19, the number of legal positions is $\pm 2 \times 10^{170}$.
-- This results in **$\pm 10^{800}$ games**, considering a length of $400$ or less.
-
-<br>
-.center.width-50[![](figures/lec4/go.jpg)]
-
----
-
-class: middle
-
-## 2010-2014
-Using *Monte Carlo tree search* and **machine learning**, computer players reach low dan levels.
-
-## 2015-2017
-Google Deepmind invents AlphaGo.
-
-- 2015: AlphaGo beat Fan Hui, the European Go Champion.
-- 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
-- 2017: AlphaGo beat Ke Jie, 1st world human player.
-
-AlphaGo combines Monte Carlo tree search and **deep learning** with extensive training, both from human and computer play.
-
----
-
-class: middle, black-slide, center
-
-<iframe width="640" height="400" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
-
-.caption[Press coverage for the victory of AlphaGo against Lee Sedol.]
-
----
-
-class: middle
-
-## 2017
-
-AlphaGo Zero combines *Monte Carlo tree search* and **deep learning** with extensive training, with self-play only
-
-.center.width-70[![](figures/lec4/alphagozero-training.gif)]
-
-.footnote[Credits: [AlphaGo Zero: Learning from scratch](https://deepmind.com/blog/alphago-zero-learning-scratch/)]
+- The reading in barometer is useful to predict rain.
+$$P(\text{rain}|\text{Barometer}=\text{high}) > P(\text{rain}|\text{Barometer}=\text{low})$$
+- But hacking a barometer will not cause rain!
+$$P(\text{rain}|\text{Barometer hacked to high}) = P(\text{rain}|\text{Barometer hacked to low})$$
 
 ---
 
 # Summary
 
-- Multi-player games are variants of search problems.
-- The difficulty rise in the fact that opponents may respond arbitrarily.
-    - The optimal solution is a **strategy**, and not a fixed sequence of actions.
-- *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
-    - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
-    - Approximations can be achieved with heuristics, reducing computing times.
-    - Minimax can be adapted to stochastic games.
-    - Minimax can be adapted to games with more than 2 players.
-- Optimal behavior is **relative** and depends on the assumptions we make about the world.
+- Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
+- Probabilistic reasoning provides a framework for managing our knowledge and *beliefs*, with the Bayes' rule acting as the workhorse for inference.
+- A **Bayesian Network** specifies a full joint distribution. They are often exponentially smaller than an explicitly enumerated joint distribution.
+- The structure of a Bayesian network encodes conditional independence assumptions between random variables.
+
 
 ---
 
@@ -765,11 +1267,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Browne, Cameron B., et al. "A survey of monte carlo tree search methods." IEEE Transactions on Computational Intelligence and AI in games 4.1 (2012): 1-43.
-- Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.
-- Silver, David, et al. "Mastering the game of Go with deep neural networks and tree search." Nature 529.7587 (2016): 484-489.

@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 3: Constraint satisfaction problems
+Lecture 3: Games and Adversarial search
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -10,768 +10,754 @@ Prof. Gilles Louppe<br>
 
 ---
 
-class: black-slide, center, middle
+class: center, black-slide, middle
 
-.center.width-100[![](figures/lec3/pacman-thinking.png)]
-
-Hmmm, let me think...
-
----
-
-count: false
-class: black-slide, center, middle
-
-.center.width-100[![](figures/lec3/pacman-thinking.png)]
-
-(...)
-
----
-
-count: false
-class: black-slide, center, middle
-
-.center.width-100[![](figures/lec3/pacman-thinking.png)]
-
-(some time later)
-
----
-
-count: false
-class: black-slide, center, middle
-
-.center.width-100[![](figures/lec3/pacman-thinking2.png)]
-
-Solution found! [Can we do better?]
+<iframe width="640" height="400" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
 
 ---
 
 # Today
 
-- *Constraint satisfaction problems*:
-    - Exploiting the representation of a state to accelerate search.
-    - Backtracking.
-    - Generic heuristics.
-- *Logical agents*
-    - Propositional logic for reasoning about the world.
-    - ... and its connection with CSPs.
-
-.center.width-50[![](figures/lec3/map-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-# Constraint satisfaction problems
-
----
-
-# Motivation
-
-In standard search problems:
-- States are evaluated by domain-specific heuristics.
-- States are tested by a domain-specific function to determine if the goal is achieved.
-- From the point of view of the search algorithms however, **states are atomic**.
-
-Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the **efficiency of the search**.
-
-.center.width-40[![](figures/lec3/atomic-factored.png)]
-
-
----
-
-# Constraint satisfaction problems
-
-- **Constraint satisfaction problem**  solvers take advantage of factored state representations and use *general-purpose* heuristics to solve complex problems.
-- CSPs are specialized to a family of search sub-problems.
-- Main idea: eliminate large portions of the search space all at once, by identifying combinations of variable/value that violate constraints.
+- How to act rationally in a *multi-agent* environment?
+- How to anticipate and respond to the **arbitrary behavior** of other agents?
+- Adversarial search
+    - Minimax
+    - $\alpha-\beta$ pruning
+    - H-Minimax
+    - Expectiminimax
+    - Monte Carlo Tree Search
+- Modeling assumptions
+- State-of-the-art agents.
 
 ---
 
 class: middle
 
-Formally, a **constraint satisfaction problem** (CSP) consists of three components $X$, $D$ and $C$:
+# Minimax
 
-- $X$ is a set of *variables*, $\\{X_1, ..., X_n\\}$,
-- $D$ is a set of *domains*, $\\{D_1, ..., D_n\\}$, one for each variable,
-- $C$ is a set of *constraints* that specify  allowable combinations of values.
+---
+
+# Games
+
+- A **game** is a multi-agent environment where agents may have either *conflicting* or *common* interests.
+- Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
+    - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
+    - This is different from search where a solution is a *fixed sequence*.
+- Time **limits**.
+    - Branching factor is often very large.
+    - Unlikely to find goal with standard search algorithms, we need to *approximate*.
+
+???
+
+A game is a mathematical model of strategic interaction between rational decision makers.
 
 ---
 
 class: middle
 
-## Example: Map coloring
+## Types of games
 
-.center.width-70[![](figures/lec3/map-coloring.png)]
+- **Deterministic** or *stochastic*?
+- **Perfect** or *imperfect* information?
+- **Two** or *more* players?
+
 
 ---
 
 class: middle
 
-.center.width-30[![](figures/lec3/map-coloring.png)]
+## Formal definition
 
-- Variables: $X = \\{ \text{WA}, \text{NT}, \text{Q}, \text{NSW}, \text{V}, \text{SA}, \text{T} \\}$
-- Domains: $D_i = \\{ \text{red}, \text{green}, \text{blue} \\}$ for each variable.
-- Constraints: $C = \\{ \text{SA} \neq \text{WA}, \text{SA} \neq \text{NT}, \text{SA} \neq \text{Q}, ... \\}$
-    - Implicit: $\text{WA} \neq \text{NT}$
-    - Explicit: $(\text{WA}, \text{NT}) \in \\{ \\{\text{red}, \text{green}\\}, \\{\text{red}, \text{blue}\\}, ... \\}$
-- Solutions are **assignments** of values to the variables such that constraints are all satisfied.
-    - e.g., $\\{ \text{WA}=\text{red}, \text{NT}=\text{green}, \text{Q}=\text{red}, \text{SA}=\text{blue},$ $\quad\quad \text{NSW}=\text{green}, \text{V}=\text{red}, \text{T}=\text{green} \\}$
-
----
-
-# Constraint (hyper)graph
-
-.center.width-50[![](figures/lec3/csp-graph.png)]
-
-- *Nodes* = variables of the problems
-- *Edges* = constraints in the problem involving the variables associated to the end nodes.
-- General purpose CSP algorithms **use the graph structure** to speedup search.
-    - e.g., Tasmania is an independent subproblem.
+A **game** is formally defined as a kind of search problem with the following components:
+- The *initial state* $s_0$ of the game.
+- A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
+- A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.
+- A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
+- A *terminal test* which determines whether the game is over.
 
 ---
 
 class: middle
 
-## Example: Cryptarithmetic
-
-.center.width-60[![](figures/lec3/cryptarithmetic.png)]
-
-- Variables: $\\{ T, W, O, F, U, R, C_1, C_2, C_3\\}$
-- Domains: $D_i = \\{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
-- Constraints:
-    - $\text{alldiff}(T, W, O, F, U, R)$
-    - $O+O=R+10\times C_1$
-    - $C_1 + W + W = U + 10\times C_2$
-    - ...
+- A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
+    - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
+- Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
+    - Nodes are game states.
+    - Edges are actions.
 
 ---
 
 class: middle
 
-## Example: Sudoku
+## Tic-Tac-Toe game tree
 
-.center.width-30[![](figures/lec3/sudoku.png)]
-
-- Variables: each (open) square
-- Domains: $D_i = \\{ 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
-- Constraints:
-    - 9-way $\text{alldiff}$ for each column
-    - 9-way $\text{alldiff}$ for each row
-    - 9-way $\text{alldiff}$ for each region
----
-
-class: middle
-
-.center.width-50[![](figures/lec3/waltz.png)]
-
-## Example: The Waltz algorithm
-
-Procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
-
-.pull-right.width-70[![](figures/lec3/waltz-inter.png)]
-CSP formulation:
-- Each intersection is a variable.
-- Adjacent intersections impose constraints on each other.
-- Solutions are physically realizable 3D objects.
-
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Variations on the CSP formalism
-
-- *Discrete variables*
-    - Finite domains
-        - Size $d$ means $O(d^n)$ complete assignments.
-        - e.g., boolean CSPs, including the SAT boolean satisfiability problem (NP-complete).
-    - Infinite domains
-        - e.g., job scheduling, variables are start/end days for for each job.
-        - need a constraint language, e.g. $start_1 + 5 \leq start_2$.
-        - Solvable for linear constraints, undecidable otherwise.
-- *Continuous variables*
-    - e.g., precise start/end times of experiments.
-    - Linear constraints solvable in polynomial time by LP methods.
+.width-100[![](figures/lec3/tictactoe.png)]
 
 ---
 
 class: middle
 
-- *Varieties of constraints*
-    - Unary constraint involve a single variable.
-        - Equivalent to reducing the domain, e.g. $\text{SA} \neq \text{green}$.
-    - Binary constraints involve pairs of variables, e.g. $\text{SA} \neq \text{WA}$.
-    - Higher-order constraints involve 3 or more variables.
-- *Preferences* (soft constraints)
-    - e.g., red is better than green.
-    - Often representable by a cost for each variable assignment.
-    - Results in constraint optimization problems.
-    - (We will ignore those in this course.)
+## Zero-sum games
 
----
+- In a **zero-sum** game, the total payoff to all players is *constant* for all games.
+    - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
+- For two-player games, agents share the **same utility** function, but one wants to *maximize* it while the other wants to *minimize* it.
+    - MAX maximizes the game's $\text{utility}$ function.
+    - MIN minimizes the game's $\text{utility}$ function.
+- *Strict competition*.
+    - If one wins, the other loses, and vice-versa.
 
-# Real-world examples
-
-.grid[
-.kol-1-2[
-- Assignment problems
-    - e.g., who teaches what class
-- Timetabling problems
-    - e.g., which class is offered when and where?
-- Hardware configuration
-- Spreadsheets
-- Transportation scheduling
-- Factory scheduling
-- Circuit layout
-- ... and many more
-]
-.kol-1-2[
-.width-100[![](figures/lec3/assignments.png)]
-]
-]
-
-Notice that many real-world problems involve real-valued variables.
-
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Constraint programming
-
-.grid[
-.kol-2-3[
 <br>
-.caption[Constraint Programming represents one of the closest approaches computer science has yet made to the Holy Grail of programming: the user states the problem, the computer solves it.
-<br>(Eugene Freuder)]
+.center.width-40[![](figures/lec3/zero-sum-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
+
+---
+
+class: middle
+
+.exercise[What is an optimal strategy (or perfect play)? How do we find it?]
+
+---
+
+# Assumptions
+
+- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
+    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
+- We will call our two players **MAX** and *MIN*. **MAX** moves first.
+
+<br><br><br>
+.center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Adversarial search
+
+.grid[.kol-2-3[
+- In a search problem, the optimal solution is a sequence of actions leading to a goal state.
+    - i.e., a terminal state where MAX wins.
+- In a game, the opponent (MIN) may react *arbitrarily* to a move.
+- Therefore, a player (MAX) must define a contingent **strategy** which specifies
+    - its moves in the initial state,
+    - its moves in the states resulting from every possible response by MIN,
+    - its moves in the states resulting from every possible response by MIN in those states, ...
 ]
-.kol-1-3[.center.circle.width-100[![](figures/lec3/eugene-freuder.jpg)]]
+.kol-1-3.width-100[
+![](figures/lec3/adversarial-search-cartoon.png)
+]
 ]
 
-Constraint programming is a programming paradigm in which the user specifies the program as a CSP. The resolution of the problem is left to the computer.
-
-Examples:
-- Prolog
-- ECLiPSe
-
-
-
----
-
-class: middle
-
-# Solving CSPs
-
----
-
-# Standard search formulation
-
-- CSPs can be cast as standard search problems.
-    - For which we have solvers, including DFS, BFS or A*.
-- States are *partial assignments*:
-    - The initial state is the empty assignment $\\{ \\}$.
-    - Actions: assign a value to an unassigned variable.
-    - Goal test: the current assignment is complete and satisfies all constraints.
-- This algorithm is **the same** for all CSPs!
-
----
-
-class: middle
-
-.center.width-50[![](figures/lec3/csp-graph.png)]
-
-What would BFS or DFS do? What problems does naive search have?
-
-For $n$ variables of domain size $d$:
-- $b=(n-l)d$ at depth $l$;
-- we generate a tree with $n!d^n$ leaves even if there are only $d^n$ possible assignments!
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-Simulate the execution on blackboard. Highlight two issues:
-- commutativity
-- constraints are checked only at the end, by the goal function
+Analogy with chess, checkers or belotte.
 
 ---
 
-# Backtracking search
+# Minimax
 
-- Backtracking search is a canonical uninformed algorithm for solving CSPs.
-- Idea 1: **One variable at a time**:
-    - The naive application of search algorithms ignores a crucial property: variable assignments are *commutative*. Therefore, fix the ordering.
-        - $\text{WA}=\text{red}$ then $\text{NT}=\text{green}$ is the same as $\text{NT}=\text{green}$ then $\text{WA}=\text{red}$.
-    - One only needs to consider assignments to a single variable at each step.
-        - $b=d$ and there are $d^n$ leaves.
-- Idea 2: **Check constraints as you go**:
-    - Consider only values which do not conflict with current partial assignment.
-    - Incremental goal test.
+The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an *optimal adversary* (MIN).
+
+.center.width-100[![](figures/lec3/minimax.png)]
+
+The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
+- Assuming that MIN is an optimal adversary that maximizes the *worst-case outcome* for MAX.
+- This is equivalent to not making an assumption about the strength of the opponent.
 
 ---
 
 class: middle
 
-.center.width-80[![](figures/lec3/backtracking-example.png)]
+.width-100[![](figures/lec3/minimax-example.png)]
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec3/backtracking.png)]
+## Properties of Minimax
 
-???
-
-- Backtracking = DFS + variable-ordering + fail-on-violation
-- What are the choice points?
-
-Choice points:
-- Ordering the variables
-- Ordering the values
-- Filtering
-- Structure
+- *Completeness*:
+    - Yes, if tree is finite.
+- *Optimality*:
+    - Yes, if MIN is an optimal opponent.
+    - What if MIN is suboptimal?
+        - Show that MAX will do even better.
+    - What if MIN is suboptimal and predictable?
+        - Other strategies might do better than Minimax. However they will do worse on an optimal opponent.
 
 ---
 
 class: middle
 
-## Improving backtracking
+## Minimax efficiency
 
-Can we improve backtracking using **general-purpose** ideas, without domain-specific knowledge?
+- Assume $\text{minimax}(s)$ is implemented using its recursive definition.
+- How *efficient* is minimax?
+    - Time complexity: same as DFS, i.e., $O(b^m)$.
+    - Space complexity:
+        - $O(bm)$, if all actions are generated at once, or
+        - $O(m)$, if actions are generated one at a time.
 
-- *Ordering*:
-    - Which variable should be assigned next?
-    - In what order should its values be tried?
-- *Filtering*: can we detect inevitable failure early?
-- *Structure*: can we exploit the problem structure?
+.exercise[Do we need to explore the whole game tree?]
+
+---
+
+# Pruning
+
+.center.width-70[![](figures/lec3/minimax-incomplete-tree.png)]
+
+.width-100[![](figures/lec3/minimax-incomplete-formula.png)]
+
+Therefore, it is possible to compute the **correct** minimax decision *without looking at every node* in the tree.
 
 ---
 
 class: middle
 
-## Variable ordering
-
-- **Minimum remaining values**:
-Choose the variable *with the fewest legal values left* in its domain.
-- Also known as the *fail-first* heuristic.
-    - Detecting failures quickly is equivalent to pruning large parts of the search tree.
-
-.center.width-100[![](figures/lec3/ordering-mrv.png)]
+.center.width-80[![](figures/lec3/minimax-incomplete-stepbystep.png)]
 
 ---
 
 class: middle
-
-## Value ordering
-
-- **Least constraining value**: Given a choice of variable, choose the *least constraining value*.
-- i.e., the value that rules out the fewest values in the remaining variables.
-
-.center.width-100[![](figures/lec3/ordering-lcv.png)]
-
-.exercise[Why should variable selection be fail-first but value selection be fail-last?]
-
-???
-
-We are seeking only one solution. Therefore:
-- fail-first variable selection to prune large portions of the tree
-- fail-last value selection to look for the most likely value
-
----
-
-class: middle
-
-## Filtering: Forward checking
-
-- Keep *track of remaining legal values* for unassigned variables.
-    - Whenever a variable $X$ is assigned, and for each unassigned variable $Y$ that is connected to $X$ by a constraint, delete from $Y$'s domain any value that is inconsistent.
-- *Terminate search* when any variable has no legal value left.
-
-.center.width-100[![](figures/lec3/forward-checking.png)]
-
----
-
-class: middle
-
-## Filtering: Constraint propagation
-
-Forward checking propagates information assigned to unassigned variables, but does not provide early detection for all failures:
-
-.center.width-100[![](figures/lec3/forward-checking-inc.png)]
-
-- $NT$ and $SA$ cannot both be blue!
-- **Constraint propagation** repeatedly enforces constraints locally.
-
----
-
-class: middle
-
-## Arc consistency
-
-- An arc $X \to Y$ is **consistent** if and only if for every value $x$ in the domain of $X$ there is some value $y$ in the domain of $Y$ that satisfies the associated binary constraint.
-- Forward checking $\Leftrightarrow$ enforcing consistency of arcs pointing to each new assignment.
-- This principle can be generalized to enforce consistency for **all** arcs.
-
-.center.width-100[![](figures/lec3/arc-consistency.png)]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec3/ac3.png)]
-
-.exercise[When in backtracking shall this procedure be called?]
-
-???
-
-- After applying AC3, either every arc is arc-consistent, or some variable has an empty domain, indicating that the CSP cannot be solved.
-- This check should be inserted after a new assignment, before the recursive call. If an inconsistency is detected
-
----
-
-# Structure
-
-.center.width-50[![](figures/lec3/csp-graph.png)]
-
-- Tasmania and mainland are **independent subproblems**.
-    - Any solution for the mainland combined with any solution for Tasmania yields a solution for the whole map.
-- Independence can be ascertained by finding *connected components* of the constraint graph.
-
----
-
-class: middle
-
-## Time complexity
-
-Assume each subproblem has $c$ variables out of $n$ in total. Then $O(\frac{n}{c} d^c)$.
-- E.g., $n=80$, $d=2$, $c=20$.
-- $2^{80} =$  4 billion years at 10 million nodes/sec.
-- $4 \times 2^{20} =$ 0.4 seconds at 10 million nodes/sec.
-
----
-
-class: middle
-
-## Tree-structured CSPs
-
-.center.width-90[![](figures/lec3/tree-csp-trans.png)]
-
-- Algorithm for tree-structured CSPs:
-    - Order: choose a root variable, order variables so that parents precede children (topological sort).
-    - Remove backward:
-        - for $i=n$ down to $2$, enforce arc consistency of $parent(X_i) \to X_i$.
-    - Assign forward:
-        - for $i=1$ to $n$, assign $X_i$ consistently with its $parent(X_i)$.
-- Time complexity: $O(n d^2)$
-    - Compare to general CSPs, where worst-case time is $O(d^n)$.
-
-???
-
-Run the algorithm on the blackboard.
-
----
-
-class: middle
-
-## Nearly tree-structured CSPs
-
-- *Conditioning*:  instantiate a variable, prune its neighbors' domains.
-- *Cutset conditioning*:
-    - Assign (in all ways) a set $S$ of variables such that the remaining constraint graph is a tree.
-    - Solve the residual CSPs (tree-structured).
-    - If the residual CSP has a solution, return it together with the assignment for $S$.
-
-.center.width-70[![](figures/lec3/cutset.png)]
-
----
-
-class: middle
-
-# Logical agents
-
----
-
-# The logicist tradition
 
 .grid[
 .kol-2-3[
-- The rational thinking approach to artificial intelligence is concerned with the study of *irrefutable
-reasoning processes*. It ensures that all actions performed by an agent are
-formally **provable** from inputs and prior knowledge.
-
-- The Greek philosopher Aristotle was one of the first to attempt to formalize rational thinking.
-His *syllogisms* provided a pattern for argument structures that always yield correct conclusion when given correct premises.
-.italic[
-All men are mortal. <br>
-Socrates is a man.<br>
-Therefore, Socrates is mortal.
+We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
+- We loop over $n$'s children.
+- The minimax values are being computed one at a time and $v$ is updated iteratively.
+- Let $\alpha$ be the best value (i.e., the highest) at any choice point along the path for MAX.
+- If $v$ becomes lower than $\alpha$, then **$n$ will never be reached** in actual play.
+- Therefore, we can *stop iterating* over the remaining $n$'s other children.
 ]
+.kol-1-3[<br><br>.center.width-100[![](figures/lec3/alpha-beta.png)]]
 ]
-.kol-1-3[
-.width-100.circle[![](figures/lec3/aristotle.jpg)]
-.caption[(Aristotle, 384-322 BC)]
-]
-]
-
----
-
-class: middle
-
-- Logicians of the 19th century developed a precise notation for statements about all kinds of objects in the world and relationships among them.
-
-- By 1965, programs existed that could, in principle, solve any solvable problem described in logical notation.
-
-- The logicist tradition within AI hopes to build on such programs to create intelligent systems.
-
-
----
-
-# The Wumpus world
-
-.center.width-70[![](figures/lec3/wumpus-world.png)]
 
 ???
 
-First example of partially observable environment!
+Go back to the previous slide and the transition from (d) to (e).
 
----
-
-class: smaller, middle
-
-## PEAS description
-
-- *Performance measure*:
-    - +1000 for climbing out of the cave with gold;
-    - -1000 for falling into a pit or being eaten by the wumpus;
-    - -1 per step.
-- *Environment*:
-    - $4 \times 4$ grid of rooms;
-    - The agent starts in the lower left square labeled $[1,1]$, facing right;
-    - Locations for gold, the wumpus and pits are chosen randomly from squares other than the start square.
-- *Actuators*:
-    - Forward, Turn left by $90$° or Turn right by $90$°.
-- *Sensors*:
-    - Squares adjacent to wumpus are *smelly*;
-    - Squares adjacent to pit are *breezy*;
-    - *Glitter* if gold is in the same square;
-        - Gold is picked up by reflex, and cannot be dropped.
-    - You *bump* if you walk into a wall.
-    - The agent program receives the percept $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{Bump}]$.
+If the minimax value $v$ for MIN becomes lower than the best value $\alpha$ for MAX, then $n$ will never be reached.
 
 ---
 
 class: middle
 
-## Wumpus world characterization
+Similarly, $\beta$ is defined as the best value (i.e., lowest) at any choice point along the path for MIN. We can halt the expansion of a MAX node as soon as $v$ becomes larger than $\beta$.
 
-- *Deterministic*: Yes, outcomes are exactly specified.
-- *Static*: Yes, Wumpus and pits dot not move.
-- *Discrete*: Yes.
-- *Single-agent*: Yes, Wumpus is essentially a part of the environment.
-- **Fully observable**: No, only *local* perception.
-    - This is our first example of partial observability.
-- **Episodic**: No, what was observed before is very useful.
-
-The agent need to maintain a model of the world and to update this model upon percepts.
-
-We will use **logical reasoning** to overcome the initial ignorance of the agent.
-
----
-
-class: middle
-
-## Exploring the Wumpus world (1)
-
-.center.width-100[![](figures/lec3/wumpus-exploration1.png)]
-
-(a) Percept = $[\text{None}, \text{None}, \text{None}, \text{None}]$
-
-(b) Percept = $[\text{None}, \text{Breeze}, \text{None}, \text{None}]$
-
----
-
-class: middle
-
-## Exploring the Wumpus world (2)
-
-.center.width-100[![](figures/lec3/wumpus-exploration2.png)]
-
-(a) Percept = $[\text{Stench}, \text{None}, \text{None}, \text{None}]$
-
-(b) Percept = $[\text{Stench}, \text{Breeze}, \text{Glitter}, \text{None}]$
-
----
-
-# Logical agents
-
-- Most useful in non-episodic, partially observable environments.
-- Logic (knowledge-based) agents combine:
-    - A *knowledge base* ($\text{KB}$): a list of facts that are known to the agent.
-    - Current *percepts*.
-- Hidden aspects of the current state are **inferred** using rules of inference.
-- Logic provides a good formal language for both   
-    - Facts, encoded as *axioms*.
-    - Rules of *inference*.
-
-.center.width-80[![](figures/lec3/kb-agent.png)]
-
----
-
-# Propositional logic
-
-## Syntax
-
-- The **syntax** of propositional logic defines allowable *sentences*.
-- The syntax of propositional logic is formally defined by the following *grammar*:
-
-.center.width-80[![](figures/lec3/syntax.png)]
+## $\alpha$-$\beta$ pruning
+- Updates the values of $\alpha$ and $\beta$ as the path is expanded.
+- Prune the remaining branches (i.e., terminate the recursive calls) as soon as the value of the current node is known to be worse than the current $\alpha$ or $\beta$ value for MAX or MIN, respectively.
 
 ???
 
-Show an example, e.g. $(P \& Q) \Rightarrow R$
+If the minimax value $v$ for MAX becomes larger the best value $\beta$ for MIN, then $n$ will never be reached.
+
+---
+
+# $\alpha$-$\beta$  search
+
+.width-90[![](figures/lec3/alpha-beta-impl.png)]
+
+???
+
+Note that MAX plays first, hence the first call to MAX-VALUE in the main function.
 
 ---
 
 class: middle
 
-## Semantics
+## Properties of $\alpha$-$\beta$ search
 
-- In propositional logic, a *model* is an assignment of  truth values for every proposition symbol.
-    - E.g., if the sentences of the knowledge base make use of the symbols $P_1$, $P_2$ and $P_3$, then one possible model is $m=\\{ P_1=\text{False}, P_2=\text{True}, P_3=\text{True}\\}$.
-- The **semantics** for propositional logic specifies how to (recursively) evaluate the *truth value* of any complex sentence, with respect to a model $m$, as follows:
-    - The truth value of a proposition symbol is specified in $m$.
-    - $\lnot P$ is true iff $P$ is false;
-    - $P \wedge Q$ is true iff $P$ and $Q$ are true;
-    - $P \lor Q$ is true iff either $P$ or $Q$ is true;
-    - $P \Rightarrow Q$ is true unless $P$ is true and $Q$ is false;
-    - $P \Leftrightarrow Q$ is true iff $P$ and $Q$ are both true of both false.
+- Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
+- *Time complexity*:
+    - The effectiveness depends on the order in which the states are examined.
+    - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
+        - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
+        - Equivalent to an effective branching factor $\sqrt{b}$.
+- *Space complexity*: $O(m)$, as for Minimax.
+
+---
+
+# Game tree size
+
+.center.width-30[![](figures/lec3/chess.jpg)]
+
+Chess:
+- $b \approx 35$ (approximate average branching factor)
+- $d \approx 100$ (depth of a game tree for typical games)
+- $b^d \approx 35^{100} \approx 10^{154}$.
+- For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
+
+Finding the exact solution is completely **infeasible**.
+
+---
+
+# Transposition table
+
+- Repeated states occur frequently because of **transpositions**: different permutations of the move sequence end in a same position.
+- Similar to the `closed` set in Graph-Search, it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+
+
+.exercise[What data structure should be used to efficiently store and look-up values of positions?]
 
 
 ---
 
-# Wumpus world sentences
+# Imperfect real-time decisions
+
+- Under *time constraints*, searching for the exact solution is not feasible in most realistic games.
+- Solution: cut the search earlier.
+    - Replace the $\text{utility}(s)$ function with a heuristic **evaluation function** $\text{eval}(s)$ that estimates the state utility.
+    - Replace the terminal test by a **cutoff test** that decides when to stop expanding a state.
+
+.center.width-100[![](figures/lec3/hminimax.png)]
+
+.exercise[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
+
+???
+
+Yes.
+
+Replace the if-statements with the terminal test with if-statements with the cutoff test.
+
+---
+
+class: middle
+
+## Evaluation functions
+
+- An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
+- The computation *must be short* (that is the whole point to search faster).
+- Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
+    - The evaluation values may be different from the true minimax values, as long as order is preserved.
+- In non-terminal states, the evaluation function should be strongly *correlated* with the actual chances of winning.
+
+???
+
+- Like for heuristics in search, evaluation functions can be learned using machine learning algorithms.
+
+---
+
+class: middle
+
+## Quiescence
+
+.center.width-70[![](figures/lec3/chess-eval.png)]
+
+- These states only differ in the position of the rook at lower right.
+- However, Black has advantage in (a), but not in (b).
+- If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
+- Cutoff should only be applied to positions that are **quiescent**.
+    - i.e., states that are unlikely to exhibit wild swings in value in the near future.
+
+
+---
+
+# The horizon effect
+
+Evaluations functions are **always imperfect**.
+- If not looked deep enough, *bad moves* may appear as *good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
+    - and vice-versa!
+- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
+
+---
+
+class: middle, black-slide
+
+.center[<video controls preload="auto" height="480" width="640">
+  <source src="./figures/lec3/depth2.mp4" type="video/mp4">
+</video>]
+
+.caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[<video controls preload="auto" height="480" width="640">
+  <source src="figures/lec3/depth10.mp4" type="video/mp4">
+</video>]
+
+.caption[Cutoff at depth 10, evaluation = the closer to the dot, the better.]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Multi-agent games
+
+- What if the game is not zero-sum, or has *multiple players*?
+- Generalization of Minimax:
+    - Terminal states are labeled with utility **tuples** (1 value per player).
+    - Intermediate states are also labeled with utility tuples.
+    - Each player maximizes its own component.
+    - May give rise to cooperation and competition dynamically.
+
+.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Stochastic games
+
+---
+
+# Stochastic games
+
+- In real life, many unpredictable external events can put us into unforeseen situations.
+- Games that mirror this unpredictability are called **stochastic games**. They include a random element, such as:
+    - explicit randomness: rolling a dice;
+    - unpredictable opponents: ghosts respond randomly;
+    - actions may fail: when moving a robot, wheels might slip.
+
+<br>
+.center.width-40[![](figures/lec3/random-opponent-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
+- This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
+
+.center.width-30[![](figures/lec3/random-player.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## Stochastic game tree
+
+.center.width-80[![](figures/lec3/stochastic-game-tree.png)]
+
+???
+
+- This tree corresponds to a game with two dices
+- What is the best move? The best move cannot be determined anymore, because it depends on chance.
+
+---
+
+# Expectiminimax
+
+- Because of the uncertainty in the action outcomes, states no longer have a *definite* $\text{minimax}$ value.
+- We can only calculate the **expected** value of a state under optimal play by the opponent.
+    - i.e., the average over all possible outcomes of the chance nodes.
+    - $\text{minimax}$ values correspond instead to the worst-case outcome.
+
+.center.width-100[![](figures/lec3/expectiminimax.png)]
+
+.exercise[Does taking the rational move mean the agent will be successful?]
+
+---
+
+class: middle
+
+## Evaluation functions
+
+- As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
+be approximated by stopping the recursion early and using an evaluation function.
+- However, to obtain correct move, the evaluation function should be a **positive linear transformation** of the expected utility of the state.
+    - It is not enough for the evaluation function to just be order-preserving.
+- If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
+
+<br>
+.center.width-70[![](figures/lec3/chance-order-preserving.png)]
+.caption[An order-preserving transformation on leaf values changes the best move.]
+
+---
+
+# Monte Carlo Tree Search
+
+## Random playout evaluation
+
+- To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
+- The sequence of random moves is called a *random playout*.
+- Use the proportion of wins as the state evaluation.
+- This strategy does **not require domain knowledge**!
+    - The game engine is all that is needed.
+
+---
+
+class: middle
+
+## Monte Carlo Tree Search
+
+The focus of MCTS is the analysis of the most promising moves, as incrementally evaluated with random playouts.
+
+Each node $n$ in the current search tree maintains  two values:
+- the number of wins $Q(n,p)$ of player $p$ for all playouts that passed through $n$;
+- the number $N(n)$ of times $n$ has been visited.
+
+---
+
+class: middle
+
+The algorithm searches the game tree as follows:
+1. *Selection*: start from root, select successive child nodes down to a node $n$ that is not fully expanded.
+2. *Expansion*: unless $n$ is a terminal state, create a new child node $n'$.
+3. *Simulation*: play a random playout from $n'$.
+4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $n'$ to the root.
+
+Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec3/mcts1b.png)]
+
+???
+
+This graph shows the steps involved in one decision, with each node showing the ratio of wins to total playouts from that point in the game tree for the player that node represents. In the Selection diagram, black is about to move. The root node shows there are 11 wins out of 21 playouts for white from this position so far. It complements the total of 10/21 black wins shown along the three black nodes under it, each of which represents a possible black move.
+
+If white loses the simulation, all nodes along the selection incremented their simulation count (the denominator), but among them only the black nodes were credited with wins (the numerator). If instead white wins, all nodes along the selection would still increment their simulation count, but among them only the white nodes would be credited with wins. In games where draws are possible, a draw causes the numerator for both black and white to be incremented by 0.5 and the denominator by 1. This ensures that during selection, each player's choices expand towards the most promising moves for that player, which mirrors the goal of each player to maximize the value of their move.
+
+Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
+
+---
+
+class: middle
+
+## Exploration and exploitation
+
+Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
+
+At a node $n$ during the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
+$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}}.$$
+- The first term  encourages the *exploitation* of higher-reward nodes.
+- The second term encourages the **exploration** of less-visited nodes.
+- The constant $c>0$ controls the trade-off between exploitation and exploration.
+
+---
+
+class: middle
+
+# Modeling assumptions
+
+---
+
+class: middle
+
+.center[
+![](figures/lec2/search-problems-models.png)
+
+What if our assumptions are incorrect?]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
 
 .grid[
 .kol-2-3[
-- Let $P_{i,j}$ be true if there is a pit in $[i,j]$.
-- Let $B_{i,j}$ be true if there is a breeze in $[i,j]$.
 
-Examples:
-- There is no pit in $[1,1]$:
-    - $R\\\_1: \lnot P\\\_{1,1}.$
-- Pits cause breezes in adjacent squares:
-    - $R\\\_2: B\\\_{1,1} \Leftrightarrow (P\\\_{1,2} \lor P\\\_{2,1}).$
-    - $R\\\_3: B\\\_{2,1} \Leftrightarrow (P\\\_{1,1} \lor P\\\_{2,2} \lor P\\\_{3,1}).$
-    - These are true in all wumpus worlds.
-- Breeze percept for the first two squares, for the specific world we consider:
-    - $R\\\_4: \lnot B\\\_{1,1}.$
-    - $R\\\_5: B\\\_{2,1}.$
+## Setup
 
+- $P_1$: Pacman uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_2$.
+- $P_2$: Ghost uses depth 2 search with an evaluation function that seeks Pacman, while assuming that Pacman follows $P_1$.
+- $P_3$: Pacman  uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_4$
+- $P_4$: Ghost makes random moves.
 ]
-.kol-1-3[.width-100[![](figures/lec3/wumpus-world.png)]]
+.kol-1-3[.width-100[![](figures/lec3/wa-setup.png)]]
 ]
 
 ---
 
-# Entailment
+class: middle, black-slide, center
 
-- We say a model $m$ *satisfies* a sentence $\alpha$ if $\alpha$ is true in $m$.
-- $M(\alpha)$ is the set of all models that satisfy $\alpha$.
-- $\alpha \vDash \beta$ iff $M(\alpha) \subseteq M(\beta)$.
-    - We say that the sentence $\alpha$ **entails** the sentence $\beta$.
-    - $\beta$ is true in all models where $\alpha$ is true.
-    - That is, $\beta$ *follows logically* from $\alpha$.
-- In other words, entailment enables **logical inference**.
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/minimax-vs-adversarial.mp4" type="video/mp4">
+</video>]
 
----
+Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
 
-# Wumpus models
-
-.center.width-30[![](figures/lec3/wumpus-simple.png)]
-
-- Let us consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
-- We consider the situation after:
-    - detecting nothing in $[1,1]$,
-    - moving right, sensing breeze in $[2,1]$.
-
-.exercise[How many models are there?]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-3 binary variables $P\_{1,2}$, $P\_{2,2}$, $P\_{3,1}$, hence $2^3=8$ models.
+Assumptions are correct.
+
+---
+
+class: middle, black-slide, center
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/minimax-vs-random.mp4" type="video/mp4">
+</video>]
+
+Minimax Pacman ($P_1$) vs. Random ghost ($P_3$)
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Assumptions are incorrect. Has the ghost some masterplan?
+
+---
+
+class: middle, black-slide, center
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/expectimax-vs-random.mp4" type="video/mp4">
+</video>]
+
+Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Assumptions are correct.
+
+---
+
+class: middle, black-slide, center
+
+.center[
+<video controls preload="auto" height="400" width="300">
+  <source src="figures/lec3/expectimax-vs-adversarial.mp4" type="video/mp4">
+</video>]
+
+Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
+
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Pacman is lucky!
 
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec3/wumpus-kb.png)]
-
-- All 8 possible models in the reduced Wumpus world.
-- The knowledge base $\text{KB}$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
+# State-of-the-art game programs
 
 ---
 
-# Entailments
+# Checkers
 
-.center.width-60[![](figures/lec3/wumpus-entailment.png)]
+## 1951
 
-- $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
-- $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
-    - This proof is called *model checking* because it *enumerates* all possible models to check whether $\alpha_1$ is true in all models where $\text{KB}$ is true.
+First computer player by Christopher Strachey.
 
-???
+## 1994
 
-Entailment can be used to carry out **logical inference**.
+The computer program *Chinook* ends the 40-year-reign of human champion Marion Tinsley.
+- Library of opening moves from grandmasters;
+- A deep search algorithm;
+- A good move evaluation function (based on a linear model);
+- A database for all positions with eight pieces or fewer.
 
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec3/wumpus-noentailment.png)]
+## 2007
+Checkers is **solved**. A weak solution is computationally proven.
+- The number of involved calculations was $10^{14}$, over a period of 18 years.
+- A draw is always guaranteed provided neither player makes a mistake.
 
-- $\alpha_2$ = "$[2,2]$ is safe". Does $\text{KB}$ entails $\alpha_2$?
-- $\text{KB} \nvDash \alpha_2$ since $M(\text{KB})  \nsubseteq M(\alpha_2)$.
-- We **cannot** conclude whether $[2,2]$ is safe (it may or may not).
+.center.width-50[![](figures/lec3/checkers-proof.png)]
 
----
-
-# Unsatisfiability theorem
-
-$$\alpha \vDash \beta \text{ iff } (\alpha \wedge \lnot \beta) \text{ is unsatisfiable}$$
-
-- A sentence $\gamma$ is unsatisfiable iff $M(\gamma) = \\{ \\}$.
-    - i.e., there is no assignment of truth values such that $\gamma$ is true.
-- Proving $\alpha \vDash \beta$ by checking the unsatisfiability of $\alpha \wedge \lnot \beta$ corresponds to the proof technique of reductio ad absurdum.
-- Checking the satisfiability of a sentence $\gamma$ can be cast as CSP!
-    - More efficient than enumerating all models, but remains NP-complete.
-    - Alternatively, propositional satisfiability (SAT) solvers can be used instead of CSPs. These are tailored for this specific problem. Many of them are variants of backtracking.
-
-???
-
-SAT into CSPs: http://www.cs.toronto.edu/~fbacchus/csc2512/Lectures/2012Readings/Walsh_SATvCSP.pdf
+.footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
 
 ---
 
-# Limitations
+# Chess
 
-- Representation of *informal* knowledge is difficult.
-- Hard to define provable *plausible* reasoning.
-- **Combinatorial explosion** (in time and space).
-- Logical inference is only a part of intelligence.
+## 1997
+
+- *Deep Blue* defeats human champion Gary Kasparov.
+    - $200000000$ position evaluations per second.
+    - Very sophisticated evaluation function.
+    - Undisclosed methods for extending some lines of search up to 40 plies.
+- Modern programs (e.g., Stockfish or AlphaZero) are better, if less historic.
+- Chess remains *unsolved* due to the complexity of the game.
+
+<br>
+.center.width-50[![](figures/lec3/deep-blue.jpg)]
+
+---
+
+# Go
+
+For long, Go was considered as the Holy Grail of AI due to the size of its game tree.
+- On a 19x19, the number of legal positions is $\pm 2 \times 10^{170}$.
+- This results in **$\pm 10^{800}$ games**, considering a length of $400$ or less.
+
+<br>
+.center.width-50[![](figures/lec3/go.jpg)]
+
+---
+
+class: middle
+
+## 2010-2014
+Using *Monte Carlo tree search* and **machine learning**, computer players reach low dan levels.
+
+## 2015-2017
+Google Deepmind invents AlphaGo.
+
+- 2015: AlphaGo beat Fan Hui, the European Go Champion.
+- 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
+- 2017: AlphaGo beat Ke Jie, 1st world human player.
+
+AlphaGo combines Monte Carlo tree search and **deep learning** with extensive training, both from human and computer play.
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/m2QFSocFeOQ" frameborder="0" allowfullscreen></iframe>
+
+.caption[Press coverage for the victory of AlphaGo against Lee Sedol.]
+
+---
+
+class: middle
+
+## 2017
+
+AlphaGo Zero combines *Monte Carlo tree search* and **deep learning** with extensive training, with self-play only
+
+.center.width-70[![](figures/lec3/alphagozero-training.gif)]
+
+.footnote[Credits: [AlphaGo Zero: Learning from scratch](https://deepmind.com/blog/alphago-zero-learning-scratch/)]
 
 ---
 
 # Summary
 
-- Constraint satisfaction problems:
-    - States are represented by a set of variable/value pairs.
-    - Backtracking, a form of depth-first search, is commonly used for solving CSPs.
-    - The complexity of solving a CSP is strongly related to the structure of its constraint graph.
-- Logical agents:
-    - Intelligent agents need knowledge about the world in order to reach good decisions.
-    - Logical inference can be used as tool to reason about the world, in particular to infer parts that are not observable.
-        - The inference problem can be cast as the problem of determining the unsatisfiability of a formula.
-        - This in turn can be cast as a CSP.
+- Multi-player games are variants of search problems.
+- The difficulty rise in the fact that opponents may respond arbitrarily.
+    - The optimal solution is a **strategy**, and not a fixed sequence of actions.
+- *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
+    - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
+    - Approximations can be achieved with heuristics, reducing computing times.
+    - Minimax can be adapted to stochastic games.
+    - Minimax can be adapted to games with more than 2 players.
+- Optimal behavior is **relative** and depends on the assumptions we make about the world.
 
 ---
 
@@ -784,5 +770,6 @@ The end.
 
 # References
 
-- Newell, A., & Simon, H. (1956). The logic theory machine--A complex information processing system. IRE Transactions on information theory, 2(3), 61-79.
-- McCarthy, J. (1960). Programs with common sense (pp. 300-307). RLE and MIT computation center.
+- Browne, Cameron B., et al. "A survey of monte carlo tree search methods." IEEE Transactions on Computational Intelligence and AI in games 4.1 (2012): 1-43.
+- Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.
+- Silver, David, et al. "Mastering the game of Go with deep neural networks and tree search." Nature 529.7587 (2016): 484-489.

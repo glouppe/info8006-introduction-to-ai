@@ -2,22 +2,11 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 5: Representing uncertain knowledge
+Lecture 5: Inference in Bayesian networks
 
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
-
-???
-
-R: remove/summarize some of the too verbose slides
-
-R: expose the plan and structure of the next lectures on probability
-R: motivate why this is important in AI (and this is not just one more probability theory class)
-R: trim some stuff less directly important for AI?
-
-R: Bayes rule/inference -> emphasis that is like Sherlock Holm. Start from a set of possibilities (prior) and discard/weigh down those not compatible with the observations/evidence.
-R: https://neilkakkar.com/Bayes-Theorem-Framework-for-Critical-Thinking.html?s=09 check this
 
 ---
 
@@ -25,396 +14,101 @@ R: https://neilkakkar.com/Bayes-Theorem-Framework-for-Critical-Thinking.html?s=0
 
 .grid[
 .kol-1-2[
-- Probability:
-    - Random variables
-    - Joint and marginal distributions
-    - Conditional distributions
-    - Product rule, Chain rule, Bayes' rule
-    - Inference
-- Bayesian networks:
-    - Representing uncertain knowledge
-    - Semantics
-    - Construction
+- Exact inference
+    - Inference by enumeration
+    - Inference by variable elimination
+- Approximate inference
+    - Ancestral sampling
+    - Rejection sampling
+    - Likelihood weighting
+    - Gibbs sampling
 ]
 .kol-1-2[
-.width-90[![](figures/lec5/proba-cartoon.png)]
+<br><br>
+.width-100[![](figures/lec5/bn-cartoon.png)]
 ]
 ]
 
-.alert[Do not overlook this lecture!]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-class: middle
-
-# Quantifying uncertainty
-
----
-
-# Ghostbusters
+# Bayesian networks
 
 .grid[
-.kol-1-2[
-A ghost is *hidden* in the grid somewhere.
+.kol-2-3[
+A Bayesian network is a directed acyclic graph in which:
+- Each node corresponds to a *random variable* $X\_i$.
+- Each node $X\_i$ is annotated with a **conditional probability distribution** ${\bf P}(X\_i | \text{parents}(X\_i))$ that quantifies the effect of the parents on the node.
 
-Sensor readings tell how close a square is to the ghost:
-- On the ghost: red
-- 1 or 2 away: orange
-- 3 away: yellow
-- 4+ away green
+A Bayesian network implicitly encodes the full joint distribution as the product of the local distributions:
+    $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
 ]
-.kol-1-2[.width-100[![](figures/lec5/gb-grid.png)]]
-]
-Sensors are **noisy**, but we know the probability values $P(\text{color}|\text{distance})$, for all colors and all distances.
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec5/gb-noprob.mp4" type="video/mp4">
-</video>]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-Could we use a logical agent for this game?
-
----
-
-# Uncertainty
-
-General setup:
-- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
-- **Unobserved** variables: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
-- (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
-
----
-
-class: middle
-
-How to handle uncertainty?
-- A purely logical approach either:
-    - risks falsehood, or
-    - leads to conclusions that are too weak for decision making.
-- **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
-
-???
-
-Falsehood: because of ignorance about the world or laziness in the model.
-
-Weak conclusions: remember the Wumpus example.
-
----
-
-# Probabilistic assertions
-
-Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
-- Probability values **summarize** effects of
-    - *laziness* (failure to enumerate all world states)
-    - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
-- (Bayesian subjective) Probabilities relate propositions to one's own state of knowledge (or lack thereof).
-    - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
-
-These are **not** claims of a "frequent tendency" in the current situation (but might be learned from past experience of similar situations).
-
----
-
-# Kolmogorov's probability theory
-
-Begin with a set $\Omega$, the **sample space**.
-
-$\omega \in \Omega$ is a *sample point* or possible world.
-
-A **probability space** is a sample space equipped with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
-- 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$.
-- 2nd axiom: $P(\Omega) = 1$.
-- 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples.
-
-where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
-
----
-
-class: middle
-
-## Example
-
-- $\Omega$ = the 6 possible rolls of a die.
-- $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding than an outcome of the die.
-- Assignment $P$ for a fair die:
-$$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
-
----
-
-# Random variables
-
-- A **random variable** is a function $X: \Omega \to D\_X$ from the sample space to some domain defining its outcomes.
-    - e.g., $\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $\text{Odd}(\omega) = (\omega\,\text{mod}\,2 = 1)$.
-- $P$ induces a *probability distribution* for any random variable $X$.
-    - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
-    - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
-- An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n)\_i\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
-- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
-    - $R$: Is it raining?
-    - $T$: Is it hot or cold?
-    - $L$: Where is the ghost?
-
----
-
-class: middle
-
-## Notations
-
-- Random variables are written in upper roman letters: $X$, $Y$, etc.
-- Realizations of a random variable are written in corresponding lower case letters.
-   E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
-- The probability value of the realization $x$ is written as $P(X=x)$.
-- When clear from context, this will be abbreviated as $P(x)$.
-- The probability distribution of the random variable $X$ is denoted as ${\bf{P}}(X)$. This corresponds e.g. to a vector of numbers, one for each of the probability values $P(X=x\_i)$ (and not to a single scalar value!).
-
----
-
-# Probability distributions
-
-For discrete variables, the **probability distribution** can be encoded by a discrete list of the probabilities of the outcomes, known as the *probability mass function*.
-
-One can think of the probability distribution as a **table** that associates a probability value to each *outcome* of the variable.
+.kol-1-3.center[.width-100[![](figures/lec5/bn-cartoon2.png)]
 
 <br>
 
-.grid[
-.center.kol-1-2[
-${\bf P}(W)$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.6$ |
-| $\text{rain}$ | $0.1$ |
-| $\text{fog}$ | $0.3$ |
-| $\text{meteor}$ | $0.0$ |
-
-]
-.kol-1-2[.width-100[![](figures/lec5/pw.png)]]
+.width-70[![](figures/lec5/bn-cartoon3.png)]]
 ]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-- This table can be infinite!
-- By construction, probability values are *normalized* (i.e., sum to $1$).
+Reminder: the topology encodes conditional independence assumptions!
 
 ---
 
 class: middle
 
-## Joint distributions
-
- A **joint** probability distribution over a set of random variables $X_1, ..., X_n$ specifies
-the probability of each (combined) outcome:
-
-$$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
+.grid[
+.kol-3-4[.center.width-100[![](figures/lec5/burglary2.svg)]]
+.kol-1-4[.center.width-100[![](figures/lec5/alarm.png)]]
+]
 
 <br>
-
-.center[${\bf P}(T,W)$]
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{hot}$ | $\text{sun}$ | $0.4$ |
-| $\text{hot}$ | $\text{rain}$ | $0.1$ |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+$$
+\begin{aligned}
+P(b,\lnot e, a, \lnot j, m) &= P(b)P(\lnot e)P(a|b, \lnot e)P(\lnot j|a)P(m, a) \\\\
+&= 0.001 \times 0.998 \times 0.94 \times 0.1 \times 0.7
+\end{aligned}$$
 
 ---
 
 class: middle
 
-From a joint distribution, the probability of any event can be calculated.
-- Probability that it is hot and sunny?
-- Probability that it is hot?
-- Probability that it is hot or sunny?
-
-Interesting events often correspond to **partial assignments**, e.g. $P(\text{hot})$.
+# Exact inference
 
 ---
 
-class: middle
+# Inference
 
-## Marginal distributions
+Inference is concerned with the problem *computing a marginal and/or a conditional probability distribution* from a joint probability distribution:
 
-The **marginal distribution** of a subset of a collection of random variables is the joint probability distribution of the variables contained in the subset.
-
-.center.grid[
-.kol-1-3[
-${\bf P}(T,W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{hot}$ | $\text{sun}$ | $0.4$ |
-| $\text{hot}$ | $\text{rain}$ | $0.1$ |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+.grid[
+.kol-1-3.center[Simple queries:]
+.kol-2-3[${\bf P}(X\_i|e)$]
 ]
-.kol-1-3[
-${\bf P}(T)$
-
-| $T$ | $P$ |
-| --- | --- |
-| $\text{hot}$ | $0.5$ |
-| $\text{cold}$ | $0.5$ |
-
-$P(t) = \sum_w P(t, w)$
+.grid[
+.kol-1-3.center[Conjunctive queries:]
+.kol-2-3[${\bf P}(X\_i,X\_j|e)={\bf P}(X\_i|e){\bf P}(X\_j|X\_i,e)$]
 ]
-.kol-1-3[
-${\bf P}(W)$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.6$ |
-| $\text{rain}$ | $0.4$ |
-
-$P(w) = \sum_t P(t, w)$
+.grid[
+.kol-1-3.center[Most likely explanation:]
+.kol-2-3[$\arg \max_q P(q|e)$]
 ]
+.grid[
+.kol-1-3.center[Optimal decisions:]
+.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
 ]
 
-Intuitively, marginal distributions are sub-tables which eliminate variables.
+.center.width-30[![](figures/lec5/query-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-To what events are marginal probabilities associated?
-
----
-
-class: middle
-
-## Conditional distributions
-
-The **conditional probability** of a realization $a$ given the realization $b$ is defined as the ratio of the probability of the joint realization $a$ and $b$, and the probability of $b$:
-$$P(a|b) = \frac{P(a,b)}{P(b)}.$$
-
-Indeed, observing $B=b$ rules out all those possible
-worlds where $B \neq b$, leaving a set whose total probability is just $P(b)$. Within that set, the worlds for which $A=a$ satisfy $A=a \wedge B=b$ and constitute a fraction $P(a,b)/ P(b)$.
-
-.center.width-35[![](figures/lec5/conditional_b.png)]
-
----
-
-class: middle
-
-Conditional distributions are probability distributions over some variables, given *fixed* values for others.
-.center.grid[
-.kol-1-3[
-${\bf P}(T,W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{hot}$ | $\text{sun}$ | $0.4$ |
-| $\text{hot}$ | $\text{rain}$ | $0.1$ |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
-]
-.kol-1-3[
-${\bf P}(W|T=\text{hot})$
-
-| $T$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.8$ |
-| $\text{rain}$ | $0.2$ |
-]
-.kol-1-3[
-${\bf P}(W|T=\text{cold})$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.4$ |
-| $\text{rain}$ | $0.6$ |
-]
-]
-
-???
-
-R: check book
-
-Is a conditional distribution defined on the same sample and probability space than the joint?
-
----
-
-class: middle
-
-## Normalization trick
-
-.center.grid[
-.kol-1-3[
-${\bf P}(T,W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{hot}$ | $\text{sun}$ | $0.4$ |
-| $\text{hot}$ | $\text{rain}$ | $0.1$ |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
-]
-.kol-1-3[
-$\rightarrow {\bf P}(T=\text{cold},W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
-
-*Select* the joint probabilities matching the evidence $T=\text{cold}$.
-
-]
-.kol-1-3[
-$\rightarrow {\bf P}(W|T=\text{cold})$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.4$ |
-| $\text{rain}$ | $0.6$ |
-
-*Normalize* the selection (make it sum to $1$).
-
-]
-]
-
----
-
-# Probabilistic inference
-
-Probabilistic **inference** is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
-
-- We generally compute conditional probabilities.
-    - e.g., $P(\text{on time} | \text{no reported accidents}) = 0.9$
-    - These represent the agent's *beliefs* given the evidence.
-- Probabilities change with new evidence:
-    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{5AM}) = 0.95$
-    - e.g., $P(\text{on time} | \text{no reported accidents}, \text{rain}) = 0.8$
-    - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
-    - Observing new evidence causes *beliefs to be updated*.
-
-.center.width-20[![](figures/lec5/inference-cartoon.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-## General case
-- *Evidence* variables: $E_1, ..., E_k = e_1, ..., e_k$
-- *Query* variables: $Q$
-- *Hidden* variables: $H_1, ..., H_r$
-- $(Q \cup E_1, ..., E_k \cup H_1, ..., H_r)$ = all variables $X_1, ..., X_n$
-
-**Inference** is the problem of computing **${\bf P}(Q|e_1, ..., e_k)$**.
+Explain what $\arg \max$ means.
 
 ---
 
@@ -436,31 +130,204 @@ Z &= \sum_q P(q,e_1,...,e_k) \\\\
 
 class: middle
 
+.pull-right[![](figures/lec5/bn-burglar.png)]
+
+Consider the alarm network and the query ${\bf P}(B|j,m)$:<br><br>
+$\begin{aligned}
+{\bf P}(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a {\bf P}(B,j,m,e,a) \\\\
+&\propto \sum\_e \sum\_a {\bf P}(B,j,m,e,a)
+\end{aligned}$
+
+Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
+$\begin{aligned}
+{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a)
+\end{aligned}$
+
+???
+
+&\propto P(B) \sum\_e P(e) \sum\_a P(a|B,e)P(j|a)P(m|a)
+
+---
+
+class: middle
+
+.center.width-80[![](figures/lec5/enumeration.png)]
+
+Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+Notice that factors that do not depend on the variables in the summations can be factored out, which means that marginalization does not necessarily have to be done at the end:
+
+$$\begin{aligned}
+{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a) \\\\
+&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a)
+\end{aligned}$$
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec5/inference-enumeration.png)]
+
+Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
+
+???
+
+- $n$ is the number of variables.
+- $d$ is the size of their domain.
+
+---
+
+class: middle
+
+## Evaluation tree for $P(b|j,m)$
+
+.center.width-80[![](figures/lec5/enumeration-tree.png)]
+
+Enumeration is still **inefficient**: there are repeated computations!
+- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
+- These can be avoided by storing *intermediate results*.
+
+???
+
+Inefficient because the product is evaluated left-to-right, in a DFS manner.
+
+---
+
+# Inference by variable elimination
+
+The **variable elimination** (VE) algorithm carries out summations right-to-left and stores intermediate results (called *factors*) to avoid recomputations.
+The algorithm interleaves:
+- Joining sub-tables
+- Eliminating hidden variables
+
+.center.width-80[![](figures/lec5/elimination.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-30[![](figures/lec5/bn-burglar.png)]
+
 ## Example
 
+$$\begin{aligned}
+{\bf P}(B|j, m) &\propto {\bf P}(B,j,m) \\\\
+&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a) \\\\
+&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \sum\_a \mathbf{f}\_3(a,B,e) \times \mathbf{f}\_4(a) \times \mathbf{f}\_5(a) \\\\
+&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
+&= \mathbf{f}\_1(B) \times \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
+\end{aligned}$$
+
+---
+
+class: middle
+
+## Factors
+
+- Each **factor $\mathbf{f}_i$** is a multi-dimensional array indexed by the values of its argument variables. E.g.:
 .grid[
 .kol-1-2[
-
-- ${\bf P}(W)$?
-- ${\bf P}(W|\text{winter})$?
-- ${\bf P}(W|\text{winter},\text{hot})$?
-
-]
-.center.kol-1-2[
-
-| $S$ | $T$ | $W$ | $P$ |
-| --- | --- | --- | --- |
-| $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
-| $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
-| $\text{summer}$ | $\text{cold}$ | $\text{sun}$ | $0.1$ |
-| $\text{summer}$ | $\text{cold}$ | $\text{rain}$ | $0.05$ |
-| $\text{winter}$ | $\text{hot}$ | $\text{sun}$ | $0.1$ |
-| $\text{winter}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
-| $\text{winter}$ | $\text{cold}$ | $\text{sun}$ | $0.15$ |
-| $\text{winter}$ | $\text{cold}$ | $\text{rain}$ | $0.2$ |
-
+$$
+\begin{aligned}
+\mathbf{f}\_4 &= \mathbf{f}\_4(A) = \left(\begin{matrix}
+P(j|a) \\\\
+P(j|\lnot a) \end{matrix}\right)
+= \left(\begin{matrix}
+0.90 \\\\
+0.05 \end{matrix}\right) \\\\
+\mathbf{f}\_4(a) &= 0.90 \\\\
+\mathbf{f}\_4(\lnot a) &= 0.5
+\end{aligned}$$
 ]
 ]
+- Factors are initialized with the CPTs annotating the nodes of the Bayesian network, conditioned on the evidence.
+
+---
+
+class: middle
+
+## Join
+
+The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}\_3$.
+- Exactly like a **database join**!
+- The variables of $\mathbf{f}\_3$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+- The elements of $\mathbf{f}\_3$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+
+.center.width-100[![](figures/lec5/ve-product.png)]
+
+---
+
+class: middle
+
+## Elimination
+
+*Summing out*, or **eliminating**, a variable from a factor is done by adding up the submatrices formed by fixing the variable to each of its values in turn.
+
+For example, to sum out $A$ from $\mathbf{f}\_3(A, B, C)$, we write:
+
+$$\begin{aligned}
+\mathbf{f}(B,C) &= \sum\_a \mathbf{f}\_3(a, B, C) = \mathbf{f}\_3(a, B, C) + \mathbf{f}\_3(\lnot a, B, C) \\\\
+&= \left(\begin{matrix}
+0.06 & 0.24 \\\\
+0.42 & 0.28
+\end{matrix}\right) + \left(\begin{matrix}
+0.18 & 0.72 \\\\
+0.06 & 0.04
+\end{matrix}\right) = \left(\begin{matrix}
+0.24 & 0.96 \\\\
+0.48 & 0.32
+\end{matrix}\right)
+\end{aligned}$$
+
+---
+
+class: middle
+
+## General Variable Elimination algorithm
+
+Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
+
+1. Start with the initial factors (the local CPTs, instantiated by the evidence).
+2. While there are still hidden variables:
+    1. Pick a hidden variable $H$
+    2. Join all factors mentioning $H$
+    3. Eliminate H
+3. Join all remaining factors
+4. Normalize
+
+---
+
+class: middle, center
+
+(blackboard example)
+
+???
+
+Prepare this for $P(B|j,m)$.
+
+---
+
+class: middle
+
+
+## Relevance
+
+Consider the query ${\bf P}(J|b)$:
+$${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
+- $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
+- In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
+
+.pull-right[![](figures/lec5/bn-burglar.png)]
+
+.italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
 ---
 
@@ -468,346 +335,368 @@ class: middle
 
 ## Complexity
 
-- Inference by enumeration can be used to answer probabilistic queries for *discrete variables* (i.e., with a finite number of values).
-- However, enumeration **does not scale**!
-    - Assume a domain described by $n$ variables taking at most $d$ values.
-    - Space complexity: $O(d^n)$
-    - Time complexity: $O(d^n)$
+.center.width-50[![](figures/lec5/ve-ordering.png)]
 
-.exercise[Can we reduce the size of the representation of the joint distribution?]
+Consider the query ${\bf P}(X\_n|y\_1,...,y\_n)$.
 
----
+Work through the two elimination orderings:
+- $Z, X\_1, ..., X\_{n-1}$
+- $X\_1, ..., X\_{n-1}, Z$
 
-# Product rule
-
-$$P(a, b) = P(b)P(a|b)$$
-
-## Example
-
-.center.grid[
-.kol-1-3[
-${\bf P}(W)$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.8$ |
-| $\text{rain}$ | $0.2$ |
-]
-.kol-1-3[
-${\bf P}(D|W)$
-
-| $D$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{wet}$ | $\text{sun}$ | $0.1$ |
-| $\text{dry}$ | $\text{sun}$ | $0.9$ |
-| $\text{wet}$ | $\text{rain}$ | $0.7$ |
-| $\text{dry}$ | $\text{rain}$ | $0.3$ |
-
-]
-.kol-1-3[
-${\bf P}(D,W)$
-
-| $D$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{wet}$ | $\text{sun}$ | ? |
-| $\text{dry}$ | $\text{sun}$ | ? |
-| $\text{wet}$ | $\text{rain}$ | ? |
-| $\text{dry}$ | $\text{rain}$ | ? |
-
-]
-]
-
----
-
-# Chain rule
-
-More generally, any joint distribution can always be written as an incremental product of conditional distributions:
-
-$$
-\begin{aligned}
-P(x\_1,x\_2,x\_3) &= P(x\_1)P(x\_2|x\_1)P(x\_3|x\_1,x\_2) \\\\
-P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})
-\end{aligned}
-$$
-
----
-
-# Independence
-
-$A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
-- $P(a|b) = P(a)$, or
-- $P(b|a) = P(b)$, or
-- $P(a,b) = P(a)P(b)$
-
-Independence is denoted as $A \perp B$.
+What is the size of the maximum factor generated for each of the orderings?
+- Answer: $2^{n+1}$ vs. $2^2$ (assuming boolean values)
 
 ---
 
 class: middle
 
-## Example 1
-
-.center.width-40[![](figures/lec5/weather-independence.svg)]
-
-$$
-\begin{aligned}
-&P(\text{toothache}, \text{catch}, \text{cavity}, \text{weather}) \\\\
-&= P(\text{toothache}, \text{catch}, \text{cavity}) P(\text{weather})
-\end{aligned}$$
-
-The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
+The computational and space complexity of variable elimination is determined by the **largest factor**.
+- The elimination *ordering* can greatly affect the size of the largest factor.
+- Does there always exist an ordering that only results in small factors? **No!**
+    - Greedy heuristic: eliminate whichever variable minimizes the size of the factor to be constructed.
+    - Singly connected networks (polytrees):
+        - Any two nodes are connected by at most one (undirected path).
+        - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
 
 ---
 
 class: middle
 
-## Example 2
+## Worst-case complexity?
 
-For $n$ independent coin flips, the joint distribution can be fully **factored** and represented as the product of $n$ 1-entry tables.
-- **$2^n \to n$**
+.center.width-80[![](figures/lec5/3sat.png)]
 
----
-
-# Conditional independence
-
-$A$ and $B$ are **conditionally independent** given $C$ iff, for all $a \in D_A$, $b \in D_B$ and $c \in D_C$,
-- $P(a|b,c) = P(a|c)$, or
-- $P(b|a,c) = P(b|c)$, or
-- $P(a,b|c) = P(a|c)P(b|c)$
-
-Conditional independence is denoted as $A \perp B | C$.
-
----
-
-class: middle
-
-- Using the chain rule, the join distribution can be factored as a product of conditional distributions.
-- Each conditional distribution may potentially be *simplified by conditional independence*.
-- Conditional independence assertions allow probabilistic models to **scale up**.
-
----
-
-class: middle
-
-.center.width-35[![](figures/lec5/tooth.png)]
-
-## Example 1
-
-Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
-
-$\text{Catch}$ is conditionally independent of $\text{Toothache}$, given $\text{Cavity}$.
-Therefore, we can write:
-
-$$
-\begin{aligned}
-&P(\text{toothache}, \text{catch}, \text{cavity}) \\\\
-&= P(\text{toothache}|\text{catch}, \text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity}) \\\\
-&= P(\text{toothache}|\text{cavity}) P(\text{catch}|\text{cavity}) P(\text{cavity})
-\end{aligned}
-$$
-
-In this case, the representation of the joint distribution reduces to $2+2+1$ independent numbers (instead of $2^n-1$).
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-## Example 2 (Naive Bayes)
-
-More generally, from the product rule, we have
-$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n|\text{cause}) P(\text{cause})$$
-
-Assuming *pairwise conditional independence* between the effects given the cause, it comes:
-$$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{cause}) \prod_i P(\text{effect}_i|\text{cause}) $$
-
-This probabilistic model is called a **naive Bayes** model.
-- The complexity of this model is $O(n)$ instead of $O(2^n)$ without the conditional independence assumptions.
-- Naive Bayes can work surprisingly well in practice, even when the assumptions are wrong.
+3SAT is a special case of inference:
+- CSP: $(u\_1 \lor u\_2 \lor u\_3) \wedge (\lnot u\_1 \lor \lnot u\_2 \lor u\_3) \wedge (u\_2 \lor \lnot u\_3 \lor u\_4)$
+- $P(U\_i=0)=P(U\_i=1)=0.5$
+- $C\_1 = U\_1 \lor U\_2 \lor U\_3$; $C\_2 = \lnot U\_1 \lor \lnot  U\_2 \lor U\_3$; $C\_3 = U\_2 \lor \lnot  U\_3 \lor U\_4$
+- $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
+- $Y = D\_2 \wedge C\_3$
 
 ???
 
-This is an important model you should know about!
+3SAT is the problem of determining the satisfiability of a formula in conjunctive normal form, where each clause is limited to a most three literals.
 
 ---
 
-class: middle, center, red-slide
+class: middle
+
+If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
+- By reduction, inference in Bayesian networks is therefore **NP-complete**.
+- There is no known efficient probabilistic inference algorithm in general.
+
+???
+
+Proof by reduction: transforming a problem (here inference) into another (here checking the satisfiability of a formula).
+
+---
+
+class: middle
+
+# Approximate inference
+
+a.k.a. Monte Carlo methods
+
+---
+
+class: middle
+
+Exact inference is **intractable** for most probabilistic models of practical interest.
+(e.g., involving many variables, continuous and discrete, undirected cycles, etc).
+
+## Solution
+
+Abandon exact inference and develop  **approximate** but *faster* inference algorithms:
+- *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
+- *Variational methods*: formulate inference as an optimization problem.
+- *Belief propagation methods*: formulate inference as a message-passing algorithm.
+
+---
+
+# Sampling methods
+
+Basic idea:
+- Draw $N$ samples from a sampling distribution $S$.
+- Compute an approximate posterior probability $\hat{P}$.
+- Show this approximate converges to the true probability distribution $P$.
+
+## Why sampling?
+
+Generating samples is often much faster than computing the right answer (e.g., with variable elimination).
+
+.center.width-70[![](figures/lec5/sampling-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Sampling
+
+How to sample from the distribution of a discrete variable $X$?
+- Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
+- Assume sampling from the uniform $\mathcal{U}(0,1)$ is possible.
+    - e.g., as enabled by a standard `rand()` function.
+- Divide the $[0,1]$ interval into $k$ regions, with region $i$ having size $P(x_i)$.
+- Sample $u \sim \mathcal{U}(0,1)$ and return the value associated to the region in which $u$ falls.
+
+<br>
+.center.width-60[![](figures/lec5/sampling.png)]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-3.center[
+$P(C)$
+
+| $C$ | $P$ |
+| --- | --- |
+| $\text{red}$ | $0.6$ |
+| $\text{green}$ | $0.1$ |
+| $\text{blue}$ | $0.3$ |
+]
+.kol-2-3[<br>
+$$\begin{aligned}
+0 \leq u < 0.6 &\to C = \text{red} \\\\
+0.6 \leq u < 0.7 &\to C = \text{green} \\\\
+0.7 \leq u < 1 &\to C = \text{blue} \\\\
+\end{aligned}$$
+]
+]
+
+.center.width-70[![](figures/lec5/sampling-colors.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Prior sampling
+
+Sampling from a Bayesian network, *without* observed evidence:
+- Sample each variable in turn, **in topological order**.
+- The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec5/ancestral-sampling.png)]
+
+<br>
+
+.center.width-100[![](figures/lec5/ancestral-sampling-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec5/as1.png)]
+
+---
+
+class: middle
 count: false
 
-Study the next slide. .bold[Twice].
-
----
-
-# The Bayes' rule
-
-.grid[
-.kol-2-3[
-
-The product rule defines two ways to factor the joint distribution of two random variables.
-    $$P(a,b) = P(a|b)P(b) = P(b|a)P(a)$$
-Therefore,
-**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}.$$**
-]
-.kol-1-3[
-.circle.width-100[![](figures/lec5/thomas.png)]
-]
-]
-
-- $P(a)$ is the prior belief on $a$.
-- $P(b)$ is the probability of the evidence $b$.
-- $P(a|b)$ is the posterior belief on $a$, given the evidence $b$.
-- $P(b|a)$ is the conditional probability of $b$ given $a$. Depending on the context, this term is called the likelihood.
+.center.width-90[![](figures/lec5/as2.png)]
 
 ---
 
 class: middle
+count: false
 
-Why is this helpful?
-- The Bayes rule let us build one conditional from its reverse.
-- Often one conditional is tricky, but the other is simple.
-
-This equation is the **foundation** of many AI systems.
+.center.width-90[![](figures/lec5/as3.png)]
 
 ---
 
 class: middle
+count: false
 
-## Example: diagnostic probability from causal probability.
-
-$$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
-where
-- $P(\text{effect}|\text{cause})$ quantifies the relationship in the *causal* direction.
-- $P(\text{cause}|\text{effect})$ describes the **diagnostic** direction.
-
-Let $S$=stiff neck and $M$=meningitis.
-Given $P(s|m) = 0.7$, $P(m) = 1/50000$, $P(s) = 0.01,$
-it comes
-$$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
-
----
-
-# Ghostbusters, revisited
-
-- Let us assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
-- We start with a uniform **prior distribution** ${\bf P}(G)$ over ghost locations.
-- We assume a sensor *reading model* ${\bf P}(R\_{i,j}|G)$.
-    - That is, we know what the sensors do.
-    - $R_{i,j}$ = reading color measured at $[i,j]$
-        - e.g., $P(R_{1,1}=\text{yellow}|G=[1,1])=0.1$
-    - Two readings are conditionally independent, given the ghost position.
-
-???
-
-This is a Naive Bayes model!
+.center.width-90[![](figures/lec5/as4.png)]
 
 ---
 
 class: middle
+count: false
 
-- We can calculate the **posterior distribution** ${\bf P}(G|R\_{i,j})$ using Bayes' rule:
-$${\bf P}(G|R\_{i,j}) = \frac{ {\bf P}(R\_{i,j}|G){\bf P}(G)}{ {\bf P}(R\_{i,j})}.$$
-- For the next reading $R\_{i',j'}$, this posterior distribution becomes the prior distribution over ghost locations, which we update similarly.
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls preload="auto" height="400" width="640">
-  <source src="./figures/lec5/gb-prob.mp4" type="video/mp4">
-</video>]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-???
-
-What if we had chosen a different prior?
-
----
-
-# Frequentism vs. Bayesianism
-
-What do probability values represent?
-- The objectivist *frequentist* view is that probabilities are real aspects of the universe.
-    - i.e., propensities of objects to behave in certain ways.
-    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
-- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
-    - i.e., probabilities do not have external physical significance.
-    - This is the interpretation of probabilities that we will use!
+.center.width-90[![](figures/lec5/as5.png)]
 
 ---
 
 class: middle
+count: false
 
-# Probabilistic reasoning
-
----
-
-class: middle
-
-## Representing knowledge
-
-- The joint probability distribution can answer any question about the domain.
-- However, its representation can become **intractably large** as the number of variable grows.
-- *Independence* and *conditional independence* reduce the number of probabilities that need to be specified in order to define the full joint distribution.
-- These relationships can be represented explicitly in the form of a **Bayesian network**.
-
----
-
-# Bayesian networks
-
-A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
-- Each *node* corresponds to a *random variable*.
-    - Can be observed or unobserved.
-    - Can be discrete or continuous.
-- Each *edge* indicate dependency relationships.
-    - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
-- Each node $X_i$ is annotated with a **conditional probability distribution** ${\bf P}(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
-    - In the simplest case, conditional distributions are represented as conditional probability tables (CTPs).
+.center.width-90[![](figures/lec5/as6.png)]
 
 ---
 
 class: middle
+count: false
 
-.center.width-45[![](figures/lec5/alarm.png)]
-
-## Example 1
-
-I am at work, neighbor John calls to say my alarm is ringing, but neighbor
-Mary does not call. Sometimes it's set off by minor earthquakes.
-Is there a burglar?
-
-- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
-- Network topology from "causal" knowledge:
-    - A burglar can set the alarm off
-    - An earthquake can set the alaram off
-    - The alarm can cause Mary to call
-    - The alarm can cause John to call
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.center.width-90[![](figures/lec5/as7.png)]
 
 ---
 
 class: middle
-
-.center.width-90[![](figures/lec5/burglary2.svg)]
-
----
-
-# Semantics
-
-A Bayesian network implicitly **encodes** the full joint distribution as the product of the local distributions:
-
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
 
 ## Example
 
+We will collect a bunch of samples from the Bayesian network:
+
+$c, \lnot s, r, w$<br>
+$c, s, r, w$<br>
+$\lnot c, s, r, \lnot w$<br>
+$c, \lnot s, r, w$<br>
+$\lnot c, \lnot s, \lnot r, w$
+
+If we want to know ${\bf P}(W)$:
+- We have counts $\langle w:4, \lnot w:1 \rangle$
+- Normalize to obtain $\hat{{\bf P}}(W) = \langle w:0.8, \lnot w:0.2 \rangle$
+- $\hat{{\bf P}}(W)$ will get closer to the true distribution ${\bf P}(W)$ as we generate more samples.
+
+---
+
+class: middle
+
+## Analysis
+
+The probability that prior sampling generates a particular event is
+$$S\_\text{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
+i.e., the Bayesian network's joint probability.
+
+Let $N\_\text{PS}(x\_1, ..., x\_n)$ denote the number of samples of an event. We
+define the probability **estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_\text{PS}(x\_1, ..., x\_n) / N.$$
+
+---
+
+class: middle
+
+Then,
+$$\begin{aligned}
+\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) &= \lim\_{N \to \infty} N\_\text{PS}(x\_1, ..., x\_n) / N \\\\
+&= S\_\text{PS}(x\_1, ..., x\_n) \\\\
+&= P(x\_1, ..., x\_n)
+\end{aligned}$$
+Therefore, prior sampling is *consistent*:
+$$P(x\_1, ..., x\_n) \approx N\_\text{PS}(x\_1, ..., x\_n) / N$$
+
+---
+
+# Rejection sampling
+
+Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the proportion of samples $x$ **agreeing with the evidence** $e$ among all samples agreeing with the evidence.
+
+<br><br><br>
+.center.width-100[![](figures/lec5/rejection-sampling-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec5/rejection-sampling.png)]
+
+---
+
+class: middle
+
+
+## Analysis
+
+Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejection sampling:
+
+$$\begin{aligned}
+\hat{P}(x|e) &= N\_\text{PS}(x,e) / N\_\text{PS}(e) \\\\
+&= \frac{N\_\text{PS}(x,e)}{N} / \frac{N\_\text{PS}(e)}{N} \\\\
+&\approx P(x,e) / P(e) \\\\
+&= P(x|e)
+\end{aligned}$$
+
+Therefore, rejection sampling returns *consistent* posterior estimates.
+
+- The standard deviation of the error in each probability is $O(1/\sqrt{n})$, where $n$ is the number of samples used in the estimate.
+- **Problem**: many samples are rejected!
+    - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
+    - Evidence is not exploited when sampling.
+
+---
+
+# Likelihood weighting
+
+Idea: *clamp* the evidence variables, sample the rest.
+- Problem: the resulting sampling distribution is not consistent.
+- Solution: **weight** by probability of evidence given parents.
+
+<br><br><br>
+.center.width-100[![](figures/lec5/likelihood-weighting-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec5/importance-sampling.png)]
+
+???
+
+Probability estimates are built by summing up weights instead of ones and normalizing.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec5/lw1.png)]
+
+---
+
+class: middle
+count: false
+
+.center.width-100[![](figures/lec5/lw2.png)]
+
+---
+
+class: middle
+count: false
+
+.center.width-100[![](figures/lec5/lw3.png)]
+
+---
+
+class: middle
+count: false
+
+.center.width-100[![](figures/lec5/lw4.png)]
+
+---
+
+class: middle
+count: false
+
+.center.width-100[![](figures/lec5/lw5.png)]
+
+---
+
+class: middle
+
+## Analysis
+
+The sampling probability for an event with likelihood weighting is
+$$S\_\text{WS}(x,e) = \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)),$$
+where the product is over the non-evidence variables.
+The weight for a given sample $x,e$ is
+$$w(x,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
+where the product is over the evidence variables.
+
+The weighted sampling probability is
 $$
 \begin{aligned}
-P(j, m, a, \lnot b, \lnot e) &= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
-&= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998 \\\\
-&\approx 0.00063
+S\_\text{WS}(x,e) w(x,e) &= \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
+&= P(x,e)
 \end{aligned}
 $$
 
@@ -815,451 +704,118 @@ $$
 
 class: middle
 
-Why does $\prod\_{i=1}^n P(x_i | \text{parents}(X_i))$ result in the proper joint probability?
-- By the *chain rule*, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
-- Provided that we assume **conditional independence** of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
-$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
-- Therefore $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
-
----
-
-class: middle
-
-.grid[
-.kol-1-2[.width-90[![](figures/lec5/tooth.png)]]
-.kol-1-2[.width-100[![](figures/lec5/dentist-network.svg)]]
-]
-<br>
-
-## Example 2
-
-The topology of the network encodes conditional independence assertions:
-- $\text{Weather}$ is independent of the other variables.
-- $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.grid.center[
-.kol-1-3[.width-80[![](figures/lec5/traffic1.png)]]
-.kol-2-3[.width-90[![](figures/lec5/traffic2.png)]<br><br>]
-]
-
-## Example 3
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
-.grid.center[
-.kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
-.kol-2-5[
-${\bf P}(R)$
-
-| $R$ | $P$ |
-| --- | --- | --- |
-| $\text{r}$ | $0.25$ |
-| $\lnot\text{r}$ | $0.75$ |
-]
-.kol-2-5[
-${\bf P}(T|R)$
-
-| $R$ | $T$ | $P$ |
-| --- | --- | --- |
-| $\text{r}$ | $\text{t}$ | $0.75$ |
-| $\text{r}$ | $\lnot\text{t}$ | $0.25$ |
-| $\lnot\text{r}$ | $\text{t}$ | $0.5$ |
-| $\lnot\text{r}$ | $\lnot\text{t}$ | $0.5$ |
-]
-]
-
----
-
-class: middle
-
-.center.width-60[![](figures/lec5/traffic3.png)]
-
-## Example 3 (bis)
-
-.grid.center[
-.kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
-.kol-2-5[
-${\bf P}(T)$
-
-| $T$ | $P$ |
-| --- | --- | --- |
-| $\text{r}$ | $9/16$ |
-| $\lnot\text{r}$ | $7/16$ |
-]
-.kol-2-5[
-${\bf P}(R|T)$
-
-| $T$ | $R$ | $P$ |
-| --- | --- | --- |
-| $\text{t}$ | $\text{r}$ | $1/3$ |
-| $\text{t}$ | $\lnot\text{r}$ | $2/3$ |
-| $\lnot\text{t}$ | $\text{r}$ | $1/7$ |
-| $\lnot\text{t}$ | $\lnot\text{r}$ | $6/7$ |
-]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-# Construction
-
-Bayesian networks are correct representations of the domain only if each node is conditionally independent of its other predecessors in the node ordering, given its parents.
-
-## Construction algorithm
-
-1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
-2. For $i=1$ to $n$:
-    1. Add $X\_i$ to the network.
-    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
-    3. For each parent, insert a link from the parent to $X\_i$.
-    4. Write down the CPT.
-
----
-
-class: middle
-
-.center.width-100[
-![](figures/lec5/burglary-mess.svg)
-]
-
-.exercise[Do these networks represent the same distribution?]
-
-???
-
-For the left network:
-
-- P (J|M ) = P (J)? No
-- P (A|J, M ) = P (A|J)? P (A|J, M ) = P (A)? No
-- P (B|A, J, M ) = P (B|A)? Yes
-- P (B|A, J, M ) = P (B)? No
-- P (E|B, A, J, M ) = P (E|A)? No
-- P (E|B, A, J, M ) = P (E|A, B)? Yes
-
----
-
-class: middle
-
-## Compactness
-
-- A CPT for boolean $X_i$ with $k$ boolean parents has $2^k$ rows for the combinations of parent values.
-- Each row requires one number $p$ for $X_i = \text{true}$.
-    - The number for $X_i=\text{false}$ is just $1-p$.
-- If each variable has no more than $k$ parents, the complete network requires $O(n \times 2^k)$ numbers.
-    - i.e., grows **linearly with $n$**, vs. $O(2^n)$ for the full joint distribution.
-- For the burglary net, we need $1+1+4+2+2=10$ numbers (vs. $2^5-1=31$).
-- Compactness depends on the *node ordering*.
-
----
-
-# Independence
-
-Important question: Are two nodes independent given certain evidence?
-- If yes, this can be proved using algebra (tedious).
-- If no, this can be proved with a counter example.
-
-<br>
-
-.center.width-45[![](figures/lec5/xyz.png)]
-
-.center[Example: Are $X$ and $Z$ necessarily independent?]
-
----
-
-class: middle
-
-## Cascades
-
-.grid[
-.kol-1-2[
-Is $X$ independent of $Z$? No.
-
-Counter-example:
-- Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
-- In numbers:
-    - $P(y|x)=1$,
-    - $P(z|y)=1$,
-    - $P(\lnot y|\lnot x)=1$,
-    - $P(\lnot z|\lnot y)=1$
-]
-.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
-
-$X$: low pressure,
-$Y$: rain,
-$Z$: traffic.
-
-$P(x,y,z)=P(x)P(y|x)P(z|y)$]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.grid[
-.kol-1-2[
-Is $X$ independent of $Z$, given $Y$? Yes.
+The estimated joint probability is computed as follows:
 
 $$\begin{aligned}
-P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
-&= \frac{P(x)P(y|x)P(z|y)}{P(x)P(y|x)} \\\\
-&= P(z|y)
+\hat{P}(x,e) &= N\_\text{WS}(x,e) w(x,e) / N \\\\
+&\approx S\_\text{WS}(x,e) w(x,e) \\\\
+&= P(x,e)
 \end{aligned}$$
 
-We say that the evidence along the cascade **"blocks"** the influence.
-
-]
-.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
-
-$X$: low pressure,
-$Y$: rain,
-$Z$: traffic.
-
-$P(x,y,z)=P(x)P(y|x)P(z|y)$]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.grid[
-.kol-1-2[
-## Common parent
-
-Is $X$ independent of $Z$? No.
-
-Counter-example:
-- Project due causes both forums busy and lab full.
-- In numbers:
-    - $P(x|y)=1$,
-    - $P(\lnot x|\lnot y)=1$,
-    - $P(z|y)=1$,
-    - $P(\lnot z|\lnot y)=1$
-]
-.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
-
-$X$: forum busy,
-$Y$: project due,
-$Z$: lab full.
-
-$P(x,y,z)=P(y)P(x|y)P(z|y)$]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
-.grid[
-.kol-1-2[
-Is $X$ independent of $Z$, given $Y$? Yes
-
+From this, the estimated posterior probability is given by:
 $$\begin{aligned}
-P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
-&= \frac{P(y)P(x|y)P(z|y)}{P(y)P(x|y)} \\\\
-&= P(z|y)
+\hat{P}(x|e) &= \hat{P}(x,e) / \hat{P}(e) \\\\
+&\approx P(x,e) / P(e) = P(x|e).
 \end{aligned}$$
 
-Observing the parent blocks the influence between the children.
-]
-.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
-
-$X$: forum busy,
-$Y$: project due,
-$Z$: lab full.
-
-$P(x,y,z)=P(y)P(x|y)P(z|y)$]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+Hence likelihood weighting returns *consistent* estimates.
 
 ---
 
 class: middle
 
-.grid[
-.kol-1-2[
-## v-structures
+- Likelihood weighting is *helpful*:
+    - The evidence is taken into account to generate a sample.
+    - More samples will reflect the state of the world suggested by the evidence.
+- Likelihood weighting **does not solve all problems**:
+    - Performance degrades as the number of evidence variable increases.
+    - The evidence influences the choice of downstream variables, but not upstream ones.
+        - Ideally, we would like to consider the evidence when we sample each and every variable.
 
-Are $X$ and $Y$ independent? Yes.
-- The ballgame and the rain cause traffic, but they are not correlated.
-- (Prove it!)
+---
 
-Are $X$ and $Y$ independent given $Z$? No!
-- Seeing traffic puts the rain and the ballgame in competition as explanation.
-- This is **backwards** from the previous cases. Observing a child node *activates* influence between parents.
-]
-.kol-1-2.center[.width-80[![](figures/lec5/v-structure.png)]
+# Inference by Markov chain simulation
 
-$X$: rain,
-$Y$: ballgame,
-$Z$: traffic.
-
-$P(x,y,z)=P(x)P(y)P(z|x,y)$]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
+- **Markov chain Monte Carlo** (MCMC) algorithms are a family of sampling algorithms that generate samples through a Markov chain.
+- They generate a sequence of samples by making random changes to a preceding sample, instead of generating each sample from scratch.
+- Helpful to think of a Bayesian network as being in a particular *current state* specifying a value for each variable and generating a *next state* by making random changes to the current state.
+- Metropolis-Hastings is one of the most famous MCMC methods, of which **Gibbs sampling** is a special case.
 
 ---
 
 class: middle
 
-## d-separation
+## Gibbs sampling
 
-Let us assume a complete Bayesian network.
-Are $X\_i$ and $X\_j$ conditionally independent given evidence $Z\_1=z\_1, ..., Z\_m=z\_m$?
+- Start with an arbitrary instance $x\_1, ..., x\_n$ consistent with the evidence.
+- Sample one variable at a time, conditioned on all the rest, but keep the evidence fixed.
+- Keep repeating this for a long time.
 
-Consider all (undirected) paths from $X\_i$ to $X\_j$:
-- If one or more active path, then independence is not guaranteed.
-- Otherwise (i.e., all paths are inactive), then independence is guaranteed.
-
-
----
-
-class: middle
-
-.grid[
-.kol-2-3[
-
-A path is **active** if each triple is active:
-- Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
-- Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
-- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
-
-]
-.kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
-]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+<br>
+.center.width-100[![](figures/lec5/gibbs-sampling.png)]
 
 ---
 
 class: middle
 
-.grid[
-.kol-1-2[
+- Both upstream and downstream variables condition on evidence.
+- In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
+
+---
+
+class: middle
+
 ## Example
 
-- $L \perp T' | T$?
-- $L \perp B$?
-- $L \perp B|T$?
-- $L \perp B|T'$?
-- $L \perp B|T, R$?
-
-]
-.kol-1-2.width-80.center[![](figures/lec5/example-d.png)]
-]
-
-???
-
-- Yes
-- Yes
-- (maybe)
-- (maybe)
-- Yes
-
----
-
-class: middle
-
-## Local semantics
-
-.center.width-60[![](figures/lec5/nondescendants.svg)]
-
-A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
-
----
-
-class: middle
-
-## Global semantics
-
-.center.width-60[![](figures/lec5/markov-blanket.svg)]
-
-A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
-
----
-
-# Causality?
-
-- When the network reflects the true causal patterns:
-    - Often more compact (nodes have fewer parents).
-    - Often easier to think about.
-    - Often easier to elicit from experts.
-- But, Bayesian networks **need not be causal**.
-    - Sometimes no causal network exists over the domain (e.g., if variables are missing).
-    - Edges reflect **correlation**, not causation.
-- What do the edges really mean then?
-    - Topology *may* happen to encode causal structure.
-    - **Topology really encodes conditional independence.**
-
-.center.width-50[![](figures/lec5/causality.png)]
-
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
-
----
-
-class: middle
-
 .grid[
-.kol-3-4[<br>
-- Correlation does not imply causation.
-- Causes cannot be expressed in the language of probability theory.
+.kol-1-4[
+1) Fix the evidence
 ]
-.kol-1-4[.circle.width-100[![](figures/lec5/pearl.jpg)].center[Judea Pearl]]
+.kol-1-4.width-100[![](figures/lec5/gibbs-init.png)]
+.kol-1-4[
+2) Randomly initialize the other variables
+]
+.kol-1-4.width-100[![](figures/lec5/gibbs-init2.png)]
 ]
 
----
+3) Repeat
+- Choose a non-evidence variable $X$.
+- Resample $X$ from ${\bf P}(X|\text{all other variables})$.
 
-class: middle
-
-Philosophers have tried to define causation in terms of probability: $X=x$ causes $Y=y$ if $X=x$ raises the probability of $Y=y$.
-
-However, the inequality
-$$P(y|x) > P(y)$$
-fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X=x$ over $Y=y$.
-- Instead, the expression means that if we observe $X=x$, then the probability of $Y=y$ increases.
-- But this increase may come about for other reasons!
+.center.width-100[![](figures/lec5/gibbs-process.png)]
 
 ---
 
 class: middle
 
-The correct formulation should read
-$$P(y|\text{do}(X=x)) > P(y),$$
-where $\text{do}(X=x)$ stands for an external intervention where $X$ is **set to** the value $x$ instead of being observed.
+## Demo
+
+See `code/lecture6-gibbs.ipynb`.
 
 ---
 
 class: middle
 
-## Observing vs. intervening
 
-- The reading in barometer is useful to predict rain.
-$$P(\text{rain}|\text{Barometer}=\text{high}) > P(\text{rain}|\text{Barometer}=\text{low})$$
-- But hacking a barometer will not cause rain!
-$$P(\text{rain}|\text{Barometer hacked to high}) = P(\text{rain}|\text{Barometer hacked to low})$$
+## Rationale
+
+The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
+
+See 14.5.2 for a technical proof.
+
 
 ---
 
 # Summary
 
-- Uncertainty arises because of laziness and ignorance. It is **inescapable** in complex non-deterministic or partially observable environments.
-- Probabilistic reasoning provides a framework for managing our knowledge and *beliefs*, with the Bayes' rule acting as the workhorse for inference.
-- A **Bayesian Network** specifies a full joint distribution. They are often exponentially smaller than an explicitly enumerated joint distribution.
-- The structure of a Bayesian network encodes conditional independence assumptions between random variables.
-
+- Exact inference by variable elimination .
+    - NP-complete on general graphs, but polynomial on polytrees.
+    - space = time, very sensitive to topology.
+- Approximate inference gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
+    - Likelihood weighting does poorly when there is lots of evidence.
+    - Likelihood weighting and Gibbs sampling are generally insensitive to topology.
+    - Convergence can be slow with probabilities close to 1 or 0.
+    - Can handle arbitrary combinations of discrete and continuous variables.
 
 ---
 
@@ -1267,3 +823,9 @@ class: end-slide, center
 count: false
 
 The end.
+
+---
+
+# References
+
+- Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.

@@ -24,7 +24,7 @@ Can you **talk** to an artificial agent? Can it understand what you say?
 - Speech recognition
 - Text-to-speech synthesis
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -83,7 +83,7 @@ class: middle
 
 .center[Natural languages are not 1:1 mappings of each other!]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -101,7 +101,7 @@ Therefore, one must understand physics as well as language.]
 
 .center.width-100[![](figures/lec10/history.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -110,7 +110,7 @@ Therefore, one must understand physics as well as language.]
 <br>
 .center.width-100[![](figures/lec10/data-driven-mt.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

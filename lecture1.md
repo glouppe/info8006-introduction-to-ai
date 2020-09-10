@@ -8,12 +8,6 @@ Lecture 1: Intelligent agents
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: go over the Intelligent agents part, formalize a bit more.
-R: ^ really do this next year
-R: draw the agent diagrams in draw.io
-
 ---
 
 class: middle
@@ -40,7 +34,6 @@ class: middle
   maps percept histories to actions:
   $$f : \mathcal{P}^* \to \mathcal{A}$$
 
-- The **agent program** runs on the physical architecture to produce $f$.
 
 ---
 
@@ -48,7 +41,7 @@ class: middle
 
 ## Simplified Pacman world
 
-.width-40.center[![](figures/lec1/pacman.png)]
+.width-20.center[![](figures/lec1/pacman.png)]
 
 - Percepts: location and content, e.g. $(\text{left cell}, \text{no food})$
 - Actions: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
@@ -77,15 +70,23 @@ Partial tabulation of a simple Pacman agent function:
 
 ---
 
+class: middle, center
+
+.width-100.center[![](figures/lec1/pacman-world.jpg)]
+
+What about the actual Pacman?
+
+---
+
 class: middle
 
 ## The optimal Pacman?
 
 What is the **right** agent function?
 How to formulate the *goal* of Pacman?
-- 1 point per food collected up to time $t$?
-- 1 point per food collected up to time $t$, minus one per move?
-- penalize when too many foods are left not collected?
+- 1 point per food dot collected up to time $t$?
+- 1 point per food dot collected up to time $t$, minus one per move?
+- penalize when too many food dots are left not collected?
 
 Can it be implemented in a *small* agent program?
 
@@ -101,7 +102,7 @@ Can it be implemented in a *small* agent program?
 
 .center[![](figures/lec1/rational-agent-cartoon.png)]
 
-.footnote[Image credits: [CS188](http://ai.berkeley.edu/lecture_slides.html), UC Berkeley.]
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -143,20 +144,30 @@ class: middle
 
 # Environment types
 
-- *Fully observable* vs. **partially observable**
-    - Whether the agent sensors give access to the complete state of the environment, at each point in time.
-- *Deterministic* vs. **stochastic**
-    - Whether the next state of the environment is completely determined by the current state and the action executed by the agent.
-- *Episodic* vs. **sequential**
-    - Whether the agent's experience is divided into atomic independent episodes.
-- *Static* vs. **dynamic**
-    - Whether the environment can change, or the performance measure can change with time.
-- *Discrete* vs. **continuous**
-    - Whether the state of the environment, the time, the percepts or the actions are continuous.
-- *Single agent* vs. **multi-agent**
-    - Whether the environment include several agents that may interact which each other.
-- *Known* vs **unknown**
-    - Reflects the agent's state of knowledge of the "law of physics" of the environment.
+*Fully observable* vs. **partially observable**
+> Whether the agent sensors give access to the complete state of the environment, at each point in time.
+
+*Deterministic* vs. **stochastic**
+> Whether the next state of the environment is completely determined by the current state and the action executed by the agent.
+
+*Episodic* vs. **sequential**
+> Whether the agent's experience is divided into atomic independent episodes.
+
+*Static* vs. **dynamic**
+> Whether the environment can change, or the performance measure can change with time.
+
+---
+
+class: middle
+
+*Discrete* vs. **continuous**
+> Whether the state of the environment, the time, the percepts or the actions are continuous.
+
+*Single agent* vs. **multi-agent**
+> Whether the environment include several agents that may interact which each other.
+
+*Known* vs **unknown**
+> Reflects the agent's state of knowledge of the "law of physics" of the environment.
 
 ---
 
@@ -178,15 +189,18 @@ static? discrete? single agents? Known?
 
 ---
 
+class: middle, center
+
+.width-100.center[![](figures/lec1/pacman-world.jpg)]
+
+What about Pacman?
+
+---
+
 # Agent programs
 
 The job of AI is to design an **agent program** that implements the agent
-function. This program will run on an *architecture*, that is a computing device
-with physical sensors and actuators.
-
-$$\text{agent} = \text{program} + \text{architecture}$$
-
-## Implementation
+function. 
 
 Agent programs can be designed and implemented in many ways:
 
@@ -197,21 +211,28 @@ Agent programs can be designed and implemented in many ways:
 
 ---
 
-# Table-driven agents
+# Reflex agents
 
-A *table-driven agent* determines its next action with a lookup table that contains the appropriate action for every possible percept sequence.
+<br>
+.center.width-70[![](figures/lec1/reflex-agent-cartoon.png)]
 
-## Issues
-
-- **Design issue:** one needs to anticipate all sequence of percepts and how the agent should respond.
-- **Technical issue:** the lookup table will contain $\sum_{t=1}^T |\mathcal{P}|^t$ entries.
-- Example (autonomous car): using a 30fps 640x480 RBG camera as sensor, this results in a table with over $10^{250000000000}$ entries for an hour of driving.
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-# Simple reflex agents
+class: middle
 
-<br><br>
+Reflex agents
+- choose an action based on current percept (and maybe memory);
+- may have memory or model of the world's current state;
+- do not consider the futur consequences of their actions.
+
+---
+
+class: middle
+
+## Simple reflex agents
+
 .center.width-80[![](figures/lec1/simple-reflex-agent.svg)]
 
 ???
@@ -229,19 +250,19 @@ class: middle
   ignoring the rest of the percept history.
 - They implement **condition-action rules** that match the
   current percept to an action.
-- Rules provide a way to *compress* the function table.
-    - Example (autonomous car): If a car in front of you slow down, you should break.
+  - Rules provide a way to *compress* the function table.
+  - Example (autonomous car): If a car in front of you slow down, you should break.
       The color and model of the car, the music on the radio or the weather are all irrelevant.
-- Simple reflex agents are simple but they turn out to have **limited intelligence**.
 - They can only work in a *Markovian* environment, that is if the correct
   decision can be made on the basis of only the current percept.
   In other words, if the environment is fully observable.
 
 ---
 
-# Model-based reflex agents
+class: middle
 
-<br><br>
+## Model-based reflex agents
+
 .center.width-80[![](figures/lec1/model-based-reflex-agent.svg)]
 
 ???
@@ -263,9 +284,29 @@ class: middle
 
 ---
 
-# Goal-based agents
+# Planning agents
 
-<br><br>
+<br>
+.center.width-80[![](figures/lec1/plan-agent-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+Planning agents:
+- ask "what if?";
+- make decisions based on (hypothesized) consequences of actions;
+- must have a model of how the world evolves in response to actions;
+- must formulate a goal.
+
+---
+
+class: middle
+
+## Goal-based agents
+
 .center.width-80[![](figures/lec1/goal-based-agent.svg)]
 
 ???
@@ -276,7 +317,7 @@ It is not easy to map a state to an action because goals are not explicit in con
 
 class: middle
 
-- Principle:
+- Decision process:
     1. generate possible sequences of actions
     2. predict the resulting states
     3. assess **goals** in each.
@@ -288,9 +329,10 @@ class: middle
 
 ---
 
-# Utility-based agents
+class: middle
 
-<br><br>
+## Utility-based agents
+
 .center.width-80[![](figures/lec1/utility-based-agent.svg)]
 
 ???
@@ -312,7 +354,7 @@ class: middle
 
 # Learning agents
 
-<br><br>
+<br>
 .center.width-80[![](figures/lec1/learning-agent.svg)]
 
 ---
