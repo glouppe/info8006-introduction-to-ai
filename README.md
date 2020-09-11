@@ -13,8 +13,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | Date | Topic |
 | --- | --- |
 | September 17<br>[[Live stream](https://www.youtube.com/watch?v=LL93g0rK5qk)] | [Course syllabus](https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf)]<br>Lecture 0: [Introduction to artificial intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf)]<br>Lecture 1: [Intelligent agents](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)] |
-| September 24 | Lecture 2: Solving problems by searching<br>Lecture 2b: Constraint satisfaction problems (optional) |
-| October 1 | Lecture 3: Games and adversarial search |
+| September 24 | Lecture 2: [Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)] <br>Lecture 2b: [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2b.pdf)]  (optional) |
+| October 1 | Lecture 3: [Games and adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)]  |
 | October 8 | Lecture 4: Representing uncertain knowledge |
 | October 15 | Lecture 5: Inference in Bayesian networks |
 | October 22 | Lecture 6: Reasoning over time |
@@ -44,6 +44,6 @@ TBD.
 
 ## Archives
 
-- [2010-2020](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2019)
+- [2019-2020](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2019)
 - [2018-2019](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2018)
 - [2017-2018](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2017)
