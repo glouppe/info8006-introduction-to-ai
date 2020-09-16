@@ -12,3 +12,5 @@ Prof. Gilles Louppe<br>
 
 R: see CS188
 R: restructure the content together with Lec7 and Lec8
+
+R: https://twitter.com/YAWScience/status/1304199719036444672?s=09

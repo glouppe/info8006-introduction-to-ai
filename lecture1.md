@@ -70,7 +70,7 @@ Partial tabulation of a simple Pacman agent function:
 
 ---
 
-class: middle, center
+class: middle, center, black-slide
 
 .width-100.center[![](figures/lec1/pacman-world.jpg)]
 
@@ -88,7 +88,7 @@ How to formulate the *goal* of Pacman?
 - 1 point per food dot collected up to time $t$, minus one per move?
 - penalize when too many food dots are left not collected?
 
-Can it be implemented in a *small* agent program?
+Can it be implemented in a *small* and **efficient** agent program?
 
 ---
 
@@ -189,7 +189,7 @@ static? discrete? single agents? Known?
 
 ---
 
-class: middle, center
+class: middle, center, black-slide
 
 .width-100.center[![](figures/lec1/pacman-world.jpg)]
 

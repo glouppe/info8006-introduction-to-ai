@@ -124,6 +124,8 @@ Edsger Dijkstra: .italic[Why don't you work first on the .bold["Intelligence"] p
 
 ???
 
+Before trying to define the contours of artificial intelligence, let us first reflect on the these words.
+
 -> No more "artificial"
 
 ---
@@ -331,6 +333,8 @@ computer model of the human mind without background knowledge of some sort.
 
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
+
+<=> How do we initialize a computer model of the brain?
 
 ---
 
