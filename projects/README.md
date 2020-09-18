@@ -27,21 +27,26 @@ The goal of this programming project is to implement intelligent agents for the 
 
 ## Installation
 
-The instructions below have been tested under Windows, Linux and MacOS.
+> The instructions below have been tested under Windows, Linux and MacOS.
 
-We recommend to install a Python (3) environment using the Anaconda distribution. Further instructions can be found on the [Anaconda user guide](https://conda.io/docs/user-guide/install/index.html). Once installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
+We recommend to install a Python (3) environment using the `conda` package manager. The easiest way is to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+
+You will also need a code editor that supports Python. If you don't already have one, here are a few you might consider : [Sublime Text](https://www.sublimetext.com/), [VS Code](https://code.visualstudio.com/), [Atom](https://atom.io/), [Vim](https://www.vim.org/), ...
+
+Once Miniconda is installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
 
 ### Setup
 
 (Linux) Create a `pacman` environment and activate it:
 ```bash
 conda create --name pacman python=3.6
-source activate pacman
+conda activate pacman
 ```
+
 (MacOS) Create a `pacman` environment and activate it:
 ```bash
 conda create --name pacman python=3.6.6
-source activate pacman
+conda activate pacman
 ```
 
 (Windows) Create a `pacman` environment and activate it:
