@@ -31,6 +31,9 @@ You are requested to deliver a *tar.gz* archive containing:
 
 ---
 
+## Disclaimer
+Fall 2020: subject to change.
+
 ## Instructions
 
 This part is due by **November 10, 2019 at 23:59**. This is a **hard** deadline.
