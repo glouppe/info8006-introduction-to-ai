@@ -120,7 +120,7 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 	 - 2 points: fast enough (<=15 seconds).
 	 - 0 point: too slow (>15 seconds).
 
- - **Code style** - **2 points**
+ - **Code style** - **2 points** - See the [General information](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects#Code) for details 
 	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).  A script will be executed to check the compatibility of your code.
 		 - 0.8 point : the script runs without error.
 		 - 0 point: any error during the execution of the script.
