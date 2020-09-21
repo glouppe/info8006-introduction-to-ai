@@ -51,7 +51,7 @@ You are asked to answer the following questions:
 		 - **1 point** - Goal test
 		 - **1 point** - Step cost
 			 - Must be > 0
-			 - Must be derived from the game score function:  <br/>	`score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`
+			 - Must be derived from the game score function:  <br/>	`score = -#time steps + 10*#number of eaten food dots - 5*#number of eaten capsules + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`
 
 		Any **reference to the API** in any component of the problem statement will be considered as **wrong**.
  2.  **Implementation**
