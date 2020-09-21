@@ -178,7 +178,7 @@ We show through this section a list of common mistakes and bad practices that we
 
 The score function of the game is computed as follows:
 
-`score = -#time steps + 10*#number of eaten food dots + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
+`score = -#time steps + 10*#number of eaten food dots - 5*#number of eaten capsules + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`.
 
 We ask you to implement an agent that wins the game while maximizing its score.
 
