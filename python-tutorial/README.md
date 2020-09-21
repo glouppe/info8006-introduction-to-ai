@@ -49,7 +49,7 @@ Credits: This tutorial is strongly based on [CS188 project 0](https://inst.eecs.
 
 ## Tools
 
-In order to work with Python, we encourage you to use a text editor and a terminal. Make sure to read the entire [Tools](#tools) section before starting your installation.
+In order to work with Python, we encourage you to use a text editor and a terminal (instead of an IDE). Make sure to read the entire [Tools](#tools) section before starting your installation.
 
 On Unix and OS X, you can use the basic terminal while on Windows, you will use the *Anaconda prompt* (see further).
 
@@ -58,52 +58,52 @@ There are plenty of text editors that can be used but [Atom](https://atom.io/) o
 Also, there exist many IDEs such as [Spyder](https://www.spyder-ide.org/) or [PyCharm](https://www.jetbrains.com/pycharm/) that could be used **CAREFULLY**.
 
 ### Python
-We recommend you to install [Anaconda](https://docs.anaconda.com/anaconda/install/). It allows you to manage many environments, with distinct Python versions and dependencies.
+We recommend you to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html). It allows you to manage many environments, with distinct Python versions and dependencies.
 
-For Windows users, Anaconda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
+For Windows users, Miniconda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
 
 ### Unix & OS X basics
 When you open a terminal window, you’re placed at a command prompt:
 
 ```console
-MacBook-Pro-de-Pascal:~ pascalleroy$
+username@computername:~$
 ```
 
 The prompt shows your username, the host you are logged onto, and your current location in the directory structure (your path). The tilde character is shorthand for your home directory. Note your prompt may look slightly different. To make a directory, use the `mkdir` command. Use `cd` to change to that directory:
 
 ```console
-MacBook-Pro-de-Pascal:~ pascalleroy$ mkdir foo
-MacBook-Pro-de-Pascal:~ pascalleroy$ cd foo
-MacBook-Pro-de-Pascal:foo pascalleroy$
+username@computername:~$ mkdir foo
+username@computername:~$ cd foo
+username@computername:foo$
 ```
 
 Use `ls` to see a listing of the contents of a directory, and `touch` to create an empty file:
 
 ```console
-MacBook-Pro-de-Pascal:foo pascalleroy$ ls
-MacBook-Pro-de-Pascal:foo pascalleroy$ touch hello
-MacBook-Pro-de-Pascal:foo pascalleroy$ ls
+username@computername:foo$ ls
+username@computername:foo$ touch hello
+username@computername:foo$ ls
 hello
-MacBook-Pro-de-Pascal:foo pascalleroy$ cd ..
-MacBook-Pro-de-Pascal:~ pascalleroy$
+username@computername:foo$ cd ..
+username@computername:~$
 ```
 
-Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python-tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory(note: the zip file’s name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
+Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python-tutorial/tutorial_code.zip)** into a directory and change your terminal to that directory (note: the zip file's name may be slightly different when you download it). Use `unzip` to extract the contents of the zip file:
 
 ```console
-MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ ls
+username@computername:python-tutorial$ ls
 tutorial_code.zip
-MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ unzip tutorial_code.zip
-MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ ls
+username@computername:python-tutorial$ unzip tutorial_code.zip
+username@computername:python-tutorial$ ls
 tutorial_code		tutorial_code.zip
-MacBook-Pro-de-Pascal:python-tutorial pascalleroy$ cd tutorial_code
-MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
+username@computername:python-tutorial$ cd tutorial_code
+username@computername:tutorial_code$ ls
 exercises python_basics
-MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd python_basics/
-MacBook-Pro-de-Pascal:python_basics pascalleroy$ ls
+username@computername:tutorial_code$ cd python_basics/
+username@computername:python_basics$ ls
 foreach.py
 listcomp.py
-mean.py		
+mean.py
 shop.py
 helloWorld.py
 listcomp2.py
@@ -118,12 +118,12 @@ Some other useful Unix commands:
 - `mv` moves a file (i.e., cut/paste instead of copy/paste)
 - `man` displays documentation for a command
 - `pwd` prints your current path
-- Press “Ctrl-c” to kill a running process
+- Press "Ctrl + c" to kill a running process
 - Append `&` to a command to run it in the background
 - `fg` brings a program running in the background to the foreground
 
 ### Windows basics
-Since you are on Windows, you will use the *Anaconda prompt* that is installed with Anaconda. In this terminal, the commands are different from those of UNIX.
+Since you are on Windows, you will use the *Anaconda prompt* that is installed with Miniconda. In this terminal, the commands are different from those of UNIX.
 
 Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/python-tutorial/tutorial_code.zip)** into a directory of your choice, unzip it using your file explorer and change the current directory of the *Anaconda prompt* to this new directory.
 
@@ -158,7 +158,7 @@ conda create --name <env-name> python=3.6
 We name our environment info8006 with the following command.
 
 ```console
-MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda create --name info8006 python=3.6
+username@computername:python_basics$ conda create --name info8006 python=3.6
 ```
 
 Enter y to confirm the installation of any missing packages.
@@ -168,8 +168,8 @@ We do the following to enter the conda environment that we just created and to c
 Note that the Python version within the environment is 3.6, just what we want.
 
 ```console
-MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda activate info8006
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
+username@computername:python_basics$ conda activate info8006
+(info8006) username@computername:python_basics$ python -V
 Python 3.6.9 :: Anaconda, Inc.
 ```
 
@@ -178,8 +178,8 @@ Note: the tag (<env-name>) shows you the name of the conda environment that is a
 #### Leaving the Environment
 Leaving the environment is just as easy.
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ conda deactivate
-MacBook-Pro-de-Pascal:python_basics pascalleroy$ python -V
+(info8006) username@computername:python_basics$ conda deactivate
+username@computername:python_basics$ python -V
 Python 2.7.10
 ```
 
@@ -204,7 +204,7 @@ Python can be run in one of two modes. It can either be used interactively, via 
 You invoke the interpreter using the command `python` at the command prompt.
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python
+(info8006) username@computername:python_basics$ python
 Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
@@ -511,7 +511,7 @@ for fruit, price in fruitPrices.items():
 In the command line, use the following command in the directory containing `foreach.py`:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python foreach.py
+(info8006) username@computername:python_basics$ python foreach.py
 apples for sale
 oranges for sale
 pears for sale
@@ -546,7 +546,7 @@ print(oddNumsPlusOne)
 This code is in a file called `listcomp.py`, which you can run:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python listcomp.py
+(info8006) username@computername:python_basics$ python listcomp.py
 [1, 3, 5]
 [2, 4, 6]
 ```
@@ -608,7 +608,7 @@ Rather than having a `main` function as in Java, the `__name__ == '__main__'` ch
 Save this script as fruit.py and run it:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python fruit.py
+(info8006) username@computername:python_basics$ python fruit.py
 That'll be 4.800000 please
 Sorry we don't have coconuts
 ```
@@ -700,7 +700,7 @@ print("My, that's expensive!")
 This code is in `shopTest.py`; you can run it like this:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python shopTest.py
+(info8006) username@computername:python_basics$ python shopTest.py
 Welcome to the Berkeley Bowl fruit shop
 1.0
 Apples cost $1.00 at the Berkeley Bowl.
@@ -735,7 +735,7 @@ class Person:
 
 We first compile the script:
 
-`(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ python person_class.py`
+`(info8006) username@computername:python_basics$ python person_class.py`
 
 Now use the class as follows:
 
@@ -822,11 +822,11 @@ In the following, we will ask you to code, test, and find solutions for three pr
 First, you need to change the current directory to `exercices`.
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:python_basics pascalleroy$ cd ..
-(info8006) MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ ls
+(info8006) username@computername:python_basics$ cd ..
+(info8006) username@computername:tutorial_code$ ls
 exercises python_basics
-(info8006) MacBook-Pro-de-Pascal:tutorial_code pascalleroy$ cd exercises/
-(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ ls
+(info8006) username@computername:tutorial_code$ cd exercises/
+(info8006) username@computername:exercises$ ls
 addition.py
 autograder.py
 buyLotsOfFruit.py
@@ -849,7 +849,7 @@ and others you can ignore in the directory `tools`.
 The command `python autograder.py` grades your solution to all three problems. If we run it before editing any files we get a page or two of output:
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py
+(info8006) username@computername:exercises$ python autograder.py
 Starting on 9-12 at 15:49:35
 
 Question q1
@@ -958,7 +958,7 @@ def add(a, b):
 Now rerun the autograder (omitting the results for questions 2 and 3):
 
 ```console
-(info8006) MacBook-Pro-de-Pascal:exercises pascalleroy$ python autograder.py -q q1
+(info8006) username@computername:exercises$ python autograder.py -q q1
 Starting on 1-21 at 23:52:05
 
 Question q1

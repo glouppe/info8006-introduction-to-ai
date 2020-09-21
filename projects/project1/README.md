@@ -27,7 +27,7 @@ You are requested to deliver a *tar.gz* archive containing:
 
 ## Instructions
 
-This part is due by **October 13, 2019 at 23:59**. This is a **hard** deadline.
+This part is due by **October 11, 2020 at 23:59**. This is a **hard** deadline.
 
 You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project1.tar.gz)** of the project into a directory of your choice. In this first part of the project, only food dots and Pacman are in the maze.
 Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
