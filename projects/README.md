@@ -137,7 +137,7 @@ We show through this section a list of common mistakes and bad practices that we
 ### Code
 
 - **Style/Documentation**
-	* Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. You can use dedicated [scripts](https://pypi.org/project/pep8/) to check PEP8-compliance of your source code.
+	* Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). You can use dedicated [scripts](https://pypi.org/project/pep8/) to check PEP8-compliance of your source code. 
 	* Function specifications are either wrong or missing. They must be present and they must **formally** describe the function out of ambiguity. Its purpose is to provide an easier-to-understand description of the function than the code itself. An example of a correct specification is provided below :
 
 	```python
@@ -216,11 +216,11 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The purpose of the projects is to give you an opportunity to have a practical approach of the core concepts of the course. However, you might be stuck during your work progression. Although we are glad to help you to figure out how to solve your various issues, the relevance of our guidance strongly relies on the specificity of your questions, which implies that you have at least tried to solve your issues by referring to the lectures.
 
-You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at **office 1.136** with the following schedule:
+You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us on collaborate (ecampus) with the following schedule:
 
  - Monday: 12PM - 2PM
- - Thursday: 2PM - 4PM
-
+ - Wednesday: 2PM - 4PM
+ 
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can of course be outside the duty periods mentioned above.   
 
 Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
