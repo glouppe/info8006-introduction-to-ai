@@ -469,6 +469,7 @@ class PacmanRules:
                 state.data._win = True
         # Eat capsule
         if(position in state.getCapsules()):
+            state.data.scoreChange -= 5
             state.data.capsules.remove(position)
             state.data._capsuleEaten = position
             # Reset all ghosts' scared timers
