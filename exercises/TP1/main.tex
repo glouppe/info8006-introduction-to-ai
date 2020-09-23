@@ -85,7 +85,7 @@
 
 
 \newif\ifhideproofs
-%\hideproofstrue %uncomment to hide proofs
+\hideproofstrue %uncomment to hide proofs
 
 \ifhideproofs
 \usepackage{environ}
@@ -158,7 +158,7 @@ Exercises 1: Solving problems by searching}
 \begin{tabular}{ll}
     \textit{Input:}  & $\text{fringe}$: The fringe, which is a priority queue for nodes, \textbf{initialised with the starting node}. \\
      & $\text{closed}$: A list of closed nodes, \textbf{initially empty}.\\
-     \textit{Output:}  & $p$: A list of nodes which represents the optimal path.\\
+     \textit{Output:}  &  A list of nodes which represents the path.\\
 \end{tabular}
 \small
 \begin{algorithmic}[1]
@@ -173,7 +173,7 @@ Exercises 1: Solving problems by searching}
 \EndIf
 \State $\text{closed}.append(n)$
 \For{$n' \in n.children$}
-    \State $p \gets n'.computePriority(n)$
+    \State $p \gets computePriority(n, n')$
     \If{$n' \not\in \text{closed} \quad \&\& \quad n' \not\in \text{fringe}$}
     \State $n'.setPriority(p)$
     \State $n'.setParent(n)$
@@ -181,11 +181,15 @@ Exercises 1: Solving problems by searching}
     
     \ElsIf{$n' \in \text{fringe} \quad \&\& \quad p < \text{fringe}.get(n').getPriority()$}
     \State $\text{fringe}.remove(n')$
+    \State $n'.setPriority(p)$
+    \State $n'.setParent(n)$
     \State $\text{fringe}.push(n')$
     
-    \ElsIf{$n' \in \text{closed} \quad \&\& \quad p < \text{closed}.get(n').getPriority()$}
-    \State $\text{closed}.remove(n')$
-    \State $\text{fringe}.push(n')$
+    % \ElsIf{$n' \in \text{closed} \quad \&\& \quad p < \text{closed}.get(n').getPriority()$}
+    % \State $\text{closed}.remove(n')$
+    % \State $n'.setPriority(p)$
+    % \State $n'.setParent(n)$
+    % \State $\text{fringe}.push(n')$
     \EndIf
 \EndFor
 \EndWhile
@@ -202,7 +206,7 @@ Exercises 1: Solving problems by searching}
         %\end{comment}
         \begin{solution}
         \\
-        Expansion: S, A, B, D, Goal \\
+        Expansion: S, A, B, C, D, Goal \\
         Path: S $\rightarrow$ A $\rightarrow$ B $\rightarrow$ D $\rightarrow$ G \\
         We use a LIFO heap to perform the search. In order to prevent cycles, when we add a node into the heap we replace its previous version if there is one and we never add a node that has already been expanded.\\
         Step-by-step:
