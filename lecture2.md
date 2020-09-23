@@ -10,6 +10,12 @@ Prof. Gilles Louppe<br>
 
 ---
 
+class: middle, center
+
+.width-50[![](figures/lec2/outline.jpg)]
+
+---
+
 # Today
 
 .grid[
@@ -312,7 +318,7 @@ class: middle
 
 ???
 
-Number of nodes in a tree = $\frac{b^{d+1}-1}{b-1}$
+Number of nodes in a tree = $\frac{b^{m+1}-1}{m-1}$
 
 ---
 
@@ -350,7 +356,7 @@ class: middle
     - No, DFS finds the leftmost solution, regardless of depth or cost.
 - *Time complexity*:
     - May generate the whole tree (or a good part of it, regardless of $d$).
-      Therefore $O(b^m)$, which might much greater than the size of the state space!
+      Therefore $O(b^m)$, which might be much greater than the size of the state space!
 - *Space complexity*:
     - Only store siblings on path to root, therefore $O(bm)$.
     - When all the descendants of a node have been visited, the node can be removed from memory.
@@ -751,6 +757,10 @@ The failure to detect **repeated states** can turn a linear problem into an expo
 
 Redundant paths and cycles can be avoided by **keeping track** of the states that have been *explored*.
 This amounts to grow a tree directly on the state-space graph.
+
+???
+
+Insist on the importance of defining a state representations which does not collapse distinct (world) states onto a same representation.
 
 ---
 
