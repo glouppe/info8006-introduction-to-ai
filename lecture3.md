@@ -456,7 +456,7 @@ class: middle
 # Expectiminimax
 
 - Because of the uncertainty in the action outcomes, states no longer have a *definite* $\text{minimax}$ value.
-- We can only calculate the **expected** value of a state under optimal play by the opponent.
+- However, we can calculate the **expected** value of a state under optimal play by the opponent.
     - i.e., the average over all possible outcomes of the chance nodes.
     - $\text{minimax}$ values correspond instead to the worst-case outcome.
 
@@ -595,6 +595,8 @@ Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
 
 Assumptions are correct.
 
+Pacman wins partly because of the larger depth it uses.
+
 ---
 
 class: middle, black-slide, center
@@ -681,6 +683,10 @@ Checkers is **solved**. A weak solution is computationally proven.
 .center.width-50[![](figures/lec3/checkers-proof.png)]
 
 .footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
+
+???
+
+A solved game is a game whose outcome (win, lose or draw) can be correctly predicted from any position, assuming that both players play perfectly. 
 
 ---
 
