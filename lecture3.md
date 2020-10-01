@@ -580,14 +580,15 @@ class: middle, black-slide
 
 ---
 
-class: middle, black-slide, center
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec3/minimax-vs-adversarial.mp4" type="video/mp4">
-</video>]
+</video>
 
 Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
+]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -599,14 +600,15 @@ Pacman wins partly because of the larger depth it uses.
 
 ---
 
-class: middle, black-slide, center
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec3/minimax-vs-random.mp4" type="video/mp4">
-</video>]
+</video>
 
-Minimax Pacman ($P_1$) vs. Random ghost ($P_3$)
+Minimax Pacman ($P_1$) vs. Random ghost ($P_4$)
+]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -616,14 +618,15 @@ Assumptions are incorrect. Has the ghost some masterplan?
 
 ---
 
-class: middle, black-slide, center
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec3/expectimax-vs-random.mp4" type="video/mp4">
-</video>]
+</video>
 
 Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
+]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -633,7 +636,7 @@ Assumptions are correct.
 
 ---
 
-class: middle, black-slide, center
+class: middle, black-slide
 
 .center[
 <video controls preload="auto" height="400" width="300">
@@ -641,6 +644,7 @@ class: middle, black-slide, center
 </video>]
 
 Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
+]
 
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
