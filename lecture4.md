@@ -8,16 +8,15 @@ Lecture 4: Representing uncertain knowledge
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+---
+
+class: middle, center
+
+.width-50[![](figures/lec0/map.jpg)]
+
 ???
 
-R: remove/summarize some of the too verbose slides
-
-R: expose the plan and structure of the next lectures on probability
-R: motivate why this is important in AI (and this is not just one more probability theory class)
-R: trim some stuff less directly important for AI?
-
-R: Bayes rule/inference -> emphasis that is like Sherlock Holm. Start from a set of possibilities (prior) and discard/weigh down those not compatible with the observations/evidence.
-R: https://neilkakkar.com/Bayes-Theorem-Framework-for-Critical-Thinking.html?s=09 check this
+Motivate why this is important in AI (and this is not just one more probability theory class).
 
 ---
 
@@ -53,7 +52,7 @@ class: middle
 
 ---
 
-# Ghostbusters
+class: middle
 
 .grid[
 .kol-1-2[
@@ -92,7 +91,7 @@ Could we use a logical agent for this game?
 
 General setup:
 - *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
-- **Unobserved** variables: agent needs to reason about other aspects that are **uncertain** (e.g., where the ghost is).
+- **Unobserved** variables: agent needs to reason about other aspects that are uncertain (e.g., where the ghost is).
 - (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
 
 ---
@@ -100,9 +99,7 @@ General setup:
 class: middle
 
 How to handle uncertainty?
-- A purely logical approach either:
-    - risks falsehood, or
-    - leads to conclusions that are too weak for decision making.
+- A purely logical approach either risks falsehood, or leads to conclusions that are too weak for decision making.
 - **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
 
 ???
@@ -119,10 +116,23 @@ Probabilistic assertions express the agent's inability to reach a definite decis
 - Probability values **summarize** effects of
     - *laziness* (failure to enumerate all world states)
     - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
-- (Bayesian subjective) Probabilities relate propositions to one's own state of knowledge (or lack thereof).
+- Probabilities relate propositions to one's own state of knowledge (or lack thereof).
     - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
 
-These are **not** claims of a "frequent tendency" in the current situation (but might be learned from past experience of similar situations).
+---
+
+class: middle
+
+## Frequentism vs. Bayesianism
+
+What do probability values represent?
+- The objectivist *frequentist* view is that probabilities are real aspects of the universe.
+    - i.e., propensities of objects to behave in certain ways.
+    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
+- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
+    - i.e., probabilities do not have external physical significance.
+    - This is the interpretation of probabilities that we will use!
+
 
 ---
 
@@ -132,10 +142,10 @@ Begin with a set $\Omega$, the **sample space**.
 
 $\omega \in \Omega$ is a *sample point* or possible world.
 
-A **probability space** is a sample space equipped with an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
-- 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$.
-- 2nd axiom: $P(\Omega) = 1$.
-- 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples.
+A **probability space** is a sample space equipped with a probability function, i.e. an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that:
+- 1st axiom: $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$
+- 2nd axiom: $P(\Omega) = 1$
+- 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples
 
 where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
 
@@ -146,7 +156,7 @@ class: middle
 ## Example
 
 - $\Omega$ = the 6 possible rolls of a die.
-- $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding than an outcome of the die.
+- $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding to an outcome of the die.
 - Assignment $P$ for a fair die:
 $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 
@@ -160,10 +170,13 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
 - An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n)\_i\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
-- In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
-    - $R$: Is it raining?
-    - $T$: Is it hot or cold?
-    - $L$: Where is the ghost?
+
+???
+
+In practice, we will use random variables to represent aspects of the world about which we (may) have uncertainty.
+- $R$: Is it raining?
+- $T$: Is it hot or cold?
+- $L$: Where is the ghost?
 
 ---
 
@@ -176,7 +189,7 @@ class: middle
    E.g., $x\_1$, $x\_2$, ..., $x\_n$ could be of outcomes of the random variable $X$.
 - The probability value of the realization $x$ is written as $P(X=x)$.
 - When clear from context, this will be abbreviated as $P(x)$.
-- The probability distribution of the random variable $X$ is denoted as ${\bf{P}}(X)$. This corresponds e.g. to a vector of numbers, one for each of the probability values $P(X=x\_i)$ (and not to a single scalar value!).
+- The probability distribution of the (discrete) random variable $X$ is denoted as ${\bf{P}}(X)$. This corresponds e.g. to a vector of numbers, one for each of the probability values $P(X=x\_i)$ (and not to a single scalar value!).
 
 ---
 
@@ -400,8 +413,6 @@ Probabilistic **inference** is the problem of computing a desired probability fr
     - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
     - Observing new evidence causes *beliefs to be updated*.
 
-.center.width-20[![](figures/lec4/inference-cartoon.png)]
-
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
@@ -541,13 +552,20 @@ $A$ and $B$ are **independent** iff, for all $a \in D_A$ and $b \in D_B$,
 
 Independence is denoted as $A \perp B$.
 
+???
+
+... from the third expression, one can already notice that assuming independences leads to a factorization in which the factors are smaller.
+
 ---
 
 class: middle
 
 ## Example 1
 
-.center.width-40[![](figures/lec4/weather-independence.svg)]
+.center[
+.width-40[![](figures/lec4/weather-independence.svg)]
+.width-45[![](figures/lec4/tooth.png)]
+]
 
 $$
 \begin{aligned}
@@ -556,6 +574,8 @@ $$
 \end{aligned}$$
 
 The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -661,19 +681,36 @@ Therefore,
 
 ---
 
-class: middle
+class: middle, center
 
-Why is this helpful?
-- The Bayes rule let us build one conditional from its reverse.
-- Often one conditional is tricky, but the other is simple.
+.grid[
+.kol-1-2[
 
-This equation is the **foundation** of many AI systems.
+<br><br><br>
+
+**$$P(a|b) = \frac{P(b|a)P(a)}{P(b)}$$**
+
+]
+.kol-1-2[.center.width-80[![](figures/lec4/inference-cartoon.png)]]
+]
+
+<br>
+
+The Bayes' rule is the **foundation** of many AI systems. 
+
+???
+
+Bayes rule/inference: emphasize that is like Sherlock Holmes:
+- Start from a set of possibilities (prior)
+- Discard/weigh down those not compatible with the observations/evidence.
+
+The Bayes' rule gives us a way to operationalize the update of our beliefs.
 
 ---
 
 class: middle
 
-## Example: diagnostic probability from causal probability.
+## Example 1: diagnostic probability from causal probability.
 
 $$P(\text{cause}|\text{effect}) = \frac{P(\text{effect}|\text{cause})P(\text{cause})}{P(\text{effect})}$$
 where
@@ -685,9 +722,15 @@ Given $P(s|m) = 0.7$, $P(m) = 1/50000$, $P(s) = 0.01,$
 it comes
 $$P(m|s) = \frac{P(s|m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} = 0.0014.$$
 
+???
+
+... or $M$=covid-19!
+
 ---
 
-# Ghostbusters, revisited
+class: middle
+
+## Example 2: Ghostbusters, revisited
 
 - Let us assume a random variable $G$ for the ghost location and a set of random variables $R_{i,j}$ for the individual readings.
 - We start with a uniform **prior distribution** ${\bf P}(G)$ over ghost locations.
@@ -726,15 +769,39 @@ What if we had chosen a different prior?
 
 ---
 
-# Frequentism vs. Bayesianism
+class: middle
 
-What do probability values represent?
-- The objectivist *frequentist* view is that probabilities are real aspects of the universe.
-    - i.e., propensities of objects to behave in certain ways.
-    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
-- The subjectivist **Bayesian** view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
-    - i.e., probabilities do not have external physical significance.
-    - This is the interpretation of probabilities that we will use!
+## Example 3: AI for Science
+
+.center.width-100[![](figures/lec4/lfi-chain.png)]
+
+---
+
+class: middle
+
+.center.width-90[![](./figures/lec4/lfi-chain.png)]
+.grid[
+.kol-1-5.center[
+SM with parameters $\theta$
+
+.width-100[![](./figures/lec4/sm.png)]]
+.kol-2-5.center[
+Simulated observables $x$
+
+.width-80[![](./figures/lec4/lhc.gif)]]
+.kol-2-5.center[
+Real observations $x\_\text{obs}$
+
+.width-80[![](./figures/lec4/pp-xobs1.png)]
+.width-80[![](./figures/lec4/pp-xobs2.jpeg)]]
+]
+
+---
+
+class: middle
+
+Given some observation $x$ and prior beliefs $p(\theta)$, science is about updating one's knowledge, which may be framed as computing
+$$p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}.$$
 
 ---
 
@@ -764,7 +831,10 @@ A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
 - Each *edge* indicate dependency relationships.
     - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
 - Each node $X_i$ is annotated with a **conditional probability distribution** ${\bf P}(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
-    - In the simplest case, conditional distributions are represented as conditional probability tables (CTPs).
+
+???
+
+In the simplest case, conditional distributions are represented as conditional probability tables (CTPs).
 
 ---
 
@@ -914,7 +984,7 @@ Bayesian networks are correct representations of the domain only if each node is
 
 ## Construction algorithm
 
-1. Choose an **ordering** of variables $X\_1, ..., X\_n$.
+1. Choose some **ordering** of the variables $X\_1, ..., X\_n$.
 2. For $i=1$ to $n$:
     1. Add $X\_i$ to the network.
     2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
@@ -1171,6 +1241,7 @@ class: middle
 
 ---
 
+exclude: true
 class: middle
 
 ## Local semantics
@@ -1181,6 +1252,7 @@ A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) gi
 
 ---
 
+exclude: true
 class: middle
 
 ## Global semantics
@@ -1229,6 +1301,9 @@ Philosophers have tried to define causation in terms of probability: $X=x$ cause
 However, the inequality
 $$P(y|x) > P(y)$$
 fails to capture the intuition behind "probability raising", which is fundamentally a causal concept connoting a causal influence of $X=x$ over $Y=y$.
+
+???
+
 - Instead, the expression means that if we observe $X=x$, then the probability of $Y=y$ increases.
 - But this increase may come about for other reasons!
 

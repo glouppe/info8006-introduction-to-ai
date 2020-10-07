@@ -8,6 +8,10 @@ Lecture 6: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: control canonical form?
+
 ---
 
 # Today
