@@ -30,7 +30,7 @@ You are requested to deliver a *tar.gz* archive containing:
 This part is due by **October 11, 2020 at 23:59**. This is a **hard** deadline.
 
 You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project1.tar.gz)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
-Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
+Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for maximizing the score.
 
 To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file `dfs.py`. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minute before the deadline. We have fixed most of the bugs but we might have left one of them. Once you have fixed the implementation and activated your Pacman environment (see our [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial#creating-a-conda-environment)), you can test DFS algorithm using the following commands:
 ```bash
