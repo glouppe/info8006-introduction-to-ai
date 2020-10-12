@@ -828,7 +828,7 @@ A **Bayesian network** is a *directed acyclic graph* (DAG) in which:
 - Each *node* corresponds to a *random variable*.
     - Can be observed or unobserved.
     - Can be discrete or continuous.
-- Each *edge* indicate dependency relationships.
+- Each *edge* indicates dependency relationships.
     - If there is an arrow from node $X$ to node $Y$, $X$ is said to be a *parent* of $Y$.
 - Each node $X_i$ is annotated with a **conditional probability distribution** ${\bf P}(X_i | \text{parents}(X_i))$ that quantifies the effect of the parents on the node.
 
