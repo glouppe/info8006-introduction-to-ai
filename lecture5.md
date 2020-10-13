@@ -110,6 +110,8 @@ Inference is concerned with the problem *computing a marginal and/or a condition
 
 Explain what $\arg \max$ means.
 
+Insist on the importance of inference. Inference <=> reasoning.
+
 ---
 
 # Inference by enumeration
@@ -305,6 +307,7 @@ Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
 
 ---
 
+exclude: true
 class: middle, center
 
 (blackboard example)
@@ -375,6 +378,8 @@ class: middle
 
 ???
 
+SKIP since Lecture 2b is optional.
+
 3SAT is the problem of determining the satisfiability of a formula in conjunctive normal form, where each clause is limited to a most three literals.
 
 ---
@@ -395,8 +400,6 @@ class: middle
 
 # Approximate inference
 
-a.k.a. Monte Carlo methods
-
 ---
 
 class: middle
@@ -404,12 +407,19 @@ class: middle
 Exact inference is **intractable** for most probabilistic models of practical interest.
 (e.g., involving many variables, continuous and discrete, undirected cycles, etc).
 
+.center.width-100[![](figures/lec5/robot-gripper.png)]
+
+---
+
+class: middle
+
 ## Solution
 
 Abandon exact inference and develop  **approximate** but *faster* inference algorithms:
 - *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
 - *Variational methods*: formulate inference as an optimization problem.
 - *Belief propagation methods*: formulate inference as a message-passing algorithm.
+- *Machine learning methods*: learn an approximation of the target distribution from training examples.
 
 ---
 
@@ -567,7 +577,7 @@ $$S\_\text{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) 
 i.e., the Bayesian network's joint probability.
 
 Let $N\_\text{PS}(x\_1, ..., x\_n)$ denote the number of samples of an event. We
-define the probability **estimate** $$\hat{P}(x\_1, ..., x\_n) = N\_\text{PS}(x\_1, ..., x\_n) / N.$$
+define the probability **estimator** $$\hat{P}(x\_1, ..., x\_n) = N\_\text{PS}(x\_1, ..., x\_n) / N.$$
 
 ---
 
@@ -606,7 +616,7 @@ class: middle
 
 ## Analysis
 
-Let consider the posterior probability estimate $\hat{P}(x|e)$ formed by rejection sampling:
+Let consider the posterior probability estimator $\hat{P}(x|e)$ formed by rejection sampling:
 
 $$\begin{aligned}
 \hat{P}(x|e) &= N\_\text{PS}(x,e) / N\_\text{PS}(e) \\\\
@@ -615,9 +625,9 @@ $$\begin{aligned}
 &= P(x|e)
 \end{aligned}$$
 
-Therefore, rejection sampling returns *consistent* posterior estimates.
+Therefore, rejection sampling is *consistent*.
 
-- The standard deviation of the error in each probability is $O(1/\sqrt{n})$, where $n$ is the number of samples used in the estimate.
+- The standard deviation of the error in each probability is $O(1/\sqrt{n})$, where $n$ is the number of samples used to compute the estimate.
 - **Problem**: many samples are rejected!
     - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
     - Evidence is not exploited when sampling.
