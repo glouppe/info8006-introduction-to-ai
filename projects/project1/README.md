@@ -30,7 +30,7 @@ You are requested to deliver a *tar.gz* archive containing:
 This part is due by **October 11, 2020 at 23:59**. This is a **hard** deadline.
 
 You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project1.tar.gz)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
-Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for eating all the dots as quickly as possible.
+Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for maximizing the score.
 
 To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file `dfs.py`. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minute before the deadline. We have fixed most of the bugs but we might have left one of them. Once you have fixed the implementation and activated your Pacman environment (see our [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial#creating-a-conda-environment)), you can test DFS algorithm using the following commands:
 ```bash
@@ -68,7 +68,7 @@ You are asked to answer the following questions:
 	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) by adapting your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are errors in the implementation of A\*, these will not be penalised for this question.
 	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
  3. **Experiment 1**
-	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as a bar plots in terms of:
+	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as bar plots in terms of:
 
 		 - Score
 		 - Number of expanded nodes
@@ -77,7 +77,7 @@ You are asked to answer the following questions:
 	- 3.c. - **0.5 point** - Refer to the course in order to justify these differences.
 	- 3.d. - **0.5 point** - Which algorithm corresponds to A\* with *h(n) = 0* for all *n* ?
  4. **Experiment 2**
-	 - 4.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)*, DFS and your implementation of BFS against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as a bar plots in terms of:
+	 - 4.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)*, DFS and your implementation of BFS against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as bar plots in terms of:
 
 		 - Score
 		 - Number of expanded nodes
