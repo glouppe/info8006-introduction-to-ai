@@ -38,7 +38,7 @@ Fall 2020: subject to change.
 
 This part is due by **November 8, 2020 at 23:59**. This is a **hard** deadline.
 
-In this second part of the project, Pacman can no longer wander peacefully in its maze! He needs to avoid a walking ghost and has no idea of (i) whether the ghost actually wants to kill him and (ii) how smart it is. Pacman only knows that it cannot make a half-turn unless it has no other choice.
+In this second part of the project, Pacman can no longer wander peacefully in its maze! He needs to avoid a walking ghost and has no idea of (i) whether the ghost actually wants to kill him and (ii) how smart it is. Pacman only knows that the ghosts cannot make a half-turn unless it has no other choice.
 
 The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
  - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
