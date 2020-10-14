@@ -271,7 +271,7 @@ class: middle
 
 ## Elimination
 
-*Summing out*, or **eliminating**, a variable from a factor is done by adding up the submatrices formed by fixing the variable to each of its values in turn.
+*Summing out*, or **eliminating**, a variable from a factor is done by adding up the sub-arrays formed by fixing the variable to each of its values in turn.
 
 For example, to sum out $A$ from $\mathbf{f}\_3(A, B, C)$, we write:
 
@@ -499,6 +499,12 @@ class: middle
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Comment on the cartoon:
+- sample first a shape
+- then a color given the shape
+
 ---
 
 class: middle
@@ -603,6 +609,11 @@ Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the proporti
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Cartoon:
+- reject all samples which are not blue (the evidence)
+
 ---
 
 class: middle
@@ -632,6 +643,10 @@ Therefore, rejection sampling is *consistent*.
     - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
     - Evidence is not exploited when sampling.
 
+???
+
+From the prior sampling analysis, we know that N_PS / N ---> P.
+
 ---
 
 # Likelihood weighting
@@ -644,6 +659,10 @@ Idea: *clamp* the evidence variables, sample the rest.
 .center.width-100[![](figures/lec5/likelihood-weighting-cartoon.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Cartoon: note how blue is now enforced and no longer drawn at random.
 
 ---
 
@@ -714,19 +733,15 @@ $$
 
 class: middle
 
-The estimated joint probability is computed as follows:
+The estimated posterior probability is computed as follows:
 
 $$\begin{aligned}
-\hat{P}(x,e) &= N\_\text{WS}(x,e) w(x,e) / N \\\\
-&\approx S\_\text{WS}(x,e) w(x,e) \\\\
-&= P(x,e)
+\hat{P}(x|e) &= \alpha N\_\text{WS}(x,e) w(x,e)  \\\\
+&\approx \alpha' S\_\text{WS}(x,e) w(x,e) \\\\
+&= \alpha' P(x,e) \\\\
+&= P(x|e)
 \end{aligned}$$
-
-From this, the estimated posterior probability is given by:
-$$\begin{aligned}
-\hat{P}(x|e) &= \hat{P}(x,e) / \hat{P}(e) \\\\
-&\approx P(x,e) / P(e) = P(x|e).
-\end{aligned}$$
+where $\alpha$ and $\alpha'$ are normalization constants.
 
 Hence likelihood weighting returns *consistent* estimates.
 
