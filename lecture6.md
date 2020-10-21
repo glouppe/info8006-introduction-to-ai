@@ -181,11 +181,11 @@ The transition model ${\bf P}(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivale
 
 # Inference tasks
 
-- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
 - *Prediction*: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
     - Computing the posterior distribution over future states.
     - Used for evaluation of possible action sequences.
+- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
 - *Smoothing*: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
     - Computing the posterior distribution over past states.
     - Used for building better estimates, since it incorporates more evidence.
@@ -680,7 +680,7 @@ class: middle
 
 ## Uniform
 
-.center.width-60[![](figures/lec6/uniform.png)]
+.center.width-60[![](figures/lec5/uniform.png)]
 
 The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
 $$
@@ -697,7 +697,7 @@ class: middle
 
 ## Normal
 
-.center.width-60[![](figures/lec6/normal.png)]
+.center.width-60[![](figures/lec5/normal.png)]
 
 The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
@@ -715,7 +715,7 @@ class: middle
 
 ## Multivariate normal
 
-.center.width-60[![](figures/lec6/mvn.png)]
+.center.width-60[![](figures/lec5/mvn.png)]
 
 The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
