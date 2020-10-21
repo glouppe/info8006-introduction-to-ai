@@ -26,26 +26,22 @@ You are requested to deliver a *tar.gz* archive containing:
  - Your `hminimax2.py` which contains your implementation of H-Minimax with your third best cut-off/heuristic functions pair.
 	 - Put the class template defined in `pacmanagent.py` into each file and fill in the `get_action` function.
 
-
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
-
-## Disclaimer
-Fall 2020: subject to change.
 
 ## Instructions
 
 This part is due by **November 8, 2020 at 23:59**. This is a **hard** deadline.
 
-In this second part of the project, Pacman can no longer wander peacefully in its maze! He needs to avoid a walking ghost and has no idea of (i) whether the ghost actually wants to kill him and (ii) how smart it is. Pacman only knows that the ghosts cannot make a half-turn unless it has no other choice. In addition, mazes can no longer contain capsules!
+In this second part of the project, Pacman can no longer wander peacefully in its maze! He needs to avoid a walking ghost and has no idea of (i) whether the ghost actually wants to kill him and (ii) how smart it is. Pacman only knows that the ghosts cannot make a half-turn unless it has no other choice. 
 
 The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
  - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
  - `greedy`: Select the next position that is the closest to Pacman.
  - `smarty`: Select the next position which leads to the shortest path towards Pacman.
 
-Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 4](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md)) for eating all the dots as quickly as possible while avoiding the ghost.
+Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 3](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md)) for eating all the dots as quickly as possible while avoiding the ghost. In this project, we will not consider layouts with capsules, but you may take them into account if you feel motivated.
 
 You are asked to answer the following questions.
 
