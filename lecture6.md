@@ -8,10 +8,6 @@ Lecture 6: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: control canonical form?
-
 ---
 
 # Today
@@ -64,13 +60,17 @@ class: middle
 Often, we want to *reason about a sequence* of observations:
 - Robot localization
 - Speech recognition
-- Medical monitoringn
+- Medical monitoring
 - Machine translation
 - Part-of-speech tagging
 - Handwriting recognition
 - ...
 
 For this reason, we need to introduce **time** (or space) in our model.
+
+???
+
+R: remove?
 
 ---
 
@@ -659,6 +659,10 @@ Formally, we want to estimate **continuous** state variables such as
 We assume *discrete* time steps.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+R: revise a bit the flow for this part of the lecture.
 
 ---
 
