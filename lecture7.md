@@ -8,14 +8,6 @@ Lecture 7: Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-- R: make sure to properly cover least squares => see https://inst.eecs.berkeley.edu/~cs188/fa20/assets/slides/archive/lec11.pdf 37+    
-  (this will be needed for RL)
-
-R: see CS188
-R: restructure the content together with Lec7 and Lec8
-
 ---
 
 # Today
@@ -33,10 +25,10 @@ Make our agents capable of self-improvement through a **learning** mechanism.
 
 # Intelligence?
 
-What we covered so far:
+What we cover in this course:
 - Search algorithms, using a state space specified by domain knowledge.
-- Constraint satisfaction problems, by exploiting a known structure of the states.
-- Logical inference, using well-specified facts and inference rules.
+- (Constraint satisfaction problems, by exploiting a known structure of the states.)
+- (Logical inference, using well-specified facts and inference rules.)
 - Adversarial search, for known and fully observable games.
 - Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
 - Taking optimal decisions, under uncertainty and possibly under partial observation.
@@ -212,7 +204,7 @@ class: middle
 
 ---
 
-# Parameter learning in Bayesian networks
+# Parameter estimation in Bayesian networks
 
 .center.width-100[![](figures/lec7/parameterized-bn.png)]
 
@@ -286,8 +278,6 @@ Again, results coincide with intuition.
 class: middle
 
 # Supervised learning
-
-(mostly neural networks)
 
 ---
 
@@ -379,12 +369,23 @@ class: middle
 
 # Linear regression
 
+Let us first assume that $y \in \mathbb{R}$.
+
+<br>
+.center.width-90[![](figures/lec7/lr-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
 .grid[
 .kol-1-5[.center.width-50[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-100[![](figures/lec7/lg.png)]]
+.kol-4-5[.center.width-60[![](figures/lec7/lr-latent.png)]]
 ]
 
-Let us first assume that $y \in \mathbb{R}$.
+
 
 Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y|\\mathbf{x})$, that is
 $$p(y|\mathbf{x}) = \mathcal{N}(y | \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
@@ -409,9 +410,25 @@ Therefore, minimizing the sum of squared errors corresponds to the MLE solution 
 
 ---
 
+class: middle
+
+.center.width-80[![](figures/lec7/lq.png)]
+
+---
+
 # Linear classification
 
 Let us now assume $y \in \\{0,1\\}$.
+
+<br>
+.center.width-50[![](figures/lec7/classif-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+
+---
+
+class: middle
 
 The linear classifier model is a squashed linear function of its inputs:
 $$h(\mathbf{x}; \mathbf{w}, b) = \text{sign}(\mathbf{w}^T \mathbf{x} + b)$$
@@ -427,7 +444,10 @@ class: middle
 
 - Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{d+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
 - Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
-- The family $\mathcal{H}$ of hypothesis is induced from the set $\mathbb{R}^{d+1}$ of possible parameters values $\mathbf{w}$ . Learning consists in finding a good vector $\mathbf{w}$ in this space.
+
+???
+
+The family $\mathcal{H}$ of hypothesis is induced from the set $\mathbb{R}^{d+1}$ of possible parameters values $\mathbf{w}$ . Learning consists in finding a good vector $\mathbf{w}$ in this space.
 
 ---
 
@@ -548,6 +568,12 @@ No more Minimax!
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Deep Learning
 
 ---
 
@@ -703,21 +729,12 @@ class: middle, center
 
 # Convolutional networks
 
-- Fully connected feedforward networks can be adapted to efficiently process **spatially structured** data (e.g., images, sequences) with known shift invariance.
-- Convolutional neural networks extend fully connected architectures with
-    - *Convolutional* layers: cross-correlation of the input through learnable kernels.
-    - *Pooling* layers: reduce the input dimension by pooling (e.g., averaging) clusters of input values.
-
-.width-55[![](figures/lec7/3d-conv.gif)] .width-40[![](figures/lec7/3d-pooling.gif)]
-.center[Convolution &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pooling]
-
-.footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
-
----
-
-class: middle, center
-
-.center.width-80[![](figures/lec7/lenet.png)]
+Convolutional neural networks extend fully connected architectures with
+- convolutional layers: cross-correlation of the input through learnable kernels.
+- pooling layers: reduce the input dimension by pooling (e.g., averaging) clusters of input values.
+  
+These are specifically designed for processing **spatially structured** data (e.g., images, sequences) with known shift invariance.
+.center.width-110[![](figures/lec7/lenet.svg)]
 
 ---
 
@@ -773,46 +790,67 @@ A recurrent network playing Mario Kart.
 
 ---
 
-# Applications
+# Deep Learning as an architectural language
 
-Neural networks are now at the core of many **state-of-the-art systems**, including:
-- Image recognition
-- Speech recognition and synthesis
-- Natural language processing
-- Scientific studies
-- Reinforcement learning
-- Autonomous agents
+<br>
+.center.circle.width-30[![](figures/lec7/lecun.jpg)]
 
-... and many many many others.
+.italic[
+People are now building a new kind of software by .bold[assembling networks of parameterized functional blocks] and by .bold[training them from examples using some form of gradient-based optimization].
+]
+
+.pull-right[Yann LeCun, 2018.]
 
 ---
 
-class: middle, black-slide
+class: middle
 
 .center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/H7Ym3DMSGms?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<video preload="auto" height="400" width="750" autoplay loop>
+  <source src="./figures/lec7/toolbox.mp4" type="video/mp4">
+</video>
 
-Autonomous drone navigation with deep learning
+The toolbox
+]
+
+.footnote[Credits: [Oriol Vinyals](https://twitter.com/OriolVinyalsML/status/1212422497339105280), 2020.]
+
+---
+
+class: middle
+
+# AI beyond Pacman
+
+---
+
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/HS1wV9NMLr8?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+How AI Helps Autonomous Vehicles See Outside the Box<br>
+(See also [other episodes](https://www.youtube.com/playlist?list=PLZHnYvH1qtOYkElUMqYiHDMrGTPnqRhSr) from NVIDIA DRIVE Labs)
+]
+
+
+---
+
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/NlpS-DhayQA?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Solving impactful and challenging problems
 ]
 
 ---
 
-class: middle, black-slide
+class: black-slide, middle
 
 .center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/wR2OlsF1CEY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/_eNUtLHXJkc?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Deep learning for medicine
-]
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/nhtNEckbQws?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Deep learning and AI at NVIDIA
+Improving Tuberculosis Monitoring with Deep Learning
 ]
 
 ---
@@ -824,6 +862,9 @@ Deep learning and AI at NVIDIA
 - Supervised learning is used to learn functions from a set of training examples.
     - Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
     - Neural networks are defined as a composition of squashed linear models.
+
+???
+
 - Reinforcement learning = learning to behave in an unknown environment from sparse rewards.
 - Unsupervised learning = learning a model of the world by observing it.
 

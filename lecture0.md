@@ -8,6 +8,10 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: https://www.youtube.com/watch?v=AmjAOiDtzZI
+
 ---
 
 # Today

@@ -626,7 +626,7 @@ $$
 \end{aligned}
 $$
 
-See `code/lecture7-forward-backward.ipynb` for the execution.
+See `code/lecture6-forward-backward.ipynb` for the execution.
 
 ---
 

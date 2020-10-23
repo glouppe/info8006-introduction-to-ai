@@ -815,7 +815,7 @@ class: middle
 
 ## Demo
 
-See `code/lecture6-gibbs.ipynb`.
+See `code/lecture5-gibbs.ipynb`.
 
 ---
 
