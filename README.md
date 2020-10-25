@@ -23,12 +23,11 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 5 | _(no class)_ |
 | November 8 | Project 2 deadline |
 | November 12 | Lecture 8: Making decisions <br>Exercises 6: Reasoning over time (part 2)  |
-| November 19 | Lecture 9: Reinforcement Learning<br>Q&As (in-person, 11:30 AM, B28/2.93, [registration required](https://docs.google.com/spreadsheets/d/12aKsuN6hfjHR35PRIlWhNn_PVkBh4fvD8YiOfGVHzW4/edit?usp=sharing)) <br>Exercises 7: Learning |
+| November 19 | Lecture 9: Reinforcement Learning <br>Exercises 7: Learning |
 | November 26 | Lecture 10: Communication <br>Exercises 8: Making decisions (part 1)   |
-| December 3 | Q&As (in-person, 11:30 AM, B28/2.93, [registration required](https://docs.google.com/spreadsheets/d/12aKsuN6hfjHR35PRIlWhNn_PVkBh4fvD8YiOfGVHzW4/edit?usp=sharing))<br>Exercises 9: Making decisions (part 2) <br>Exercises 10: Reinforcement Learning |
+| December 3 | Lecture 11: Artificial general intelligence and beyond<br>Exercises 9: Making decisions (part 2) <br>Exercises 10: Reinforcement Learning |
 | December 6 | Project 3 deadline |
-| December 10 | Lecture 11: Artificial general intelligence and beyond<br>Correction of a past exam |
-| December 17 | Q&As (in-person, 11:30 AM, B28/2.93, [registration required](https://docs.google.com/spreadsheets/d/12aKsuN6hfjHR35PRIlWhNn_PVkBh4fvD8YiOfGVHzW4/edit?usp=sharing)) |
+| December 10 | Correction of a past exam |
 
 ## Projects
 
