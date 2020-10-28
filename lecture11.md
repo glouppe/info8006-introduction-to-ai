@@ -29,6 +29,8 @@ R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-
 
 R: extend on genetic algorithms?
 
+R: https://hai.stanford.edu/sites/default/files/2020-09/AI-Definitions-HAI.pdf
+
 ---
 
 # Today$^\*$
