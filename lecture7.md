@@ -10,6 +10,12 @@ Prof. Gilles Louppe<br>
 
 ---
 
+class: middle, center
+
+.width-50[![](figures/lec0/map.jpg)]
+
+---
+
 # Today
 
 .center.width-50[![](figures/lec7/sl-cartoon.png)]
@@ -98,8 +104,12 @@ Frame **learning** as a Bayesian update of a probability distribution ${\bf P}(H
 - the prior is ${\bf P}(H)$,
 - $\mathbf{d}$ is the observed data.
 
+---
+
+class: middle
+
 Given data, each hypothesis has a posterior probability
-$$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is called the likelihood.
+$$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is the likelihood of the hypothesis.
 
 ---
 
@@ -195,12 +205,15 @@ class: middle
 ## Recipe
 
 - Choose a **parameterized** family of models to describe the data (e.g., a Bayesian network).
-    - requires substantial insight and sometimes new models.
-- Write down the log-likelihood $L$ of the data as a function of the parameters.
-    - may require summing over hidden variables, i.e., inference.
-- Write down the derivative of the log likelihood w.r.t. each parameter $\theta$.
-- Find the parameter values $\theta$ such that the derivatives are zero and check whether the Hessian is negative definite.
-    - may be hard; modern optimization techniques help.
+- Write down the log-likelihood $L$ of the parameters $\theta$.
+- Write down the derivative of the log likelihood of the parameters $\theta$.
+- Find the parameter values $\theta^\*$ such that the derivatives are zero and check whether the Hessian is negative definite.
+
+???
+
+Note that:
+- evaluating the likelihood may require summing over hidden variables, i.e., inference.
+- finding $\theta^\*$ may be hard; modern optimization techniques help.
 
 ---
 
@@ -277,7 +290,7 @@ Again, results coincide with intuition.
 
 class: middle
 
-# Supervised learning
+# Machine learning
 
 ---
 
@@ -532,7 +545,7 @@ Can we learn to play Pacman only from observations?
 class: middle, black-slide
 
 .center[
-<video controls preload="auto" height="400" width="640">
+<video controls muted preload="auto" height="400" width="640">
   <source src="./figures/lec7/training1.mp4" type="video/mp4">
 </video>
 
@@ -546,7 +559,7 @@ The Perceptron agent observes a very good Minimax-based agent for two games and 
 class: middle, black-slide
 
 .center[
-<video controls preload="auto" height="400" width="640">
+<video controls muted preload="auto" height="400" width="640">
   <source src="./figures/lec7/training2.mp4" type="video/mp4">
 </video>
 
@@ -559,7 +572,7 @@ class: middle, black-slide
 class: middle, black-slide
 
 .center[
-<video controls preload="auto" height="400" width="640">
+<video controls muted preload="auto" height="400" width="640">
   <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
 </video>
 
@@ -574,6 +587,8 @@ No more Minimax!
 class: middle
 
 # Deep Learning
+
+(a short introduction)
 
 ---
 
@@ -721,9 +736,11 @@ where $\theta$ denotes the model parameters $\\{ \mathbf{W}\_k, \mathbf{b}\_k, .
 
 ---
 
-class: middle, center
+class: middle
 
-.width-90[![](figures/lec7/mlp.png)]
+.width-100[![](figures/lec7/mlp.png)]
+
+.footnote[Credits: [PyTorch Deep Learning Minicourse](https://atcold.github.io/pytorch-Deep-Learning-Minicourse/), Alfredo Canziani, 2020.]
 
 ---
 
