@@ -8,6 +8,10 @@ Lecture 7: Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: develop linear regression / OLS  further ---> up to the analytical solution
+
 ---
 
 class: middle, center

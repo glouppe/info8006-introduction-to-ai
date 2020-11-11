@@ -8,11 +8,6 @@ Lecture 8: Making decisions
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: see CS188
-R: restructure the content together with Lec7 and Lec8
-
 ---
 
 # Today
@@ -222,6 +217,10 @@ $V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2r + ...$
 ]
 ]
 
+???
+
+Explain what coherent means.
+
 ---
 
 class: middle
@@ -289,9 +288,9 @@ Because of discounted utilities, the optimal policy is *independent* of the star
 
 ---
 
-# Utilities of states
+# Values of states
 
-The utility (or value) $V(s)$ of a state is now simply defined as $V^{\pi^\*}(s)$.
+The utility, or value, $V(s)$ of a state is now simply defined as $V^{\pi^\*}(s)$.
 - That is, the expected (discounted) reward if the agent executes an optimal policy starting from $s$.
 - Notice that $R(s)$ and $V(s)$ are quite different quantities:
     - $R(s)$ is the short term reward for having reached $s$.
@@ -313,7 +312,7 @@ class: middle
 
 ## Policy extraction
 
-Using the principle of maximum expected utility (MEU), the optimal action maximizes the expected utility of the subsequent state.
+Using the principle of maximum expected utility, the optimal action maximizes the expected utility of the subsequent state.
 That is,
 $$\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 
@@ -329,6 +328,8 @@ Point out the circularity of the argument!
 
 class: middle
 
+$$\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s'|s,a) V(s')$$
+
 .center.width-90[![](figures/lec8/how-to.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -337,18 +338,16 @@ class: middle
 
 # The Bellman equation
 
-There is a direct relationship between the utility of a state and the utility of its neighbors:
-
-The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action.
-
-That is,
+The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
 $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 - These equations are called the **Bellman equations**. They form a system of $n=|\mathcal{S}|$ non-linear equations with as many unknowns.
 - The utilities of states, defined as the expected utility of subsequent state sequences, are solutions of the set of Bellman equations.
 
 ???
 
-Bellman equation combine the expected utility (slide 16) with the policy extraction equation (slide 20).
+There is a direct relationship between the utility of a state and the utility of its neighbors.
+
+The Bellman equation combines the expected utility (slide 16) with the policy extraction equation (slide 20).
 
 ---
 
@@ -530,7 +529,7 @@ class: middle
 
 ---
 
-# POMPDs
+# POMDPs
 
 What if the environment is only **partially observable**?
 - The agent does not know in which state $s$ it is in.
@@ -636,7 +635,7 @@ $$a$$
 
 class: middle
 
-Although we have reduced POMDPs to MPDs, the Belief MDP we obtain has a **continuous** (and usually high-dimensional) state space.
+Although we have reduced POMDPs to MDPs, the Belief MDP we obtain has a **continuous** (and usually high-dimensional) state space.
 - None of the algorithms described earlier directly apply.
 - In fact, solving POMDPs remains a difficult problem for which there is no known efficient exact algorithm.
 - Yet, Nature is a POMDP.
@@ -685,87 +684,14 @@ That is, we transition from $b$ to $b'$, instead of $s$ to $s'$.
 
 ---
 
-# Reinforcement learning
-
-A Markov decision process assumes the knowledge of a transition model $P(s'|s,a)$
-and of a reward function $R$.
-What if the MDP is unknown?
-- We do not know which states are good nor what actions do!
-- We must observe or interact with the environment in order  to jointly *learn* these dynamics and act upon them.
-
-$\Rightarrow$ This is **reinforcement learning**.
-
-<br>
-.center.width-80[![](figures/lec8/rl.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-Reinforcement learning include two main families of algorithms:
-<br><br>
-
-.grid[
-.kol-1-2[
-## Model-based
-
-- Learn an approximate model for $P(s'|s,a)$ and $R$ based on experiences.
-- Solve the resulting approximate MDP with value or policy iteration.
-
-]
-.kol-1-2[
-## Model-free
-
-- Learn an approximate model for $V$ based on experiences.
-- Extract a policy from the approximate state values $V$.
-]
-]
-
-Learning approximate models from experiences can be done with *supervised learning* (see Lecture 9).
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Playing Pinball
-]
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/5WXVJ1A0k6Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Playing Seaquest
-]
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/6kO4eZWeKOM?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Playing Enduro
-]
-
----
-
 # Summary
 
 - Sequential decision problems in uncertain environments, called MDPs, are defined by transition model and a reward function.
 - The utility of a state sequence is the sum of all the rewards over the sequence, possibly discounted over time.
     - The solution of an MDP is a policy that associates a decision with every state that the agent might reach.
     - An optimal policy maximizes the utility of the state sequence encountered when it is executed.
-- Value iteration and policy can both be used for solving MDPs.
+- Value iteration and policy iteration can both be used for solving MDPs.
 - POMDPs are much more difficult than MDPs. However, a decision-theoretic agent can be constructed for those environments.
-    - Research is going on!
 
 ---
 
