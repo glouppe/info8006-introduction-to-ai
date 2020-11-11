@@ -34,9 +34,7 @@ In this third part of the project, Pacman got tired of ghosts wandering around h
 A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are confused and should be willing to escape from him.
 More precisely, he knows that `scared` is more fearful than `afraid` who is more fearful than `confused`.
 
-Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for locating all the ghosts in the maze.
-
-While updating your belief of the ghosts position, it is then possible to control pacman to eat ghosts.
+Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 6](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md)) for locating all the ghosts in the maze.
 
 You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman, controlled by the `humanagent`, tries to locate him with a (very) rusty sensor:
 ```bash
@@ -56,7 +54,7 @@ You are asked to answer the following questions:
  	- 2.a. - **4 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts (all running the same policy).
 		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
-		 - Your filter should consider the Pacman position as it can move.
+		 - Your filter should consider the Pacman position, as Pacman may wander freely in the maze.
 
  3. **Experiment**
  	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
@@ -68,7 +66,7 @@ You are asked to answer the following questions:
 	- 3.d. - **2 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
 	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
 	- 3.f. - **2 points** - How would you implement a stochastic Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
-	- 3.d. - **BONUS TBD points** - Implement this stochastic controller in the `pacmanagent.py` file.
+	- 3.d. - **BONUS 3 points** - Implement this stochastic controller in the `pacmanagent.py` file.
 
 
 ---
@@ -107,7 +105,7 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 		- 0.3 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
 
-Note that your implementation might be tested on other layouts with moving Pacman.
+Note that your implementation might be tested on other layouts, with Pacman moving arbitrarily.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.
 

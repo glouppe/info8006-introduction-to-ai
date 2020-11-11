@@ -15,14 +15,14 @@ class PacmanAgent(Agent):
 
     def get_action(self, state, belief_state):
         """
-        Given a pacman game state and a "belief state",
+        Given a pacman game state and a belief state,
                 returns a legal move.
 
         Arguments:
         ----------
         - `state`: the current game state. See FAQ and class
                    `pacman.GameState`.
-        - 'belief_state': a list of probability matrices.
+        - `belief_state`: a list of probability matrices.
 
         Return:
         -------
