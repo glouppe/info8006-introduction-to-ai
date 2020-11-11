@@ -113,7 +113,7 @@ class BeliefStateAgent(Agent):
 
     def get_action(self, state):
         """
-        Given a pacman game state, returns a legal move.
+        Given a pacman game state, returns a "belief state".
 
         Arguments:
         ----------
@@ -122,7 +122,7 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        - A legal move as defined in `game.Directions`.
+        - A "belief state".
         """
 
         """

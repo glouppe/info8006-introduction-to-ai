@@ -387,7 +387,10 @@ class ClassicGameRules:
             beliefStateAgent,
             display,
             quiet=False,
-            catchExceptions=False, hiddenGhosts=False, edibleGhosts=False):
+            catchExceptions=False,
+            hiddenGhosts=False,
+            edibleGhosts=False,
+            startingIndex=0):
 
         agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + \
             ([beliefStateAgent] if beliefStateAgent is not None else [])
@@ -398,7 +401,11 @@ class ClassicGameRules:
             hiddenGhosts=hiddenGhosts,
             edibleGhosts=edibleGhosts,
             beliefStateAgent=beliefStateAgent)
-        game = Game(agents, display, self, catchExceptions=catchExceptions)
+        game = Game(agents,
+                    display,
+                    self,
+                    startingIndex=startingIndex,
+                    catchExceptions=catchExceptions)
         game.state = initState
         self.initialState = initState.deepCopy()
         self.quiet = quiet
@@ -969,7 +976,10 @@ def runGame(
         ghosts,
         beliefstateagent,
         displayGraphics,
-        expout=np.inf, hiddenGhosts=False, edibleGhosts=False):
+        expout=np.inf,
+        hiddenGhosts=False,
+        edibleGhosts=False,
+        startingIndex=0):
     display = graphicsDisplay.PacmanGraphics(
         1.0, frameTime=0.1) if displayGraphics else textDisplay.NullGraphics()
     import __main__
@@ -986,5 +996,6 @@ def runGame(
         False,
         False,
         hiddenGhosts=hiddenGhosts,
-        edibleGhosts=edibleGhosts)
+        edibleGhosts=edibleGhosts,
+        startingIndex=startingIndex)
     return game.run()
