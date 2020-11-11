@@ -25,10 +25,6 @@ You are requested to deliver a *tar.gz* archive containing:
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
-## Disclaimer
-
-Fall 2020: subject to change.
-
 ## Instructions
 
 This part is due by **December 6, 2020 at 23:59**. This is a **hard** deadline.
