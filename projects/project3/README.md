@@ -65,8 +65,8 @@ You are asked to answer the following questions:
 		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
 	- 3.d. - **2 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
 	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
-	- 3.f. - **2 points** - How would you implement a stochastic Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
-	- 3.g. - **BONUS 3 points** - Implement this stochastic controller in the `pacmanagent.py` file.
+	- 3.f. - **2 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
+	- 3.g. - **BONUS 3 points** - Implement this controller in the `pacmanagent.py` file.
 
 
 ---
