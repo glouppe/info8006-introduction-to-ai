@@ -36,7 +36,7 @@ In this third part of the project, Pacman got tired of ghosts wandering around h
 A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are confused and should be willing to escape from him.
 More precisely, he knows that `scared` is more fearful than `afraid` who is more fearful than `confused`.
 
-Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for locating all the ghosts in the maze.
+Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 6](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md)) for locating all the ghosts in the maze.
 
 You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
 ```bash
