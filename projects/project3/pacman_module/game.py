@@ -640,7 +640,8 @@ class Game:
             rules,
             startingIndex=0,
             muteAgents=False,
-            catchExceptions=False):
+            catchExceptions=False,
+            oracleBeliefStateAgent=None):
         self.agentCrashed = False
         self.agents = agents
         self.display = display
@@ -655,6 +656,7 @@ class Game:
         self.agentTimeout = False
         import io
         self.agentOutput = [io.StringIO() for agent in agents]
+        self.oracleBeliefStateAgent = oracleBeliefStateAgent
 
     def getProgress(self):
         if self.gameOver:
@@ -722,6 +724,17 @@ class Game:
             if expout == 0:
                 if (agentIndex == 0 and type(self.agents[numAgents-1]).__name__ == "BeliefStateAgent"):
                     action = agent.get_action(observation, previous_action)
+                elif (agentIndex == numAgents-1 and type(self.agents[numAgents-1]).__name__ == "BeliefStateAgent"):
+                    action, evidence = agent.get_action(observation)
+                    if self.oracleBeliefStateAgent is not None:
+                        oracleAction = self.oracleBeliefStateAgent.get_action(observation, evidence)
+                        #print(action)
+                        #print(oracleAction)
+
+                        if len(action) == len(oracleAction) and np.array([(np.absolute(x - y) < 10**(-6)).all() for x,y in zip(action, oracleAction)]).all():
+                            print("step {}: OK".format(self.numMoves))
+                        else:
+                            print("step {}: Not OK".format(self.numMoves))
                 else:
                     action = agent.get_action(observation)
             else:
@@ -754,7 +767,7 @@ class Game:
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state, self)
             # Track progress
-            if agentIndex == numAgents + 1:
+            if agentIndex == numAgents - 1:
                 self.numMoves += 1
             # Next agent
             agentIndex = (agentIndex + 1) % numAgents

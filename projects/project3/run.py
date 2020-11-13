@@ -92,6 +92,10 @@ if __name__ == '__main__':
         help='Python file containing a `BeliefStateAgent` class.',
         default=None)
     parser.add_argument(
+        '--oraclebsagentfile',
+        help='Python file containing a `BeliefStateAgent` class to which bsagentfile will be compared.',
+        default=None)
+    parser.add_argument(
         '--edibleghosts',
         help='Whether the ghost can be eaten.',
         default=True,
@@ -126,15 +130,19 @@ if __name__ == '__main__':
         gagts = []
     layout = args.layout
     bsagt = None
+    oraclebsagt = None
     startingIndex = 0
     if args.bsagentfile is not None:
         bsagt = load_agent_from_file(
             args.bsagentfile, "BeliefStateAgent")(args)
         startingIndex = nghosts+1
+    if args.oraclebsagentfile is not None:
+        oraclebsagt = load_agent_from_file(
+            args.oraclebsagentfile, "BeliefStateAgent")(args)
     total_score, total_computation_time, _ = runGame(
         layout, agent, gagts, bsagt, not args.silentdisplay, expout=0,
         hiddenGhosts=args.hiddenghosts, edibleGhosts=args.edibleghosts,
-        startingIndex=startingIndex)
+        startingIndex=startingIndex, oracleBeliefStateAgent=oraclebsagt)
 
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
