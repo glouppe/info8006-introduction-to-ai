@@ -3,7 +3,7 @@
 from pacman_module.game import Agent
 import numpy as np
 from pacman_module import util
-
+from scipy.stats import binom
 
 class BeliefStateAgent(Agent):
     def __init__(self, args):
@@ -27,7 +27,10 @@ class BeliefStateAgent(Agent):
         self.ghost_type = self.args.ghostagent
         self.sensor_variance = self.args.sensorvariance
 
-    def update_belief_state(self, evidences, pacman_position):
+        self.p = 0.5
+        self.n = int(self.sensor_variance/(self.p*(1-self.p)))
+
+    def update_belief_state(self, evidences, pacman_position, ghosts_eaten):
         """
         Given a list of (noised) distances from pacman to ghosts,
         returns a list of belief states about ghosts positions
@@ -40,6 +43,8 @@ class BeliefStateAgent(Agent):
         - `pacman_position`: 2D coordinates position
           of pacman at state x_{t}
           where 't' is the current time step
+        - `ghosts_eaten`: list of booleans indicating
+          whether ghosts have been eaten or not
 
         Return:
         -------
@@ -83,11 +88,10 @@ class BeliefStateAgent(Agent):
         pacman_position = state.getPacmanPosition()
         noisy_distances = []
 
-        for p in positions:
-            true_distance = util.manhattanDistance(p, pacman_position)
-            noisy_distances.append(
-                np.random.normal(loc=true_distance,
-                                 scale=np.sqrt(self.sensor_variance)))
+        for pos in positions:
+            true_distance = util.manhattanDistance(pos, pacman_position)
+            noise = binom.rvs(self.n, self.p) - self.n*self.p
+            noisy_distances.append(true_distance + noise)
 
         return noisy_distances
 
@@ -136,7 +140,8 @@ class BeliefStateAgent(Agent):
             self.walls = state.getWalls()
 
         newBeliefStates = self.update_belief_state(self._get_evidence(state),
-                                                   state.getPacmanPosition())
+                                                   state.getPacmanPosition(),
+                                                   state.data._eaten[1:])
         self._record_metrics(self.beliefGhostStates, state)
 
         return newBeliefStates
