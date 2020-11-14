@@ -101,6 +101,10 @@ strong {
 }
 
 .smaller-xx {
+    font-size: 0.7em;
+}
+
+.smaller-xxx {
     font-size: 0.5em;
 }
 
