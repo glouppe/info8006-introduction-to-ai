@@ -19,14 +19,12 @@ You are requested to deliver a *tar.gz* archive containing:
 	 - In French or English.
  - A file named `bayesfilter.py` containing your implementation of the Bayes filter algorithm.
 	 - Put the class template defined in `beliefstateagent.py` into `bayesfilter.py` and fill in the `update_belief_state` function.
-
+	 - :warning: Do not change the class name (`BeliefStateAgent`).
+ - (optional) A file named `pacmanagent.py` containing your implementation of the BONUS.
+     - Simply modify the provided `pacmanagent.py` file.
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
-## Disclaimer
-
-Fall 2020: subject to change.
-
 ## Instructions
 
 This part is due by **December 6, 2020 at 23:59**. This is a **hard** deadline.
@@ -36,11 +34,11 @@ In this third part of the project, Pacman got tired of ghosts wandering around h
 A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are confused and should be willing to escape from him.
 More precisely, he knows that `scared` is more fearful than `afraid` who is more fearful than `confused`.
 
-Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 7](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md)) for locating all the ghosts in the maze.
+Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 6](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md)) for locating all the ghosts in the maze.
 
-You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman tries to locate him with a (very) rusty sensor:
+You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman, controlled by the `humanagent`, tries to locate him with a (very) rusty sensor:
 ```bash
-python run.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --seed -1
+python run.py --agentfile humanagent.py --bsagent beliefstateagent.py --ghostagent scared --nghosts 1 --seed -1 --layout large_filter
 ```
 Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
 
@@ -56,7 +54,7 @@ You are asked to answer the following questions:
  	- 2.a. - **4 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `update_belief_state` function of `bayesfilter.py`, following the template of `beliefstateagent.py`.
 		 - Your implementation must work with multiple ghosts (all running the same policy).
 		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
-		 - Your filter should consider the Pacman position.
+		 - Your filter should consider the Pacman position, as Pacman may wander freely in the maze.
 
  3. **Experiment**
  	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
@@ -67,7 +65,8 @@ You are asked to answer the following questions:
 		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
 	- 3.d. - **2 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
 	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
-	- 3.f. - **2 points** - How would you implement a stochastic Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
+	- 3.f. - **2 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
+	- 3.g. - **BONUS 3 points** - Implement this controller in the `pacmanagent.py` file.
 
 
 ---
@@ -106,7 +105,7 @@ Besides the questions you're expected to answer, you will also be evaluated acco
 		- 0.3 point : at least 25% correct specifications.
 		- 0 point : less than 25% correct specifications.
 
-Note that your implementation might be tested on other layouts.
+Note that your implementation might be tested on other layouts, with Pacman moving arbitrarily.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.
 

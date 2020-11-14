@@ -720,7 +720,10 @@ class Game:
             violated = False
             t = time.time()
             if expout == 0:
-                action = agent.get_action(observation)
+                if (agentIndex == 0 and type(self.agents[numAgents-1]).__name__ == "BeliefStateAgent"):
+                    action = agent.get_action(observation, previous_action)
+                else:
+                    action = agent.get_action(observation)
             else:
                 # TODO : node expansion control through getSuccessors
                 action = agent.get_action(observation)
