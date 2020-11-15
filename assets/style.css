@@ -225,6 +225,15 @@ td {
     display: block;
 }
 
+.question {
+    background-color: rgba(40,167,69,0.25);
+    border: 2px solid rgb(40,167,69);
+    border-radius: 5px;
+    width: 95%;
+    display: block;
+    padding: 1em;
+}
+
 .alert {
     color: #721c24;
     background-color: #f8d7da;
