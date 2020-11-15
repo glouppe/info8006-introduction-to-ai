@@ -499,11 +499,11 @@ The function $f(u,n)$ should be increasing in $v$ and decreasing in $n$. A simpl
 
 # Model-free learning
 
-Although temporal difference learning provides a way to estimate $V^\pi$ in a model-free fashion, it would also have to learn a model $P(s'|s,a)$ in order to be able choose an action based via a one-step look-ahead.
+Although temporal difference learning provides a way to estimate $V^\pi$ in a model-free fashion, we would still have to learn a model $P(s'|s,a)$ to choose an action based on a one-step look-ahead.
 
 ---
 
-# Q-values
+# Détour: Q-values
 
 .grid[
 .kol-1-2[
@@ -547,12 +547,12 @@ As for value iteration, the last equation can be used as an update equation for 
 
 The state-action-values $Q(s,a)$ can be learned in a model-free fashion using a temporal-difference method known as **Q-Learning**.
 
-Q-Learning consists in updating $Q(s,a)$ each time the agent experiences a transition $(s, r=R(s), a=\pi(s), s')$.
+Q-Learning consists in updating $Q(s,a)$ each time the agent experiences a transition $(s, r=R(s), a, s')$.
 
 The update equation for TD Q-Learning is
 $$Q(s,a) \leftarrow Q(s,a) + \alpha (r + \gamma \max\_{a'} Q(s',a') - Q(s,a)).$$
 
-Therefore, since $\pi^*(s) = \arg \max\_a Q(s,a)$, a TD agent that learns Q-values does not need a model of the form $P(s'|s,a)$, neither for learning nor for action selection!
+.alert[Since $\pi^*(s) = \arg \max\_a Q(s,a)$, a TD agent that learns Q-values does not need a model of the form $P(s'|s,a)$, neither for learning nor for action selection!]
 
 ---
 
@@ -581,31 +581,101 @@ Q-Learning **converges to an optimal policy**, even when acting suboptimally.
 
 # Generalizing across states
 
-lec 11, slide 25
+.grid[
+.kol-2-3[
+- Basic Q-Learning keeps a table for all Q-values $Q(s,a)$.
+- In realstic situations, we cannot possibly learn about every single state!
+  - Too many states to visit them all in training.
+  - Too many states to hold the Q-tables in memory.
+- We want to generalize:
+  - Learn about some small number of training states from experience.
+  - Generalize that experience to new, similar situations.
+  - This is supervised *machine learning* again!
+]
+.kol-1-3.width-100[![](figures/lec9/cartoon-generalization.png)]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-lec 11, slide 26
+class: middle
+
+## Example: Pacman
+.grid.center[
+.kol-1-8[]
+.kol-1-4[(a)
+
+.width-100[![](figures/lec9/pacman1.png)]]
+.kol-1-4[(b)
+
+.width-100[![](figures/lec9/pacman2.png)]]
+.kol-1-4[(c)
+
+.width-100[![](figures/lec9/pacman3.png)]]
+.kol-1-8[]
+]
+
+If we discover by experience that (a) is bad, then in naive Q-Learning, we know nothing about (b) nor (c)!
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-lec 11, slide 30
+class: middle 
+
+.grid[
+.kol-3-4[
+## Feature-based representations
+
+Solution: describe a state $s$ using a vector $\mathbf{x} = [f\_1(s), ..., f\_d(s)] \in \mathbb{R}^d$ of features.
+- Features are functions $f\_k$ from states to real numbers that capture important properties of the state.
+- Example features:
+  - Distance to closest ghost
+  - Distance to closest dot
+  - Number of ghosts
+  - ...
+- Can similarly describe q-state $(s, a)$ with features $f\_k(s,a)$.
+]
+.kol-1-4.width-100[![](figures/lec9/pacman1.png)]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-lec 11, slide 31
+class: middle
+
+.center.width-50[![](figures/lec9/lr-cartoon.png)]
+
+## Approximate Q-Learning
+
+Q-tables can now be replaced with function approximators of the Q-values, such as linear models:
+$$Q(s,a) = w\_1 f\_1(s,a) + w\_2 f\_2(s,a) + ... + w\_d f\_d(s,a).$$
+
+Upon the transition $(s, r, a, s')$, the update becomes
+$$
+w\_k \leftarrow  w\_k + \alpha (r + \gamma \max\_{a'} Q(s', a') - Q(s,a)) f\_k(s,a),
+$$
+for all $w\_k$.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-lec 11, slide 32
+class: middle
 
----
+In linear regression, imagine we had only one point $\mathbf{x}$ with features $[f\_1, ..., f\_d]$. Then,
+$$
+\begin{aligned}
+\ell(\mathbf{w}) &= \frac{1}{2} \left( y - \sum\_k w\_k f\_k \right)^2 \\\\
+\frac{\partial \ell}{\partial w\_k} &= -\left(y -  \sum\_k w\_k f_k \right) f\_k \\\\
+w\_k &\leftarrow w\_k + \alpha \left(y -  \sum\_k w\_k f\_k \right) f\_k,
+\end{aligned}
+$$
 
-lec 11, slide 39
-
----
-
-lec 11, slide 33
+hence the Q update
+$$w\_k \leftarrow w\_k + \alpha \left(\underbrace{r + \gamma \max\_{a'} Q(s', a')}\_{\text{target}\, y} -  \underbrace{Q(s,a)}\_{\text{prediction}} \right) f\_k(s,a).$$
 
 ---
 
@@ -620,7 +690,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Pinball
+Playing Atari Games (Pinball)
 ]
 
 ---
@@ -635,17 +705,23 @@ MarIQ
 
 ---
 
-robotics 
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="480" src="https://www.youtube.com/embed/W4joe3zzglU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Robotic manipulation
+]
 
 ---
 
 # Summary
 
-summary of rl
+<br>
 
----
+.width-100[![](figures/lec9/summary.png)]
 
-summary of decision making algorithms
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
