@@ -27,7 +27,7 @@ You are requested to deliver a *tar.gz* archive containing:
 ---
 ## Instructions
 
-This part is due by **December 6, 2020 at 23:59**. This is a **hard** deadline.
+This part is due by **December 13, 2020 at 23:59**. This is a **hard** deadline.
 
 In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
 
