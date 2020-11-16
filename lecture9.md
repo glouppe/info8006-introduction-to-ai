@@ -228,7 +228,7 @@ Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
 
 # Model-based estimation
 
-A **model-based** agent learns approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
+A **model-based** agent estimates approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
 
 - Step 1: Learn an empirical MDP.
   - Estimate $\hat{P}(s'|s,a)$ from empirical samples $(s,a,s')$ (as in Lecture 5) or with supervised learning (as in Lecture 7).
@@ -291,7 +291,7 @@ Can we learn $V^\pi$ in a **model-free** fashion, without explicitly modeling th
 
 # Direct utility estimation
 
-(a.k.a. Monte Carlo evluation)
+(a.k.a. Monte Carlo evaluation)
 
 - The utility $V^\pi(s)$ of state $s$ is the expected total reward from the state onward (called the expected **reward-to-go**)
 $$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\rvert\_{s\_0=s}$$
