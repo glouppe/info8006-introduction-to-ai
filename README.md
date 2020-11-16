@@ -26,8 +26,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 19<br>[[Live stream](https://www.youtube.com/watch?v=kynU2eX0dMI), 9:00 AM] | Lecture 9: [Reinforcement Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)] <br>Exercises 7: Learning |
 | November 26 | Lecture 10: [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)] <br>Exercises 8: Making decisions (part 1)   |
 | December 3 | Lecture 11: Artificial general intelligence and beyond<br>Exercises 9: Making decisions (part 2) <br>Exercises 10: Reinforcement Learning |
-| December 6 | Project 3 deadline |
 | December 10 | Correction of a past exam |
+| December 13 | Project 3 deadline |
 
 ## Projects
 
@@ -37,7 +37,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
 - Part 1: [Search algorithms](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1) (due by October 11)
 - Part 2: [Adversarial search](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2) (due by November 8)
-- Part 3: [Bayes filter](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project3) (due by December 6)
+- Part 3: [Bayes filter](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project3) (due by December 13)
 
 ### Reading assignment
 
