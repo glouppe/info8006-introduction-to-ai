@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 9: Reinforcement learning
+Lecture 9: Reinforcement Learning
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -29,6 +29,14 @@ How to make decisions under uncertainty, **while learning** about the environmen
 ]
 .kol-1-2.width-100[<br><br><br>![](figures/lec9/intro.png)]
 ]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.width-100[![](figures/lec9/plan.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -74,6 +82,15 @@ $$a$$
 
 ---
 
+class: middle
+
+## Remarks
+
+- Although MDPs generalize to continuous state-action spaces, we assume in this lecture that both $\mathcal{S}$ and $\mathcal{A}$ are discrete and finite.
+- The formalism we use to define MDPs is not unique. A quite well-established and equivalent variant is to define the reward function with respect to a transition $(s,a,s')$, i.e. $R(s,a,s')$. This results in new formulations of the algorithms covered in Lecture 8.
+
+---
+
 # The Bellman equation
 
 The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
@@ -90,7 +107,7 @@ $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 The **value iteration** algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
 - Let $V\_i(s)$ be the estimated utility value for $s$ at the $i$-th iteration step.
 - The **Bellman update** consists in updating simultaneously all the estimates to make them *locally consistent* with the Bellman equation:
-$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') $$
+$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s'). $$
 - Repeat until convergence.
 
 ---
@@ -99,9 +116,9 @@ $$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') $$
 
 The **policy iteration** algorithm directly computes the policy (instead of state values). It alternates the following two steps:
 - Policy evaluation: given $\pi\_i$, calculate $V\_i = V^{\pi\_i}$, i.e. the utility of each state if $\pi\_i$ is executed:
-$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s)) V\_i(s')$$
+$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s)) V\_i(s').$$
 - Policy improvement: calculate a new policy $\pi\_{i+1}$ using one-step look-ahead based on $V\_i$:
-$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s'|s,a)V\_i(s')$$
+$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s'|s,a)V\_i(s').$$
 
 ---
 
@@ -359,6 +376,12 @@ where $\alpha$ is the *learning rate* parameter.
 
 class: middle
 
+Alternatively, the TD-update can be viewed as a single gradient descent step on the squared error between the target $r+ \gamma V^\pi(s')$ and the prediction $V^\pi(s)$. (More later.)
+
+---
+
+class: middle
+
 ## Exponential moving average
 
 The TD-update can equivalently be expressed as the exponential moving average
@@ -455,7 +478,7 @@ The agent **does not** learn the true utilities or the true optimal policy!
 class: middle
 
 The resulting is **greedy** and **suboptimal**:
-- The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as true environment.
+- The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as the true environment.
 - Therefore, what is optimal in the learned model can be suboptimal in the true environment.
 
 ---
@@ -465,7 +488,7 @@ The resulting is **greedy** and **suboptimal**:
 Actions do more than provide rewards according to the current learned model. 
 They also contribute to learning the true environment. 
 
-This the **exploitation-exploration** trade-off:
+This is the **exploitation-exploration** trade-off:
 - Exploitation: follow actions that maximize the rewards, under the current learned model;
 - Exploration: follow actions to explore and learn about the true environment.
 
@@ -501,11 +524,20 @@ where $f(v, n)$ is called the **exploration function**.
 
 The function $f(v,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$.
 
+???
+
+This is similar to MCTS! (Lecture 3)
+
 ---
 
 # Model-free learning
 
 Although temporal difference learning provides a way to estimate $V^\pi$ in a model-free fashion, we would still have to learn a model $P(s'|s,a)$ to choose an action based on a one-step look-ahead.
+
+<br>
+.center.width-50[![](figures/lec9/cartoon-model-free.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -735,7 +767,7 @@ Robotic manipulation
 
 <br>
 
-.width-100[![](figures/lec9/summary.png)]
+.width-100[![](figures/lec9/plan.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
