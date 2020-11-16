@@ -220,43 +220,6 @@ class: middle
 
 class: middle
 
-## Unsupervised machine translation
-
-- The latest approaches do not even need to have a bilingual corpus!
-- Machine translation can be learned in a **fully unsupervised** way with unsupervised alignment.
-
----
-
-class: middle
-
-Word-by-word translation:
-- Learn a neural word embedding trained to predict the words around a given word using a context.
-- Embedding in different languages share similar neighborhood structure.
-- The system learn rotation of the word embedding in one language to match the word embedding in the other language, using adversarial training.
-- This can be used to infer a fairly accurate bilingual dictionary without access to any translation!
-
-.center.width-50[![](figures/lec10/umt-word-by-word.gif)]
-
-.footnote[Image credits: [Facebook AI Research, 2018. Unsupervised machine translation](https://code.fb.com/ai-research/unsupervised-machine-translation-a-novel-approach-to-provide-fast-accurate-translations-for-more-languages/).]
-
----
-
-class: middle
-
-Translating sentences:
-- Bootstrap the translation model with word-by-word initialization.
-- The neural translation model must be able to reconstruct a sentence in a given language from a noisy version of it.
-- The model also learns to reconstruct any source sentence given a noisy translation of the same sentence in the target domain, and vice-versa.
-- The source and target sentence latent representations are constrained to have the same latent distributions through adversarial training.
-
-.center.width-70[![](figures/lec10/umt1.png)]
-
-.footnote[Image credits: [Lample et al, 2017. arXiv:1711.00043](https://arxiv.org/pdf/1711.00043.pdf).]
-
----
-
-class: middle
-
 # Speech recognition
 
 ---
