@@ -728,10 +728,8 @@ class Game:
                     action, evidence = agent.get_action(observation)
                     if self.oracleBeliefStateAgent is not None:
                         oracleAction = self.oracleBeliefStateAgent.get_action(observation, evidence)
-                        #print(action)
-                        #print(oracleAction)
 
-                        if len(action) == len(oracleAction) and np.array([(np.absolute(x - y) < 10**(-6)).all() for x,y in zip(action, oracleAction)]).all():
+                        if len(action) == len(oracleAction) and np.array([(np.absolute(x - y) < 10**(-4)).all() for x,y in zip(action, oracleAction)]).all():
                             print("step {}: OK".format(self.numMoves))
                         else:
                             print("step {}: Not OK".format(self.numMoves))
