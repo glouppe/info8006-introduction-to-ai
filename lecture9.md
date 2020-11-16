@@ -14,16 +14,21 @@ Prof. Gilles Louppe<br>
 
 How to make decisions under uncertainty, **while learning** about the environment?
 
+.grid[
+.kol-1-2[
 - Reinforcement learning (RL)
 - Passive RL
-  - Direct utility estimation
-  - Adaptive dynamic programming
-  - Temporal-difference learning
+  - Model-based estimation
+  - Model-free estimation
+    - Direct utility estimation
+    - Temporal-difference learning
 - Active RL
+  - Model-based learning
   - Q-Learning
   - Generalizing across states
-  
-.center.width-55[![](figures/lec9/intro.png)]
+]
+.kol-1-2.width-100[<br><br><br>![](figures/lec9/intro.png)]
+]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -44,6 +49,7 @@ A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
+- ($0 < \gamma \leq 1$ is the discount factor.)
 
 ---
 
@@ -147,13 +153,13 @@ class: middle
 
 # Reinforcement learning
 
-Still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R)$ such that:
+We still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
 
-Still looking for a policy $\pi(s)$.
+Our goal is find the optimal policy $\pi^\*(s)$.
 
 ---
 
@@ -222,7 +228,7 @@ Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
 
 # Model-based estimation
 
-A **model-based** agent learns approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluate the resulting empirical MDP.
+A **model-based** agent learns approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
 
 - Step 1: Learn an empirical MDP.
   - Estimate $\hat{P}(s'|s,a)$ from empirical samples $(s,a,s')$ (as in Lecture 5) or with supervised learning (as in Lecture 7).
@@ -333,7 +339,7 @@ If both $B$ and $E$ go to $C$ under $\pi$,<br> how can their values be different
 
 class: middle
 
-Unfortunately, direct utility estimation misses the fact that the utilities of states are not independent, since they obey the Bellman equations for a fixed policy:
+Unfortunately, direct utility estimation misses the fact that the state values $V^\pi(s)$ are not independent, since they obey the Bellman equations for a fixed policy:
 $$V^\pi(s) = R(s) + \gamma \sum\_{s'}P(s'|s,\pi(s)) V^\pi(s').$$
 Therefore, direct utility estimation misses opportunities for learning and takes a long time to learn.
 
@@ -355,7 +361,7 @@ class: middle
 
 ## Exponential moving average
 
-The TD update can equivalently be expressed as the exponential moving average
+The TD-update can equivalently be expressed as the exponential moving average
 $$V^\pi(s) \leftarrow (1-\alpha)V^\pi(s) + \alpha (r + \gamma V^\pi(s')).$$
 
 Intuitively,
@@ -376,7 +382,7 @@ Transition: $(B, -1, \text{east}, C)$
 ]
 ]
 
-TD update:
+TD-update:
 
 $\begin{aligned}
 V^\pi(B) &\leftarrow V^\pi(B) + \alpha(R(B) + \gamma V^\pi(C) - V^\pi(B)) \\\\
@@ -396,7 +402,7 @@ Transition: $(C, -1, \text{east}, D)$
 ]
 ]
 
-TD update:
+TD-update:
 
 $\begin{aligned}
 V^\pi(C) &\leftarrow V^\pi(C) + \alpha(R(C) + \gamma V^\pi(D) - V^\pi(C)) \\\\
@@ -410,7 +416,7 @@ class: middle
 
 ## Convergence
 
-- Notice that the TD update involves only the observed successor $s'$, whereas the actual Bellman equations for a fixed policy involves all possible next states. Nevertheless, the *average* value of $V^\pi(s)$ will converge to the correct value.
+- Notice that the TD-update involves only the observed successor $s'$, whereas the actual Bellman equations for a fixed policy involves all possible next states. Nevertheless, the *average* value of $V^\pi(s)$ will converge to the correct value.
 - If we change $\alpha$ from a fixed parameter to a function that decreases as the number of times a state has been visited increases, then $V^\pi(s)$  will itself converge to the correct value.
 
 ---
@@ -450,14 +456,14 @@ class: middle
 
 The resulting is **greedy** and **suboptimal**:
 - The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as true environment.
-- Therefore, what is optimal in the learned model can be suboptimal in the true environement.
+- Therefore, what is optimal in the learned model can be suboptimal in the true environment.
 
 ---
 
 # Exploration
 
 Actions do more than provide rewards according to the current learned model. 
-They also contribute to learning the true model. 
+They also contribute to learning the true environment. 
 
 This the **exploitation-exploration** trade-off:
 - Exploitation: follow actions that maximize the rewards, under the current learned model;
@@ -493,7 +499,7 @@ For Value Iteration, the update equation becomes
 $$V^+\_{i+1}(s) = R(s) + \gamma \max\_a f(\sum_{s'} P(s'|s,a) V^+\_i(s'), N(s,a)),$$
 where $f(v, n)$ is called the **exploration function**. 
 
-The function $f(u,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$.
+The function $f(v,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$.
 
 ---
 
@@ -584,15 +590,15 @@ Q-Learning **converges to an optimal policy**, even when acting suboptimally.
 .grid[
 .kol-2-3[
 - Basic Q-Learning keeps a table for all Q-values $Q(s,a)$.
-- In realstic situations, we cannot possibly learn about every single state!
+- In realistic situations, we cannot possibly learn about every single state!
   - Too many states to visit them all in training.
-  - Too many states to hold the Q-tables in memory.
+  - Too many states to hold the Q-table in memory.
 - We want to generalize:
   - Learn about some small number of training states from experience.
   - Generalize that experience to new, similar situations.
   - This is supervised *machine learning* again!
 ]
-.kol-1-3.width-100[![](figures/lec9/cartoon-generalization.png)]
+.kol-1-3.width-100[<br><br>![](figures/lec9/cartoon-generalization.png)]
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -635,7 +641,7 @@ Solution: describe a state $s$ using a vector $\mathbf{x} = [f\_1(s), ..., f\_d(
   - Distance to closest dot
   - Number of ghosts
   - ...
-- Can similarly describe q-state $(s, a)$ with features $f\_k(s,a)$.
+- Can similarly describe a q-state $(s, a)$ with features $f\_k(s,a)$.
 ]
 .kol-1-4.width-100[![](figures/lec9/pacman1.png)]
 ]
@@ -650,7 +656,7 @@ class: middle
 
 ## Approximate Q-Learning
 
-Q-tables can now be replaced with function approximators of the Q-values, such as linear models:
+Using a feature-based representation, the Q-table can now be replaced with a function approximator, such as a linear model:
 $$Q(s,a) = w\_1 f\_1(s,a) + w\_2 f\_2(s,a) + ... + w\_d f\_d(s,a).$$
 
 Upon the transition $(s, r, a, s')$, the update becomes
@@ -674,8 +680,18 @@ w\_k &\leftarrow w\_k + \alpha \left(y -  \sum\_k w\_k f\_k \right) f\_k,
 \end{aligned}
 $$
 
-hence the Q update
+hence the Q-update
 $$w\_k \leftarrow w\_k + \alpha \left(\underbrace{r + \gamma \max\_{a'} Q(s', a')}\_{\text{target}\, y} -  \underbrace{Q(s,a)}\_{\text{prediction}} \right) f\_k(s,a).$$
+
+---
+
+class: middle
+
+## DQN
+
+Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the *DQN* algorithm.
+
+.center.width-100[![](figures/lec9/dqn.png)]
 
 ---
 
@@ -688,9 +704,9 @@ class: middle
 class: middle, black-slide
 
 .center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/Tnu4O_xEmVk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Playing Atari Games (Pinball)
+MarIQ
 ]
 
 ---
@@ -698,9 +714,9 @@ Playing Atari Games (Pinball)
 class: middle, black-slide
 
 .center[
-<iframe width="640" height="480" src="https://www.youtube.com/embed/Tnu4O_xEmVk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-MarIQ
+Playing Atari Games (Pinball)
 ]
 
 ---
