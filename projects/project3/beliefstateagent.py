@@ -53,7 +53,8 @@ class BeliefStateAgent(Agent):
           where N and M are respectively width and height
           of the maze layout and Z is the number of ghosts.
 
-        N.B. : [0,0] is the bottom left corner of the maze
+        N.B. : [0,0] is the bottom left corner of the maze.
+               Matrices filled with zeros must be returned for eaten ghosts.
         """
         beliefStates = self.beliefGhostStates
 
