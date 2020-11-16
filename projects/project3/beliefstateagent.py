@@ -5,6 +5,7 @@ import numpy as np
 from pacman_module import util
 from scipy.stats import binom
 
+
 class BeliefStateAgent(Agent):
     def __init__(self, args):
         """
