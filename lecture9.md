@@ -364,7 +364,7 @@ Therefore, direct utility estimation misses opportunities for learning and takes
 
 # Temporal-difference learning
 
-Temporal-difference learning consists in updating $V^\pi(s)$ each time the agent experiences a transition $(s, r=R(s), a=\pi(s), s')$.
+Temporal-difference (TD) learning consists in updating $V^\pi(s)$ each time the agent experiences a transition $(s, r=R(s), a=\pi(s), s')$.
 
 .width-20.center[![](figures/lec9/td-triple.png)]
 
@@ -765,11 +765,17 @@ Robotic manipulation
 
 # Summary
 
-<br>
-
 .width-100[![](figures/lec9/plan.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## My mission .green[&#10004;]
+
+By the end of this course, you will have built autonomous agents that efficiently make decisions in fully informed, partially observable and adversarial settings. Your agents will draw inferences in uncertain and unknown environments and optimize actions for arbitrary reward structures. 
 
 ---
 
