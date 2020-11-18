@@ -40,6 +40,10 @@ class: middle
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Offline solution = Planning
+
 ---
 
 class: middle
@@ -166,6 +170,10 @@ class: middle
 - Sampling: because of chance, you have to try things repeatedly.
 - Difficult: learning can be much harder than solving a known MDP.
 
+???
+
+There was a chicken, in some unknown MDP. The chicken wanted to maximise his reward.
+
 ---
 
 # Reinforcement learning
@@ -184,7 +192,7 @@ class: middle
 
 ## New twist 
 
-The transition model $P(s'|s,a)$ and the reward function $R$ are **unknown**.
+The transition model $P(s'|s,a)$ and the reward function $R(s)$ are **unknown**.
 - We do not know which states are good nor what actions do!
 - We must observe or interact with the environment in order  to jointly *learn* these dynamics and act upon them.
 .grid[
@@ -322,7 +330,7 @@ $$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\r
 
 class: middle
 
-## Example
+## Example ($\gamma=1$)
 
 .grid[
 .kol-1-4.smaller-x[
@@ -343,7 +351,7 @@ Trajectories:
 
 .grid[
 .kol-1-4.smaller-x[
-Output values:
+Output values $\hat{V}^\pi(s)$:
 
 .width-100[![](figures/lec9/due-example.png)]
 ]
@@ -371,6 +379,15 @@ Temporal-difference (TD) learning consists in updating $V^\pi(s)$ each time the 
 When a transition from $s$ to $s'$ occurs, the temporal-difference update steers $V^\pi(s)$ to better agree with the Bellman equations for a fixed policy, i.e.
 $$V^\pi(s) \leftarrow V^\pi(s) + \alpha \underbrace{(r + \gamma V^\pi(s') - V^\pi(s))}\_{\text{temporal difference error}}$$
 where $\alpha$ is the *learning rate* parameter.
+
+???
+
+Instead waiting for a complete trajectory to update $V^\pi(s)$, ...
+
+...
+
+- If $r + \gamma V^\pi(s') > V^\pi(s)$ then the prediction $V^\pi(s)$ underestimates the value, hence the increment.
+- If $r + \gamma V^\pi(s') < V^\pi(s)$ then the prediction $V^\pi(s)$ overestimates the value, hence the decrement.
 
 ---
 
@@ -432,6 +449,12 @@ V^\pi(C) &\leftarrow V^\pi(C) + \alpha(R(C) + \gamma V^\pi(D) - V^\pi(C)) \\\\
 &\leftarrow 0 + 0.5 (-1 + 8 - 0) \\\\
 &\leftarrow 3.5
 \end{aligned}$
+
+???
+
+Note how the large reward eventually propagates back to the states leading to it. 
+
+Doing the first update again would result in a better value for $B$.
 
 ---
 
@@ -506,7 +529,7 @@ Simplest approach for forcing exploration: random actions ($\epsilon$-greedy).
 - With a (small) probability $\epsilon$, act randomly.
 - With a (large) probability $(1-\epsilon)$, follow the current policy.
 
-Problem: $\epsilon$-greedy does eventually explore the space, but keeps trashing around once learning is done.
+$\epsilon$-greedy does eventually explore the space, but keeps trashing around once learning is done.
 
 ---
 
@@ -699,6 +722,10 @@ for all $w\_k$.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Remember that the TD-update can be viewed as a online GD update, except now we dot not directly modify $Q(s,a)$ but rather the parameters of the function approximator.
+
 ---
 
 class: middle
@@ -758,8 +785,24 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/W4joe3zzglU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Robotic manipulation
+Robotic manipulation (I)
 ]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls preload="auto" height="500" width="700">
+  <source src="https://www.festo.com/group/en/repo/assets/media/BionicSoftHand_Making-of_en_720x405.mp4" type="video/mp4">
+</video>
+
+Robotic manipulation (II)
+]
+
+???
+
+Nice example merging disciplines from engineering (mechanics, electronics) together with artificial intelligence.
 
 ---
 
