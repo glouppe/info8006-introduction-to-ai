@@ -139,7 +139,7 @@ class: middle, black-slide
   <source src="./figures/lec9/chicken1.mp4" type="video/mp4">
 </video>]
 
-.footnote[Image credits: [@YAWScience](https://twitter.com/YAWScience/status/1304199719036444672), 2020.]
+.footnote[Video credits: [Megan Hayes](https://twitter.com/PigMegan), [@YAWScience](https://twitter.com/YAWScience/status/1304199719036444672), 2020.]
 
 
 ---
@@ -151,7 +151,7 @@ class: middle, black-slide
   <source src="./figures/lec9/chicken2.mp4" type="video/mp4">
 </video>]
 
-.footnote[Image credits: [@YAWScience](https://twitter.com/YAWScience/status/1304199719036444672), 2020.]
+.footnote[Video credits: [Megan Hayes](https://twitter.com/PigMegan), [@YAWScience](https://twitter.com/YAWScience/status/1304199719036444672), 2020.]
 
 ---
 
