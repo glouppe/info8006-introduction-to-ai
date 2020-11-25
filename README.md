@@ -43,7 +43,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 Your task is to read a major scientific paper in the field of Artificial Intelligence.
 
-> Paper: ""Human-level control through deep reinforcement learning."<br>
+> Paper: "Human-level control through deep reinforcement learning."<br>
 > Volodymyr Mnih et al, 2015. [[PDF](https://deepmind-media.storage.googleapis.com/dqn/DQNNaturePaper.pdf)]
 
 The reading assignment includes the main text (pages 1-4), as well as the methods section (pages 6-7).
