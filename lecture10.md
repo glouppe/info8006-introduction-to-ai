@@ -139,6 +139,10 @@ $$f^\* = \arg\max\_f P(f|e).$$
 - Most of the English sentences to be translated will be novel, but will be composed of phrases that that have been seen before.
 - The corresponding French phrases will be reassembled to form a French sentence that makes sense.
 
+???
+
+phrase = locution
+
 ---
 
 class: middle
@@ -192,8 +196,7 @@ All that remains is to learn the phrasal and distortion probabilities:
 Modern machine translation systems are all based on **neural networks** of various types, often architectured as compositions of
 - recurrent networks for sequence-to-sequence learning,
 - convolutional networks for modeling spatial dependencies.
-
-<br>
+- transformer networks.
 
 .center.width-70[![](figures/lec10/gnmt.jpg)]
 
@@ -249,7 +252,7 @@ Speech recognition can be viewed as an instance of the problem of **finding the 
 
 - The input audio waveform from a microphone is converted into a sequence of fixed size acoustic vectors $\mathbf{y}\_{1:T}$ in a process called *feature extraction*.
 
-- The decoder attempts to find the sequence of words $\mathbf{w}\_{1:L} = w\_1, ..., w\_L$ which is the most likely to have generated $\mathbf{y}\_{1:T}$:
+- The decoder attempts to find the sequence of words $\mathbf{w}\_{1:L} = w\_1, ..., w\_L$ which is the most likely given the sequence $\mathbf{y}\_{1:T}$:
 $$\hat{\mathbf{w}}\_{1:L} = \arg \max\_{\mathbf{w}\_{1:L}} P(\mathbf{w}\_{1:L}|\mathbf{y}\_{1:T})$$
 
 ---
@@ -458,47 +461,6 @@ $\mathbf{y}\_{1:T}$
 
 ---
 
-# Autoregressive models
-
-.grid[
-.kol-3-4[
-By the chain rule, any joint distribution can always be written as an incremental product of conditional distributions:
-$$
-\begin{aligned}
-p(x\_1,...,x\_n) &= \prod\_{k=1}^n p(x\_k | x\_1, ..., x\_{k-1}).
-\end{aligned}
-$$
-If $h\_{k-1}$ is a lossless statistic of the previous observations in the sequence, then we can express
-$$p(x\_k | x\_1, ..., x\_{k-1}) = g\_\theta(x\_k | h\_{k-1}).$$
-]
-.kol-1-4.center[
-.width-100[![](figures/lec10/ar-image.png)]
-.caption[Autoregressive model<br> for images.]
-]
-]
-
----
-
-class: middle
-
-An autoregressive model can be formulated as a recurrent neural network such that
-
-$$
-\begin{aligned}
-p(x\_k | x\_1, ..., x\_{k-1}) &= g\_\theta(x\_k | h\_{k-1}) \\\\
-h\_k &= f\_\theta(x\_k, h\_{k-1})
-\end{aligned}
-$$
-where
-- $g$ specifies a probability density function for the next $x$ given $h$.
-- $f$ specifies (in a deterministic way) the next state $h$ given $x$.
-
-If $g$ and $f$ have enough capacity (e.g., $f$ and $g$ are large neural networks), then the resulting autoregressive model is often capable of modeling complex distributions, such as text, images or speech.
-
-The same architecture can be used for modeling *conditional* distributions over inputs.
-
----
-
 # Tacotron 2
 
 The Tacotron 2 system is a **sequence-to-sequence neural network** architecture for text-to-speech. It consists of two components:
@@ -523,27 +485,9 @@ class: middle
 - This last step can be performed through another autoregressive neural model, such as **Wavenet**, to transform mel-scale spectrograms into high-fidelity waveforms.
 
 <br>
-.center.width-40[![](figures/lec10/mel-to-wave.png)]
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec10/wavenet.png)]
-
-.center[The Wavenet architecture.]
-
-.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec10/wavenet.gif)]
-
-.center[Dilated convolutions.]
-
-.footnote[Image credits: [Van den Oord et al, 2016.](https://deepmind.com/blog/wavenet-generative-model-raw-audio/).]
+.center[
+.width-30[![](figures/lec10/mel-to-wave.png)] .width-50[![](figures/lec10/wavenet.png)]
+]
 
 ---
 
