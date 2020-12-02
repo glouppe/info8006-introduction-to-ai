@@ -67,7 +67,6 @@ You are asked to answer the following questions:
 	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
 	- 3.f. - **2 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
 	- 3.g. - **BONUS 3 points** - Implement this controller in the `pacmanagent.py` file.
-		 - :warning: If you need to use the state, please make a deepcopy of it first in the `get_action` function.
 
 
 ---
