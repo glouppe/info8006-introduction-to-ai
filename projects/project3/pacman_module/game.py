@@ -431,7 +431,7 @@ class GameStateData:
             self.capsules = prevState.capsules[:]
             self.agentStates = self.copyAgentStates(prevState.agentStates)
             self.layout = prevState.layout
-            self._eaten = prevState._eaten
+            self._eaten = deepcopy(prevState._eaten)
             self.score = prevState.score
             try:
                 self.beliefStates = np.copy(prevState.beliefStates)
