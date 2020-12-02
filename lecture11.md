@@ -76,46 +76,14 @@ class: middle
 
 ---
 
-
-
-class: middle
-
-.center.circle.width-20[![](figures/lec11/good.jpg)]
-.caption[Irving John Good (1965)]
-
-## Singularity
-
-- Let an **ultraintelligent** machine be defined as a machine that can far surpass all the intellectual activities of any man however clever.
-- Since the design of machines is one of these intellectual activities, an ultraintelligent machine could *design even better machines*.
-- There would then unquestionably be an **intelligence explosion**.
-- Thus the first ultraintelligent machine is the *last invention* that man need ever make, provided that the machine is docile enough to tell us how to keep it under control.
-
-???
-
-- Good worked as a cryptologist with Alan Turing.
-- Note that human is also capable of self-improvement, with medicine (from macro to gene).
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/MnT1xgZgkpk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-What happens when our computers get smarter than we are? (Nick Bostrom)
-]
-
-
----
-
 class: middle
 
 .center.width-40[![](figures/lec11/washing-machine.png)]
 
 ## Artificial narrow intelligence
 
-Artificial intelligence today remains **narrow**:
-- Modern AI systems often reach super-human level performance, ... but only at *very specific problems*!
+Today's artificial intelligence remains **narrow**:
+- AI systems often reach super-human level performance, ... but only at *very specific problems*!
 - They **do not generalize** to the real world nor to arbitrary tasks.
 
 ---
@@ -157,15 +125,17 @@ class: middle
 
 # AGI
 
-- **Artificial general intelligence** (AGI) is the intelligence of a machine that could successfully perform any intellectual task that a human being can.
-- Agreement that AGI is required to do the following:
-    - reason, use strategy, solve puzzle, plan,
-    - make judgments under uncertainty,
-    - represent knowledge, including commonsense knowledge,
-    - improve and learn new skills,
-    - communicate in natural language,
-    - integrate all these skills towards common goals.
-- This is similar to our definition of *thinking rationally*, but applied broadly to any set of tasks.
+Artificial general intelligence, or **AGI**, is the intelligence of a machine that could successfully perform any intellectual task that a human being can perform.
+
+The scientific community agrees that AGI would be required to do the following:
+- reason, use strategy, solve puzzle, plan,
+- make judgments under uncertainty,
+- represent knowledge, including commonsense knowledge,
+- improve and learn new skills,
+- communicate in natural language,
+- integrate all these skills towards common goals.
+
+This is similar to our definition of *thinking rationally*, but applied broadly to any set of tasks.
 
 ---
 
@@ -174,12 +144,10 @@ class: middle
 ## Roads towards AGI
 
 Several working **hypothesis**:
-- Supervised learning
-- Unsupervised learning
-- *AIXI*
-- *Artificial life*
-- Brain simulation
-- ... or something else?
+- Learning (supervised, unsupervised, reinforcement)
+- AIXI
+- Artificial life
+- ... or probably something else?
 
 ---
 
@@ -187,22 +155,7 @@ class: middle
 
 # AIXI
 
-???
-
-Mathematical formalism for AGI.
-
----
-
-class: middle
-
-.exercise[How to act rationally in an unknown environment?]
-
-???
-
-The Bayesian solution:
-- maintain a prior over environments,
-- update it as evidence is collected,
-- follow the Bayes-optimal  solution.
+AIXI (Hutter, 2005) is a theoretical mathematical formalism of artificial general intelligence.
 
 ---
 
@@ -239,21 +192,20 @@ class: middle, center
 
 class: middle
 
+AIXI defines a measure of universal intelligence as 
 $$\Upsilon(\pi) := \sum\_{\mu \in E} 2^{-K(\mu)} V^{\pi}\_\mu$$
 
-???
-
-Mix all items together (Solomonoff induction with decision theory) and you get AIXI.
-
----
-
-class: middle
-
+where
 - $\Upsilon(\pi)$ formally defines the **universal intelligence** of an agent $\pi$.
 - $\mu$ is the environment of the agent and $E$ is the set of all computable reward bounded environments.
 - $V^{\pi}\_\mu = \mathbb{E}\[ \sum\_{i=1}^\infty R\_i \]$ is the expected sum of future rewards when the agent $\pi$ interacts with environment $\mu$.
 - $K(.)$ is the Kolmogorov complexity, such that $2^{-K(\mu)}$ weights the agent's performance in each environment, inversely proportional to its complexity.
     - Intuitively, $K(\mu)$ measures the complexity of the shortest Universal Turing Machine program that describes the environment $\mu$.
+
+
+???
+
+Mix all items together (Solomonoff induction with decision theory) and you get AIXI.
 
 ---
 
@@ -321,9 +273,9 @@ class: middle
 
 class: middle
 
-## Benefits of a foundational theory of AI
+## Benefits of AIXI
 
-AIXI provides
+The AIXI theoretical formalism of AGI provides
 - a high-level *blue-print* or inspiration for design;
 - common terminology and goal formulation;
 - understand and predict behavior of yet-to-be-built agents;
@@ -340,10 +292,12 @@ class: middle
 
 # Artificial life
 
-**Artificial life** is the study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
+Study of systems related to natural life, its processes and its evolution, through the use of *simulations* with computer models, robotics or biochemistry.
 
-<br>
-.center.width-100[![](figures/lec11/tree.gif)]
+One of its goals is to **synthesize** life in order to understand its origins, development and organization.
+
+<br><br>
+.center.width-80[![](figures/lec11/tree.gif)]
 
 .caption[How did intelligence arise in Nature?]
 
@@ -351,54 +305,73 @@ class: middle
 
 class: middle
 
-- One of its goals is to *synthesize* life in order to understand its origins, development and organization.
-- There are three main kinds of artificial life, named after their approaches:
-    - Software approaches (soft)
-    - Hardware approaches (hard)
-    - Biochemistry approaches (wet)
-- Artificial life is related to AI since synthesizing complex life forms would, **hypothetically**, induce intelligence.
-- The field of AI has traditionally used a top down approach. Artificial life generally works from the bottom up.
+
+## Approaches
+
+There are three main kinds of artificial life, named after their approaches:
+- Software approaches (soft)
+- Hardware approaches (hard)
+- Biochemistry approaches (wet)
+
+The field of AI has traditionally used a top down approach. Artificial life generally works from the *bottom up*.
+  
+???
+
+Artificial life is related to AI since synthesizing complex life forms would, **hypothetically**, induce intelligence.
 
 ---
 
 class: middle, black-slide
 
 .center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/dySwrhMQdX4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="420" src="https://www.youtube.com/embed/dySwrhMQdX4?&loop=1&start=353" frameborder="0" volume="0" allowfullscreen></iframe>
 
 Wet artificial life: The line between life and not-life (Martin Hanczyc).
 ]
 
 ---
 
-# Evolution
+# Evolutionary algorithms
 
 Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
 - This algorithm gave rise to AGI (e.g., it induced humans).
-- Can we **simulate** the *evolutionary process* to reproduce life and intelligence?
-- Using software simulation, we can work at a high level of abstraction.
-    - We don't have to simulate physics or chemistry to simulate evolution.
-    - We can also bootstrap the system with agents that are better than random.
+- **Simulation** of the evolutionary process should eventually reproduce life and, maybe, intelligence?
 
 <br>
 
-.center.width-50[![](figures/lec11/conway.gif)]
+.center.width-60[![](figures/lec11/conway.gif)]
 .caption[Conway's game of life]
+
+???
+
+Using software simulation, we can work at a high level of abstraction.
+- We don't have to simulate physics or chemistry to simulate evolution.
+- We can also bootstrap the system with agents that are better than random.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/Kk2MH9O4pXY?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Conway's game of life
+]
 
 ---
 
 class: middle
 
-## Evolutionary algorithms
+## Evolutionary algorithms as metaheuristic optimization algorithms
 
-- Start with a *random population* of **creatures**.
-- Each creature is *tested for their ability* to perform a given task.
-    - e.g., swim in a simulated environment.
-    - e.g., stay alive as long as possible (without starving or being killed).
-- The **most successful survive**.
-- Their virtual genes containing coded instructions for their growth are copied, combined and mutated to *make offspring* for a new population.
-- The new creatures are tested again, some of which may be improvements on their parents.
-- As this cycle of variation and selection continues, creatures with more and more successful behaviors may **emerge**.
+1. Start with a random population of creatures.
+2. Repeat until termination:
+   1. Each creature is tested for their ability to perform a given task.
+   2. Select the fittest creatures for reproduction.
+   3. Breed new creatures by combining and mutating the virtual genes of their selected parents. 
+   4. Replace the least-fit creatures of the population with new creatures.
+
+As this cycle of variation and selection continues, creatures with more and more successful behaviors may **emerge**.
 
 ???
 
@@ -409,7 +382,9 @@ Virtual genes could be artificial neural networks.
 class: black-slide, middle
 
 .center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/CQVjS-PT_c4?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="420" src="https://www.youtube.com/embed/bBt0imn77Zg?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Karl Sims, 1994.
 ]
 
 ---
@@ -417,30 +392,18 @@ class: black-slide, middle
 class: black-slide, middle
 
 .center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/bBt0imn77Zg?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="640" height="420" src="https://www.youtube.com/embed/ngCIB-IWD8E?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Self-assembling morphologies (Pathak et al, 2019)
 ]
-
----
-
-class: middle
-
-.center[
-.width-100[![](figures/lec11/es.gif)]
-
-Evolution strategies for locomotion.
-]
-
-.footnote[Image credits: [OpenAI](https://blog.openai.com/evolution-strategies/).]
-
-???
-
-See also http://blog.otoro.net/2017/11/12/evolving-stable-strategies/.
 
 ---
 
 class: middle, center
 
-Neurevolution [demo](http://otoro.net/planks/).
+.width-70[![](figures/lec11/planks.png)]
+
+Creatures avoiding planks [[demo](http://otoro.net/planks/)].
 
 ---
 
@@ -448,7 +411,7 @@ class: middle
 
 ## Environments for AGI?
 
-For the emergence of generally intelligent creatures, we presumably need environments that **incentivize** the emergence of a *cognitive toolkit* (attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...).
+For the emergence of generally intelligent creatures, environments should **incentivize** the emergence of a *cognitive toolkit* (attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...).
 
 .center.width-80[![](figures/lec11/envs.png)]
 
@@ -496,24 +459,32 @@ Artificial intelligence algorithms are transforming science, engineering and soc
 
 As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges. Seize them!
 
-.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/)]
+.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/).]
 
 
 ---
 
 # Recap
 
-- Lecture 1: Foundations
+- Lecture 0: Artificial intelligence
+- Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
-- Lecture 3: Constraint satisfaction problems
-- Lecture 4: Adversarial search
-- Lecture 5: Representing uncertain knowledge
-- Lecture 6: Inference in Bayesian networks
-- Lecture 7: Reasoning over time
+- .inactive[Lecture 2b: Constraint satisfaction problems (optional)]
+- Lecture 3: Adversarial search
+- Lecture 4: Representing uncertain knowledge
+- Lecture 5: Inference in Bayesian networks
+- Lecture 6: Reasoning over time
+- Lecture 7: Learning
 - Lecture 8: Making decisions
-- Lecture 9: Learning
-- Lecture 10: Communication
-- Lecture 11: Artificial General Intelligence and beyond
+- Lecture 9: Reinforcement learning
+- Lecture 10: Communication 
+- Lecture 11: Artificial General Intelligence and beyond 
+
+---
+
+class: middle, center
+
+.width-50[![](figures/lec0/map.jpg)]
 
 ---
 
@@ -528,6 +499,8 @@ This course is designed as an introduction to the many other courses available a
 - INFO0948: Introduction to Intelligent Robotics
 - INFO0049: Knowledge representation
 - ELEN0016: Computer vision
+- ELEN0060: Information and coding theory
+- MATH2022: Large-sample analysis: theory and practice
 - DROI8031: Introduction to the law of robots
 
 ---
@@ -549,15 +522,3 @@ count: false
 <br><br>
 
 Thanks for following Introduction to Artificial Intelligence!
-
----
-
-count: false
-
-# References
-
-- Bostrom, Nick. Superintelligence. Dunod, 2017.
-- Legg, Shane, and Marcus Hutter. "Universal intelligence: A definition of machine intelligence." Minds and Machines 17.4 (2007): 391-444.
-- Hutter, Marcus. "One decade of universal artificial intelligence." Theoretical foundations of artificial general intelligence (2012): 67-88.
-- Sims, Karl. "Evolving 3D morphology and behavior by competition." Artificial life 1.4 (1994): 353-372.
-- Kasparov, Garry. Deep Thinking: Where Machine Intelligence Ends and Human Creativity Begins, 2017.
