@@ -10,26 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-human centered ai, ai concerns more than engineers
-ai for what? climate, energy, science, etc
-
-R: ai for good 
-
-https://www.elementai.com/fr/news/2019/changement-climatique
-https://www.climatechange.ai/
-
-http://www.machineintelligence.org/universal-ai.pdf
-R: https://virtualcreatures.github.io/
-
-R: consciousness, self-awareness
-
-R: chinese room argument https://plato.stanford.edu/entries/chinese-room/
-
 R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-who-like-ai/
-
-R: extend on genetic algorithms?
-
-R: https://hai.stanford.edu/sites/default/files/2020-09/AI-Definitions-HAI.pdf
 
 ---
 
@@ -335,7 +316,7 @@ Wet artificial life: The line between life and not-life (Martin Hanczyc).
 
 Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
 - This algorithm gave rise to AGI (e.g., it induced humans).
-- **Simulation** of the evolutionary process should eventually reproduce life and, maybe, intelligence?
+- **Simulation** of the evolutionary process should/could eventually reproduce life and, maybe, intelligence?
 
 <br>
 
@@ -387,6 +368,10 @@ class: black-slide, middle
 Karl Sims, 1994.
 ]
 
+???
+
+Bootstrapped the field.
+
 ---
 
 class: black-slide, middle
@@ -396,6 +381,20 @@ class: black-slide, middle
 
 Self-assembling morphologies (Pathak et al, 2019)
 ]
+
+---
+
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/wQQ2NHECcvQ?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Mini-documentary: Artifical life
+]
+
+???
+
+Jump to 6:40.
 
 ---
 
