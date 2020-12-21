@@ -137,7 +137,7 @@ We show through this section a list of common mistakes and bad practices that we
 ### Code
 
 - **Style/Documentation**
-	* Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). You can use dedicated [scripts](https://pypi.org/project/pep8/) to check PEP8-compliance of your source code. 
+	* Source code is not PEP8-compliant. Fulfilling the required specifications help to the readability of your source code. PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). You can use dedicated [scripts](https://pypi.org/project/pycodestyle/) to check PEP8-compliance of your source code. 
 	* Function specifications are either wrong or missing. They must be present and they must **formally** describe the function out of ambiguity. Its purpose is to provide an easier-to-understand description of the function than the code itself. An example of a correct specification is provided below :
 
 	```python
