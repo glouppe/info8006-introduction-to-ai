@@ -80,7 +80,7 @@ For each **implementation question** (2.a), provide simply references to your co
  - 50% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem.
  - no point: implementation error of any component of the algorithm.
 
-For each **discussion question** (1.a, 1.b, 2.b, 3.a, 3.b, 3.d, 3.e, 3.f), the evaluation will be performed as follows:
+For each **discussion question** (1.a, 1.b, 3.a, 3.b, 3.d, 3.e, 3.f), the evaluation will be performed as follows:
 
  - 100% points: complete answer.
  - 50% points: some relevant elements but incomplete and/or incorrect answer.
