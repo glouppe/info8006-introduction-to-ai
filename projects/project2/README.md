@@ -41,7 +41,7 @@ The ghost follows one of the following policies, as set through the `--ghostagen
  - `greedy`: Select the next position that is the closest to Pacman.
  - `smarty`: Select the next position which leads to the shortest path towards Pacman.
 
-Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 3](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md)) for eating all the dots as quickly as possible while avoiding the ghost. In this project, we will not consider layouts with capsules, but you may take them into account if you feel motivated.
+Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 3](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md)) for maximizing the score. In this project, we will not consider layouts with capsules, but you may take them into account if you feel motivated.
 
 You are asked to answer the following questions.
 
@@ -67,6 +67,7 @@ You are asked to answer the following questions.
 		 - Each proposed evaluation function needs to differ from the game score function.
 		 - Your evaluation functions need to be **fast** to compute and **generalizable**.
 		 - Evaluation functions can be built by weighting the different characteristics of the game state, but this is not a constraint.
+		 - Your evaluation/cut-off functions must be significantly different (changing the value of a parameter is not sufficient)
 
 		 N.B.: Although 3 layouts are provided for this project, you remain free to build your own layouts in order to fit the most general cutoff-test/evaluation function pair as possible. If you do so, discuss it briefly in your report.
 

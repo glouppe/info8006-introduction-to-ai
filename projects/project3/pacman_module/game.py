@@ -611,6 +611,14 @@ class GameStateData:
             uniformBelief = np.full((self.layout.width,
                                      self.layout.height),
                                     1.0 / (self.layout.width * self.layout.height))
+            
+            for x in range(self.layout.width):
+                for y in range(self.layout.height):
+                    if self.layout.walls[x][y]:
+                        uniformBelief[x][y] = 0.
+                        
+            uniformBelief = uniformBelief/np.sum(uniformBelief)
+
             agtState = AgentState(
                 Configuration(
                     -1,
