@@ -8,6 +8,11 @@ Fall 2020
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: prepare more code examples (one per course)
+R: prepare handwritten developments
+
 ---
 
 # Goals and philosophy
