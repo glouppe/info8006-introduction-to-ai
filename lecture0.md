@@ -14,6 +14,8 @@ R: https://www.youtube.com/watch?v=AmjAOiDtzZI
 
 R: https://hai.stanford.edu/sites/default/files/2020-09/AI-Definitions-HAI.pdf
 
+R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-perseverance-mars-rover-takes-the-wheel
+
 ---
 
 # Today

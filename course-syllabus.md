@@ -12,6 +12,7 @@ Prof. Gilles Louppe<br>
 
 R: prepare more code examples (one per course)
 R: prepare handwritten developments
+R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-perseverance-mars-rover-takes-the-wheel
 
 ---
 
