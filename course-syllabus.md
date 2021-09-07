@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2020
+Fall 2021
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -12,7 +12,6 @@ Prof. Gilles Louppe<br>
 
 R: prepare more code examples (one per course)
 R: prepare handwritten developments
-R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-perseverance-mars-rover-takes-the-wheel
 
 ---
 
@@ -36,36 +35,20 @@ R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-persev
 
 This course is given by:
 - Theoretical lectures: Gilles Louppe
-- Exercise sessions: Antoine Wehenkel
-- Programming projects: Arnaud Delaunoy, Pascal Leroy
+- Exercise sessions: François Rozet
+- Programming projects: Arnaud Delaunoy, Gaspard Lambrechts
 
 Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) for help.
 
 <br>
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/antoine.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/arnaud.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/pascal.jpg)]
+.circle.width-20[![](figures/course-syllabus/arnaud.jpg)] 
 ]
 
 ---
 
 # Materials
-
-This year, the course takes place online on Youtube at [https://bit.ly/3igTphO](https://bit.ly/3igTphO).
-- Theoretical lectures will be **streamed live**.
-  - Use the chat to interact or ask your questions during the lecture.
-- Exercise sessions will be posted as regular videos. 
-  - Use the comments to ask your questions.
-
-.center.width-60[![](figures/course-syllabus/youtube.png)]
-
----
-
-class: middle
-
-## Slides
 
 The schedule and slides are available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
 - In HTML and in PDFs.
@@ -73,6 +56,16 @@ The schedule and slides are available at [github.com/glouppe/info8006-introducti
 - Minor improvements/fixes from previous years.
 
 .center.width-80[![](figures/course-syllabus/slides.png)]
+
+---
+
+class: middle
+
+## Videos
+
+Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD).
+
+.center.width-60[![](figures/course-syllabus/youtube.png)]
 
 ---
 
@@ -129,9 +122,9 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 - Written exam (60%)
     - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
-    - Project 1: 10%
-    - Project 2: 15%
-    - Project 3: 15%
+    - Project 0: 0%
+    - Project 1: 20%
+    - Project 2: 20%
     - Programming projects are **mandatory** for presenting the exam.
 
 ---

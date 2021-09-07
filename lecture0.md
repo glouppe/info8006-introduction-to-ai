@@ -11,12 +11,16 @@ Prof. Gilles Louppe<br>
 ???
 
 R: codex copilot
+R: tesla bot https://www.youtube.com/watch?v=j0z4FweCy4M&t=7725s
+https://t.co/EMMKOO5FbK?amp=1
 
 R: https://www.youtube.com/watch?v=AmjAOiDtzZI
 
 R: https://hai.stanford.edu/sites/default/files/2020-09/AI-Definitions-HAI.pdf
 
 R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-perseverance-mars-rover-takes-the-wheel
+
+
 
 ---
 

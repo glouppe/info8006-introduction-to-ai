@@ -17,14 +17,14 @@ body {
 
 .remark-slide-content {
     font-size: 1.4em;
-    border-top: solid 5px #00707f;
+
 }
 
 .remark-slide-content h1 {
     font-weight: bold;
     font-size: 2.25em;
     margin: 0 0 .5em 0;
-    color: #17525d;
+    color: #235699;
 }
 
 .remark-slide-content h2 {
@@ -105,11 +105,11 @@ strong {
 }
 
 .smaller-xxx {
-    font-size: 0.5em;
+    font-size: 0.4em;
 }
 
 .katex {
-    color: #1a7082;
+    color: #356aaf;
 }
 
 .black-slide .katex, .black-slide h1 {
@@ -229,7 +229,7 @@ td {
     display: block;
 }
 
-.question {
+.question, .success {
     background-color: rgba(40,167,69,0.25);
     border: 2px solid rgb(40,167,69);
     border-radius: 5px;
@@ -331,6 +331,10 @@ td {
 
 .width-90 * {
     width: 90%;
+}
+
+.width-93 * {
+    width: 93.7%;
 }
 
 .width-95 * {
@@ -441,7 +445,7 @@ td {
 }
 
 .end-slide {
-    background-color: #00707f;
+    background-color: #1452a3;
     color: white;
     vertical-align: middle;
 }

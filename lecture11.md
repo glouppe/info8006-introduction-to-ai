@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-who-like-ai/
+R: jurgen https://www.youtube.com/watch?v=j7DqIkHB8Q0&t=5626s
 
 ---
 
