@@ -45,14 +45,14 @@ R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-persev
 - Lecture 7: Learning
 - Lecture 8: Making decisions
 - Lecture 9: Reinforcement learning
-- Lecture 10: Communication 
+- .inactive[Lecture 10: Communication  (optional)]
 - Lecture 11: Artificial General Intelligence and beyond 
 
 ---
 
 class: middle, center
 
-.width-50[![](figures/lec0/map.jpg)]
+.width-50[![](figures/lec0/map.png)]
 
 ---
 
@@ -364,10 +364,9 @@ formally **provable** from inputs and prior knowledge.
 Their study initiated the field of *logic* and the *logicist tradition* of AI
 (1960-1990).
 
-
-
 ---
 
+exclude: true
 class: middle
 
 ## Who owns the zebra?
@@ -397,6 +396,7 @@ class: middle
 
 ---
 
+exclude: true
 class: middle, smaller
 
 ```prolog
@@ -551,7 +551,7 @@ class: middle
 
 ---
 
-# What can AI do at present?
+# What can an AI do today?
 
 - Translate spoken Chinese to spoken English, live?
 - Answer multi choice questions, as good as an 8th grader?
@@ -563,6 +563,7 @@ class: middle
 - Perform a surgery?
 - Identify skin cancer better than a dermatologist?
 - Write a funny story?
+- Write computer code?
 - Paint like Vangogh? Compose music?
 - Show common sense?
 
@@ -602,17 +603,18 @@ Beat the best human Go players (2016)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/eHipy_j29Xw" frameborder="0" allowfullscreen></iframe>
-
-Beat teams of human players at real-time strategy games (Dota 2) (2018)
-
----
-
-class: middle, center, black-slide
-
 <iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
 
 Playing soccer (2018)
+
+---
+
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/tF4DML7FIWk" frameborder="0" allowfullscreen></iframe>
+
+... although some robots might now do better (2021).
 
 ---
 
@@ -648,25 +650,17 @@ class: middle, center, black-slide
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/5kpsZoKjPgQ" frameborder="0" allowfullscreen></iframe>
-
-Object detection, pose estimation, segmentation (2019)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/8BFzu9m52sc" frameborder="0" allowfullscreen></iframe>
-
-Generating image descriptions (2015)
-
----
-
-class: middle, center, black-slide
-
 <iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
 
 Detecting skin cancer (2017)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/Zm9B-DvwOgw" frameborder="0" allowfullscreen></iframe>
+
+Write computer code (OpenAI, 2021)
 
 ---
 

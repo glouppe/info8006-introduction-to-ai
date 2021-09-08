@@ -43,6 +43,7 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 <br>
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
+.circle.width-20[![](figures/course-syllabus/frozet.jpeg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/arnaud.jpg)] 
 ]
 
@@ -79,7 +80,7 @@ The core content of this course is based on the following textbook:
 
 > .italic[Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.]
 
-This textbook is **recommended**, although not required.
+This textbook is **recommended**. It covers both the theory and the exercises.
 
 ---
 
