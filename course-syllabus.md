@@ -44,7 +44,8 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/frozet.jpeg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/arnaud.jpg)] 
+.circle.width-20[![](figures/course-syllabus/arnaud.jpg)] &nbsp;
+.circle.width-20[![](figures/course-syllabus/gaspard.jpg)] 
 ]
 
 ---
