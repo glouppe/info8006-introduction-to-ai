@@ -8,6 +8,11 @@ Lecture 4: Representing uncertain knowledge
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: prepare one code example
+R: prepare handwritten developments
+
 ---
 
 class: middle, center

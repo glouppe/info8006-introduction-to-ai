@@ -10,7 +10,9 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: give some more applications
+R: give some more applications -> perseverance?
+R: prepare one code example
+R: prepare handwritten developments
 
 ---
 

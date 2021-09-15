@@ -8,16 +8,11 @@ Fall 2021
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: prepare more code examples (one per course)
-R: prepare handwritten developments
-
 ---
 
 # Goals and philosophy
 
-## Thorough and detailed
+## General 
 - Understand the landscape of artificial intelligence.
 - Be able to write from scratch, debug and run (some) AI algorithms.
 
@@ -54,8 +49,7 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 
 The schedule and slides are available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
 - In HTML and in PDFs.
-- Posted/updated online the day before the lesson (hopefully).
-- Minor improvements/fixes from previous years.
+- Minor updates up to the day before the lesson.
 
 .center.width-80[![](figures/course-syllabus/slides.png)]
 
@@ -89,12 +83,11 @@ class: middle
 
 ## CS188
 
-- Some lessons and materials are partially adapted from "[CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/fa20/)", from UC Berkeley.
+- Some lessons, exercises, and various other materials are partially adapted from [CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/su21/), from UC Berkeley. 
 - Cartoons that you will see in those slides were all originally made for CS188. 
 
 <br>
 .center.width-50[![](figures/course-syllabus/cs188.png)]
-
 
 ---
 

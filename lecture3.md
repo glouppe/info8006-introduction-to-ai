@@ -8,6 +8,11 @@ Lecture 3: Games and Adversarial search
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: prepare one code example
+R: prepare handwritten developments
+
 ---
 
 class: center, black-slide, middle

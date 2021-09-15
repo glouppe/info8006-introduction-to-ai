@@ -12,6 +12,8 @@ Prof. Gilles Louppe<br>
 
 R: develop linear regression / OLS  further ---> up to the analytical solution
 R: NN Tesla HydraNet
+R: prepare one code example
+R: prepare handwritten developments
 
 ---
 

@@ -8,6 +8,11 @@ Lecture 8: Making decisions
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: prepare one code example
+R: prepare handwritten developments
+
 ---
 
 # Today

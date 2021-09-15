@@ -8,20 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: codex copilot
-R: tesla bot https://www.youtube.com/watch?v=j0z4FweCy4M&t=7725s
-https://t.co/EMMKOO5FbK?amp=1
-
-R: https://www.youtube.com/watch?v=AmjAOiDtzZI
-
-R: https://hai.stanford.edu/sites/default/files/2020-09/AI-Definitions-HAI.pdf
-
-R: NASA Perseverance https://www.nasa.gov/feature/jpl/nasa-s-self-driving-perseverance-mars-rover-takes-the-wheel
-
-
-
 ---
 
 # Today
@@ -78,7 +64,7 @@ This course is designed as an introduction to the many other courses available a
 - INFO8010: Deep Learning
 - INFO8003: Optimal decision making for complex problems
 - INFO0948: Introduction to Intelligent Robotics
-- INFO0049: Knowledge representation
+- INFO9014: Knowledge representation and reasoning
 - ELEN0016: Computer vision
 - ELEN0060: Information and coding theory
 - MATH2022: Large-sample analysis: theory and practice
@@ -477,6 +463,10 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Underline the importance of *expected*.
+
 ---
 
 # AI prehistory
@@ -531,10 +521,10 @@ class: middle, center, black-slide
 class: middle
 
 ## 1970-1990: Knowledge-based approaches
-- 1969: Neural network research almost disappears after Minsky and Papert's book.
+- 1969: Neural network research almost disappears after Minsky and Papert's book (1st AI winter).
 - 1969-1979: Early development of knowledge-based systems.
 - 1980-1988: Expert systems industrial boom.
-- 1988-1993: Expert systems industry busts  (AI winter).
+- 1988-1993: Expert systems industry busts  (2nd AI winter).
 
 ---
 
@@ -645,6 +635,14 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/RCahWWOSxaw" frameborder="0" allowfullscreen></iframe>
 
 ... and preventing accidents.
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/8USTGyUhnJk" frameborder="0" allowfullscreen></iframe>
+
+Driving on Mars.
 
 ---
 
