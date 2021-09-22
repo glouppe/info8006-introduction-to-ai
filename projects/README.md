@@ -216,10 +216,10 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The purpose of the projects is to give you an opportunity to have a practical approach of the core concepts of the course. However, you might be stuck during your work progression. Although we are glad to help you to figure out how to solve your various issues, the relevance of our guidance strongly relies on the specificity of your questions, which implies that you have at least tried to solve your issues by referring to the lectures.
 
-You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us on collaborate (ecampus) with the following schedule:
+You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office with the following schedule:
 
- - Monday: 12PM - 2PM
- - Wednesday: 2PM - 4PM
+ - Monday: 12PM - 2PM (Arnaud Delaunoy, R 103)
+ - Wednesday: 12PM - 2PM (Gaspard Lambrechts, 1 106)
  
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can of course be outside the duty periods mentioned above.   
 
