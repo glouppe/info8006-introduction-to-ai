@@ -18,7 +18,7 @@ R: prepare handwritten developments
 
 class: middle, center
 
-.width-50[![](figures/lec2/outline.jpg)]
+.width-50[![](figures/lec0/map.png)]
 
 ---
 
@@ -324,7 +324,7 @@ class: middle
 
 ???
 
-Number of nodes in a tree = $\frac{b^{m+1}-1}{m-1}$
+Number of nodes in a tree = $\frac{b^{m+1}-1}{b-1}$
 
 ---
 
@@ -411,7 +411,20 @@ class: middle
 
 class: middle, center
 
-Demo comparing DFS against BFS.
+(demo)
+
+???
+
+```
+python run.py --agentfile dfs.py --show 1 --layout small
+python run.py --agentfile bfs.py --show 1 --layout small
+
+python run.py --agentfile dfs.py --show 1 --layout medium
+python run.py --agentfile bfs.py --show 1 --layout medium
+
+python run.py --agentfile dfs.py --show 1 --layout large
+python run.py --agentfile bfs.py --show 1 --layout large
+```
 
 ---
 
@@ -434,8 +447,6 @@ Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
 .center.width-80[![](figures/lec2/id-properties.png)]
 ]
 ]
-
-
 
 ---
 
@@ -475,6 +486,19 @@ class: middle
      - The worst-case time complexity is $O(b^{C^\*/\epsilon})$.
 - *Space complexity*:
      - The number of nodes to maintain is the size of the fringe, so as many as in the last tier $O(b^{C^\*/\epsilon})$.
+
+---
+
+class: middle, center
+
+(demo)
+
+???
+
+```
+python run.py --agentfile bfs.py --show 1 --layout medium
+python run.py --agentfile ucs.py --show 1 --layout medium
+```
 
 ---
 
@@ -718,6 +742,20 @@ A*
 ???
 
 A\* finds the shortest path.
+
+---
+
+class: middle, center
+
+(demo)
+
+???
+
+```
+python run.py --agentfile astar0.py --layout large --show 1
+python run.py --agentfile astar1.py --layout large --show 1
+python run.py --agentfile astar2.py --layout large --show 1
+```
 
 ---
 
