@@ -8,12 +8,6 @@ Lecture 2: Solving problems by searching
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 class: middle, center
