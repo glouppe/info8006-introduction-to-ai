@@ -39,19 +39,19 @@ Once Miniconda is installed, open the Anaconda prompt (Windows) or a terminal (L
 
 (Linux) Create a `pacman` environment and activate it:
 ```bash
-conda create --name pacman python=3.6
+conda create --name pacman python=3.9
 conda activate pacman
 ```
 
 (MacOS) Create a `pacman` environment and activate it:
 ```bash
-conda create --name pacman python=3.6.6
+conda create --name pacman python=3.9.7
 conda activate pacman
 ```
 
 (Windows) Create a `pacman` environment and activate it:
 ```bash
-conda create --name pacman python=3.6
+conda create --name pacman python=3.9
 conda activate pacman
 ```
 
