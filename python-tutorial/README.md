@@ -149,16 +149,16 @@ D:\>
 In the following, the commands are the same either you are working on Anaconda prompt or a UNIX terminal.
 
 #### Creating a Conda Environment
-The command for creating a conda environment with Python 3.6 is:
+The command for creating a conda environment with Python 3.9 is:
 
 ```console
-conda create --name <env-name> python=3.6
+conda create --name <env-name> python=3.9
 ```
 
 We name our environment info8006 with the following command.
 
 ```console
-username@computername:python_basics$ conda create --name info8006 python=3.6
+username@computername:python_basics$ conda create --name info8006 python=3.9
 ```
 
 Enter y to confirm the installation of any missing packages.
@@ -170,7 +170,7 @@ Note that the Python version within the environment is 3.6, just what we want.
 ```console
 username@computername:python_basics$ conda activate info8006
 (info8006) username@computername:python_basics$ python -V
-Python 3.6.9 :: Anaconda, Inc.
+Python 3.9.7 :: Anaconda, Inc.
 ```
 
 Note: the tag (<env-name>) shows you the name of the conda environment that is active. In our case, we have (info8006), as what we’d expect.
@@ -205,7 +205,7 @@ You invoke the interpreter using the command `python` at the command prompt.
 
 ```console
 (info8006) username@computername:python_basics$ python
-Python 3.6.9 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
+Python 3.9.7 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
