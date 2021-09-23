@@ -165,7 +165,7 @@ Enter y to confirm the installation of any missing packages.
 
 #### Entering the Environment
 We do the following to enter the conda environment that we just created and to check the python version.
-Note that the Python version within the environment is 3.6, just what we want.
+Note that the Python version within the environment is 3.9, just what we want.
 
 ```console
 username@computername:python_basics$ conda activate info8006
