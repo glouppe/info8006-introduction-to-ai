@@ -1,6 +1,6 @@
 # Python tutorial
 
-Programming projects will be done in Python 3.6.
+Programming projects will be done in Python 3.9.
 In this tutorial, you will install Python and learn its basics.
 
 Credits: This tutorial is strongly based on [CS188 project 0](https://inst.eecs.berkeley.edu/~cs188/su19/project0/) from UC Berkeley.
