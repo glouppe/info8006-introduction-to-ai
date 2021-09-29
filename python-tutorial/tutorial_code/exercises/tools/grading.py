@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -15,7 +15,7 @@
 "Common code for autograders"
 
 from __future__ import print_function
-import cgi
+import html
 import time
 import json
 import traceback
@@ -144,7 +144,7 @@ to follow your instructor's guidelines to receive credit on your project.
     def addExceptionMessage(self, q, inst, traceback):
         """
         Method to format the exception message, this is more complicated because
-        we need to cgi.escape the traceback but wrap the exception in a <pre> tag
+        we need to html.escape the traceback but wrap the exception in a <pre> tag
         """
         self.fail('FAIL: Exception raised: %s' % inst)
         self.addMessage('')
@@ -291,7 +291,7 @@ to follow your instructor's guidelines to receive credit on your project.
             if self.mute: util.unmutePrint()
             print('*** ' + message)
             if self.mute: util.mutePrint()
-            message = cgi.escape(message)
+            message = html.escape(message)
         self.messages[self.currentQuestion].append(message)
 
     def addMessageToEmail(self, message):

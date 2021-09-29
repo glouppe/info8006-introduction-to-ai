@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -14,7 +14,7 @@
 
 # imports from python standard library
 from __future__ import print_function
-import imp
+import importlib
 import optparse
 import os
 import re
@@ -22,7 +22,7 @@ import sys
 from tools import projectParams, testClasses, grading, testParser, textDisplay
 import random
 random.seed(0)
-try: 
+try:
     from pacman import GameState
 except:
     pass
@@ -132,8 +132,11 @@ def loadModuleString(moduleSource):
 
 
 def loadModuleFile(moduleName, filePath):
-    with open(filePath, 'r') as f:
-        return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
+    directory, filename = os.path.split(filePath)
+    package = directory.replace('/', '.')
+    if package == '':
+        return importlib.import_module(moduleName)
+    return importlib.import_module(package + '.' + moduleName, package)
 
 
 def readFile(path, root=""):
