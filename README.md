@@ -10,8 +10,6 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 ## Agenda
 
-Disclaimer: Do not download or print everything just yet. Materials will be updated.
-
 | Date | Topic |
 | --- | --- |
 | September 16 | [Course syllabus](https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf)] [[video](https://www.youtube.com/watch?v=XOjc3OtJA4U)]<br>Lecture 0: [Introduction to artificial intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf)] [[video](https://www.youtube.com/watch?v=G6YrPwF-to8)]<br>Lecture 1: [Intelligent agents](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)] [[video](https://www.youtube.com/watch?v=WYxZiGIZXSs)]|

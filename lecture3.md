@@ -8,11 +8,6 @@ Lecture 3: Games and Adversarial search
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 class: center, black-slide, middle
@@ -195,7 +190,7 @@ class: middle
     - What if MIN is suboptimal?
         - Show that MAX will do even better.
     - What if MIN is suboptimal and predictable?
-        - Other strategies might do better than Minimax. However they will do worse on an optimal opponent.
+        - Other strategies might do better than Minimax. However they may do worse on an optimal opponent.
 
 ---
 
@@ -309,9 +304,7 @@ Finding the exact solution is completely **infeasible**.
 - Repeated states occur frequently because of **transpositions**: different permutations of the move sequence end in a same position.
 - Similar to the `closed` set in Graph-Search, it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
 
-
 .exercise[What data structure should be used to efficiently store and look-up values of positions?]
-
 
 ---
 
@@ -362,7 +355,6 @@ class: middle
 - Cutoff should only be applied to positions that are **quiescent**.
     - i.e., states that are unlikely to exhibit wild swings in value in the near future.
 
-
 ---
 
 # The horizon effect
@@ -383,6 +375,13 @@ class: middle, black-slide
 .caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+```
+python run.py --agentfile hminimax.py  --pdepth 2 --nghosts 2
+python run.py --agentfile hminimax.py  --pdepth 10 --nghosts 2
+```
 
 ---
 
@@ -646,11 +645,10 @@ class: middle, black-slide
 .center[
 <video controls preload="auto" height="400" width="300">
   <source src="figures/lec3/expectimax-vs-adversarial.mp4" type="video/mp4">
-</video>]
+</video>
 
 Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
 ]
-
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
