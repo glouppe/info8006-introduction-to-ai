@@ -12,139 +12,137 @@
 ## Deliverables
 
 You are requested to deliver a *tar.gz* archive containing:
- - Your report named `report.pdf`.
-	 - Your report must be at most 5 pages long.
-	 - Fill in the following [template](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/project1/template-project1.tex) to write your report.
- - Your `astar.py` file containing your implementation of A\* algorithm.
-	 - Put the class template defined in `pacmanagent.py` into `astar.py` and fill in the `get_action` function.
- - Your `bfs.py` file containing your implementation of BFS algorithm.
-	 - Put the class template defined in `pacmanagent.py` into `bfs.py` and fill in the `get_action` function.
-	 - Your implementation of BFS should only differ from A\* by its cost function and heuristic.
+ 1. Your report named `report.pdf`.
+     - Your report must be at most **5** pages long.
+     - Fill in the following [template](./template-project1.tex) to write your report.
+     - In French or English.
+     
+ 2. Your `minimax.py` file that implements the Minimax algorithm.
 
-:warning: A penalty of **-2 points** on the final grade will be applied if files are not named based on the instructions above.
+ 3. Your `hminimax0.py` file that implements the H-Minimax algorithm with your best cut-off/heuristic functions pair.
+
+ 4. Your `hminimax1.py` file that implements the H-Minimax algorithm with your second best cut-off/heuristic functions pair.
+
+ 5. Your `hminimax2.py` file that implements the H-Minimax algorithm with your third best cut-off/heuristic functions pair.
+
+  Put the template defined in `pacmanagent.py` into each of the `*.py` files and fill in the `get_action` function differently for each file.
+
+:warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
 
 ## Instructions
 
-This part is due by **October 11, 2020 at 23:59**. This is a **hard** deadline.
+This part is due by **October 28, 2021 at 23:59**. This is a **hard** deadline.
 
-You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project1.tar.gz)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
-Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for maximizing the score.
+In [project 0](../project0), Pacman could wander peacefully in its maze. In this *project 1*, he needs to avoid a walking ghost that would kill it if it reached his position. And Pacman has not idea of (i) what is the objective of the ghost (whether the ghost wants to kill him or not) and (ii) if it is playing optimally for achieving its goal. Pacman only knows that the ghost cannot make a half-turn unless it has no other choice.
 
-To help you, the implementation of Depth-First Search (DFS) is available in the corresponding Python file `dfs.py`. We warn you that one of the TAs have coded this just after having a hard night trying to submit a journal paper a minute before the deadline. We have fixed most of the bugs but we might have left one of them. Once you have fixed the implementation and activated your Pacman environment (see our [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial#creating-a-conda-environment)), you can test DFS algorithm using the following commands:
-```bash
-python run.py --agentfile dfs.py --layout medium
+The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
+ - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
+ - `greedy`: Select the next position that is the closest to Pacman.
+ - `smarty`: Select the next position which leads to the shortest path towards Pacman.
+
+:warning: But as specified above, Pacman is not aware of the policy that the ghost follows.
+
+Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 3](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md)) for maximizing the score. In this project, we will not consider layouts with capsules, but you may take them into account if you feel motivated. You can start by downloading the [archive](../project1.tar.gz) of the project. In order to run you code, you can use the following command (replacing `humanagent.py` by `minimax.py` for example):
+
 ```
-When you want to test one of your implementation, just replace the script parameter `dfs.py` by the name of the file of the agent you want to test. Refer to the [usage section](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#usage) for more details about the game parameters.
+python3 run.py --agentfile humanagent.py --ghost dumby --layout small_adv
+```
 
-Reminder: it is mandatory to use only the [API](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects#api) to retrieve game information.
+You are asked to answer the following questions.
 
-You are asked to answer the following questions:
- 1. **Problem statement**
-	 - 1.a. - **5 points** - Formalize the game as a **search problem**, i.e. in terms of:
+ 1. **Problem Statement -- 4.5 points**
+    
+     - 1.a. - **4 points** - Formalize the game as an **adversarial search problem** by proposing a definition of the following elements **for this particular problem**:
+       
+        - The *set of states* of this game
+            - You must specify the initial state
+        - The function `player(s)` that defines which player has the move (1 for Pacman, 0 for Ghost) in state `s`
+        - The function `action(s)` that defines the legal actions available in state `s`
+        - The transition model that returns the state `s' = result(s, a)` that results from taking action `a` in state `s`
+        - The terminal test `terminal(s)` that determines whether state `s` is terminal (1 for terminal, 0 for non terminal)
+        - The utility function `utility(s, p)` that defines the final numerical value for a game that ends in state `s` for player `p`.
+            - You should define it for player `p = Pacman` only
+            - Remember for game one that the game score function is defined as:
+            ```
+            score = -#time steps + 10*#number of eaten food dots - 5*#number of eaten capsules + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)
+            ```
 
-		 - **1 point** - Set of possible states
-			 - You should specify the initial state.
-		 - **1 point** - Set of legal actions
-		 - **1 point** - Transition model
-		 - **1 point** - Goal test
-		 - **1 point** - Step cost
-			 - Must be > 0
-			 - Must be derived from the game score function:  <br/>	`score = -#time steps + 10*#number of eaten food dots - 5*#number of eaten capsules + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)`
+        Any **reference to the API** in any component of the problem statement will be considered as **false** (i.e. you can not use function or variables defined in the code in your formalization).
 
-		Any **reference to the API** in any component of the problem statement will be considered as **wrong**.
- 2.  **Implementation**
-	  - 2.a. - **0.5 point** - Identify the implementation error in `dfs.py`. Explain its impact and how to fix it. Do not submit the fixed version of DFS.
-	  - 2.b. - **3.5 points** - Implement the A\* algorithm with **your own cost function** *g(n)*  and an **admissible heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `astar.py`, following the template of `pacmanagent.py`.
+     - 1.b. - **0.5 points** - How would you define `utility(s, p)` for `p = Ghost`, if the game was a zero-sum game.
 
-		 - You must have *g(n)* different from *depth(n)* where *depth(n)* is the depth of node *n* in the search tree.
-		 - You must have *h(n)* different from 0 for all *n*.
-		 - You must prevent cycles. A cycle occurs when the same state occurs twice in a given path.
-		 - You may want to have a look at the file `/pacman_module/util.py` in order find a suitable data structure for the exploration of the game tree.
+ 2. **Implementation -- 9 points**
 
-	  - 2.c. - **1.0 point** - Define and describe formally your cost function *g(n)* and your heuristic *h(n)*. Explain whether your heuristic *h(n)* guarantees the optimality of your A\* implementation.
-	  - 2.d - **0.5 point** - Explain how your choice of *g(n)* preserves the completeness and optimality - with respect to the original score function - of A\* when *h(n)* = 0 for all *n*.
-	  - 2.e. - **1.5 points** - Implement Breadth-First Search (BFS) by adapting your A\* implementation using **appropriate cost function** *g(n)*  and **heuristic** *h(n)*. The algorithm should be implemented inside the `get_action` function of the corresponding Python file `bfs.py`, following the template of `pacmanagent.py`. <br/> If your implementation of BFS only differs from A* by *g(n)* and *h(n)* and if there are errors in the implementation of A\*, these will not be penalised for this question.
-	  - 2.f. - **0.5 point** - Justify briefly the choice of *g(n)* and *h(n)* for your BFS implementation.
- 3. **Experiment 1**
-	 - 3.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)* and  A\* with your own *g(n)* and *h(n) = 0* for all *n* against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as bar plots in terms of:
+     - 2.a. - **1 point** - Consider the direct application of Minimax with respect to the problem statement, by assuming that the game is a zero-sum game.
 
-		 - Score
-		 - Number of expanded nodes
+        - Discuss its completeness with respect to the game of Pacman.
 
-	- 3.b. - **0.5 point** - Describe the differences between the results, in terms of score and number of expanded nodes, of the two versions of A\*.
-	- 3.c. - **0.5 point** - Refer to the course in order to justify these differences.
-	- 3.d. - **0.5 point** - Which algorithm corresponds to A\* with *h(n) = 0* for all *n* ?
- 4. **Experiment 2**
-	 - 4.a. - **0.5 point** - Run A\* with your own *g(n)* and *h(n)*, DFS and your implementation of BFS against the medium maze layout `/pacman_module/layouts/medium.lay`. Report the results as bar plots in terms of:
+        - From the point of view of Pacman, by looking at the utility function, is there an advantage in going through a cycle (i.e., going back to an already visited state `s`)?
 
-		 - Score
-		 - Number of expanded nodes
+        - In view of that, discuss how you could guarantee the completeness of Minimax by adapting the components described in the problem statement, while keeping the same set of optimal strategies.
+        
+     - 2.b. - **4 points** - Implement the **Minimax** algorithm as specified in section [Deliverables](#deliverables) in `minimax.py`.
+       
+         - You must **guarantee the completeness** of the algorithm.
 
-	  - 4.b. - **0.5 point** - Describe the differences between the results, in terms of score and number of expanded nodes, of:
+         - Your Minimax agent needs to **provide an optimal strategy in the smaller map** `./pacman_module/layouts/small_adv.lay` against all kinds of ghosts.
 
-		  - A\* and DFS
-		  - A\* and BFS
+         - In your report, just refer your code.
+         
+     - 2.c. - **4 points** - Implement the **H-Minimax** algorithm with your own **cutoff-tests** and **evaluation functions** in `hminimax0.py`, `hminimax1.py` and `hminimax2.py`. You are expected to provide **3 cutoff-test/evaluation function pairs**, with **at least two different evaluation functions**. At most two of them might fail against some ghosts/layouts as long as the heuristics do still make sense. We expect you to design winning heuristics while being able to provide possible explanations on failing heuristics.
+       
+         - Each proposed evaluation function needs to differ from the game score function.
+         
+         - Your evaluation functions need to be **fast** to compute and **generalizable**.
+         
+         - Evaluation functions can be built by weighting the different characteristics of the game state, but this is not a constraint.
+         
+         - Your different evaluation/cut-off functions must be significantly different (changing the value of a parameter is not sufficient)
+         
+         - In your report, refer your codes and the describe formally your different cutoff-tests and evaluation functions.
+         
+           N.B.: Although 3 layouts are provided for this project, you remain free to build your own layouts in order to fit the most general cutoff-test/evaluation function pair as possible. If you do so, discuss it briefly in your report.
+     
+ 3. **Experiment -- 4 points**
 
-	  - 4.c. - **0.5 point** - Refer to the course in order to justify these differences.
+    - 3.a. - **2 points** - Run your H-Minimax agent against `./pacman_module/layouts/large_adv.lay` layout and all ghosts, using your 3 cutoff-test/evaluation function pairs. Report your 9 results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes.      
+
+        - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining bars whenever possible
+
+        - Pay attention to the clarity of your plots (e.g. by labelling the axes, adding a legend, and puting a caption in your LaTeX report).
+
+    - 3.b. - **2 points** - **Summarize** the results of your cutoff-test/evaluation function pairs, according to the type of ghosts. **Explain** these results, notably by referring to the course.
+    
+    NB: there are additional evaluation criteria that you can find in section [Evaluation](#evaluation).
 
 ---
 
 ## Evaluation
 
-In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code and report.
-
-For each **implementation question** (2.b, 2.e), provide simply references to your code and to your heurisitic and cost functions in your report. The evaluation of your code will be performed as follows:
- - 100% points: correct implementation of the algorithm and its components.
- - 75% points: correct implementation w.r.t. the pseudo-code but errors related to the search problem (A\* and BFS) and to the heuristic (A\*).
- - no point: implementation error of any component of the algorithm.
-
-For each **discussion question** (2.a, 2.c, 2.d, 2.f, 3.b, 3.c, 3.d, 4.b, 4.c), the evaluation will be performed as follows:
- - 100% points: complete answer.
- - 50% points: some relevant elements but incomplete and/or incorrect answer.
- - no point: no relevant element or no answer.
-
-Note that any unjustified answer will be considered as incomplete.
-
-Questions implying the inclusion of **plots** (3.a, 4.a) in the report will be evaluated considering the following criteria:
-
- - Presence: your resulting grade will be half the ratio between the provided and expected number of relevant bars.
- - Readability: Each bar that is not clearly readable/identifiable will be considered as not provided.
- - Scale: All the bars on each plot that is not correctly scaled will be considered as not provided.
-
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
-
- - **Code performances** - **2 points** - Your implementation will be tested on the submission platform machines. In order not to get too long executions of the test scripts on the submission platform, your implementation is expected to run in less than 15 seconds. This upper bound should only penalize very poorly optimized code.
-
-	 - 2 points: fast enough (<=15 seconds).
-	 - 0 point: too slow (>15 seconds).
+ - **Code performance** - **2 points** - Your code will be tested on the submission platform machines. After each submission, you will receive a feedback which will contain information about the accuracy of your results and the time performances of your code.  
+     - 2 points: <= 30 seconds
+     - 0 point: > 30 seconds
 
  - **Code style** - **2 points**
-	 - **PEP8 compatibility** - **0.8 point** - [General information](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects#Code) - A script will be executed to check the compatibility of your code.
-		 - 0.8 point : the script runs without error.
-		 - 0 point: any error during the execution of the script.
-	 - **Specification** - **1.2 point** - correctness of the specification of your functions.
-		- 1.2 point : all specifications are correct.
-		- 0.9 point : at least 75% correct specifications.
-		- 0.6 point : at least 50% correct specifications.
-		- 0.3 point : at least 25% correct specifications.
-		- 0 point : less than 25% correct specifications.
-
-
-Take care of providing a clearly structured and commented source code. We reserve the right to refuse to evaluate a source code (i.e. to consider it entirely wrong), which would be difficult to read and understand despite its possible correctness.
-
-In the same way, take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which would be difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right.
-
-We have written a [Typical mistakes and bad practices](https://github.com/glouppe/info8006-introduction-to-ai/blob/master/projects/README.md#typical-mistakes-and-bad-practices) section to help you to provide a working source code of good quality.
-
-Sanctions will be imposed in case of non-respect of the guidelines about the structure and length of the report:
-
- - Any modification of the template: **-2 points**
- - Only the first 5 pages of the report will be taken into account for the evaluation.
-
+     - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). A script will be executed to check the compatibility of your code.
+         - 0.8 point : the script runs without error.
+         - 0 point: any error during the execution of the script.
+     - **Specification** - **1.2 point** - correctness of the specification of your functions.
+        - 1.2 point : all specifications are correct.
+        - 0.9 point : at least 75% correct specifications.
+        - 0.6 point : at least 50% correct specifications.
+        - 0.3 point : at least 25% correct specifications.
+        - 0 point : less than 25% correct specifications.
 
 Note that your implementation might be tested on other layouts.
+
+:warning: Take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which would be difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right. Sanctions will be imposed in case of non-respect of the guidelines about the structure and length of the report:
+
+ - Any modification of the template: **- 2 points**
+ - Only the first 5 pages of the report will be taken into account for the evaluation.
 
 :warning: Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.
 

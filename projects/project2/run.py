@@ -1,48 +1,32 @@
-import importlib
+import imp
 import os
 from argparse import ArgumentParser, ArgumentTypeError
-
+import random
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import\
-    GreedyGhost, SmartyGhost, DumbyGhost, EastRandyGhost
+    ConfusedGhost, AfraidGhost, ScaredGhost
+import numpy as np
 
 
-def restricted_float(x):
+def proba_float(x):
     x = float(x)
-    if x < 0.1 or x > 1.0:
-        raise ArgumentTypeError("%r not in range [0.1, 1.0]" % (x,))
+    if x < 0 or x > 1:
+        raise ArgumentTypeError("%r is not between 0 and 1" % (x,))
     return x
 
 
-def positive_integer(x):
+def strictly_positive_integer(x):
     x = int(x)
-    if x < 0:
-        raise ArgumentTypeError("%r is not >= 0" % (x,))
+    if x <= 0:
+        raise ArgumentTypeError("%r is not > 0" % (x,))
     return x
 
 
-def layout_thin_borders(layout, thickness):
-    if thickness <= 1:
-        return layout
-    w = thickness-1
-    lay = layout.replace(".lay", "")
-    with open("pacman_module/layouts/" + lay + ".lay") as f:
-        list_lines = f.readlines()
-    for _ in range(w * 2):
-        list_lines[0] = '%' + list_lines[0]
-        list_lines[-1] = '%' + list_lines[-1]
-    for _ in range(w):
-        list_lines.insert(0, list_lines[0])
-        list_lines.append(list_lines[0])
-    for i in range(w+1, len(list_lines) - w-1):
-        list_lines[i] = list_lines[i].replace("\n", "")
-        for _ in range(w):
-            list_lines[i] += '%'
-            list_lines[i] = '%' + list_lines[i]
-        list_lines[i] += "\n"
-    with open("pacman_module/layouts/" + lay + "_thicker.lay", "w+") as f:
-        f.writelines(list_lines)
-    return lay + "_thicker.lay"
+def strictly_positive_float(x):
+    x = float(x)
+    if x <= 0:
+        raise ArgumentTypeError("%r is not > 0" % (x,))
+    return x
 
 
 def load_agent_from_file(filepath, class_module):
@@ -50,7 +34,11 @@ def load_agent_from_file(filepath, class_module):
     expected_class = class_module
     mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
 
-    py_mod = importlib.import_module(mod_name)
+    if file_ext.lower() == '.py':
+        py_mod = imp.load_source(mod_name, filepath)
+
+    elif file_ext.lower() == '.pyc':
+        py_mod = imp.load_compiled(mod_name, filepath)
 
     if hasattr(py_mod, expected_class):
         class_mod = getattr(py_mod, expected_class)
@@ -59,10 +47,9 @@ def load_agent_from_file(filepath, class_module):
 
 
 ghosts = {}
-ghosts["greedy"] = GreedyGhost
-ghosts["smarty"] = SmartyGhost
-ghosts["dumby"] = DumbyGhost
-ghosts["rightrandy"] = EastRandyGhost
+ghosts["confused"] = ConfusedGhost
+ghosts["afraid"] = AfraidGhost
+ghosts["scared"] = ScaredGhost
 
 if __name__ == '__main__':
     usage = """
@@ -77,7 +64,7 @@ if __name__ == '__main__':
         '--seed',
         help='Seed for random number generator',
         type=int,
-        default=1)
+        default=-1)
     parser.add_argument(
         '--agentfile',
         help='Python file containing a `PacmanAgent` class.',
@@ -85,38 +72,50 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ghostagent',
         help='Ghost agent available in the `ghostAgents` module.',
-        choices=["dumby", "greedy", "smarty", "rightrandy"], default="greedy")
+        choices=["confused", "afraid", "scared"], default="confused")
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
-        default="small_adv")
+        default="large_filter")
     parser.add_argument(
         '--nghosts',
         help='Maximum number of ghosts in a maze.',
         type=int, default=1)
     parser.add_argument(
-        '--hiddenghosts',
-        help='Whether the ghost is graphically hidden or not.',
-        default=False, action="store_true")
-    parser.add_argument(
         '--silentdisplay',
         help="Disable the graphical display of the game.",
         action="store_true")
+
     # Specific to Project III
     parser.add_argument(
         '--bsagentfile',
         help='Python file containing a `BeliefStateAgent` class.',
         default=None)
     parser.add_argument(
-        '--w',
-        help='Parameter w as specified in instructions for Project Part 3.',
-        type=int, default=1)
+        '--oraclebsagentfile',
+        help='Python file containing a `BeliefStateAgent` class to which bsagentfile will be compared.',
+        default=None)
     parser.add_argument(
-        '--p',
-        help='Parameter p as specified in instructions for Project Part 3.',
-        type=float, default=0.5)
+        '--edibleghosts',
+        help='Whether the ghost can be eaten.',
+        default=True,
+        action="store_true")
+    parser.add_argument(
+        '--hiddenghosts',
+        help='Whether the ghosts are graphically hidden or not.',
+        default=False,
+        action="store_true")
+    parser.add_argument(
+        '--sensorvariance',
+        help='The variance of the sensor estimates.',
+        default=1.0,
+        type=float)
 
     args = parser.parse_args()
+
+    if args.seed >= 0:
+        np.random.seed(args.seed)
+        random.seed(args.seed)
 
     if (args.agentfile == "humanagent.py" and args.silentdisplay):
         print("Human agent cannot play without graphical display")
@@ -129,20 +128,25 @@ if __name__ == '__main__':
         gagts = [gagt(i + 1, args) for i in range(nghosts)]
     else:
         gagts = []
-    layout = layout_thin_borders(args.layout, args.w)
+    layout = args.layout
     bsagt = None
+    oraclebsagt = None
+    startingIndex = 0
     if args.bsagentfile is not None:
         bsagt = load_agent_from_file(
             args.bsagentfile, "BeliefStateAgent")(args)
-
-    total_score, total_computation_time, total_expanded_nodes = runGame(
-        layout, agent, gagts, bsagt, not args.silentdisplay,
-        expout=0, hiddenGhosts=args.hiddenghosts)
+        startingIndex = nghosts+1
+    if args.oraclebsagentfile is not None:
+        oraclebsagt = load_agent_from_file(
+            args.oraclebsagentfile, "BeliefStateAgent")(args)
+    total_score, total_computation_time, _ = runGame(
+        layout, agent, gagts, bsagt, not args.silentdisplay, expout=0,
+        hiddenGhosts=args.hiddenghosts, edibleGhosts=args.edibleghosts,
+        startingIndex=startingIndex, oracleBeliefStateAgent=oraclebsagt)
 
     print("Total score : " + str(total_score))
     print("Total computation time (seconds) : " + str(total_computation_time))
-    print("Total expanded nodes : " + str(total_expanded_nodes))
     f = open("temp", "w+")
-    s, c, e = total_score, total_computation_time, total_expanded_nodes
-    f.write(str(s) + ";" + str(c) + ";" + str(e))
+    s, c = total_score, total_computation_time
+    f.write(str(s) + ";" + str(c))
     f.close()

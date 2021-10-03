@@ -59,6 +59,7 @@ from copy import deepcopy
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
 
+
 class GameState:
     """
     A GameState specifies the full game state, including the food, capsules,
@@ -83,10 +84,11 @@ class GameState:
     # static variable keeps track of number of calls of
     # /!\ XXX: Do NOT modify this variable during get_action call.
     # /!\ Otherwise, your project won't be graded
-    countExpanded=0
+    countExpanded = 0
     maximumExpanded = np.inf
+
     def resetNodeExpansionCounter():
-        GameState.countExpanded=0
+        GameState.countExpanded = 0
 
     def setMaximumExpanded(m):
         GameState.maximumExpanded = m
@@ -139,12 +141,17 @@ class GameState:
 
         # Let agent's logic deal with its action's effects on the board
         if agentIndex == 0:  # Pacman is moving
-            state.data._eaten = [False for i in range(state.getNumAgents())]
+            if "beliefStates" not in dir(state.data):
+                state.data._eaten = [
+                    False for i in range(
+                        state.getNumAgents())]
             PacmanRules.applyAction(state, action)
-        elif state.data.agentStates[agentIndex].agtType > 0:                # A ghost is moving
+        # A ghost is moving
+        elif state.data.agentStates[agentIndex].agtType > 0:
             GhostRules.applyAction(state, action, agentIndex)
         else:
-            state.data.beliefStates = action                                    # Belief state replacement
+            # Belief state replacement
+            state.data.beliefStates = action
 
         # Time passes
         if agentIndex == 0:
@@ -178,9 +185,10 @@ class GameState:
         if (GameState.countExpanded >= GameState.maximumExpanded):
             return None
         GameState.countExpanded += 1
-        return [(self.generateSuccessor(0, action),action) for action in self.getLegalPacmanActions() if action != Directions.STOP]
+        return [(self.generateSuccessor(0, action), action)
+                for action in self.getLegalPacmanActions() if action != Directions.STOP]
 
-    def generateGhostSuccessors(self,index):
+    def generateGhostSuccessors(self, index):
         """
          Returns a list of pairs of successor states and moves given the current state s for the ghost agent (>0).
         """
@@ -189,7 +197,8 @@ class GameState:
             return None
         GameState.countExpanded += 1
 
-        return [(self.generateSuccessor(index, action),action) for action in self.getLegalActions(index) if action != Directions.STOP]
+        return [(self.generateSuccessor(index, action), action)
+                for action in self.getLegalActions(index) if action != Directions.STOP]
 
     def getPacmanState(self):
         """
@@ -204,7 +213,8 @@ class GameState:
         return self.data.agentStates[0].getPosition()
 
     def getGhostStates(self):
-        return list(filter(lambda x : x.agtType == 1,self.data.agentStates[1:]))
+        return list(filter(lambda x: x.agtType ==
+                           1, self.data.agentStates[1:]))
 
     def getGhostState(self, agentIndex):
         if agentIndex == 0 or agentIndex >= self.getNumAgents():
@@ -222,22 +232,28 @@ class GameState:
         return self.data.agentStates[agentIndex].getDirection()
 
     def getGhostPositions(self):
-        return [tuple(map(int,s.getPosition())) for s in self.getGhostStates()]
+        return [tuple(map(int, s.getPosition()))
+                for s in self.getGhostStates()]
 
     def getGhostDirections(self):
-        return [tuple(map(int,s.getDirection())) for s in self.getGhostStates()]
+        return [tuple(map(int, s.getDirection()))
+                for s in self.getGhostStates()]
 
     def getGhostBeliefStates(self):
         return np.copy(self.data.beliefStates)
 
     def getNoisyGhostDistances(self):
         ghosts_pos = self.getGhostPositions()
-        manhattan_distances = [manhattanDistance(self.getPacmanPosition(), x) for x in ghosts_pos]
-        #Returns [x ~ P(lbd)] for lbd in 'manhattan_distances' list
+        manhattan_distances = [
+            manhattanDistance(
+                self.getPacmanPosition(),
+                x) for x in ghosts_pos]
+        # Returns [x ~ P(lbd)] for lbd in 'manhattan_distances' list
         num_ghosts = len(ghosts_pos)
         for i in range(num_ghosts):
-            manhattan_distances[i] = np.random.poisson(lam=manhattan_distances[i])
-        return manhattan_distances 
+            manhattan_distances[i] = np.random.poisson(
+                lam=manhattan_distances[i])
+        return manhattan_distances
 
     def getNumAgents(self):
         return len(self.data.agentStates)
@@ -325,11 +341,22 @@ class GameState:
 
         return str(self.data)
 
-    def initialize(self, layout, numGhostAgents=1000, hiddenGhosts=False,beliefStateAgent=None):
+    def initialize(
+            self,
+            layout,
+            numGhostAgents=1000,
+            hiddenGhosts=False,
+            edibleGhosts=False,
+            beliefStateAgent=None):
         """
         Creates an initial game state from a layout array (see layout.py).
         """
-        self.data.initialize(layout, numGhostAgents, isGhostVisible=not hiddenGhosts, beliefStateAgent=beliefStateAgent)
+        self.data.initialize(
+            layout,
+            numGhostAgents,
+            isGhostVisible=not hiddenGhosts,
+            edibleGhosts=edibleGhosts,
+            beliefStateAgent=beliefStateAgent)
 
 ############################################################################
 #                     THE HIDDEN SECRETS OF PACMAN                         #
@@ -360,12 +387,27 @@ class ClassicGameRules:
             beliefStateAgent,
             display,
             quiet=False,
-            catchExceptions=False, hiddenGhosts=False):
-        
-        agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + ([beliefStateAgent] if beliefStateAgent is not None else []) 
+            catchExceptions=False,
+            hiddenGhosts=False,
+            edibleGhosts=False,
+            startingIndex=0,
+            oracleBeliefStateAgent=None):
+
+        agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + \
+            ([beliefStateAgent] if beliefStateAgent is not None else [])
         initState = GameState()
-        initState.initialize(layout, len(ghostAgents), hiddenGhosts=hiddenGhosts, beliefStateAgent=beliefStateAgent)
-        game = Game(agents, display, self, catchExceptions=catchExceptions)
+        initState.initialize(
+            layout,
+            len(ghostAgents),
+            hiddenGhosts=hiddenGhosts,
+            edibleGhosts=edibleGhosts,
+            beliefStateAgent=beliefStateAgent)
+        game = Game(agents,
+                    display,
+                    self,
+                    startingIndex=startingIndex,
+                    catchExceptions=catchExceptions,
+                    oracleBeliefStateAgent=oracleBeliefStateAgent)
         game.state = initState
         self.initialState = initState.deepCopy()
         self.quiet = quiet
@@ -493,15 +535,18 @@ class GhostRules:
         possibleActions = Actions.getPossibleActions(
             conf, state.data.layout.walls)
         reverse = Actions.reverseDirection(conf.direction)
-        if Directions.STOP in possibleActions:
+        if Directions.STOP in possibleActions and "beliefStates" not in dir(
+                state.data):
             possibleActions.remove(Directions.STOP)
-        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
+        if "beliefStates" not in dir(
+                state.data) and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
-        
+
         return possibleActions
     getLegalActions = staticmethod(getLegalActions)
 
-    def getLegalActionsAtPositionAndDirection(state, ghostIndex, position, direction):
+    def getLegalActionsAtPositionAndDirection(
+            state, ghostIndex, position, direction):
         """
         Ghosts cannot stop, and cannot turn around unless they
         reach a dead end, but can turn 90 degrees at intersections.
@@ -514,11 +559,13 @@ class GhostRules:
         reverse = Actions.reverseDirection(conf.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
-        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
+        if "beliefStates" not in dir(
+                state.data) and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
-        
+
         return possibleActions
-    getLegalActionsAtPositionAndDirection = staticmethod(getLegalActionsAtPositionAndDirection)
+    getLegalActionsAtPositionAndDirection = staticmethod(
+        getLegalActionsAtPositionAndDirection)
 
     def applyAction(state, action, ghostIndex):
 
@@ -528,7 +575,7 @@ class GhostRules:
 
         ghostState = state.data.agentStates[ghostIndex]
         speed = GhostRules.GHOST_SPEED
-        if ghostState.scaredTimer > 0:
+        if ghostState.scaredTimer > 0 and "beliefStates" not in dir(state.data):
             speed /= 2.0
         vector = Actions.directionToVector(action, speed)
         ghostState.configuration = ghostState.configuration.generateSuccessor(
@@ -547,12 +594,12 @@ class GhostRules:
         pacmanPosition = state.getPacmanPosition()
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
             for index in range(1, len(state.data.agentStates)):
-                if state.data.agentStates[index].agtType != -1:            
+                if state.data.agentStates[index].agtType != -1:
                     ghostState = state.data.agentStates[index]
                     ghostPosition = ghostState.configuration.getPosition()
                     if GhostRules.canKill(pacmanPosition, ghostPosition):
                         GhostRules.collide(state, ghostState, index)
-        elif state.data.agentStates[agentIndex].agtType != -1:    
+        elif state.data.agentStates[agentIndex].agtType != -1:
             ghostState = state.data.agentStates[agentIndex]
             ghostPosition = ghostState.configuration.getPosition()
             if GhostRules.canKill(pacmanPosition, ghostPosition):
@@ -562,10 +609,21 @@ class GhostRules:
     def collide(state, ghostState, agentIndex):
         if ghostState.scaredTimer > 0:
             state.data.scoreChange += 200
-            GhostRules.placeGhost(state, ghostState)
-            ghostState.scaredTimer = 0
-            # Added for first-person
+            GhostRules.placeGhost(
+                state,
+                ghostState,
+                agentIndex,
+                delete="beliefStates" in dir(
+                    state.data))
             state.data._eaten[agentIndex] = True
+            if "beliefStates" not in dir(state.data):
+                ghostState.scaredTimer = 0
+            else:
+                if np.all(state.data._eaten[1:]) and not state.data._lose:
+                    state.data.scoreChange += 500
+                    state.data._win = True
+            # Added for first-person
+
         else:
             if not state.data._win:
                 state.data.scoreChange -= 500
@@ -578,8 +636,13 @@ class GhostRules:
             pacmanPosition) <= COLLISION_TOLERANCE
     canKill = staticmethod(canKill)
 
-    def placeGhost(state, ghostState):
-        ghostState.configuration = ghostState.start
+    def placeGhost(state, ghostState, agentIndex, delete=False):
+        if not delete:
+            ghostState.configuration = ghostState.start
+        else:
+            voidConfiguration = deepcopy(ghostState.start)
+            voidConfiguration.pos = (-10, -10)
+            ghostState.configuration = voidConfiguration
     placeGhost = staticmethod(placeGhost)
 
 #############################
@@ -915,7 +978,11 @@ def runGame(
         ghosts,
         beliefstateagent,
         displayGraphics,
-        expout=np.inf,hiddenGhosts=False):
+        expout=np.inf,
+        hiddenGhosts=False,
+        edibleGhosts=False,
+        startingIndex=0,
+        oracleBeliefStateAgent=None):
     display = graphicsDisplay.PacmanGraphics(
         1.0, frameTime=0.1) if displayGraphics else textDisplay.NullGraphics()
     import __main__
@@ -923,5 +990,16 @@ def runGame(
     lay = layout.getLayout(layout_name)
 
     rules = ClassicGameRules(expout)
-    game = rules.newGame(lay, pacman, ghosts, beliefstateagent, display, False, False, hiddenGhosts=hiddenGhosts)
+    game = rules.newGame(
+        lay,
+        pacman,
+        ghosts,
+        beliefstateagent,
+        display,
+        False,
+        False,
+        hiddenGhosts=hiddenGhosts,
+        edibleGhosts=edibleGhosts,
+        startingIndex=startingIndex,
+        oracleBeliefStateAgent=oracleBeliefStateAgent)
     return game.run()

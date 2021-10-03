@@ -24,16 +24,14 @@ class PacmanAgent(Agent):
         self.lastMove = Directions.STOP
         self.keys = []
 
-    def get_action(self, state, belief_state):
+    def get_action(self, state):
         """
-        Given a pacman game state and a belief state,
-                returns a legal move.
+        Given a pacman game state, returns a legal move.
 
         Arguments:
         ----------
         - `state`: the current game state. See FAQ and class
                    `pacman.GameState`.
-        - `belief_state`: a list of probability matrices.
 
         Return:
         -------
