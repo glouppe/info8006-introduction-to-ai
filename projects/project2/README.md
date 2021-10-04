@@ -10,7 +10,7 @@
 
 ---
 
-:warning: **This statement is not up to date, please do not start to work of this project yet.** Project 2 will be announced on October 28, 2021.
+:warning: This statement is not up to date, please **do not start to work of this project yet.** Project 2 will be **announced on October 28, 2021**.
 
 ## Deliverables
 
@@ -29,7 +29,7 @@ You are requested to deliver a *tar.gz* archive containing:
 ---
 ## Instructions
 
-This part is due by **December 13, 2020 at 23:59**. This is a **hard** deadline.
+This part is due by **November 25, 2021 at 23:59**. This is a **hard** deadline.
 
 In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
 
