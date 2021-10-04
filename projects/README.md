@@ -5,9 +5,9 @@
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
-- [**Project I**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project1): you have to implement a Search agent for eating all the food dots as quickly as possible.
-- [**Project II**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
-- [**Project III**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project3): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
+- [**Project 0**](./project0): you have to implement a Search agent for eating all the food dots as quickly as possible.
+- [**Project I**](./project1): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
+- [**Project II**](./project2): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
 
 ## Table of contents
 
@@ -91,7 +91,7 @@ python run.py --silentdisplay
 python run.py --layout medium
 ```
 
-`--ghostagent`: Start the game with a user-specifed ghost agent (see [**project II**](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects/project2)):
+`--ghostagent`: Start the game with a user-specifed ghost agent (see [**project I**](./project2)):
 ```bash
 python run.py --ghostagent greedy
 ```
@@ -110,7 +110,7 @@ For each part of the project, you must provide the following deliverables:
 - The source code of your Pacman agent(s).
 - A report in PDF format. A template will be provided for each part of the project in order to set the structure and page layout of the report. This template must be completed without any modification.
 
-The three parts of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
+Parts 2 and 3 of the project must be carried out in groups of maximum 2 students (with the same group across all parts).
 
 Your deliverables must be submitted as a *tar.gz* archive on the [Montefiore submission platform](https://submit.montefiore.ulg.ac.be/teacher/courseDetails/INFO8006/).
 
@@ -146,11 +146,11 @@ We show through this section a list of common mistakes and bad practices that we
            Computes the n-th member of the Fibonacci sequence.
            Recursive definition: f(0)=0, f(1)=1,
                                  f(n)=f(n-1) + f(n-2) for n > 1
-
+	
            Arguments:
            ----------
            - `n (integer): Positive index of the Fibonacci sequence.
-
+	
            Return:
            -------
            - The n-th member of the Fibonacci sequence.
@@ -220,7 +220,7 @@ You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also m
 
  - Monday: 12PM - 2PM (Arnaud Delaunoy, R 103)
  - Wednesday: 12PM - 2PM (Gaspard Lambrechts, 1 106)
- 
+
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can of course be outside the duty periods mentioned above.   
 
 Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.

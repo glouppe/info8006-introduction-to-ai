@@ -1,4 +1,4 @@
-import imp
+import importlib
 import os
 from argparse import ArgumentParser, ArgumentTypeError
 
@@ -50,11 +50,7 @@ def load_agent_from_file(filepath, class_module):
     expected_class = class_module
     mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
 
-    if file_ext.lower() == '.py':
-        py_mod = imp.load_source(mod_name, filepath)
-
-    elif file_ext.lower() == '.pyc':
-        py_mod = imp.load_compiled(mod_name, filepath)
+    py_mod = importlib.import_module(mod_name)
 
     if hasattr(py_mod, expected_class):
         class_mod = getattr(py_mod, expected_class)
@@ -93,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
-        default="small")
+        default="small_adv")
     parser.add_argument(
         '--nghosts',
         help='Maximum number of ghosts in a maze.',
