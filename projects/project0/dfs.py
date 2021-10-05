@@ -1,17 +1,3 @@
-"""
-Author : one of the TAs, just after
-submitting an important journal manuscript.
-
-I am so tired that I might have screwed up the following DFS implementation.
-
-My fellow TAs are expected to fix all the errors
-while I'm taking a very long nap.
-
-I trust them but you should also, student,
-check the following code against a possible *unique* error.
-
-"""
-
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 
@@ -29,7 +15,9 @@ def key(state):
     -------
     - A hashable key object that uniquely identifies a Pacman game state.
     """
-    return state.getPacmanPosition()
+    
+    # TODO
+    pass
 
 
 class PacmanAgent(Agent):
@@ -82,25 +70,6 @@ class PacmanAgent(Agent):
         -------
         - A list of legal moves as defined in `game.Directions`.
         """
-        path = []
-        fringe = [(state, path)]
-        closed = set()
-
-        while True:
-            if len(fringe) == 0:
-                return []  # failure
-
-            current, path = fringe.pop()
-
-            if current.isWin():
-                return path
-
-            current_key = key(current)
-
-            if current_key not in closed:
-                closed.add(current_key)
-
-                for next_state, action in current.generatePacmanSuccessors():
-                    fringe.append((next_state, path + [action]))
-
-        return path
+        
+        # TODO
+        pass
