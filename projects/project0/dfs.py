@@ -1,17 +1,3 @@
-"""
-Author : one of the TAs, just after
-submitting an important journal manuscript.
-
-I am so tired that I might have screwed up the following DFS implementation.
-
-My fellow TAs are expected to fix all the errors
-while I'm taking a very long nap.
-
-I trust them but you should also, student,
-check the following code against a possible *unique* error.
-
-"""
-
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 
