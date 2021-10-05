@@ -199,6 +199,7 @@ Useful methods of the state are specified below:
  - ```s.getPacmanPosition()``` : Returns the Pacman position in a ```(x,y)``` pair.
  - ```s.getScore()``` : Returns the total score of a state (as defined above).
  - ```s.getFood()``` : Returns a boolean matrix which gives the position of all food dots.
+ - ```s.getNumFood()``` : Returns a scalar which gives the number of food dots remaining.
  - ```s.getWalls()``` : Returns a boolean matrix which gives the position of all walls.
  - ```s.getGhostPosition(agentIndex)``` : Returns the position of the ghost agent indexed by ```agentIndex>0```.
  - ```s.getGhostDirection(agentIndex)``` : Returns the direction of the ghost agent indexed by ```agentIndex>0```.
