@@ -333,7 +333,7 @@ class: middle
 
 - An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
 - The computation *must be short* (that is the whole point to search faster).
-- Ideally, the evaluation should *order* terminal states in the same way as in Minimax.
+- Ideally, the evaluation should *order* states in the same way as in Minimax.
     - The evaluation values may be different from the true minimax values, as long as order is preserved.
 - In non-terminal states, the evaluation function should be strongly *correlated* with the actual chances of winning.
 
