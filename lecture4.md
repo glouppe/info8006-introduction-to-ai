@@ -12,6 +12,7 @@ Prof. Gilles Louppe<br>
 
 R: prepare one code example
 R: prepare handwritten developments
+R: bayes demo
 
 ---
 
@@ -356,12 +357,6 @@ ${\bf P}(W|T=\text{cold})$
 ]
 ]
 
-???
-
-R: check book
-
-Is a conditional distribution defined on the same sample and probability space than the joint?
-
 ---
 
 class: middle
@@ -684,6 +679,10 @@ Therefore,
 - $P(a|b)$ is the posterior belief on $a$, given the evidence $b$.
 - $P(b|a)$ is the conditional probability of $b$ given $a$. Depending on the context, this term is called the likelihood.
 
+???
+
+Do it on the blackboard.
+
 ---
 
 class: middle, center
@@ -868,6 +867,10 @@ class: middle
 
 .center.width-90[![](figures/lec4/burglary2.svg)]
 
+???
+
+Blackboard: example of calculation, as in the next slide.
+
 ---
 
 # Semantics
@@ -949,6 +952,10 @@ ${\bf P}(T|R)$
 ]
 ]
 
+???
+
+Causal model
+
 ---
 
 class: middle
@@ -980,6 +987,10 @@ ${\bf P}(R|T)$
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Diagnostic model
 
 ---
 
