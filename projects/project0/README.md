@@ -1,7 +1,7 @@
 # Project 0
 ## Instructions
 
-You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project0.tar.gz)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
+You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project0.zip)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
 Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for maximizing the score.
 
 To help you, we provide base code to implement an agent in the Python file `dfs.py`. Once you have activated your Pacman environment (see our [Python tutorial](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial#creating-a-conda-environment)), you can test DFS algorithm using the following commands:
