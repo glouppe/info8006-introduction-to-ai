@@ -8,11 +8,6 @@ Lecture 5: Inference in Bayesian networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 # Today
@@ -412,7 +407,8 @@ class: middle
 Exact inference is **intractable** for most probabilistic models of practical interest.
 (e.g., involving many variables, continuous and discrete, undirected cycles, etc).
 
-.center.width-100[![](figures/lec5/robot-gripper.png)]
+.center.width-80[![](figures/lec5/norman1.png)]
+.center.width-100[![](figures/lec5/norman2.png)]
 
 ---
 

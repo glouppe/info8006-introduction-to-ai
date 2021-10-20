@@ -965,8 +965,8 @@ ${\bf P}(T)$
 
 | $T$ | $P$ |
 | --- | --- | --- |
-| $\text{r}$ | $9/16$ |
-| $\lnot\text{r}$ | $7/16$ |
+| $\text{t}$ | $9/16$ |
+| $\lnot\text{t}$ | $7/16$ |
 ]
 .kol-2-5[
 ${\bf P}(R|T)$
@@ -1212,7 +1212,7 @@ class: middle
 .grid[
 .kol-2-3[
 
-A path is **active** if each triple is active:
+A path is **active** if each triple along the path is active:
 - Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
 - Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
 - v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
