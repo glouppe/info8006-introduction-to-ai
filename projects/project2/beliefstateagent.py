@@ -31,6 +31,40 @@ class BeliefStateAgent(Agent):
         self.p = 0.5
         self.n = int(self.sensor_variance/(self.p*(1-self.p)))
 
+    def _get_sensor_model(self, pacman_position, evidence):
+        """
+        Arguments:
+        ----------
+        - `pacman_position`: 2D coordinates position
+          of pacman at state x_{t}
+          where 't' is the current time step
+
+        Return:
+        -------
+        The sensor model represented as a 2D numpy array of 
+        size [width, height].
+        The element at position (w, h) is the probability
+        P(E_t=evidence | X_t=(w, h))
+        """
+        pass
+
+    def _get_transition_model(self, pacman_position):
+        """
+        Arguments:
+        ----------
+        - `pacman_position`: 2D coordinates position
+          of pacman at state x_{t}
+          where 't' is the current time step
+
+        Return:
+        -------
+        The transition model represented as a 4D numpy array of 
+        size [width, height, width, height].
+        The element at position (w1, h1, w2, h2) is the probability
+        P(X_t+1=(w1, h1) | X_t=(w2, h2))
+        """
+        pass
+
     def update_belief_state(self, evidences, pacman_position, ghosts_eaten):
         """
         Given a list of (noised) distances from pacman to ghosts,
