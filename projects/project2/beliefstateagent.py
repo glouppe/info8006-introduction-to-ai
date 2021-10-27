@@ -41,7 +41,7 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        The sensor model represented as a 2D numpy array of 
+        The sensor model represented as a 2D numpy array of
         size [width, height].
         The element at position (w, h) is the probability
         P(E_t=evidence | X_t=(w, h))
@@ -58,12 +58,51 @@ class BeliefStateAgent(Agent):
 
         Return:
         -------
-        The transition model represented as a 4D numpy array of 
+        The transition model represented as a 4D numpy array of
         size [width, height, width, height].
         The element at position (w1, h1, w2, h2) is the probability
         P(X_t+1=(w1, h1) | X_t=(w2, h2))
         """
         pass
+
+    def _get_updated_belief(self, belief, evidences, pacman_position,
+            ghosts_eaten):
+        """
+        Given a list of (noised) distances from pacman to ghosts,
+        and the previous belief states before receiving the evidences,
+        returns the updated list of belief states about ghosts positions
+
+        Arguments:
+        ----------
+        - `belief`: A list of Z belief states at state x_{t-1}
+          as N*M numpy mass probability matrices
+          where N and M are respectively width and height
+          of the maze layout and Z is the number of ghosts.
+        - `evidences`: list of distances between
+          pacman and ghosts at state x_{t}
+          where 't' is the current time step
+        - `pacman_position`: 2D coordinates position
+          of pacman at state x_{t}
+          where 't' is the current time step
+        - `ghosts_eaten`: list of booleans indicating
+          whether ghosts have been eaten or not
+
+        Return:
+        -------
+        - A list of Z belief states at state x_{t}
+          as N*M numpy mass probability matrices
+          where N and M are respectively width and height
+          of the maze layout and Z is the number of ghosts.
+
+        N.B. : [0,0] is the bottom left corner of the maze.
+               Matrices filled with zeros must be returned for eaten ghosts.
+        """
+
+        # XXX: Your code here
+
+        # XXX: End of your code
+
+        return belief
 
     def update_belief_state(self, evidences, pacman_position, ghosts_eaten):
         """
@@ -88,18 +127,13 @@ class BeliefStateAgent(Agent):
           where N and M are respectively width and height
           of the maze layout and Z is the number of ghosts.
 
-        N.B. : [0,0] is the bottom left corner of the maze.
-               Matrices filled with zeros must be returned for eaten ghosts.
+        XXX: DO NOT MODIFY THIS FUNCTION !!!
+        Doing so will result in a 0 grade.
         """
-        beliefStates = self.beliefGhostStates
-
-        # XXX: Your code here
-
-        # XXX: End of your code
-
-        self.beliefGhostStates = beliefStates
-
-        return beliefStates
+        belief = self._get_updated_belief(self.beliefGhostStates, evidences,
+                                          pacman_position, ghosts_eaten)
+        self.beliefGhostStates = belief
+        return belief
 
     def _get_evidence(self, state):
         """
