@@ -441,8 +441,8 @@ Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k
 $$
 \begin{aligned}
 {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) P(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
+&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
+&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -530,8 +530,6 @@ $$\mathbf{m}\_{1:t+1} = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \m
 ???
 
 Naive procedure: use smoothing to compute $P(X\_k|e\_{1:t})$, then output the sequence of the most likely value for each $k$.
-
-R: prepare a counter-example
 
 ---
 
