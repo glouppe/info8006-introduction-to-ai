@@ -45,7 +45,7 @@ Note that when you use multiple ghosts, they all run the same policy (e.g., all 
 You are asked to answer the following questions:
 
  1. **Bayes filter**
-	 - 1.a. - **1 point** - Describe mathematically the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
+	 - 1.a. - **2 point** - Describe mathematically the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
 	 - 1.b. - **2 points** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py` (functions `getDistribution`). Your model should specify a single free parameter.
      :warning: Be aware that in project 2, the ghosts are now able to go move backward, on the contrary to project 1.
 
@@ -53,8 +53,8 @@ You are asked to answer the following questions:
 
  2. **Implementation**
 
- 	- 2.a. - **4 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `_get_updated_belief` function of `bayesfilter.py`.
-         - Your function `_get_updated_belief` should use the functions `_get_sensor_model` and `_get_transition_model` that you should define yourself.
+ 	- 2.a. - **6 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `_get_updated_belief` function of `bayesfilter.py`.
+         - Your function `_get_updated_belief` (**2 points**) should use the functions `_get_sensor_model` (**2 points**) and `_get_transition_model` (**2 points**) that you should also define yourself.
  		 - Your implementation must work with multiple ghosts (all running the same policy).
  		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
  		 - Your filter should consider the Pacman position, as Pacman may wander freely in the maze.
@@ -67,9 +67,9 @@ You are asked to answer the following questions:
  		 - Record your measures (see `_record_metrics` function in `bayesfilter.py`) averaged over several trials.
  		 - Your results should come with error bars.
  		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
- 	- 3.d. - **2 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
- 	- 3.e. - **2 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
- 	- 3.f. - **2 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
+ 	- 3.d. - **1 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
+ 	- 3.e. - **1 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
+ 	- 3.f. - **1 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
  	- 3.g. - **BONUS 3 points** - Implement this controller in the `pacmanagent.py` file.
 
 ---
