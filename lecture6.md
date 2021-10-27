@@ -8,12 +8,6 @@ Lecture 6: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: give some more applications -> perseverance?
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 # Today
@@ -38,7 +32,6 @@ Maintain a **belief state** about the world, and update it as time passes and ev
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
-
 ---
 
 class: middle, black-slide
@@ -53,30 +46,20 @@ class: middle, black-slide
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+```
+python3 run.py --nghosts 2 --layout maze_small
+python3 run.py --nghosts 3 --layout maze_medium
+python3 run.py --nghosts 4 --layout maze_huge
+
+```
+
 ---
 
 class: middle
 
 # Markov models
-
----
-
-# Reasoning over time
-
-Often, we want to *reason about a sequence* of observations:
-- Robot localization
-- Speech recognition
-- Medical monitoring
-- Machine translation
-- Part-of-speech tagging
-- Handwriting recognition
-- ...
-
-For this reason, we need to introduce **time** (or space) in our model.
-
-???
-
-R: remove?
 
 ---
 
@@ -119,6 +102,7 @@ class: middle
 
 ---
 
+exclude: True
 class: middle
 
 ## Second-order Markov processes
@@ -139,7 +123,7 @@ class: middle
 
 ## Stationarity assumption
 
--  The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
+- The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
 
 ---
 
@@ -152,7 +136,7 @@ class: middle
 A Markov process can be described as a *growable* Bayesian network, unrolled infinitely through time, with a specified **restricted structure** between time steps.
 
 Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is
-    $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
+$${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
 
 ---
 
@@ -218,9 +202,8 @@ $\begin{aligned}
 .width-80[![](figures/lec6/base-case1.png)]
 
 $\begin{aligned}
-{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &= \frac{ {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1)}{P(\mathbf{e}\_1)} \\\\
-&\propto {\bf P}(\mathbf{X}\_1, \mathbf{e}\_1) \\\\
-&= {\bf P}(\mathbf{X}\_1) {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1)
+{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &=\frac{{\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
+&= \alpha {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)
 \end{aligned}$
 
 (Update) Update ${\bf P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
@@ -252,7 +235,7 @@ class: middle, black-slide
   <source src="./figures/lec6/gb-basics.mp4" type="video/mp4">
 </video>]
 
-.center[Random dynamics (Ghostbusters)]
+.center[Random dynamics]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -265,7 +248,7 @@ class: middle, black-slide
   <source src="./figures/lec6/gb-circular.mp4" type="video/mp4">
 </video>]
 
-.center[Circular dynamics (Ghostbusters)]
+.center[Circular dynamics]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -278,7 +261,7 @@ class: middle, black-slide
   <source src="./figures/lec6/gb-whirlpool.mp4" type="video/mp4">
 </video>]
 
-.center[Whirlpool dynamics (Ghostbusters)]
+.center[Whirlpool dynamics]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -302,9 +285,9 @@ As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
 
 What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
-- Eventually, the distribution converges to a fixed point, called the **stationary distribution**.
+- Eventually, the distribution converges to a fixed point, called a **stationary distribution**.
 - This distribution is such that
-$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) {\bf P}(\mathbf{x}\_\infty) $$
+$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty) $$
 
 ---
 
@@ -312,10 +295,10 @@ class: middle
 
 | $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
 | --- | --- | --- |
-| $sun$ | $sun$ | 0.9 |
-| $sun$ | $rain$ | 0.1 |
-| $rain$ | $sun$ | 0.3 |
-| $rain$ | $rain$ | 0.7 |
+| $\text{sun}$ | $\text{sun}$ | 0.9 |
+| $\text{sun}$ | $\text{rain}$ | 0.1 |
+| $\text{rain}$ | $\text{sun}$ | 0.3 |
+| $\text{rain}$ | $\text{rain}$ | 0.7 |
 
 ## Example
 
@@ -333,8 +316,6 @@ Therefore, $P(\mathbf{X}\_\infty=\text{sun}) = 3 P(\mathbf{X}\_\infty=\text{rain
 Which implies that
 $P(\mathbf{X}\_\infty=\text{sun}) = \frac{3}{4}$ and
 $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
-
-
 
 ---
 
@@ -408,16 +389,16 @@ class: middle
 
 | $R\_{t-1}$ | $P(R\_t)$ |
 | ---------- | --------- |
-| $true$ | $0.7$ |
-| $false$ | $0.3$ |
+| $\text{true}$ | $0.7$ |
+| $\text{false}$ | $0.3$ |
 
 ]
 .kol-1-4.center[
 
 | $R\_{t}$ | $P(U\_t)$ |
 | ---------- | --------- |
-| $true$ | $0.9$ |
-| $false$ | $0.2$ |
+| $\text{true}$ | $0.9$ |
+| $\text{false}$ | $0.2$ |
 
 ]
 ]
@@ -439,6 +420,15 @@ Ghostbusters with a Bayes filter
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+```
+python3 run.py --nghosts 2 --layout maze_small --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
+python3 run.py --nghosts 3 --layout maze_medium --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
+python3 run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
+
+```
 
 ---
 
@@ -508,7 +498,7 @@ Solve on blackboard.
 
 # Most likely explanation
 
-Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]$ is the umbrella sequence.
 
 What is the weather sequence that is the most likely to explain this?
 - Does the absence of umbrella at day 3 means it wasn't raining?
@@ -577,7 +567,6 @@ Some authors instead divide Markov models into two classes, depending on the obs
 
 We follow here instead the terminology of the textbook.
 
-
 ---
 
 class: middle
@@ -605,7 +594,7 @@ class: middle
 
 ## Example
 
-Suppose that $[true, true, false, true, true]$ is the umbrella sequence.
+Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]$ is the umbrella sequence.
 
 $$
 \begin{aligned}
@@ -642,7 +631,7 @@ class: middle
 
 The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
 $$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
-Therefore, the stationary distribution corresponds to the (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
+Therefore, the stationary distribution corresponds to a (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
 
 ---
 
@@ -830,7 +819,7 @@ $$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{
 is also a Gaussian distribution.
 - .italic[Update step:]<br><br>
 If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
 ???
@@ -844,7 +833,7 @@ class: middle
 Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{x}\_t | \mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
 
 - Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
-- By contrast, for general (nonlinear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
+- By contrast, for general (non-linear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
 
 ---
 
@@ -974,14 +963,6 @@ In this example, $\mathbf{X}$ includes the X-Y positions and the X-Y velocities.
 
 ---
 
-class: middle
-
-## 2D tracking: smoothing
-
-.center.width-90[![](figures/lec6/kf-smoothing.png)]
-
----
-
 class: middle, black-slide
 
 ## Apollo guidance computer
@@ -995,7 +976,6 @@ class: middle, black-slide
 .kol-1-3[.width-100[![](figures/lec6/agc.jpg)]]
 ]
 
-
 .footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
 
 ---
@@ -1006,13 +986,22 @@ class: center, black-slide, middle
 
 ---
 
+class: middle, black-slide
+
+## Data assimilation for weather forecasts solves a filtering problem
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/YPAWYjPf_Pk?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+]
+
+---
+
 # Dynamic Bayesian networks
 
 .grid[
 .kol-2-3[.center.width-100[![](figures/lec6/dbn-cartoon.png)]]
 .kol-1-3[.center.width-80[![](figures/lec6/robot-dbn1.svg)]]
 ]
-
 
 Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables over time, using multiple sources of evidence. Idea:
 - Repeat a fixed Bayes net structure at each time $t$.
@@ -1116,8 +1105,8 @@ class: middle
 - Temporal models use state and sensor variables replicated over time.
     - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
 - The Markov and stationarity assumptions imply that we only need to specify
-    - a transition model $P(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
-    - a sensor model $P(\mathbf{E}\_t | \mathbf{X}\_t)$.
+    - a transition model ${\bf P}(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
+    - a sensor model ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_t)$.
 - Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
 - Filter algorithms are all based on the core of idea of
     - projecting the current belief state through the transition model,
