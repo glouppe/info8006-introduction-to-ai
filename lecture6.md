@@ -202,7 +202,7 @@ $\begin{aligned}
 .width-80[![](figures/lec6/base-case1.png)]
 
 $\begin{aligned}
-{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &=\frac{{\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
+{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &=\frac{ {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
 &= \alpha {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)
 \end{aligned}$
 
