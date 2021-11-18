@@ -10,10 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: develop linear regression / OLS  further ---> up to the analytical solution
-R: NN Tesla HydraNet
 R: prepare one code example
-R: prepare handwritten developments
 
 ---
 
@@ -396,6 +393,10 @@ Let us first assume that $y \in \mathbb{R}$.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Do it on the blackboard.
+
 ---
 
 class: middle
@@ -404,8 +405,6 @@ class: middle
 .kol-1-5[.center.width-50[![](figures/lec7/latent.svg)]]
 .kol-4-5[.center.width-60[![](figures/lec7/lr-latent.png)]]
 ]
-
-
 
 Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y|\\mathbf{x})$, that is
 $$p(y|\mathbf{x}) = \mathcal{N}(y | \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
@@ -856,6 +855,17 @@ How AI Helps Autonomous Vehicles See Outside the Box<br>
 (See also [other episodes](https://www.youtube.com/playlist?list=PLZHnYvH1qtOYkElUMqYiHDMrGTPnqRhSr) from NVIDIA DRIVE Labs)
 ]
 
+---
+
+class: black-slide, middle, center
+
+.width-100[![](figures/lec7/hydranet.png)]
+
+Hydranet (Tesla, 2021)
+
+???
+
+70 networks
 
 ---
 
