@@ -22,6 +22,7 @@ You are requested to deliver a *tar.gz* archive containing:
 	 - :warning: Do not change the class name (`BeliefStateAgent`).
  - (optional) A file named `pacmanagent.py` containing your implementation of the BONUS.
      - Simply modify the provided `pacmanagent.py` file.
+
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
@@ -47,6 +48,7 @@ You are asked to answer the following questions:
  1. **Bayes filter**
 	 - 1.a. - **2 point** - Describe mathematically the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
 	 - 1.b. - **2 points** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py` (functions `getDistribution`). Your model should specify a single free parameter.
+     
      :warning: Be aware that in project 2, the ghosts are now able to go move backward, on the contrary to project 1.
 
     Answers to the previous questions should not make any reference to the API nor include pseudo-code.

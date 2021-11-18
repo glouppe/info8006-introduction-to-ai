@@ -14,10 +14,15 @@ class BeliefStateAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
+
         """
             Variables to use in 'update_belief_state' method.
             Initialization occurs in 'get_action' method.
+
+            XXX: DO NOT MODIFY THE DEFINITION OF THESE VARIABLES
+            # Doing so will result in a 0 grade.
         """
+
         # Current list of belief states over ghost positions
         self.beliefGhostStates = None
 
@@ -30,6 +35,11 @@ class BeliefStateAgent(Agent):
 
         self.p = 0.5
         self.n = int(self.sensor_variance/(self.p*(1-self.p)))
+
+        # XXX: Your code here
+        # NB: Adding code here is not necessarily useful, but you may.
+        # XXX: End of your code
+
 
     def _get_sensor_model(self, pacman_position, evidence):
         """
