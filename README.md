@@ -11,36 +11,103 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 ## Agenda
 
 | Date | Topic |
-| --- | --- |
-| September 16 | [Course syllabus](https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf)] [[video](https://www.youtube.com/watch?v=XOjc3OtJA4U)]<br>Lecture 0: [Introduction to artificial intelligence](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf)] [[video](https://www.youtube.com/watch?v=G6YrPwF-to8)]<br>Lecture 1: [Intelligent agents](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf)] [[video](https://www.youtube.com/watch?v=WYxZiGIZXSs)]|
-| September 23| Lecture 2: [Solving problems by searching](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf)] [[video](https://www.youtube.com/watch?v=9hU3gx79pEE)] <br>Lecture 2b: [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2b.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2b.pdf)]  (optional) <br>Tutorial: [Introduction to Python](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]|
-| September 30 | Lecture 3: [Games and adversarial search](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf)] [[video](https://www.youtube.com/watch?v=rjCBWMJhKg0)] <br>Exercises 1: Solving problems by searching [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1.pdf)] [[solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1-solutions.pdf)] |
-| October 7 | Lecture 4: [Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)] [[video](https://www.youtube.com/watch?v=i1UqwV3jMIY)] <br>Tutorial: [Search algorithms](./projects/project0) (project 0, done in class)<br>Project 1: [Adversarial search](./projects/project1) (due by October 28, 2021) |
-| October 14 (10:30 AM) | Exercises 2: Games and adversarial search [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-2.pdf)] [[solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-2-solutions.pdf)] |
-| October 21 | Lecture 4: [Representing uncertain knowledge](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf)] [[video](https://www.youtube.com/watch?v=i1UqwV3jMIY)] (continued)<br>Lecture 5: [Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf)] [[video](https://www.youtube.com/watch?v=p5EFRO8YLI0)] <br>Exercises 3: Reasoning under uncertainty [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-3.pdf)] [[solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-3-solutions.pdf)] |
-| October 28| Lecture 6: [Reasoning over time](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf)] [[video](https://www.youtube.com/watch?v=crN15fPqnoo)] <br>Exercises 4: Reasoning over time [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-4.pdf)] [[solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-4-solutions.pdf)] <br>Project 1: Deadline <br>Project 2: [Bayes filter](./projects/project2) (due by November 25, 2021) |
-| November 18 | Lecture 7: [Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf)] [[video](https://www.youtube.com/watch?v=Vt0vySeV1hc)] <br>Exercises 4: Hyperloop [[notebook](code/exercises-4-hyperloop.ipynb)]|
-| November 25 | Lecture 8: [Making decisions](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf)] [[video](https://www.youtube.com/watch?v=ORYUUPEkiQU)] <br>Exercises 5: Learning [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-5.pdf)] [[solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-5-solutions.pdf)] |
-| December 2 | Lecture 9: [Reinforcement Learning](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf)] [[video](https://www.youtube.com/watch?v=mjq7Py-bzmw)]<br>Exercises 7: Making decisions<br>Project 2: Deadline  |
-| December 9 | Lecture 10: [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf)] [[video](https://www.youtube.com/watch?v=5Hdi6Rz8qNM)] (optional)<br>Lecture 11: [Artificial general intelligence and beyond](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf)] [[video](https://www.youtube.com/watch?v=gvkgMBURpAk)] <br>Exercises 8: Reinforcement Learning |
+| ---- | ----- |
+| September 16 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
+| September 23 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] <br> Lecture 2b: [Constraint satisfaction problems][l2b] [[PDF][l2b-pdf]] (optional) <br> Tutorial: [Introduction to Python](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]|
+| September 30 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
+| October 7 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Tutorial: [Search algorithms](projects/project0) (project 0, done in class) <br> Project 1: [Adversarial search](projects/project1) (due by October 28, 2021) |
+| October 14 (10:30 AM) | Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
+| October 21 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] (continued) <br> Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]] <br> Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 28 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 1: Deadline <br> Project 2: [Bayes filter](projects/project2) (due by November 25, 2021) |
+| November 18 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Hyperloop [[notebook](code/exercises-4-hyperloop.ipynb)] |
+| November 25 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
+| December 2 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] <br> Project 2: Deadline |
+| December 9 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 7: Reinforcement Learning |
 | December 16 | Correction of a past exam |
 
+[syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
+[syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
+[syllabus-vid]: https://www.youtube.com/watch?v=XOjc3OtJA4U
+
+[l0]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md
+[l0-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf
+[l0-vid]: https://www.youtube.com/watch?v=G6YrPwF-to8
+
+[l1]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md
+[l1-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf
+[l1-vid]: https://www.youtube.com/watch?v=WYxZiGIZXSs
+
+[l2]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md
+[l2-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf
+[l2-vid]: https://www.youtube.com/watch?v=9hU3gx79pEE
+
+[l2b]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2b.md
+[l2b-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2b.pdf
+
+[l3]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md
+[l3-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf
+[l3-vid]: https://www.youtube.com/watch?v=rjCBWMJhKg0
+
+[l4]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md
+[l4-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf
+[l4-vid]: https://www.youtube.com/watch?v=i1UqwV3jMIY
+
+[l5]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md
+[l5-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf
+[l5-vid]: https://www.youtube.com/watch?v=p5EFRO8YLI0
+
+[l6]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md
+[l6-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf
+[l6-vid]: https://www.youtube.com/watch?v=crN15fPqnoo
+
+[l7]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md
+[l7-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf
+[l7-vid]: https://www.youtube.com/watch?v=Vt0vySeV1hc
+
+[l8]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md
+[l8-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf
+[l8-vid]: https://www.youtube.com/watch?v=ORYUUPEkiQU
+
+[l9]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md
+[l9-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf
+[l9-vid]: https://www.youtube.com/watch?v=mjq7Py-bzmw
+
+[l10]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture10.md
+[l10-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec10.pdf
+[l10-vid]: https://www.youtube.com/watch?v=5Hdi6Rz8qNM
+
+[l11]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md
+[l11-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf
+[l11-vid]: https://www.youtube.com/watch?v=gvkgMBURpAk
+
+[e1]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1.pdf
+[e1s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1-solutions.pdf
+[e2]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-2.pdf
+[e2s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-2-solutions.pdf
+[e3]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-3.pdf
+[e3s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-3-solutions.pdf
+[e4]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-4.pdf
+[e4s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-4-solutions.pdf
+[e5]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-5.pdf
+[e5s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-5-solutions.pdf
+[e6]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-6.pdf
+[e6s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-6-solutions.pdf
 
 ## Projects
 
 ### Pacman programming projects
 
-- [General instructions](./projects)
-- [Python tutorial](./python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 0: [Search algorithms](./projects/project0) (done in class)
-- Part 1: [Adversarial search](./projects/project1) (due by **October 28, 2021**)
-- Part 2: [Bayes filter](./projects/project2) (due by **December 2, 2021**)
+- [General instructions](projects)
+- [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
+- Part 0: [Search algorithms](projects/project0) (done in class)
+- Part 1: [Adversarial search](projects/project1) (due by **October 28, 2021**)
+- Part 2: [Bayes filter](projects/project2) (due by **December 2, 2021**)
 
 ### Reading assignment
 
 Your task is to read a major scientific paper in the field of Artificial Intelligence.
 
-> Paper: "Human-level control through deep reinforcement learning."<br>
+> Paper: "Human-level control through deep reinforcement learning." <br>
 > Volodymyr Mnih et al, 2015. [[PDF](https://deepmind-media.storage.googleapis.com/dqn/DQNNaturePaper.pdf)]
 
 The reading assignment includes the main text (pages 1-4), as well as the methods section (pages 6-7).
@@ -49,10 +116,10 @@ Short questions will be asked as part of the written exam. You do not have to pr
 
 ## Previous exams
 
-- [January 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019.pdf) ([Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019-solutions.pdf))
+- [January 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2019-solutions.pdf))
 - [August 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2019.pdf)
 - [January 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2020.pdf)
-- [August 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020.pdf) ([Solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020-solutions.pdf))
+- [August 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020-solutions.pdf))
 - [January 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021.pdf)
 - [August 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2021.pdf)
 
