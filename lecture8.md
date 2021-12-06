@@ -8,11 +8,6 @@ Lecture 8: Making decisions
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 # Today
@@ -35,7 +30,7 @@ Reasoning under uncertainty and **taking decisions**:
 
 .grid[
 .kol-2-3[
-Assume our agent lives in a $4 \times 3$ grid environment.
+Assume our agent lives in a $3 \times 4$ grid environment.
 - Noisy movements: actions do not always go as planned.
     - Each action achieves the intended effect with probability $0.8$.
     - The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intented direction.
@@ -218,7 +213,7 @@ Discounted utility:<br>
 .kol-2-3[
 $V([r\_0, r\_1, r\_2, ...]) = r\_0 + r\_1 + r\_2 + ...$
 
-$V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2r + ...$
+$V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2 + ...$
 ]
 ]
 
@@ -378,7 +373,7 @@ Because of the $\max$ operator, the Bellman equations are non-linear and solving
 The **value iteration** algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
 - Let $V\_i(s)$ be the estimated utility value for $s$ at the $i$-th iteration step.
 - The **Bellman update** consists in updating simultaneously all the estimates to make them *locally consistent* with the Bellman equation:
-$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') $$
+$$V\_{i+1}(s) := R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') $$
 - Repeat until convergence.
 
 ---
@@ -476,7 +471,7 @@ class: middle
 
 In some cases $O(n^3)$ is too prohibitive. Fortunately, it is not necessary to perform exact policy evaluation. An approximate solution is sufficient.
 
-One way is to run $k$ iterations of simplified Bell updates:
+One way is to run $k$ iterations of simplified Bellman updates:
 $$V\_{i+1}(s) = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s))V\_i(s') $$
 
 This hybrid algorithm is called **modified policy iteration**.

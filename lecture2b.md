@@ -4,6 +4,8 @@ class: middle, center, title-slide
 
 Lecture 2b: Constraint satisfaction problems
 
+(Optional)
+
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)

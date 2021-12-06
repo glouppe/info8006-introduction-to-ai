@@ -91,7 +91,7 @@ class: middle
 
 .center.width-100[![](figures/lec11/picking.png)]
 
-.center[Can we run AlphaGo on a robot for the Amazon Picking Challenge?]
+.center[Can we run AlphaGo on a robot?]
 
 ???
 
@@ -115,6 +115,7 @@ The scientific community agrees that AGI would be required to do the following:
 - represent knowledge, including commonsense knowledge,
 - improve and learn new skills,
 - communicate in natural language,
+- be creative,
 - integrate all these skills towards common goals.
 
 This is similar to our definition of *thinking rationally*, but applied broadly to any set of tasks.
@@ -125,11 +126,29 @@ class: middle
 
 ## Roads towards AGI
 
-Several working **hypothesis**:
-- Learning (supervised, unsupervised, reinforcement)
-- AIXI
-- Artificial life
-- ... or probably something else?
+Several working hypothesis:
+1. Learning (supervised, unsupervised, reinforcement)
+2. AIXI
+3. Artificial life
+
+... or probably something else?
+
+---
+
+class: middle
+
+# Learning
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/_wUzaRma0pU?loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Could AI be perceived as creative? (Jürgen Schmidhuber)
+
+]
 
 ---
 
@@ -141,34 +160,28 @@ AIXI (Hutter, 2005) is a theoretical mathematical formalism of artificial genera
 
 ---
 
-class: middle, center
+class: center
 
 .grid[
-.kol-1-6[.width-100.circle[![](figures/lec11/occam.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/lec11/occam.jpg)]]
 .kol-3-4[<br>Occam: Prefer the simplest consistent hypothesis.]
 ]
 .grid[
-.kol-1-6[.width-100.circle[![](figures/lec11/epicurus.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/lec11/epicurus.jpg)]]
 .kol-3-4[<br>Epicurus: Keep all consistent hypotheses.]
 ]
 .grid[
-.kol-1-6[.width-100.circle[![](figures/lec11/thomas.png)]]
+.kol-1-6[.width-90.circle[![](figures/lec11/thomas.png)]]
 .kol-3-4[<br>Bayes: $P(h|d) = \frac{P(d|h)P(h)}{P(d)}$]
 ]
-
----
-
-class: middle, center
-
 .grid[
-.kol-1-6[.width-100.circle[![](figures/lec11/turing.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/lec11/turing.jpg)]]
 .kol-3-4[<br>Turing: It is possible to invent a single machine which can be used to compute any computable sequence.]
 ]
 .grid[
-.kol-1-6[.width-100.circle[![](figures/lec11/solo.jpg)]]
-.kol-3-4[Solomonoff: Use computer programs $\mu$ as hypotheses/environments. Make a weighted prediction based on all consistent programs, with short programs weighted higher.]
+.kol-1-6[.width-90.circle[![](figures/lec11/solo.jpg)]]
+.kol-3-4[<br>Solomonoff: Use computer programs $\mu$ as hypotheses/environments.]
 ]
-
 
 ---
 
@@ -182,12 +195,13 @@ where
 - $\mu$ is the environment of the agent and $E$ is the set of all computable reward bounded environments.
 - $V^{\pi}\_\mu = \mathbb{E}\[ \sum\_{i=1}^\infty R\_i \]$ is the expected sum of future rewards when the agent $\pi$ interacts with environment $\mu$.
 - $K(.)$ is the Kolmogorov complexity, such that $2^{-K(\mu)}$ weights the agent's performance in each environment, inversely proportional to its complexity.
-    - Intuitively, $K(\mu)$ measures the complexity of the shortest Universal Turing Machine program that describes the environment $\mu$.
 
 
 ???
 
 Mix all items together (Solomonoff induction with decision theory) and you get AIXI.
+
+Intuitively, $K(\mu)$ measures the complexity of the shortest Universal Turing Machine program that describes the environment $\mu$.
 
 ---
 
@@ -445,12 +459,6 @@ work with them (Garry Kasparov).
 
 ---
 
-class: middle 
-
-.center.width-70[![](figures/lec11/ai-danger.png)]
-
----
-
 class: middle
 
 ## Beyond Pacman
@@ -477,14 +485,14 @@ As future engineers or scientists, AI offers you opportunities to address some o
 - Lecture 7: Learning
 - Lecture 8: Making decisions
 - Lecture 9: Reinforcement learning
-- Lecture 10: Communication 
+- .inactive[Lecture 10: Communication (optional)]
 - Lecture 11: Artificial General Intelligence and beyond 
 
 ---
 
 class: middle, center
 
-.width-50[![](figures/lec0/map.jpg)]
+.width-50[![](figures/lec0/map.png)]
 
 ---
 

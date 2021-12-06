@@ -4,13 +4,11 @@ class: middle, center, title-slide
 
 Lecture 10: Communication
 
+(Optional)
+
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
-
-???
-
-R: check https://static.googleusercontent.com/media/research.google.com/fr//pubs/archive/45882.pdf
 
 ---
 

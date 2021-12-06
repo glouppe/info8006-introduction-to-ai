@@ -8,11 +8,6 @@ Lecture 9: Reinforcement Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: prepare one code example
-R: prepare handwritten developments
-
 ---
 
 # Today
@@ -505,7 +500,7 @@ The agent **does not** learn the true utilities or the true optimal policy!
 
 class: middle
 
-The resulting is **greedy** and **suboptimal**:
+The resulting policy is **greedy** and **suboptimal**:
 - The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as the true environment.
 - Therefore, what is optimal in the learned model can be suboptimal in the true environment.
 
@@ -756,6 +751,12 @@ class: middle
 Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the *DQN* algorithm.
 
 .center.width-100[![](figures/lec9/dqn.png)]
+
+---
+
+class: middle, center
+
+(demo)
 
 ---
 
