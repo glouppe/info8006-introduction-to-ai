@@ -24,6 +24,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | December 2 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] <br> Project 2: Deadline |
 | December 9 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 7: Reinforcement Learning |
 | December 16 | Correction of a past exam |
+| -- | All lectures [[PDF][lall-pdf]] | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
@@ -79,6 +80,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 [l11]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture11.md
 [l11-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec11.pdf
 [l11-vid]: https://www.youtube.com/watch?v=gvkgMBURpAk
+
+[lall-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec-all.pdf
 
 [e1]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1.pdf
 [e1s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1-solutions.pdf
