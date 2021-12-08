@@ -8,11 +8,6 @@ Lecture 11: Artificial General Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: ALife: https://thegradient.pub/an-introduction-to-artificial-life-for-people-who-like-ai/
-R: jurgen https://www.youtube.com/watch?v=j7DqIkHB8Q0&t=5626s
-
 ---
 
 # Today$^\*$
@@ -138,6 +133,23 @@ Several working hypothesis:
 class: middle
 
 # Learning
+
+---
+
+class: middle, center
+
+.width-90[![](figures/lec11/reward1.png)]
+
+.pull-right[David Silver et al, 2021.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec11/reward2.png)]
+
+
+.footnote[Image credits: David Silver et al, "Reward is enough", 2021.]
 
 ---
 
