@@ -23,7 +23,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 25 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
 | December 2 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] <br> Project 2: Deadline |
 | December 9 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] |
-| December 16 | Correction of a past exam |
+| December 16 | Correction of a past exam (January 2021) |
 | -- | All lectures [[PDF][lall-pdf]] | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
