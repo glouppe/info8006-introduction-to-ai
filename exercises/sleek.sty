@@ -1,0 +1,220 @@
+\ProvidesPackage{sleek}[2021/11/10 v1.1.3 Sleek Package]
+
+%%%%%%%%%%%%%%%%
+% Requirements %
+%%%%%%%%%%%%%%%%
+
+% Typesetting
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage{microtype}
+\RequirePackage{multicol}
+
+% Encoding
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{eurosym}
+
+% Style
+
+\RequirePackage{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage[bottom]{footmisc}
+
+\newlength\storedparindent
+\setlength{\storedparindent}{\parindent}
+
+\RequirePackage[parfill]{parskip}
+
+\RequirePackage[inline]{enumitem}
+\RequirePackage{csquotes}
+\RequirePackage[dvipsnames]{xcolor}
+
+% Links
+
+\RequirePackage[
+    pdfusetitle,
+    colorlinks=true,
+    linktoc=page,
+    allcolors=Blue
+]{hyperref}
+\RequirePackage{qrcode}
+
+% Mathematics
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bm}
+\RequirePackage{esint}
+\RequirePackage{mathtools}
+
+% Units
+
+\RequirePackage{siunitx}
+
+% Figures
+
+\RequirePackage{float}
+\RequirePackage[skip=1.5ex]{caption}
+\RequirePackage{subcaption}
+\RequirePackage[ruled]{algorithm}
+\RequirePackage[noend]{algpseudocode}
+
+% Arrays
+
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{multirow}
+
+% Bibliography
+
+\RequirePackage[
+    backend=biber,
+    style=numeric-comp,
+    sorting=none,
+    maxcitenames=1,
+    maxbibnames=3,
+    backref=true
+]{biblatex}
+
+\setlength\bibitemsep{1ex}
+
+\DeclareFieldFormat*{title}{\enquote{#1}}
+\DeclareFieldFormat*{citetitle}{\enquote{#1}}
+
+\DefineBibliographyStrings{english}{
+    backrefpage = {page},
+    backrefpages = {pages}
+}
+
+\DefineBibliographyStrings{french}{
+    backrefpage = {page},
+    backrefpages = {pages}
+}
+
+% Others
+
+\RequirePackage{comment}
+
+%%%%%%%%%%%%
+% Settings %
+%%%%%%%%%%%%
+
+% Parindent
+
+\DeclareOption{parindent}{
+    \setlength{\parindent}{\storedparindent}
+}
+
+% Style
+
+\geometry{margin=2.5cm}
+
+\pagestyle{fancy}
+\fancyhead[L]{}
+\fancyhead[R]{}
+\fancyfoot[C]{\thepage}
+\renewcommand*{\headrulewidth}{0pt}
+
+\DeclareOption{header}{
+    \geometry{top=3.5cm, bottom=2.5cm, right=2.5cm, left=2.5cm}
+    \fancyhead[R]{\leftmark}
+}
+
+% Algorithms
+
+\makeatletter
+\renewcommand\fs@ruled{% https://ctan.org/pkg/float
+    \def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled%
+    \def\@fs@pre{\hrule height \heavyrulewidth depth 0pt \kern 4pt}%
+    \def\@fs@mid{\kern 4pt \hrule height \heavyrulewidth depth 0pt \kern 4pt}%
+    \def\@fs@post{\kern 4pt \hrule height \heavyrulewidth depth 0pt \relax}%
+    \let\@fs@iftopcapt\iftrue%
+}
+\makeatother
+
+\algrenewcommand{\algorithmiccomment}[1]{\hfill #1}
+\algrenewcommand{\alglinenumber}[1]{\footnotesize{#1}}
+
+\algnewcommand\Input{\item[\textbf{Input:}]}
+\algnewcommand\Output{\item[\textbf{Output:}]}
+
+\algnewcommand\Break{\textbf{break}}
+\algnewcommand\Continue{\textbf{continue}}
+
+% Arrays
+
+\renewcommand{\arraystretch}{1.1}
+
+% Languages
+
+\DeclareOption{french}{
+    %% Lists
+    \frenchbsetup{StandardLists=true}
+
+    %% Units
+    \sisetup{output-decimal-marker=,}
+
+    %% Captions
+    \addto\captionsfrench{\def\figurename{Figure}}
+    \addto\captionsfrench{\def\tablename{Table}}
+    \addto\captionsfrench{\def\proofname{Preuve}}
+
+    %% Macros
+    \def\cad{c.-à-d.\@}
+    \def\Cad{C.-à-d.\@}
+}
+
+\ProcessOptions\relax
+
+%%%%%%%%%%%%
+% Commands %
+%%%%%%%%%%%%
+
+% Abbreviations
+
+\def\cf{\emph{cf.}\@} % confer
+\def\eg{\emph{e.g.}\@} % exempli gratia
+\def\ie{\emph{i.e.}\@} % id est
+
+% Table of contents
+
+\newcommand*{\romantableofcontents}{ % table of contents with roman (i, ii, ...) numbering of the pages
+    \newpage
+    \pagenumbering{roman}
+    \tableofcontents
+    \newpage
+    \pagenumbering{arabic}
+}
+
+% Mathematics
+
+\DeclarePairedDelimiter\rbk{(}{)} % round brackets (parentheses)
+\DeclarePairedDelimiter\cbk{\{}{\}} % curly brackets {braces}
+\DeclarePairedDelimiter\sbk{[}{]} % square brackets [brackets]
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert} % absolute value |x|
+\DeclarePairedDelimiter\norm{\lVert}{\rVert} % norm ||x||
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil} % ceil ⌈x⌉
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor} % floor ⌊x⌋
+
+\newcommand*{\fact}[1]{#1!} % factorial x!
+
+\renewcommand*{\d}[1]{\operatorname{d}\!{#1}} % upright 'd' for differential
+
+\DeclareMathOperator{\tr}{tr} % trace
+\DeclareMathOperator{\diag}{diag} % diagonal
+
+% Figures
+
+\captionsetup{labelsep=period} % 'Figure 1.2.' instead of 'Figure 1.2:'
+\newcommand*{\noskipcaption}[1]{\caption{#1}\vspace{-\intextsep}} % caption without additional vertical space
+
+% Footnotes
+
+\makeatletter
+\def\blindfootnote{\gdef\@thefnmark{}\@footnotetext} % footnote without number
+\makeatother
+
+\endinput
