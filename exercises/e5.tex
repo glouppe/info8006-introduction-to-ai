@@ -1,0 +1,318 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage{sleek}
+\usepackage{common}
+
+\title{Introduction to Artificial Intelligence (INFO8006)}
+\subtitle{Exercises 5 -- Learning}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Learning outcomes}
+
+At the end of this session you should be able to
+\begin{itemize}[noitemsep]
+    \item define and apply maximum a posteriori (MAP) estimation;
+    \item define and apply maximum likelihood estimation (MLE);
+    \item define and apply linear regression.
+\end{itemize}
+
+\section{Pacbaby (UC Berkeley CS188, Spring 2014)}
+
+Pacman and Pacwoman have been searching for each other in the maze. Pacwoman has been pregnant with a baby, and just this morning she has given birth to Pacbaby\footnote{Congratulations!}. Because Pacbaby was born before Pacman and Pacwoman were reunited in the maze, he has never met his father. Naturally, Pacwoman wants to teach Pacbaby to recognize his father, using a set of pictures of Pacman. She also has several pictures of ghosts to use as negative examples.
+
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{figures/e5_pacbaby.jpg}
+\end{center}
+
+Because the pictures are black and white, and were taken from various angles, Pacwoman has decided to teach Pacbaby to identify Pacman based on salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ccc|c}
+        \toprule
+        $B$ & $H$ & $M$ & $S$ \\
+        \midrule
+        0 & 0 & 0 & 1 \\
+        1 & 0 & 0 & 0 \\
+        1 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{enumerate}
+    \item Suppose Pacbaby has a Naive Bayes based brain. Draw the Bayesian network that would represent the dependencies between $S$, $B$, $H$ and $M$ for Pacbaby.
+    
+    \begin{solution}
+        \begin{center}
+            \begin{tikzpicture}[node distance = 2cm]
+                \node[state, align=center] (S) {$S$};
+                \node[state, align=center] (B) [below left of=S] {$B$};
+                \node[state, align=center] (H) [below of=S] {$H$};
+                \node[state, align=center] (M) [below right of=S] {$M$};
+                
+                \path[-{>[scale=1.5]}] (S) edge (B);
+                \path[-{>[scale=1.5]}] (S) edge (H);
+                \path[-{>[scale=1.5]}] (S) edge (M);
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+    
+    \item Write the Bayesian classification rule for this problem, \ie{} the formula that given a data point $(b, h, m)$ returns the most likely subject. Write the formula in terms of conditional and prior probabilities. What does the formula become under the assumptions of Pacbaby ?
+    
+    \begin{solution}
+        Given $(b, h, m)$, the most likely subject is given by the \emph{maximum a posteriori} (MAP) estimation
+        \begin{align*}
+            s_{\text{MAP}} & = \arg\max_{s} P(s \knowing b, h, m) \\
+            & = \arg\max_{s} P(b, h, m \knowing s) P(s) .
+        \end{align*}
+        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $P(B, H, M \knowing S) = P(B \knowing S) P(H \knowing S) P(M \knowing S)$. Then, the formula becomes
+        \begin{align*}
+            s_{\text{MAP}} & = \arg\max_{s} P(b \knowing s) P(h \knowing s) P(m \knowing s) P(s) .
+        \end{align*}
+    \end{solution}
+    
+    \item What are the parameters of this model? Give estimates of these parameters according to the pictures provided by Pacwoman.
+    
+    \begin{solution}
+        The parameters of the model are the elements of
+        the prior vector $P(S)$ and the (conditional) probability matrices $P(B \knowing S)$, $P(H \knowing S)$ and $P(M \knowing S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
+        
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{c|cccc}
+                \toprule
+                $S$ & $P(S)$ & $P(B = 1 \knowing S)$ & $P(H = 1 \knowing S)$ & $P(M = 1 \knowing S)$ \\
+                \midrule
+                0 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{2}{3}$ & $\frac{0}{3}$ \\
+                1 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{1}{3}$ & $\frac{2}{3}$ \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{solution}
+    
+    \item Pacman eventually shows up wearing a bowtie, but no hat or mustache. Will Pacbaby recognize his father?
+    
+    \begin{solution}
+        Pacbaby will recognize his father if $s_{\text{MAP}} = 1$ for $(b, h, m) = (1, 0, 0)$. Using the parameters estimated previously, we have
+        \begin{align*}
+            P(b \knowing 0) P(h \knowing 0) P(m \knowing 0) P(0) & = \frac{2}{3} \times \rbk*{1 - \frac{2}{3}} \times \rbk*{1 - \frac{0}{3}} \times \frac{3}{6} \approx \num{0.111} \\
+            P(b \knowing 1) P(h \knowing 1) P(m \knowing 1) P(1) & = \frac{2}{3} \times \rbk*{1 - \frac{1}{3}} \times \rbk*{1 - \frac{2}{3}} \times \frac{3}{6} \approx \num{0.074} .
+        \end{align*}
+        Therefore, $s_{\text{MAP}} = 0$, meaning that Pacbaby will \emph{not} recognize his father.
+    \end{solution}
+    
+    \item If Pacbaby had a perceptron based brain, meaning that he is limited to learn linear classification rules, would he be able to learn a rule that makes no mistakes on the set of pictures? In other words, is the learning set \emph{linearly separable}?
+    
+    \begin{solution}
+        For a training set $\cbk{(x_i, y_i)}$ with $x_i \in \R^n$ and $y_i \in \cbk{-1, +1}$, a linear separation consists in \emph{any} hyperplane parameters $w \in \R^n$ and $b \in \R$ such that
+        \begin{equation*}
+            y_i = \operatorname{sign}(w^T x_i + b)
+        \end{equation*}
+        for all $(x_i, y_i)$. There exists several ways of fitting these parameters to a learning set, but it is very tedious by hand. However, in low dimension (2D, 3D), it is possible to solve this problem visually. We can draw the data points on a grid with different colors for each class and try to find a plane that separates best the two classes.
+        
+        In our case, we draw the $S = 0$ class in red and the $S = 1$ class in blue, and see that there is a plane that separates them perfectly. Hence, the learning set is linearly separable.
+        
+        \begin{center}
+            \pgfplotsset{
+                layers/my layers/.define layer set={
+                    background,
+                    main,
+                    foreground
+                }{},
+                set layers=my layers,
+            }
+        
+            \begin{tikzpicture}
+                \begin{axis}[
+                    3d box,
+                    width=10cm, height=11cm,
+                    view={30}{30},
+                    mark layer=like plot,
+                    enlargelimits=false,
+                    grid=major,
+                    domain=-0.1:1.1,
+                    zmin=-0.1, zmax=1.1,
+                    xtick={0, 0.5, 1},
+                    ytick={0, 0.5, 1},
+                    ztick={0, 0.5, 1},
+                    xlabel=$h$,
+                    ylabel=$b$,
+                    zlabel=$m$
+                ]
+                    \addplot3[only marks, red, on layer=background] table[row sep=crcr] {%
+                        1 0 0\\
+                        1 1 0\\
+                        0 1 0\\
+                    };
+        
+                    \addplot3[only marks, blue, on layer=foreground] table[row sep=crcr] {%
+                        0 0 0\\
+                        1 0 1\\
+                        1 1 1\\
+                    };
+                
+                    \addplot3[
+                        surf,
+                        shader=interp,
+                        opacity=0.66,
+                        colormap/blackwhite,
+                        on layer=main
+                    ] (x, {max(y, 0.3 - x)}, {0.5 * x + 0.5 * max(y, 0.3 - x) - 0.25});
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
+\section{Predict your grade}
+
+\begin{center}
+    \begin{tikzpicture}[node distance = 2cm]
+        \node[state, align=center] (X1) {$x_1$};
+        \node[state, align=center] (X2) [right of=X1] {$x_2$};
+        \node[state, align=center] (X3) [right of=X2] {$x_3$};
+        \node[state, align=center] (Y) [below of=X2] {$y$};
+        
+        \path[-{>[scale=1.5]}] (X1) edge (X2);
+        \path[-{>[scale=1.5]}] (X2) edge (X3);
+        \path[-{>[scale=1.5]}] (X1) edge (Y);
+        \path[-{>[scale=1.5]}] (X2) edge (Y);
+        \path[-{>[scale=1.5]}] (X3) edge (Y);
+    \end{tikzpicture}
+\end{center}
+
+The hereabove Bayesian network represents how the final grade of a class is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the grades obtained by a student at the homework, project and exam. The teaching assistant that grades the homework also grades the project and the exam, which introduces a slight bias in the corrections. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the final grade, which is a linear combination of the grades obtained by the student during the semester plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
+
+\begin{enumerate}
+    \item Assuming the parameters of the model are known, what is the expected value of $y$ given $x_1$ and $x_2$.
+    
+    \begin{solution}
+        Our task is to find the expectation
+        \begin{equation*}
+            \underset{p(y \knowing x_1, x_2)}{\E} \sbk{y} = \int y \, p(y \knowing x_1, x_2) \d{y} .
+        \end{equation*}
+        We know that
+        \begin{equation*}
+            p(y \knowing x_1, x_2) = \int p(y \knowing x_1, x_2, x_3) \, p(x_3 \knowing x_1, x_2) \d{x_3} ,
+        \end{equation*}
+        where $p(y \knowing x_1, x_2, x_3)$ and $p(x_3 \knowing x_1, x_2)$ are linear Gaussian distributions given in the statement. Therefore, we have
+        \begin{equation*}
+            p(y \knowing x_1, x_2) = \N\rbk*{a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
+        \end{equation*}
+        and, by definition of a Gaussian distribution,
+        \begin{equation*}
+            \underset{p(y \knowing x_1, x_2)}{\E} \sbk{y} = a_3 x_1 + (a_4 + a_5 a_2) x_2 + a_5 \mu_3 + \mu_y.
+        \end{equation*}
+    \end{solution}
+    
+    \item \label{itm:mle} Suppose now that the model's parameters are unknown. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, determine the model that best describes $d$.
+    
+    \begin{solution}
+        We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
+        \begin{align*}
+            h_{\text{MLE}} & = \arg \max_w p(d \knowing h) \\
+            & = \arg \max_h \prod_i p(x_i, y_i \knowing h) \\
+            & = \arg \max_h \log \prod_i p(x_i, y_i \knowing h) \\ \displaybreak
+            & = \arg \max_h \sum_i \log p(x_i, y_i \knowing h) \\
+            & = \arg \max_h \sum_i \log p(y_i \knowing h, x_i) + \log p(x_i) \\
+            & = \arg \max_h \sum_i \log p(y_i \knowing h, x_i) \\
+            & = \arg \max_h \sum_i \log \sbk*{\frac{1}{\sqrt{2 \pi \sigma^2}} \exp\rbk*{- \frac{(w^T x_i - y_i)^2}{2 \sigma^2}}} \\
+            & = \arg \max_h \sum_i - \frac{1}{2} \log (2 \pi \sigma^2) - \frac{(w^T x_i - y_i)^2}{2 \sigma^2} \\
+            & = \arg \min_h \log \sigma^2 + \frac{1}{\sigma^2} \frac{1}{N} \sum_i (w^T x_i - y_i)^2 ,
+        \end{align*}
+        where $x_i = \mat{x_{i,1} & x_{i,2} & 1}^T$ and $w = \mat{w_1 & w_2 & b}^T$. In the last expression, we observe that the summation term is independent from $\sigma$. Therefore,
+        \begin{align*}
+            w_{\text{MLE}} & = \arg \min_w \sum_i (w^T x_i - y_i)^2 ,
+        \end{align*}
+        which exactly corresponds to a \emph{linear regression} problem. Then, we find $w_{\text{MLE}}$ by canceling the gradient with respect to $w$, \ie{}
+        \begin{align*}
+            0 & = \nabla_w \sum_i (w^T x_i - y_i)^2 \\
+            & = \sum_i \nabla_w \, (w^T x_i - y_i)^2 \\
+            & = \sum_i 2 \, (w^T x_i - y_i) \, x_i \\
+            & = \sum_i (w^T x_i - y_i) \, x_i .
+        \end{align*}
+        This expression is a \emph{vectorial} equality, which is equivalent to the set of element-wise equalities
+        \begin{align*}
+            0 & = \sum_i (w^T x_i - y_i) \, x_{ij} \\
+            & = \sum_i \rbk*{\sum_k w_k x_{ik}} x_{ij} - \sum_i y_i x_{ij} \\
+            & = \underbrace{\sum_k w_k \underbrace{\sum_i x_{ik} x_{ij}}_{\rbk{X^T X}_{jk}}}_{\rbk{X^T X w}_j} - \underbrace{\sum_i y_i x_{ij}}_{\rbk{X^T Y}_j} \\
+            & = \rbk*{X^T X w - X^T Y}_j ,
+        \end{align*}
+        where $X = (x_i^T) \in \R^{N \times 3}$ and $Y = (y_i) \in \R^{N}$. Finally, going back to vectors, we have
+        \begin{alignat*}{2}
+            && 0 & = X^T X w_{\text{MLE}} - X^T Y \\
+            \Leftrightarrow \quad && w_{\text{MLE}} & = (X^T X)^{-1} X^T Y .
+        \end{alignat*}
+        Afterwards, we find $\sigma_{\text{MLE}}$ such that
+        \begin{align*}
+            \sigma_{\text{MLE}} & = \arg \min_\sigma \log \sigma^2 + \frac{\text{MSE}}{\sigma^2} \\
+            & = \sqrt{\text{MSE}},
+        \end{align*}
+        where $\text{MSE}$ denotes the \emph{mean squared error}
+        \begin{equation*}
+            \frac{1}{N} \sum_i ({w_{\text{MLE}}}^T x_i - y_i)^2 .
+        \end{equation*}
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
+\section{Heteroscedastic linear regression}
+
+What becomes the expression of the weight vector $w$ in the solution of question 2.2 if the noise is different for each sample? In
+particular, $y_i \sim N(w^T x, \sigma_i^2)$ and we know the values $\sigma_i$.
+
+\newpage
+
+\section{Ridge regression}
+
+One can generalize the linear regression problem to the minimization problem
+\begin{align*}
+    w^* & = \arg \min_w \sum_i \ell(w^T x_i - y_i) ,
+\end{align*}
+where $\ell$ is a \emph{loss} function. Show that $\ell(x) = \abs{x}$ corresponds to assuming the noise follows a Laplace distribution in contrast to $\ell(x) = x^2$, which corresponds to assuming Gaussian noise.
+
+\newpage
+
+\section{Learning to play Pacman (August 2020)}
+
+You observe a Grandmaster agent playing Pacman. How can you use the moves you observe to train your own agent?
+
+\begin{enumerate}
+    \item Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
+    
+    \item How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
+    
+    \item Discuss the expected performance of the resulting agent when \begin{enumerate*}
+        \item the Grandmaster agent is optimal, and
+        \item the Grandmaster agent is suboptimal.
+    \end{enumerate*}
+\end{enumerate}
+
+\newpage
+
+\section*{Supplementary materials}
+
+\begin{itemize}    
+    \item Heteroscedasticity
+    
+    \qrcode{https://en.wikipedia.org/wiki/Heteroscedasticity}
+    
+    \item Laplace distribution
+    
+    \qrcode{https://en.wikipedia.org/wiki/Laplace_distribution}
+    
+    \item Chapter 18 of the reference textbook.
+\end{itemize}
+
+\end{document}

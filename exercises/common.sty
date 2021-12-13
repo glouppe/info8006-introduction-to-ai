@@ -1,0 +1,65 @@
+\ProvidesPackage{common}[2021/12/12]
+
+%%%%%%%%%
+% Title %
+%%%%%%%%%
+
+\newif\ifSubtitle
+\newif\ifDate
+
+\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}\Subtitletrue}
+\renewcommand*{\date}[1]{\gdef\@date{#1}\Datetrue}
+
+\renewcommand*{\maketitle}{
+    \begin{center}
+        {\LARGE\@title\unskip\\}
+        \ifSubtitle
+            \vspace{0.25cm}
+            {\Large\@subtitle\unskip\\}
+        \fi
+        \ifDate
+            \vspace{0.25cm}
+            {\large\@date\unskip\\}
+        \fi
+        \unskip\par
+    \end{center}
+}
+
+%%%%%%%%%%
+% Graphs %
+%%%%%%%%%%
+
+\RequirePackage{tikz}
+\RequirePackage{pgf}
+\RequirePackage{pgfplots}
+
+\usetikzlibrary{automata, arrows.meta}
+
+%%%%%%%%%%%%%
+% Exercises %
+%%%%%%%%%%%%%
+
+\renewcommand{\thesection}{Exercise \arabic{section}}
+
+\RequirePackage{environ}
+
+\NewEnviron{solution}{\BODY}
+
+\DeclareOption{nosolutions}{
+    \RenewEnviron{solution}{}
+}
+
+\ProcessOptions\relax
+
+%%%%%%%%%%
+% Macros %
+%%%%%%%%%%
+
+\def\knowing{\vert}
+\def\E{\mathbb{E}}
+\def\N{\mathcal{N}}
+\def\V{\mathbb{V}}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+\endinput
