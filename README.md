@@ -125,7 +125,7 @@ Short questions will be asked as part of the written exam. You do not have to pr
 - [August 2019](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2019.pdf)
 - [January 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2020.pdf)
 - [August 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020-solutions.pdf))
-- [January 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021.pdf)
+- [January 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021-solutions.pdf))
 - [August 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2021.pdf)
 
 Materials covered by the exam are listed [here](https://glouppe.github.io/info8006-introduction-to-ai/pdf/info8006-grid.pdf).
