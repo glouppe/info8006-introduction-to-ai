@@ -8,6 +8,11 @@ Lecture 6: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: applications https://users.aalto.fi/~ssarkka/pub/cup_book_online_20131111.pdf
+R: promise for today: understand how weather forecast is done! isn't that cool?
+
 ---
 
 # Today

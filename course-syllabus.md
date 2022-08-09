@@ -8,6 +8,13 @@ Fall 2021
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: add that they should participate. Dont be shy! (have candies for each answer?)
+R: honor code / plagiarism
+R: check content of https://stanford-cs221.github.io/spring2022/
+R: reading one of https://direct.mit.edu/daed/issue/151/2 ?
+
 ---
 
 # Goals and philosophy
