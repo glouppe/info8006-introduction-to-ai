@@ -8,6 +8,10 @@ Lecture 5: Inference in Bayesian networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+Discuss the sampling algorithms with code, to better communicate the inefficiency and intuition.
+
 ---
 
 # Today
