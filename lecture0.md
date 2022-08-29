@@ -8,6 +8,11 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+Copilot
+https://github.com/AUTOMATIC1111/stable-diffusion-webui
+
 ---
 
 # Today
