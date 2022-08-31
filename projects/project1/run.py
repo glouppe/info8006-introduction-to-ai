@@ -89,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--layout',
         help='Maze layout (from layout folder).',
-        default="small_adv")
+        default="small")
     parser.add_argument(
         '--nghosts',
         help='Maximum number of ghosts in a maze.',

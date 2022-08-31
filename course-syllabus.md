@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2021
+Fall 2022
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -10,8 +10,6 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: add that they should participate. Dont be shy! (have candies for each answer?)
-R: honor code / plagiarism
 R: check content of https://stanford-cs221.github.io/spring2022/
 R: reading one of https://direct.mit.edu/daed/issue/151/2 ?
 
@@ -24,7 +22,7 @@ R: reading one of https://direct.mit.edu/daed/issue/151/2 ?
 - Be able to write from scratch, debug and run (some) AI algorithms.
 
 ## Well established algorithms and state-of-the-art
-- Well-established algorithms for building intelligent agents.
+- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
 - Introduction to materials new from research ($\leq$ 5 years old).
 - Understand some of the open questions and challenges in the field.
 
@@ -38,7 +36,7 @@ R: reading one of https://direct.mit.edu/daed/issue/151/2 ?
 This course is given by:
 - Theoretical lectures: Gilles Louppe
 - Exercise sessions: François Rozet
-- Programming projects: Arnaud Delaunoy, Gaspard Lambrechts
+- Programming projects: Arnaud Delaunoy, François Rozet
 
 Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) for help.
 
@@ -46,9 +44,15 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/frozet.jpeg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/arnaud.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/gaspard.jpg)] 
+.circle.width-20[![](figures/course-syllabus/arnaud.jpg)]
 ]
+
+---
+
+# You
+
+<br>
+.center.width-100[![](./figures/course-syllabus/sleep.jpg)]
 
 ---
 
@@ -100,17 +104,6 @@ class: middle
 
 # Projects
 
-## Reading assignment
-
-Read a major scientific paper in Artificial Intelligence.
-(Paper to be announced later.)
-
-.center.width-40[![](figures/course-syllabus/alphago-paper.png)]
-
----
-
-class: middle
-
 ## Programming projects
 
 Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty.
@@ -119,15 +112,36 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 ---
 
+class: middle
+
+## Reading assignment
+
+Read a scientific paper in Artificial Intelligence.
+(Paper to be announced later.)
+
+.center.width-40[![](figures/course-syllabus/alphago-paper.png)]
+
+---
+
 # Evaluation
 
 - Written exam (60%)
     - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
-    - Project 0: 0%
-    - Project 1: 20%
+    - Project 1: +1
     - Project 2: 20%
+    - Project 3: 20%
     - Programming projects are **mandatory** for presenting the exam.
+
+---
+
+class: middle
+
+## Honor code
+
+You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .bold[However, under no circumstances, may you base your project on someone else's implementation.] One of the main learning outcomes of the programming projects is for you to better understand the course materials.
+
+.bold[Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.]
 
 ---
 

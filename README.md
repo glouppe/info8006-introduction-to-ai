@@ -1,29 +1,33 @@
 # INFO8006 - Introduction to Artificial Intelligence
 
-Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2021.
+Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2022.
 
 - Instructor: Gilles Louppe
-- Teaching assistants: Arnaud Delaunoy, François Rozet, Gaspard Lambrechts
+- Teaching assistants: Arnaud Delaunoy, François Rozet
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
-- When: Fall 2021, Thursday 8:30 AM to 12:30 AM.
-- Classroom: B7b A142
+- When: Fall 2022, Thursday 8:30 AM to 12:30 AM.
+- Classroom: B7b/A142
 
 ## Agenda
 
 | Date | Topic |
 | ---- | ----- |
-| September 16 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
-| September 23 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] <br> Lecture 2b: [Constraint satisfaction problems][l2b] [[PDF][l2b-pdf]] (optional) <br> Tutorial: [Introduction to Python](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]|
-| September 30 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
-| October 7 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Tutorial: [Search algorithms](projects/project0) (project 0, done in class) <br> Project 1: [Adversarial search](projects/project1) (due by October 28, 2021) |
-| October 14 (10:30 AM) | Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
-| October 21 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] (continued) <br> Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]] <br> Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
-| October 28 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 1: Deadline <br> Project 2: [Bayes filter](projects/project2) (due by November 25, 2021) |
-| November 18 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Hyperloop [[notebook](code/exercises-4-hyperloop.ipynb)] |
-| November 25 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
-| December 2 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] <br> Project 2: Deadline |
-| December 9 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] |
-| December 16 (9:00 AM) | Q&A <br> Correction of a past exam (January 2021) |
+| September 15 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
+| September 22 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] <br> Lecture 2b: [Constraint satisfaction problems][l2b] [[PDF][l2b-pdf]] (optional)<br> Project 1: [Search algorithms](projects/project1) (due by October 7) |
+| September 29 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
+| October 6 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Project 2: [Adversarial search](projects/project2) (due by October 28)<br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
+| October 7 | Project 1: Deadline |
+| October 13 | Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 20 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]] |
+| October 27 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 3: [Bayes filter](projects/project3) (due by November 25, 2021) |
+| October 28 | Project 2: Deadline |
+| November 10 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 4b: Hyperloop [[notebook](code/exercises-4-hyperloop.ipynb)] |
+| November 17 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
+| November 24 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] |
+| November 25 | Project 3: Deadline |
+| December 1 | No class | 
+| December 8 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] |
+| December 15 | Q&As <br> Correction of a past exam (January 2022) |
 | -- | All lectures [[PDF][lall-pdf]] | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
@@ -104,13 +108,13 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 0: [Search algorithms](projects/project0) (done in class)
-- Part 1: [Adversarial search](projects/project1) (due by **October 28, 2021**)
-- Part 2: [Bayes filter](projects/project2) (due by **December 2, 2021**)
+- Part 1: [Search algorithms](projects/project1) (due by **October 7, 2022**)
+- Part 2: [Adversarial search](projects/project2) (due by **October 28, 2022**)
+- Part 3: [Bayes filter](projects/project3) (due by **November 25, 2022**)
 
 ### Reading assignment
 
-Your task is to read a major scientific paper in the field of Artificial Intelligence.
+Your task is to read a scientific paper in the field of Artificial Intelligence.
 
 > Paper: "Human-level control through deep reinforcement learning." <br>
 > Volodymyr Mnih et al, 2015. [[PDF](https://deepmind-media.storage.googleapis.com/dqn/DQNNaturePaper.pdf)]
@@ -127,11 +131,14 @@ Short questions will be asked as part of the written exam. You do not have to pr
 - [August 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020-solutions.pdf))
 - [January 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021-solutions.pdf))
 - [August 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2021.pdf)
+- [January 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022.pdf)
+- [August 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2022.pdf)
 
 Materials covered by the exam are listed [here](https://glouppe.github.io/info8006-introduction-to-ai/pdf/info8006-grid.pdf).
 
 ## Archives
 
+- [2021-2022](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2021)
 - [2020-2021](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2020)
 - [2019-2020](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2019)
 - [2018-2019](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2018)

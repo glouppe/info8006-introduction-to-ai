@@ -1,5 +1,4 @@
-
-# Project II
+# Project I
 
 ## Table of contents
 
@@ -13,85 +12,132 @@
 ## Deliverables
 
 You are requested to deliver a *tar.gz* archive containing:
- - Your report named `report.pdf`.
-	 - Your report must be at most **5** pages long.
-	 - Fill in the following [template](./template-project2.tex) to write your report.
-	 - In French or English.
- - A file named `bayesfilter.py` containing your implementation of the Bayes filter algorithm.
-     - Simply modify the provided `bayesfilter.py` file.
-	 - :warning: Do not change the class name (`BeliefStateAgent`).
- - (optional) A file named `pacmanagent.py` containing your implementation of the BONUS.
-     - Simply modify the provided `pacmanagent.py` file.
+ 1. Your report named `report.pdf`.
+     - Your report must be at most **5** pages long.
+     - Fill in the following [template](./template-project1.tex) to write your report.
+     - In French or English.
+     
+ 2. Your `minimax.py` file that implements the Minimax algorithm.
+
+ 3. Your `hminimax0.py` file that implements the H-Minimax algorithm with your best cut-off/heuristic functions pair.
+
+ 4. Your `hminimax1.py` file that implements the H-Minimax algorithm with your second best cut-off/heuristic functions pair.
+
+ 5. Your `hminimax2.py` file that implements the H-Minimax algorithm with your third best cut-off/heuristic functions pair.
+
+  Put the template defined in `pacmanagent.py` into each of the `*.py` files and fill in the `get_action` function differently for each file.
 
 :warning: A penalty of **-2 points** on the final grade will be applied if the files are not named based on the instructions above.
 
 ---
+
 ## Instructions
 
-This part is due by **December 2, 2021 at 23:59**. This is a **hard** deadline.
+This part is due by **October 28, 2021 at 23:59**. This is a **hard** deadline.
 
-In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
+In [project 0](../project0), Pacman could wander peacefully in its maze. In this *project 1*, he needs to avoid a walking ghost that would kill it if it reached his position. And Pacman has not idea of (i) what is the objective of the ghost (whether the ghost wants to kill him or not) and (ii) if it is playing optimally for achieving its goal. Pacman only knows that the ghost cannot make a half-turn unless it has no other choice.
 
-A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are confused and should be willing to escape from him.
-More precisely, he knows that the first ghost, named `scared`, is more fearful than the second ghost, named `afraid`, who is more fearful than the third ghost, named `confused`.
+The ghost follows one of the following policies, as set through the `--ghostagent` command line option:
+ - `dumby`: Rotate on itself in a counterclockwise fashion until it can go on its left.
+ - `greedy`: Select the next position that is the closest to Pacman.
+ - `smarty`: Select the next position which leads to the shortest path towards Pacman.
 
-Your task is to design an intelligent agent based on the Bayes filter algorithm (see [Lecture 6](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md)) for locating all the ghosts in the maze.
+:warning: But as specified above, Pacman is not aware of the policy that the ghost follows.
 
-You may use the following command line to start a game where the sole eadible `scared` ghost wanders around the maze while Pacman, controlled by the `humanagent.py` policy, tries to locate him with a (very) rusty sensor:
-```bash
-python run.py --agentfile humanagent.py --bsagentfile bayesfilter.py --ghostagent scared --nghosts 1 --seed -1 --layout large_filter
+Your task is to design an intelligent agent based on adversarial search algorithms (see [Lecture 3](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md)) for maximizing the score. In this project, we will not consider layouts with capsules, but you may take them into account if you feel motivated. You can start by downloading the [archive](../project1.tar.gz) of the project. In order to run you code, you can use the following command (replacing `humanagent.py` by `minimax.py` for example):
+
 ```
-Note that when you use multiple ghosts, they all run the same policy (e.g., all `scared`). Change the value of `seed` - for random number generator - to a positive value to ease reproducibility of your experiments.
+python3 run.py --agentfile humanagent.py --ghost dumby --layout small_adv
+```
 
-You are asked to answer the following questions:
+You are asked to answer the following questions.
 
- 1. **Bayes filter**
-	 - 1.a. - **2 point** - Describe mathematically the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
-	 - 1.b. - **2 points** - Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py` (functions `getDistribution`). Your model should specify a single free parameter.
+ 1. **Problem Statement -- 4.5 points**
+    
+     - 1.a. - **4 points** - Formalize the game as an **adversarial search problem** by proposing a definition of the following elements **for this particular problem**:
+       
+        - The *set of states* of this game
+            - You must specify the initial state
+        - The function `player(s)` that defines which player has the move (1 for Pacman, 0 for Ghost) in state `s`
+        - The function `action(s)` that defines the legal actions available in state `s`
+        - The transition model that returns the state `s' = result(s, a)` that results from taking action `a` in state `s`
+        - The terminal test `terminal(s)` that determines whether state `s` is terminal (1 for terminal, 0 for non terminal)
+        - The utility function `utility(s, p)` that defines the final numerical value for a game that ends in state `s` for player `p`.
+            - You should define it for player `p = Pacman` only
+            - Remember for game one that the game score function is defined as:
+            ```
+            score = -#time steps + 10*#number of eaten food dots - 5*#number of eaten capsules + 200*#number of eaten ghost + (-500 if #losing end) + (500 if #winning end)
+            ```
+
+        Any **reference to the API** in any component of the problem statement will be considered as **false** (i.e. you can not use function or variables defined in the code in your formalization).
+
+     - 1.b. - **0.5 points** - How would you define `utility(s, p)` for `p = Ghost`, if the game was a zero-sum game.
+
+ 2. **Implementation -- 9 points**
+
+     - 2.a. - **1 point** - Consider the direct application of Minimax with respect to the problem statement, by assuming that the game is a zero-sum game.
+
+        - Discuss its completeness with respect to the game of Pacman.
+
+        - From the point of view of Pacman, by looking at the utility function, is there an advantage in going through a cycle (i.e., going back to an already visited state `s`)?
+
+        - In view of that, discuss how you could guarantee the completeness of Minimax by adapting the components described in the problem statement, while keeping the same set of optimal strategies.
+        
+     - 2.b. - **4 points** - Implement the **Minimax** algorithm as specified in section [Deliverables](#deliverables) in `minimax.py`.
+       
+         - You must **guarantee the completeness** of the algorithm.
+
+         - Your Minimax agent needs to **provide an optimal strategy in the smaller map** `./pacman_module/layouts/small_adv.lay` against all kinds of ghosts.
+
+         - In your report, just refer your code.
+         
+     - 2.c. - **4 points** - Implement the **H-Minimax** algorithm with your own **cutoff-tests** and **evaluation functions** in `hminimax0.py`, `hminimax1.py` and `hminimax2.py`. You are expected to provide **3 cutoff-test/evaluation function pairs**, with **at least two different evaluation functions**. At most two of them might fail against some ghosts/layouts as long as the heuristics do still make sense. We expect you to design winning heuristics while being able to provide possible explanations on failing heuristics.
+       
+         - Each proposed evaluation function needs to differ from the game score function.
+         
+         - Your evaluation functions need to be **fast** to compute and **generalizable**.
+         
+         - Evaluation functions can be built by weighting the different characteristics of the game state, but this is not a constraint.
+         
+         - Your different evaluation/cut-off functions must be significantly different (changing the value of a parameter is not sufficient)
+         
+         - In your report, refer your codes and the describe formally your different cutoff-tests and evaluation functions.
+         
+           N.B.: Although 3 layouts are provided for this project, you remain free to build your own layouts in order to fit the most general cutoff-test/evaluation function pair as possible. If you do so, discuss it briefly in your report.
      
-     :warning: Be aware that in project 2, the ghosts are now able to go move backward, on the contrary to project 1.
+ 3. **Experiment -- 4 points**
 
-    Answers to the previous questions should not make any reference to the API nor include pseudo-code.
+    - 3.a. - **2 points** - Run your H-Minimax agent against `./pacman_module/layouts/large_adv.lay` layout and all ghosts, using your 3 cutoff-test/evaluation function pairs. Report your 9 results as bar plots in terms of (i) score, (ii) time performances and (iii) number of expanded nodes.      
 
- 2. **Implementation**
+        - As the number of pages of the report is limited, we advise you to minimise the number of plots by combining bars whenever possible
 
- 	- 2.a. - **6 points** - Implement the **Bayes filter** algorithm to compute Pacman's belief state. This should be done in the `_get_updated_belief` function of `bayesfilter.py`.
-         - Your function `_get_updated_belief` (**2 points**) should use the functions `_get_sensor_model` (**2 points**) and `_get_transition_model` (**2 points**) that you should also define yourself.
- 		 - Your implementation must work with multiple ghosts (all running the same policy).
- 		 - Pacman's belief state should eventually converge to an uncertainty area for each ghost.
- 		 - Your filter should consider the Pacman position, as Pacman may wander freely in the maze.
+        - Pay attention to the clarity of your plots (e.g. by labelling the axes, adding a legend, and puting a caption in your LaTeX report).
 
- 3. **Experiment**
-
- 	- 3.a. - **1 point** - Provide a measure which summarizes Pacman's belief state (i.e., its uncertainty).
- 	- 3.b. - **1 point** - Provide a measure of the quality of the belief state(s). You may assume access to the ground truth (i.e., the true position of the ghost(s)).
- 	- 3.c. - **3 points** - Run your filter implementation on the `/pacman_module/layouts/large_filter.lay` and the `/pacman_module/layouts/large_filter_walls.lay` layouts, against each type of ghost. Report your results graphically.
- 		 - Record your measures (see `_record_metrics` function in `bayesfilter.py`) averaged over several trials.
- 		 - Your results should come with error bars.
- 		 - The number of trials must be high enough and their duration long enough so that the measures have converged.
- 	- 3.d. - **1 points** - Discuss the effect of the ghost transition model parameter on its own behavior and on Pacman's belief state. Consider the two provided layouts. Motivate your answer by using your measures and the model itself. Use the default sensor variance.
- 	- 3.e. - **1 points** - Discuss the effect of the sensor variance (as set through the `--sensorvariance` command line argument) on Pacman's belief state.
- 	- 3.f. - **1 points** - How would you implement a Pacman controller to eat ghosts using only its current position, the set of legal actions and its current belief state?
- 	- 3.g. - **BONUS 3 points** - Implement this controller in the `pacmanagent.py` file.
+    - 3.b. - **2 points** - **Summarize** the results of your cutoff-test/evaluation function pairs, according to the type of ghosts. **Explain** these results, notably by referring to the course.
+    
+    NB: there are additional evaluation criteria that you can find in section [Evaluation](#evaluation).
 
 ---
 
 ## Evaluation
 
 Besides the questions you're expected to answer, you will also be evaluated according to the following criteria:
+ - **Code performance** - **2 points** - Your code will be tested on the submission platform machines. After each submission, you will receive a feedback which will contain information about the accuracy of your results and the time performances of your code.  
+     - 2 points: <= 30 seconds
+     - 0 point: > 30 seconds
 
  - **Code style** - **2 points**
-	 - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). A script will be executed to check the compatibility of your code.
-		 - 0.8 point : the script runs without error.
-		 - 0 point: any error during the execution of the script.
-	 - **Specification** - **1.2 point** - correctness of the specification of your functions.
-		- 1.2 point : all specifications are correct.
-		- 0.9 point : at least 75% correct specifications.
-		- 0.6 point : at least 50% correct specifications.
-		- 0.3 point : at least 25% correct specifications.
-		- 0 point : less than 25% correct specifications.
+     - **PEP8 compatibility** - **0.8 point** - PEP8 guidelines are provided at [Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/). A script will be executed to check the compatibility of your code.
+         - 0.8 point : the script runs without error.
+         - 0 point: any error during the execution of the script.
+     - **Specification** - **1.2 point** - correctness of the specification of your functions.
+        - 1.2 point : all specifications are correct.
+        - 0.9 point : at least 75% correct specifications.
+        - 0.6 point : at least 50% correct specifications.
+        - 0.3 point : at least 25% correct specifications.
+        - 0 point : less than 25% correct specifications.
 
-Note that your implementation might be tested on other layouts, with Pacman moving arbitrarily.
+Note that your implementation might be tested on other layouts.
 
 :warning: Take care of providing a clearly written report, which fully follows the provided template. We reserve the right to refuse to evaluate a report (i.e. to consider it as not provided) which would be difficult to read and understand. We may also refuse to evaluate discussion blocks that are truly confusing, even if the underlying idea might be right. Sanctions will be imposed in case of non-respect of the guidelines about the structure and length of the report:
 

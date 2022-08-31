@@ -63,17 +63,15 @@ class: middle
 
 This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
 
-- **INFO8006: Introduction to Artificial Intelligence $\leftarrow$ you are there**
+- INFO8006: Introduction to Artificial Intelligence $\leftarrow$ **you are there**
+- DATS0001: Foundations of dats science
 - ELEN0062: Introduction to Machine Learning
-- INFO8004: Advanced Machine Learning
 - INFO8010: Deep Learning
+- INFO8004: Advanced Machine Learning
 - INFO8003: Optimal decision making for complex problems
 - INFO0948: Introduction to Intelligent Robotics
 - INFO9014: Knowledge representation and reasoning
 - ELEN0016: Computer vision
-- ELEN0060: Information and coding theory
-- MATH2022: Large-sample analysis: theory and practice
-- DROI8031: Introduction to the law of robots
 
 ???
 

@@ -151,6 +151,7 @@ class AgentState:
         self.scaredTimer = 0
         self.numCarrying = 0
         self.numReturned = 0
+        
 
     def __str__(self):
         if self.isPacman:
@@ -431,11 +432,11 @@ class GameStateData:
             self.capsules = prevState.capsules[:]
             self.agentStates = self.copyAgentStates(prevState.agentStates)
             self.layout = prevState.layout
-            self._eaten = deepcopy(prevState._eaten)
+            self._eaten = prevState._eaten
             self.score = prevState.score
             try:
                 self.beliefStates = np.copy(prevState.beliefStates)
-            except BaseException:
+            except:
                 pass
 
         self._foodEaten = None
@@ -456,7 +457,7 @@ class GameStateData:
         state._capsuleEaten = self._capsuleEaten
         try:
             state.beliefStates = np.copy(self.beliefStates)
-        except BaseException:
+        except:
             pass
         return state
 
@@ -563,13 +564,7 @@ class GameStateData:
             return '3'
         return 'E'
 
-    def initialize(
-            self,
-            layout,
-            numGhostAgents,
-            isGhostVisible=True,
-            edibleGhosts=False,
-            beliefStateAgent=None):
+    def initialize(self, layout, numGhostAgents, isGhostVisible=True, beliefStateAgent=None):
         """
         Creates an initial game state from a layout array (see layout.py).
         """
@@ -584,49 +579,35 @@ class GameStateData:
         self.agentStates = []
         numGhosts = 0
         for agtType, pos in layout.agentPositions:
-            isPacman = agtType == 0
+            isPacman = agtType == 0 
             if not isPacman:
                 if numGhosts == numGhostAgents:
                     continue  # Max ghosts reached already
                 else:
                     numGhosts += 1
-                    # If beliefstateagent is specified, it is Project Part III
-                    # Here we choose a random initial location
+                    #If ghost is not visible, it is Project Part III
+                    #Here we choose a random initial location
                     if beliefStateAgent is not None:
                         pos = layout.getRandomLegalGhostPosition()
             agt = AgentState(
-                Configuration(
-                    pos,
-                    Directions.STOP,
-                    visible=isGhostVisible if not isPacman else True),
-                agtType)
-            if edibleGhosts:
-                agt.scaredTimer = float("inf")
+                    Configuration(
+                        pos,
+                        Directions.STOP, visible=isGhostVisible if not isPacman else True),
+                    agtType)
             self.agentStates.append(agt)
         self._eaten = [False for a in self.agentStates]
         if beliefStateAgent is not None:
             """
             Create a uniform prior on the belief state
             """
-            uniformBelief = np.full((self.layout.width,
-                                     self.layout.height),
-                                    1.0 / (self.layout.width * self.layout.height))
-            
-            for x in range(self.layout.width):
-                for y in range(self.layout.height):
-                    if self.layout.walls[x][y]:
-                        uniformBelief[x][y] = 0.
-                        
-            uniformBelief = uniformBelief/np.sum(uniformBelief)
-
+            uniformBelief = np.full((self.layout.width,self.layout.height), 1.0/(self.layout.width*self.layout.height))
             agtState = AgentState(
-                Configuration(
-                    -1,
-                             (-1, -1), False),
-                -1)
+                          Configuration(
+                             -1,
+                             (-1,-1), False),
+                             -1)
             self.agentStates.append(agtState)
-            self.beliefStates = [np.copy(uniformBelief)
-                                 for _ in range(numGhosts)]
+            self.beliefStates = [np.copy(uniformBelief) for _ in range(numGhosts)]
 
 
 try:
@@ -648,8 +629,7 @@ class Game:
             rules,
             startingIndex=0,
             muteAgents=False,
-            catchExceptions=False,
-            oracleBeliefStateAgent=None):
+            catchExceptions=False):
         self.agentCrashed = False
         self.agents = agents
         self.display = display
@@ -664,7 +644,6 @@ class Game:
         self.agentTimeout = False
         import io
         self.agentOutput = [io.StringIO() for agent in agents]
-        self.oracleBeliefStateAgent = oracleBeliefStateAgent
 
     def getProgress(self):
         if self.gameOver:
@@ -730,21 +709,9 @@ class Game:
             violated = False
             t = time.time()
             if expout == 0:
-                if (agentIndex == 0 and type(self.agents[numAgents-1]).__name__ == "BeliefStateAgent"):
-                    action = agent.get_action(observation, previous_action)
-                elif (agentIndex == numAgents-1 and type(self.agents[numAgents-1]).__name__ == "BeliefStateAgent"):
-                    action, evidence = agent.get_action(observation)
-                    if self.oracleBeliefStateAgent is not None:
-                        oracleAction = self.oracleBeliefStateAgent.get_action(observation, evidence)
-
-                        if len(action) == len(oracleAction) and np.array([(np.absolute(x - y) < 10**(-4)).all() for x,y in zip(action, oracleAction)]).all():
-                            print("step {}: OK".format(self.numMoves))
-                        else:
-                            print("step {}: Not OK".format(self.numMoves))
-                else:
-                    action = agent.get_action(observation)
+                action = agent.get_action(observation)
             else:
-                # TODO : node expansion control through getSuccessors
+                #TODO : node expansion control through getSuccessors
                 action = agent.get_action(observation)
                 if pacmodule.pacman.GameState.countExpanded > expout:
                     violated = True
@@ -757,7 +724,7 @@ class Game:
                 print("Node expansion budget violated !")
                 action = previous_action
 
-            if not self.state.isLegalAction(agentIndex, action):
+            if not self.state.isLegalAction(agentIndex,action):
                 action = Directions.STOP
             self.unmute()
             # Execute the action
@@ -773,7 +740,7 @@ class Game:
             # Allow for game specific conditions (winning, losing, etc.)
             self.rules.process(self.state, self)
             # Track progress
-            if agentIndex == numAgents - 1:
+            if agentIndex == numAgents + 1:
                 self.numMoves += 1
             # Next agent
             agentIndex = (agentIndex + 1) % numAgents
@@ -784,4 +751,4 @@ class Game:
         totalScore = self.state.getScore()
 
         self.display.finish()
-        return totalScore, totalComputationTime, totalExpandedNodes
+        return totalScore,totalComputationTime,totalExpandedNodes

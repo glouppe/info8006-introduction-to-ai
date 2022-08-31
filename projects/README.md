@@ -5,23 +5,27 @@
 </p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
-- [**Project 0**](./project0): you have to implement a Search agent for eating all the food dots as quickly as possible.
-- [**Project I**](./project1): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
-- [**Project II**](./project2): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
+- [**Project 1**](./project1): you have to implement a Search agent for eating all the food dots as quickly as possible.
+- [**Project 2**](./project2): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
+- [**Project 3**](./project3): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
 
 ## Table of contents
 
-- [Installation](#installation)
-    * [Setup](#setup)
-    * [Usage](#usage)
-- [Instructions](#instructions)
-- [Typical mistakes and bad practices](#typical-mistakes-and-bad-practices)
-- [FAQ](#faq)
-    * [Game score](#score)
-    * [API](#api)
-    * [Illegal moves](#illegal-moves)
-	* [Questions about the projects](#questions-about-the-projects)
-- [Credits](#credits)
+- [Pacman programming project](#pacman-programming-project)
+  - [Table of contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Setup](#setup)
+    - [Usage](#usage)
+  - [Instructions](#instructions)
+  - [Typical mistakes and bad practices](#typical-mistakes-and-bad-practices)
+    - [Report](#report)
+    - [Code](#code)
+  - [FAQ](#faq)
+    - [Game score](#game-score)
+    - [API](#api)
+    - [Illegal moves](#illegal-moves)
+    - [Questions about the projects](#questions-about-the-projects)
+  - [Credits](#credits)
 
 ---
 
