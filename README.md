@@ -116,12 +116,10 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 Your task is to read a scientific paper in the field of Artificial Intelligence.
 
-> Paper: "Human-level control through deep reinforcement learning." <br>
-> Volodymyr Mnih et al, 2015. [[PDF](https://deepmind-media.storage.googleapis.com/dqn/DQNNaturePaper.pdf)]
+> Paper: "A Golden Decade of Deep Learning: Computing Systems & Applications" <br>
+> Jeffrey Dean, 2022. [[PDF](https://direct.mit.edu/daed/article-pdf/151/2/58/2009186/daed_a_01900.pdf)]
 
-The reading assignment includes the main text (pages 1-4), as well as the methods section (pages 6-7).
-
-Short questions will be asked as part of the written exam. You do not have to produce any summary report.
+1 or 2 short questions will be asked as part of the written exam. You do not have to produce any summary report.
 
 ## Previous exams
 

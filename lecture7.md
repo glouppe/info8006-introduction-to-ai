@@ -10,7 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
-R: prepare one code example
+R: prepare one code example, make this more concrete
 
 ---
 

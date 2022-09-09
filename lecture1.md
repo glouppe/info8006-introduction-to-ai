@@ -80,6 +80,8 @@ What about the actual Pacman?
 
 Run the program!
 
+... and solve it with Copilot :-)
+
 ---
 
 class: middle
@@ -212,10 +214,6 @@ Agent programs can be designed and implemented in many ways:
 - with rules
 - with search algorithms
 - with learning algorithms
-
-???
-
-Run code?
 
 ---
 

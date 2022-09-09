@@ -12,6 +12,7 @@ Prof. Gilles Louppe<br>
 
 Copilot
 https://github.com/AUTOMATIC1111/stable-diffusion-webui
+Mercedes autonomous car on german highways
 
 ---
 
@@ -111,6 +112,7 @@ The reality is quite different...
 
 ---
 
+exclude: true
 class: middle
 
 .center[
@@ -133,6 +135,7 @@ Before trying to define the contours of artificial intelligence, let us first re
 
 ---
 
+exclude: true
 class: middle
 
 .width-30.circle.center[![](figures/lec0/minsky.png)]
@@ -237,6 +240,16 @@ class: middle, center, black-slide
 
 A conversation with GPT-3 (2020)
 
+???
+
+https://beta.openai.com/playground/p/default-chat
+
+---
+
+class: middle, center
+
+Let us Turing test an AI!
+
 ---
 
 class: middle
@@ -318,8 +331,6 @@ class: middle
 - In linguistics, the argument of **poverty of the stimulus** states that children
 do not receive sufficient input to generalize grammatical rules through
 linguistic input alone.
-    - A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
-
 - (Controversial) Therefore, humans must be *biologically pre-wired*
 with **innate knowledge** for representing language.
 ]
@@ -329,10 +340,12 @@ with **innate knowledge** for representing language.
 ]
 ]
 
-Therefore, it may not be possible to implement a fully functioning
+For this reason, it may not be possible to implement a fully functioning
 computer model of the human mind without background knowledge of some sort.
 
 ???
+
+A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
 
 This is a huge technical **obstacle**, as accessing
 this knowledge would require reverse-engineering the brain.
@@ -657,6 +670,14 @@ Detecting skin cancer (2017)
 
 ---
 
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
+
+Advance Science (Deepmind, AlphaFold, 2020)
+
+---
+
 class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/Zm9B-DvwOgw" frameborder="0" allowfullscreen></iframe>
@@ -670,23 +691,6 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/egJ0PTKQp4U?start=223" frameborder="0" allowfullscreen></iframe>
 
 Compose music (NVIDIA, 2017)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/hYZM5l0G28I" frameborder="0" allowfullscreen></iframe>
-
-Learning to sort waste, before training <br>(Norman Marlier, ULiège, 2018)
-
----
-
-count: false
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/MsuS0gaSHJ0" frameborder="0" allowfullscreen></iframe>
-
-Learning to sort waste, after training <br>(Norman Marlier, ULiège, 2018)
 
 ---
 

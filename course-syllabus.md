@@ -8,11 +8,6 @@ Fall 2022
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: check content of https://stanford-cs221.github.io/spring2022/
-R: reading one of https://direct.mit.edu/daed/issue/151/2 ?
-
 ---
 
 # Goals and philosophy
@@ -46,13 +41,6 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 .circle.width-20[![](figures/course-syllabus/frozet.jpeg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/arnaud.jpg)]
 ]
-
----
-
-# You
-
-<br>
-.center.width-100[![](./figures/course-syllabus/sleep.jpg)]
 
 ---
 
@@ -117,7 +105,6 @@ class: middle
 ## Reading assignment
 
 Read a scientific paper in Artificial Intelligence.
-(Paper to be announced later.)
 
 .center.width-40[![](figures/course-syllabus/alphago-paper.png)]
 
@@ -128,7 +115,7 @@ Read a scientific paper in Artificial Intelligence.
 - Written exam (60%)
     - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
-    - Project 1: +1
+    - Project 1: +0.5
     - Project 2: 20%
     - Project 3: 20%
     - Programming projects are **mandatory** for presenting the exam.
