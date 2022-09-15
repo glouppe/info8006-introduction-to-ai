@@ -1,8 +1,10 @@
-\ProvidesPackage{common}[2021/12/12]
+\ProvidesPackage{common}[2021/09/14]
 
-%%%%%%%%%
-% Title %
-%%%%%%%%%
+%%%%%%%%%%%%
+% Settings %
+%%%%%%%%%%%%
+
+% Title
 
 \newif\ifSubtitle
 \newif\ifDate
@@ -25,19 +27,16 @@
     \end{center}
 }
 
-%%%%%%%%%%
-% Graphs %
-%%%%%%%%%%
+% Graphs
 
 \RequirePackage{tikz}
 \RequirePackage{pgf}
 \RequirePackage{pgfplots}
 
+\pgfplotsset{compat=1.7}
 \usetikzlibrary{automata, arrows.meta}
 
-%%%%%%%%%%%%%
-% Exercises %
-%%%%%%%%%%%%%
+% Exercises
 
 \renewcommand{\thesection}{Exercise \arabic{section}}
 
@@ -45,20 +44,30 @@
 
 \NewEnviron{solution}{\BODY}
 
+%%%%%%%%%%%
+% Options %
+%%%%%%%%%%%
+
 \DeclareOption{nosolutions}{
     \RenewEnviron{solution}{}
 }
 
 \ProcessOptions\relax
 
-%%%%%%%%%%
-% Macros %
-%%%%%%%%%%
+%%%%%%%%%%%%
+% Commands %
+%%%%%%%%%%%%
 
 \def\knowing{\vert}
+
 \def\E{\mathbb{E}}
-\def\N{\mathcal{N}}
 \def\V{\mathbb{V}}
+
+\def\N{\mathcal{N}}
+\def\U{\mathcal{U}}
+
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
 
 \newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 

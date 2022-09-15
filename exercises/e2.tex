@@ -23,11 +23,11 @@ At the end of this session you should be able to
 
 \section{21 misery game (January 2019)}
 
-The game \enquote{21} is played as a game with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
+The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
 
 \begin{enumerate}
     \item Define the search problem associated with the 2-player version of the \enquote{21} game.
-    
+
     \begin{solution}
         Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{0, 1}$, where $v$ is the current value of the counter and $p$ the player to play next.
         \begin{description}
@@ -39,15 +39,16 @@ The game \enquote{21} is played as a game with any number of players who take tu
             \item[Utility function] $utility(s) = 1$ if $p = 0$, $0$ otherwise.
         \end{description}
     \end{solution}
-    
+
     \item For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules has \enquote{21} except that you should not say 5 or more. Show the whole game tree.
     \item Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
     \item Mark the nodes that would be pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \includegraphics[width=0.9\textwidth]{figures/e2_21.pdf}
-        \end{center}
+        \end{figure}
     \end{solution}
 \end{enumerate}
 
@@ -61,7 +62,7 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
 
 \begin{enumerate}
     \item Define the search problem associated with the Tic-Tac-Toe game.
-    
+
     \begin{solution}
         Let a state of the game be a matrix $s = (s_{ij}) \in \cbk{-1, 0, 1}^{3 \times 3}$, where the values $-1$, $0$ and $1$ respectively denote O, empty and X cells.
         \begin{description}
@@ -77,41 +78,43 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
                 \end{cases}
             \end{equation*}
             \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $actions(s) = \cbk{(i, j): s_{ij} = 0}$.
-            \item[Transition model] For an action $a \in actions(s)$, $result(s, a) = s'$ is the same as $s$ except that $s'_a = player(s)$.
+            \item[Transition model] For an action $(i, j) \in actions(s)$, $result(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = player(s)$.
             \item[Terminal test] $terminal(s)$ is true if $X_3 + O_3 \geq 1$, false otherwise.
             \item[Utility function] $utility(s) = 1$ if $X_3 \geq 1$, $-1$ if $O_3 \geq 1$ and $0$ otherwise.
         \end{description}
     \end{solution}
-    
+
     \item Approximately how many possible games states of Tic-Tac-Toe are there?
-    
+
     \begin{solution}
         If we disregard unreachable states, we have $3^{3 \times 3} = \num{19683}$ possible states and $\fact{9} = \num{362880}$ possible games.
     \end{solution}
-    
+
     \item Show the whole game tree starting from an empty grid down to depth 2 (one X and one O on the board), taking symmetry into account.
     \item Annotate your tree with the evaluations of all the positions at depth 2.
     \item Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
     \item Mark the nodes that would be pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \includegraphics[width=0.8\textwidth]{figures/e2_tictactoe.pdf}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $eval(s)$ is misleading.
-    
+
     \begin{solution}
         This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning.
-        
-        \begin{center}
+
+        \begin{figure}[h]
+            \centering
             \includegraphics[width=0.3\textwidth]{figures/e2_misleading.pdf}
-        \end{center}
-        
+        \end{figure}
+
         This heuristic does not preserve the Minimax \emph{ordering} of intermediate states.
     \end{solution}
-    
+
 \end{enumerate}
 
 \newpage
@@ -120,25 +123,25 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
 
 \begin{enumerate}
     \item In a fully observable, turn-taking, zero-sum game between two perfectly rational players, does it help the first player to know what strategy the second player is using, \ie{} what actions the second player will take? What if the second player is not rational ?
-    
+
     \begin{solution}
         Since the actions taken by a perfectly rational player are always the optimal ones, the first player can already guess the moves of the second by observing the state of the game, which actually corresponds to the Minimax algorithm. Therefore, knowing the actions doesn't help.
-        
+
         However, if the second player is not rational, it could be better to follow another strategy than Minimax, especially if the second player's strategy is known.
     \end{solution}
-    
+
     \item What is a quiescent state?
-    
+
     \begin{solution}
         A state in which the outcome of a game is unlikely to vary a lot in the near future. For instance, in chess, if a player has a lot more pieces than the other, the outcome of the game is likely already known, and should not change in the next few moves.
     \end{solution}
-    
+
     \item In Monte Carlo Tree Search (MCTS), what is encouraged by each term of the sum in the formula
     \begin{equation*}
         \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
     \end{equation*}
     and what is $c$?
-    
+
     \begin{solution}
         The first term encourages the \emph{exploitation} of states we believe to be \enquote{good}, which allows to improve our beliefs for these states. The second term encourages the \emph{exploration} of states we don't have a lot of information about. The constant $c$ controls the trade-of between exploitation and exploration.
     \end{solution}
@@ -154,23 +157,23 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
     \item Decide on a compact representation of a game state for storage in a transposition table.
 
     \begin{solution}
-        There are 32 pieces and we need to specify their positions in a $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \SI{6}{bits} ($2^6 = 64$), for a total of \SI{24}{o} per state.
+        There are 32 pieces and we need to specify their positions in a $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \qty{6}{bits} ($2^6 = 64$), for a total of \qty{24}{o} per state.
     \end{solution}
-    
-    \item About how many entries can you fit in a \SI{4}{\giga o} in-memory table?
-    
+
+    \item About how many entries can you fit in a \qty{4}{\giga o} in-memory table?
+
     \begin{solution}
         We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{160e6}$ states in the table.
     \end{solution}
-    
+
     \item Will that be enough for the three minutes of search allocated for one move?
-    
+
     \begin{solution}
         It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.880e9}$ evaluated nodes.
     \end{solution}
-    
-    \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \SI{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
-    
+
+    \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
+
     \begin{solution}
         We can perform
         \begin{equation*}
@@ -184,40 +187,44 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
 
 \section{Minimax (UC Berkeley CS188, Fall 2019)}
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.6\textwidth]{figures/e2_minimax_0.pdf}
-\end{center}
+\end{figure}
 
 \begin{enumerate}
     \item Consider the zero-sum game tree shown above. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player. Assuming both players act optimally, fill in the Minimax value of each node.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \includegraphics[width=0.6\textwidth]{figures/e2_minimax_1.pdf}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \includegraphics[width=0.6\textwidth]{figures/e2_minimax_2.pdf}
-        \end{center}
+        \end{figure}
     \end{solution}
 
     \item  Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the Expectminimax value of each node. The game tree is redrawn below for your convenience.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \includegraphics[width=0.6\textwidth]{figures/e2_minimax_3.pdf}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not.
-    
+
     \begin{solution}
         No nodes can be pruned. There will always be the possibility that an as-yet-unvisited leaf of the current parent chance node will have a very high value, which increases the overall average value for that chance node. For example, when we see that leaf 4 has a value of 2, which is much less than the value of the left chance node, 7, at this point we cannot make any assumptions about how the value of the middle chance node will ultimately be more or less in value than the left chance node. As it turns out, the leaf 5 has a value of 15, which brings the expected value of the middle chance node to 8, which is greater than the value of the left chance node.
-        
+
         In the case where there is an upper bound to the value of a leaf node, there is a possibility of pruning: suppose that an upper bound of +10 applies only to the children of the rightmost chance node. In this case, after seeing that leaf 7 has a value of 6 and leaf 8 has a value of 5, the best possible value that the rightmost chance node can take on is $\frac{6+5+10}{3} = 7$, which is less than 8, the value of the middle chance node. Therefore, it is possible to prune leaf 9 in this case.
     \end{solution}
 \end{enumerate}
@@ -226,8 +233,8 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
 
 \section*{Supplementary materials}
 
-\begin{itemize}    
+\begin{itemize}
     \item Chapter 5 of the reference textbook.
 \end{itemize}
-    
+
 \end{document}
