@@ -2,27 +2,11 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Fall 2022
+Course syllabus, Fall 2022
 
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
-
----
-
-# Goals and philosophy
-
-## General 
-- Understand the landscape of artificial intelligence.
-- Be able to write from scratch, debug and run (some) AI algorithms.
-
-## Well established algorithms and state-of-the-art
-- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
-- Introduction to materials new from research ($\leq$ 5 years old).
-- Understand some of the open questions and challenges in the field.
-
-## Practical
-- Fun and challenging course projects.
 
 ---
 
@@ -87,6 +71,15 @@ class: middle
 
 <br>
 .center.width-50[![](figures/course-syllabus/cs188.png)]
+
+---
+
+# Exercise sessions
+
+- Exercice sessions are held every week after the lecture.
+- Prepare the exercises proposed the previous week.
+- Use this time to get answers to your questions, and not to transcribe everything from the blackboard.
+- Solutions are provided for all exercises. 
 
 ---
 

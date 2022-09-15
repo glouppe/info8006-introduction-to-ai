@@ -8,12 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Copilot
-https://github.com/AUTOMATIC1111/stable-diffusion-webui
-Mercedes autonomous car on german highways
-
 ---
 
 # Today
@@ -60,12 +54,30 @@ The techniques you learn in this course apply to a wide variety of artificial in
 
 class: middle
 
+## Goals and philosophy
+
+.italic[General]
+- Understand the landscape of artificial intelligence.
+- Be able to write from scratch, debug and run (some) AI algorithms.
+
+.italic[Well-established and state-of-the-art algorithms] 
+- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
+- Introduction to materials new from research ($\leq$ 5 years old).
+- Understand some of the open questions and challenges in the field.
+
+.italic[Practical]
+- Fun and challenging course projects.
+
+---
+
+class: middle
+
 ## Going further
 
 This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
 
 - INFO8006: Introduction to Artificial Intelligence $\leftarrow$ **you are there**
-- DATS0001: Foundations of dats science
+- DATS0001: Foundations of Data Science
 - ELEN0062: Introduction to Machine Learning
 - INFO8010: Deep Learning
 - INFO8004: Advanced Machine Learning
@@ -249,6 +261,13 @@ https://beta.openai.com/playground/p/default-chat
 class: middle, center
 
 Let us Turing test an AI!
+
+???
+
+Wooclap at https://app.wooclap.com/events/BKEAKB/0
+
+- https://www.midjourney.com/showcase/
+- https://lexica.art/
 
 ---
 
@@ -560,16 +579,16 @@ class: middle
 # What can an AI do today?
 
 - Translate spoken Chinese to spoken English, live?
-- Answer multi choice questions, as good as an 8th grader?
+- Answer multi choice questions, as good as an 8th grader? 
+- Solve university math problems?
+- Prove mathematical theorems?
 - Converse with a person for an hour?
 - Play decently at Chess? Go? Poker? Soccer?
 - Buy groceries on the web? in a supermarket?
-- Prove mathematical theorems?
-- Drive a car safely on a parking lot? in New York?
-- Perform a surgery?
+- Drive a car safely on a parking lot? in New York? in Germany?
 - Identify skin cancer better than a dermatologist?
-- Write a funny story?
-- Write computer code?
+- Write computer code? 
+- Tell a funny story?
 - Paint like Vangogh? Compose music?
 - Show common sense?
 
@@ -691,6 +710,23 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/egJ0PTKQp4U?start=223" frameborder="0" allowfullscreen></iframe>
 
 Compose music (NVIDIA, 2017)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/J9Th_WYu6Eg" frameborder="0" allowfullscreen></iframe>
+
+Cow behaviour recognition (Francois Lievens, ULiège, 2022)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/MsuS0gaSHJ0" frameborder="0" allowfullscreen></iframe>
+
+Learning to sort waste<br>(Norman Marlier, ULiège, 2018)
+
 
 ---
 

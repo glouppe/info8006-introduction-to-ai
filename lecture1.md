@@ -80,8 +80,6 @@ What about the actual Pacman?
 
 Run the program!
 
-... and solve it with Copilot :-)
-
 ---
 
 class: middle
@@ -130,11 +128,15 @@ percepts dictate techniques for selecting rational actions.
 
 These characteristics are summarized as the **task environment**.
 
-## Example 1: an autonomous car
+## Example 1: a self-driving car
 - *performance measure*: safety, destination, legality, comfort, ...
 - *environment*: streets, highways, traffic, pedestrians, weather, ...
 - *actuators*: steering, accelerator, brake, horn, speaker, display, ...
 - *sensors*: video, accelerometers, gauges, engine sensors, GPS, ...
+
+???
+
+We will later call these the reward, the environment, the actions and the observations.
 
 ---
 
