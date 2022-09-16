@@ -35,7 +35,7 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
             0 = \max \cbk{0, P(A) + P(B) - 1} & \leq P(A \cap B) && \leq \min \cbk{P(A), P(B)} = 0.3 .
         \end{alignat*}
         This can be illustrated with Venn diagrams.
-        
+
         \item If the agent believes that $P(A \knowing B) = 0.5$, it should also believe that
         \begin{equation*}
             P(A \cap B) = P(A \knowing B) P(B) = 0.5 \times 0.3 = 0.15,
@@ -51,7 +51,8 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
 
 \section{(AIMA, Ex 13.8)}
 
-\begin{center}
+\begin{table}[h]
+    \centering
     \begin{tabular}{|c|c|c|c|c|}
         \hline
         & \multicolumn{2}{c|}{toothache} & \multicolumn{2}{c|}{no toothache} \\ \hline
@@ -59,8 +60,7 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
         cavity & 0.108 & 0.012 & 0.072 & 0.008 \\ \hline
         no cavity & 0.016 & 0.064 & 0.144 & 0.576 \\ \hline
     \end{tabular}
-    \vspace{1ex}
-\end{center}
+\end{table}
 
 Given the hereabove probability table, compute the following probabilities:
 
@@ -70,32 +70,32 @@ Given the hereabove probability table, compute the following probabilities:
 
 \begin{enumerate}
     \item $P(toothache)$
-    
+
     \begin{solution}
         \begin{equation*}
             P(T = 1) = \sum_{ct} \sum_{cv} P(T = 1, ct, cv) = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
         \end{equation*}
     \end{solution}
-    
+
     \item $P(cavity)$
-    
+
     \begin{solution}
         \begin{equation*}
             P(CV = 1) = \sum_{t} \sum_{ct} P(t, ct, CV = 1) = 0.108 + 0.012 + 0.072 + 0.008 = 0.2
         \end{equation*}
     \end{solution}
-    
+
     \item $P(toothache \knowing cavity)$
-    
+
     \begin{solution}
         \begin{align*}
             P(T = 1 \knowing CV = 1) = \frac{P(T = 1, CV = 1)}{P(CV = 1)} & = \frac{\sum_{ct} P(T = 1, ct, CV = 1)}{P(CV = 1)} \\
             & = \frac{0.108 + 0.012}{0.2} = 0.6
         \end{align*}
     \end{solution}
-    
+
     \item $P(cavity \knowing toothache \cup catch)$
-    
+
     \begin{solution}
         \begin{align*}
             P(CV = 1 \knowing T = 1 \cup CT = 1) & = \frac{P(T = 1 \cup CT = 1, CV = 1)}{P(T = 1 \cup CT = 1)} \\
@@ -103,14 +103,14 @@ Given the hereabove probability table, compute the following probabilities:
             & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
         \end{align*}
     \end{solution}
-    
+
 \end{enumerate}
 
 \newpage
 
 \section{(AIMA, Ex 13.15)}
 
-After your yearly checkup, the doctor has bad news and good news. The bad news is that you tested positive for a serious disease and that the test is \SI{99}{\percent} accurate, \ie{} the probability of testing positive when you do have the disease is \num{0.99} and the probability of testing positive when you don't is \num{0.01}. The good news is that this is a rare disease, striking only 1 in \num{10000} people of your age. Why is it good news that the disease is rare? What are the chances that you actually have the disease?
+After your yearly checkup, the doctor has bad news and good news. The bad news is that you tested positive for a serious disease and that the test is \qty{99}{\percent} accurate, \ie{} the probability of testing positive when you do have the disease is \num{0.99} and the probability of testing positive when you don't is \num{0.01}. The good news is that this is a rare disease, striking only 1 in \num{10000} people of your age. Why is it good news that the disease is rare? What are the chances that you actually have the disease?
 
 \begin{solution}
     It is a good news because the conditional probability will drop due to the weak prior value. Indeed,
@@ -129,19 +129,19 @@ For each of the following statements, either prove it is valid or give a counter
 
 \begin{enumerate}
     \item If $P(a \knowing b, c) = P(b \knowing a, c)$, then $P(a \knowing c) = P(b \knowing c)$.
-    
+
     \begin{solution}
         True. By the conditional probability rule we have $P(a \knowing b, c) P(b, c) = P(b \knowing a, c) P(a, c)$, which by assumption reduces to $P(b, c) = P(a, c)$ and thereby $P(b \knowing c) = P(a \knowing c)$.
     \end{solution}
-    
+
     \item If $P(a \knowing b, c) = P(a)$, then $P(b \knowing c) = P(b)$.
-    
+
     \begin{solution}
-        False. The statement $P(a \knowing b, c) = P(a)$ merely states that a is independent of $b$ and $c$, it makes no claim regarding the dependence of $b$ and $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = b$.
+        False. The statement $P(a \knowing b, c) = P(a)$ merely states that $a$ is independent of $b$ and $c$, it makes no claim regarding the dependence of $b$ and $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = b$.
     \end{solution}
-    
+
     \item If $P(a \knowing b) = P(a)$, then $P(a \knowing b, c) = P(a \knowing c)$.
-    
+
     \begin{solution}
         False. While the statement $P(a \knowing b) = P(a)$ implies that $a$ is independent of $b$, it does not imply that $a$ is conditionally independent of $b$ given $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = a \vee b$.
     \end{solution}
@@ -151,11 +151,11 @@ For each of the following statements, either prove it is valid or give a counter
 
 \section{Bag of coins}
 
-We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of coming up heads of \SI{20}{\percent}, \SI{60}{\percent}, and \SI{80}{\percent}, respectively. One coin is drawn randomly from the bag (with equal probability of drawing each of the three coins), and then the coin is flipped three times to generate the outcomes $X_1$, $X_2$ and $X_3$ (heads or tail).
+We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of coming up heads of \qty{20}{\percent}, \qty{60}{\percent}, and \qty{80}{\percent}, respectively. One coin is drawn randomly from the bag (with equal probability of drawing each of the three coins), and then the coin is flipped three times to generate the outcomes $X_1$, $X_2$ and $X_3$ (heads or tail).
 
 \begin{enumerate}
     \item Draw the Bayesian network corresponding to this setup and define the corresponding conditional probability tables (CPTs).
-    
+
     \begin{solution}
         The process is described with the following random variables:
         \begin{itemize}
@@ -163,52 +163,38 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
             \item $X_i \in \cbk{h, t}$, the realization of the $i$-th coin toss.
         \end{itemize}
         The variable $Y$ is the parent of $X_i$, it should be put before in the network ordering.
-    
-        \begin{center}
-            \begin{tikzpicture}[node distance = 2cm]
-                \node[state, align=center] (Y) {$Y$};
-                \node[state, align=center] (X1) [below left of=Y] {$X_1$};
-                \node[state, align=center] (X2) [below of=Y] {$X_2$};
-                \node[state, align=center] (X3) [below right of=Y] {$X_3$};
-                
-                \path[-{>[scale=1.5]}] (Y) edge (X1);
-                \path[-{>[scale=1.5]}] (Y) edge (X2);
-                \path[-{>[scale=1.5]}] (Y) edge (X3);
-            \end{tikzpicture}
-        \end{center}
-        
-        \vspace{1ex}
-        
-        \begin{minipage}{0.495\textwidth}
-            \centering
-            \begin{tabular}{c|c}
-                \toprule
-                 $Y$ & $P(Y)$ \\
-                 \midrule
-                 $a$ & $\frac{1}{3}$ \\
-                 $b$ & $\frac{1}{3}$ \\
-                 $c$ & $\frac{1}{3}$ \\
-                \bottomrule
-            \end{tabular}
-        \end{minipage}
-        \begin{minipage}{0.495\textwidth}
-            \centering
-            \begin{tabular}{c|c}
-                \toprule
-                 $Y$ & $P(X_i = h \knowing Y)$ \\
-                 \midrule
-                 $a$ & $0.2$ \\
-                 $b$ & $0.6$ \\
-                 $c$ & $0.8$ \\
-                \bottomrule
-            \end{tabular}
-        \end{minipage}
-        
-        \vspace{1ex}
+
+        \begin{figure}[h]
+            \begin{subfigure}[c]{0.495\textwidth}
+                \centering
+                \begin{tikzpicture}[node distance = 2cm]
+                    \node[state, align=center] (Y) {$Y$};
+                    \node[state, align=center] (X1) [below left of=Y] {$X_1$};
+                    \node[state, align=center] (X2) [below of=Y] {$X_2$};
+                    \node[state, align=center] (X3) [below right of=Y] {$X_3$};
+
+                    \path[-{>[scale=1.5]}] (Y) edge (X1);
+                    \path[-{>[scale=1.5]}] (Y) edge (X2);
+                    \path[-{>[scale=1.5]}] (Y) edge (X3);
+                \end{tikzpicture}
+            \end{subfigure}
+            \begin{subfigure}[c]{0.495\textwidth}
+                \centering
+                \begin{tabular}{c|cc}
+                    \toprule
+                     $Y$ & $P(Y)$ & $P(X_i = h \knowing Y)$ \\
+                     \midrule
+                     $a$ & $\frac{1}{3}$ & $0.2$ \\
+                     $b$ & $\frac{1}{3}$ & $0.6$ \\
+                     $c$ & $\frac{1}{3}$ & $0.8$ \\
+                    \bottomrule
+                \end{tabular}
+            \end{subfigure}
+        \end{figure}
     \end{solution}
-    
+
     \item Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tail once.
-    
+
     \begin{solution}
         In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y \knowing X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. Thanks to Bayes rule, we have
         \begin{equation*}
@@ -234,48 +220,46 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
 
 \section{Handedness (AIMA, Ex: 14.6)}
 
-Let $H_x$ be a random variable denoting the handedness of an individual $x$, with possible values $l$ or $r$. A common \emph{hypothesis} is that left or right-handedness is inherited by a simple mechanism; that is, there is a gene $G_x$, also with values $l$ or $r$, and $H_x$ turns out the same as $G_x$ with some probability $s$. 
+Let $H_x$ be a random variable denoting the handedness of an individual $x$, with possible values $l$ or $r$. A common \emph{hypothesis} is that left or right-handedness is inherited by a simple mechanism; that is, there is a gene $G_x$, also with values $l$ or $r$, and $H_x$ turns out the same as $G_x$ with some probability $s$.
 
 Furthermore, the gene itself is equally likely to be inherited from either of the individual's parents, with a small nonzero probability $m$ of a random mutation flipping the gene.
 
 \begin{enumerate}
     \item Which of the following networks claim that $P(G_{child} \knowing G_{mother}, G_{father}) = P(G_{child})$ ?
-    
-    \begin{center}
+
+    \begin{figure}[h]
+        \centering
         \includegraphics[width=0.9\textwidth]{figures/e3_handedness.pdf}
-    \end{center}
-    
+    \end{figure}
+
     \begin{solution}
         The third one, as the node $G_{child}$ does not have any parents.
     \end{solution}
-    
+
     \item Which of the networks make independence claims that are consistent with the hypothesis about the inheritance of handedness ?
-    
+
     \begin{solution}
         The first and second ones. It should be noted that the second one is also valid as it makes \emph{less} assumptions about the variables dependencies, \ie{} it is more general than the first one.
     \end{solution}
-    
+
     \item Write down the CPT for the $G_{child}$ nodes in first network, in terms of $s$ and $m$.
-    
+
     \begin{solution}
-        \vspace{1ex}
-    
-        \begin{center}
+        \begin{table}[h]
+            \centering
             \begin{tabular}{cc|c}
                 \toprule
                  $G_{mother}$ & $G_{father}$ & $P(G_{child} = l \knowing G_{mother}, G_{father})$ \\
                  \midrule
-                 l & l & 1 - m \\
-                 l & r & 0.5 \\
-                 r & l & 0.5 \\
-                 r & r & m \\
+                 $l$ & $l$ & $1 - m$ \\
+                 $l$ & $r$ & $0.5$ \\
+                 $r$ & $l$ & $0.5$ \\
+                 $r$ & $r$ & $m$ \\
                 \bottomrule
             \end{tabular}
-        \end{center}
-        
-        \vspace{1ex}
+        \end{table}
     \end{solution}
-    
+
     \item Suppose that $P(G_{mother} = l) = P(G_{father} = l) = q$. In the first network, derive an expression for $P(G_{child} = l)$ in terms of $s$, $m$ and $q$.
     \begin{solution}
         \begin{align*}
@@ -285,23 +269,24 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
             & = q + m - 2qm
         \end{align*}
     \end{solution}
-    
+
     \item Under conditions of genetic equilibrium, we expect the distribution of genes to be the same across generations. Use this to calculate the value of $q$, and, given what you know about handedness in humans, explain why the hypothesis described at the beginning of this question must be wrong.
-    
+
     \begin{solution}
         Under genetic equilibrium, we have $P(G_{child} = l) = P(G_{parent} = l) = q$. Therefore, $q = q + m - 2 q m$ meaning that $q = 0.5$. In practice, being left-handed is much more rare than being right-handed which invalidates the initial hypothesis.
-    \end{solution}    
+    \end{solution}
 \end{enumerate}
 
 \newpage
 
 \section{Independence}
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.6\textwidth]{figures/e3_independence.png}
-\end{center}
+\end{figure}
 
-Considering the hereabove Bayesian network, which of the following statements are asserted, \ie{} enforced, by the network structure ?
+Considering the hereabove Bayesian network, which of the following statements are enforced by the network structure?
 
 \begin{solution}
     We apply the d-separation\footnote{Slides 64 and 65, Lecture 4.} algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triples are active.
@@ -309,40 +294,40 @@ Considering the hereabove Bayesian network, which of the following statements ar
 
 \begin{enumerate}
     \item $P(B, C) = P(B) P(C)$
-    
+
     \begin{solution}
         This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The two paths that link $B$ and $C$ are $(B, A, C)$ and $(B, D, C)$. $(B, A, C)$ is active because $A$ is unknown ($\wedge$-structure). We cannot guarantee that $B \perp C$.
     \end{solution}
-    
+
     \item $P(B, C \knowing A) = P(B \knowing A) P(C \knowing A)$
-    
+
     \begin{solution}
         This is true iff $B \perp C \knowing A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). We can guarantee that $B \perp C \knowing A$.
     \end{solution}
-    
+
     \item $P(B, C \knowing A, D) =  P(B \knowing A, D) P(C \knowing A, D)$
-    
+
     \begin{solution}
         This is true iff $B \perp C \knowing A, D$. This time, $(B, D, C)$ is active because $D$ is known. We cannot assert that $B \perp C \knowing A, D$.
     \end{solution}
-    
+
     \item $P(B, E \knowing A) = P(B \knowing A) P(E \knowing A)$
-    
+
     \begin{solution}
         This is true iff $B \perp E \knowing A$. We know that, knowing $A$, no path between $B$ and $C$ are active. As $C$ is the only parent of $E$, all paths between $B$ and $E$ go trough $C$, meaning that they are not active. We can guarantee that $B \perp E \knowing A$.
     \end{solution}
-    
+
     \item $P(C \knowing A, D, E) = P(C \knowing A, B, D, E)$
-    
+
     \begin{solution}
         This is true iff $B \perp C \knowing A, D, E$. Once again, $(B, D, C)$ is active because $D$ is known. We can cannot guarantee that $B \perp C \knowing A, D, E$.
     \end{solution}
-    
+
     \item $P(B, E) = \sum_{a, c, d} P(E \knowing c) P(d \knowing B, c) P(c \knowing a) P(B \knowing a) P(a)$
-    
+
     \begin{solution}
-        This comes down to evaluate if $$P(A, B, C, D, E) = P(E \knowing C) P(D \knowing B, C) P(C \knowing A) P(B \knowing A) P(A),$$
-        is guaranteed. This exactly corresponds to
+        Since $$P(B, E) = \sum_{a, c, d} P(a, B, c, d, E),$$ we need to assess whether $$P(A, B, C, D, E) = P(E \knowing C) P(D \knowing B, C) P(C \knowing A) P(B \knowing A) P(A),$$
+        is guaranteed. This factorization corresponds exactly to
         \begin{equation*}
             P(X_1, \dots, X_n) = \prod_{i = 1}^n P(X_i \knowing parents(X_i)) ,
         \end{equation*}
@@ -359,13 +344,25 @@ For the same network, use inference by variable elimination to compute $P(E \kno
         & = \alpha \sum_{c, d} P(A = 1) P(B = 1| A = 1) P(c| A = 1) P(d|B = 1, c) P(E|c) \\
         & = \alpha P(A = 1) P(B = 1 | A = 1) \sum_{c} P(c|A = 1) P(E|c)\sum_d P(d|B = 1,c) .
     \end{align*}
-    We define the initial factors as $f_1 = P(A=1)$, $f_2 = P(B=1 | A=1)$, $f_3(C) = P(C|A=1)$, $f_4(C, D) = P(D|B=1, C)$, $f_5(E, C) = P(E|C)$.
-    
-    Then we compute $f_6(C) = \sum_d f_4(C, d)$, then $f_7(C, E) = f_3(C) \times f_5(E, C) \times f_6(C)$ and $f_8(E) = \sum_c f_7(c, E)$, then $f_9(E) = f_1 \times f_2 \times f_7(E)$. Finally,
+    We define the initial factors as
     \begin{align*}
-        P(E \knowing A = 1, B = 1) & = \alpha f_9(E) \\
-        & = \frac{f_9(E)}{\sum_e f_9(e)}.
+        f_1 & = P(A=1) \\
+        f_2 & = P(B=1 | A=1) \\
+        f_3(C) & = P(C|A=1) \\
+        f_4(E, C) & = P(E|C) \\
+        f_5(C, D) & = P(D|B=1, C)
     \end{align*}
+    and the composite factors as
+    \begin{align*}
+        f_6(C) & = \sum_d f_5(C, d) \\
+        f_7(C, E) & = f_3(C) \times f_4(E, C) \times f_6(C) \\
+        f_8(E) & = \sum_c f_7(c, E) \\
+        f_9(E) & = f_1 \times f_2 \times f_7(E) .
+    \end{align*}
+    Finally,
+    \begin{equation*}
+        P(E \knowing A = 1, B = 1) = \alpha f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
+    \end{equation*}
 \end{solution}
 
 \newpage
@@ -374,23 +371,25 @@ For the same network, use inference by variable elimination to compute $P(E \kno
 
 Let be the following Bayesian network describing some features of a car's electrical system and engine. Each variable is Boolean, and the true value indicates that the corresponding aspect of the vehicle is in working order.
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.6\textwidth]{figures/e3_car.eps}
-\end{center}
+\end{figure}
 
 \begin{enumerate}
     \item Extend the network with the Boolean variables IcyWeather and StarterMotor.
-    
+
     \begin{solution}
         IcyWeather is not caused by any of the car-related variables, so needs no parents. It directly affects the battery and the starter motor. StarterMotor is an additional precondition for Starts.
-        
-        \begin{center}
+
+        \begin{figure}[h]
+            \centering
             \includegraphics[width=0.6\textwidth]{figures/e3_car_full.png}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item According to your knowledge of cars, give reasonable conditional probability tables for all the nodes.
-    
+
     \begin{solution}
         Reasonable probabilities may vary a lot depending on the kind of car and perhaps the personal experience of the assessor. The following values indicate the general order of magnitude and relative values that would be reasonable:
         \begin{itemize}
@@ -400,19 +399,19 @@ Let be the following Bayesian network describing some features of a car's electr
             \item $P(Radio|Battery) = 0.9999, P (Radio|\lnot Battery) = 0.05$.
             \item $P(Ignition|Battery) = 0.998, P (Ignition|\lnot Battery) = 0.01$.
             \item $P(Gas) = 0.995$.
-            \item $P(Starts|Ignition,StarterMotor,Gas) = 0.9999, other entries 0.0$.
+            \item $P(Starts|Ignition,StarterMotor,Gas) = 0.9999$, other entries $0.0$.
             \item $P(Moves|Starts) = 0.998$.
         \end{itemize}
     \end{solution}
-    
+
     \item How many independent values are contained in the joint probability distribution for eight Boolean nodes, assuming that no conditional independence relations are known to hold among them?
-    
+
     \begin{solution}
         With 8 Boolean variables, the joint has $2^8 - 1 = 255$ independent entries.
     \end{solution}
-    
+
     \item How many independent probability values do your network tables contain?
-    
+
     \begin{solution}
         Given the topology with IcyWeather and StarterMotor, the total number of independent CPT entries is $1 + 2 + 2 + 2 + 2 + 1 + 8 + 2 = 20$.
     \end{solution}
@@ -426,18 +425,20 @@ In your local nuclear power station, there is an alarm that senses when a temper
 
 \begin{enumerate}
     \item Draw a Bayesian network for this domain, given that the gauge is more likely to fail when the core temperature gets too high.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[h]
+            \centering
             \includegraphics[width=0.4\textwidth]{figures/e3_nuclear.png}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Suppose there are just two possible actual and measured temperatures: low ($l$) and high ($h$). The probability that the gauge gives the correct temperature is $x$ when it is working, but $y$ when it is faulty. Give the conditional probability table associated with $G$.
-    
+
     \begin{solution}
         The CPT for $G$ is shown below. Students should pay careful attention to the semantics of $F_G$, which is true when the gauge is faulty, \ie{} not working properly.
-        \begin{center}
+        \begin{table}[h]
+            \centering
             \begin{tabular}{cc|c}
                 \toprule
                  $T$ & $F_G$ & $P(G = l \knowing T, F_G)$ \\
@@ -448,13 +449,14 @@ In your local nuclear power station, there is an alarm that senses when a temper
                  $h$ & 1 & $1 - y$ \\
                  \bottomrule
             \end{tabular}
-        \end{center}
+        \end{table}
     \end{solution}
-    
+
     \item Suppose the alarm is always triggered by high measured temperatures, unless it is faulty, in which case it never sounds. Give the conditional probability table associated with $A$.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{table}[h]
+            \centering
             \begin{tabular}{cc|c}
                 \toprule
                  $G$ & $F_A$ & $P(A = 1 \knowing G, F_A)$ \\
@@ -465,11 +467,11 @@ In your local nuclear power station, there is an alarm that senses when a temper
                  $h$ & 1 & 1 \\
                  \bottomrule
             \end{tabular}
-        \end{center}
+        \end{table}
     \end{solution}
-    
+
     \item Suppose the gauge is not faulty and the alarm is triggered. Calculate an expression for the probability that the temperature of the core is too high, in terms of the various conditional probabilities in the network.
-    
+
     \begin{solution}
         The probability of interest here is $P(T = h \knowing A = 1, F_G = 0)$. Because the alarm's behavior is deterministic, we can deduce that $G$ indicates high ($h$). Hence, $P(T = h \knowing A = 1, F_G = 0) = P(T = h \knowing A = 1, G = h, F_G = 0)$. We also see that $A \perp T \knowing G$. Therefore, we only need to calculate
         \begin{align*}
@@ -486,14 +488,14 @@ In your local nuclear power station, there is an alarm that senses when a temper
 
 \begin{itemize}
     \item Hygiène Mentale -- La Pensée Bayésienne
-    
+
     \qrcode{https://www.youtube.com/watch?v=x-2uVNze56s}
-    
+
     \item The Book of Why
-    
-    \qrcode{http://bayes.cs.ucla.edu/WHY/why-intro.pdf} 
-    
+
+    \qrcode{http://bayes.cs.ucla.edu/WHY/why-intro.pdf}
+
     \item Chapters 13 and 14 of the reference textbook.
 \end{itemize}
-    
+
 \end{document}

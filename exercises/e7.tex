@@ -23,23 +23,23 @@ At the end of this session you should be able to
 
 \section{Passive RL}
 
-\begin{center}
-    \vspace{+1ex}
+\begin{figure}[h]
+    \centering
     \begin{tikzpicture}
         \draw[step=1cm, black, thin] (0,0) grid (3,3);
         \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
         \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-        
+
         \draw[black, thin, fill=yellow] (0.5, 0.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
         \fill[black] (0.5, 0.72) circle (0.05);
-        
+
         \draw (0.5, -0.5) node {1};
         \draw (1.5, -0.5) node {2};
         \draw (2.5, -0.5) node {3};
         \draw (-0.5, 0.5) node {1};
         \draw (-0.5, 1.5) node {2};
         \draw (-0.5, 2.5) node {3};
-        
+
         \draw (1.5, 0.5) node {$-8$};
         \draw (2.5, 0.5) node {$+3$};
         \draw (0.5, 2.5) node {$-6$};
@@ -47,7 +47,7 @@ At the end of this session you should be able to
         \draw (2.5, 2.5) node {$+5$};
     \end{tikzpicture}
     \vspace{-1ex}
-\end{center}
+\end{figure}
 
 Consider the grid-world given above and an agent who is trying to learn the optimal policy. The agent starts from the bottom-left corner and can take the actions \texttt{north} ($N$), \texttt{south} ($S$), \texttt{west} ($W$) and \texttt{east} ($E$). Rewards are only awarded for reaching the terminal (shaded) states. You observe the following trials, whose trajectories are sequences of tuples $(s^i_t, r^i_t, a^i_t, s^i_{t+1})$.
 
@@ -72,7 +72,7 @@ Assuming a discount factor $\gamma = 1$,
 
 \begin{enumerate}
     \item Perform direct utility estimation of the expected utilities $V^\pi(s)$, given the four first trials.
-    
+
     \begin{solution}
         In this setting, the transition model $P(s' \knowing s, a)$ and the reward function $R(s)$ are unknown. We wish to learn the expected utility $V^\pi$ of the policy $\pi$ without modeling the environment, \ie{} without building approximates $\hat{P}(s' \knowing s, a)$ and $\hat{R}(s)$. The principle of direct utility estimation is to approximate $V^\pi(s)$ by the average utility $\hat{V}(s)$ of the state $s$ within all trial trajectories, \ie{}
         \begin{equation*}
@@ -89,20 +89,20 @@ Assuming a discount factor $\gamma = 1$,
         \end{align*}
         Importantly, since the agent hasn't reached the states $(1, 3)$ and $(3, 3)$ yet, it is not possible to estimate their expected utility. Instead, we assume a default value of $0$.
 
-        \begin{center}
-            \vspace{+1ex}
+        \begin{figure}[h]
+            \centering
             \begin{tikzpicture}
                 \draw[step=1cm, black, thin] (0,0) grid (3,3);
                 \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
                 \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-                
+
                 \draw (0.5, -0.5) node {1};
                 \draw (1.5, -0.5) node {2};
                 \draw (2.5, -0.5) node {3};
                 \draw (-0.5, 0.5) node {1};
                 \draw (-0.5, 1.5) node {2};
                 \draw (-0.5, 2.5) node {3};
-                
+
                 \draw (0.5, 0.5) node {$\frac{-5}{4}$};
                 \draw (1.5, 0.5) node {$-8$};
                 \draw (2.5, 0.5) node {0};
@@ -113,12 +113,11 @@ Assuming a discount factor $\gamma = 1$,
                 \draw (1.5, 2.5) node {$-1$};
                 \draw (2.5, 2.5) node {$+5$};
             \end{tikzpicture}
-            \vspace{-1ex}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Update the estimated expected utilities with respect to the fifth trial using temporal-difference learning. Assume a learning rate $\alpha = 0.5$.
-    
+
     \begin{solution}
         Direct utility estimation misses the fact that the expected utilities for different states are not independent, since they obey the Bellman equation for a fixed policy
         \begin{equation*}
@@ -138,9 +137,9 @@ Assuming a discount factor $\gamma = 1$,
             & \gets (1 - \alpha) \hat{V}(s) + \alpha \rbk*{r + \gamma \hat{V}(s')}
         \end{align*}
         where $\alpha$ is the learning rate. For a fixed learning rate, the average of $\hat{V}(s)$ converge towards (oscillates around) the true expected utility $V^\pi(s)$. For a (slowly) decreasing learning rate, $\hat{V}(s)$ itself converges to $V^\pi(s)$. For historical reasons, this algorithm is called temporal-difference (TD) learning.
-        
+
         \footnotetext{We are not limited to perform only one update for each tuple $(s, r, a, s')$. Indeed, as we assume the policy to be stationary, past trials are as likely to happen again as more recent ones. Therefore, reusing tuples several times (in other orders) is a good way to improve estimates while generating less trials.}
-        
+
         Following the trajectory of the fifth trial, we perform the updates
         \begin{align*}
             V^\pi((1, 1)) & \gets (1 - \alpha) V^\pi((1, 1)) + \alpha \rbk*{0 + \gamma V^\pi((1, 2))} = \frac{1}{2} \frac{-5}{4} + \frac{1}{2} \frac{-5}{4} = \frac{-5}{4} \\
@@ -149,21 +148,21 @@ Assuming a discount factor $\gamma = 1$,
             V^\pi((3, 2)) & \gets (1 - \alpha) V^\pi((3, 2)) + \alpha \rbk*{0 + \gamma V^\pi((3, 1))} = \frac{1}{2} 2 + \frac{1}{2} 0 = +1 \\
             V^\pi((3, 1)) & \gets (1 - \alpha) V^\pi((3, 1)) + \alpha \rbk*{3 + 0} = \frac{1}{2} 0 + \frac{1}{2} 3 = \frac{+3}{2} .
         \end{align*}
-        
-        \begin{center}
-            \vspace{+1ex}
+
+        \begin{figure}[h]
+            \centering
             \begin{tikzpicture}
                 \draw[step=1cm, black, thin] (0,0) grid (3,3);
                 \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
                 \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-                
+
                 \draw (0.5, -0.5) node {1};
                 \draw (1.5, -0.5) node {2};
                 \draw (2.5, -0.5) node {3};
                 \draw (-0.5, 0.5) node {1};
                 \draw (-0.5, 1.5) node {2};
                 \draw (-0.5, 2.5) node {3};
-                
+
                 \draw (0.5, 0.5) node {$\frac{-5}{4}$};
                 \draw (1.5, 0.5) node {$-8$};
                 \draw (2.5, 0.5) node {$\frac{+3}{2}$};
@@ -174,8 +173,7 @@ Assuming a discount factor $\gamma = 1$,
                 \draw (1.5, 2.5) node {$-1$};
                 \draw (2.5, 2.5) node {$+5$};
             \end{tikzpicture}
-            \vspace{-1ex}
-        \end{center}
+        \end{figure}
     \end{solution}
 \end{enumerate}
 
@@ -206,10 +204,10 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
 
 \begin{enumerate}
     \item Apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to $0$.
-    
+
     \begin{solution}
         As seen in the previous exercise, given trial trajectories of some policy $\pi$, it is possible to estimate its expected utility $V^\pi$ even without knowing the transition model $P(s' \knowing s, a)$ or the reward function $R(s)$ of the environment. However, estimating $V^\pi$ only evaluates the quality of $\pi$, but does not describe how to improve it.
-        
+
         By definition, the optimal policy $\pi^*$ is the one that maximizes the expect utility of the state $s$, \ie{}
         \begin{equation*}
             \pi^*(s) = \arg \max_a \sum_{s'} P(s' \knowing s, a) V(s')
@@ -229,7 +227,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
             & \gets (1 - \alpha) \hat{Q}(s, a) + \alpha \rbk*{r + \gamma \max_{a'} \hat{Q}(s', a')}
         \end{align*}
         from observed tuples $(s, r, a, s')$.
-        
+
         In our case, the sequence of updates would be
         \begin{align*}
             \hat{Q}(A, 0) & \gets (1 - \alpha) \hat{Q}(A, 0) + \alpha \rbk*{2 + \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} = \frac{1}{4} 0 + \frac{3}{4} \rbk{2 + \frac{1}{2} 0} = \frac{+3}{2} \\
@@ -240,9 +238,9 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         \end{align*}
         It should be noted that, as for TD learning, we are not limited to perform only one update for each tuple. Reusing tuples several times (in other orders) is a good way to reach convergence faster while generating less trials.
     \end{solution}
-    
+
     \item We now switch to a feature-based estimator $\hat{Q}(s, a) = w_0 + w_1 f_1(s, a)$, with $f_1(s, a) = 2 a - 1$. Starting from weights $w_0 = w_1 = 0$, update the weights according to the approximate $Q$-learning algorithm.
-    
+
     \begin{solution}
         We would like our estimates $\hat{Q}(s, a)$ to satisfy the
         Bellman equation, \ie{} to minimize
@@ -259,7 +257,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         \end{equation*}
         where $\alpha$ is the learning rate. In our case,
         \begin{equation*}
-            \nabla_{\!w} \hat{Q}(s, a) = \mat{\partial_{w_0} \\ \partial_{w_1} } (w_0 + w_1 f_1(s, a)) = \mat{ 1 \\ f_1(s, a)} = \mat{1 \\ 2 a - 1} 
+            \nabla_{\!w} \hat{Q}(s, a) = \mat{\partial_{w_0} \\ \partial_{w_1} } (w_0 + w_1 f_1(s, a)) = \mat{ 1 \\ f_1(s, a)} = \mat{1 \\ 2 a - 1}
         \end{equation*}
         and the two first weight updates would be
         \begin{align*}
@@ -268,7 +266,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
             w & \gets w - \alpha \rbk*{\hat{Q}(C, 1) + 2 - \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} \nabla_{\!w} \hat{Q}(C, 1) \\
             & \gets \mat{\frac{+3}{2} \\ \frac{-3}{2}} - \frac{3}{4} \rbk*{2 - \frac{1}{2} \max\cbk{0, 3}} \mat{1 \\ 1} = \mat{\frac{+9}{8} \\ \frac{-15}{8}} .
         \end{align*}
-        
+
         \footnotetext{It should be noted that the target $R(s) + \gamma \max_{a'} \hat{Q}(s', a')$ should not affected by the gradient operation as it is considered constant in the objective. In practice, this is not true as modifying the weights in a parametric function $\hat{Q}$ does so for all state-action pairs $(s, a)$ at once. This generally makes the approximate $Q$-learning algorithm very unstable.}
     \end{solution}
 \end{enumerate}
@@ -277,7 +275,14 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
 
 \section{Football}
 
-ULiège's football team is playing against UCL's team next week. With a lot of losses this season, Liège needs to improve their attack strategy to win the game and increase their popularity. Luckily, the team captain follows INFO8006 and knows how to model the attack as a Markov Decision Process. The captain considers four states \texttt{close}, \texttt{away}, \texttt{fail}, and \texttt{goal} and two actions \texttt{pass} and \texttt{shoot}. Although the transition probabilities are unsure, the possible transitions $(s, a, s')$ are known. To each transition is associated an increase/decrease of the team's popularity.
+\def\C{\texttt{C}}
+\def\A{\texttt{A}}
+\def\F{\texttt{F}}
+\def\G{\texttt{G}}
+\def\P{\texttt{P}}
+\def\S{\texttt{S}}
+
+ULiège's football team is playing against UCL's team next week. With a lot of losses this season, Liège needs to improve their attack strategy to win the game and increase their popularity. Luckily, the team captain follows INFO8006 and knows how to model the attack as a Markov Decision Process. The captain considers four states \texttt{close} (\C), \texttt{away} (\A), \texttt{fail} (\F), and \texttt{goal} (\G), and two actions \texttt{pass} (\P) and \texttt{shoot} (\S). Although the transition probabilities are unsure, the possible transitions $(s, a, s')$ are known. To each transition is associated an increase/decrease of the team's popularity.
 
 \begin{table}[h]
     \centering
@@ -285,39 +290,32 @@ ULiège's football team is playing against UCL's team next week. With a lot of l
         \toprule
          $s$ & $a$ & $s'$ & $R(s, a, s')$ \\
          \midrule
-         \texttt{close} & \texttt{pass} & \texttt{close} & $+1$ \\
-         \texttt{close} & \texttt{pass} & \texttt{away} & $-1$ \\
-         \texttt{close} & \texttt{pass} & \texttt{fail} & $-2$ \\
-         \texttt{close} & \texttt{shoot} & \texttt{close} & $+3$ \\
-         \texttt{close} & \texttt{shoot} & \texttt{fail} & $-5$ \\
-         \texttt{close} & \texttt{shoot} & \texttt{goal} & $+10$ \\
+         \C & \P & \C & $+1$ \\
+         \C & \P & \A & $-1$ \\
+         \C & \P & \F & $-2$ \\
+         \C & \S & \C & $+3$ \\
+         \C & \S & \F & $-5$ \\
+         \C & \S & \G & $+10$ \\
          \midrule
-         \texttt{away} & \texttt{pass} & \texttt{close} & $+2$ \\
-         \texttt{away} & \texttt{pass} & \texttt{away} & $0$ \\
-         \texttt{away} & \texttt{pass} & \texttt{fail} & $-3$ \\
-         \texttt{away} & \texttt{shoot} & \texttt{close} & $+3$ \\
-         \texttt{away} & \texttt{shoot} & \texttt{fail} & $-10$ \\
-         \texttt{away} & \texttt{shoot} & \texttt{goal} & $+20$ \\
+         \A & \P & \C & $+2$ \\
+         \A & \P & \A & $0$ \\
+         \A & \P & \F & $-3$ \\
+         \A & \S & \C & $+3$ \\
+         \A & \S & \F & $-10$ \\
+         \A & \S & \G & $+20$ \\
          \bottomrule
     \end{tabular}
 \end{table}
 
 The current strategy of the team is to always shoot. Last match, they had several attack opportunities, resulting in the following actions.
 
-\begin{table}[H]
+\begin{table}[h]
     \centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{c|cccccccc}
         \toprule
-         $s$ & $a$ & $s'$ \\
-         \midrule
-         \texttt{close} & \texttt{shoot} & \texttt{goal} \\
-         \texttt{close} & \texttt{shoot} & \texttt{close} \\
-         \texttt{close} & \texttt{shoot} & \texttt{goal} \\
-         \texttt{close} & \texttt{shoot} & \texttt{fail} \\
-         \texttt{away} & \texttt{shoot} & \texttt{fail} \\
-         \texttt{away} & \texttt{shoot} & \texttt{close} \\
-         \texttt{away} & \texttt{shoot} & \texttt{fail} \\
-         \texttt{away} & \texttt{shoot} & \texttt{fail} \\
+         $s$ & \C & \C & \C & \C & \A & \A & \A & \A \\
+         $a$ & \S & \S & \S & \S & \S & \S & \S & \S \\
+         $s'$ & \G & \C & \G & \F & \F & \C & \F & \F \\
          \bottomrule
     \end{tabular}
 \end{table}
@@ -325,36 +323,106 @@ The current strategy of the team is to always shoot. Last match, they had severa
 Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
 
 \begin{enumerate}
-    \item Build an estimator $\hat{P}(s' \knowing s, a)$ of the transition model and, from it, determine the expected utility $V^\pi$ of the team's current policy $\pi$.
+    \item Build an estimator of the transition model $P(s' \knowing s, a)$ and, from it, determine the expected utility $V^\pi$ of the team's current policy $\pi$.
+    \begin{solution}
+        Given the previous table, we can estimate the transition probabilities for $s \in \cbk{\C, \A}$ and $a = \S$.
 
-    \item Perform direct utility estimation of the expected utility $V^\pi$. Do you observe a difference with the previous estimation? Why?
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{cc|cccc}
+                \toprule
+                 $s$ & $a$ & \multicolumn{4}{c}{$P(s' | s, a)$} \\
+                     &     & \C & \A & \F & \G \\
+                 \midrule
+                 \C & \S & $0.25$ & $0$ & $0.25$ & $0.5$ \\
+                 \A & \S & $0.25$ & $0$ & $0.75$ & $0$ \\
+                 \bottomrule
+            \end{tabular}
+        \end{table}
+
+        We can now determine the expected utility $V^\pi$ of the team's current policy $\pi(s) = \S$ using the following Bellman operator
+        \begin{equation*}
+            V_{i + 1}^\pi(s) = \sum_{s'} P(s' \knowing s, \pi(s)) \sbk*{R(s, \pi(s), s') + \gamma V_i^\pi(s')} ,
+        \end{equation*}
+        with $V_0^\pi(s) = 0$ for all state $s$. Because the states \F and \G are terminal, their expected utility remains constant and we only have to update \C and \A. For the first iteration,
+        \begin{align*}
+            V_1^\pi(\C) & = \sum_{s'} P(s' \knowing \C, \S) \sbk*{R(\C, \S, s') + \gamma V_0^\pi(s')} \\
+            & = 0.25 (3 + \gamma \, 0) + 0.25 (-5 + \gamma \, 0) + 0.5 (10 + \gamma \, 0) = 4.5
+        \end{align*}
+        and
+        \begin{align*}
+            V_1^\pi(\A) & = \sum_{s'} P(s' \knowing \A, \S) \sbk*{R(\A, \S, s') + \gamma V_0^\pi(s')} \\
+            & = 0.25 (3 + \gamma \, 0) + 0.75 (-10 + \gamma \, 0) = -6.75 .
+        \end{align*}
+        We repeat the same procedure until $V_{i + 1}^\pi(s) \approx V_i^\pi(s)$ for all state $s$.
+
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{c|cccc}
+                \toprule
+                $s$ & \C & \A & \F & \G \\
+                \midrule
+                $V_0^\pi(s)$ & 0 & 0 & 0 & 0 \\
+                $V_1^\pi(s)$ & 4.5 & -6.75 & 0 & 0 \\
+                $V_2^\pi(s)$ & \num{5.3437} & \num{-5.9063} & 0 & 0 \\
+                $V_3^\pi(s)$ & \num{5.5019} & \num{-5.7480} & 0 & 0 \\
+                $V_4^\pi(s)$ & \num{5.5316} & \num{-5.7183} & 0 & 0 \\
+                \vdots       & \vdots & \vdots & \vdots & \vdots \\
+                $V_8^\pi(s)$ & \num{5.5385} & \num{-5.7115} & 0 & 0 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{solution}
+
 \end{enumerate}
 
 The captain found the tapes of the previous season where they had much more success. Together with the team, the captain selects the following instructive actions.
 
-\begin{table}[H]
+\begin{table}[h]
     \centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{c|cccccccc}
         \toprule
-         $s$ & $a$ & $s'$ \\
-         \midrule
-         \texttt{close} & \texttt{pass} & \texttt{fail} \\
-         \texttt{close} & \texttt{pass} & \texttt{close} \\
-         \texttt{close} & \texttt{pass} & \texttt{away} \\
-         \texttt{close} & \texttt{pass} & \texttt{fail} \\
-         \texttt{away} & \texttt{pass} & \texttt{away} \\
-         \texttt{away} & \texttt{pass} & \texttt{close} \\
-         \texttt{away} & \texttt{pass} & \texttt{close} \\
-         \texttt{away} & \texttt{pass} & \texttt{fail} \\
+         $s$ & \C & \C & \A & \A & \C & \A & \A & \C \\
+         $a$ & \S & \S & \S & \P & \P & \P & \S & \P \\
+         $s'$ & \G & \C & \F & \C & \C & \C & \F & \F \\
          \bottomrule
     \end{tabular}
 \end{table}
 
 \begin{enumerate}
-    \setcounter{enumi}{2}
-    \item Apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to 0.
-    
+    \setcounter{enumi}{1}
+    \item Given the selected tuples, apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to 0.
+
+    \begin{solution}
+        In $Q$-learning, the state-action-value $Q(s, a)$ estimates are updated following
+        \begin{align*}
+            Q(s, a) & \gets Q(s, a) - \alpha \rbk*{Q(s, a) - r - \gamma \max_{a'} Q(s', a')} \\
+            & \gets (1 - \alpha) Q(s, a) + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a')}
+        \end{align*}
+        for observed tuples $(s, r, a, s')$. In our case, we have a list a 16 (8 + 8) tuples $(s, a, s')$ and we have access to the reward function $R(s, a, s')$. Using the tuples in arbitrary order, we have
+        \begin{align*}
+            Q(\C, \S) & \gets (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \G) + \gamma \max_{a'} Q(\G, a')} \\
+            & \gets 0.75 \times 0 + 0.25 \rbk{10 + 0} = 2.5 \\
+            Q(\C, \S) & \gets (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \C) + \gamma \max_{a'} Q(\C, a')} \\
+            & \gets 0.75 \times 2.5 + 0.25 \rbk{3 + 0.75 \max \cbk{2.5, 0}} = 3.094 \\
+            Q(\A, \S) & \gets (1 - \alpha) Q(\A, \S) + \alpha \rbk*{R(\A, \S, \F) + \gamma \max_{a'} Q(\F, a')} \\
+            & \gets 0.75 \times 0 + 0.25 \rbk{-10 + 0} = -2.5 \\
+            Q(\A, \P) & \gets (1 - \alpha) Q(\A, \P) + \alpha \rbk*{R(\A, \P, \C) + \gamma \max_{a'} Q(\C, a')} \\
+            & \gets 0.75 \times 0 + 0.25 \rbk{2 + 0.75 \max \cbk{3.094, 0}} = 4.320 \\
+            Q(\C, \P) & \gets \dots
+        \end{align*}
+    \end{solution}
+
     \item Determine the optimal policy according to the state-action-value estimates.
+
+    \begin{solution}
+        \begin{equation*}
+            \pi(s) = \begin{cases}
+                \S & \text{if } s = \C \\
+                \P & \text{if } s = \A
+            \end{cases}
+        \end{equation*}
+    \end{solution}
 \end{enumerate}
 
 \newpage
@@ -363,7 +431,7 @@ The captain found the tapes of the previous season where they had much more succ
 
 \begin{itemize}
     \item Playing Atari with Deep Reinforcement Learning
-    
+
     \qrcode{https://arxiv.org/abs/1312.5602}
 
     \item Chapter 21 of the reference textbook.

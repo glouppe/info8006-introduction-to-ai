@@ -29,13 +29,13 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
 
 \begin{enumerate}
     \item Formalize Micro-Blackjack as an MDP.
-    
+
     \begin{solution}
         A Markov decision process (MDP) is a tuple $(S, A, P, R)$, where $S$ is a set of reachable states, $A(s)$ is a set of available actions, $P(s' \knowing s, a)$ is a (stationary) transition model and $R(s)$ is a reward function.
-        
+
         In our case,
         \begin{align*}
-            S & \subset \N \times \cbk{0, 1} \\
+            S & \subset \mathbb{N} \times \cbk{0, 1} \\
             A(s = (s_1, s_2)) & = \begin{cases}
                 \cbk{d, c} & \text{if } s_1 < 6 \text{ and } s_2 = 0 \\
                 \cbk{c} & \text{if } s_2 = 0 \\
@@ -52,10 +52,10 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
             \end{cases}
         \end{align*}
     \end{solution}
-    
+
     \item Derive the optimal policy for this MDP.
-    
-    \begin{solution}    
+
+    \begin{solution}
         Let $(s_0, s_1, \dots, s_l)$ be a sequence of states, \ie{} a path. Its utility is
         \begin{equation*}
             \sum_{t = 0}^{l} \gamma^t R(s_t),
@@ -79,9 +79,9 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
         \begin{align*}
             \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V(s') .
         \end{align*}
-        
+
         To find this optimal policy, we can apply either the \emph{value iteration} or \emph{policy iteration} algorithms.
-        
+
         \begin{itemize}
             \item In value iteration, we estimate the value $V(s)$ by value estimates $V_i(s)$ and update them with the Bellman operator
             \begin{equation*}
@@ -92,8 +92,8 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                 V(s = (s_1, 1)) = R(s) .
             \end{equation*}
             Let $V_0(s) = R(s)$ be our first value estimate.
-            
-            \begin{table}[H]
+
+            \begin{table}[h]
                 \centering
                 \begin{tabular}{c|cccccc|cccccc}
                     \toprule
@@ -109,8 +109,8 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                 \end{tabular}
             \end{table}
 
-            Each iteration of this algorithm takes $\mathcal{O}(\abs{S}^2 \abs{A})$ operations. 
-            
+            Each iteration of this algorithm takes $\mathcal{O}(\abs{S}^2 \abs{A})$ operations.
+
             \item In policy iteration, we estimate the optimal policy $\pi^*$ by policy estimates $\pi_i$ and update them with
             \begin{equation*}
                 \pi_{i+1}(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V^{\pi_i}(s'),
@@ -128,7 +128,8 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                 \pi_j(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V_j(s')
             \end{equation*}
             and then start updating the value estimates again. The algorithm stops when the policy estimates have converged. Let $V_0(s) = R(s)$ be our first value estimate.
-            \begin{table}[H]
+
+            \begin{table}[h]
                 \centering
                 \begin{tabular}{c|cccccc|cccccc}
                     \toprule
@@ -145,6 +146,7 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                     \bottomrule
                 \end{tabular}
             \end{table}
+
             The modified policy iteration algorithm does not necessarily converge faster than the value iteration algorithm, but the simplified Bellman operator is (much) easier and faster to compute than the standard one. One could consider modified policy iteration as a version of value iteration where the optimal actions are \enquote{cached} periodically instead of recalculating them at each iteration.
         \end{itemize}
     \end{solution}
@@ -154,30 +156,31 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
 
 \section{Crying Baby Problem}
 
-To earn some money you have decided to do babysitting. Tonight you will take care of a 9 months old baby. His parents asked you to feed him when he is hungry. Because you are a super-babysitter you know from your experience that the probability of the baby crying when he is hungry is equal to 0.8 and to cry when he is not hungry is equal to 0.1. The cost of feeding the baby is equal to \SI{5}{\$} whereas if you don't feed him while he is hungry it costs you \SI{10}{\$} (because the parent will be upset and will reduce your pay). You will have many things to do tonight and so you decide to optimize your time by just checking every hour whether the baby is crying. Between two intervals of time you assume that the baby has a probability of 0.2 to get hungry. You can also assume that the baby has a uniform probability of being hungry when you start your babysitting.
+To earn some money you have decided to do babysitting. Tonight you will take care of a 9 months old baby. His parents asked you to feed him when he is hungry. Because you are a super-babysitter you know from your experience that the probability of the baby crying when he is hungry is equal to 0.8 and to cry when he is not hungry is equal to 0.1. The cost of feeding the baby is equal to \qty{5}{\$} whereas if you don't feed him while he is hungry it costs you \qty{10}{\$} (because the parent will be upset and will reduce your pay). You will have many things to do tonight and so you decide to optimize your time by just checking every hour whether the baby is crying. Between two intervals of time you assume that the baby has a probability of 0.2 to get hungry. You can also assume that the baby has a uniform probability of being hungry when you start your babysitting.
 
 \begin{enumerate}
     \item Draw the dynamic Bayesian network as well as the conditional probability tables associated with your babysitting of tonight.
-    
+
     \begin{solution}
         Let $H_t \in \cbk{0, 1}$ indicate whether the baby is hungry at time $t$, $C_t \in \cbk{0, 1}$ the baby is crying at time $t$ and $F_t \in \cbk{0, 1}$ the fact that you fed the baby at time $t$. Your cost is $R_t \in \cbk{0, -5, -10}$.
-        
-        \begin{center}
+
+        \begin{figure}[h]
+            \centering
             \begin{tikzpicture}[node distance = 2cm]
                 \node[state, align=center] (H) {$H_t$};
                 \node[state, align=center] (R) [below right of=H] {$R_t$};
                 \node[state, align=center] (F) [below right of=R] {$F_t$};
                 \node[state, align=center] (C) [below left of=R] {$C_t$};
                 \node[state, align=center] (H1) [above right of=R] {$H_{t+1}$};
-                
+
                 \path[-{>[scale=1.5]}] (H) edge (C);
                 \path[-{>[scale=1.5]}] (H) edge (R);
                 \path[-{>[scale=1.5]}] (F) edge (R);
                 \path[-{>[scale=1.5]}] (H) edge (H1);
                 \path[-{>[scale=1.5]}] (F) edge (H1);
             \end{tikzpicture}
-        \end{center}
-        
+        \end{figure}
+
         \begin{table}[h]
             \centering
             \begin{tabular}{cc|cc|c}
@@ -191,15 +194,15 @@ To earn some money you have decided to do babysitting. Tonight you will take car
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         For completeness we also have to define the prior $P(H_0 = 1) = 0.5$. Note that $R_t$ is a deterministic function of $H_t$ and $F_t$ instead of a distribution.
     \end{solution}
-    
+
     \item Give the sequence of belief states if you assume the sequence of observation-action pairs $(0, 0)$, $(1, 1)$, $(0, 0)$, $(0, 0)$.
-    
+
     \begin{solution}
         In this problem, the environment is only \emph{partially} observable (POMDP). You, the agent, does not know the current state $s = H_t$. Instead, you collect an observation $e = C_t$ through a sensor model $P(e \knowing s)$ which allows to reason about the unknown state $s$ and to take an informed action $a = F_t$.
-    
+
         If $b$ is the current belief state (a distribution over the state space $S$) and the agent does an action $a$ and observes $e'$, then
         \begin{align*}
             b'(s') & = \sum_s P(s' \knowing s, a, e') b(s) \\
@@ -222,9 +225,9 @@ To earn some money you have decided to do babysitting. Tonight you will take car
             b_3 & = \alpha_3 \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.8 & 0 \\ 0.2 & 1} b_2 \approx \mat{0.9474 \\ 0.0526} .
         \end{align*}
     \end{solution}
-    
+
     \item From the sequence of belief states, determine the sequence of expected rewards.
-    
+
     \begin{solution}
         The expected reward of a belief state $b$ is defined as
         \begin{equation*}
@@ -260,7 +263,7 @@ For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghos
 
 \begin{enumerate}
     \item Assume a discount factor $\gamma = 0.5$, where the discount factor is applied once every time either Pacman or the ghost moves. What is the Minimax value of the complete (infinite) game?
-    
+
     \begin{solution}
         If we assume the game starts from the displayed state $s_0$, Pacman has always an action to get out of reach of the ghost. Hence, if Pacman is optimal, which is true by definition in Minimax, he will never get eaten. Therefore, we can compute the initial state value
         \begin{equation*}
@@ -268,13 +271,13 @@ For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghos
         \end{equation*}
         without actually building the (infinite) Minimax tree.
     \end{solution}
-    
+
     \item Why are the value/policy iteration algorithms superior to Minimax for solving this game?
-    
+
     \begin{solution}
         If $\gamma < 1$, we know that the value/policy iteration algorithms converge toward a fixed point, even if the game does not terminate. Conversely, Minimax is not guaranteed to terminate due to its recursivity.
     \end{solution}
-    
+
 \end{enumerate}
 
 This game is similar to an MDP because rewards are earned at every timestep. However, it is also an adversarial game involving decisions by two agents. Let $s$ be the state (\eg{} the positions of Pacman and the ghost and who is playing) and let $A(s)$ be the set of actions available to the player in state $s$. Let $s' = T(s, a)$ denote the successor of a state $s$ resulting from the action $a$. Finally, let $R(s)$ denote the utility received after moving to state $s$.
@@ -282,7 +285,7 @@ This game is similar to an MDP because rewards are earned at every timestep. How
 \begin{enumerate}
     \setcounter{enumi}{3}
     \item Write down an expression (analogous to Bellman equation) for $V(s)$, the value of the current state if it is Pacman's turn.
-    
+
     \begin{solution}
         \begin{equation*}
             V(s) = R(s) + \gamma \max_{a \in A(s)} \sbk*{ R(T(s, a)) + \gamma \min_{a' \in A(T(s, a))} V(T(T(s, a), a')) }
@@ -295,7 +298,7 @@ This game is similar to an MDP because rewards are earned at every timestep. How
 \section{(AIMA, Ex 16.15)}
 
 Consider a student, Sam, who has the choice to buy or not buy a textbook for a course. We'll model this as a decision problem with one Boolean decision node, $B$, indicating whether the agent chooses to buy the book, and two Boolean chance nodes,
-$M$, indicating whether the student has mastered the material of the course, and $F$, indicating whether the student fails the course. There is also a utility node, $U$. Sam has an additive utility function: 0 for not buying the book and \SI{-100}{\$} for buying it; and 0 for failing the course and \SI{2000}{\$} for passing it. Sam's conditional probability estimates are as follows:
+$M$, indicating whether the student has mastered the material of the course, and $F$, indicating whether the student fails the course. There is also a utility node, $U$. Sam has an additive utility function: 0 for not buying the book and \qty{-100}{\$} for buying it; and 0 for failing the course and \qty{2000}{\$} for passing it. Sam's conditional probability estimates are as follows:
 
 \begin{table}[h]
     \centering
@@ -313,9 +316,9 @@ $M$, indicating whether the student has mastered the material of the course, and
 
 \begin{enumerate}
     \item Draw the decision network for this problem.
-    
+
     \item Compute the expected utility of buying the book and of not buying it.
-    
+
     \item What should Sam do?
 \end{enumerate}
 
@@ -323,7 +326,7 @@ $M$, indicating whether the student has mastered the material of the course, and
 
 \section{(AIMA, Ex 17.6)}
 
-The slides of the course states that the Bellman operator 
+The slides of the course states that the Bellman operator
 \begin{equation*}
     (B V)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V(s')
 \end{equation*}
@@ -334,7 +337,7 @@ is a contraction.
     \begin{equation*}
         \abs{\max_x f(x) - \max_x g(x)} \leq \max_x \, \abs{f(x) - g(x)} .
     \end{equation*}
-    
+
     \item Apply the previous result to prove that the Bellman operator is a contraction of factor $\gamma$, that is
     \begin{equation*}
         \norm{(BV) - (BV')}_\infty \leq \gamma \norm{V - V'}_\infty .
@@ -349,7 +352,7 @@ is a contraction.
 
 \section{(AIMA, Ex 17.8)} \label{sec:17.8}
 
-Consider the $3 \times 3$ world shown in Figure \ref{fig:grid-mdp}. The transition model is the same as in the $4 \times 3$ \ref{fig:sequential}: \SI{80}{\percent} of the time the agent goes in the direction it selects; the rest of the time it moves at right angles to the intended direction.
+Consider the $3 \times 3$ world shown in Figure \ref{fig:grid-mdp}. The transition model is the same as in the $4 \times 3$ \ref{fig:sequential}: \qty{80}{\percent} of the time the agent goes in the direction it selects; the rest of the time it moves at right angles to the intended direction.
 
 \begin{figure}[h]
     \centering
@@ -423,7 +426,7 @@ Answer the following questions:
             \begin{itemize}
                 \item In state 1,
                 $\pi^1(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i|s_1, a) V(s_i) = 0.8 \times -20 + 0.2 \times -10 = -18$ and $\pi^1(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i|s_1, b) V(s_i)  = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi^1(s_1) = b$.
-                
+
                 \item In state 2,
                 $\pi^1(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i|s_2, a) V(s_i) = 0.2 \times -20 + 0.8 \times -10 = -12$ and $\pi^1(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i|s_2, b) V(s_i)  = 0.1 \times 0 + 0.9 \times -20 = -18$, thus $\pi^1(s_2) = a$.
             \end{itemize}
@@ -436,7 +439,7 @@ Answer the following questions:
             \begin{itemize}
                 \item In state 1,
                 $\pi^1(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i|s_1, a) V(s_i) = 0.8 \times -12.5 + 0.2 \times -10 = -12$ and $\pi^1(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i|s_1, b) V(s_i)  = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi^1(s_1) = b$.
-                
+
                 \item In state 2,
                 $\pi^1(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i|s_2, a) V(s_i) = 0.2 \times -12.5 + 0.8 \times -10 = -10.5$ and $\pi^1(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i|s_2, b) V(s_i)  = 0.1 \times 0 + 0.9 \times -12.5 = -11.25$, thus $\pi^1(s_2) = a$.
             \end{itemize}
@@ -446,10 +449,10 @@ Answer the following questions:
 \end{comment}
 
     \item What happens to policy iteration if the initial policy has action $a$ in both states? Does discounting help? Does the optimal policy depend on the discount factor?
-    
+
 \begin{comment}
     \begin{solution}
-        An initial policy with action $a$ in both states leads to an unsolvable problem. The initial value determination problem has the form $$\begin{array}{l}{u_{1}=-1+0.2 u_{1}+0.8 u_{2}} \\ {u_{2}=-2+0.8 u_{1}+0.2 u_{2}} \\ {u_{3}=0}\end{array}$$ and the first two equations are inconsistent. If we were to try to solve them iteratively, we would find the values tending to $-\infty$. Discounting leads to well-defined solutions by bounding the penalty (expected dis- counted cost) an agent can incur at either state. However, the choice of discount factor will affect the policy that results. For $\gamma$ small, the cost incurred in the distant future plays a negligible role in the value computation, because $\gamma^n$ is near $0$. As a result, an agent could choose action $b$ in state 2 because the discounted short-term cost of remaining in the non-terminal states (states 1 and 2) outweighs the discounted long-term cost of action $b$ failing repeatedly and leaving the agent in state 2. 
+        An initial policy with action $a$ in both states leads to an unsolvable problem. The initial value determination problem has the form $$\begin{array}{l}{u_{1}=-1+0.2 u_{1}+0.8 u_{2}} \\ {u_{2}=-2+0.8 u_{1}+0.2 u_{2}} \\ {u_{3}=0}\end{array}$$ and the first two equations are inconsistent. If we were to try to solve them iteratively, we would find the values tending to $-\infty$. Discounting leads to well-defined solutions by bounding the penalty (expected dis- counted cost) an agent can incur at either state. However, the choice of discount factor will affect the policy that results. For $\gamma$ small, the cost incurred in the distant future plays a negligible role in the value computation, because $\gamma^n$ is near $0$. As a result, an agent could choose action $b$ in state 2 because the discounted short-term cost of remaining in the non-terminal states (states 1 and 2) outweighs the discounted long-term cost of action $b$ failing repeatedly and leaving the agent in state 2.
     \end{solution}
 \end{comment}
 \end{enumerate}
@@ -470,12 +473,12 @@ Teams in the National Hockey League historically received 2 points for winning a
 
 \begin{enumerate}
     \item Was hockey a zero-sum game before the rule change? After?
-    
+
     \item Suppose that at a certain time $t$ in a game, the home team has probability $p$ of winning in regulation time, probability $0.78 - p$ of losing, and probability $0.22$ of going into overtime, where they have probability $q$ of winning, $0.9 - q$ of losing, and $0.1$ of tying. Give equations for the expected value for the home and visiting teams.
 
     \item Imagine that it were legal and ethical for the two teams to enter into a pact where they agree that they will skate to a tie in regulation time, and then both try in earnest to win in overtime. Under what conditions, in terms of $p$ and $q$, would it be rational for both teams to agree to this pact?
-    
-    \item Some experts report that since the rule change, the percentage of games with a winner in overtime went up \SI{18.2}{\percent}, as desired, but the percentage of overtime games also went up \SI{3.6}{\percent}. What does that suggest about possible collusion or conservative play after the rule change?
+
+    \item Some experts report that since the rule change, the percentage of games with a winner in overtime went up \qty{18.2}{\percent}, as desired, but the percentage of overtime games also went up \qty{3.6}{\percent}. What does that suggest about possible collusion or conservative play after the rule change?
 \end{enumerate}
 
 \newpage
@@ -484,13 +487,13 @@ Teams in the National Hockey League historically received 2 points for winning a
 
 \begin{itemize}
     \item Uniform norm
-    
+
     \qrcode{https://en.wikipedia.org/wiki/Uniform_norm}
 
     \item Dutch auction
-    
+
     \qrcode{https://en.wikipedia.org/wiki/Dutch_auction}
-    
+
     \item Chapters 16 and 17 of the reference textbook.
 \end{itemize}
 

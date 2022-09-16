@@ -25,7 +25,8 @@ At the end of this session you should be able to
 
 \section{Search algorithms}
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
         \node[state, align=center] (S) {S(tart)\\$h=11$};
         \node[state, align=center] (A) [above right of=S] {A\\$h=20$};
@@ -34,7 +35,7 @@ At the end of this session you should be able to
         \node[state, align=center] (D) [below right of=B] {D\\$h=3$};
         \node[state, align=center] (E) [above right of=B] {E\\$h=19$};
         \node[state, align=center] (G) [right of=D] {G(oal)};
-        
+
         \path[-] (S) edge node[fill=white] {1} (A);
         \path[-] (S) edge node[fill=white] {4} (B);
         \path[-] (S) edge node[fill=white] {3} (C);
@@ -46,17 +47,17 @@ At the end of this session you should be able to
         \path[-] (C) edge node[fill=white] {2} (B);
         \path[-] (A) edge node[fill=white] {5} (B);
     \end{tikzpicture}}
-\end{center}
+\end{figure}
 
 For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm (lecture 2, slide 62) and give the order in which the states, represented by the nodes of this undirected graph, are expanded, as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 
 \begin{enumerate}
     \item Depth-First Search (DFS)
-    
+
     \begin{solution}
         We use a Last-In First-Out (LIFO) fringe, \ie{} a \emph{stack}, to perform the search. In this stack, we keep track of the states that are reachable from the visited (closed) states. These states are annotated with the state they were expanded from, which allows to reconstruct the path at the end. At each step, the state at the \emph{top} of the stack is \emph{popped}. If it was not visited previously, it is expanded, which consists in \emph{pushing} its neighbors to the top of the stack.
-        
-        \begin{table}[h]
+
+        \begin{table}[H]
             \centering
             \begin{tabular}{l|l|c}
                 \toprule
@@ -72,17 +73,17 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         For readability, we don't write the nodes currently in the fringe that are already in the closed set, since they will never be expanded.
-        
+
         Expansion: S, A, B, C, D, E, G. Path: S, A, B, D, E, G.
     \end{solution}
-    
+
     \item Breadth-First Search (BFS)
-    
+
     \begin{solution}
         We use a First-In First-Out (FIFO) fringe, \ie{} a \emph{queue}, to keep track of the reachable states. At each step, the state at the \emph{front} of the queue is popped. If it was not visited previously, it is expanded, which consists in pushing its neighbors to the \emph{back} of the queue.
-    
+
         \begin{table}[h]
             \centering
             \begin{tabular}{l|l|c}
@@ -99,15 +100,15 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         Expansion: S, A, B, C, D, E, G. Path: S, B, D, G.
     \end{solution}
-    
+
     \item Uniform-Cost search (UCS)
-    
+
     \begin{solution}
         The fringe is a \emph{priority} queue. The priority of a node $n$ in the queue is its cumulative cost $g(n)$.
-    
+
         \begin{table}[h]
             \centering
             \begin{tabular}{l|l|c}
@@ -124,15 +125,15 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         Expansion: S, A, C, B, E, D, G. Path: S, B, E, D, G.
     \end{solution}
-    
+
     \item Greedy search
-    
+
     \begin{solution}
         The fringe is also a \emph{priority} queue, but the priority of a node $n$ in the queue is its \emph{heuristic} cost $h(n)$.
-    
+
         \begin{table}[h]
             \centering
             \begin{tabular}{l|l|c}
@@ -147,39 +148,39 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         Expansion: S, C, B, D, G. Path: S, B, D, G.
     \end{solution}
-    
+
     \item \Astar{}
-    
+
     \begin{solution}
     The priority of a node $n$ is the \emph{estimated} cost $f(n) = g(n) + h(n)$ of the cheapest solution through $n$.
     \end{solution}
-    
+
     \begin{enumerate}
         \item Is the heuristic admissible ? If not, make it admissible.
-        
+
         \begin{solution}
             A heuristic $h$ is admissible if $0 \leq h(n) \leq h^*(n)$, where $h^*(n)$ is the true forward cost of $n$. In the graph, $h(\text{E}) = 19$ is larger than $h^*(\text{E}) = 11$, making $h$ non-admissible. This is problematic as it means E (and G) would be expanded before D.
-        
+
             Setting $h(\text{E}) = 11$ is sufficient to make $h$ admissible.
         \end{solution}
-        
+
         \item Is the heuristic consistent ? If not, can we apply \textsc{Graph-Search} ?
-        
+
         \begin{solution}
             In a graph, a heuristic $h$ is consistent if $h(n) \leq c(n, n') + h(n')$ for all node $n'$ reachable from $n$, where $c(n, n')$ is the step cost from $n$ to $n'$. Because this graph is undirected, unless $c(n, n') \geq \abs{h(n') - h(n)}$ for all pair of neighbors $(n, n')$ (which is not the case), it cannot be consistent.
-            
+
             This is problematic as it could create situations where a node has been expanded within a path that is not optimal, and cannot be re-expanded later on within the optimal one. Hence, the algorithm loses its optimality.
-            
+
             Fortunately, there is a modification of \textsc{Graph-Search} that can handle inconsistent heuristics. If we annotate the nodes in the closed set with the priority at which they were expanded, we obtain the capacity to re-expand a node if it has a better (lower) priority than before. The priority in the closed set is then updated.
         \end{solution}
     \end{enumerate}
-    
+
     \begin{solution}
         We apply the modified algorithm with the admissible heuristic.
-    
+
         \begin{table}[h]
             \centering
             \begin{tabular}{l|l|c}
@@ -196,7 +197,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
                 \bottomrule
             \end{tabular}
         \end{table}
-        
+
         Expansion: S, C, B, D, E, D, G. Path: S, B, E, D, G.
     \end{solution}
 \end{enumerate}
@@ -205,9 +206,10 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
 \section{Maze Car (UC Berkeley CS188, Spring 2014)}
 
-\begin{center}
-   \includegraphics[width=0.3\linewidth]{figures/e1_maze.png}
-\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{figures/e1_maze.png}
+\end{figure}
 
 Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent’s goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
 
@@ -215,31 +217,31 @@ As an example, in the hereabove maze, if the agent is initially stationary, it m
 
 \begin{enumerate}
     \item For a grid of size $M \times N$, what is the size of the state space? Assume that all configurations are reachable from the starting state.
-    
+
     \begin{solution}
         $N \times M \times 4 \times (V + 1)$
     \end{solution}
-    
+
     \item What is the maximum branching factor of this problem? Assume that illegal actions are simply not returned by the successor function.
-    
+
     \begin{solution}
         The maximum branching factor is 3, and this happens when the agent is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
     \end{solution}
 
     \item Is the Manhattan distance from the agent’s location to the exit’s location admissible?
-    
+
     \begin{solution}
         No because it does not take the velocity of the agent into account. For instance, in a long straight path, the number of steps could be smaller than the number of squares.
     \end{solution}
-    
+
     \item If we used an inadmissible heuristic in \Astar{} tree search, could it change the completeness of the search? And the optimality ?
-    
+
     \begin{solution}
         With an inadmissible heuristic, \Astar{} will still find a final state if there exists a reachable one (complete), but it could stop the search before finding the optimal one (non optimal).
     \end{solution}
 
     \item State and motivate a non-trivial admissible heuristic for this problem.
-    
+
     \begin{solution}
         Some examples of admissible heuristics are:
         \begin{itemize}
@@ -247,16 +249,16 @@ As an example, in the hereabove maze, if the agent is initially stationary, it m
             \item We can improve the above heuristic by adding the current velocity $v$, as the agent has to slow down to 0 before reaching its goal. This heuristic \emph{dominates} the first one as it is always larger (or equal), but is still admissible as it never overestimates the true forward cost.
         \end{itemize}
     \end{solution}
-    
+
     \item Give a general advantage that an inadmissible heuristic might have over an admissible one.
-    
+
     \begin{solution}
         The time to solve an \Astar{} tree search problem is a function of two factors: the number of nodes expanded, and the time spent per node.
         \begin{itemize}
             \item An inadmissible heuristic may be faster to compute, leading to a solution that is obtained faster due to less time spent per node.
-            \item Admissible heuristics are sometimes too conservative (well below $h^*$). An inadmissible heuristic could be a better estimate of the true forward cost $h^*$ (although it will overestimate at times), thus expanding less nodes. 
+            \item Admissible heuristics are sometimes too conservative (well below $h^*$). An inadmissible heuristic could be a better estimate of the true forward cost $h^*$ (although it will overestimate at times), thus expanding less nodes.
         \end{itemize}
-        We lose the guarantee of optimality by using an inadmissible heuristic. However, sometimes, we may be okay with finding faster a suboptimal solution.
+        We lose the guarantee of optimality by using an inadmissible heuristic. However, sometimes, we may be okay with finding a suboptimal solution faster.
     \end{solution}
 \end{enumerate}
 
@@ -268,22 +270,22 @@ Consider a graph search problem where all edges have a unit cost and the optimal
 
 \begin{enumerate}
     \item Is $h$ admissible?
-    
+
     \begin{solution}
         Yes. If $h^* \geq k$, $h^* - k \leq h^*$, otherwise $0 \leq h^*$.
     \end{solution}
-    
+
     \item Which of the following is the most reasonable description of how much more work will be done, \ie{} how many more nodes will be expanded, with heuristic $h$ compared to $h^*$, as a function of $k$?
-    
+
     \begin{enumerate}
         \item Constant in $k$
         \item Linear in $k$
         \item Exponential in $k$
         \item Unbounded
     \end{enumerate}
-    
+
     \begin{solution}
-        With this heuristic, all nodes $n$ such that $h^*(n) \leq k$, \ie{} within distance $k$ from the objective, will have have a null heuristic. Assuming a node can have up to $p$ parents, then there is at most $p^k$ such node and the algorithm will expand all of them, in the worst case. Thus, the additional work is exponential in $k$.
+        With this heuristic, all nodes $n$ such that $h^*(n) \leq k$, \ie{} within distance $k$ from the objective, will have have a null heuristic. Assuming a node can have up to $p$ parents, there is at most $p^k$ such node and the algorithm will expand all of them, in the worst case. Thus, the additional work is exponential in $k$.
     \end{solution}
 \end{enumerate}
 
@@ -291,8 +293,9 @@ Consider a graph search problem where all edges have a unit cost and the optimal
 
 \section{Search algorithms}
 
-\begin{center}
-     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
+\begin{figure}[h]
+    \centering
+    \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
         \node[state, align=center] (S) {S(tart)};
         \node[state, align=center] (A) [above right of=S] {A};
         \node[state, align=center] (B) [right of=A] {B};
@@ -309,53 +312,53 @@ Consider a graph search problem where all edges have a unit cost and the optimal
         \path[-] (C) edge node[fill=white] {2} (G);
         \path[-] (D) edge node[fill=white] {3} (G);
     \end{tikzpicture}}
-\end{center}
+\end{figure}
 
 For each of the following search algorithms, give the order in which states are expanded as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 
 \begin{enumerate}
     \item Depth-First search (DFS)
-    
+
     \begin{solution}
         Expansion: S, A, B, D, C, G. Path: S, A, B, D, C, G.
     \end{solution}
-    
+
     \item Breadth-First Search (BFS)
-    
+
     \begin{solution}
         Expansion: S, A, G. Path: S, G.
     \end{solution}
-    
+
     \item Uniform-Cost search (UCS)
-    
+
     \begin{solution}
         Expansion: S, A, C, D, B, G. Path: S, A, C, G.
     \end{solution}
-    
+
     \item Consider the following heuristics:
     \begin{table}[h]
         \centering
         \begin{tabular}{c|cc}
-        \toprule
-        State & $h_1$ & $h_2$ \\
-        \midrule
-        S & 5 & 4\\
-        A & 3 & 2\\
-        B & 6 & 6\\
-        C & 2 & 1\\
-        D & 3 & 3\\
-        G & 0 & 0\\
-        \bottomrule
+            \toprule
+            State & $h_1$ & $h_2$ \\
+            \midrule
+            S & 5 & 4\\
+            A & 3 & 2\\
+            B & 6 & 6\\
+            C & 2 & 1\\
+            D & 3 & 3\\
+            G & 0 & 0\\
+            \bottomrule
         \end{tabular}
     \end{table}
     which one is not admissible? Why?
-    
+
     \begin{solution}
         The heuristic $h_1$ is not admissible because the real cost from S to G is 4 which is smaller than 5.
     \end{solution}
-    
+
     \item \Astar{} (with the admissible heuristic)
-    
+
     \begin{solution}
         Expansion: S, A, C, G. Path: S, A, C, G.
     \end{solution}
@@ -367,9 +370,10 @@ For each of the following search algorithms, give the order in which states are 
 
 The hive of insects needs your help. You control an insect in a rectangular maze-like environment of size $M \times N$, as shown on the Figure below. At each time-step, the insect can move into a free adjacent cell or stay in its current location. All actions have a unit cost.
 
-\begin{center}
-   \includegraphics[width=0.3\linewidth]{figures/e1_hive.png}
-\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{figures/e1_hive.png}
+\end{figure}
 
 In this particular case, the insect must pass through a series of partially flooded tunnels, as illustrated by the gray cells on the map. The insect can hold its breath for $A$ time-steps in a row. Moving into a flooded cell requires your insect to consume 1 unit of air, while moving into a free cell refills its air supply.
 
@@ -379,11 +383,11 @@ In this particular case, the insect must pass through a series of partially floo
     \begin{solution}
         The position of the insect  as well as the number of unit of air it has left. $s = (x, y, u_a) \in [1, M] \times [1, N] \times [1, A]$.
     \end{solution}
-    
+
     \item Give the size of your state space.
-    
+
     \begin{solution}
-        $M\times N \times A$ 
+        $M\times N \times A$
     \end{solution}
 \end{itemize}
 
@@ -393,14 +397,14 @@ In this particular case, the insect must pass through a series of partially floo
 
 \begin{itemize}
     \item Search (UC Berkeley CS188, Spring 2014 Section 0).
-    
+
     \qrcode{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}
-    
+
     \item Search (UC Berkeley CS188, Spring 2014 Section 1).
-    
+
     \qrcode{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}
-    
+
     \item Chapter 3 of the reference textbook.
 \end{itemize}
-    
+
 \end{document}

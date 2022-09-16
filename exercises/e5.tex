@@ -25,9 +25,10 @@ At the end of this session you should be able to
 
 Pacman and Pacwoman have been searching for each other in the maze. Pacwoman has been pregnant with a baby, and just this morning she has given birth to Pacbaby\footnote{Congratulations!}. Because Pacbaby was born before Pacman and Pacwoman were reunited in the maze, he has never met his father. Naturally, Pacwoman wants to teach Pacbaby to recognize his father, using a set of pictures of Pacman. She also has several pictures of ghosts to use as negative examples.
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.5\textwidth]{figures/e5_pacbaby.jpg}
-\end{center}
+\end{figure}
 
 Because the pictures are black and white, and were taken from various angles, Pacwoman has decided to teach Pacbaby to identify Pacman based on salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
 
@@ -49,24 +50,25 @@ Because the pictures are black and white, and were taken from various angles, Pa
 
 \begin{enumerate}
     \item Suppose Pacbaby has a Naive Bayes based brain. Draw the Bayesian network that would represent the dependencies between $S$, $B$, $H$ and $M$ for Pacbaby.
-    
+
     \begin{solution}
-        \begin{center}
+        \begin{figure}[H]
+            \centering
             \begin{tikzpicture}[node distance = 2cm]
                 \node[state, align=center] (S) {$S$};
                 \node[state, align=center] (B) [below left of=S] {$B$};
                 \node[state, align=center] (H) [below of=S] {$H$};
                 \node[state, align=center] (M) [below right of=S] {$M$};
-                
+
                 \path[-{>[scale=1.5]}] (S) edge (B);
                 \path[-{>[scale=1.5]}] (S) edge (H);
                 \path[-{>[scale=1.5]}] (S) edge (M);
             \end{tikzpicture}
-        \end{center}
+        \end{figure}
     \end{solution}
-    
+
     \item Write the Bayesian classification rule for this problem, \ie{} the formula that given a data point $(b, h, m)$ returns the most likely subject. Write the formula in terms of conditional and prior probabilities. What does the formula become under the assumptions of Pacbaby ?
-    
+
     \begin{solution}
         Given $(b, h, m)$, the most likely subject is given by the \emph{maximum a posteriori} (MAP) estimation
         \begin{align*}
@@ -78,13 +80,13 @@ Because the pictures are black and white, and were taken from various angles, Pa
             s_{\text{MAP}} & = \arg\max_{s} P(b \knowing s) P(h \knowing s) P(m \knowing s) P(s) .
         \end{align*}
     \end{solution}
-    
+
     \item What are the parameters of this model? Give estimates of these parameters according to the pictures provided by Pacwoman.
-    
+
     \begin{solution}
         The parameters of the model are the elements of
         the prior vector $P(S)$ and the (conditional) probability matrices $P(B \knowing S)$, $P(H \knowing S)$ and $P(M \knowing S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
-        
+
         \begin{table}[h]
             \centering
             \begin{tabular}{c|cccc}
@@ -97,9 +99,9 @@ Because the pictures are black and white, and were taken from various angles, Pa
             \end{tabular}
         \end{table}
     \end{solution}
-    
+
     \item Pacman eventually shows up wearing a bowtie, but no hat or mustache. Will Pacbaby recognize his father?
-    
+
     \begin{solution}
         Pacbaby will recognize his father if $s_{\text{MAP}} = 1$ for $(b, h, m) = (1, 0, 0)$. Using the parameters estimated previously, we have
         \begin{align*}
@@ -108,19 +110,20 @@ Because the pictures are black and white, and were taken from various angles, Pa
         \end{align*}
         Therefore, $s_{\text{MAP}} = 0$, meaning that Pacbaby will \emph{not} recognize his father.
     \end{solution}
-    
+
     \item If Pacbaby had a perceptron based brain, meaning that he is limited to learn linear classification rules, would he be able to learn a rule that makes no mistakes on the set of pictures? In other words, is the learning set \emph{linearly separable}?
-    
+
     \begin{solution}
         For a training set $\cbk{(x_i, y_i)}$ with $x_i \in \R^n$ and $y_i \in \cbk{-1, +1}$, a linear separation consists in \emph{any} hyperplane parameters $w \in \R^n$ and $b \in \R$ such that
         \begin{equation*}
             y_i = \operatorname{sign}(w^T x_i + b)
         \end{equation*}
         for all $(x_i, y_i)$. There exists several ways of fitting these parameters to a learning set, but it is very tedious by hand. However, in low dimension (2D, 3D), it is possible to solve this problem visually. We can draw the data points on a grid with different colors for each class and try to find a plane that separates best the two classes.
-        
+
         In our case, we draw the $S = 0$ class in red and the $S = 1$ class in blue, and see that there is a plane that separates them perfectly. Hence, the learning set is linearly separable.
-        
-        \begin{center}
+
+        \begin{figure}[h]
+            \centering
             \pgfplotsset{
                 layers/my layers/.define layer set={
                     background,
@@ -129,7 +132,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
                 }{},
                 set layers=my layers,
             }
-        
+
             \begin{tikzpicture}
                 \begin{axis}[
                     3d box,
@@ -143,8 +146,8 @@ Because the pictures are black and white, and were taken from various angles, Pa
                     xtick={0, 0.5, 1},
                     ytick={0, 0.5, 1},
                     ztick={0, 0.5, 1},
-                    xlabel=$h$,
-                    ylabel=$b$,
+                    xlabel=$b$,
+                    ylabel=$h$,
                     zlabel=$m$
                 ]
                     \addplot3[only marks, red, on layer=background] table[row sep=crcr] {%
@@ -152,13 +155,13 @@ Because the pictures are black and white, and were taken from various angles, Pa
                         1 1 0\\
                         0 1 0\\
                     };
-        
+
                     \addplot3[only marks, blue, on layer=foreground] table[row sep=crcr] {%
                         0 0 0\\
                         1 0 1\\
                         1 1 1\\
                     };
-                
+
                     \addplot3[
                         surf,
                         shader=interp,
@@ -168,7 +171,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
                     ] (x, {max(y, 0.3 - x)}, {0.5 * x + 0.5 * max(y, 0.3 - x) - 0.25});
                 \end{axis}
             \end{tikzpicture}
-        \end{center}
+        \end{figure}
     \end{solution}
 \end{enumerate}
 
@@ -176,26 +179,27 @@ Because the pictures are black and white, and were taken from various angles, Pa
 
 \section{Predict your grade}
 
-\begin{center}
+\begin{figure}[h]
+    \centering
     \begin{tikzpicture}[node distance = 2cm]
         \node[state, align=center] (X1) {$x_1$};
         \node[state, align=center] (X2) [right of=X1] {$x_2$};
         \node[state, align=center] (X3) [right of=X2] {$x_3$};
         \node[state, align=center] (Y) [below of=X2] {$y$};
-        
+
         \path[-{>[scale=1.5]}] (X1) edge (X2);
         \path[-{>[scale=1.5]}] (X2) edge (X3);
         \path[-{>[scale=1.5]}] (X1) edge (Y);
         \path[-{>[scale=1.5]}] (X2) edge (Y);
         \path[-{>[scale=1.5]}] (X3) edge (Y);
     \end{tikzpicture}
-\end{center}
+\end{figure}
 
 The hereabove Bayesian network represents how the final grade of a class is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the grades obtained by a student at the homework, project and exam. The teaching assistant that grades the homework also grades the project and the exam, which introduces a slight bias in the corrections. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the final grade, which is a linear combination of the grades obtained by the student during the semester plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
 
 \begin{enumerate}
     \item Assuming the parameters of the model are known, what is the expected value of $y$ given $x_1$ and $x_2$.
-    
+
     \begin{solution}
         Our task is to find the expectation
         \begin{equation*}
@@ -214,9 +218,9 @@ The hereabove Bayesian network represents how the final grade of a class is comp
             \underset{p(y \knowing x_1, x_2)}{\E} \sbk{y} = a_3 x_1 + (a_4 + a_5 a_2) x_2 + a_5 \mu_3 + \mu_y.
         \end{equation*}
     \end{solution}
-    
+
     \item \label{itm:mle} Suppose now that the model's parameters are unknown. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, determine the model that best describes $d$.
-    
+
     \begin{solution}
         We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
         \begin{align*}
@@ -236,19 +240,13 @@ The hereabove Bayesian network represents how the final grade of a class is comp
         \end{align*}
         which exactly corresponds to a \emph{linear regression} problem. Then, we find $w_{\text{MLE}}$ by canceling the gradient with respect to $w$, \ie{}
         \begin{align*}
-            0 & = \nabla_w \sum_i (w^T x_i - y_i)^2 \\
-            & = \sum_i \nabla_w \, (w^T x_i - y_i)^2 \\
-            & = \sum_i 2 \, (w^T x_i - y_i) \, x_i \\
-            & = \sum_i (w^T x_i - y_i) \, x_i .
+            0 & = \nabla_{\!w} \sum_i (w^T x_i - y_i)^2 \\
+            & = \nabla_{\!w} \sum_i (w^T x_i - y_i) (w^T x_i - y_i) \\
+            & = \nabla_{\!w} \sum_i (w^T x_i)^2 + y_i^2 - 2 w^T x_i y_i \\
+            & = \nabla_{\!w} \rbk*{w^T X^T X w + Y^T Y - 2 w^T X^T Y} \\
+            & = 2 X^T X w - 2 X^T Y
         \end{align*}
-        This expression is a \emph{vectorial} equality, which is equivalent to the set of element-wise equalities
-        \begin{align*}
-            0 & = \sum_i (w^T x_i - y_i) \, x_{ij} \\
-            & = \sum_i \rbk*{\sum_k w_k x_{ik}} x_{ij} - \sum_i y_i x_{ij} \\
-            & = \underbrace{\sum_k w_k \underbrace{\sum_i x_{ik} x_{ij}}_{\rbk{X^T X}_{jk}}}_{\rbk{X^T X w}_j} - \underbrace{\sum_i y_i x_{ij}}_{\rbk{X^T Y}_j} \\
-            & = \rbk*{X^T X w - X^T Y}_j ,
-        \end{align*}
-        where $X = (x_i^T) \in \R^{N \times 3}$ and $Y = (y_i) \in \R^{N}$. Finally, going back to vectors, we have
+        where $X = (x_i^T) \in \R^{N \times 3}$ and $Y = (y_i) \in \R^{N}$. Finally, we have
         \begin{alignat*}{2}
             && 0 & = X^T X w_{\text{MLE}} - X^T Y \\
             \Leftrightarrow \quad && w_{\text{MLE}} & = (X^T X)^{-1} X^T Y .
@@ -290,9 +288,9 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
 \begin{enumerate}
     \item Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
-    
+
     \item How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
-    
+
     \item Discuss the expected performance of the resulting agent when \begin{enumerate*}
         \item the Grandmaster agent is optimal, and
         \item the Grandmaster agent is suboptimal.
@@ -301,17 +299,65 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
 \newpage
 
+\section{Escape game (January 2022)}
+
+A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(i, j)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\mathcal{N}(0, 1)$.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cc}
+        \toprule
+        Starting room & Measured best time \\
+        \midrule
+        $(4, 5)$ & $2.0$ \\
+        $(5, 3)$ & $3.5$ \\
+        $(3, 3)$ & $4.5$ \\
+        $(4, 1)$ & $7.0$ \\
+        $(1, 2)$ & $8.5$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+From the leaderboard, you wish to learn a heuristic $h(i, j)$ approximating the best time to get to the exit from room $(i, j)$. You decide to use a small neural network as approximator, described by the following parametric function,
+\begin{align*}
+    h(i, j) & = \text{ReLU}(i w_1 + j w_2 + w_3) + \text{ReLU}(i w_4 + j w_5 + w_6) \\
+    \text{ReLU}(x) & = \max(x, 0).
+\end{align*}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|cccccc}
+            \toprule
+            Set & $w_1$ & $w_2$ & $w_3$ & $w_4$ & $w_5$ & $w_6$ \\
+            \midrule
+            $A$ &$-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
+            $B$ &$-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
+            $C$ &$-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \item You now assume a Gaussian prior $\mathcal{N}(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
+    \item Discuss the procedure you would implement on a computer to find the optimal set of parameters, had the table above not been provided.
+    \item Using the parameters $(-2, 1, 5, 0.5, -2, 7)$, apply $5$ iterations of the greedy search algorithm, starting from room $(1, 1)$.
+\end{enumerate}
+
+\newpage
+
 \section*{Supplementary materials}
 
-\begin{itemize}    
+\begin{itemize}
     \item Heteroscedasticity
-    
+
     \qrcode{https://en.wikipedia.org/wiki/Heteroscedasticity}
-    
+
     \item Laplace distribution
-    
+
     \qrcode{https://en.wikipedia.org/wiki/Laplace_distribution}
-    
+
     \item Chapter 18 of the reference textbook.
 \end{itemize}
 
