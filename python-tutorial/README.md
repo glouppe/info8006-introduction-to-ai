@@ -1,51 +1,9 @@
 # Python tutorial
 
-Programming projects will be done in Python 3.9.
+Programming projects will be done in Python 3.8.
 In this tutorial, you will install Python and learn its basics.
 
-Credits: This tutorial is strongly based on [CS188 project 0](https://inst.eecs.berkeley.edu/~cs188/su19/project0/) from UC Berkeley.
-
-## Table of contents
-
-- [Tools](#tools)
-    - [Python](#python)
-    - [Unix & OS X basics](#unix--os-x-basics)
-    - [Windows basics](#windows-basics)
-    - [Python environment management](#python-environment-management)
-      	- [Creating a Conda Environment](#creating-a-conda-environment)
-      	- [Entering the Environment](#entering-the-environment)
-      	- [Leaving the Environment](#leaving-the-environment)
-- [Python Basics](#python-basics)
-    - [Required Files](#required-files)
-    - [Introduction](#introduction)
-    - [Invoking the Interpreter](#invoking-the-interpreter)
-    - [Operators](#operators)
-    - [Strings](#strings)
-    - [Exercise: Dir and Help](#exercise-dir-and-help)
-    - [Built-in Data Structures](#built-in-data-structures)
-      	- [Lists](#lists)
-      	- [Exercise: Lists](#exercise-lists)
-      	- [Tuples](#tuples)
-      	- [Sets](#sets)
-      	- [Dictionaries](#dictionaries)
-      	- [Exercise: Dictionaries](#exercise-dictionaries)
-    - [Writing Scripts](#writing-scripts)
-    - [Exercise: List Comprehensions](#exercise-list-comprehensions)
-    - [Beware of Indendation!](#beware-of-indendation)
-    - [Tabs vs Spaces](#tabs-vs-spaces)
-    - [Writing Functions](#writing-functions)
-    - [Advanced Exercise](#advanced-exercise)
-    - [Object Basics](#object-basics)
-      	- [Defining Classes](#defining-classes)
-      	- [Using Objects](#using-objects)
-    - [Static vs Instance Variables](#static-vs-instance-variables)
-    - [More Python Tips and Tricks](#more-python-tips-and-tricks)
-    - [Troubleshooting](#troubleshooting)
-- [Exercises](#exercises)
-    - [Question 1: Addition](#question-1-addition)
-    - [Question 2: buyLotsOfFruit function](#question-2-buylotsoffruit-function)
-    - [Question 3: shopSmart function](#question-3-shopsmart-function)
-- [Going further](#going-further)
+Credits: This tutorial is heavily inspired from [CS188 project 0](https://inst.eecs.berkeley.edu/~cs188/su19/project0/) by UC Berkeley.
 
 ## Tools
 
@@ -53,7 +11,7 @@ In order to work with Python, we encourage you to use a text editor and a termin
 
 On Unix and OS X, you can use the basic terminal while on Windows, you will use the *Anaconda prompt* (see further).
 
-There are plenty of text editors that can be used but [Atom](https://atom.io/) or [Sublime Text](https://www.sublimetext.com/) are good candidates.
+There are plenty of text editors that can be used but [Sublime Text](https://www.sublimetext.com/) or [VS Code](https://code.visualstudio.com/) are good candidates.
 
 Also, there exist many IDEs such as [Spyder](https://www.spyder-ide.org/) or [PyCharm](https://www.jetbrains.com/pycharm/) that could be used **CAREFULLY**.
 
@@ -61,6 +19,8 @@ Also, there exist many IDEs such as [Spyder](https://www.spyder-ide.org/) or [Py
 We recommend you to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html). It allows you to manage many environments, with distinct Python versions and dependencies.
 
 For Windows users, Miniconda comes with the *Anaconda prompt* that will be used as a terminal to execute Python code.
+
+> On Windows, you cannot install Miniconda if you have accents in your username. In that case, you either have to install Miniconda for all users or create a new user without accents.
 
 ### Unix & OS X basics
 When you open a terminal window, you’re placed at a command prompt:
@@ -130,12 +90,10 @@ Download **[tutorial_code.zip](https://github.com/glouppe/info8006-introduction-
 You can find several commands to manipulate files and the current directory of your prompt in the following:
 
 - If you are not on the desired disk, you just have to type its name in the prompt:
-
-```console
-C:\Users>D:
-D:\>
-```
-
+    ```console
+    C:\Users>D:
+    D:\>
+    ```
 - `md` to create a new directory
 - `cd` to change directory
 - `dir` to see a listing of the contents of a directory
@@ -146,31 +104,34 @@ D:\>
 - To create an empty file, prefer the file explorer
 
 ### Python environment management
+
 In the following, the commands are the same either you are working on Anaconda prompt or a UNIX terminal.
 
-#### Creating a Conda Environment
-The command for creating a conda environment with Python 3.9 is:
+#### Creating a Conda environment
+
+The command for creating a conda environment with Python 3.8 is:
 
 ```console
-conda create --name <env-name> python=3.9
+conda create --name <envname> python=3.8
 ```
 
 We name our environment info8006 with the following command.
 
 ```console
-username@computername:python_basics$ conda create --name info8006 python=3.9
+username@computername:python_basics$ conda create --name info8006 python=3.8
 ```
 
 Enter y to confirm the installation of any missing packages.
 
-#### Entering the Environment
+#### Entering the environment
+
 We do the following to enter the conda environment that we just created and to check the python version.
-Note that the Python version within the environment is 3.9, just what we want.
+Note that the Python version within the environment is 3.8, just what we want.
 
 ```console
 username@computername:python_basics$ conda activate info8006
 (info8006) username@computername:python_basics$ python -V
-Python 3.9.7 :: Anaconda, Inc.
+Python 3.8.10 :: Anaconda, Inc.
 ```
 
 Note: the tag (<env-name>) shows you the name of the conda environment that is active. In our case, we have (info8006), as what we’d expect.
@@ -205,7 +166,7 @@ You invoke the interpreter using the command `python` at the command prompt.
 
 ```console
 (info8006) username@computername:python_basics$ python
-Python 3.9.7 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
+Python 3.8.10 |Anaconda, Inc.| (default, Jul 30 2019, 13:42:17)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
@@ -301,7 +262,7 @@ find(...) method of builtins.str instance
 1
 ```
 
-Try out some of the string functions listed in `dir` (ignore those with underscores '_' around the method name).
+Try out some of the string functions listed in `dir` (ignore those with underscores `_` around the method name).
 
 ### Built-in Data Structures
 
@@ -397,7 +358,7 @@ Play with some of the list functions. You can find the methods you can call on a
 
 ```
 
-Note: Ignore functions with underscores "_" around the names; these are private helper methods. Press 'q' to back out of a help screen.
+Note: Ignore functions with underscores `_` around the names; these are private helper methods. Press 'q' to back out of a help screen.
 
 #### Tuples
 
@@ -429,7 +390,9 @@ A set is another data structure that serves as an unordered list with no duplica
 
 Another way of creating a set is shown below:
 
-`>>> setOfShapes = {‘circle’, ‘square’, ‘triangle’, ‘circle’}`
+```python
+>>> setOfShapes = {'circle', 'square', 'triangle', 'circle'}
+```
 
 Next, we show how to add things to the set, test if an item is in the set, and perform common set operations (difference, intersection, union):
 
@@ -1015,7 +978,6 @@ shops = [shop1, shop2]
 `test_cases/q3/select_shop1.test` tests whether: `shopSmart.shopSmart(orders1, shops) == shop1`
 
 and `test_cases/q3/select_shop2.test` tests whether: `shopSmart.shopSmart(orders2, shops) == shop2`
-
 
 ## Going further
 

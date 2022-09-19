@@ -1,75 +1,82 @@
-from pacman_module.game import Agent
-from pacman_module.pacman import Directions
+from pacman_module.game import Agent, Directions
+from pacman_module.util import Stack
 
 
 def key(state):
-    """
-    Returns a key that uniquely identifies a Pacman game state.
+    """Returns a key that uniquely identifies a Pacman game state.
 
     Arguments:
-    ----------
-    - `state`: the current game state. See FAQ and class
-               `pacman.GameState`.
+        state: a game state. See API or class `pacman.GameState`.
 
-    Return:
-    -------
-    - A hashable key object that uniquely identifies a Pacman game state.
+    Returns:
+        A hashable key tuple.
     """
-    
-    # TODO
-    pass
+
+    return (
+        state.getPacmanPosition(),
+        # ...
+    )
 
 
 class PacmanAgent(Agent):
-    """
-    A Pacman agent based on Depth-First-Search.
-    """
+    """Pacman agent based on depth-first search (DFS)."""
 
-    def __init__(self, args):
-        """
-        Arguments:
-        ----------
-        - `args`: Namespace of arguments from command-line prompt.
-        """
-        self.moves = []
+    def __init__(self):
+        super().__init__()
+
+        self.moves = None
 
     def get_action(self, state):
-        """
-        Given a pacman game state, returns a legal move.
+        """Given a Pacman game state, returns a legal move.
 
         Arguments:
-        ----------
-        - `state`: the current game state. See FAQ and class
-                   `pacman.GameState`.
+            state: a game state. See API or class `pacman.GameState`.
 
         Return:
-        -------
-        - A legal move as defined in `game.Directions`.
+            A legal move as defined in `game.Directions`.
         """
 
-        if not self.moves:
+        if self.moves is None:
             self.moves = self.dfs(state)
 
-        try:
+        if self.moves:
             return self.moves.pop(0)
-
-        except IndexError:
+        else:
             return Directions.STOP
 
     def dfs(self, state):
-        """
-        Given a pacman game state,
-        returns a list of legal moves to solve the search layout.
+        """Given a Pacman game state, returns a list of legal moves to solve
+        the search layout.
 
         Arguments:
-        ----------
-        - `state`: the current game state. See FAQ and class
-                   `pacman.GameState`.
+            state: a game state. See API or class `pacman.GameState`.
 
-        Return:
-        -------
-        - A list of legal moves as defined in `game.Directions`.
+        Returns:
+            A list of legal moves.
         """
-        
-        # TODO
-        pass
+
+        path = []
+        fringe = Stack()
+        fringe.push((state, path))
+        closed = set()
+
+        while True:
+            if fringe.isEmpty():
+                return []
+
+            current, path = fringe.pop()
+
+            if current.isWin():
+                return path
+
+            current_key = key(current)
+
+            if current_key in closed:
+                continue
+            else:
+                closed.add(current_key)
+
+            for successor, action in current.generatePacmanSuccessors():
+                fringe.push((successor, path + [action]))
+
+        return path
