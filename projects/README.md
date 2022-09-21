@@ -223,9 +223,10 @@ The purpose of the projects is to give you an opportunity to have a practical ap
 
 You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office with the following schedule:
 
+ - ? (François Rozet, ?)
  - Wednesday: 12PM - 2PM (Arnaud Delaunoy, R 103)
 
-If this time slot does not suit you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can of course be outside the duty periods mentioned above.   
+If none of these time slots suit you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can of course be outside the duty periods mentioned above.   
 
 Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
 
