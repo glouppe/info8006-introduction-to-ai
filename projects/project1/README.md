@@ -37,16 +37,10 @@ In this section, you can find the criteria according to which the different ques
 Each of your codes will be evaluated against new mazes, some being designed to test the common pitfalls. Passing the public tests does not mean that your code is perfect and that you will get the highest grades. The criteria are the following:
 
 * **BFS** (20%)
-  - 100%: The agent returns the same score as our on all the mazes
-  - 0%: Otherwise
+  If implemented correctly, your implementation should return the same score as our and roughly expand the same amount of nodes. We will take both these criteria into account.
 
 * **A-star** (75%)
-   A well-implemented A-star algorithm should return the optimal solution no matter the maze structure. The number of expanded nodes needed to find an      optimal solution depends on the quality of the heuristic.
-   - 100%: Return the optimal solution on all the mazes and never expand more nodes than twice the amount expanded by our implementation.
-   - 75%: Return the optimal solution on all the mazes and expand more nodes than twice the amount expanded by our implementation on at least one maze.
-   - 50%: Fail to return the optimal solution on one maze.
-   - 25%: Fail to return the optimal solution on two mazes or more.
-   - 0%: Fail to return the optimal solution on more than half of the mazes or returns a python error.
+   A well-implemented A-star algorithm should return the optimal solution no matter the maze structure. The number of expanded nodes needed to find an      optimal solution depends on the quality of the heuristic. We will check if the optimal solution is returned on all tested maze and will also take the    number of expanded nodes into account (the lower the better).
 
 * **Code style** (5%)
   - 100%: The source code is PEP8 formatted
