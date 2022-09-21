@@ -1,4 +1,15 @@
-# Project 0
+# Project 1
+
+## Deliverables
+
+You are requested to deliver a *zip* archive containing:
+ - Your `astar.py` file containing your implementation of A\* algorithm.
+	 - Put the class template defined in `pacmanagent.py` into `astar.py` and fill in the `get_action` function.
+ - Your `bfs.py` file containing your implementation of BFS algorithm.
+	 - Put the class template defined in `pacmanagent.py` into `bfs.py` and fill in the `get_action` function.
+   
+No report is required.
+
 ## Instructions
 
 You can download the **[archive](https://github.com/glouppe/info8006-introduction-to-ai/raw/master/projects/project0.zip)** of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze.
@@ -13,11 +24,30 @@ When you want to test one of your implementation, just replace the script parame
 Reminder: it is mandatory to use only the [API](https://github.com/glouppe/info8006-introduction-to-ai/tree/master/projects#api) to retrieve game information.
 
 You are asked to implement the following algorithms:
-1. Depth-first search
-2. Breadth-first search
-3. Uniform-cost search
-4. A-star
+1. Breadth-first search
+2. A-star
 
 We recommend implementing those in this order in an incremental way.
 
 The programming projects are adapted from [CS188 (UC Berkeley)](http://ai.berkeley.edu/project_overview.html).
+
+## Evaluation
+In this section, you can find the criteria according to which the different questions will be evaluated, as well as some additional form evaluations of your code.
+
+Each of your codes will be evaluated against new mazes, some being designed to test the common pitfalls. Passing the public tests does not mean that your code is perfect and that you will get the highest grades. The criteria are the following:
+
+* **BFS** (20%)
+  - 100%: The agent returns the same score as our on all the mazes
+  - 0%: Otherwise
+
+* **A-star** (75%)
+   A well-implemented A-star algorithm should return the optimal solution no matter the maze structure. The number of expanded nodes needed to find an      optimal solution depends on the quality of the heuristic.
+   - 100%: Return the optimal solution on all the mazes and never expand more nodes than twice the amount expanded by our implementation.
+   - 75%: Return the optimal solution on all the mazes and expand more nodes than twice the amount expanded by our implementation on at least one maze.
+   - 50%: Fail to return the optimal solution on one maze.
+   - 25%: Fail to return the optimal solution on two mazes or more.
+   - 0%: Fail to return the optimal solution on more than half of the mazes or returns a python error.
+
+* **Code style** (5%)
+  - 100%: The source code is PEP8 formatted
+  - 0%: At least one error was raised when checking PEP8 compatibility
