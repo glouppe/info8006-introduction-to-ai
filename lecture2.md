@@ -44,6 +44,13 @@ class: middle
 
 # Planning agents
 
+???
+
+Start with a human agent for Pacman and discuss.
+
+```
+python run.py --agentfile humanagent.py --layout large
+```
 ---
 
 # Reflex agents
@@ -131,6 +138,10 @@ A **search problem** consists of the following components:
     - We say that $s'$ is a *successor* of $s$ if there is an acceptable action from $s$ to $s'$.
 
 .center[![](figures/lec2/pacman-successor.png)]
+
+???
+
+List on the blackboard.
 
 ---
 

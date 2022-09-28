@@ -43,9 +43,7 @@ class: middle
 - Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
     - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
     - This is different from search where a solution is a *fixed sequence*.
-- Time **limits**.
-    - Branching factor is often very large.
-    - Unlikely to find goal with standard search algorithms, we need to *approximate*.
+- Time is often **limited**.
 
 ???
 
@@ -75,6 +73,10 @@ A **game** is formally defined as a kind of search problem with the following co
 - A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
 - A *terminal test* which determines whether the game is over.
 
+???
+
+Outline on the blackboard.
+
 ---
 
 class: middle
@@ -84,14 +86,6 @@ class: middle
 - Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
     - Nodes are game states.
     - Edges are actions.
-
----
-
-class: middle
-
-## Tic-Tac-Toe game tree
-
-.width-100[![](figures/lec3/tictactoe.png)]
 
 ---
 
@@ -115,6 +109,14 @@ class: middle
 ???
 
 The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
+
+---
+
+class: middle
+
+## Tic-Tac-Toe game tree
+
+.width-100[![](figures/lec3/tictactoe.png)]
 
 ---
 
@@ -170,6 +172,10 @@ The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for 
 The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
 - Assuming that MIN is an optimal adversary that maximizes the *worst-case outcome* for MAX.
 - This is equivalent to not making an assumption about the strength of the opponent.
+
+???
+
+Blackboard.
 
 ---
 
@@ -496,6 +502,10 @@ be approximated by stopping the recursion early and using an evaluation function
 - This strategy does **not require domain knowledge**!
     - The game engine is all that is needed.
 
+???
+
+Explain MCTS on the blackboard.
+
 ---
 
 class: middle
@@ -778,11 +788,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Browne, Cameron B., et al. "A survey of monte carlo tree search methods." IEEE Transactions on Computational Intelligence and AI in games 4.1 (2012): 1-43.
-- Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.
-- Silver, David, et al. "Mastering the game of Go with deep neural networks and tree search." Nature 529.7587 (2016): 484-489.
