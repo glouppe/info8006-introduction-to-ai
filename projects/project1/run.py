@@ -18,15 +18,15 @@ if __name__ == '__main__':
         '-l',
         '--layout',
         default='large',
-        help='Maze layout (from layouts folder).',
+        help='Maze layout from the `layouts` directory.',
     )
 
     parser.add_argument(
         '-ng',
         '--nographics',
-        help='Disable the graphical display of the game.',
-        default=False,
         action='store_true',
+        default=False,
+        help='Disable the graphical display of the game.',
     )
 
     args = parser.parse_args()
