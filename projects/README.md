@@ -20,9 +20,9 @@ Once Miniconda is installed, open the Anaconda prompt (Windows) or a terminal (L
 Create a `pacman` environment, activate it and install the dependencies:
 
 ```console
-conda create --name pacman python=3.8
-conda activate pacman
-conda install numpy
+$ conda create --name pacman python=3.8
+$ conda activate pacman
+$ conda install numpy
 ```
 
 From now, it is assumed that `pacman` is activated.
@@ -31,17 +31,22 @@ From now, it is assumed that `pacman` is activated.
 
 - `--agent`: start the game with a user-specifed Pacman agent
     ```console
-    python run.py --agent humanagent
+    $ python run.py --agent humanagent
+    ```
+
+- `--ghost`: start the game with a user-specifed Ghost agent (`dumby`, `greedy`, `smarty` or `eastrandy`)
+    ```console
+    $ python run.py --ghost dumby
     ```
 
 - `--layout`: start the game with a user-specifed maze layout (see `pacman_module/layouts` directory)
     ```console
-    python run.py --layout medium
+    $ python run.py --layout medium
     ```
 
 - `--nographics`: disable the graphical user interface
     ```console
-    python run.py --agent dfs --nographics
+    $ python run.py --agent dfs --nographics
     ```
 
 ## Instructions

@@ -176,7 +176,7 @@ class GameState:
         Returns a list of pairs of successor states and moves given the current state s for the pacman agent.
         """
         if (GameState.countExpanded >= GameState.maximumExpanded):
-            return None
+            raise Exception("Too many expanded nodes")
         GameState.countExpanded += 1
         return [(self.generateSuccessor(0, action),action) for action in self.getLegalPacmanActions() if action != Directions.STOP]
 
@@ -185,10 +185,11 @@ class GameState:
          Returns a list of pairs of successor states and moves given the current state s for the ghost agent (>0).
         """
 
-        if (GameState.countExpanded >= GameState.maximumExpanded or index == 0):
-            return None
+        if index == 0:
+            raise Exception("Invalid index passed to generateGhostSuccessors")
+        elif (GameState.countExpanded >= GameState.maximumExpanded):
+            raise Exception("Too many expanded nodes")
         GameState.countExpanded += 1
-
         return [(self.generateSuccessor(index, action),action) for action in self.getLegalActions(index) if action != Directions.STOP]
 
     def getPacmanState(self):
@@ -218,7 +219,7 @@ class GameState:
 
     def getGhostDirection(self, agentIndex):
         if agentIndex == 0:
-            raise Exception("Pacman's index passed to getGhostPosition")
+            raise Exception("Pacman's index passed to getGhostDirection")
         return self.data.agentStates[agentIndex].getDirection()
 
     def getGhostPositions(self):

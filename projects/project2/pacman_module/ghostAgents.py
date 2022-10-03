@@ -23,9 +23,8 @@ import numpy as np
 
 
 class GhostAgent(Agent):
-    def __init__(self, index, args):
+    def __init__(self, index):
         self.index = index
-        self.args = args
 
     def get_action(self, state):
         dist = self.getDistribution(state)
@@ -43,54 +42,33 @@ class GhostAgent(Agent):
 class EastRandyGhost(GhostAgent):
     "A stochastic ghost which favor EAST direction when legal"
 
-    def _uniformOverLegalActions(self, state):
-        """
-        Returns uniform discrete distribution over legal actions
-        """
-        dist = util.Counter()
-        legal = state.getLegalActions(self.index)
-        len_legal = len(legal)
-        for a in legal:
-            dist[a] = 1.0/len_legal
-        dist.normalize()
-        return dist
+    def __init__(self, index, p=0.5):
+        super().__init__(index)
+        self.p = p
 
     def getDistribution(self, state):
         """
         Returns a distribution such that
         if East is in legal actions, then
-        select it with 'p' probability.
-        If East is select, returns a distribution
-        with East probability set to 1 and 0 for others.
-        If East is not selected or not legal,
-        returns a uniform distribution over legal actions
-        (incl. East if legal)
+        selects it with probability 'p'.
         """
-        legal = state.getLegalActions(self.index)
-        args = self.args
-        N = len(legal)
-        if Directions.EAST in legal:
-            # Select EAST with probability p
-            dist = util.Counter()
-            dist[Directions.EAST] = 1 if len(legal) == 1 and args.p==0 else args.p
 
-            for a in legal:
-                if a != Directions.EAST:
-                    dist[a] = (1 - args.p) / (N - 1)
-            d = util.chooseFromDistribution(dist)
-            # If EAST is not selected,
-            # return uniform distribution over legal actions
-            # Otherwise... return EAST with probability 1 !
-            if d != Directions.EAST:
-                return self._uniformOverLegalActions(state)
-            else:
-                for a in legal:
-                    dist[a] = 0
-                dist[Directions.EAST] = 1
-                dist.normalize()
-                return dist
+        legal = state.getLegalActions(self.index)
+        dist = util.Counter()
+
+        if Directions.EAST in legal:
+            for action in legal:
+                if action == Directions.EAST:
+                    dist[action] = self.p
+                else:
+                    dist[action] = (1.0 - self.p) / (len(legal) - 1)
         else:
-            return self._uniformOverLegalActions(state)
+            for action in legal:
+                dist[action] = 1.0
+
+        dist.normalize()
+
+        return dist
 
 
 class DumbyGhost(GhostAgent):
@@ -118,8 +96,8 @@ class DumbyGhost(GhostAgent):
 class GreedyGhost(GhostAgent):
     "A greedy ghost."
 
-    def __init__(self, index, args, prob_attack=1.0, prob_scaredFlee=1.0):
-        GhostAgent.__init__(self, index, args)
+    def __init__(self, index, prob_attack=1.0, prob_scaredFlee=1.0):
+        super().__init__(index)
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee
 
@@ -170,14 +148,13 @@ class GreedyGhost(GhostAgent):
 class SmartyGhost(GhostAgent):
     """A smart ghost"""
 
-    def __init__(self, index, args):
-        GhostAgent.__init__(self, index, args)
-        self.index = index
+    def __init__(self, index):
+        super().__init__(index)
         self.fscore = None
         self.gscore = None
         self.wasScared = False
         self.corners = None
-        self.gghost = GreedyGhost(index, args)
+        self.gghost = GreedyGhost(index)
 
     def _pathsearch(self, state, fscore_in, gscore_in, goal):
         fringe = PriorityQueue()
