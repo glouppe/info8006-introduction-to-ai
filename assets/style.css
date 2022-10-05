@@ -198,6 +198,17 @@ td {
   border-style: dashed;
 }
 
+.avatars {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+}
+
+.avatars img {
+    width: 2.5em;
+    border-radius: 50%;
+}
+
 .footnote {
   position: absolute;
   bottom: 2em;

@@ -92,21 +92,9 @@ Could we use a logical agent for this game?
 General setup:
 - *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
 - **Unobserved** variables: agent needs to reason about other aspects that are uncertain (e.g., where the ghost is).
-- (Probabilistic) *model*: agent knows or believes something about how the known variables relate to the unknown variables.
+- (Probabilistic) *model*: agent knows or believes something about how the observed variables relate to the unobserved variables.
 
----
-
-class: middle
-
-How to handle uncertainty?
-- A purely logical approach either risks falsehood, or leads to conclusions that are too weak for decision making.
-- **Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
-
-???
-
-Falsehood: because of ignorance about the world or laziness in the model.
-
-Weak conclusions: remember the Wumpus example.
+**Probabilistic reasoning** provides a framework for managing our knowledge and beliefs.
 
 ---
 
@@ -245,9 +233,7 @@ $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(
 | $\text{cold}$ | $\text{sun}$ | $0.2$ |
 | $\text{cold}$ | $\text{rain}$ | $0.3$ |
 
----
-
-class: middle
+???
 
 From a joint distribution, the probability of any event can be calculated.
 - Probability that it is hot and sunny?
@@ -299,10 +285,6 @@ $P(w) = \sum_t P(t, w)$
 
 Intuitively, marginal distributions are sub-tables which eliminate variables.
 
-???
-
-To what events are marginal probabilities associated?
-
 ---
 
 class: middle
@@ -353,6 +335,7 @@ ${\bf P}(W|T=\text{cold})$
 
 ---
 
+exclude: true
 class: middle
 
 ## Normalization trick
@@ -775,28 +758,26 @@ class: middle
 
 ---
 
-class: middle
+class: middle, black-slide
 
-.center.width-90[![](./figures/lec4/lfi-chain.png)]
-.grid[
-.kol-1-5.center[
-SM with parameters $\theta$
+## Example 3: Exoplanet atmosphere characterization
 
-.width-100[![](./figures/lec4/sm.png)]]
-.kol-2-5.center[
-Simulated observables $x$
+.center.width-95[![](./figures/lec4/exoplanet-probe.jpg)]
 
-.width-80[![](./figures/lec4/lhc.gif)]]
-.kol-2-5.center[
-Real observations $x\_\text{obs}$
-
-.width-80[![](./figures/lec4/pp-xobs1.png)]
-.width-80[![](./figures/lec4/pp-xobs2.jpeg)]]
-]
+.footnote[Credits: [NSA/JPL-Caltech](https://www.nasa.gov/topics/universe/features/exoplanet20100203-b.html), 2010.]
 
 ---
 
 class: middle
+
+.avatars[![](figures/lec4/faces/malavika.jpg)![](figures/lec4/faces/francois.jpg)![](figures/lec4/faces/absil.jpg)]
+
+.center[
+.width-25[![](./figures/lec4/exoplanet-residuals.png)]
+.width-70[![](./figures/lec4/exoplanet-corner.png)]
+]
+
+???
 
 Given some observation $x$ and prior beliefs $p(\theta)$, science is about updating one's knowledge, which may be framed as computing
 $$p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}.$$
@@ -838,7 +819,7 @@ In the simplest case, conditional distributions are represented as conditional p
 
 class: middle
 
-.center.width-45[![](figures/lec4/alarm.png)]
+.center.width-40[![](figures/lec4/alarm.png)]
 
 ## Example 1
 
