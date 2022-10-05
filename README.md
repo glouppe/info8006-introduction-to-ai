@@ -19,7 +19,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | October 7 | Project 1: Deadline |
 | October 13 | Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 20 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]] |
-| October 27 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 3: [Bayes filter](projects/project3) (due by November 25, 2021) |
+| October 27 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 3: [Bayes filter](projects/project3) (due by November 25) |
 | October 28 | Project 2: Deadline |
 | November 10 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 4b: Hyperloop [[notebook](code/exercises-4-hyperloop.ipynb)] |
 | November 17 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
