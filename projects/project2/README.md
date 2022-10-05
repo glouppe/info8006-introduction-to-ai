@@ -23,21 +23,29 @@ $ python run.py --agent humanagent.py --ghost dumby --layout small_adv
 
 ### Code
 
-TODO
+You are requested to deliver a `minimax.py` file and a `hminimax.py` file containing the implementation of the Minimax and H-Minimax algorithms.
 
 ### Report
 
 In addition to `minimax.py` and `hminimax.py`, you are asked to submit a short (2 pages) report.
 
-1. **Formalization** -- Formalize the game as an **adversarial search problem** by proposing a definition of its components (state, initial state, player function, actions, ...). For the utility function, assume the game as a **zero-sum game**. :warning: Do not make **references to the API** in the definition of the components.
+1. **Formalization** -- Formalize the game as an **adversarial search problem** by proposing a definition of its components (state, initial state, player function, actions, transitions, terminal and utility functions). For the utility function, assume the game as a **zero-sum game**. :warning: Do not make **references to the API** in the definition of the components.
 
 2. **Minimax** -- Consider the direct application of Minimax to the game (assuming zero-sum).
   - 2.a. Is the completeness of Minimax guaranteed in this context? Why?
   - 2.b. From the point of view of Pacman, is there any advantage in going through a cycle, i.e. going back to a state that has already been visited?
   - 2.c. In this regard, how can you adapt the components described in the formalization to guarantee Minimax's completeness, while keeping the same set of optimal strategies?
 
-3. **Heuristic** -- Describe formally and discuss the heuristic of your H-Minimax implementation.
+3. **Heuristic/cut-off** -- Describe formally and discuss the heuristic and cut-off of your H-Minimax implementation.
 
 ## Evaluation
 
-TODO
+Your project will be evaluated as follow:
+
+* **Report**: 4 points. We evaluate the correctness and precision of your answers.
+
+* **Minimax**: 7 points. We evaluate the optimality of your implementation on both public and private layouts.
+
+* **H-Minimax**: 8 points. We evaluate the performance of your implementation on both public and private layouts. Both the score and the number of expanded nodes are taken into account.
+
+* **PEP8 compatibility** 1 point. You get the point if all the submitted files are PEP8 compatible.
