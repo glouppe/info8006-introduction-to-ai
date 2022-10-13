@@ -760,7 +760,7 @@ class: middle
 
 class: middle, black-slide
 
-## Example 3: Exoplanet atmosphere characterization
+## Exoplanet atmosphere characterization
 
 .center.width-95[![](./figures/lec4/exoplanet-probe.jpg)]
 
@@ -891,6 +891,10 @@ The topology of the network encodes conditional independence assertions:
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Insist it does *not* encode dependencies!
 
 ---
 

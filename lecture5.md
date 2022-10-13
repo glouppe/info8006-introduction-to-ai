@@ -10,7 +10,9 @@ Prof. Gilles Louppe<br>
 
 ???
 
-Discuss the sampling algorithms with code, to better communicate the inefficiency and intuition.
+Discuss the sampling algorithms with code, to better communicate the inefficiency and intuition => All of this could be done with a notebook.
+
+Skip the entire lecture?
 
 ---
 

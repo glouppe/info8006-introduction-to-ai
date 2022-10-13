@@ -17,7 +17,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | September 29 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
 | October 6 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Project 2: [Adversarial search](projects/project2) (due by October 28)<br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
 | October 7 | Project 1: Deadline |
-| October 13 | Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 13 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] (continued) <br>Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 20 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]] |
 | October 27 | Lecture 7: [Learning][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] <br> Project 3: [Bayes filter](projects/project3) (due by November 25) |
 | October 28 | Project 2: Deadline |
