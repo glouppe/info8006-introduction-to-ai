@@ -8,11 +8,6 @@ Lecture 6: Reasoning over time
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: applications https://users.aalto.fi/~ssarkka/pub/cup_book_online_20131111.pdf
-R: promise for today: understand how weather forecast is done! isn't that cool?
-
 ---
 
 # Today
@@ -208,7 +203,7 @@ $\begin{aligned}
 
 $\begin{aligned}
 {\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &=\frac{ {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
-&= \alpha {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)
+&\propto {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)
 \end{aligned}$
 
 (Update) Update ${\bf P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
@@ -326,13 +321,17 @@ $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
 
 # Filtering
 
-<br>
+<br><br>
+
 .center.width-90[![](figures/lec6/observation.png)]
 <br>
 
 What if we collect new observations?
-Beliefs get reweighted, and uncertainty "decreases":
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
+Beliefs get reweighted, and uncertainty "decreases".
+
+???
+
+$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
 
 ---
 
@@ -353,15 +352,15 @@ class: middle
 $$
 \begin{aligned}
 {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
+&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
+&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
+&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
+&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
 \end{aligned}
 $$
 
 where
-- the normalization constant $$\alpha = \frac{1}{P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t})} = 1 / \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
+- the normalization constant $$Z = P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
 - in the last expression, the first and second terms are given by the model while the third is obtained recursively.
 
 <!-- $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
@@ -375,7 +374,7 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(
 class: middle
 
 We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
-- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} = \alpha\, \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
+- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
 - The complexity of a forward update is constant (in time and space) with $t$.
 
 ---
@@ -446,8 +445,8 @@ Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k
 $$
 \begin{aligned}
 {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
-&= \alpha {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
+&\propto {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
+&\propto {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -523,7 +522,7 @@ class: middle
 $$
 \begin{aligned}
 &\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
-&= \alpha {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
+&\propto {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
 \end{aligned}
 $$
 - Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
@@ -568,7 +567,7 @@ Some authors instead divide Markov models into two classes, depending on the obs
 - Observable system state: Markov chains
 - Partially-observable system state: Hidden Markov models.
 
-We follow here instead the terminology of the textbook.
+We follow here instead the terminology of the textbook, as defined in the previous slide.
 
 ---
 
@@ -672,10 +671,6 @@ Let $X: \Omega \to D\_X$ be a random variable.
 $$P(a < X \leq b) = \int\_a^b p(x) dx,$$
 where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
 
-???
-
-Ref: http://ai.stanford.edu/~paskin/gm-short-course/lec1.pdf
-
 ---
 
 class: middle
@@ -691,7 +686,6 @@ p(x) = \begin{cases}
 0 & \text{otherwise}
 \end{cases}$$
 where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
-
 
 ---
 
@@ -719,27 +713,73 @@ class: middle
 
 .center.width-60[![](figures/lec5/mvn.png)]
 
-The multivariate normal distribution generalizes to $N$ random variables. Its (joint) density function is defined as
-$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{\mu})^T \Sigma^{-1} (\mathbf{x}-\mu) \right) $$
-where $\mu \in \mathbb{R}^n$ and $\Sigma \in \mathbb{R}^{n\times n}$ is positive semi-definite.
+The multivariate normal distribution generalizes to $n$ random variables. Its (joint) density function is defined as
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\mathbf{\Sigma}|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
+where $\mathbf{m} \in \mathbb{R}^n$ and $\mathbf{\Sigma} \in \mathbb{R}^{n\times n}$ is positive semi-definite.
 
 ---
 
 class: middle
 
-The (multivariate) Normal density is the only density for real random variables that is
-**closed under marginalization and multiplication**.
-Also
-- a linear (or affine) function of a Normal random variable is
-Normal;
-- a sum of Normal variables is Normal.
+## Cheat sheet for Gaussian models (Särkkä, 2013)
 
-For these reasons, most algorithms discussed in this course are tractable only for
-discrete random variables or Normal random variables.
+If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
+$$
+\begin{aligned}
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{m}, \mathbf{P}) \\\\
+p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
+\end{aligned}
+$$
+then the joint distribution of $\mathbf{x}$ and $\mathbf{y}$ is Gaussian with
+$$
+\begin{aligned}
+p\left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) = \mathcal{N}\left( \left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) \bigg\vert \left(\begin{matrix}
+\mathbf{m} \\\\
+\mathbf{H}\mathbf{m}+\mathbf{u} 
+\end{matrix}\right), \left(\begin{matrix}
+\mathbf{P} & \mathbf{P}\mathbf{H}^T \\\\
+\mathbf{H}\mathbf{P} & \mathbf{H}\mathbf{P}\mathbf{H}^T + \mathbf{R} 
+\end{matrix}\right) \right).
+\end{aligned}
+$$
 
-???
+---
 
-Be more precise and cite Bishop pg 93?
+class: middle
+
+If $\mathbf{x}$ and $\mathbf{y}$ have the joint Gaussian distribution 
+$$
+\begin{aligned}
+p\left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) = \mathcal{N}\left( \left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) \bigg\vert \left(\begin{matrix}
+\mathbf{a} \\\\
+\mathbf{b} 
+\end{matrix}\right), \left(\begin{matrix}
+\mathbf{A} & \mathbf{C} \\\\
+\mathbf{C}^T & \mathbf{B}
+\end{matrix}\right) \right),
+\end{aligned}
+$$
+then the marginal and conditional distributions of $\mathbf{x}$ and $\mathbf{y}$ are given by
+$$
+\begin{aligned}
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{a}, \mathbf{A}) \\\\
+p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{b}, \mathbf{B}) \\\\
+p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{a}+\mathbf{C}\mathbf{B}^{-1}(\mathbf{y}-\mathbf{b}), \mathbf{A}-\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T) \\\\
+p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{b}+\mathbf{C}^T\mathbf{A}^{-1}(\mathbf{x} - \mathbf{a}) , \mathbf{B}-\mathbf{C}^T\mathbf{A}^{-1}\mathbf{C}).
+\end{aligned}
+$$
 
 ---
 
@@ -748,7 +788,7 @@ Be more precise and cite Bishop pg 93?
 The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &= \alpha\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
+p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &\propto\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
 \end{aligned}
 $$
 where the normalization constant is
@@ -762,12 +802,6 @@ The **Kalman filter** is a special case of the Bayes filter, which assumes:
 - Gaussian prior
 - Linear Gaussian transition model
 - Linear Gaussian sensor model
-
----
-
-class: middle
-
-## Linear Gaussian models
 
 .grid[
 .kol-1-2.center[
@@ -792,28 +826,6 @@ Sensor model
 
 class: middle
 
-## Cheat sheet for Gaussian models (Bishop, 2006)
-
-Given a marginal Gaussian distribution for $\mathbf{x}$ and a linear Gaussian distribution for $\mathbf{y}$ given $\mathbf{x}$ in the form
-$$
-\begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mu, \mathbf{\Lambda}^{-1}) \\\\
-p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{x}+\mathbf{b}, \mathbf{L}^{-1})
-\end{aligned}
-$$
-the marginal distribution of $\mathbf{y}$ and the conditional distribution of $\mathbf{x}$ given $\mathbf{y}$ are given by
-$$
-\begin{aligned}
-p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{A}\mu + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A}\mathbf{\Lambda}^{-1}\mathbf{A}^T) \\\\
-p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{\Sigma}\left(\mathbf{A}^T\mathbf{L}(\mathbf{y}-\mathbf{b}) + \mathbf{\Lambda}\mu\right), \mathbf{\Sigma})
-\end{aligned}$$
-where
-$$\mathbf{\Sigma} = (\mathbf{\Lambda} + \mathbf{A}^T \mathbf{L}\mathbf{A})^{-1}.$$
-
----
-
-class: middle
-
 ## Filtering Gaussian distributions
 
 - .italic[Prediction step:]<br><br>
@@ -824,10 +836,6 @@ is also a Gaussian distribution.
 If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
 $$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
-
-???
-
-Explain how this is consistent with the previous slide.
 
 ---
 
@@ -859,19 +867,15 @@ The one-step predicted distribution is given by
 $$
 \begin{aligned}
 p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
-&= \alpha \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
-&= \alpha \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
+&\propto \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
+&\propto \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
 &... \,\, \text{(simplify by completing the square)} \\\\
-&= \alpha \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&\propto \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
 &= \mathcal{N}(x\_1 | \mu\_0, \sigma\_0^2 + \sigma\_x^2)
 \end{aligned}
 $$
 
 Note that the same result can be obtained by using instead the Gaussian models identities.
-
-???
-
-Check Bishop page 93 for another derivation.
 
 ---
 
@@ -880,9 +884,9 @@ class: middle
 For the update step, we need to condition on the observation at the first time step:
 $$
 \begin{aligned}
-p(x\_1 | e\_1) &= \alpha p(e\_1 | x\_1) p(x\_1) \\\\
-&= \alpha \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
-&= \alpha \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
+p(x\_1 | e\_1) &\propto p(e\_1 | x\_1) p(x\_1) \\\\
+&\propto \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
+&\propto \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
 &= \mathcal{N}\left(x\_1 \bigg\vert \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
 \end{aligned}
 $$
@@ -956,9 +960,9 @@ $ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation r
 
 class: middle
 
-## 2D tracking: filtering
+## 2d tracking by filtering
 
-.center.width-90[![](figures/lec6/kf-filtering.png)]
+.center.width-80[![](figures/lec6/kf-filtering.png)]
 
 ???
 
@@ -994,7 +998,7 @@ class: middle, black-slide
 ## Data assimilation for weather forecasts solves a filtering problem
 
 .center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/YPAWYjPf_Pk?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/9c4kXW7btBE?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
 ]
 
 ---
@@ -1121,10 +1125,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Kalman, Rudolph Emil. "A new approach to linear filtering and prediction problems." Journal of basic Engineering 82.1 (1960): 35-45.
-- Bishop, Christopher "Pattern Recognition and Machine Learning" (2006).

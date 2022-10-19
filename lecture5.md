@@ -10,6 +10,8 @@ Prof. Gilles Louppe<br>
 
 ???
 
+Reorganize: use BNs as generators by sampling.
+
 Discuss the sampling algorithms with code, to better communicate the inefficiency and intuition => All of this could be done with a notebook.
 
 Skip the entire lecture?
@@ -743,12 +745,11 @@ class: middle
 The estimated posterior probability is computed as follows:
 
 $$\begin{aligned}
-\hat{P}(x|e) &= \alpha N\_\text{WS}(x,e) w(x,e)  \\\\
-&\approx \alpha' S\_\text{WS}(x,e) w(x,e) \\\\
-&= \alpha' P(x,e) \\\\
-&= P(x|e)
+\hat{P}(x|e) &\propto N\_\text{WS}(x,e) w(x,e) \\\\
+&\propto S\_\text{WS}(x,e) w(x,e) \\\\
+&\propto P(x,e) \\\\
+&\propto P(x|e).
 \end{aligned}$$
-where $\alpha$ and $\alpha'$ are normalization constants.
 
 Hence likelihood weighting returns *consistent* estimates.
 
@@ -855,9 +856,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Cooper, Gregory F. "The computational complexity of probabilistic inference using Bayesian belief networks." Artificial intelligence 42.2-3 (1990): 393-405.
