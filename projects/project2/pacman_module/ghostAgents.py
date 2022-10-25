@@ -40,7 +40,7 @@ class GhostAgent(Agent):
 
 
 class EastRandyGhost(GhostAgent):
-    "A stochastic ghost which favor EAST direction when legal"
+    """A stochastic ghost which favor EAST direction when legal"""
 
     def __init__(self, index, p=0.5):
         super().__init__(index)
@@ -72,7 +72,7 @@ class EastRandyGhost(GhostAgent):
 
 
 class DumbyGhost(GhostAgent):
-    "A dumb ghost."
+    """A dumb ghost."""
 
     def getDistribution(self, state):
         dist = util.Counter()
@@ -94,7 +94,7 @@ class DumbyGhost(GhostAgent):
 
 
 class GreedyGhost(GhostAgent):
-    "A greedy ghost."
+    """A greedy ghost."""
 
     def __init__(self, index, prob_attack=1.0, prob_scaredFlee=1.0):
         super().__init__(index)

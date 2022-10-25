@@ -22,7 +22,6 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
-        '-ng',
         '--nographics',
         action='store_true',
         default=False,

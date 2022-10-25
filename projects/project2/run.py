@@ -1,5 +1,7 @@
 import argparse
 import importlib
+import numpy as np
+import random
 
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import (
@@ -44,17 +46,26 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
-        '-ng',
         '--nographics',
         action='store_true',
         default=False,
         help='Disable the graphical display of the game.',
     )
 
+    parser.add_argument(
+        '--seed',
+        type=int,
+        default=None,
+        help='Seed for random number generator.',
+    )
+
     args = parser.parse_args()
 
     if args.agent == 'humanagent' and args.nographics:
         raise ValueError("Human agent cannot play without graphics")
+
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
     score, time, nodes = runGame(
         layout_name=args.layout,
