@@ -13,12 +13,7 @@ class BeliefStateAgent(Agent):
     def __init__(self, ghost):
         super().__init__()
 
-        if ghost == 'terrified':
-            self.fear = 3.0
-        elif ghost == 'afraid':
-            self.fear = 1.0
-        elif ghost == 'fearless':
-            self.fear = 0.0
+        self.ghost = ghost
 
     def transition_matrix(self, walls, position):
         """Builds the transitiion matrix
