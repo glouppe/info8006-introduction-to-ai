@@ -8,7 +8,11 @@ You are requested to deliver:
 
 ## Instructions
 
-In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors which are described in the user manual.
+In this third part of the project, Pacman got tired of ghosts wandering around him. So he decided to buy a laser gun and kill them. But while he shot them, he figured out that the gun has instead turned them into invisible but edible ghosts! Fortunately, as it was part of a box that he bought from a flea market, he also got his hands on a rusty sensor, which still works but is subject to measurement errors. We know that the sensor returns a noisy manhattan distance between pacman and the ghost. Let us denote by `true distance` the true manhattan distance between pacman and the ghost, the noisy distance is sampled from the following distribution
+
+$\text{noisy distance} \sim Pois(\text{true distance}),$
+
+where `Pois` corresponds to the [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
 
 A lot of confusion arose since Pacman shot the ghosts: he has no idea where they currently are in the maze! However, he knows that the ghosts are afraid and should be willing to escape from him. More precisely, he knows that the first ghost, named `terrified`, is more fearful than the second ghost, named `afraid`, who is more fearful than the third ghost, named `fearless`.
 
@@ -33,7 +37,7 @@ When you use multiple ghosts, they all run the same policy (e.g. all `afraid`). 
 
 In addition to `bayesfilter.py`, you are asked to submit a short (2 pages) report.
 
-1. Describe mathematically the sensor model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
+1. Describe mathematically the observational model of the rusty sensor, as implemented in `_get_evidence` of the `BeliefStateAgent` class.
 
 2. Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py` (functions `getDistribution`). Your model should specify a single free parameter.
      
