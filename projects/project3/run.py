@@ -39,15 +39,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '-ng',
         '--nghosts',
+        type=int,
         default=1,
         help='The maximum number of ghost agents.',
-    )
-
-    parser.add_argument(
-        '--edible',
-        action='store_true',
-        default=False,
-        help='Whether ghosts can be eaten or not.',
     )
 
     parser.add_argument(
@@ -96,7 +90,7 @@ if __name__ == '__main__':
         displayGraphics=not args.nographics,
         expout=0.0,
         hiddenGhosts=not args.visible,
-        edibleGhosts=args.edible,
+        edibleGhosts=True,
     )
 
     print(f"Score: {score}")
