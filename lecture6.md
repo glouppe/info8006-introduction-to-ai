@@ -657,10 +657,6 @@ We assume *discrete* time steps.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
-???
-
-R: revise a bit the flow for this part of the lecture.
-
 ---
 
 # Continuous variables
@@ -723,36 +719,6 @@ class: middle
 
 ## Cheat sheet for Gaussian models (Särkkä, 2013)
 
-If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
-$$
-\begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{m}, \mathbf{P}) \\\\
-p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
-\end{aligned}
-$$
-then the joint distribution of $\mathbf{x}$ and $\mathbf{y}$ is Gaussian with
-$$
-\begin{aligned}
-p\left(\begin{matrix}
-\mathbf{x} \\\\
-\mathbf{y} 
-\end{matrix}\right) = \mathcal{N}\left( \left(\begin{matrix}
-\mathbf{x} \\\\
-\mathbf{y} 
-\end{matrix}\right) \bigg\vert \left(\begin{matrix}
-\mathbf{m} \\\\
-\mathbf{H}\mathbf{m}+\mathbf{u} 
-\end{matrix}\right), \left(\begin{matrix}
-\mathbf{P} & \mathbf{P}\mathbf{H}^T \\\\
-\mathbf{H}\mathbf{P} & \mathbf{H}\mathbf{P}\mathbf{H}^T + \mathbf{R} 
-\end{matrix}\right) \right).
-\end{aligned}
-$$
-
----
-
-class: middle
-
 If $\mathbf{x}$ and $\mathbf{y}$ have the joint Gaussian distribution 
 $$
 \begin{aligned}
@@ -783,6 +749,36 @@ $$
 
 ---
 
+class: middle
+
+If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
+$$
+\begin{aligned}
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{m}, \mathbf{P}) \\\\
+p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
+\end{aligned}
+$$
+then the joint distribution of $\mathbf{x}$ and $\mathbf{y}$ is Gaussian with
+$$
+\begin{aligned}
+p\left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) = \mathcal{N}\left( \left(\begin{matrix}
+\mathbf{x} \\\\
+\mathbf{y} 
+\end{matrix}\right) \bigg\vert \left(\begin{matrix}
+\mathbf{m} \\\\
+\mathbf{H}\mathbf{m}+\mathbf{u} 
+\end{matrix}\right), \left(\begin{matrix}
+\mathbf{P} & \mathbf{P}\mathbf{H}^T \\\\
+\mathbf{H}\mathbf{P} & \mathbf{H}\mathbf{P}\mathbf{H}^T + \mathbf{R} 
+\end{matrix}\right) \right).
+\end{aligned}
+$$
+
+---
+
 # Continuous Bayes filter
 
 The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
@@ -792,7 +788,7 @@ p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &\propto\, p(\mathbf{e}\_{t+1}| \mathb
 \end{aligned}
 $$
 where the normalization constant is
-$$\alpha = 1\, / \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
+$$Z = \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
 
 ---
 
@@ -802,7 +798,7 @@ The **Kalman filter** is a special case of the Bayes filter, which assumes:
 - Gaussian prior
 - Linear Gaussian transition model
 - Linear Gaussian sensor model
-
+  
 .grid[
 .kol-1-2.center[
 <br><br><br>

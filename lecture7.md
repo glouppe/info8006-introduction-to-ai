@@ -37,8 +37,6 @@ Make our agents capable of self-improvement through a **learning** mechanism.
 
 What we cover in this course:
 - Search algorithms, using a state space specified by domain knowledge.
-- (Constraint satisfaction problems, by exploiting a known structure of the states.)
-- (Logical inference, using well-specified facts and inference rules.)
 - Adversarial search, for known and fully observable games.
 - Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
 - Taking optimal decisions, under uncertainty and possibly under partial observation.
@@ -435,7 +433,7 @@ class: middle
 
 ---
 
-# Linear classification
+# Logistic regression
 
 Let us now assume $y \in \\{0,1\\}$.
 
@@ -444,165 +442,11 @@ Let us now assume $y \in \\{0,1\\}$.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
-
 ---
 
 class: middle
 
-The linear classifier model is a squashed linear function of its inputs:
-$$h(\mathbf{x}; \mathbf{w}, b) = \text{sign}(\mathbf{w}^T \mathbf{x} + b)$$
-
-
-.center.width-60[![](figures/lec7/activation-sign.png)]
-
----
-
-class: middle
-
-.center.width-30[![](figures/lec7/linear-classifier.png)]
-
-- Without loss of generality, the model can be rewritten without $b$ as $h(\mathbf{x}; \mathbf{w}) = \text{sign}(\mathbf{w}^T \mathbf{x})$, where $\mathbf{w} \in \mathbb{R}^{d+1}$ and $\mathbf{x}$ is extended with a dummy element $x\_0 = 1$.
-- Predictions are computed by comparing the feature vector $\mathbf{x}$ to the weight vector $\mathbf{w}$. Geometrically, $\mathbf{w}^T \mathbf{x}$ corresponds to $||\mathbf{w}|| ||\mathbf{x}|| \cos(\theta)$.
-
-???
-
-The family $\mathcal{H}$ of hypothesis is induced from the set $\mathbb{R}^{d+1}$ of possible parameters values $\mathbf{w}$ . Learning consists in finding a good vector $\mathbf{w}$ in this space.
-
----
-
-# Perceptron
-
-.grid[
-.kol-1-2[
-- Start with $\mathbf{w}=0$.
-- For each training example $(\mathbf{x},y)$:
-    - Classify with current weights: $\hat{y} = \text{sign}(\mathbf{w}^T \mathbf{x})$
-    - If $y=\hat{y}$, do nothing.
-    - Otherwise, update parameters: $\mathbf{w} = \mathbf{w} + y\mathbf{x} - (1-y)\mathbf{x}$
-
-.center.width-70[![](figures/lec7/perceptron-update.png)]
-]
-.kol-1-2[.width-100[![](figures/lec7/perceptron-cartoon.png)]]
-]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-
-
-## Multiclass perceptron
-
-.grid[
-.kol-2-3[
-
-- If we have more than $2$ classes, then
-    - Define a weight vector $\mathbf{w}\_c$ for each class $c$.
-    - The activation for class $c$ is $\mathbf{w}\_c^T \mathbf{x}$.
-- Learning:
-    - Start with $\mathbf{w}\_c=0$ for all $c$.
-    - For each training example $(\mathbf{x},y)$:
-        - Classify with current weights: $\hat{y} = \arg \max\_{c}\, \mathbf{w}\_c^T \mathbf{x}$
-        - If $y=\hat{y}$, do nothing.
-        - Otherwise, update parameters:
-            - $\mathbf{w}\_y = \mathbf{w}\_y + \mathbf{x}$ (raise score of right answer)
-            - $\mathbf{w}\\\_{\hat{y}} = \mathbf{w}\_{\hat{y}} - \mathbf{x}$ (lower score of wrong answer).
-
-
-]
-.kol-1-3[.center.width-100[![](figures/lec7/multiclass.png)]]
-]
-
----
-
-class: middle
-
-.center[
-<video controls preload="auto" height="500" width="700">
-  <source src="./figures/lec7/multiclass-perceptron.mp4" type="video/mp4">
-</video>]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-
----
-
-# Apprenticeship
-
-Can we learn to play Pacman only from observations?
-- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
-- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
-- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
-- This is a multiclass classification problem.
-
-<br>
-.center.width-70[![](figures/lec7/pacman.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-???
-
-<span class="Q">[Q]</span> How is this (very) different from reinforcement learning?
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/training1.mp4" type="video/mp4">
-</video>
-
-The Perceptron agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
-]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/training2.mp4" type="video/mp4">
-</video>
-
-<br><br>]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
-</video>
-
-After two training episodes, the Perceptron agents plays.<br>
-No more Minimax!
-]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-# Deep Learning
-
-(a short introduction)
-
----
-
-# Logistic regression
-
-An alternative model to the classification model based on the $\text{sign}$ function is to consider that $P(Y=1|\mathbf{x})$ varies smoothly with $\mathbf{x}$.
-
-**Logistic regression** models the conditional as
+Logistic regression models the conditional as
 $$P(Y=1|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
@@ -630,7 +474,9 @@ This loss is an instance of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log 
 
 ---
 
-# Gradient descent
+class: middle
+
+## Gradient descent
 
 Let $\mathcal{L}(\theta)$ denote a loss function defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
 
@@ -715,6 +561,74 @@ class: center, middle
 
 ---
 
+# Apprenticeship
+
+Can we learn to play Pacman only from observations?
+- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
+- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
+- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
+- This is a multiclass classification problem that can be solved by combining binary classifers.
+
+.center.width-70[![](figures/lec7/pacman.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+<span class="Q">[Q]</span> How is this (very) different from reinforcement learning?
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/training1.mp4" type="video/mp4">
+</video>
+
+The agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/training2.mp4" type="video/mp4">
+</video>
+
+<br><br>]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
+</video>
+
+After two training episodes, the ML-based agents plays.<br>
+No more Minimax!
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Deep Learning
+
+(a short introduction)
+
+---
+
 # Layers
 
 So far we considered the logistic unit $h=\sigma\left(\mathbf{w}^T \mathbf{x} + b\right)$, where $h \in \mathbb{R}$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{w} \in \mathbb{R}^d$ and $b \in \mathbb{R}$.
@@ -747,6 +661,12 @@ class: middle
 .width-100[![](figures/lec7/mlp.png)]
 
 .footnote[Credits: [PyTorch Deep Learning Minicourse](https://atcold.github.io/pytorch-Deep-Learning-Minicourse/), Alfredo Canziani, 2020.]
+
+---
+
+class: middle, center
+
+(demo)
 
 ---
 
@@ -908,131 +828,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-count: false
-
-# Chomsky vs. Piaget
-
-.grid[
-.kol-2-3[
-- Noam Chomsky's *innatism*:
-    - State that humans possess a genetically determined faculty for thought and language.
-    - The structures of language and thought are set in motion through interaction with the environment.
-- Jean Piaget's **constructivism**:
-    - Deny the existence of innate cognitive structure specific for thought and language.
-    - Postulate instead all cognitive acquisitions, including language, to be the outcome of a gradual process of construction, i.e., a learning procedure.
-]
-.kol-1-3[.center.width-80[![](figures/lec7/piaget-chomsky.jpg)]]
-]
-
-
-What about AI?
-- Should it be a pre-wired efficient machine?
-- Or a machine that can learn and improve?
-- or maybe a bit of both?
-
----
-
-class: middle, black-slide
-count: false
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/aCCotxqxFsk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-The debate continues...
-]
-
----
-
-class: middle
-count: false
-
-# Unsupervised learning
-
----
-
-class: middle
-count: false
-
--  Most of the learning performed by animals and humans is **unsupervised**.
-    - Without labeled examples nor rewards.
-- We learn how the world works through observation:
-    - We learn that the world is 3-dimensional.
-    - We learn that objects can move independently of each other.
-    - We learn *object permanence*.
-    - We learn to predict what the world will look one second or one hour from now.
-
-.footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
-
----
-
-class: middle, black-slide
-count: false
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/-gWJrZ7MHpY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Object permanence in infants (part 1)
-]
-
----
-
-class: middle, black-slide
-count: false
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/kV0o6RK54-M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Object permanence in infants (part 2)
-]
-
-
----
-
-class: middle, black-slide
-count: false
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/OLrYzY3jVPY?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-In animals
-]
-
-
----
-
-class: middle
-count: false
-
-## Common sense
-
-We build a model of the world through *predictive unsupervised learning*.
-- This predictive model gives us **common sense**.
-- Unsupervised learning discovers regularities in the world.
-
----
-
-class: middle
-count: false
-
-If I say: "Bernard picks up his bag and leaves the room".
-
-You can **infer**:
-- Bernard stood up, extended his arm to pick the bag, walked towards the door, opened the door, walked out.
-- He and his bag are not in the room anymore.
-- He probably did not dematerialized or flied out.
-
-.center.width-50[![](figures/lec7/bernard.png)]
-
-.footnote[Credits: Yann Lecun (NYU), [Deep Learning, 2017](https://cilvr.nyu.edu/doku.php?id=deeplearning2017:schedule)]
-
----
-
-class: middle, center
-count: false
-
-How do we do that?
-
-We have no clue! (mostly)
