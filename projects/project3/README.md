@@ -37,7 +37,7 @@ In addition to `bayesfilter.py`, you are asked to submit a short (2 pages) repor
 
 2. Provide a unified parametrized transition model from which the ghosts `scared`, `afraid` and `confused` can be derived. Derive this model from the ghost implementations found in `/pacman_module/ghostAgents.py` (functions `getDistribution`). Your model should specify a single free parameter.
      
-  :warning: Be aware that in project 2, the ghosts are now able to go move backward, on the contrary to project 1.
+  :warning: Be aware that in project 3, the ghosts are now able to go move backward, on the contrary to project 2.
 
     Answers to the previous questions should not make any reference to the API nor include pseudo-code.
 
