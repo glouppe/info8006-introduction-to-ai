@@ -20,8 +20,10 @@ $ python run.py --agent minimax.py --ghost dumby --layout small_adv
 
 Several strategies are available for the ghost:
 - `dumby` rotates on itself counterclockwise until it can go to its left.
-- `greedy` selects the action leading to the cell closest to Pacman.
+- `greedy` selects the action leading to the cell closest to Pacman. If several actions are equivalent, `greedy` chooses randomly among them.
 - `smarty` selects the action leading to the shortest path towards Pacman.
+
+The random seed of the game can be changed with the `--seed` option (e.g. `--seed 42`).
 
 ### Report
 
