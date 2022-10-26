@@ -53,6 +53,7 @@ import time
 import random
 import os
 import numpy as np
+from scipy.stats import binom
 from copy import deepcopy
 
 ###################################################
@@ -236,7 +237,7 @@ class GameState:
         pacman = self.getPacmanPosition()
         ghosts = self.getGhostPositions()
         distances = [manhattanDistance(pacman, g) for g in ghosts]
-        return [np.random.normal(loc=d, scale=1) for d in distances]
+        return [d + binom.rvs(4, 0.5) - 4*0.5 for d in distances]
 
     def getGhostEaten(self):
         return deepcopy(self.data._eaten[1:])
