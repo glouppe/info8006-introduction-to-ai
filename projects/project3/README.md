@@ -7,9 +7,11 @@ You are requested to deliver:
 
 ## Instructions
 
-In this third part of the project, Pacman got tired of ghosts wandering around him, so he bought a magic gun that make the ghosts edible. But while he shot them, he figured out that the gun also made them invisible. Fortunately, he also got his hands on a rusty distance sensor. The sensor returns a noisy Manhattan distance between pacman and each ghost, which Pacman can use as evidence to find the ghost positions. The noisy distance, denoted $e$, is drawn from a Gaussian distribution centered around the true Manhattan distance with unit variance.
+In this third part of the project, Pacman got tired of ghosts wandering around him, so he bought a magic gun that make the ghosts edible. But while he shot them, he figured out that the gun also made them invisible. Fortunately, he also got his hands on a rusty distance sensor. The sensor returns a noisy Manhattan distance between pacman and each ghost, which Pacman can use as evidence to find the ghost positions. The noisy distance, denoted $e$, results from the addition of noise to the true Manhattan distance, the noise being sampled from a binomial distribution centered around 0. 
 
-$$e \sim \mathcal{N}(\mu=\text{ManhattanDistance}(\text{Pacman}, \text{Ghost}), \sigma^2=1)$$
+$$e = \text{ManhattanDistance}(\text{Pacman}, \text{Ghost}) + z - np \qquad z \sim \text{Binom}(n, p),$$
+
+where $n=4$ and $p=0.5$.
 
 Pacman knows that the ghosts are afraid of him and are more likely to take actions that makes it move away from him. Their exact action policy of the ghosts (`afraid`, `fearless` and `terrified`) should be deducted from the [ghostAgents.py](pacman_module/ghostAgents.py) file.
 
