@@ -15,7 +15,7 @@ Your task is to design an intelligent agent based on adversarial search algorith
 
 To get started, download and extract the [archive](../project2.zip?raw=true) of the project in the directory of your choice. Use the following command to run your Minimax implementation against the `dumby` ghost in the small layout:
 ```console
-$ python run.py --agent minimax.py --ghost dumby --layout small_adv
+$ python run.py --agent minimax --ghost dumby --layout small_adv
 ```
 
 Several strategies are available for the ghost:
