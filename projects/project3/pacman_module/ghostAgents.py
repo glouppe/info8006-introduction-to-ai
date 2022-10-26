@@ -69,14 +69,14 @@ class AfraidGhost(GhostAgent):
         return dist
 
 
-class FearlessGhost(GhostAgent):
+class FearlessGhost(AfraidGhost):
     """A stochastic ghost which does not favor any action."""
 
     def __init__(self, index):
         super().__init__(index, fear=0.0)
 
 
-class TerrifiedGhost(GhostAgent):
+class TerrifiedGhost(AfraidGhost):
     """A stochastic ghost which heavily favors actions that makes it move away from Pacman."""
 
     def __init__(self, index):
