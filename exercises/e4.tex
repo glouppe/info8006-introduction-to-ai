@@ -293,15 +293,16 @@ The professor asks you to answer the following questions:
 
 \section{Super Spring Ultra Pro Max XXL}
 
-The \enquote{Foire de Liège} has a new attraction called \enquote{Super Spring Ultra Pro Max XXL} which consists in a ball hanging from a spring. The participants take seat in the ball locked at some position. The ball is then released and pulled by the spring which makes it oscillate back and forth. After a few seconds, the ball is stopped by magnetic brakes. You notice that the final position of the ball is different each time. As the ball is opaque, you wonder if it is possible for the participants to guess where the ball stopped, given their perception of acceleration.
+The \enquote{Foire de Liège} has a new attraction called \enquote{Super Spring Ultra Pro Max XXL} which consists in a ball attached to a spring on a platform. The participants take seat in the ball locked at some position. The ball is then released and pulled by the spring which makes it oscillate back and forth. After a few seconds, the ball is stopped by magnetic brakes. You notice that the final position of the ball is different each time. As the ball is opaque, you wonder if it is possible for the participants to guess where the ball stopped, given their perception of acceleration.
 
 You more or less remember your Newtonian mechanics class and model the movement of the ball as a series of transitions
 \begin{align*}
     p_t & = p_{t-1} + \Delta t \, \dot{p}_{t - 1} + \frac{1}{2} {\Delta t}^2 \, \ddot{p}_{t - 1} \\
     \dot{p}_t & = \dot{p}_{t - 1} + \Delta t \, \ddot{p}_{t - 1} \\
-    \ddot{p}_t & = g - \kappa \, p_{t - 1} - \eta \, \dot{p}_{t - 1} + \tau
+    \ddot{p}_t & = \rho w_t - \kappa \, p_{t - 1} - \eta \, \dot{p}_{t - 1} \\
+    w_t & \sim \N(\alpha w_{t-1}, \sigma_w^2)
 \end{align*}
-where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocity and acceleration of the ball at timestep $t$, $\Delta t$ is the time elapsed between $t-1$ and $t$, $g$ is earth's surface gravity, $\kappa$ is the stiffness of the spring, $\eta$ is the linear drag coefficient of the air and $\tau \sim \N(0, \sigma_\tau^2)$ is the random thrust caused by the wind. You estimate that the ball starts \qty{10 \pm 0.5}{\meter} below the top of the spring with a negligible speed \qty{0 \pm 0.1}{\meter\per\second} and an acceleration $g - \kappa 10 \pm \sigma_\tau$. You also assume that the human perception of acceleration follows an unbiased Gaussian distribution.
+where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocity and acceleration of the ball at timestep $t$, $w_t$ is the wind at timestep $t$, $\Delta t$ is the time elapsed between $t-1$ and $t$, $\rho$ is the thrust coefficient of the wind, $\kappa$ is the stiffness of the spring, $\eta$ is the friction coefficient of the platform and $\alpha$ is the persistence of the wind. You estimate that the ball starts \qty{10 \pm 0.5}{\meter} at the left of the spring with a negligible speed \qty{0 \pm 0.1}{\meter\per\second} and acceleration \qty{0 \pm 0.1}{\meter\per\second\squared}. You assume that the wind has a stationary distribution. Finally, you assume that the human perception of acceleration follows an unbiased Gaussian distribution.
 
 \begin{enumerate}
     \item You wish to predict the state of the ball given the perceptions of a participant. Define the components of a Kalman filter in this context.
@@ -311,28 +312,28 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \begin{itemize}
             \item a Gaussian prior
             \begin{equation*}
-                p(x_0) = \N(\mu_0, \Sigma_0),
+                p(X_0) = \N(\mu_0, \Sigma_0),
             \end{equation*}
             \item a linear Gaussian transition model
             \begin{equation*}
-                p(x_t \knowing x_{t - 1}) = \N(A x_{t - 1} + b, \Sigma_x)
+                p(X_t \knowing X_{t - 1}) = \N(F X_{t - 1} + u, \Sigma_x)
             \end{equation*}
             \item and a linear Gaussian sensor model
             \begin{equation*}
-                p(e_t \knowing x_t) = \N(C x_t + d, \Sigma_e).
+                p(E_t \knowing X_t) = \N(H X_t + v, \Sigma_e).
             \end{equation*}
         \end{itemize}
-        In a \href{https://en.wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is simply the vector of the variables' mean, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. Interestingly, $\Sigma_{ii} = \E\sbk{(x_i - \mu_i)^2} = \V\sbk{x_i}$, meaning that the diagonal elements of $\Sigma$ are the variables' variance. Importantly, if $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$.
+        In a \href{https://en.wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
 
-        In our case, the state $x_t$ is a 3-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t}^T$ and according to the provided information, the prior is defined by
+        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined by
         \begin{equation*}
-            \mu_0 = \mat{10 \\ 0 \\ g - \kappa 10} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 \\ 0 & 0.1^2 & 0 \\ 0 & 0 & \sigma_\tau^2} .
+            \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0.0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
         \end{equation*}
         Then, our transition model is defined by
         \begin{equation*}
-            A = \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 \\ 0 & 1 & \Delta t \\ -\kappa & - \eta & 0}, \quad b = \mat{0 \\ 0 \\ g} \quad \text{and} \quad \Sigma_x = \mat{0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & \sigma_\tau^2} .
+            F = \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha}, \quad u = \mat{0 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_x = \mat{0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sigma_w^2} .
         \end{equation*}
-        It should be noted that only the acceleration has a non-null variance in $\Sigma_x$, since the transitions of the position and speed are considered \emph{deterministic}.
+        It should be noted that only the wind has a non-null variance in $\Sigma_x$, since the transitions of the position, velocity and acceleration are \emph{deterministic}.
 
         Concerning the sensor model, the evidence is a perturbed, but unbiased, perception of the acceleration, that is
         \begin{align*}
@@ -340,33 +341,40 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \end{align*}
         which translates to
         \begin{equation*}
-            C = \mat{0 & 0 & 1}, \quad d = 0 \quad \text{and} \quad \Sigma_e = \sigma_e^2 .
+            H = \mat{0 & 0 & 1 & 0}, \quad v = 0 \quad \text{and} \quad \Sigma_e = \sigma_e^2 .
         \end{equation*}
     \end{solution}
 
-    \item Express the distribution $p(x_t \knowing e_{1:t})$ with respect to the components defined previously.
+    \item Express the distribution $p(X_t \knowing e_{1:t})$ with respect to the components defined previously.
 
     \begin{solution}
         This task corresponds exactly to filtering, \ie{} inferring the distribution
         \begin{align*}
-            p(x_t \knowing e_{1:t}) & = \alpha \, p(e_t \knowing x_t, e_{1:t-1}) \, p(x_t \knowing e_{1:t-1}) \\
-            & = \alpha \, p(e_t \knowing x_t) \int p(x_t \knowing x_{t-1}) \, p(x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} .
+            p(X_t \knowing e_{1:t}) & = \alpha \, p(e_t \knowing X_t, e_{1:t-1}) \, p(X_t \knowing e_{1:t-1}) \\
+            & = \alpha \, p(e_t \knowing X_t) \int p(X_t, x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} .
         \end{align*}
-        We notice that the latter expression depends on the sensor model $p(e_t \knowing x_t)$, the transition model $p(x_t \knowing x_{t-1})$ and our previous belief $p(x_{t-1} \knowing e_{1:t-1})$. When $t = 1$, this belief is the prior $p(x_0)$ and is a (multivariate) Gaussian distribution. But, from the cheat sheet for Gaussian models (slide 51, lecture 6), we know that if we have a Gaussian distribution $p(x) = \N(\mu_x, \Sigma_x)$ and a linear Gaussian condition distribution $p(y \knowing x) = \N(A x + b, \Sigma_y)$, the marginal $p(y)$ and the posterior $p(x \knowing y)$ are also Gaussian and take the form
-        \begin{align*}
-            p(y) & = \int p(y \knowing x) \, p(x) \d{x} = \N\rbk*{A \mu_x + b, \Sigma_y + A \Sigma_x A^T} \\
-            p(x \knowing y) & = \alpha \, p(y \knowing x) \, p(x) = \N\rbk*{\Sigma \rbk*{A^T \Sigma_y^{-1} (y - b) + \Sigma_x^{-1} \mu_x}, \Sigma}
-        \end{align*}
-        with $\Sigma = \rbk*{\Sigma_x^{-1} + A^T \Sigma_y^{-1} A}^{-1}$. Then, by induction, all beliefs $p(x_t | e_{1:t})$ are Gaussian and we have
-        \begin{align*}
-            p(x_t | e_{1:t-1}) & = \int p(x_t \knowing x_{t-1}) \, p(x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} = \N\rbk[\Big]{\underbrace{A \mu_{t-1} + b}_{\mu_*}, \underbrace{\Sigma_x + A \Sigma_{t-1} A^T}_{\Sigma_*}} \\
-            p(x_t \knowing e_{1:t}) & =  \alpha \, p(e_t \knowing x_t) \, p(x_t \knowing e_{1:t-1}) = \N(\mu_t, \Sigma_t)
-        \end{align*}
-        with
-        \begin{align*}
-            \mu_t & = \Sigma_t \rbk*{C^T \Sigma_e^{-1} (e_t - d) + \Sigma_*^{-1} \mu_*} \\
-            \Sigma_t & = \rbk*{\Sigma_*^{-1} + C^T \Sigma_e^{-1} C}^{-1} .
-        \end{align*}
+        In the latter expression, the integral corresponds to the marginalization of the joint distribution
+        \begin{equation*}
+            p(X_t, X_{t-1} \knowing e_{1:t-1}) = p(X_t | X_{t-1}) \, p(X_{t-1} | e_{1:t-1}) .
+        \end{equation*}
+        Because the transition model $p(X_t | X_{t-1})$ is linear Gaussian, if the previous belief $p(X_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
+        \begin{equation*}
+            p\rbk*{ \mat{X_{t-1} \\ X_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
+        \end{equation*}
+        and
+        \begin{equation*}
+            p(X_t \knowing e_{1:t-1}) = \N\rbk[\Big]{ \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
+        \end{equation*}
+        Similarly, because the sensor model $p(E_t | X_t)$ is linear Gaussian, we have the joint distribution
+        \begin{equation*}
+            p\rbk*{ \mat{X_t \\ E_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
+        \end{equation*}
+        Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
+        \begin{equation*}
+            p(X_t \knowing e_{1:t}) =
+            \N\rbk[\Big]{ \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
+        \end{equation*}
+        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(X_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
     \end{solution}
 
     \item Represent the transition and sensor models as a dynamic Bayesian network.
