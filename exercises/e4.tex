@@ -386,10 +386,12 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
                 \node[state, align=center] (p) {$p_{t-1}$};
                 \node[state, align=center] (dp) [below of=p] {$\dot{p}_{t-1}$};
                 \node[state, align=center] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
+                \node[state, align=center] (w) [below of=ddp] {$w_{t-1}$};
 
                 \node[state, align=center] (pb) [right of=p] {$p_t$};
                 \node[state, align=center] (dpb) [right of=dp] {$\dot{p}_t$};
                 \node[state, align=center] (ddpb) [right of=ddp] {$\ddot{p}_t$};
+                \node[state, align=center] (wb) [right of=w] {$w_t$};
 
                 \node[state, align=center] (e) [right of=ddpb] {$e_t$};
 
@@ -400,6 +402,8 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
                 \path[-{>[scale=1.5]}] (dp) edge (ddpb);
                 \path[-{>[scale=1.5]}] (ddp) edge (pb);
                 \path[-{>[scale=1.5]}] (ddp) edge (dpb);
+                \path[-{>[scale=1.5]}] (w) edge (ddpb);
+                \path[-{>[scale=1.5]}] (w) edge (wb);
 
                 \path[-{>[scale=1.5]}] (ddpb) edge (e);
             \end{tikzpicture}
