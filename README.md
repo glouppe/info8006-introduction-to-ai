@@ -24,8 +24,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 10 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 4b: Kalman [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 17 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
 | November 24 | Lecture 10: [Communication][l10] [[PDF][l10-pdf]] [[video][l10-vid]] (optional) <br> Lecture 11: [Artificial general intelligence and beyond][l11] [[PDF][l11-pdf]] [[video][l11-vid]] <br> Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] |
-| November 25 | Project 3: Deadline |
 | December 1 | No class | 
+| December 2 | Project 3: Deadline |
 | December 8 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] |
 | December 15 | Q&As <br> Correction of a past exam (January 2022) |
 | -- | All lectures [[PDF][lall-pdf]] | 
@@ -110,7 +110,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
 - Part 1: [Search algorithms](projects/project1) (due by **October 7, 2022**)
 - Part 2: [Adversarial search](projects/project2) (due by **October 28, 2022**)
-- Part 3: [Bayes filter](projects/project3) (due by **November 25, 2022**)
+- Part 3: [Bayes filter](projects/project3) (due by **December 2, 2022**)
 
 ### Reading assignment
 
