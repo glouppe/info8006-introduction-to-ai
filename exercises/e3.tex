@@ -115,8 +115,8 @@ After your yearly checkup, the doctor has bad news and good news. The bad news i
 \begin{solution}
     It is a good news because the conditional probability will drop due to the weak prior value. Indeed,
     \begin{align*}
-        P(d \knowing t) & = \frac{p(t \knowing d) p(d)}{p(t)} \\
-        & = \frac{p(t \knowing d) p(d)}{p(t \knowing d) p(d) + p(t \knowing \neg d) p(\neg d)} \\
+        P(d \knowing t) & = \frac{P(t \knowing d) P(d)}{P(t)} \\
+        & = \frac{P(t \knowing d) P(d)}{P(t \knowing d) P(d) + P(t \knowing \neg d) P(\neg d)} \\
         & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} = \num{0.0098} .
     \end{align*}
 \end{solution}

@@ -163,8 +163,9 @@ Another person enters the room, takes the coins and put them into a bag. They dr
             \item The sensor matrix
                 \begin{equation*}
                     B = P(E_t \knowing X_t) = \mat{
-                        0.8 & 0.5 & 0.2 \\
-                        0.2 & 0.5 & 0.8
+                        0.8 & 0.2 \\
+                        0.5 & 0.5 \\
+                        0.2 & 0.8
                     }
                 \end{equation*}
         \end{itemize}
@@ -178,22 +179,22 @@ Another person enters the room, takes the coins and put them into a bag. They dr
             && P(X_t \knowing e_{1:t}) & = \alpha P(e_t \knowing X_t, e_{1:t-1}) P(X_t \knowing e_{1:t-1}) \\
             &&& = \alpha P(e_t \knowing X_t, e_{1:t-1}) \sum_{x_{t-1}} P(X_t \knowing x_{t-1}, e_{1:t-1}) P(x_{t-1} \knowing e_{1:t-1}) \\
             &&& = \alpha P(e_t \knowing X_t) \sum_{x_{t-1}} P(X_t \knowing x_{t-1}) P(x_{t-1} \knowing e_{1:t-1}) \\
-            \Leftrightarrow \quad && f_t & = \alpha \, O_t \, T \, f_{t-1}
+            \Leftrightarrow \quad && f_t & = \alpha \, O_t \, T^T \, f_{t-1}
         \end{alignat*}
-        where $O_t = \diag(P(e_t | X_t))$ is the observation matrix. By substitution,
+        where $O_t = \diag(P(e_t \knowing X_t))$ is the observation matrix. By substitution,
         \begin{equation*}
                 O_1 = O_2 = O_4 = \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \quad \text{and} \quad O_3 = \mat{0.2 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.8} .
         \end{equation*}
         Then, to calculate $f_4$, we first need $f_1$, $f_2$ and $f_3$.
         \begin{align*}
-            f_1 & = \alpha_1 \, O_1 \, T \, f_0 = \alpha_1 \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{
+            f_1 & = \alpha_1 \, O_1 \, T^T \, f_0 = \alpha_1 \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{
                 \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
             } \mat{\frac{1}{3} \\ \frac{1}{3} \\ \frac{1}{3}} = \alpha_1 \mat{\frac{4}{15} \\ \frac{1}{6} \\ \frac{1}{15}} = \mat{\frac{8}{15} \\ \frac{1}{3} \\ \frac{2}{15}} \\
-            f_2 & = \alpha_2 \, O_2 \, T \, f_1 = \dots \\
-            f_3 & = \alpha_3 \, O_3 \, T \, f_2 = \dots \\
-            f_4 & = \alpha_4 \, O_4 \, T \, f_3 = \dots \approx \mat{0.472 & 0.374 & 0.154}^T
+            f_2 & = \alpha_2 \, O_2 \, T^T \, f_1 = \dots \\
+            f_3 & = \alpha_3 \, O_3 \, T^T \, f_2 = \dots \\
+            f_4 & = \alpha_4 \, O_4 \, T^T \, f_3 = \dots \approx \mat{0.472 & 0.374 & 0.154}^T
         \end{align*}
     \end{solution}
 
@@ -210,18 +211,18 @@ Another person enters the room, takes the coins and put them into a bag. They dr
         \begin{alignat*}{2}
             && P(e_{k + 1:t} \knowing X_k) & = \sum_{x_{k + 1}} P(x_{k + 1} \knowing X_k) P(e_{k + 1:t} \knowing X_k, x_{k + 1}) \\
             &&& = \sum_{x_{k + 1}} P(x_{k + 1} \knowing X_k) P(e_{k + 1} \knowing x_{k + 1}) P(e_{k + 2:t} \knowing x_{k + 1}) \\
-            \Leftrightarrow \quad && b_k & = T^T \, O_{k + 1} \, b_{k + 1}
+            \Leftrightarrow \quad && b_k & = T \, O_{k + 1} \, b_{k + 1}
         \end{alignat*}
         where $b_t = b_4 = P(anything \knowing X_4) = \mat{1 & 1 & 1}^T$. Therefore, to calculate $b_0$, we first need $b_3$, $b_2$ and $b_1$.
         \begin{align*}
-            b_3 & = T^T \, O_{4} \, b_4 = \mat{
+            b_3 & = T \, O_{4} \, b_4 = \mat{
                 \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
             } \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{1 \\ 1 \\ 1} = \mat{0.65 \\ 0.5 \\ 0.35} \\
-            b_2 & = T^T \, O_{3} \, b_3 = \dots \\
-            b_1 & = T^T \, O_{2} \, b_2 = \dots \\
-            b_0 & = T^T \, O_{1} \, b_1 = \dots \approx \mat{0.076 & 0.055 & 0.035}^T
+            b_2 & = T \, O_{3} \, b_3 = \dots \\
+            b_1 & = T \, O_{2} \, b_2 = \dots \\
+            b_0 & = T \, O_{1} \, b_1 = \dots \approx \mat{0.076 & 0.055 & 0.035}^T
         \end{align*}
         Eventually,
         \begin{align*}
@@ -312,15 +313,15 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \begin{itemize}
             \item a Gaussian prior
             \begin{equation*}
-                p(X_0) = \N(\mu_0, \Sigma_0),
+                p(x_0) = \N(x_0 \knowing \mu_0, \Sigma_0),
             \end{equation*}
             \item a linear Gaussian transition model
             \begin{equation*}
-                p(X_t \knowing X_{t - 1}) = \N(F X_{t - 1} + u, \Sigma_x)
+                p(x_t \knowing x_{t - 1}) = \N(x_t \knowing F x_{t - 1} + u, \Sigma_x)
             \end{equation*}
             \item and a linear Gaussian sensor model
             \begin{equation*}
-                p(E_t \knowing X_t) = \N(H X_t + v, \Sigma_e).
+                p(e_t \knowing x_t) = \N(e_t \knowing H x_t + v, \Sigma_e).
             \end{equation*}
         \end{itemize}
         In a \href{https://en.wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
@@ -345,36 +346,35 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \end{equation*}
     \end{solution}
 
-    \item Express the distribution $p(X_t \knowing e_{1:t})$ with respect to the components defined previously.
+    \item Express the distribution $p(x_t \knowing e_{1:t})$ with respect to the components defined previously.
 
     \begin{solution}
         This task corresponds exactly to filtering, \ie{} inferring the distribution
         \begin{align*}
-            p(X_t \knowing e_{1:t}) & = \alpha \, p(e_t \knowing X_t, e_{1:t-1}) \, p(X_t \knowing e_{1:t-1}) \\
-            & = \alpha \, p(e_t \knowing X_t) \int p(X_t, x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} .
+            p(x_t \knowing e_{1:t}) & = \alpha \, p(e_t \knowing x_t, e_{1:t-1}) \, p(x_t \knowing e_{1:t-1}) \\
+            & = \alpha \, p(e_t \knowing x_t) \int p(x_t, x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} .
         \end{align*}
         In the latter expression, the integral corresponds to the marginalization of the joint distribution
         \begin{equation*}
-            p(X_t, X_{t-1} \knowing e_{1:t-1}) = p(X_t | X_{t-1}) \, p(X_{t-1} | e_{1:t-1}) .
+            p(x_t, x_{t-1} \knowing e_{1:t-1}) = p(x_t \knowing x_{t-1}) \, p(x_{t-1} \knowing e_{1:t-1}) .
         \end{equation*}
-        Because the transition model $p(X_t | X_{t-1})$ is linear Gaussian, if the previous belief $p(X_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
+        Because the transition model $p(x_t \knowing x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} \knowing e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
         \begin{equation*}
-            p\rbk*{ \mat{X_{t-1} \\ X_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
+            p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg\knowing \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
         \end{equation*}
         and
         \begin{equation*}
-            p(X_t \knowing e_{1:t-1}) = \N\rbk[\Big]{ \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
+            p(x_t \knowing e_{1:t-1}) = \N\rbk[\Big]{x_t \knowing \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
         \end{equation*}
-        Similarly, because the sensor model $p(E_t | X_t)$ is linear Gaussian, we have the joint distribution
+        Similarly, because the sensor model $p(e_t \knowing x_t)$ is linear Gaussian, we have the joint distribution
         \begin{equation*}
-            p\rbk*{ \mat{X_t \\ E_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
+            p\rbk*{ \mat{x_t \\ e_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg\knowing \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
         \end{equation*}
         Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
         \begin{equation*}
-            p(X_t \knowing e_{1:t}) =
-            \N\rbk[\Big]{ \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
+            p(x_t \knowing e_{1:t}) = \N\rbk[\Big]{x_t \knowing \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
         \end{equation*}
-        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(X_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
+        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
     \end{solution}
 
     \item Represent the transition and sensor models as a dynamic Bayesian network.
