@@ -91,7 +91,7 @@ class: middle
 ## Remarks
 
 - Although MDPs generalize to continuous state-action spaces, we assume in this lecture that both $\mathcal{S}$ and $\mathcal{A}$ are discrete and finite.
-- The formalism we use to define MDPs is not unique. A quite well-established and equivalent variant is to define the reward function with respect to a transition $(s,a,s')$, i.e. $R(s,a,s')$. This results in new formulations of the algorithms covered in Lecture 8.
+- The formalism we use to define MDPs is not unique. A quite well-established and equivalent variant is to define the reward function with respect to a transition $(s,a,s')$, i.e. $R(s,a,s')$. This results in new (but equivalent) formulations of the algorithms covered in Lecture 8.
 
 ---
 

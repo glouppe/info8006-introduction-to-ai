@@ -27,7 +27,6 @@ class: middle, center
 Make our agents capable of self-improvement through a **learning** mechanism.
 - Bayesian learning
 - Supervised learning
-- Unsupervised learning (Bonus)
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -50,7 +49,7 @@ Sufficient to implement complex and rational behaviors, in some situations.
 Is that intelligence? Aren't we missing a critical component?
 => Learning component
 
-The auestion is then to determine what should be pre-defined from what should be learned.
+The question is then to determine what should be pre-defined from what should be learned.
 
 ---
 

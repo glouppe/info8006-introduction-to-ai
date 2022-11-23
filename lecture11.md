@@ -162,6 +162,10 @@ Could AI be perceived as creative? (Jürgen Schmidhuber)
 
 ]
 
+???
+
+Learning can yield creativity and curiosity, but it is not clear whether this is enough to reach AGI.
+
 ---
 
 class: middle
@@ -332,6 +336,15 @@ Artificial life is related to AI since synthesizing complex life forms would, **
 class: middle, black-slide
 
 .center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/DR3h24iV9kQ?&loop=1" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Wet artificial life: The line between life and not-life (Martin Hanczyc).
+
+]
+
+???
+
+.center[
 <iframe width="640" height="420" src="https://www.youtube.com/embed/dySwrhMQdX4?&loop=1&start=353" frameborder="0" volume="0" allowfullscreen></iframe>
 
 Wet artificial life: The line between life and not-life (Martin Hanczyc).
@@ -343,18 +356,25 @@ Wet artificial life: The line between life and not-life (Martin Hanczyc).
 
 Evolution may **hypothetically** be interpreted as an (unknown) algorithm.
 - This algorithm gave rise to AGI (e.g., it induced humans).
-- **Simulation** of the evolutionary process should/could eventually reproduce life and, maybe, intelligence?
-
-<br>
-
-.center.width-60[![](figures/lec11/conway.gif)]
-.caption[Conway's game of life]
+- Simulation of the evolutionary process should/could eventually reproduce life and, maybe, intelligence?
 
 ???
 
 Using software simulation, we can work at a high level of abstraction.
 - We don't have to simulate physics or chemistry to simulate evolution.
 - We can also bootstrap the system with agents that are better than random.
+
+---
+
+class: middle
+
+## Conway's Game of Life
+
+- Any live cell with two or three live neighbours survives.
+- Any dead cell with three live neighbours becomes a live cell.
+- All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+.center.width-60[![](figures/lec11/conway.gif)]
 
 ---
 
@@ -459,32 +479,7 @@ class: middle
 
 ---
 
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/NP8xt8o4_5Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-A note of optimism: Don't fear intelligent machines,<br>
-work with them (Garry Kasparov).
-]
-
----
-
 class: middle
-
-## Beyond Pacman
-
-Artificial intelligence algorithms are transforming science, engineering and society.
-
-As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges. Seize them!
-
-.footnote[E.g.: [Climate Change AI](https://www.climatechange.ai/).]
-
-
----
-
-# Recap
 
 - Lecture 0: Artificial intelligence
 - Lecture 1: Intelligent agents
@@ -508,29 +503,62 @@ class: middle, center
 
 ---
 
-# Going further
+class: middle
+
+## Going further
 
 This course is designed as an introduction to the many other courses available at ULiège and related to AI, including:
 
 - ELEN0062: Introduction to Machine Learning
-- INFO8004: Advanced Machine Learning
+- DATS0001: Foundations of Data Science
 - INFO8010: Deep Learning
+- INFO8004: Advanced Machine Learning
 - INFO8003: Optimal decision making for complex problems
 - INFO0948: Introduction to Intelligent Robotics
-- INFO0049: Knowledge representation
 - ELEN0016: Computer vision
-- ELEN0060: Information and coding theory
-- MATH2022: Large-sample analysis: theory and practice
-- DROI8031: Introduction to the law of robots
+- SPATXXXX: Machine Learning in Space Sciences (from 2023-2024)
 
 ---
 
-# Research opportunities
+class: middle
+
+## Research opportunities
 
 Feel free to contact us
 - for research Summer internship opportunities
 - MSc thesis opportunities
 - PhD thesis opportunities
+
+---
+
+class: middle
+
+## Beyond Pacman
+
+Artificial intelligence algorithms are transforming science, engineering and society.
+
+As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges. 
+
+???
+
+- Build the next generation of aircrafts, cars, robots, ...
+- Make the next app that will change the world
+- Work on the next generation of medical devices, ...
+- Analyze large amounts of genomic data, process biomedical images, ...
+- Try to understand the brain, or the universe, ...
+- Discover new drugs, new materials, ...
+
+---
+
+exclude: true
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="420" src="https://www.youtube.com/embed/NP8xt8o4_5Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+A note of optimism: Don't fear intelligent machines,<br>
+work with them (Garry Kasparov).
+]
 
 ---
 
