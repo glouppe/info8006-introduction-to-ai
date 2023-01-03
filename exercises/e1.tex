@@ -28,13 +28,13 @@ At the end of this session you should be able to
 \begin{figure}[h]
     \centering
     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
-        \node[state, align=center] (S) {S(tart)\\$h=11$};
-        \node[state, align=center] (A) [above right of=S] {A\\$h=20$};
-        \node[state, align=center] (B) [right of=S] {B\\$h=12$};
-        \node[state, align=center] (C) [below right of=S] {C\\$h=10$};
-        \node[state, align=center] (D) [below right of=B] {D\\$h=3$};
-        \node[state, align=center] (E) [above right of=B] {E\\$h=19$};
-        \node[state, align=center] (G) [right of=D] {G(oal)};
+        \node[state] (S) {S(tart)\\$h=11$};
+        \node[state] (A) [above right of=S] {A\\$h=20$};
+        \node[state] (B) [right of=S] {B\\$h=12$};
+        \node[state] (C) [below right of=S] {C\\$h=10$};
+        \node[state] (D) [below right of=B] {D\\$h=3$};
+        \node[state] (E) [above right of=B] {E\\$h=19$};
+        \node[state] (G) [right of=D] {G(oal)};
 
         \path[-] (S) edge node[fill=white] {1} (A);
         \path[-] (S) edge node[fill=white] {4} (B);
@@ -211,7 +211,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
     \includegraphics[width=0.3\linewidth]{figures/e1_maze.png}
 \end{figure}
 
-Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent’s goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
+Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent's direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent's goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
 
 As an example, in the hereabove maze, if the agent is initially stationary, it might first turn to the east using \texttt{right}, then move one square east using \texttt{faster}, then two more squares east using \texttt{faster} again. However, the agent will have to slow to take the turn.
 
@@ -228,7 +228,7 @@ As an example, in the hereabove maze, if the agent is initially stationary, it m
         The maximum branching factor is 3, and this happens when the agent is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
     \end{solution}
 
-    \item Is the Manhattan distance from the agent’s location to the exit’s location admissible?
+    \item Is the Manhattan distance from the agent's location to the exit's location admissible?
 
     \begin{solution}
         No because it does not take the velocity of the agent into account. For instance, in a long straight path, the number of steps could be smaller than the number of squares.
@@ -296,12 +296,12 @@ Consider a graph search problem where all edges have a unit cost and the optimal
 \begin{figure}[h]
     \centering
     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
-        \node[state, align=center] (S) {S(tart)};
-        \node[state, align=center] (A) [above right of=S] {A};
-        \node[state, align=center] (B) [right of=A] {B};
-        \node[state, align=center] (C) [below of=B] {C};
-        \node[state, align=center] (D) [below right of=B] {D};
-        \node[state, align=center] (G) [below of=D] {G(oal)};
+        \node[state] (S) {S(tart)};
+        \node[state] (A) [above right of=S] {A};
+        \node[state] (B) [right of=A] {B};
+        \node[state] (C) [below of=B] {C};
+        \node[state] (D) [below right of=B] {D};
+        \node[state] (G) [below of=D] {G(oal)};
 
         \path[-] (S) edge node[fill=white] {1} (A);
         \path[-] (S) edge node[fill=white] {12} (G);

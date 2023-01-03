@@ -1,3 +1,16 @@
+# Others
 doc/
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.bcf
+*.bbl
+*.blg
+*.run.xml
+
+# Python
 __pycache__/
 *.pyc

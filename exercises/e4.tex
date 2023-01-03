@@ -35,11 +35,11 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
     \begin{solution}
         The first belief describes the umbrella world as a \emph{first-order Markov process}, such that
         \begin{equation*}
-            P(R_t \knowing R_{1:t-1}) = P(R_t \knowing R_{t-1}),
+            P(R_t | R_{1:t-1}) = P(R_t | R_{t-1}),
         \end{equation*}
         \ie{} $R_t$ is independent from $R_{1:t - 2}$ given $R_{t-1}$. The second belief is equivalent to a \emph{first-order sensor Markov assumption}, implying that
         \begin{equation*}
-            P(U_t \knowing R_{1:t}, U_{1:t-1}) = P(U_t \knowing R_{t}).
+            P(U_t | R_{1:t}, U_{1:t-1}) = P(U_t | R_{t}).
         \end{equation*}
     \end{solution}
 
@@ -56,7 +56,7 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
                 \centering
                 \begin{tabular}{c|c}
                     \toprule
-                     $R_{t-1}$ & $P(R_t = 1 \knowing R_{t-1})$ \\
+                     $R_{t-1}$ & $P(R_t = 1 | R_{t-1})$ \\
                      \midrule
                      1 & 0.7 \\
                      0 & 0.3 \\
@@ -67,7 +67,7 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
                 \centering
                 \begin{tabular}{c|c}
                     \toprule
-                     $R_t$ & $P(U_t = 1 \knowing R_t)$ \\
+                     $R_t$ & $P(U_t = 1 | R_t)$ \\
                      \midrule
                      1 & 0.9 \\
                      0 & 0.2 \\
@@ -77,27 +77,27 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
         \end{table}
     \end{solution}
 
-    \item Express the distributions $P(R_{t + 1} \knowing R_{t-1})$, $P(U_t \knowing R_{t-1})$ and $P(R_t \knowing R_{t-1}, U_t)$ in terms of the transition and sensor models.
+    \item Express the distributions $P(R_{t + 1} | R_{t-1})$, $P(U_t | R_{t-1})$ and $P(R_t | R_{t-1}, U_t)$ in terms of the transition and sensor models.
 
     \begin{solution}
         \begin{align*}
-            P(R_{t + 1} \knowing R_{t-1}) & = \sum_{r_t} P(R_{t + 1} \knowing r_t) P(r_t \knowing R_{t-1}) \\
+            P(R_{t + 1} | R_{t-1}) & = \sum_{r_t} P(R_{t + 1} | r_t) P(r_t | R_{t-1}) \\
             & = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{0.7 & 0.3 \\ 0.3 & 0.7} = \mat{0.58 & 0.42 \\ 0.42 & 0.58} \\
-            P(U_t \knowing R_{t-1}) & = \sum_{r_t} P(U_t \knowing R_{t-1}, r_t) P(r_t \knowing R_{t-1}) \\
-            & = \sum_{r_t} P(U_t \knowing r_t) P(r_t \knowing R_{t-1}) \\
+            P(U_t | R_{t-1}) & = \sum_{r_t} P(U_t | R_{t-1}, r_t) P(r_t | R_{t-1}) \\
+            & = \sum_{r_t} P(U_t | r_t) P(r_t | R_{t-1}) \\
             & = \mat{0.9 & 0.2 \\ 0.1 & 0.8} \mat{0.7 & 0.3 \\ 0.3 & 0.7} = \mat{0.69 & 0.41 \\ 0.31 & 0.59} \\
-            P(R_t \knowing R_{t-1}, U_t) & = \frac{P(U_t \knowing R_{t-1}, R_t) P(R_t \knowing R_{t-1})}{P(U_t \knowing R_{t-1})} \\
-            & = \frac{P(U_t \knowing R_t) P(R_t \knowing R_{t-1})}{P(U_t \knowing R_{t-1})}
+            P(R_t | R_{t-1}, U_t) & = \frac{P(U_t | R_{t-1}, R_t) P(R_t | R_{t-1})}{P(U_t | R_{t-1})} \\
+            & = \frac{P(U_t | R_t) P(R_t | R_{t-1})}{P(U_t | R_{t-1})}
         \end{align*}
     \end{solution}
 
     \item Suppose you observe an unending sequence of days on which the umbrella appears. Show that, as the days go by, the probability of rain on the current day tends monotonically towards a fixed point. Calculate this fixed point.
 
     \begin{solution}
-        We are asked to prove that $x_t = P(R_t = 1 \knowing U_{1:t} = 1)$ tends monotonically (with respect to $t$) towards a fixed point $x^*$. To do so, we need to find the value of $x_t$, which corresponds to apply \emph{filtering} on the Markov model defined by the umbrella world. On this basis, we have
+        We are asked to prove that $x_t = P(R_t = 1 | U_{1:t} = 1)$ tends monotonically (with respect to $t$) towards a fixed point $x^*$. To do so, we need to find the value of $x_t$, which corresponds to apply \emph{filtering} on the Markov model defined by the umbrella world. On this basis, we have
         \begin{alignat*}{2}
-            && P(R_t \knowing U_{1:t} = 1) & = \alpha P(U_t = 1 \knowing R_t) \sum_{r_{t-1}} P(R_t \knowing r_{t-1}) P(r_{t-1} \knowing U_{1:t-1}  = 1) \\
-            &&& = \alpha \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t-1} \knowing U_{1:t-1} = 1) \\
+            && P(R_t | U_{1:t} = 1) & = \alpha P(U_t = 1 | R_t) \sum_{r_{t-1}} P(R_t | r_{t-1}) P(r_{t-1} | U_{1:t-1}  = 1) \\
+            &&& = \alpha \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t-1} | U_{1:t-1} = 1) \\
             \Leftrightarrow \quad && \mat{x_{t} \\ 1 - x_{t}} & = \alpha \mat{0.63 & 0.27 \\ 0.06 & 0.14} \mat{x_{t-1} \\ 1 - x_{t-1}} \\
             &&& = \alpha \mat{0.27 + (0.63 - 0.27) \, x_{t-1} \\ 0.14 + (0.06 - 0.14) \, x_{t-1}} \\
             &&& = \frac{1}{0.41 + 0.28 \, x_{t-1}} \mat{0.27 + 0.36 \, x_{t-1} \\ 0.14 - 0.08 \, x_{t-1}} .
@@ -119,10 +119,10 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
     \item Now consider forecasting further and further into the future, given $t$ umbrella observations. Is there a fixed point ? If yes, compute its exact value.
 
     \begin{solution}
-        We are asked to forecast the rain probability $x_k = P(R_{t + k} = 1 \knowing U_{1:t} = 1)$, \ie{} to perform \emph{prediction}. We have
+        We are asked to forecast the rain probability $x_k = P(R_{t + k} = 1 | U_{1:t} = 1)$, \ie{} to perform \emph{prediction}. We have
         \begin{alignat*}{2}
-            && P(R_{t+k} \knowing U_{1:t} = 1) & = \sum_{r_{t+k-1}} P(R_{t+k} \knowing r_{t+k-1}) P(r_{t+k-1} \knowing U_{1:t} = 1) \\
-            &&& = \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t+k-1} \knowing U_{1:t} = 1) \\
+            && P(R_{t+k} | U_{1:t} = 1) & = \sum_{r_{t+k-1}} P(R_{t+k} | r_{t+k-1}) P(r_{t+k-1} | U_{1:t} = 1) \\
+            &&& = \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t+k-1} | U_{1:t} = 1) \\
             \Leftrightarrow \quad && \mat{x_k \\ 1 - x_k} & = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{x_{k - 1} \\ 1 - x_{k - 1}} .
         \end{alignat*}
         By symmetry, we find the fixed point $x^* = 0.5$, which highlights the fact that, without new evidences, uncertainty about the states accumulates.
@@ -153,7 +153,7 @@ Another person enters the room, takes the coins and put them into a bag. They dr
 
             \item The transition matrix
                 \begin{equation*}
-                    T = P(X_t \knowing X_{t-1}) = \mat{
+                    T = P(X_t | X_{t-1}) = \mat{
                         \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
                         \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
                         \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
@@ -162,7 +162,7 @@ Another person enters the room, takes the coins and put them into a bag. They dr
 
             \item The sensor matrix
                 \begin{equation*}
-                    B = P(E_t \knowing X_t) = \mat{
+                    B = P(E_t | X_t) = \mat{
                         0.8 & 0.2 \\
                         0.5 & 0.5 \\
                         0.2 & 0.8
@@ -174,14 +174,14 @@ Another person enters the room, takes the coins and put them into a bag. They dr
     \item What are the probabilities of the last coin given the sequence of evidences?
 
     \begin{solution}
-        We are asked to calculate the distribution $f_t = P(X_t \knowing e_{1:t})$ for $t = 4$. Applying Bayes filter, we have
+        We are asked to calculate the distribution $f_t = P(X_t | e_{1:t})$ for $t = 4$. Applying Bayes filter, we have
         \begin{alignat*}{2}
-            && P(X_t \knowing e_{1:t}) & = \alpha P(e_t \knowing X_t, e_{1:t-1}) P(X_t \knowing e_{1:t-1}) \\
-            &&& = \alpha P(e_t \knowing X_t, e_{1:t-1}) \sum_{x_{t-1}} P(X_t \knowing x_{t-1}, e_{1:t-1}) P(x_{t-1} \knowing e_{1:t-1}) \\
-            &&& = \alpha P(e_t \knowing X_t) \sum_{x_{t-1}} P(X_t \knowing x_{t-1}) P(x_{t-1} \knowing e_{1:t-1}) \\
+            && P(X_t | e_{1:t}) & = \alpha P(e_t | X_t, e_{1:t-1}) P(X_t | e_{1:t-1}) \\
+            &&& = \alpha P(e_t | X_t, e_{1:t-1}) \sum_{x_{t-1}} P(X_t | x_{t-1}, e_{1:t-1}) P(x_{t-1} | e_{1:t-1}) \\
+            &&& = \alpha P(e_t | X_t) \sum_{x_{t-1}} P(X_t | x_{t-1}) P(x_{t-1} | e_{1:t-1}) \\
             \Leftrightarrow \quad && f_t & = \alpha \, O_t \, T^T \, f_{t-1}
         \end{alignat*}
-        where $O_t = \diag(P(e_t \knowing X_t))$ is the observation matrix. By substitution,
+        where $O_t = \diag(P(e_t | X_t))$ is the observation matrix. By substitution,
         \begin{equation*}
                 O_1 = O_2 = O_4 = \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \quad \text{and} \quad O_3 = \mat{0.2 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.8} .
         \end{equation*}
@@ -201,19 +201,19 @@ Another person enters the room, takes the coins and put them into a bag. They dr
     \item What are the probabilities of the first coin given the sequence of evidences? And of the first coin tossed?
 
     \begin{solution}
-        We are asked to calculate the distribution $P(X_k \knowing e_{1:t})$ for $t = 4$ and $k = 0$. As $k < t$ this corresponds to \emph{smoothing} our belief of the past. We have
+        We are asked to calculate the distribution $P(X_k | e_{1:t})$ for $t = 4$ and $k = 0$. As $k < t$ this corresponds to \emph{smoothing} our belief of the past. We have
         \begin{align*}
-            P(X_k \knowing e_{1:t}) & = \alpha P(X_k, e_{k + 1:t} \knowing e_{1:k}) \\
-            & = \alpha P(e_{k + 1:t} \knowing X_k, e_{1:k}) P(X_k \knowing e_{1:k}) \\
-            & = \alpha P(e_{k + 1:t} \knowing X_k) P(X_k \knowing e_{1:k})
+            P(X_k | e_{1:t}) & = \alpha P(X_k, e_{k + 1:t} | e_{1:k}) \\
+            & = \alpha P(e_{k + 1:t} | X_k, e_{1:k}) P(X_k | e_{1:k}) \\
+            & = \alpha P(e_{k + 1:t} | X_k) P(X_k | e_{1:k})
         \end{align*}
-        As we already know $f_k = P(X_k \knowing e_{1:k})$, we only need to compute $b_k = P(e_{k + 1:t} \knowing X_k)$. We have
+        As we already know $f_k = P(X_k | e_{1:k})$, we only need to compute $b_k = P(e_{k + 1:t} | X_k)$. We have
         \begin{alignat*}{2}
-            && P(e_{k + 1:t} \knowing X_k) & = \sum_{x_{k + 1}} P(x_{k + 1} \knowing X_k) P(e_{k + 1:t} \knowing X_k, x_{k + 1}) \\
-            &&& = \sum_{x_{k + 1}} P(x_{k + 1} \knowing X_k) P(e_{k + 1} \knowing x_{k + 1}) P(e_{k + 2:t} \knowing x_{k + 1}) \\
+            && P(e_{k + 1:t} | X_k) & = \sum_{x_{k + 1}} P(x_{k + 1} | X_k) P(e_{k + 1:t} | X_k, x_{k + 1}) \\
+            &&& = \sum_{x_{k + 1}} P(x_{k + 1} | X_k) P(e_{k + 1} | x_{k + 1}) P(e_{k + 2:t} | x_{k + 1}) \\
             \Leftrightarrow \quad && b_k & = T \, O_{k + 1} \, b_{k + 1}
         \end{alignat*}
-        where $b_t = b_4 = P(anything \knowing X_4) = \mat{1 & 1 & 1}^T$. Therefore, to calculate $b_0$, we first need $b_3$, $b_2$ and $b_1$.
+        where $b_t = b_4 = P(anything | X_4) = \mat{1 & 1 & 1}^T$. Therefore, to calculate $b_0$, we first need $b_3$, $b_2$ and $b_1$.
         \begin{align*}
             b_3 & = T \, O_{4} \, b_4 = \mat{
                 \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
@@ -226,8 +226,8 @@ Another person enters the room, takes the coins and put them into a bag. They dr
         \end{align*}
         Eventually,
         \begin{align*}
-            P(X_0 \knowing e_{1:4}) & = \alpha b_0 \times f_0 \approx \mat{0.457 & 0.331 & 0.212}^T \\
-            P(X_1 \knowing e_{1:4}) & = \alpha b_1 \times f_1 \approx \mat{0.580 & 0.329 & 0.091}^T
+            P(X_0 | e_{1:4}) & = \alpha b_0 \times f_0 \approx \mat{0.457 & 0.331 & 0.212}^T \\
+            P(X_1 | e_{1:4}) & = \alpha b_1 \times f_1 \approx \mat{0.580 & 0.329 & 0.091}^T
         \end{align*}
     \end{solution}
 
@@ -236,33 +236,33 @@ Another person enters the room, takes the coins and put them into a bag. They dr
     \begin{solution}
         The most likely sequence $x_{1:t}^*$ given the sequence of evidences $e_{1:t}$ is the one that satisfies
         \begin{equation*}
-            x_{1:t}^* = \arg \max_{x_{1:t}} P(x_{1:t} \knowing e_{1:t})
+            x_{1:t}^* = \arg \max_{x_{1:t}} P(x_{1:t} | e_{1:t})
         \end{equation*}
         or, equivalently,
         \begin{align*}
-            x_k^* & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} P(x_{1:k}, x^*_{k+1:t} \knowing e_{1:t}) } \\
-            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(x_{1:k}, x^*_{k+1:t}, e_{k+1:t} \knowing e_{1:k}) } \\
-            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(e_{k+1:t} \knowing x_{1:k}, x^*_{k+1:t}, e_{1:k}) P(x^*_{k+1:t} \knowing x_{1:k}, e_{1:k}) P(x_{1:k} \knowing e_{1:k}) } \\
-            & = \arg \max_{x_k} \sbk[\bigg]{ \max_{x_{1:k-1}} \underbrace{\alpha P(e_{k+1:t} \knowing x^*_{k+1:t}) P(x^*_{k+2:t} \knowing x^*_{k+1})}_{\text{constant}} P(x^*_{k+1} \knowing x_{k}) P(x_{1:k} \knowing e_{1:k}) } \\
-            & = \arg \max_{x_k} P(x^*_{k+1} \knowing x_{k}) \sbk*{ \max_{x_{1:k-1}} P(x_{1:k} \knowing e_{1:k}) } \\
-            & = \arg \max_{x_k} P(x^*_{k+1} \knowing x_{k}) \, m_k(x_k)
+            x_k^* & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} P(x_{1:k}, x^*_{k+1:t} | e_{1:t}) } \\
+            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(x_{1:k}, x^*_{k+1:t}, e_{k+1:t} | e_{1:k}) } \\
+            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(e_{k+1:t} | x_{1:k}, x^*_{k+1:t}, e_{1:k}) P(x^*_{k+1:t} | x_{1:k}, e_{1:k}) P(x_{1:k} | e_{1:k}) } \\
+            & = \arg \max_{x_k} \sbk[\bigg]{ \max_{x_{1:k-1}} \underbrace{\alpha P(e_{k+1:t} | x^*_{k+1:t}) P(x^*_{k+2:t} | x^*_{k+1})}_{\text{constant}} P(x^*_{k+1} | x_{k}) P(x_{1:k} | e_{1:k}) } \\
+            & = \arg \max_{x_k} P(x^*_{k+1} | x_{k}) \sbk*{ \max_{x_{1:k-1}} P(x_{1:k} | e_{1:k}) } \\
+            & = \arg \max_{x_k} P(x^*_{k+1} | x_{k}) \, m_k(x_k)
         \end{align*}
         where
         \begin{align*}
-            m_k & = \max_{x_{1:k-1}} P(x_{1:k-1}, X_k \knowing e_{1:k}) \\
-            & = \max_{x_{1:k-1}} \alpha P(x_{1:k-1}, X_k, e_k \knowing e_{1:k-1}) \\
-            & = \max_{x_{1:k-1}} \alpha P(e_t \knowing x_{1:k-1}, X_t, e_{1:k-1}) P(X_k \knowing x_{1:k-1}, e_{1:k-1}) P(x_{1:k-1} \knowing e_{1:k-1}) \\
-            & = \max_{x_{1:k-1}} \alpha P(e_k \knowing X_k) P(X_k \knowing x_{k-1}) P(x_{1:k-1} \knowing e_{1:k-1}) \\
-            & = \alpha P(e_k \knowing X_k) \max_{x_{k-1}} P(X_k \knowing x_{k-1}) \max_{x_{1:k - 2}} P(x_{1:k-1} \knowing e_{1:k-1}) \\
-            & = \alpha P(e_k \knowing X_k) \max_{x_{k-1}} P(X_k \knowing x_{k-1}) \, m_{k-1}(x_{k-1})
+            m_k & = \max_{x_{1:k-1}} P(x_{1:k-1}, X_k | e_{1:k}) \\
+            & = \max_{x_{1:k-1}} \alpha P(x_{1:k-1}, X_k, e_k | e_{1:k-1}) \\
+            & = \max_{x_{1:k-1}} \alpha P(e_t | x_{1:k-1}, X_t, e_{1:k-1}) P(X_k | x_{1:k-1}, e_{1:k-1}) P(x_{1:k-1} | e_{1:k-1}) \\
+            & = \max_{x_{1:k-1}} \alpha P(e_k | X_k) P(X_k | x_{k-1}) P(x_{1:k-1} | e_{1:k-1}) \\
+            & = \alpha P(e_k | X_k) \max_{x_{k-1}} P(X_k | x_{k-1}) \max_{x_{1:k - 2}} P(x_{1:k-1} | e_{1:k-1}) \\
+            & = \alpha P(e_k | X_k) \max_{x_{k-1}} P(X_k | x_{k-1}) \, m_{k-1}(x_{k-1})
         \end{align*}
-        and $m_1 = P(X_1 \knowing e_1) = f_1$. Therefore, we can iteratively build the vectors $m_1$, $m_2$, \dots, $m_t$ to find the most likely last state
+        and $m_1 = P(X_1 | e_1) = f_1$. Therefore, we can iteratively build the vectors $m_1$, $m_2$, \dots, $m_t$ to find the most likely last state
         \begin{equation*}
             x_t^* = \arg \max_{x_t} m_t(x_t)
         \end{equation*}
         and, then, the most likely sequence with
         \begin{equation*}
-            x_k^* = \arg \max_{x_k} P(x^*_{k + 1} \knowing x_k) \, m_k(x_k) .
+            x_k^* = \arg \max_{x_k} P(x^*_{k + 1} | x_k) \, m_k(x_k) .
         \end{equation*}
     \end{solution}
 
@@ -287,7 +287,7 @@ The professor asks you to answer the following questions:
     \item Reformulate the dynamic Bayesian network as a hidden Markov model that has only a single observation variable. Give the complete probability tables for the model.
 
     \item For the sequence $e_{1:3}$ of observations \enquote{no red eyes, not sleeping in class}, \enquote{red eyes, not sleeping in class} and
-    \enquote{red eyes, sleeping in class}, calculate the distributions $P(EnoughSleep_t \knowing e_{1:t})$ and $P(EnoughSleep_t \knowing e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
+    \enquote{red eyes, sleeping in class}, calculate the distributions $P(EnoughSleep_t | e_{1:t})$ and $P(EnoughSleep_t | e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
 \end{enumerate}
 
 \newpage
@@ -298,9 +298,9 @@ The \enquote{Foire de Liège} has a new attraction called \enquote{Super Spring 
 
 You more or less remember your Newtonian mechanics class and model the movement of the ball as a series of transitions
 \begin{align*}
-    p_t & = p_{t-1} + \Delta t \, \dot{p}_{t - 1} + \frac{1}{2} {\Delta t}^2 \, \ddot{p}_{t - 1} \\
-    \dot{p}_t & = \dot{p}_{t - 1} + \Delta t \, \ddot{p}_{t - 1} \\
-    \ddot{p}_t & = \rho w_t - \kappa \, p_{t - 1} - \eta \, \dot{p}_{t - 1} \\
+    p_t & = p_{t-1} + \Delta t \, \dot{p}_{t-1} + \frac{1}{2} {\Delta t}^2 \, \ddot{p}_{t-1} \\
+    \dot{p}_t & = \dot{p}_{t-1} + \Delta t \, \ddot{p}_{t-1} \\
+    \ddot{p}_t & = \rho w_{t-1} - \kappa \, p_{t-1} - \eta \, \dot{p}_{t-1} \\
     w_t & \sim \N(\alpha w_{t-1}, \sigma_w^2)
 \end{align*}
 where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocity and acceleration of the ball at timestep $t$, $w_t$ is the wind at timestep $t$, $\Delta t$ is the time elapsed between $t-1$ and $t$, $\rho$ is the thrust coefficient of the wind, $\kappa$ is the stiffness of the spring, $\eta$ is the friction coefficient of the platform and $\alpha$ is the persistence of the wind. You estimate that the ball starts \qty{10 \pm 0.5}{\meter} at the left of the spring with a negligible speed \qty{0 \pm 0.1}{\meter\per\second} and acceleration \qty{0 \pm 0.1}{\meter\per\second\squared}. You assume that the wind has a stationary distribution. Finally, you assume that the human perception of acceleration follows an unbiased Gaussian distribution.
@@ -313,18 +313,18 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \begin{itemize}
             \item a Gaussian prior
             \begin{equation*}
-                p(x_0) = \N(x_0 \knowing \mu_0, \Sigma_0),
+                p(x_0) = \N(x_0 | \mu_0, \Sigma_0),
             \end{equation*}
             \item a linear Gaussian transition model
             \begin{equation*}
-                p(x_t \knowing x_{t - 1}) = \N(x_t \knowing F x_{t - 1} + u, \Sigma_x)
+                p(x_t | x_{t-1}) = \N(x_t | F x_{t-1} + u, \Sigma_x)
             \end{equation*}
             \item and a linear Gaussian sensor model
             \begin{equation*}
-                p(e_t \knowing x_t) = \N(e_t \knowing H x_t + v, \Sigma_e).
+                p(e_t | x_t) = \N(e_t | H x_t + v, \Sigma_e).
             \end{equation*}
         \end{itemize}
-        In a \href{https://en.wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
+        In a \href{https://wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
 
         In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined by
         \begin{equation*}
@@ -346,33 +346,33 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \end{equation*}
     \end{solution}
 
-    \item Express the distribution $p(x_t \knowing e_{1:t})$ with respect to the components defined previously.
+    \item Express the distribution $p(x_t | e_{1:t})$ with respect to the components defined previously.
 
     \begin{solution}
         This task corresponds exactly to filtering, \ie{} inferring the distribution
         \begin{align*}
-            p(x_t \knowing e_{1:t}) & = \alpha \, p(e_t \knowing x_t, e_{1:t-1}) \, p(x_t \knowing e_{1:t-1}) \\
-            & = \alpha \, p(e_t \knowing x_t) \int p(x_t, x_{t-1} \knowing e_{1:t-1}) \d{x_{t-1}} .
+            p(x_t | e_{1:t}) & = \alpha \, p(e_t | x_t, e_{1:t-1}) \, p(x_t | e_{1:t-1}) \\
+            & = \alpha \, p(e_t | x_t) \int p(x_t, x_{t-1} | e_{1:t-1}) \d{x_{t-1}} .
         \end{align*}
         In the latter expression, the integral corresponds to the marginalization of the joint distribution
         \begin{equation*}
-            p(x_t, x_{t-1} \knowing e_{1:t-1}) = p(x_t \knowing x_{t-1}) \, p(x_{t-1} \knowing e_{1:t-1}) .
+            p(x_t, x_{t-1} | e_{1:t-1}) = p(x_t | x_{t-1}) \, p(x_{t-1} | e_{1:t-1}) .
         \end{equation*}
-        Because the transition model $p(x_t \knowing x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} \knowing e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
+        Because the transition model $p(x_t | x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
         \begin{equation*}
-            p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg\knowing \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
+            p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
         \end{equation*}
         and
         \begin{equation*}
-            p(x_t \knowing e_{1:t-1}) = \N\rbk[\Big]{x_t \knowing \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
+            p(x_t | e_{1:t-1}) = \N\rbk[\Big]{x_t | \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
         \end{equation*}
-        Similarly, because the sensor model $p(e_t \knowing x_t)$ is linear Gaussian, we have the joint distribution
+        Similarly, because the sensor model $p(e_t | x_t)$ is linear Gaussian, we have the joint distribution
         \begin{equation*}
-            p\rbk*{ \mat{x_t \\ e_t} \Bigg\knowing \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg\knowing \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
+            p\rbk*{ \mat{x_t \\ e_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg| \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
         \end{equation*}
         Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
         \begin{equation*}
-            p(x_t \knowing e_{1:t}) = \N\rbk[\Big]{x_t \knowing \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
+            p(x_t | e_{1:t}) = \N\rbk[\Big]{x_t | \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
         \end{equation*}
         where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
     \end{solution}
@@ -383,31 +383,117 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \begin{figure}[H]
             \centering
             \begin{tikzpicture}[node distance = 2cm]
-                \node[state, align=center] (p) {$p_{t-1}$};
-                \node[state, align=center] (dp) [below of=p] {$\dot{p}_{t-1}$};
-                \node[state, align=center] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
-                \node[state, align=center] (w) [below of=ddp] {$w_{t-1}$};
+                \node[state] (p) {$p_{t-1}$};
+                \node[state] (dp) [below of=p] {$\dot{p}_{t-1}$};
+                \node[state] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
+                \node[state] (w) [below of=ddp] {$w_{t-1}$};
+                \node[state] (pb) [right of=p] {$p_t$};
+                \node[state] (dpb) [right of=dp] {$\dot{p}_t$};
+                \node[state] (ddpb) [right of=ddp] {$\ddot{p}_t$};
+                \node[state] (wb) [right of=w] {$w_t$};
+                \node[state] (e) [right of=ddpb] {$e_t$};
 
-                \node[state, align=center] (pb) [right of=p] {$p_t$};
-                \node[state, align=center] (dpb) [right of=dp] {$\dot{p}_t$};
-                \node[state, align=center] (ddpb) [right of=ddp] {$\ddot{p}_t$};
-                \node[state, align=center] (wb) [right of=w] {$w_t$};
-
-                \node[state, align=center] (e) [right of=ddpb] {$e_t$};
-
-                \path[-{>[scale=1.5]}] (p) edge (pb);
-                \path[-{>[scale=1.5]}] (p) edge (ddpb);
-                \path[-{>[scale=1.5]}] (dp) edge (pb);
-                \path[-{>[scale=1.5]}] (dp) edge (dpb);
-                \path[-{>[scale=1.5]}] (dp) edge (ddpb);
-                \path[-{>[scale=1.5]}] (ddp) edge (pb);
-                \path[-{>[scale=1.5]}] (ddp) edge (dpb);
-                \path[-{>[scale=1.5]}] (w) edge (ddpb);
-                \path[-{>[scale=1.5]}] (w) edge (wb);
-
-                \path[-{>[scale=1.5]}] (ddpb) edge (e);
+                \draw[arrow] (p) to (pb);
+                \draw[arrow] (p) to (ddpb);
+                \draw[arrow] (dp) to (pb);
+                \draw[arrow] (dp) to (dpb);
+                \draw[arrow] (dp) to (ddpb);
+                \draw[arrow] (ddp) to (pb);
+                \draw[arrow] (ddp) to (dpb);
+                \draw[arrow] (w) to (ddpb);
+                \draw[arrow] (w) to (wb);
+                \draw[arrow] (ddpb) to (e);
             \end{tikzpicture}
         \end{figure}
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
+\section{Robots (UC Berkeley CS188, Fall 2017)}
+
+In the near future, autonomous robots will live among us. Therefore, the robots need to know how to act appropriately in the presence of humans. In this question, we explore a simplified model of this interaction. We assume that we can observe the robot's actions at time $t$, $R_t$, and an evidence observation, $E_t$, directly caused by the (hidden) human state, $H_t$. Robot actions from the current time-step affect the human state in the next-time step, as illustrated in the Bayesian network given below.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm,
+        hidden/.style={state},
+        observed/.style={state, fill=gray!20},
+    ]
+        \node[circle] (H0) {$\dots$};
+        \node[hidden] (H1) [right of=H0] {$H_{t-1}$};
+        \node[hidden] (H2) [right of=H1]  {$H_{t}$};
+        \node[hidden] (H3) [right of=H2]  {$H_{t+1}$};
+        \node[circle] (H4) [right of=H3] {$\dots$};
+
+        \draw[arrow] (H0) to (H1);
+        \draw[arrow] (H1) to (H2);
+        \draw[arrow] (H2) to (H3);
+        \draw[arrow] (H3) to (H4);
+
+        \node[circle] (E0) [below of=H0] {$\dots$};
+        \node[observed] (E1) [right of=E0] {$E_{t-1}$};
+        \node[observed] (E2) [right of=E1] {$E_{t}$};
+        \node[observed] (E3) [right of=E2] {$E_{t+1}$};
+        \node[circle] (E4) [right of=E3] {$\dots$};
+
+        \draw[arrow] (H1) to (E1);
+        \draw[arrow] (H2) to (E2);
+        \draw[arrow] (H3) to (E3);
+
+        \node[circle] (R0) [below of=E0] {$\dots$};
+        \node[observed] (R1) [right of=R0] {$R_{t-1}$};
+        \node[observed] (R2) [right of=R1] {$R_{t}$};
+        \node[observed] (R3) [right of=R2] {$R_{t+1}$};
+        \node[circle] (R4) [right of=R3] {$\dots$};
+
+        \draw[arrow] (E1) to (R1);
+        \draw[arrow] (E2) to (R2);
+        \draw[arrow] (E3) to (R3);
+
+        \draw[arrow] (R0) to (H1);
+        \draw[arrow] (R1) to (H2);
+        \draw[arrow] (R2) to (H3);
+        \draw[arrow] (R3) to (H4);
+    \end{tikzpicture}
+\end{figure}
+
+Assuming discrete random variables and given the probability tables $P(H_0)$, $P(E_t | H_t)$, $P(R_t | E_t)$ and $P(H_{t + 1} | H_t, R_t)$, your goal is to derive a procedure to maintain a belief $P(H_t | e_{1:t}, r_{1:t})$ about the state of the human at time $t$.
+
+\begin{enumerate}
+    \item Derive an update equation for incorporating a pair of observations $(e_t, r_t)$ to a given belief state $P(H_t)$.
+
+    \begin{solution}
+        \begin{align*}
+            P(H_t | e_t, r_t) & = \frac{P(e_t, r_t | H_t) P(H_t)}{P(e_t, r_t)} \\
+            & = \alpha P(r_t | e_t) P(e_t | H_t) P(H_t) \\
+            & = \alpha P(e_t | H_t) P(H_t)
+        \end{align*}
+    \end{solution}
+
+    \item Derive an update equation for predicting the future state $H_{t+1}$ of the human at time $t+1$ given a belief state $P(H_t | e_{1:t}, r_{1:t})$.
+
+    \begin{solution}
+        \begin{align*}
+            P(H_{t+1} | e_{1:t}, r_{1:t}) & = \sum_{h_t} P(H_{t+1}, h_t | e_{1:t}, r_{1:t}) \\
+            & = \sum_{h_t} P(H_{t+1} | h_t, r_t) P(h_t | e_{1:t}, r_{1:t})
+        \end{align*}
+    \end{solution}
+
+    \item Combine both equations to derive a recursive update equation of the belief state $P(H_t | e_{1:t}, r_{1:t})$, as observations are collected and time passes.
+
+    \begin{solution}
+        \begin{align*}
+            P(H_{t+1} | e_{1:t+1}, r_{1:t+1}) & = \alpha P(e_{t+1} | H_{t+1}) P(H_{t+1} | e_{1:t}, r_{1:t}) \\
+            & = \alpha P(e_{t+1} | H_{t+1}) \sum_{h_t} P(H_{t+1} | h_t, r_t) P(h_t | e_{1:t}, r_{1:t})
+        \end{align*}
+    \end{solution}
+
+    \item Let us now assume that all variables are continuous. Discuss how you would compute or approximate the belief state on a computer.
+
+    \begin{solution}
+        If all variables are continuous, unless the prior, transition model and sensor model are strictly constrained (e.g. Gaussian), it is not possible to express and update the belief states in closed form. Instead, we can use approximate filtering algorithms, such as extended Kalman filters or particle filters.
     \end{solution}
 \end{enumerate}
 
@@ -420,7 +506,7 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
 
     \qrcode{http://ai.berkeley.edu/sections/section_6.pdf}
 
-    \item 68–95–99.7 rule
+    \item 68-95-99.7 rule
 
     \qrcode{https://en.wikipedia.org/wiki/68-95-99.7_rule}
 

@@ -231,6 +231,150 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
 
 \newpage
 
+\section{Leapfrog (AIMA, Ex 5.8)}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \draw[step=1cm, black, thin] (0, 0) grid (4, 1);
+        \node at (0.5, -0.5) {1};
+        \node at (1.5, -0.5) {2};
+        \node at (2.5, -0.5) {3};
+        \node at (3.5, -0.5) {4};
+        \node[draw, circle] at (0.5, 0.5) {$A$};
+        \node[draw, circle] at (3.5, 0.5) {$B$};
+    \end{tikzpicture}
+\end{figure}
+
+Consider the following two-player turn-taking game which initial configuration is shown in the figure above. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
+
+\begin{enumerate}
+    \item Define the search problem associated with this game.
+
+    \begin{solution}
+        Let a state of the game be a tuple $s = (i, j, p) \in \cbk{1, 2, 3, 4}^2 \times \cbk{0, 1}$, where $i$ and $j$ are the respective positions of $A$ and $B$ and $p$ is $0$ when it is $A$'s turn and $1$ when it is $B$'s.
+        \begin{description}
+            \item[Initial state] $s_0 = (1, 4, 0)$.
+            \item[Player function] $player(s = (i, j, p)) = p$.
+            \item[Actions] $actions(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
+            \item[Transition model] For an available action $a \in actions(s)$,
+            \begin{equation*}
+                result(s = (i, j, p), a) = \begin{cases}
+                    (next(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{right} \\
+                    (prev(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{left} \\
+                    (i, next(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{right} \\
+                    (i, prev(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{left}
+                \end{cases}
+            \end{equation*}
+            where
+            \begin{align*}
+                next(x, y) & = \begin{cases}
+                    y + 1 & \text{if } x + 1 = y \\
+                    x + 1 & \text{otherwise}
+                \end{cases} \\
+                prev(x, y) & = \begin{cases}
+                    y - 1 & \text{if } x - 1 = y \\
+                    x - 1 & \text{otherwise}
+                \end{cases} .
+            \end{align*}
+            \item[Terminal test] $terminal(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
+            \item[Utility function]
+            \begin{equation*}
+                utility(s = (i, j, p)) = \begin{cases}
+                    +1 & \text{if } i = 4 \\
+                    -1 & \text{if } j = 1
+                \end{cases} .
+            \end{equation*}
+        \end{description}
+    \end{solution}
+
+    \item Draw the complete game tree, using the following conventions:
+    \begin{itemize}
+        \item Put each terminal state in a square box and annotate it with its game value.
+        \item Put loop states (states that already appear on the path to the root) in double square boxes. Since their value is unclear, annotate them with a \enquote{?} symbol.
+    \end{itemize}
+
+    \begin{solution}
+        \begin{figure}[H]
+            \centering
+            \scalebox{0.75}{\begin{tikzpicture}[node distance = 2.5cm]
+                \node[state] (N0) {$(1, 4, 0)$};
+                \node[state] (N1) [right of=N0] {$(2, 4, 1)$};
+                \node[state] (N2) [right of=N1] {$(2, 3, 0)$};
+                \node[state, square] (N3) [below of=N2] {$(4, 3, 1)$\\$+1$};
+                \node[state] (N4) [right of=N2] {$(1, 3, 1)$};
+                \node[state, square, double] (N5) [below of=N4] {$(1, 4, 0)$\\$?$};
+                \node[state] (N6) [right of=N4] {$(1, 2, 0)$};
+                \node[state] (N7) [right of=N6] {$(3, 2, 1)$};
+                \node[state, square] (N8) [below of=N7] {$(3, 1, 0)$\\$-1$};
+                \node[state] (N9) [right of=N7] {$(3, 4, 0)$};
+                \node[state, square, double] (N10) [below of=N9] {$(2, 4, 1)$\\$?$};
+
+                \draw[arrow] (N0) to (N1);
+                \draw[arrow] (N1) to (N2);
+                \draw[arrow] (N2) to (N3);
+                \draw[arrow] (N2) to (N4);
+                \draw[arrow] (N4) to (N5);
+                \draw[arrow] (N4) to (N6);
+                \draw[arrow] (N6) to (N7);
+                \draw[arrow] (N7) to (N8);
+                \draw[arrow] (N7) to (N9);
+                \draw[arrow] (N9) to (N10);
+            \end{tikzpicture}}
+        \end{figure}
+    \end{solution}
+
+    \item Explain why the standard minimax algorithm would fail on this game.
+
+    \begin{solution}
+        The Minimax algorithm is designed to work on finite acyclic game trees. In our case, the tree is not acyclic, which leads the standard Minimax algorithm into infinite loops.
+    \end{solution}
+
+    \item Annotate each node with its backed-up minimax value. Explain how you handled the \enquote{?} values and why.
+
+    \begin{solution}
+        We handle the \enquote{?} values by assuming that a player only chooses to go in loop states if no winning action is available. That is, $A$ (resp. $B$) prefers $+1$ (resp. $-1$) to \enquote{?}, but \enquote{?} to $-1$ (resp. $+1$).
+
+        \begin{figure}[H]
+            \centering
+            \scalebox{0.75}{\begin{tikzpicture}[node distance=2.5cm]
+                \node[state] (N0) {$(1, 4, 0)$\\$+1$};
+                \node[state] (N1) [right of=N0] {$(2, 4, 1)$\\$+1$};
+                \node[state] (N2) [right of=N1] {$(2, 3, 0)$\\$+1$};
+                \node[state, square] (N3) [below of=N2] {$(4, 3, 1)$\\$+1$};
+                \node[state] (N4) [right of=N2] {$(1, 3, 1)$\\$-1$};
+                \node[state, square, double] (N5) [below of=N4] {$(1, 4, 0)$\\$?$};
+                \node[state] (N6) [right of=N4] {$(1, 2, 0)$\\$-1$};
+                \node[state] (N7) [right of=N6] {$(3, 2, 1)$\\$-1$};
+                \node[state, square] (N8) [below of=N7] {$(3, 1, 0)$\\$-1$};
+                \node[state] (N9) [right of=N7] {$(3, 4, 0)$\\$?$};
+                \node[state, square, double] (N10) [below of=N9] {$(2, 4, 1)$\\$?$};
+
+                \draw[arrow] (N0) to (N1);
+                \draw[arrow] (N1) to (N2);
+                \draw[arrow] (N2) to (N3);
+                \draw[arrow] (N2) to (N4);
+                \draw[arrow] (N4) to (N5);
+                \draw[arrow] (N4) to (N6);
+                \draw[arrow] (N6) to (N7);
+                \draw[arrow] (N7) to (N8);
+                \draw[arrow] (N7) to (N9);
+                \draw[arrow] (N9) to (N10);
+            \end{tikzpicture}}
+        \end{figure}
+
+        Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than Minimax must be used.
+    \end{solution}
+
+    \item This 4-cell game can be generalized to $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
+
+    \begin{solution}
+        We already know that $A$ wins if $n = 4$ and it is quick to verify that $B$ wins if $n = 3$. For $n \geq 5$, we notice that the three first states are $(1, n, 0)$, $(2, n, 1)$ and $(2, n - 1, 0)$. For optimal players, the state $(2, n - 1, 0)$ is equivalent (in the sense that the winner is the same) to the initial state of the game with $n - 2$ cells. Likewise, the outcome for $n$ cells is the same as for $n + 2$ cells and, by induction, for $n + 2k$ ($k \geq 0$) cells. Therefore, we have that $A$ wins games with $4 + 2k$ cells (even) and loses those with $3 + 2k$ cells (odd).
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
 \section*{Supplementary materials}
 
 \begin{itemize}

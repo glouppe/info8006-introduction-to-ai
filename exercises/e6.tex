@@ -31,7 +31,7 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
     \item Formalize Micro-Blackjack as an MDP.
 
     \begin{solution}
-        A Markov decision process (MDP) is a tuple $(S, A, P, R)$, where $S$ is a set of reachable states, $A(s)$ is a set of available actions, $P(s' \knowing s, a)$ is a (stationary) transition model and $R(s)$ is a reward function.
+        A Markov decision process (MDP) is a tuple $(S, A, P, R)$, where $S$ is a set of reachable states, $A(s)$ is a set of available actions, $P(s' | s, a)$ is a (stationary) transition model and $R(s)$ is a reward function.
 
         In our case,
         \begin{align*}
@@ -41,7 +41,7 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                 \cbk{c} & \text{if } s_2 = 0 \\
                 \cbk{} & \text{otherwise}
             \end{cases} \\
-            P(s' = (s_1', s_2') \knowing s = (s_1, 0), a) & = \begin{cases}
+            P(s' = (s_1', s_2') | s = (s_1, 0), a) & = \begin{cases}
                 1 & \text{if } s_1' = s_1 \text{ and } s_2' = 1 \text{ and } a = c \\
                 \frac{1}{3} & \text{if } s_1' - s_1 \in \cbk{2, 3, 4} \text{ and } s_2' = 0 \text{ and } a = d \\
                 0 & \text{otherwise}
@@ -64,20 +64,20 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
         \begin{align*}
             V^\pi(s_0) & = \E \sbk*{\sum_{t = 0}^\infty \gamma^t R(s_t)} \\
             & = \max_\pi R(s_0) + \gamma \, \E \sbk*{V^\pi(s_1)} \\
-            & = R(s_0) + \gamma \sum_{s_1} P(s_1 \knowing s_0, \pi(s_0)) V^\pi(s_1),
+            & = R(s_0) + \gamma \sum_{s_1} P(s_1 | s_0, \pi(s_0)) V^\pi(s_1),
         \end{align*}
-        where the states $s_{t+1} \sim P(s \knowing s_t, \pi(s_t))$. Therefore, we define the value $V(s)$ of a state $s$ is its maximum expected utility, \ie{}
+        where the states $s_{t+1} \sim P(s | s_t, \pi(s_t))$. Therefore, we define the value $V(s)$ of a state $s$ is its maximum expected utility, \ie{}
         \begin{align*}
             V(s) & = V^{\pi^*}(s) \\
             & = \max_\pi V^\pi(s) \\
-            & = \max_\pi R(s) + \gamma \sum_{s'} P(s' \knowing s, \pi(s)) V^\pi(s') \\
-            & = R(s) + \gamma \max_\pi \sum_{s'} P(s' \knowing s, \pi(s)) V^\pi(s') \\
-            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) \max_\pi V^\pi(s') \\
-            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V(s') ,
+            & = \max_\pi R(s) + \gamma \sum_{s'} P(s' | s, \pi(s)) V^\pi(s') \\
+            & = R(s) + \gamma \max_\pi \sum_{s'} P(s' | s, \pi(s)) V^\pi(s') \\
+            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) \max_\pi V^\pi(s') \\
+            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V(s') ,
         \end{align*}
         where $\pi^*$ is the optimal policy
         \begin{align*}
-            \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V(s') .
+            \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V(s') .
         \end{align*}
 
         To find this optimal policy, we can apply either the \emph{value iteration} or \emph{policy iteration} algorithms.
@@ -85,7 +85,7 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
         \begin{itemize}
             \item In value iteration, we estimate the value $V(s)$ by value estimates $V_i(s)$ and update them with the Bellman operator
             \begin{equation*}
-                V_{i+1}(s) = (B V_i)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V_{i}(s')
+                V_{i+1}(s) = (B V_i)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V_{i}(s')
             \end{equation*}
             until convergence ($V_{i + 1} = V_i$). For our task, it should be noted that all states $s = (s_1, 1)$ are terminal, meaning that they don't allow to take any actions. Consequently, the value of these states is exactly their reward, \ie{}
             \begin{equation*}
@@ -113,19 +113,19 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
 
             \item In policy iteration, we estimate the optimal policy $\pi^*$ by policy estimates $\pi_i$ and update them with
             \begin{equation*}
-                \pi_{i+1}(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V^{\pi_i}(s'),
+                \pi_{i+1}(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V^{\pi_i}(s'),
             \end{equation*}
             where $V^{\pi_i}$ is the unique solution of the simplified Bellman equation
             \begin{equation*}
-                V^{\pi_i}(s) = R(s) + \gamma \sum_{s'} P(s' \knowing s, \pi_i(s)) V^{\pi_i}(s') .
+                V^{\pi_i}(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi_i(s)) V^{\pi_i}(s') .
             \end{equation*}
             However, finding $V^{\pi_i}$ exactly requires $\mathcal{O}(\abs{S}^3)$ operations, which is usually intractable. Instead in \emph{modified} policy iteration, we keep value estimates $V_j$ and update them with the simplified Bellman operator
             \begin{equation*}
-                V_{j + 1}(s) = R(s) + \gamma \sum_{s'} P(s' \knowing s, \pi_i) V_j(s') .
+                V_{j + 1}(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi_i) V_j(s') .
             \end{equation*}
             After sufficient convergence ($V_{j+1} \approx V_{j}$), we update the policy estimate with respect to the last value estimate
             \begin{equation*}
-                \pi_j(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V_j(s')
+                \pi_j(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V_j(s')
             \end{equation*}
             and then start updating the value estimates again. The algorithm stops when the policy estimates have converged. Let $V_0(s) = R(s)$ be our first value estimate.
 
@@ -167,17 +167,17 @@ To earn some money you have decided to do babysitting. Tonight you will take car
         \begin{figure}[h]
             \centering
             \begin{tikzpicture}[node distance = 2cm]
-                \node[state, align=center] (H) {$H_t$};
-                \node[state, align=center] (R) [below right of=H] {$R_t$};
-                \node[state, align=center] (F) [below right of=R] {$F_t$};
-                \node[state, align=center] (C) [below left of=R] {$C_t$};
-                \node[state, align=center] (H1) [above right of=R] {$H_{t+1}$};
+                \node[state] (H) {$H_t$};
+                \node[state] (R) [below right of=H] {$R_t$};
+                \node[state] (F) [below right of=R] {$F_t$};
+                \node[state] (C) [below left of=R] {$C_t$};
+                \node[state] (H1) [above right of=R] {$H_{t+1}$};
 
-                \path[-{>[scale=1.5]}] (H) edge (C);
-                \path[-{>[scale=1.5]}] (H) edge (R);
-                \path[-{>[scale=1.5]}] (F) edge (R);
-                \path[-{>[scale=1.5]}] (H) edge (H1);
-                \path[-{>[scale=1.5]}] (F) edge (H1);
+                \draw[arrow] (H) to (C);
+                \draw[arrow] (H) to (R);
+                \draw[arrow] (F) to (R);
+                \draw[arrow] (H) to (H1);
+                \draw[arrow] (F) to (H1);
             \end{tikzpicture}
         \end{figure}
 
@@ -185,7 +185,7 @@ To earn some money you have decided to do babysitting. Tonight you will take car
             \centering
             \begin{tabular}{cc|cc|c}
                 \toprule
-                $H_t$ & $F_t$ & $P(C_t = 1 \knowing H_t)$ & $P(H_{t+1} = 1 \knowing H_t, F_t)$ & $R_t(H_t, F_t)$ \\
+                $H_t$ & $F_t$ & $P(C_t = 1 | H_t)$ & $P(H_{t+1} = 1 | H_t, F_t)$ & $R_t(H_t, F_t)$ \\
                 \midrule
                 0 & 0 & 0.1 & 0.2 & 0 \\
                 1 & 0 & 0.8 & 1 & -10 \\
@@ -201,21 +201,21 @@ To earn some money you have decided to do babysitting. Tonight you will take car
     \item Give the sequence of belief states if you assume the sequence of observation-action pairs $(0, 0)$, $(1, 1)$, $(0, 0)$, $(0, 0)$.
 
     \begin{solution}
-        In this problem, the environment is only \emph{partially} observable (POMDP). You, the agent, does not know the current state $s = H_t$. Instead, you collect an observation $e = C_t$ through a sensor model $P(e \knowing s)$ which allows to reason about the unknown state $s$ and to take an informed action $a = F_t$.
+        In this problem, the environment is only \emph{partially} observable (POMDP). You, the agent, does not know the current state $s = H_t$. Instead, you collect an observation $e = C_t$ through a sensor model $P(e | s)$ which allows to reason about the unknown state $s$ and to take an informed action $a = F_t$.
 
         If $b$ is the current belief state (a distribution over the state space $S$) and the agent does an action $a$ and observes $e'$, then
         \begin{align*}
-            b'(s') & = \sum_s P(s' \knowing s, a, e') b(s) \\
-            & = \alpha P(e' \knowing s') \sum_s P(s' \knowing s, a) b(s)
+            b'(s') & = \sum_s P(s' | s, a, e') b(s) \\
+            & = \alpha P(e' | s') \sum_s P(s' | s, a) b(s)
         \end{align*}
         is the next belief state. Within the formulation of our problem, this gives
         \begin{align*}
-            b_{t+1}(h_{t+1}) & = \alpha P(c_{t+1} \knowing h_{t+1}) \sum_{h_t} P(h_{t+1} \knowing h_t, f_t) b_t(h_t),
+            b_{t+1}(h_{t+1}) & = \alpha P(c_{t+1} | h_{t+1}) \sum_{h_t} P(h_{t+1} | h_t, f_t) b_t(h_t),
         \end{align*}
         with the initial belief
         \begin{align*}
-            b_0 & = P(H_0 \knowing c_0) \\
-            & = \alpha P(c_0 \knowing H_0) P(H_0)
+            b_0 & = P(H_0 | c_0) \\
+            & = \alpha P(c_0 | H_0) P(H_0)
         \end{align*}
         Then, knowing from the statement that $c_{0:3} = f_{0:3} = (0, 1, 0, 0)$, we have
         \begin{align*}
@@ -304,7 +304,7 @@ $M$, indicating whether the student has mastered the material of the course, and
     \centering
     \begin{tabular}{cc|cc}
         \toprule
-        $B$ & $M$ & $P(M \knowing B)$ & $P(F = 1 \knowing B, M)$ \\
+        $B$ & $M$ & $P(M | B)$ & $P(F = 1 | B, M)$ \\
         \midrule
         0 & 0 & 0.3 & 0.7 \\
         1 & 0 & 0.1 & 0.5 \\
@@ -328,7 +328,7 @@ $M$, indicating whether the student has mastered the material of the course, and
 
 The slides of the course states that the Bellman operator
 \begin{equation*}
-    (B V)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \knowing s, a) V(s')
+    (B V)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V(s')
 \end{equation*}
 is a contraction.
 
@@ -382,8 +382,7 @@ the policy obtained in each case. Explain intuitively why the value of $r$ leads
 
 \section{(AIMA, Ex 17.9)} \label{sec:17.9}
 
-Consider the $101 \times 3$ world shown in \ref{fig:grid-mdp}. In the start state the agent has a choice of two deterministic actions, \texttt{up} or \texttt{down}, but in the other states the agent has one deterministic action, \texttt{right}. Assuming a discounted
-reward function, compute the utility of each action as a function of $\gamma$. For what values of the discount factor $\gamma$ should the agent choose \texttt{up} and for which \texttt{down}?
+Consider the $101 \times 3$ world shown in \ref{fig:grid-mdp}. In the start state the agent has a choice of two deterministic actions, \texttt{up} or \texttt{down}, but in the other states the agent has one deterministic action, \texttt{right}. Assuming a discounted reward function, compute the utility of each action as a function of $\gamma$. For what values of the discount factor $\gamma$ should the agent choose \texttt{up} and for which \texttt{down}?
 
 \blindfootnote{This simple example actually reflects many real-world situations in which one must weigh the value of an immediate action versus the potential long-term consequences, such as choosing to dump pollutants into a lake.}
 
@@ -391,8 +390,7 @@ reward function, compute the utility of each action as a function of $\gamma$. F
 
 \section{(AIMA, Ex 17.10)}
 
-Consider an undiscounted MDP having three states, $(1, 2, 3)$, with rewards $-1$, $-2$, $0$, respectively. State 3 is a terminal state. In
-states 1 and 2 there are two possible actions: $a$ and $b$. The transition model is as follows:
+Consider an undiscounted MDP having three states, $(1, 2, 3)$, with rewards $-1$, $-2$, $0$, respectively. State 3 is a terminal state. In states 1 and 2 there are two possible actions: $a$ and $b$. The transition model is as follows:
 
 \begin{itemize}
     \item In state 1, action $a$ moves the agent to state 2 with probability $0.8$ and makes the agent stay put with probability $0.2$.
