@@ -55,14 +55,14 @@ Because the pictures are black and white, and were taken from various angles, Pa
         \begin{figure}[H]
             \centering
             \begin{tikzpicture}[node distance = 2cm]
-                \node[state, align=center] (S) {$S$};
-                \node[state, align=center] (B) [below left of=S] {$B$};
-                \node[state, align=center] (H) [below of=S] {$H$};
-                \node[state, align=center] (M) [below right of=S] {$M$};
+                \node[state] (S) {$S$};
+                \node[state] (B) [below left of=S] {$B$};
+                \node[state] (H) [below of=S] {$H$};
+                \node[state] (M) [below right of=S] {$M$};
 
-                \path[-{>[scale=1.5]}] (S) edge (B);
-                \path[-{>[scale=1.5]}] (S) edge (H);
-                \path[-{>[scale=1.5]}] (S) edge (M);
+                \draw[arrow] (S) to (B);
+                \draw[arrow] (S) to (H);
+                \draw[arrow] (S) to (M);
             \end{tikzpicture}
         \end{figure}
     \end{solution}
@@ -72,26 +72,25 @@ Because the pictures are black and white, and were taken from various angles, Pa
     \begin{solution}
         Given $(b, h, m)$, the most likely subject is given by the \emph{maximum a posteriori} (MAP) estimation
         \begin{align*}
-            s_{\text{MAP}} & = \arg\max_{s} P(s \knowing b, h, m) \\
-            & = \arg\max_{s} P(b, h, m \knowing s) P(s) .
+            s_{\text{MAP}} & = \arg\max_{s} P(s | b, h, m) \\
+            & = \arg\max_{s} P(b, h, m | s) P(s) .
         \end{align*}
-        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $P(B, H, M \knowing S) = P(B \knowing S) P(H \knowing S) P(M \knowing S)$. Then, the formula becomes
+        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $P(B, H, M | S) = P(B | S) P(H | S) P(M | S)$. Then, the formula becomes
         \begin{align*}
-            s_{\text{MAP}} & = \arg\max_{s} P(b \knowing s) P(h \knowing s) P(m \knowing s) P(s) .
+            s_{\text{MAP}} & = \arg\max_{s} P(b | s) P(h | s) P(m | s) P(s) .
         \end{align*}
     \end{solution}
 
     \item What are the parameters of this model? Give estimates of these parameters according to the pictures provided by Pacwoman.
 
     \begin{solution}
-        The parameters of the model are the elements of
-        the prior vector $P(S)$ and the (conditional) probability matrices $P(B \knowing S)$, $P(H \knowing S)$ and $P(M \knowing S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
+        The parameters of the model are the elements of the prior vector $P(S)$ and the (conditional) probability matrices $P(B | S)$, $P(H | S)$ and $P(M | S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
 
         \begin{table}[h]
             \centering
             \begin{tabular}{c|cccc}
                 \toprule
-                $S$ & $P(S)$ & $P(B = 1 \knowing S)$ & $P(H = 1 \knowing S)$ & $P(M = 1 \knowing S)$ \\
+                $S$ & $P(S)$ & $P(B = 1 | S)$ & $P(H = 1 | S)$ & $P(M = 1 | S)$ \\
                 \midrule
                 0 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{2}{3}$ & $\frac{0}{3}$ \\
                 1 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{1}{3}$ & $\frac{2}{3}$ \\
@@ -105,8 +104,8 @@ Because the pictures are black and white, and were taken from various angles, Pa
     \begin{solution}
         Pacbaby will recognize his father if $s_{\text{MAP}} = 1$ for $(b, h, m) = (1, 0, 0)$. Using the parameters estimated previously, we have
         \begin{align*}
-            P(b \knowing 0) P(h \knowing 0) P(m \knowing 0) P(0) & = \frac{2}{3} \times \rbk*{1 - \frac{2}{3}} \times \rbk*{1 - \frac{0}{3}} \times \frac{3}{6} \approx \num{0.111} \\
-            P(b \knowing 1) P(h \knowing 1) P(m \knowing 1) P(1) & = \frac{2}{3} \times \rbk*{1 - \frac{1}{3}} \times \rbk*{1 - \frac{2}{3}} \times \frac{3}{6} \approx \num{0.074} .
+            P(b | 0) P(h | 0) P(m | 0) P(0) & = \frac{2}{3} \times \rbk*{1 - \frac{2}{3}} \times \rbk*{1 - \frac{0}{3}} \times \frac{3}{6} \approx \num{0.111} \\
+            P(b | 1) P(h | 1) P(m | 1) P(1) & = \frac{2}{3} \times \rbk*{1 - \frac{1}{3}} \times \rbk*{1 - \frac{2}{3}} \times \frac{3}{6} \approx \num{0.074} .
         \end{align*}
         Therefore, $s_{\text{MAP}} = 0$, meaning that Pacbaby will \emph{not} recognize his father.
     \end{solution}
@@ -182,16 +181,16 @@ Because the pictures are black and white, and were taken from various angles, Pa
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}[node distance = 2cm]
-        \node[state, align=center] (X1) {$x_1$};
-        \node[state, align=center] (X2) [right of=X1] {$x_2$};
-        \node[state, align=center] (X3) [right of=X2] {$x_3$};
-        \node[state, align=center] (Y) [below of=X2] {$y$};
+        \node[state] (X1) {$x_1$};
+        \node[state] (X2) [right of=X1] {$x_2$};
+        \node[state] (X3) [right of=X2] {$x_3$};
+        \node[state] (Y) [below of=X2] {$y$};
 
-        \path[-{>[scale=1.5]}] (X1) edge (X2);
-        \path[-{>[scale=1.5]}] (X2) edge (X3);
-        \path[-{>[scale=1.5]}] (X1) edge (Y);
-        \path[-{>[scale=1.5]}] (X2) edge (Y);
-        \path[-{>[scale=1.5]}] (X3) edge (Y);
+        \draw[arrow] (X1) to (X2);
+        \draw[arrow] (X2) to (X3);
+        \draw[arrow] (X1) to (Y);
+        \draw[arrow] (X2) to (Y);
+        \draw[arrow] (X3) to (Y);
     \end{tikzpicture}
 \end{figure}
 
@@ -203,33 +202,33 @@ The hereabove Bayesian network represents how the final grade of a class is comp
     \begin{solution}
         Our task is to find the expectation
         \begin{equation*}
-            \underset{p(y \knowing x_1, x_2)}{\E} \sbk{y} = \int y \, p(y \knowing x_1, x_2) \d{y} .
+            \underset{p(y | x_1, x_2)}{\E} \sbk{y} = \int y \, p(y | x_1, x_2) \d{y} .
         \end{equation*}
         We know that
         \begin{equation*}
-            p(y \knowing x_1, x_2) = \int p(y \knowing x_1, x_2, x_3) \, p(x_3 \knowing x_1, x_2) \d{x_3} ,
+            p(y | x_1, x_2) = \int p(y | x_1, x_2, x_3) \, p(x_3 | x_1, x_2) \d{x_3} ,
         \end{equation*}
-        where $p(y \knowing x_1, x_2, x_3)$ and $p(x_3 \knowing x_1, x_2)$ are linear Gaussian distributions given in the statement. Therefore, we have
+        where $p(y | x_1, x_2, x_3)$ and $p(x_3 | x_1, x_2)$ are linear Gaussian distributions given in the statement. Therefore, we have
         \begin{equation*}
-            p(y \knowing x_1, x_2) = \N\rbk*{a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
+            p(y | x_1, x_2) = \N\rbk*{a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
         \end{equation*}
         and, by definition of a Gaussian distribution,
         \begin{equation*}
-            \underset{p(y \knowing x_1, x_2)}{\E} \sbk{y} = a_3 x_1 + (a_4 + a_5 a_2) x_2 + a_5 \mu_3 + \mu_y.
+            \underset{p(y | x_1, x_2)}{\E} \sbk{y} = a_3 x_1 + (a_4 + a_5 a_2) x_2 + a_5 \mu_3 + \mu_y.
         \end{equation*}
     \end{solution}
 
-    \item \label{itm:mle} Suppose now that the model's parameters are unknown. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, determine the model that best describes $d$.
+    \item Suppose now that the model's parameters are unknown. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, determine the model that best describes $d$.
 
     \begin{solution}
         We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
         \begin{align*}
-            h_{\text{MLE}} & = \arg \max_w p(d \knowing h) \\
-            & = \arg \max_h \prod_i p(x_i, y_i \knowing h) \\
-            & = \arg \max_h \log \prod_i p(x_i, y_i \knowing h) \\ \displaybreak
-            & = \arg \max_h \sum_i \log p(x_i, y_i \knowing h) \\
-            & = \arg \max_h \sum_i \log p(y_i \knowing h, x_i) + \log p(x_i) \\
-            & = \arg \max_h \sum_i \log p(y_i \knowing h, x_i) \\
+            h_{\text{MLE}} & = \arg \max_w p(d | h) \\
+            & = \arg \max_h \prod_i p(x_i, y_i | h) \\
+            & = \arg \max_h \log \prod_i p(x_i, y_i | h) \\ \displaybreak
+            & = \arg \max_h \sum_i \log p(x_i, y_i | h) \\
+            & = \arg \max_h \sum_i \log p(y_i | h, x_i) + \log p(x_i) \\
+            & = \arg \max_h \sum_i \log p(y_i | h, x_i) \\
             & = \arg \max_h \sum_i \log \sbk*{\frac{1}{\sqrt{2 \pi \sigma^2}} \exp\rbk*{- \frac{(w^T x_i - y_i)^2}{2 \sigma^2}}} \\
             & = \arg \max_h \sum_i - \frac{1}{2} \log (2 \pi \sigma^2) - \frac{(w^T x_i - y_i)^2}{2 \sigma^2} \\
             & = \arg \min_h \log \sigma^2 + \frac{1}{\sigma^2} \frac{1}{N} \sum_i (w^T x_i - y_i)^2 ,
@@ -267,8 +266,7 @@ The hereabove Bayesian network represents how the final grade of a class is comp
 
 \section{Heteroscedastic linear regression}
 
-What becomes the expression of the weight vector $w$ in the solution of question 2.2 if the noise is different for each sample? In
-particular, $y_i \sim N(w^T x, \sigma_i^2)$ and we know the values $\sigma_i$.
+What becomes the expression of the weight vector $w$ in the solution of question 2.2 if the noise is different for each sample? In particular, $y_i \sim N(w^T x, \sigma_i^2)$ and we know the values $\sigma_i$.
 
 \newpage
 
@@ -301,30 +299,31 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
 \section{Escape game (January 2022)}
 
-A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(i, j)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\mathcal{N}(0, 1)$.
+A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(x, y)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\N(0, 1)$.
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{cc}
+    \begin{tabular}{c|cc}
         \toprule
-        Starting room & Measured best time \\
+        $i$ & Starting room & Measured best time \\
         \midrule
-        $(4, 5)$ & $2.0$ \\
-        $(5, 3)$ & $3.5$ \\
-        $(3, 3)$ & $4.5$ \\
-        $(4, 1)$ & $7.0$ \\
-        $(1, 2)$ & $8.5$ \\
+        1 & $(4, 5)$ & $2.0$ \\
+        2 & $(5, 3)$ & $3.5$ \\
+        3 & $(3, 3)$ & $4.5$ \\
+        4 & $(4, 1)$ & $7.0$ \\
+        5 & $(1, 2)$ & $8.5$ \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-From the leaderboard, you wish to learn a heuristic $h(i, j)$ approximating the best time to get to the exit from room $(i, j)$. You decide to use a small neural network as approximator, described by the following parametric function,
+From the leaderboard, you wish to learn a heuristic approximating the best time to get to the exit, starting from room $(x, y)$. You decide to use a small neural network as approximator, described by the following parametric function,
 \begin{align*}
-    h(i, j) & = \text{ReLU}(i w_1 + j w_2 + w_3) + \text{ReLU}(i w_4 + j w_5 + w_6) \\
-    \text{ReLU}(x) & = \max(x, 0).
+    h(x, y; \phi) & = \text{ReLU}(x w_1 + y w_2 + w_3) + \text{ReLU}(x w_4 + y w_5 + w_6) \\
+    \text{ReLU}(x) & = \max(x, 0) ,
 \end{align*}
+where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights of the neural network.
 
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}
     \item Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
 
     \begin{table}[h]
@@ -333,16 +332,83 @@ From the leaderboard, you wish to learn a heuristic $h(i, j)$ approximating the 
             \toprule
             Set & $w_1$ & $w_2$ & $w_3$ & $w_4$ & $w_5$ & $w_6$ \\
             \midrule
-            $A$ &$-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
-            $B$ &$-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
-            $C$ &$-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
+            $\phi_A$ &$-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
+            $\phi_B$ &$-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
+            $\phi_C$ &$-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
             \bottomrule
         \end{tabular}
     \end{table}
 
-    \item You now assume a Gaussian prior $\mathcal{N}(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
+    \begin{solution}
+        A set of parameters is better than another if it \enquote{explains} the data better, that is the likeliness of the data given the set of parameter is higher. Our task is to find the set of parameters that maximizes the likelihood of data under the assumed probability model, or maximum likelihood estimation (MLE). In our case, the data $d$ is the leaderboard and consists of independent position-time tuples $(x_i, y_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(x, y)$, approximated by a neural network $h(x, y; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
+        \begin{align*}
+            \phi_{\text{MLE}} & = \arg\max_\phi p(d | \phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i | \phi) \\ \displaybreak
+            & = \arg\max_\phi \prod_{i=1}^5 p(t_i | x_i, y_i, \phi) \, p(x_i, y_i) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \\
+            & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(x_i, y_i; \phi))^2}{2}}} \\
+            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2
+        \end{align*}
+        Now that we have an objective $L(\phi)$ to minimize, we can evaluate it for each of the proposed sets and select the best one.
+        \begin{align*}
+            L(\phi_A) & = \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi_A))^2 = (2.0 - 5.5)^2 + (3.5 - 6.5)^2 + \dots = 29.75 \\
+            L(\phi_B) & = 35.75 \\
+            L(\phi_C) & = 205.25
+        \end{align*}
+        The best set is $\phi_A$.
+    \end{solution}
+
+    \item You now assume a Gaussian prior $\N(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
+
+    \begin{solution}
+        Now that we hold a prior belief on the parameters, our task is to find the most likely set of parameters given the data, that is maximum a posteriori (MAP) estimation.
+        \begin{align*}
+            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi | d) \\
+            & = \arg\max_\phi p(d | \phi) p(\phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i | \phi) \prod_{j=1}^6 p(w_j) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
+            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
+        \end{align*}
+        Here again, we have an objective $L'(\phi)$ to minimize, which we evaluate for each of the proposed sets.
+        \begin{align*}
+            L'(\phi_A) & = L(\phi_A) + \sum_{j=1}^6 (w_j)^2 = 29.75 + (-1.5)^2 + (1)^2 + \dots = 88.25 \\
+            L'(\phi_B) & = 65.0 \\
+            L'(\phi_C) & = 257.0
+        \end{align*}
+        The best set is $\phi_B$.
+    \end{solution}
+
     \item Discuss the procedure you would implement on a computer to find the optimal set of parameters, had the table above not been provided.
-    \item Using the parameters $(-2, 1, 5, 0.5, -2, 7)$, apply $5$ iterations of the greedy search algorithm, starting from room $(1, 1)$.
+
+    \begin{solution}
+        If the table is not provided, it is intractable to evaluate and compare all possible sets of parameters. However, we still want to minimize the MLE (or MAP) objective $L(\phi)$. We can improve a set of parameters $\phi$ by following the opposite of the objective's gradient $\nabla_{\! \phi} L(\phi)$, \ie{} performing \emph{gradient descent} steps
+        \begin{equation*}
+            \phi \gets \phi - \gamma \nabla_{\! \phi} L(\phi) ,
+        \end{equation*}
+        where $\gamma$ is the learning rate. As alternatives to gradient descent, one could mention genetic or Markov chain Monte Carlo (MCMC) algorithms.
+    \end{solution}
+
+    \item Using the heuristic $h(x, y; \phi_D)$ with $\phi_D = (-2, 1, 5, 0.5, -2, 7)$, apply $5$ iterations of the greedy search algorithm, starting from room $(1, 1)$.
+
+    \begin{solution}
+        The greedy search algorithm uses a priority queue as fringe. Our goal is to reach the exit as fast as possible. As our heuristic approximates the time to reach the exit from room $(x, y)$, we should prioritize rooms that have the lowest heuristic in our queue. We keep in our fringe the rooms that are reachable from the visited (closed set) rooms. For convenience, we denote rooms as a two-digit number $10 \times x + y$, annotate rooms with their priority $h(x, y; \phi_D)$ and prune visited rooms from the fringe.
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{l|l|c}
+                \toprule
+                Fringe (priority queue) & Closed & Expand \\
+                \midrule
+                11(9.5) & & 11 \\
+                21(8.5), 12(8.0) & 11 & 12 \\
+                21(8.5), 22(7.0), 13(6.5) & 11, 12 & 13 \\
+                21(8.5), 14(7.0), 22(7.0), 23(5.5) & 11, 12, 13 & 23 \\
+                21(8.5), 14(7.0), 22(7.0), 24(5.0), 33(4.5) & 11, 12, 13, 23 & 33 \\
+                21(8.5), 14(7.0), 22(7.0), 32(6.0), 24(5.0), 43(3.5), 34(3.0) & 11, 12, 13, 23, 33 & 34 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{solution}
 \end{enumerate}
 
 \newpage

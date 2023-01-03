@@ -1,4 +1,4 @@
-\ProvidesPackage{common}[2021/09/14]
+\ProvidesPackage{common}[2023/01/02]
 
 %%%%%%%%%%%%
 % Settings %
@@ -34,7 +34,22 @@
 \RequirePackage{pgfplots}
 
 \pgfplotsset{compat=1.7}
-\usetikzlibrary{automata, arrows.meta}
+
+\usetikzlibrary{
+    automata,
+    arrows.meta,
+    shapes.geometric,
+}
+
+\tikzset{
+    every node/.style={align=center},
+    square/.style={
+        regular polygon,
+        regular polygon sides=4,
+        inner sep=0,
+    },
+    arrow/.style={arrows={-{>[scale=1.5]}}},
+}
 
 % Exercises
 
@@ -57,8 +72,6 @@
 %%%%%%%%%%%%
 % Commands %
 %%%%%%%%%%%%
-
-\def\knowing{\vert}
 
 \def\E{\mathbb{E}}
 \def\V{\mathbb{V}}
