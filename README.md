@@ -129,7 +129,7 @@ Your task is to read a scientific paper in the field of Artificial Intelligence.
 - [August 2020](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2020-solutions.pdf))
 - [January 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2021-solutions.pdf))
 - [August 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2021.pdf)
-- [January 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022.pdf)
+- [January 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022-solutions.pdf))
 - [August 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2022.pdf)
 
 Materials covered by the exam are listed [here](https://glouppe.github.io/info8006-introduction-to-ai/pdf/info8006-grid.pdf).
