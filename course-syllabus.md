@@ -8,6 +8,11 @@ Course syllabus, Fall 2022
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: Less AGI, more NNs?
+R: check https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
+
 ---
 
 # Us
