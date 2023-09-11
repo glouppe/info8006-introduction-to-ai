@@ -2,9 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 2b: Constraint satisfaction problems
-
-(Optional)
+Lecture: Constraint satisfaction problems
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -14,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 class: black-slide, center, middle
 
-.center.width-100[![](figures/lec2b/pacman-thinking.png)]
+.center.width-100[![](figures/archives-lec-csp/pacman-thinking.png)]
 
 Hmmm, let me think...
 
@@ -23,7 +21,7 @@ Hmmm, let me think...
 count: false
 class: black-slide, center, middle
 
-.center.width-100[![](figures/lec2b/pacman-thinking.png)]
+.center.width-100[![](figures/archives-lec-csp/pacman-thinking.png)]
 
 (...)
 
@@ -32,7 +30,7 @@ class: black-slide, center, middle
 count: false
 class: black-slide, center, middle
 
-.center.width-100[![](figures/lec2b/pacman-thinking.png)]
+.center.width-100[![](figures/archives-lec-csp/pacman-thinking.png)]
 
 (some time later)
 
@@ -41,7 +39,7 @@ class: black-slide, center, middle
 count: false
 class: black-slide, center, middle
 
-.center.width-100[![](figures/lec2b/pacman-thinking2.png)]
+.center.width-100[![](figures/archives-lec-csp/pacman-thinking2.png)]
 
 Solution found! [Can we do better?]
 
@@ -57,7 +55,7 @@ Solution found! [Can we do better?]
     - Propositional logic for reasoning about the world.
     - ... and its connection with CSPs.
 
-.center.width-50[![](figures/lec2b/map-cartoon.png)]
+.center.width-50[![](figures/archives-lec-csp/map-cartoon.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -78,7 +76,7 @@ In standard search problems:
 
 Instead, if states have *a factored representation*, then the structure of states can be exploited to improve the **efficiency of the search**.
 
-.center.width-40[![](figures/lec2b/atomic-factored.png)]
+.center.width-40[![](figures/archives-lec-csp/atomic-factored.png)]
 
 
 ---
@@ -105,13 +103,13 @@ class: middle
 
 ## Example: Map coloring
 
-.center.width-70[![](figures/lec2b/map-coloring.png)]
+.center.width-70[![](figures/archives-lec-csp/map-coloring.png)]
 
 ---
 
 class: middle
 
-.center.width-30[![](figures/lec2b/map-coloring.png)]
+.center.width-30[![](figures/archives-lec-csp/map-coloring.png)]
 
 - Variables: $X = \\{ \text{WA}, \text{NT}, \text{Q}, \text{NSW}, \text{V}, \text{SA}, \text{T} \\}$
 - Domains: $D_i = \\{ \text{red}, \text{green}, \text{blue} \\}$ for each variable.
@@ -125,7 +123,7 @@ class: middle
 
 # Constraint (hyper)graph
 
-.center.width-50[![](figures/lec2b/csp-graph.png)]
+.center.width-50[![](figures/archives-lec-csp/csp-graph.png)]
 
 - *Nodes* = variables of the problems
 - *Edges* = constraints in the problem involving the variables associated to the end nodes.
@@ -138,7 +136,7 @@ class: middle
 
 ## Example: Cryptarithmetic
 
-.center.width-60[![](figures/lec2b/cryptarithmetic.png)]
+.center.width-60[![](figures/archives-lec-csp/cryptarithmetic.png)]
 
 - Variables: $\\{ T, W, O, F, U, R, C_1, C_2, C_3\\}$
 - Domains: $D_i = \\{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
@@ -154,7 +152,7 @@ class: middle
 
 ## Example: Sudoku
 
-.center.width-30[![](figures/lec2b/sudoku.png)]
+.center.width-30[![](figures/archives-lec-csp/sudoku.png)]
 
 - Variables: each (open) square
 - Domains: $D_i = \\{ 1, 2, 3, 4, 5, 6, 7, 8, 9 \\}$
@@ -166,13 +164,13 @@ class: middle
 
 class: middle
 
-.center.width-50[![](figures/lec2b/waltz.png)]
+.center.width-50[![](figures/archives-lec-csp/waltz.png)]
 
 ## Example: The Waltz algorithm
 
 Procedure for interpreting 2D line drawings of solid polyhedra as 3D objects. Early example of an AI computation posed as a CSP.
 
-.pull-right.width-70[![](figures/lec2b/waltz-inter.png)]
+.pull-right.width-70[![](figures/archives-lec-csp/waltz-inter.png)]
 CSP formulation:
 - Each intersection is a variable.
 - Adjacent intersections impose constraints on each other.
@@ -230,7 +228,7 @@ class: middle
 - ... and many more
 ]
 .kol-1-2[
-.width-100[![](figures/lec2b/assignments.png)]
+.width-100[![](figures/archives-lec-csp/assignments.png)]
 ]
 ]
 
@@ -249,7 +247,7 @@ Notice that many real-world problems involve real-valued variables.
 .caption[Constraint Programming represents one of the closest approaches computer science has yet made to the Holy Grail of programming: the user states the problem, the computer solves it.
 <br>(Eugene Freuder)]
 ]
-.kol-1-3[.center.circle.width-100[![](figures/lec2b/eugene-freuder.jpg)]]
+.kol-1-3[.center.circle.width-100[![](figures/archives-lec-csp/eugene-freuder.jpg)]]
 ]
 
 Constraint programming is a programming paradigm in which the user specifies the program as a CSP. The resolution of the problem is left to the computer.
@@ -282,7 +280,7 @@ class: middle
 
 class: middle
 
-.center.width-50[![](figures/lec2b/csp-graph.png)]
+.center.width-50[![](figures/archives-lec-csp/csp-graph.png)]
 
 What would BFS or DFS do? What problems does naive search have?
 
@@ -314,13 +312,13 @@ Simulate the execution on blackboard. Highlight two issues:
 
 class: middle
 
-.center.width-80[![](figures/lec2b/backtracking-example.png)]
+.center.width-80[![](figures/archives-lec-csp/backtracking-example.png)]
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec2b/backtracking.png)]
+.center.width-100[![](figures/archives-lec-csp/backtracking.png)]
 
 ???
 
@@ -358,7 +356,7 @@ Choose the variable *with the fewest legal values left* in its domain.
 - Also known as the *fail-first* heuristic.
     - Detecting failures quickly is equivalent to pruning large parts of the search tree.
 
-.center.width-100[![](figures/lec2b/ordering-mrv.png)]
+.center.width-100[![](figures/archives-lec-csp/ordering-mrv.png)]
 
 ---
 
@@ -369,7 +367,7 @@ class: middle
 - **Least constraining value**: Given a choice of variable, choose the *least constraining value*.
 - i.e., the value that rules out the fewest values in the remaining variables.
 
-.center.width-100[![](figures/lec2b/ordering-lcv.png)]
+.center.width-100[![](figures/archives-lec-csp/ordering-lcv.png)]
 
 .exercise[Why should variable selection be fail-first but value selection be fail-last?]
 
@@ -389,7 +387,7 @@ class: middle
     - Whenever a variable $X$ is assigned, and for each unassigned variable $Y$ that is connected to $X$ by a constraint, delete from $Y$'s domain any value that is inconsistent.
 - *Terminate search* when any variable has no legal value left.
 
-.center.width-100[![](figures/lec2b/forward-checking.png)]
+.center.width-100[![](figures/archives-lec-csp/forward-checking.png)]
 
 ---
 
@@ -399,7 +397,7 @@ class: middle
 
 Forward checking propagates information assigned to unassigned variables, but does not provide early detection for all failures:
 
-.center.width-100[![](figures/lec2b/forward-checking-inc.png)]
+.center.width-100[![](figures/archives-lec-csp/forward-checking-inc.png)]
 
 - $NT$ and $SA$ cannot both be blue!
 - **Constraint propagation** repeatedly enforces constraints locally.
@@ -414,13 +412,13 @@ class: middle
 - Forward checking $\Leftrightarrow$ enforcing consistency of arcs pointing to each new assignment.
 - This principle can be generalized to enforce consistency for **all** arcs.
 
-.center.width-100[![](figures/lec2b/arc-consistency.png)]
+.center.width-100[![](figures/archives-lec-csp/arc-consistency.png)]
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec2b/ac3.png)]
+.center.width-100[![](figures/archives-lec-csp/ac3.png)]
 
 .exercise[When in backtracking shall this procedure be called?]
 
@@ -433,7 +431,7 @@ class: middle
 
 # Structure
 
-.center.width-50[![](figures/lec2b/csp-graph.png)]
+.center.width-50[![](figures/archives-lec-csp/csp-graph.png)]
 
 - Tasmania and mainland are **independent subproblems**.
     - Any solution for the mainland combined with any solution for Tasmania yields a solution for the whole map.
@@ -456,7 +454,7 @@ class: middle
 
 ## Tree-structured CSPs
 
-.center.width-90[![](figures/lec2b/tree-csp-trans.png)]
+.center.width-90[![](figures/archives-lec-csp/tree-csp-trans.png)]
 
 - Algorithm for tree-structured CSPs:
     - Order: choose a root variable, order variables so that parents precede children (topological sort).
@@ -483,7 +481,7 @@ class: middle
     - Solve the residual CSPs (tree-structured).
     - If the residual CSP has a solution, return it together with the assignment for $S$.
 
-.center.width-70[![](figures/lec2b/cutset.png)]
+.center.width-70[![](figures/archives-lec-csp/cutset.png)]
 
 ---
 
@@ -510,7 +508,7 @@ Therefore, Socrates is mortal.
 ]
 ]
 .kol-1-3[
-.width-100.circle[![](figures/lec2b/aristotle.jpg)]
+.width-100.circle[![](figures/archives-lec-csp/aristotle.jpg)]
 .caption[(Aristotle, 384-322 BC)]
 ]
 ]
@@ -530,7 +528,7 @@ class: middle
 
 # The Wumpus world
 
-.center.width-70[![](figures/lec2b/wumpus-world.png)]
+.center.width-70[![](figures/archives-lec-csp/wumpus-world.png)]
 
 ???
 
@@ -584,7 +582,7 @@ class: middle
 
 ## Exploring the Wumpus world (1)
 
-.center.width-100[![](figures/lec2b/wumpus-exploration1.png)]
+.center.width-100[![](figures/archives-lec-csp/wumpus-exploration1.png)]
 
 (a) Percept = $[\text{None}, \text{None}, \text{None}, \text{None}]$
 
@@ -596,7 +594,7 @@ class: middle
 
 ## Exploring the Wumpus world (2)
 
-.center.width-100[![](figures/lec2b/wumpus-exploration2.png)]
+.center.width-100[![](figures/archives-lec-csp/wumpus-exploration2.png)]
 
 (a) Percept = $[\text{Stench}, \text{None}, \text{None}, \text{None}]$
 
@@ -615,7 +613,7 @@ class: middle
     - Facts, encoded as *axioms*.
     - Rules of *inference*.
 
-.center.width-80[![](figures/lec2b/kb-agent.png)]
+.center.width-80[![](figures/archives-lec-csp/kb-agent.png)]
 
 ---
 
@@ -626,7 +624,7 @@ class: middle
 - The **syntax** of propositional logic defines allowable *sentences*.
 - The syntax of propositional logic is formally defined by the following *grammar*:
 
-.center.width-80[![](figures/lec2b/syntax.png)]
+.center.width-80[![](figures/archives-lec-csp/syntax.png)]
 
 ???
 
@@ -670,7 +668,7 @@ Examples:
     - $R\\\_5: B\\\_{2,1}.$
 
 ]
-.kol-1-3[.width-100[![](figures/lec2b/wumpus-world.png)]]
+.kol-1-3[.width-100[![](figures/archives-lec-csp/wumpus-world.png)]]
 ]
 
 ---
@@ -689,7 +687,7 @@ Examples:
 
 # Wumpus models
 
-.center.width-30[![](figures/lec2b/wumpus-simple.png)]
+.center.width-30[![](figures/archives-lec-csp/wumpus-simple.png)]
 
 - Let us consider possible models for $\text{KB}$ assuming only pits and a reduced Wumpus world with only 5 squares and pits.
 - We consider the situation after:
@@ -706,7 +704,7 @@ Examples:
 
 class: middle
 
-.center.width-60[![](figures/lec2b/wumpus-kb.png)]
+.center.width-60[![](figures/archives-lec-csp/wumpus-kb.png)]
 
 - All 8 possible models in the reduced Wumpus world.
 - The knowledge base $\text{KB}$ contains all possible Wumpus worlds consistent with the observations and the physics of the  world.
@@ -715,7 +713,7 @@ class: middle
 
 # Entailments
 
-.center.width-60[![](figures/lec2b/wumpus-entailment.png)]
+.center.width-60[![](figures/archives-lec-csp/wumpus-entailment.png)]
 
 - $\alpha_1$ = "$[1,2]$ is safe". Does $\text{KB}$ entails $\alpha_1$?
 - $\text{KB} \vDash \alpha_1$ since $M(\text{KB})  \subseteq M(\alpha_1)$.
@@ -729,7 +727,7 @@ Entailment can be used to carry out **logical inference**.
 
 class: middle
 
-.center.width-60[![](figures/lec2b/wumpus-noentailment.png)]
+.center.width-60[![](figures/archives-lec-csp/wumpus-noentailment.png)]
 
 - $\alpha_2$ = "$[2,2]$ is safe". Does $\text{KB}$ entails $\alpha_2$?
 - $\text{KB} \nvDash \alpha_2$ since $M(\text{KB})  \nsubseteq M(\alpha_2)$.
@@ -781,10 +779,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Newell, A., & Simon, H. (1956). The logic theory machine--A complex information processing system. IRE Transactions on information theory, 2(3), 61-79.
-- McCarthy, J. (1960). Programs with common sense (pp. 300-307). RLE and MIT computation center.

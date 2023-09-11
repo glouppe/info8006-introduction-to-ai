@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 11: Artificial General Intelligence
+Lecture: Artificial General Intelligence
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 # Today$^\*$
 
-.center.width-30[![](figures/lec11/agi.png)]
+.center.width-30[![](figures/archives-lec-agi/agi.png)]
 
 Towards generally intelligent agents?
 - Artificial general intelligence
@@ -26,8 +26,8 @@ Towards generally intelligent agents?
 
 class: middle
 
-.grid[.kol-1-6[].kol-2-3[.width-100[![](figures/lec11/alphago.jpg)]]]
-.grid[.kol-1-6[].kol-2-3[.width-100[![](figures/lec11/waymo.gif)]]]
+.grid[.kol-1-6[].kol-2-3[.width-100[![](figures/archives-lec-agi/alphago.jpg)]]]
+.grid[.kol-1-6[].kol-2-3[.width-100[![](figures/archives-lec-agi/waymo.gif)]]]
 
 .caption[From technological breakthroughs...]
 
@@ -39,15 +39,15 @@ class: middle
 .kol-3-4[
 
 <br><br><br>
-.center.width-80[![](figures/lec11/terminator.png)]
+.center.width-80[![](figures/archives-lec-agi/terminator.png)]
 
 .caption[... to press coverage.]
 ]
 .kol-1-4[
-.center.width-80[![](figures/lec11/news1.png)]
-.center.width-80[![](figures/lec11/news7.png)]
-.center.width-80[![](figures/lec11/news6.png)]
-.center.width-80[![](figures/lec11/news8.png)]
+.center.width-80[![](figures/archives-lec-agi/news1.png)]
+.center.width-80[![](figures/archives-lec-agi/news7.png)]
+.center.width-80[![](figures/archives-lec-agi/news6.png)]
+.center.width-80[![](figures/archives-lec-agi/news8.png)]
 ]
 ]
 
@@ -55,7 +55,7 @@ class: middle
 
 class: middle
 
-.center.width-40[![](figures/lec11/washing-machine.png)]
+.center.width-40[![](figures/archives-lec-agi/washing-machine.png)]
 
 ## Artificial narrow intelligence
 
@@ -78,13 +78,13 @@ Convenient properties of the game of Go:
 - Clear and fast evaluation (as stated by Go rules)
 - Huge dataset available (games)
 
-.center.width-30[![](figures/lec11/go.jpg)]
+.center.width-30[![](figures/archives-lec-agi/go.jpg)]
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec11/picking.png)]
+.center.width-100[![](figures/archives-lec-agi/picking.png)]
 
 .center[Can we run AlphaGo on a robot?]
 
@@ -138,7 +138,7 @@ class: middle
 
 class: middle, center
 
-.width-90[![](figures/lec11/reward1.png)]
+.width-90[![](figures/archives-lec-agi/reward1.png)]
 
 .pull-right[David Silver et al, 2021.]
 
@@ -146,7 +146,7 @@ class: middle, center
 
 class: middle
 
-.center.width-100[![](figures/lec11/reward2.png)]
+.center.width-100[![](figures/archives-lec-agi/reward2.png)]
 
 
 .footnote[Image credits: David Silver et al, "Reward is enough", 2021.]
@@ -179,23 +179,23 @@ AIXI (Hutter, 2005) is a theoretical mathematical formalism of artificial genera
 class: center
 
 .grid[
-.kol-1-6[.width-90.circle[![](figures/lec11/occam.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/archives-lec-agi/occam.jpg)]]
 .kol-3-4[<br>Occam: Prefer the simplest consistent hypothesis.]
 ]
 .grid[
-.kol-1-6[.width-90.circle[![](figures/lec11/epicurus.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/archives-lec-agi/epicurus.jpg)]]
 .kol-3-4[<br>Epicurus: Keep all consistent hypotheses.]
 ]
 .grid[
-.kol-1-6[.width-90.circle[![](figures/lec11/thomas.png)]]
+.kol-1-6[.width-90.circle[![](figures/archives-lec-agi/thomas.png)]]
 .kol-3-4[<br>Bayes: $P(h|d) = \frac{P(d|h)P(h)}{P(d)}$]
 ]
 .grid[
-.kol-1-6[.width-90.circle[![](figures/lec11/turing.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/archives-lec-agi/turing.jpg)]]
 .kol-3-4[<br>Turing: It is possible to invent a single machine which can be used to compute any computable sequence.]
 ]
 .grid[
-.kol-1-6[.width-90.circle[![](figures/lec11/solo.jpg)]]
+.kol-1-6[.width-90.circle[![](figures/archives-lec-agi/solo.jpg)]]
 .kol-3-4[<br>Solomonoff: Use computer programs $\mu$ as hypotheses/environments.]
 ]
 
@@ -240,7 +240,7 @@ class: middle
 - Which Turing machine is the agent in? If it knew, it could plan perfectly.
 - Use the *Bayes rule* to update the agent beliefs given its experience so far.
 
-.center.width-100[![](figures/lec11/tm.png)]
+.center.width-100[![](figures/archives-lec-agi/tm.png)]
 
 ---
 
@@ -259,7 +259,7 @@ class: middle
 
 class: middle
 
-.center.width-100[![](figures/lec11/optimal-action.png)]
+.center.width-100[![](figures/archives-lec-agi/optimal-action.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://ivenzor.com/wp-content/uploads/2018/07/yconftalk-170902200916.pdf)]
 
@@ -277,7 +277,7 @@ class: middle
 
 ## AIXI is incomputable
 
-.center.width-100[![](figures/lec11/aixi-action.png)]
+.center.width-100[![](figures/archives-lec-agi/aixi-action.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://ivenzor.com/wp-content/uploads/2018/07/yconftalk-170902200916.pdf)]
 
@@ -309,7 +309,7 @@ Study of systems related to natural life, its processes and its evolution, throu
 One of its goals is to **synthesize** life in order to understand its origins, development and organization.
 
 <br><br>
-.center.width-80[![](figures/lec11/tree.gif)]
+.center.width-80[![](figures/archives-lec-agi/tree.gif)]
 
 .caption[How did intelligence arise in Nature?]
 
@@ -374,7 +374,7 @@ class: middle
 - Any dead cell with three live neighbours becomes a live cell.
 - All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-.center.width-60[![](figures/lec11/conway.gif)]
+.center.width-60[![](figures/archives-lec-agi/conway.gif)]
 
 ---
 
@@ -447,7 +447,7 @@ Jump to 6:40.
 
 class: middle, center
 
-.width-70[![](figures/lec11/planks.png)]
+.width-70[![](figures/archives-lec-agi/planks.png)]
 
 Creatures avoiding planks [[demo](http://otoro.net/planks/)].
 
@@ -459,7 +459,7 @@ class: middle
 
 For the emergence of generally intelligent creatures, environments should **incentivize** the emergence of a *cognitive toolkit* (attention, memory, knowledge representation, reasoning, emotions, forward simulation, skill acquisition, ...).
 
-.center.width-80[![](figures/lec11/envs.png)]
+.center.width-80[![](figures/archives-lec-agi/envs.png)]
 
 .footnote[Credits: [Andrej Karpathy, Where will AGI come from?](https://ivenzor.com/wp-content/uploads/2018/07/yconftalk-170902200916.pdf)]
 
@@ -473,100 +473,7 @@ Multi-agent environments are certainly better because of:
 
 ---
 
-class: middle
-
-# Conclusions
-
----
-
-class: middle
-
-- Lecture 0: Artificial intelligence
-- Lecture 1: Intelligent agents
-- Lecture 2: Solving problems by searching
-- .inactive[Lecture 2b: Constraint satisfaction problems (optional)]
-- Lecture 3: Adversarial search
-- Lecture 4: Representing uncertain knowledge
-- Lecture 5: Inference in Bayesian networks
-- Lecture 6: Reasoning over time
-- Lecture 7: Learning
-- Lecture 8: Making decisions
-- Lecture 9: Reinforcement learning
-- .inactive[Lecture 10: Communication (optional)]
-- Lecture 11: Artificial General Intelligence and beyond 
-
----
-
-class: middle, center
-
-.width-50[![](figures/lec0/map.png)]
-
----
-
-class: middle
-
-## Going further
-
-This course is designed as an introduction to the many other courses available at ULiège and related to AI, including:
-
-- ELEN0062: Introduction to Machine Learning
-- DATS0001: Foundations of Data Science
-- INFO8010: Deep Learning
-- INFO8004: Advanced Machine Learning
-- INFO8003: Optimal decision making for complex problems
-- INFO0948: Introduction to Intelligent Robotics
-- ELEN0016: Computer vision
-- SPATXXXX: Machine Learning in Space Sciences (from 2023-2024)
-
----
-
-class: middle
-
-## Research opportunities
-
-Feel free to contact us
-- for research Summer internship opportunities
-- MSc thesis opportunities
-- PhD thesis opportunities
-
----
-
-class: middle
-
-## Beyond Pacman
-
-Artificial intelligence algorithms are transforming science, engineering and society.
-
-As future engineers or scientists, AI offers you opportunities to address some of the world's biggest challenges. 
-
-???
-
-- Build the next generation of aircrafts, cars, robots, ...
-- Make the next app that will change the world
-- Work on the next generation of medical devices, ...
-- Analyze large amounts of genomic data, process biomedical images, ...
-- Try to understand the brain, or the universe, ...
-- Discover new drugs, new materials, ...
-
----
-
-exclude: true
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="420" src="https://www.youtube.com/embed/NP8xt8o4_5Q?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-A note of optimism: Don't fear intelligent machines,<br>
-work with them (Garry Kasparov).
-]
-
----
-
-class: center, middle, black-slide
+class: end-slide, center
 count: false
 
-.center.width-70[![](figures/lec11/gameover.png)]
-
-<br><br>
-
-Thanks for following Introduction to Artificial Intelligence!
+The end.

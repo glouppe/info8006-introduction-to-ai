@@ -2,9 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 10: Communication
-
-(Optional)
+Lecture: Communication
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -14,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-.center.width-30[![](figures/lec10/robot-speech.png)]
+.center.width-30[![](figures/archives-lec-communication/robot-speech.png)]
 
 Can you **talk** to an artificial agent? Can it understand what you say?
 
@@ -38,7 +36,7 @@ class: middle
 ]
 .grid[
 .kol-1-3[Speech recognition:]
-.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
+.kol-1-4.center[.width-100[![](figures/archives-lec-communication/waveform.png)]]
 .kol-2-12.center[$\rightarrow$]
 .kol-1-4.center[Hello, my name is HAL.]
 ]
@@ -46,7 +44,7 @@ class: middle
 .kol-1-3[Text-to-speech synthesis:]
 .kol-1-4.center[Hello, my name is HAL.]
 .kol-2-12.center[$\rightarrow$]
-.kol-1-4.center[.width-100[![](figures/lec10/waveform.png)]]
+.kol-1-4.center[.width-100[![](figures/archives-lec-communication/waveform.png)]]
 ]
 
 ---
@@ -59,7 +57,7 @@ class: middle
 
 class: middle
 
-.center.width-100[![](figures/lec10/translate.png)]
+.center.width-100[![](figures/archives-lec-communication/translate.png)]
 
 ## Machine translation
 
@@ -77,7 +75,7 @@ class: middle
 
 ## Issue of dictionary lookups
 
-.center.width-80[![](figures/lec10/lookups.png)]
+.center.width-80[![](figures/archives-lec-communication/lookups.png)]
 
 .center[Natural languages are not 1:1 mappings of each other!]
 
@@ -87,7 +85,7 @@ class: middle
 
 class: middle
 
-.center.width-100[![](figures/lec10/translate-soccer.png)]
+.center.width-100[![](figures/archives-lec-communication/translate-soccer.png)]
 
 .center[To obtain a correct translation, one must decide<br> whether "it" refers to the soccer ball or to the window.
 
@@ -97,7 +95,7 @@ Therefore, one must understand physics as well as language.]
 
 # History
 
-.center.width-100[![](figures/lec10/history.png)]
+.center.width-100[![](figures/archives-lec-communication/history.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -106,7 +104,7 @@ Therefore, one must understand physics as well as language.]
 # Data-driven machine translation
 
 <br>
-.center.width-100[![](figures/lec10/data-driven-mt.png)]
+.center.width-100[![](figures/archives-lec-communication/data-driven-mt.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -124,7 +122,7 @@ Translation systems must model the source and target languages, but systems vary
 
 class: middle
 
-.center.width-100[![](figures/lec10/vauquois.png)]
+.center.width-100[![](figures/archives-lec-communication/vauquois.png)]
 
 ---
 
@@ -154,7 +152,7 @@ Given an English source sentence $e$, finding a French translation $f$ is a matt
 
 class: middle
 
-.center.width-100[![](figures/lec10/translation-wumpus.png)]
+.center.width-100[![](figures/archives-lec-communication/translation-wumpus.png)]
 
 ---
 
@@ -196,7 +194,7 @@ Modern machine translation systems are all based on **neural networks** of vario
 - convolutional networks for modeling spatial dependencies.
 - transformer networks.
 
-.center.width-70[![](figures/lec10/gnmt.jpg)]
+.center.width-70[![](figures/archives-lec-communication/gnmt.jpg)]
 
 ---
 
@@ -213,7 +211,7 @@ class: middle
     - Decode using the context vector, the embedding of the previous output word and the hidden state.
 ]
 .kol-1-2[
-.center.width-100[![](figures/lec10/nmt.png)]
+.center.width-100[![](figures/archives-lec-communication/nmt.png)]
 ]
 ]
 
@@ -227,7 +225,7 @@ class: middle
 
 class: middle, center, black-slide
 
-.center.width-100[![](figures/lec10/google-assistant.gif)]
+.center.width-100[![](figures/archives-lec-communication/google-assistant.gif)]
 
 ---
 
@@ -236,7 +234,7 @@ class: middle, center, black-slide
 .grid[
 .kol-5-12.center[
 $\mathbf{y}\_{1:T}$
-.width-100[![](figures/lec10/waveform.png)]]
+.width-100[![](figures/archives-lec-communication/waveform.png)]]
 .kol-2-12.center[
 <br>$\rightarrow$]
 .kol-5-12.center[
@@ -267,7 +265,7 @@ where
 
 class: middle
 
-.center.width-90[![](figures/lec10/hmm-recognition.png)]
+.center.width-90[![](figures/archives-lec-communication/hmm-recognition.png)]
 
 ---
 
@@ -284,7 +282,7 @@ class: middle
 class: middle
 
 
-.center.width-100[![](figures/lec10/mfcc.png)
+.center.width-100[![](figures/archives-lec-communication/mfcc.png)
 
 MFCCs calculation.]
 
@@ -303,11 +301,11 @@ MFCCs calculation.]
 
 class: middle
 
-.center.width-90[![](figures/lec10/time_signal.jpg)]
+.center.width-90[![](figures/archives-lec-communication/time_signal.jpg)]
 
 $$\downarrow$$
 
-.center.width-90[![](figures/lec10/mfcc.jpg)]
+.center.width-90[![](figures/archives-lec-communication/mfcc.jpg)]
 
 .center[Feature extraction from the signal in the time domain to MFCCs.]
 
@@ -330,19 +328,19 @@ A spoken word $w$ is decomposed into a sequence of $K\_w$ basic sounds called *b
 
 class: middle
 
-.center.width-100[![](figures/lec10/phones.png)]
+.center.width-100[![](figures/archives-lec-communication/phones.png)]
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec10/phone-model.png)]
+.center.width-100[![](figures/archives-lec-communication/phone-model.png)]
 
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec10/hmm-phone.png)]
+.center.width-60[![](figures/archives-lec-communication/hmm-phone.png)]
 
 Each base phone $q$ is represented by **phone model** defined as a three-state continuous density HMM, where
 - the transition probability parameter $a\_{ij}$ corresponds to the probability of making the particular transition from state $s\_i$ to $s\_j$;
@@ -420,7 +418,7 @@ Modern speech recognition systems are now based on *end-to-end* deep neural netw
 - Total of 35M parameters.
 - Same architecture for both English and Mandarin.
 ]
-.kol-1-3[.width-100[![](figures/lec10/deepspeech.png)]]
+.kol-1-3[.width-100[![](figures/archives-lec-communication/deepspeech.png)]]
 ]
 
 .footnote[Image credits: [Amodei et al, 2015. arXiv:1512.02595](https://arxiv.org/abs/1512.02595).]
@@ -454,7 +452,7 @@ $\mathbf{w}\_{1:L}$
 <br>$\rightarrow$]
 .kol-5-12.center[
 $\mathbf{y}\_{1:T}$
-.width-100[![](figures/lec10/waveform.png)]]
+.width-100[![](figures/archives-lec-communication/waveform.png)]]
 ]
 
 ---
@@ -469,7 +467,7 @@ The Tacotron 2 system is a **sequence-to-sequence neural network** architecture 
 
 class: middle
 
-.width-80.center[![](figures/lec10/tacotron.png)]
+.width-80.center[![](figures/archives-lec-communication/tacotron.png)]
 
 .footnote[Image credits: [Shen et al, 2017. arXiv:1712.05884](https://arxiv.org/abs/1712.05884).]
 
@@ -484,7 +482,7 @@ class: middle
 
 <br>
 .center[
-.width-30[![](figures/lec10/mel-to-wave.png)] .width-50[![](figures/lec10/wavenet.png)]
+.width-30[![](figures/archives-lec-communication/mel-to-wave.png)] .width-50[![](figures/archives-lec-communication/wavenet.png)]
 ]
 
 ---
@@ -520,9 +518,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Gales, M., & Young, S. (2008). The application of hidden Markov models in speech recognition. Foundations and Trends® in Signal Processing, 1(3), 195-304.
