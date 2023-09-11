@@ -13,6 +13,7 @@ Prof. Gilles Louppe<br>
 R: Less AGI, more NNs?
 R: AI for intelligent agents and direct applications in science and engineering.
 R: check https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
+R: bishop quote
 
 ---
 
@@ -112,9 +113,13 @@ class: middle
 
 ## Honor code
 
-You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .bold[However, under no circumstances, may you base your project on someone else's implementation.] One of the main learning outcomes of the programming projects is for you to better understand the course materials.
+You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.] In particular, the use of large language models (e.g., ChatGPT, Github Copilot) is forbidden -- unless you build and train your own :-)
 
-.bold[Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.]
+Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty office.
+
+???
+
+One of the main learning outcomes of the programming projects is for you to better understand the course materials. By using someone else's implementation, you are depriving yourself of this learning opportunity. Moreover, you are also depriving yourself of the opportunity to learn how to write good code, which is an important skill for any computer scientist.
 
 ---
 

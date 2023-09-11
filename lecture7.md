@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 7: Learning
+Lecture 7: Machine learning and neural networks
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -10,6 +10,7 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: check early lectures of https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
 R: prepare one code example, make this more concrete
 
 ---

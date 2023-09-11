@@ -94,7 +94,7 @@ em {
 strong {
     color: #d11a01;
     font-style: normal;
-    font-weight: normal;
+    font-weight: 300;
 }
 
 .highlight{ 
@@ -482,4 +482,9 @@ td {
     background-color: red;
     color: white;
     border-top: solid 0px;
+}
+
+.shadow {
+    background-color: rgba(0,0,0,0.75);
+    padding: 10px;
 }

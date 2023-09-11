@@ -8,95 +8,214 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
----
+???
 
-# Today
-
-- Course outline
-- Introduction to Artificial Intelligence
-- Intelligent agents
+Trim down some slides.
 
 ---
 
-# Outline
+class: middle, center
+background-color: #343541
 
-- Lecture 0: Artificial intelligence
-- Lecture 1: Intelligent agents
-- Lecture 2: Solving problems by searching
-- .inactive[Lecture 2b: Constraint satisfaction problems (optional)]
-- Lecture 3: Adversarial search
-- Lecture 4: Representing uncertain knowledge
-- Lecture 5: Inference in Bayesian networks
-- Lecture 6: Reasoning over time
-- Lecture 7: Learning
-- Lecture 8: Making decisions
-- Lecture 9: Reinforcement learning
-- .inactive[Lecture 10: Communication  (optional)]
-- Lecture 11: Artificial General Intelligence and beyond 
+<video src="./figures/lec0/chatgpt.webm" autoplay loop muted width=640 height=640></video>
+
+???
+
+The elephant in the room. ChatGPT.
+
+In november 2022, OpenAI released ChatGPT, a chatbot interface to GPT-3, a neural network trained on a very large corpus of text.
+
+For the first time, the public got access through a simple web interface to a model that can generate text that is indistinguishable from human-written text. You can ask any question to the model, and it will answer, however complex or bizarre the question is.
+
+For instance, in the video, I am asking ChatGPT to prepare a 1-day itinerary for a trip to Liège, Belgium, and it is answering me with a detailed itinerary, including the names of the places to visit, general information about the city, etc. I can also instruct ChatGPT to pretend that it knows all the hidden secrets of the city and revise its itinerary accordingly.
+
+I am quite sure many of you have already used ChatGPT more or less seriously, so there is no need to introduce it further. However, I believe we can all agree that this is a very impressive technology and that it marks a milestone in the history of AI.
 
 ---
 
 class: middle, center
 
-.width-50[![](figures/lec0/map.png)]
+.grid[
+.kol-1-2[
 
----
+<br><br><br><br><br><br>
 
-class: middle
+One simple idea:
 
-## My mission
+.bold[Guess the next word]
 
-By the end of this course, you will have built autonomous agents that efficiently make decisions in fully informed, partially observable and adversarial settings. Your agents will draw inferences in uncertain and unknown environments and optimize actions for arbitrary reward structures. 
-
-The techniques you learn in this course apply to a wide variety of artificial intelligence problems and will serve as the foundation for further study in any application area you choose to pursue.
-
----
-
-class: middle
-
-## Goals and philosophy
-
-.italic[General]
-- Understand the landscape of artificial intelligence.
-- Be able to write from scratch, debug and run (some) AI algorithms.
-
-.italic[Well-established and state-of-the-art algorithms] 
-- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
-- Introduction to materials new from research ($\leq$ 5 years old).
-- Understand some of the open questions and challenges in the field.
-
-.italic[Practical]
-- Fun and challenging course projects.
-
----
-
-class: middle
-
-## Going further
-
-This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
-
-- INFO8006: Introduction to Artificial Intelligence $\leftarrow$ **you are there**
-- DATS0001: Foundations of Data Science
-- ELEN0062: Introduction to Machine Learning
-- INFO8010: Deep Learning
-- INFO8004: Advanced Machine Learning
-- INFO8003: Optimal decision making for complex problems
-- INFO0948: Introduction to Intelligent Robotics
-- INFO9014: Knowledge representation and reasoning
-- ELEN0016: Computer vision
+]
+.kol-1-2[.center.width-70[![](./figures/lec0/phone-autocomplete.jpg)]]
+]
 
 ???
 
-Mention pre-requisites:
-- programming experience
-- probability theory
+Despite its impressive performance and its apparent complexity, the underlying principle of ChatGPT is actually very simple.
+
+The model is trained to guess the next word in a sentence. That's it.
+
+It is the same principle that is used in your phone to autocomplete your messages, except that the model is much larger and has been trained on a much larger corpus of text.
+
+What is interesting with the guess-the-next-word problem is that it is a very simple problem, but that it is also a very hard problem. It is simple because it is easy to understand, but it is hard because there are many possible next words. It is also hard because the context of a word is not always enough to predict the next word. Sometimes, we need to know more about the world to make a prediction.
+
+---
+
+class: middle, center
+
+```
+John plays the ___
+```
+
+???
+
+Let's start with a simple example.
+
+Suppose we want to predict the next word in the sentence "John plays the ___".
+
+What is the next word?
+
+There are many possibilities, but plausible possibilities are instruments such as "piano", "guitar", or "violin". 
+
+This one was easy.
+
+---
+
+class: middle, center
+count: false
+
+```
+John plays the piano and Mary plays the ____
+```
+
+???
+
+Now, suppose we want to predict the next word in the sentence "John plays the piano and Mary plays the ___". What is the next word?
+
+Just like before, we have to predict the next word following "plays the" but the context is now different.
+
+It feels now more likely that the next word is "guitar", "violin" or "cello" than "piano" because "piano" is already used in the sentence.
+
+This one was a bit harder.
+
+---
+
+class: middle, center
+count: false
+
+```
+John plays the piano and Paul plays the ____
+```
+
+???
+
+Now, suppose we want to predict the next word in the sentence "John plays the piano and Paul plays the ___". What is the next word?
+
+Again, we have to predict the next word following "plays the" but the context is different.
+
+Because the second person is now Paul, the context hints that John and Paul are the Beatles, and that the next word is likely to be "guitar" or "bass", not "violin" or "cello".
+
+How do we know that? We know that because we have external knowledge about the world that we can use to make a prediction. In this case, we know that John and Paul are the Beatles, and that the Beatles play the piano and the bass.
+
+---
+
+class: middle, center
+
+.width-60[![](./figures/lec0/transformer.svg)]
+
+???
+
+This simple idea of guessing the next word is the basis of the transformer, a neural network architecture that has become the de facto standard for many AI tasks.
+
+At its core, the transformer builds a representation of the context of a word, and uses it to predict the next word. The canonical architecture is made of an encoder, which builds the representation of the context, and a decoder, which uses it to predict the next word. The encoder and decoder are made of many layers which are used to process the context and to make the prediction.
+
+The transformer is a neural architecture that can be used for many tasks, such as machine translation, question answering, text summarization, etc. However, in its decoder-only form, its most impressive application is language modeling, which is the task of predicting the next word in a sentence.
+
+The transformer is one of the many neural network architectures that exist in deep learning. What's new is that it is a general-purpose architecture that can be used for many tasks. We used to have dedicated architectures for each task, but this is less and less the case.
 
 ---
 
 class: middle
 
-# Artificial intelligence
+.center.width-100[![](figures/lec0/tokens.png)]
+
+???
+
+In practice, the transformer is implemented as a regular computer program. It takes as input a sequence of tokens, which are the words of a sentence, and outputs a sequence of tokens, which are the words of the next sentence. At initialization, the parameters of the neural network are set to random values, which results in random and wrong predictions. To make correct predictions, the parameters of the neural network must be adjusted, or trained, on a large corpus of text. More precisely, the parameters can be optimized with a training procedure to minimize the error between the predicted next word and the actual next word.
+
+Training a transformer is a bit like training a dog. You show it a lot of examples, and it learns to predict the next word. If it predicts the wrong word, you give it a negative feedback, and if it predicts the right word, you give it a positive feedback.
+
+Fortunately, each sentence contains many guess-the-next-word problems that can be used to train a transformer. [For instance, the sentence "John plays the piano and Paul plays the ___" contains 8 instances of the problem, one for each word.]
+
+Contrary to what we used to face in deep learning, acquiring data is therefore cheap and easy. There is no need to manually label the data, which is a tedious and expensive process. Instead, collecting data is as simple as downloading a large corpus of text from the internet.
+
+For this reason, big tech companies have been able to train transformers on very large corpora of text, literally large parts of the internet counting hundreds of billions of tokens, which only they can collect.
+
+---
+
+class: middle, center
+
+.center.width-90[![](./figures/lec0/prompt.png)]
+
+???
+
+Alright, so we have a transformer that has been trained on a large corpus of text. How do we use it?
+
+After pre-training, a transformer is not very useful by itself just yet. It is like a dog that has been trained to guess the next word, but that cannot do anything else. To be useful, transformers must be fine-tuned or instructed to answer questions.
+
+To do so, we can use a technique called prompt engineering or in-context learning, which consists in writing a prompt, a short text that contains instructions of a task to solve and some context. The prompt is then fed to the transformer, which is used to complete the prompt. The continuation of the prompt, obtained by guessing the next words, is likely to be consistent with the instructions and to answer the question. That's it!
+
+As an example, the prompt in the slide can be used to instruct a transformer to translate English to French. The prompt contains a description of the task, together with a few examples of translations. The transformer is then used to complete the prompt, which results in a translation.
+
+Similarly, ChatGPT and other chatbots are transformers that are repurposed to answer questions by using prompts that instruct them to answer questions, in the form of a conversation.
+
+---
+
+class: middle
+
+.width-100[![](./figures/lec0/scaling-power-law.png)]
+
+A brutal simplicity: 
+
+- The more data, the better the model.
+- The more parameters, the better the model.
+- The more compute, the better the model.
+
+???
+
+The simplicity behind transformers is brutal. You'd think that there is more sophistication behind the scenes, but there is not. It is just a neural network that guesses the next words.
+
+Not only that, but the research community has also found that the performance of transformers follows a power law. The more data, the better the model. The more parameters, the better the model. The more compute, the better the model. No matter how much data, parameters, and compute you have, you can always do better by increasing them, and there is no sign of saturation yet.
+
+This is a very different paradigm than what we used to do in deep learning, where we would spend a lot of time designing the architecture of the neural network. Here, the architecture is always the same, and the only thing that matters is the amount of data, the number of parameters, and the amount of compute.
+
+---
+
+class: black-slide, center
+background-image: url(./figures/lec0/robot.png)
+
+<br>
+
+<p class="shadow">Why does it work? How does complexity arise from<br> the simplicity of guessing the next `____`?</p>
+
+???
+
+Alright, so we have seen that transformers are very simple. So simple that it is hard to believe that they work so well.
+
+And indeed, why do they work? How does complexity arise from the simplicity of guessing the next word?
+
+The immediate answer is that it works because the transformer has seen the answer before. All the answers are in the training data and have been memorized.
+
+However, when trained on a large corpus, a neural network cannot memorize the entire training data. It must have learned a compressed representation of the training data. 
+
+One such representation is hypothetically a beginning of some kind of understanding of the world, stored compactly in the weights of the neural network, and that can be used to predict the next word.
+
+This is a very exciting hypothesis, but it is still a hypothesis. We do not know for sure that this is the case. 
+
+---
+
+class: middle
+
+# Before ChatGPT
 
 ---
 
@@ -121,29 +240,6 @@ class: middle, center
 ???
 
 The reality is quite different...
-
----
-
-exclude: true
-class: middle
-
-.center[
-
-.width-25.circle[![](figures/lec0/dijkstra.jpg)]&nbsp;&nbsp;&nbsp;
-.width-25.circle[![](figures/lec0/valiant.jpg)]
-
-
-]
-
-Edsger Dijkstra: .italic[What do you work on?]<br>
-Leslie Valiant (very proudly): .italic[Artificial Intelligence.]<br>
-Edsger Dijkstra: .italic[Why don't you work first on the .bold["Intelligence"] part?]
-
-???
-
-Before trying to define the contours of artificial intelligence, let us first reflect on the these words.
-
--> No more "artificial"
 
 ---
 
@@ -206,7 +302,7 @@ Textbook definition(s) from AIMA.
 
 ---
 
-# Acting humanly
+class: middle
 
 ## The Turing test
 
@@ -246,34 +342,7 @@ today.
 
 ---
 
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/V-M5SVta2uw" frameborder="0" allowfullscreen></iframe>
-
-A conversation with GPT-3 (2020)
-
-???
-
-https://beta.openai.com/playground/p/default-chat
-
----
-
-class: middle, center
-
-Let us Turing test an AI!
-
-???
-
-Wooclap at https://app.wooclap.com/events/BKEAKB/0
-
-- https://www.midjourney.com/showcase/
-- https://lexica.art/
-
----
-
 class: middle
-
-## Limitations of the Turing test
 
 The Turing test tends to focus on *human-like errors*, *linguistic tricks*, etc.
 
@@ -290,202 +359,15 @@ so exactly like pigeons that they can fool even other pigeons.
 
 ---
 
-# Thinking humanly
+# Rational agents
 
-## Cognitive science
+- A **rational agent** acts so as to achieve the *best expected* outcome.
 
-Study of the *human mind* and its processes.
-- The goal of cognitive science
-  is to form a theory about the structure of the mind, summarized as a comprehensive **computer
-  model**.
-- It includes language, problem-solving, decision-making and perception.
-- A *cognitive architecture* usually follows human-like reasoning and can be used to
-produce testable predictions (time of delays during problem solving, kinds of
-mistakes, learning rates, etc).
+- Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
 
-???
+- Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
 
-Grew out of psychology.
-
----
-
-class: middle, center
-
-.width-80[![ACT-R](figures/lec0/soar.jpg)]
-
-The modern SOAR cognitive architecture.
-
-???
-
-The SOAR architecture is both:
-- a theory of cognition
-- a computational implementation of that theory
-
----
-
-class: middle
-
-## Neurobiology and neuroscience
-
-Study of the anatomy and physiology of neural tissue.
-- Neurobiology is concerned with the the *anatomy and physiology of the brain*, from major structures down to neurons and molecules.
-- Neuroscience adds to that the study of **how the brain works**, mechanistically, functionally, and systematically to produce observable behavior.
-
-.center.width-70[![](figures/lec0/latent.png)]
-
-.footnote[Image credits: M et al. 2018.]
-
-???
-
-Grew out of clinical neurology and neurobiology.
-
----
-
-class: middle
-
-## Limitations of cognition and neuroscience for AI
-
-.grid[
-.kol-2-3[
-- In linguistics, the argument of **poverty of the stimulus** states that children
-do not receive sufficient input to generalize grammatical rules through
-linguistic input alone.
-- (Controversial) Therefore, humans must be *biologically pre-wired*
-with **innate knowledge** for representing language.
-]
-.kol-1-3.center[
-.circle.width-100[![Noam Chomsky](figures/lec0/chomsky.png)]
-.caption[How do we know what we know? (Noam Chomsky, 1980)]
-]
-]
-
-For this reason, it may not be possible to implement a fully functioning
-computer model of the human mind without background knowledge of some sort.
-
-???
-
-A baby hears too few sentences to deduce the grammar of English before he speaks correctly.
-
-This is a huge technical **obstacle**, as accessing
-this knowledge would require reverse-engineering the brain.
-
-<=> How do we initialize a computer model of the brain?
-
----
-
-# Thinking rationally
-
-## The logical approach
-
-- The rational thinking approach is concerned with the study of *irrefutable
-reasoning processes*. It ensures that all actions performed by a computer are
-formally **provable** from inputs and prior knowledge.
-
-- The "laws of thought" were supposed to govern the operation of the mind.
-Their study initiated the field of *logic* and the *logicist tradition* of AI
-(1960-1990).
-
----
-
-exclude: true
-class: middle
-
-## Who owns the zebra?
-
-.grid[
-.kol-1-2[
-- There are five houses.
-- The English man lives in the red house.
-- The Swede has a dog.
-- The Dane drinks tea.
-- The green house is immediately to the left of the white house.
-- They drink coffee in the green house.
-- The man who smokes Pall Mall has birds.
-- In the yellow house they smoke Dunhill.
-- In the middle house they drink milk.
-]
-.kol-1-2[
-- The Norwegian lives in the first house.
-- The man who smokes Blend lives in the house next to the house with cats.
-- In a house next to the house where they have a horse, they smoke Dunhill.
-- The man who smokes Blue Master drinks beer.
-- The German smokes Prince.
-- The Norwegian lives next to the blue house.
-- They drink water in a house next to the house where they smoke Blend.
-]
-]
-
----
-
-exclude: true
-class: middle, smaller
-
-```prolog
-select([A|As],S):- select(A,S,S1),select(As,S1).
-select([],_).
-
-next_to(A,B,C):- left_of(A,B,C) ; left_of(B,A,C).
-left_of(A,B,C):- append(_,[A,B|_],C).
-
-zebra(Owns, HS):-  % color,nation,pet,drink,smokes
-      HS =    [ h(_,norwegian,_,_,_), _,  h(_,_,_,milk,_), _, _],
-      select( [ h(red,englishman,_,_,_),  h(_,swede,dog,_,_),
-                h(_,dane,_,tea,_),        h(_,german,_,_,prince) ], HS),
-      select( [ h(_,_,birds,_,pallmall),  h(yellow,_,_,_,dunhill),
-                h(_,_,_,beer,bluemaster) ],                         HS),
-      left_of(  h(green,_,_,coffee,_),    h(white,_,_,_,_),         HS),
-      next_to(  h(_,_,_,_,dunhill),       h(_,_,horse,_,_),         HS),
-      next_to(  h(_,_,_,_,blend),         h(_,_,cats, _,_),         HS),
-      next_to(  h(_,_,_,_,blend),         h(_,_,_,water,_),         HS),
-      next_to(  h(_,norwegian,_,_,_),     h(blue,_,_,_,_),          HS),
-      member(   h(_,Owns,zebra,_,_), HS).
-
-:- ?- time(( zebra(Who, HS), maplist(writeln,HS), nl, write(Who), nl, nl, fail
-             ; write('No more solutions.') )).
-
-h(yellow,norwegian, cats,  water, dunhill)
-h(blue,  dane,      horse, tea,   blend)
-h(red,   englishman,birds, milk,  pallmall)
-h(green, german,    zebra, coffee,prince)
-h(white, swede,     dog,   beer,  bluemaster)
-
-german
-```
-
----
-
-class: middle
-
-## Limitations of logical inference
-
-- Representation of *informal* knowledge is difficult.
-- Hard to define provable *plausible* reasoning.
-- Combinatorial **explosion** (in time and space).
-- Logical inference is only a part of intelligence. It does not cover everything:
-    - e.g., might be no provably correct thing to do, but still something must be done;
-    - e.g., reflex actions can be more successful than slower carefully deliberated ones.
-
-.center[![Pain withdrawal reflex](figures/lec0/reflex.jpg)]
-.caption[Pain withdrawal reflexes do not involve inference.]
-
----
-
-# Acting rationally
-
-A **rational agent** acts so as to achieve the *best expected* outcome.
-- Correct logical inference is just one of several possible mechanisms for achieving this goal.
-- Perfect rationality cannot be achieved due to computational limitations!
-  - The amount of reasoning is adjusted according to available resources and importance of the result.
-- The brain is good at making rational decisions but not perfect either.
-
----
-
-class: middle
-
-Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-
-Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
-The standard of rationality is general and mathematically well defined.
+- The standard of rationality is general and mathematically well defined.
 
 ---
 
@@ -501,18 +383,6 @@ In this course, Artificial intelligence = **Maximizing expected performance**
 ???
 
 Underline the importance of *expected*.
-
----
-
-# AI prehistory
-
-- *Philosophy:* logic, methods of reasoning, mind as physical system, foundations of learning, language, rationality.
-- *Mathematics:* formal representation and proof, algorithms, computation, (un)decidability, (in)tractability, probability.
-- *Psychology:* adaptation, phenomena of perception and motor control, psychophysics.
-- *Economics:* formal theory of rational decisions.
-- *Linguistics:* knowledge representation, grammar.
-- *Neuroscience:* plastic physical substrate for mental activity.
-- *Control theory:* homeostatic systems, stability, simple optimal agent designs.
 
 ---
 
@@ -742,15 +612,92 @@ It is about *modeling the world*:
 
 ---
 
+class: middle
+
+# INFO8006 Introduction to AI
+
+---
+
+# Course outline
+
+- Lecture 0: Artificial intelligence
+- Lecture 1: Intelligent agents
+- Lecture 2: Solving problems by searching
+- Lecture 3: Adversarial search
+- Lecture 4: Representing uncertain knowledge
+- Lecture 5: Inference in Bayesian networks
+- Lecture 6: Reasoning over time
+- Lecture 7: Machine learning and neural networks
+- Lecture 8: Making decisions
+- Lecture 9: Reinforcement learning
+
+---
+
+class: middle, center
+
+.width-50[![](figures/lec0/map.png)]
+
+???
+
+xxx update
+
+---
+
+class: middle
+
+## My mission
+
+By the end of this course, you will have built autonomous agents that efficiently make decisions in fully informed, partially observable and adversarial settings. Your agents will draw inferences in uncertain and unknown environments and optimize actions for arbitrary reward structures. 
+
+The models and algorithms you will learn in this course apply to a wide variety of artificial intelligence problems and will serve as the foundation for further study in any application area (from engineering and science, to business and medicine) you choose to pursue.
+
+---
+
+class: middle
+
+## Goals and philosophy
+
+.italic[General]
+- Understand the landscape of artificial intelligence.
+- Be able to write from scratch, debug and run (some) AI algorithms.
+
+.italic[Well-established and state-of-the-art algorithms] 
+- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
+- Introduction to materials new from research ($\leq$ 5 years old).
+- Understand some of the open questions and challenges in the field.
+
+.italic[Practical]
+- Fun and challenging course projects.
+
+---
+
+class: middle
+
+## Going further
+
+This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
+
+- INFO8006: Introduction to Artificial Intelligence $\leftarrow$ **you are there**
+- DATS0001: Foundations of Data Science
+- ELEN0062: Introduction to Machine Learning
+- INFO8010: Deep Learning
+- INFO8004: Advanced Machine Learning
+- INFO9023: Machine Learning Systems Design
+- INFO8003: Optimal decision making for complex problems
+- INFO0948: Introduction to Intelligent Robotics
+- INFO9014: Knowledge representation and reasoning
+- ELEN0016: Computer vision
+
+???
+
+Mention pre-requisites:
+- programming experience
+- probability theory
+
+
+---
+
 class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Turing, Alan M. "Computing machinery and intelligence." Mind 59.236 (1950): 433-460.
-- Newell, Allen, and Herbert Simon. "The logic theory machine--A complex information processing system." IRE Transactions on information theory 2.3 (1956): 61-79.
-- Chomsky, Noam. "Rules and representations." Behavioral and brain sciences 3.1 (1980): 1-15.
