@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Course syllabus, Fall 2022
+Course syllabus, Fall 2023
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: Less AGI, more NNs?
+R: AI for intelligent agents and direct applications in science and engineering.
 R: check https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
 
 ---
@@ -88,9 +89,7 @@ class: middle
 
 ---
 
-# Projects
-
-## Programming projects
+# Programming projects
 
 Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty.
 
@@ -98,20 +97,9 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 ---
 
-class: middle
-
-## Reading assignment
-
-Read a scientific paper in Artificial Intelligence.
-
-.center.width-40[![](figures/course-syllabus/alphago-paper.png)]
-
----
-
 # Evaluation
 
 - Written exam (60%)
-    - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
     - Project 1: +0.5
     - Project 2: 20%
