@@ -8,6 +8,10 @@ Lecture 4: Representing uncertain knowledge
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: move stuff from learning (map, mle) here?
+
 ---
 
 class: middle, center

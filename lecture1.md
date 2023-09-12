@@ -8,6 +8,10 @@ Lecture 1: Intelligent agents
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+Roomba example, actual video
+
 ---
 
 class: middle

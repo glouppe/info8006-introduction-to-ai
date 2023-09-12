@@ -10,8 +10,11 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: reorganize with lec 4
+R: extend the NN part, check cs188 materials
 R: check early lectures of https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
 R: prepare one code example, make this more concrete
+R: bishop quote
 
 ---
 

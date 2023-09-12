@@ -8,13 +8,6 @@ Course syllabus, Fall 2023
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: Less AGI, more NNs?
-R: AI for intelligent agents and direct applications in science and engineering.
-R: check https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
-R: bishop quote
-
 ---
 
 # Us
@@ -24,7 +17,7 @@ This course is given by:
 - Exercise sessions: François Rozet
 - Programming projects: Arnaud Delaunoy, François Rozet
 
-Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) for help.
+Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/fZaSPxsg) for help.
 
 <br>
 .center[
@@ -49,7 +42,7 @@ class: middle
 
 ## Videos
 
-Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD).
+Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD). They are not up-to-date with the current course, but they may still be useful.
 
 .center.width-60[![](figures/course-syllabus/youtube.png)]
 
@@ -113,9 +106,11 @@ class: middle
 
 ## Honor code
 
-You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.] In particular, the use of large language models (e.g., ChatGPT, Github Copilot) is forbidden -- unless you build and train your own :-)
+You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.] In particular, the use of large language models (e.g., ChatGPT, Github Copilot) is forbidden$^\*$.
 
 Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty office.
+
+.footnote[$^\*$: Unless you build and train your own :-)]
 
 ???
 

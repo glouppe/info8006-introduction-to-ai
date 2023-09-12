@@ -8,10 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Trim down some slides.
-
 ---
 
 class: middle, center
@@ -134,15 +130,23 @@ The transformer is one of the many neural network architectures that exist in de
 
 ---
 
-class: middle
-
-.center.width-100[![](figures/lec0/tokens.png)]
+class: black-slide
+background-image: url(./figures/lec0/soundboard.jpg)
+background-size: cover
 
 ???
 
 In practice, the transformer is implemented as a regular computer program. It takes as input a sequence of tokens, which are the words of a sentence, and outputs a sequence of tokens, which are the words of the next sentence. At initialization, the parameters of the neural network are set to random values, which results in random and wrong predictions. To make correct predictions, the parameters of the neural network must be adjusted, or trained, on a large corpus of text. More precisely, the parameters can be optimized with a training procedure to minimize the error between the predicted next word and the actual next word.
 
 Training a transformer is a bit like training a dog. You show it a lot of examples, and it learns to predict the next word. If it predicts the wrong word, you give it a negative feedback, and if it predicts the right word, you give it a positive feedback.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec0/tokens.png)]
+
+???
 
 Fortunately, each sentence contains many guess-the-next-word problems that can be used to train a transformer. [For instance, the sentence "John plays the piano and Paul plays the ___" contains 8 instances of the problem, one for each word.]
 
@@ -443,18 +447,19 @@ class: middle
 - 2000-: Availability of very large datasets.
 - 2010-: Availability of fast commodity hardware (GPUs).
 - 2012-: Resurgence of neural networks with  deep learning approaches.
+- 2017: Attention is all you need (transformers).
+- 2022: ChatGPT released to the public.
 
 ---
 
 # What can an AI do today?
 
 - Translate spoken Chinese to spoken English, live?
-- Answer multi choice questions, as good as an 8th grader? 
+- Answer multiple choice questions, as good as an 8th grader?
 - Solve university math problems?
 - Prove mathematical theorems?
 - Converse with a person for an hour?
 - Play decently at Chess? Go? Poker? Soccer?
-- Buy groceries on the web? in a supermarket?
 - Drive a car safely on a parking lot? in New York? in Germany?
 - Identify skin cancer better than a dermatologist?
 - Write computer code? 
@@ -484,7 +489,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/V1eYniJ0Rnk" frameborder="0" allowfullscreen></iframe>
 
-Playing Atari games
+Playing Atari games (2013)
 
 ---
 
@@ -493,23 +498,6 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/g-dKXOlsf98" frameborder="0" allowfullscreen></iframe>
 
 Beat the best human Go players (2016)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
-
-Playing soccer (2018)
-
----
-
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/tF4DML7FIWk" frameborder="0" allowfullscreen></iframe>
-
-... although some robots might now do better (2021).
 
 ---
 
@@ -529,6 +517,22 @@ Similar to a baby learning to walk.
 
 class: middle, center, black-slide
 
+<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
+
+Playing soccer (2018)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/tF4DML7FIWk" frameborder="0" allowfullscreen></iframe>
+
+... although some robots might now do better (2021).
+
+---
+
+class: middle, center, black-slide
+
 <iframe width="600" height="450" src="https://www.youtube.com/embed/qhUvQiKec2U" frameborder="0" allowfullscreen></iframe>
 
 Driving a car (NVIDIA, 2016)
@@ -537,9 +541,9 @@ Driving a car (NVIDIA, 2016)
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/RCahWWOSxaw" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/hA_-MkU0Nfw" frameborder="0" allowfullscreen></iframe>
 
-... and preventing accidents.
+Autonomous cars (Waymo, 2022)
 
 ---
 
@@ -547,15 +551,23 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/8USTGyUhnJk" frameborder="0" allowfullscreen></iframe>
 
-Driving on Mars.
+Driving on Mars (NASA/JPL, 2021)
 
 ---
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/IvmLEq9piJ4" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/FUUT6IrQjo4" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Detecting skin cancer (2017)
+Predicting extreme weather events (NVIDIA, 2023)
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/_eNUtLHXJkc" frameborder="0" volume="0" allowfullscreen></iframe>
+
+Improving Tuberculosis Monitoring with Deep Learning (NVIDIA, 2020)
 
 ---
 
@@ -563,23 +575,23 @@ class: middle, black-slide, center
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
 
-Advance Science (Deepmind, AlphaFold, 2020)
+Solving protein folding (Deepmind, AlphaFold, 2020)
 
 ---
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/Zm9B-DvwOgw" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/4RfD5JiXt3A" frameborder="0" allowfullscreen></iframe>
 
-Write computer code (OpenAI, 2021)
+Write computer code (Github Copilot X, 2023)
 
 ---
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/egJ0PTKQp4U?start=223" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/7c1lKFFF6dM" frameborder="0" allowfullscreen></iframe>
 
-Compose music (NVIDIA, 2017)
+Learning to sort waste<br>(ULiège, 2021)
 
 ---
 
@@ -588,15 +600,6 @@ class: middle, center, black-slide
 <iframe width="600" height="450" src="https://www.youtube.com/embed/J9Th_WYu6Eg" frameborder="0" allowfullscreen></iframe>
 
 Cow behaviour recognition (Francois Lievens, ULiège, 2022)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/MsuS0gaSHJ0" frameborder="0" allowfullscreen></iframe>
-
-Learning to sort waste<br>(Norman Marlier, ULiège, 2018)
-
 
 ---
 
@@ -636,10 +639,6 @@ class: middle
 class: middle, center
 
 .width-50[![](figures/lec0/map.png)]
-
-???
-
-xxx update
 
 ---
 
