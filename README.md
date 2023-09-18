@@ -18,13 +18,16 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | September 28 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
 | October 5 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
 | October 12 | Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 13 | Deadline of Project 1 |
 | October 19 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 26 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] |
 | November 9 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 4b: Kalman [[notebook](code/exercises-4-kalman.ipynb)] |
+| November 10 | Deadline of Project 2 |
 | November 16 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
 | November 23 | Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] |
 | November 30 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]]  | 
 | December 7 | Q&As <br> Correction of a past exam  |
+| December 8 | Deadline of Project 3 |
 | December 14 | No class.  | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
@@ -90,9 +93,9 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 1: [Search algorithms](projects/project1) (due by **TBD**)
-- Part 2: [Adversarial search](projects/project2) (due by **TBD**)
-- Part 3: [Bayes filter](projects/project3) (due by **TBD**)
+- Part 1: [Search algorithms](projects/project1) (due by October 13)
+- Part 2: [Adversarial search](projects/project2) (due by November 10)
+- Part 3: [Bayes filter](projects/project3) (due by December 8)
 
 ## Previous exams
 

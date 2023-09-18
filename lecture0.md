@@ -219,7 +219,7 @@ This is a very exciting hypothesis, but it is still a hypothesis. We do not know
 
 class: middle
 
-# Before ChatGPT
+# Artificial Intelligence
 
 ---
 
@@ -235,6 +235,15 @@ Triggers a rich imagination fueled by science-fiction.
 
 ---
 
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/DsBGaHywRhs" frameborder="0" allowfullscreen></iframe>
+
+Geoffrey Hinton
+
+---
+
 class: middle, center
 
 .width-60[![](figures/lec0/washing-machine.png)]
@@ -247,29 +256,11 @@ The reality is quite different...
 
 ---
 
-exclude: true
-class: middle
-
-.width-30.circle.center[![](figures/lec0/minsky.png)]
-
-.italic[".bold[What is intelligence, anyway?] It is only a word that people use to name those unknown processes with which our brains
-solve problems we call hard. But whenever you learn a skill yourself, you're less impressed or mystified when other people
-do the same.
-
-This is why .bold[the meaning of "intelligence" seems so elusive]: it describes not some definite thing but only the
-momentary horizon of .bold[our ignorance about how minds might work]. It is hard for scientists who try to understand intelligence
-to explain precisely what they do, since our working definitions change from year to year. But it is not at all unusual for
-sciences to aim at moving targets." -- Marvin Minsky]
-
-???
-
--> No more "intelligence"
-
----
-
 class: middle, center, black-slide
 
 <iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen allow="autoplay"></iframe>
+
+Yann LeCun
 
 ---
 
@@ -443,7 +434,6 @@ class: middle
 - 1985-1995: The return of neural networks.
 - 1988-: Resurgence of probability, focus on uncertainty, general increase in technical depth.
 - 1995-2010: New fade of neural networks.
-- 1995-: Complete intelligent agents and learning systems.
 - 2000-: Availability of very large datasets.
 - 2010-: Availability of fast commodity hardware (GPUs).
 - 2012-: Resurgence of neural networks with  deep learning approaches.
@@ -576,6 +566,14 @@ class: middle, black-slide, center
 <iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
 
 Solving protein folding (Deepmind, AlphaFold, 2020)
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/zrcxLZmOyNA" frameborder="0" allowfullscreen></iframe>
+
+Powering the future of clean energy (NVIDIA, 2023)
 
 ---
 
