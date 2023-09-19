@@ -8,10 +8,6 @@ Lecture 1: Intelligent agents
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Roomba example, actual video
-
 ---
 
 class: middle
@@ -25,6 +21,10 @@ class: middle
 <br><br>
 .width-80.center[![](figures/lec1/agent-environment.svg)]
 
+???
+
+Roomba example
+
 ---
 
 class: middle
@@ -37,7 +37,6 @@ class: middle
 - The agent behavior is described by the **agent function**, or **policy**, that
   maps percept histories to actions:
   $$f : \mathcal{P}^* \to \mathcal{A}$$
-
 
 ---
 
@@ -128,9 +127,8 @@ class: middle
 # Performance, environment, actuators, sensors
 
 The characteristics of the performance measure, environment, action space and
-percepts dictate techniques for selecting rational actions.
-
-These characteristics are summarized as the **task environment**.
+percepts dictate approaches for selecting rational actions.
+They are summarized as the **task environment**.
 
 ## Example 1: a self-driving car
 - *performance measure*: safety, destination, legality, comfort, ...
@@ -211,7 +209,7 @@ What about Pacman?
 
 # Agent programs
 
-The job of AI is to design an **agent program** that implements the agent
+Our goal is to design an **agent program** that implements the agent
 function. 
 
 Agent programs can be designed and implemented in many ways:
@@ -225,19 +223,16 @@ Agent programs can be designed and implemented in many ways:
 
 # Reflex agents
 
-<br>
-.center.width-70[![](figures/lec1/reflex-agent-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
 
 Reflex agents
 - choose an action based on current percept (and maybe memory);
 - may have memory or model of the world's current state;
 - do not consider the futur consequences of their actions.
+
+<br>
+.center.width-50[![](figures/lec1/reflex-agent-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -287,31 +282,25 @@ Then map this state to an action.
 
 class: middle
 
-- *Model-based agents* handle partial observability of the environment by
-  keeping track of the part of the world they cannot see now.
-
+- *Model-based agents* handle partial observability of the environment by keeping track of the part of the world they cannot see now.
 - The internal state of model-based agents is updated on the basis of a **model** which determines:
-    - how the environment evolves independently of the agent;
-    - how the agent actions affect the world.
+  - how the environment evolves independently of the agent;
+  - how the agent actions affect the world.
 
 ---
 
 # Planning agents
-
-<br>
-.center.width-80[![](figures/lec1/plan-agent-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
 
 Planning agents:
 - ask "what if?";
 - make decisions based on (hypothesized) consequences of actions;
 - must have a model of how the world evolves in response to actions;
 - must formulate a goal.
+
+<br>
+.center.width-50[![](figures/lec1/plan-agent-cartoon.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -337,7 +326,6 @@ class: middle
     - More general than rules. Goals are rarely explicit in condition-action rules.
     - Finding action sequences that achieve goals is difficult.
       *Search* and *planning* are two strategies.
-- Example (autonomous car): Has the car arrived to destination?
 
 ---
 

@@ -71,9 +71,9 @@ Reflex agents
          to a dot if there is one in its neighborhood.
          No planning is involved to take this decision. ]
 
-.Q[[Q]] Can a reflex agent be rational?
-
 ???
+
+Can a reflex agent be rational?
 
 Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
@@ -928,9 +928,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Hart, Peter E., Nils J. Nilsson, and Bertram Raphael. "A formal basis for the heuristic determination of minimum cost paths." IEEE transactions on Systems Science and Cybernetics 4.2 (1968): 100-107.
