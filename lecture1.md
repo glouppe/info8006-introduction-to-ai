@@ -256,13 +256,15 @@ class: middle
 - *Simple reflex agents* select actions on the basis of the current percept,
   ignoring the rest of the percept history.
 - They implement **condition-action rules** that match the
-  current percept to an action.
-  - Rules provide a way to *compress* the function table.
-  - Example (autonomous car): If a car in front of you slow down, you should break.
-      The color and model of the car, the music on the radio or the weather are all irrelevant.
+  current percept to an action. Rules provide a way to *compress* the function table.
 - They can only work in a *Markovian* environment, that is if the correct
   decision can be made on the basis of only the current percept.
   In other words, if the environment is fully observable.
+
+???
+
+Example (autonomous car): If a car in front of you slow down, you should break.
+The color and model of the car, the music on the radio or the weather are all irrelevant.
 
 ---
 
@@ -343,12 +345,14 @@ Often there are several sequences of actions that achieve a goal. We should pick
 
 class: middle
 
-- *Goals* are often not enough to generate high-quality behavior.
-    - Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
-    - Goals only provide binary assessment of performance.
+- *Goals* are often not enough to generate high-quality behavior. Goals only provide binary assessment of performance.
 - A **utility function** scores any given sequence of environment states.
     - The utility function is an internalization of the performance measure.
 - A rational utility-based agent chooses an action that **maximizes the expected utility of its outcomes**.
+
+???
+
+Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
 
 ---
 
