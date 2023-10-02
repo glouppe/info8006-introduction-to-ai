@@ -7,7 +7,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - When: Fall 2023, Thursday 8:30 AM to 12:30 AM
 - Classroom: B31/Laurent (4/89)
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
-- Discord: [https://discord.gg/fZaSPxsg](https://discord.gg/fZaSPxsg)
+- Discord: [https://discord.gg/vrz6qcm8K](https://discord.gg/vrz6qcm8K)
 
 ## Agenda
 
