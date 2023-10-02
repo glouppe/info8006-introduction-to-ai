@@ -55,9 +55,16 @@
 
 \renewcommand{\thesection}{Exercise \arabic{section}}
 
+\RequirePackage{catchfile}
 \RequirePackage{environ}
 
-\NewEnviron{solution}{\BODY}
+\CatchFileEdef{\NOSOL}{"|kpsewhich --var-value NOSOL"}{\endlinechar=-1}
+
+\if\NOSOL1
+    \NewEnviron{solution}{}
+\else
+    \NewEnviron{solution}{\BODY}
+\fi
 
 %%%%%%%%%%%
 % Options %
