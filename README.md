@@ -16,8 +16,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | September 14 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
 | September 21 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] |
 | September 28 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
-| October 5 | Lecture 4: [Representing uncertain knowledge][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
-| October 12 | Lecture 5: [Inference in Bayesian networks][l5] [[PDF][l5-pdf]] [[video][l5-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 5 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
+| October 12 | Lecture 5: [Representing uncertain knowledge][l5] [[PDF][l5-pdf]] <br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 13 | Deadline of Project 1 |
 | October 19 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 26 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] |
@@ -128,6 +128,7 @@ Due to progress in the field, some of the lectures have become less relevant. Ho
 | Topic |
 | --- |
 | Lecture: [Constraint satisfaction problems](https://glouppe.github.io/info8006-introduction-to-ai/?p=archives-lecture-csp.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/archives-lec-csp.pdf)] |
+| Lecture: [Inference in Bayesian networks](https://glouppe.github.io/info8006-introduction-to-ai/?p=archives-lecture-inference.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/archives-lec-inference.pdf)] |
 | Lecture: [Communication](https://glouppe.github.io/info8006-introduction-to-ai/?p=archives-lecture-communication.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/archives-lec-communication.pdf)] |
 | Lecture: [Artificial general intelligence and beyond](https://glouppe.github.io/info8006-introduction-to-ai/?p=archives-lecture-agi.md) [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/archives-lec-agi.pdf)] |
 
