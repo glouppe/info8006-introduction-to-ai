@@ -16,7 +16,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | September 14 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
 | September 21 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] |
 | September 28 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
-| October 5 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] [[video][l4-vid]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
+| October 5 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
 | October 12 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 13 | Deadline of Project 1 |
 | October 19 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
