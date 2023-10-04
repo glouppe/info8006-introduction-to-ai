@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 5: Representing uncertain knowledge
+Lecture 5: Probabilistic reasoning
 
 <br><br>
 Prof. Gilles Louppe<br>

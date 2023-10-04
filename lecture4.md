@@ -26,10 +26,11 @@ Motivate why this is important in AI (and this is not just one more probability 
 .kol-1-2[
 
 - Random variables
-- Joint and marginal distributions
-- Conditional distributions
-- Product rule, Chain rule, Bayes' rule
+- Probability distributions
 - Inference
+- Independence
+- The Bayes' rule
+
     
 ]
 .kol-1-2[
@@ -78,9 +79,17 @@ class: middle, black-slide
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
-???
+---
 
-Could we use a logical agent for this game?
+class: middle
+
+.center.width-50[![](figures/lec0/max-utility.png)]
+
+## Principle of maximum expected utility
+
+An agent is rational if it chooses the action that yields the **highest expected utility**, averaged over all the possible outcomes of the action.
+
+.question[What does "expected" mean exactly?]
 
 ---
 
@@ -118,10 +127,11 @@ What do probability values represent?
     - i.e., probabilities do not have external physical significance.
     - This is the interpretation of probabilities that we will use!
 
+.question[How shall we assign numerical values to beliefs?]
 
 ---
 
-# Kolmogorov's probability theory
+# Kolmogorov's axioms
 
 Begin with a set $\Omega$, the **sample space**.
 
@@ -133,6 +143,12 @@ A **probability space** is a sample space equipped with a probability function, 
 - 3rd axiom: $P(\\{ \omega\_1, ..., \omega\_n \\}) = \sum\_{i=1}^n P(\omega\_i)$ for any set of samples
 
 where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
+
+???
+
+The axioms really do constrain the degrees of belief an agent can have concerning logically related propositions.
+
+De Finetti's theorem implies that no rational agent can have beliefs that violate the axioms of probability.
 
 ---
 
@@ -154,7 +170,7 @@ $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
 - $P$ induces a *probability distribution* for any random variable $X$.
     - $P(X=x\_i) = \sum\_{\\{\omega: X(\omega)=x\_i\\}} P(\omega)$
     - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
-- An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n)\_i\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
+- An *event* $E$ is a set of outcomes $\\{(x\_1, ..., x\_n), ...\\}$ of the variables $X\_1, ..., X\_n$, such that $$P(E) = \sum_{(x_1, ..., x_n) \in E} P(X\_1=x_1, ..., X\_n=x_n).$$
 
 ???
 
@@ -459,7 +475,7 @@ class: middle
     - Space complexity: $O(d^n)$
     - Time complexity: $O(d^n)$
 
-.exercise[Can we reduce the size of the representation of the joint distribution?]
+.question[Can we reduce the size of the representation of the joint distribution?]
 
 ---
 
@@ -753,6 +769,11 @@ class: middle
 
 .center.width-100[![](figures/lec4/lfi-chain.png)]
 
+
+Given some observation $x$ and prior beliefs $p(\theta)$, science is about updating one's knowledge, which may be framed as computing
+$$p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}.$$
+
+
 ---
 
 class: middle, black-slide
@@ -773,11 +794,6 @@ class: middle
 .width-25[![](./figures/lec4/exoplanet-residuals.png)]
 .width-70[![](./figures/lec4/exoplanet-corner.png)]
 ]
-
-???
-
-Given some observation $x$ and prior beliefs $p(\theta)$, science is about updating one's knowledge, which may be framed as computing
-$$p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}.$$
 
 ---
 
