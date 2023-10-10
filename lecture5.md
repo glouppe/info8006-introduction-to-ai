@@ -8,11 +8,6 @@ Lecture 5: Probabilistic reasoning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: move stuff from learning on parameter estimation (map, mle)
-R: parameter estimation == setting P (Kolmogorov) from data and picking the best one
-
 ---
 
 # Today
@@ -50,11 +45,11 @@ The explicit representation of the joint probability distribution grows exponent
 .kol-3-4[
 
 A Bayesian network is a .bold[directed acyclic graph] where
-- each node corresponds to a random variable;
+- each **node** corresponds to a random variable;
     - observed or unobserved
     - discrete or continuous
-- each edge is directed and indicates a direct probabilistic dependency between two variables;
-- each node $X_i$ is annotated with a conditional probability distribution ${\bf P}(X_i | \text{parents}(X_i))$ that defines the distribution of $X_i$ given its parents in the network.
+- each **edge** is directed and indicates a direct probabilistic dependency between two variables;
+- each node $X_i$ is annotated with a *conditional probability distribution* $${\bf P}(X_i | \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
 
 ]
 .kol-1-4.width-100[![](figures/lec5/example-d.png)]
@@ -73,7 +68,7 @@ class: middle
 ## Example 1
 
 - Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
-- Network topology from "causal" knowledge:
+- The network topology can be defined from domain knowledge:
     - A burglar can set the alarm off
     - An earthquake can set the alaram off
     - The alarm can cause Mary to call
@@ -105,6 +100,7 @@ A Bayesian network implicitly encodes the full joint distribution as a product o
 
 $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i)).$$
 
+Proof:
 - By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
 - Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
 $$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
@@ -135,7 +131,9 @@ class: middle
 .kol-1-2[.width-100[![](figures/lec5/dentist-network.svg)]]
 ]
 
-By construction, the topology of the network encodes conditional independence assertions. Each variable is independent of its non-descendants given its parents. E.g.,
+The dentist's scenario can be modeled as a Bayesian network with four variables, as shown on the right.
+
+By construction, the topology of the network encodes conditional independence assertions. Each variable is independent of its non-descendants given its parents:
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
@@ -154,7 +152,7 @@ class: middle
 .kol-2-3[.width-90[![](figures/lec5/traffic2.png)]<br><br>]
 ]
 
-## Example 3
+## Example 3: Edges need not be causal!
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -547,7 +545,7 @@ Z &= \sum_q P(q,e_1,...,e_k) \\\\
 
 class: middle
 
-.width-25.center[![](figures/lec5/bn-burglar.png)]
+.width-25.center[![](figures/lec5/bn-alarm.svg)]
 
 Consider the alarm network and the query ${\bf P}(B|j,m)$. We have
 $$\begin{aligned}
@@ -709,7 +707,7 @@ $$\begin{aligned}
 
 class: middle, center
 
-.center.width-25[![](figures/lec5/bn-burglar.png)]
+.center.width-25[![](figures/lec5/bn-alarm.svg)]
 
 (blackboard example for $P(B|j,m)$)
 
@@ -724,8 +722,6 @@ Consider the query ${\bf P}(J|b)$:
 $${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
 - $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
 - In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
-
-.pull-right[![](figures/lec5/bn-burglar.png)]
 
 .italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
@@ -758,7 +754,7 @@ The computational and space complexity of variable elimination is determined by 
 
 # Approximate inference
 
-Exact inference is **intractable** for most probabilistic models of practical interest.
+Exact inference is *intractable* for most probabilistic models of practical interest.
 (e.g., involving many variables, continuous and discrete, undirected cycles, etc).
 
 We must resort to **approximate** inference algorithms:
@@ -777,9 +773,13 @@ class: middle
 
 class: middle
 
-When modeling a domain, we must choose a probabilistic model such as a Bayesian network. However, specifying the individual probabilities is often difficult. 
+When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probabilities is often difficult. 
 
-A workaround is to use a **parameterized** family ${\bf P}(X | \theta)$ of models, and *estimate* the parameters $\theta$ from data.
+A workaround is to use a **parameterized** family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and *estimate* the parameters $\theta$ from data.
+
+???
+
+Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distributions $P_\theta$.
 
 ---
 
@@ -796,7 +796,7 @@ Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \{x\_1, ..., x\_N
 The *likelihood* of the parameters $\theta$ is the probability of the data given the parameters
 $$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
 
-The **maximum likelihood estimate** (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood:
+The **maximum likelihood estimate** (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
 $$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
 
 ---
@@ -805,7 +805,7 @@ class: middle
 
 In practice,
 1. Write down the log-likelihood $L$ of the parameters $\theta$.
-2. Write down the derivative of the log likelihood of the parameters $\theta$.
+2. Write down the derivative $\frac{\partial L}{\partial \theta}$ of the log-likelihood of the parameters $\theta$.
 3. Find the parameter values $\theta^\*$ such that the derivatives are zero (and check whether the Hessian is negative definite).
 
 ???
@@ -831,14 +831,6 @@ L(\mathbf{d}|\theta) &= \log P(\mathbf{d}|\theta) = c \log \theta + l \log(1-\th
 \frac{\partial L(\mathbf{d}|\theta)}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
 \end{aligned}$$
 Hence $\theta=\frac{c}{N}$.
-Instead, we can use a **prior** distribution $P(\theta)$ over the parameters, and compute the **posterior** distribution $P(\theta|\mathbf{d})$. Then, as data arrives, we can update the posterior distribution.
-???
-
-Highlight that using the empirical estimate as an estimator of the mean can be viewed as consequence of
-- deciding on a probabilistic model
-- maximum likelihood estimation under this model
-
-Seems sensible, but causes problems with $0$ counts!
 
 ---
 
@@ -883,9 +875,11 @@ Again, results coincide with intuition.
 
 With small datasets, maximum likelihood estimation can lead to overfitting.
 
-Instead we can treat parameter learning as a **Bayesian inference** problem, and use a **prior** distribution ${\bf P}(\theta)$ over the parameters.
+Instead we can treat parameter learning as a .bold[Bayesian inference] problem.
+- Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
+- Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
-Then, as data arrives, we can update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
+.question[How does Figure 20.2 (a) should be updated?]
 
 ???
 
