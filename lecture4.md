@@ -96,7 +96,7 @@ An agent is rational if it chooses the action that yields the **highest expected
 # Uncertainty
 
 General setup:
-- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
+- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., senso(it is too much work or irrealistic to define an exact model)r readings).
 - **Unobserved** variables: agent needs to reason about other aspects that are uncertain (e.g., where the ghost is).
 - (Probabilistic) *model*: agent knows or believes something about how the observed variables relate to the unobserved variables.
 
@@ -108,8 +108,8 @@ General setup:
 
 Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
 - Probability values **summarize** effects of
-    - *laziness* (failure to enumerate all world states)
-    - *ignorance* (lack of relevant facts, initial conditions, correct model, etc).
+    - *ignorance* (theoretical, practical)
+    - *laziness* (lack of time, resources)
 - Probabilities relate propositions to one's own state of knowledge (or lack thereof).
     - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
 
@@ -149,6 +149,8 @@ where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
 The axioms really do constrain the degrees of belief an agent can have concerning logically related propositions.
 
 De Finetti's theorem implies that no rational agent can have beliefs that violate the axioms of probability.
+
+$P$ can be universal (Frequentist), subjective (Bayesian). It is a choice we make. It can even be parameterized and then learned from data (Lecture 5 and 7).
 
 ---
 
