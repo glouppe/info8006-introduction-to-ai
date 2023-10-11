@@ -13,17 +13,17 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 | Date | Topic |
 | ---- | ----- |
-| September 14 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] [[video][syllabus-vid]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] [[video](l0-vid)] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] [[video][l1-vid]] |
-| September 21 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] [[video][l2-vid]] |
-| September 28 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] [[video][l3-vid]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
+| September 14 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
+| September 21 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] |
+| September 28 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
 | October 5 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[solutions][e2s]] |
 | October 12 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
 | October 13 | Deadline of Project 1 |
-| October 19 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] [[video][l6-vid]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
-| October 26 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] [[video][l7-vid]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] |
-| November 9 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] [[video][l8-vid]] <br> Exercises 4b: Kalman [[notebook](code/exercises-4-kalman.ipynb)] |
+| October 19 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>Exercises 3: Reasoning under uncertainty [[PDF][e3]] [[solutions][e3s]] |
+| October 26 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4: Reasoning over time [[PDF][e4]] [[solutions][e4s]] |
+| November 9 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 4b: Kalman [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 10 | Deadline of Project 2 |
-| November 16 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] [[video](l9-vid)] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
+| November 16 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
 | November 23 | Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] |
 | November 30 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]]  | 
 | December 7 | Q&As <br> Correction of a past exam  |
@@ -32,47 +32,36 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
-[syllabus-vid]: https://www.youtube.com/watch?v=XOjc3OtJA4U
 
 [l0]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture0.md
 [l0-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec0.pdf
-[l0-vid]: https://www.youtube.com/watch?v=G6YrPwF-to8
 
 [l1]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture1.md
 [l1-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec1.pdf
-[l1-vid]: https://www.youtube.com/watch?v=WYxZiGIZXSs
 
 [l2]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md
 [l2-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec2.pdf
-[l2-vid]: https://www.youtube.com/watch?v=9hU3gx79pEE
 
 [l3]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture3.md
 [l3-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec3.pdf
-[l3-vid]: https://www.youtube.com/watch?v=rjCBWMJhKg0
 
 [l4]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture4.md
 [l4-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec4.pdf
-[l4-vid]: https://www.youtube.com/watch?v=i1UqwV3jMIY
 
 [l5]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture5.md
 [l5-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec5.pdf
-[l5-vid]: https://www.youtube.com/watch?v=p5EFRO8YLI0
 
 [l6]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture6.md
 [l6-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec6.pdf
-[l6-vid]: https://www.youtube.com/watch?v=crN15fPqnoo
 
 [l7]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture7.md
 [l7-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec7.pdf
-[l7-vid]: https://www.youtube.com/watch?v=Vt0vySeV1hc
 
 [l8]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture8.md
 [l8-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec8.pdf
-[l8-vid]: https://www.youtube.com/watch?v=ORYUUPEkiQU
 
 [l9]: https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture9.md
 [l9-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/lec9.pdf
-[l9-vid]: https://www.youtube.com/watch?v=mjq7Py-bzmw
 
 [e1]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1.pdf
 [e1s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-1-solutions.pdf
