@@ -102,8 +102,8 @@ $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i)).$$
 
 Proof:
 - By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
-- Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$:
-$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$$
+- Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$, we have
+$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i)).$$
 - Therefore, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
 
 ---
@@ -148,13 +148,13 @@ A dentist is examining a patient's teeth. The patient has a cavity, but the dent
 class: middle
 
 .grid.center[
-.kol-1-3[.width-80[![](figures/lec5/traffic1.png)]]
-.kol-2-3[.width-90[![](figures/lec5/traffic2.png)]<br><br>]
+.kol-1-3[.width-70[![](figures/lec5/traffic1.png)]]
+.kol-2-3[.width-80[![](figures/lec5/traffic2.png)]<br><br>]
 ]
 
-## Example 3: Edges need not be causal!
+## Example 3
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+Edges may correspond to causal relations.
 
 .grid.center[
 .kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
@@ -178,6 +178,8 @@ ${\bf P}(T|R)$
 ]
 ]
 
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
 ???
 
 Causal model
@@ -189,6 +191,8 @@ class: middle
 .center.width-60[![](figures/lec5/traffic3.png)]
 
 ## Example 3 (bis)
+
+... but edges need not be causal!
 
 .grid.center[
 .kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
@@ -309,7 +313,7 @@ P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
 &= P(z|y)
 \end{aligned}$$
 
-We say that the evidence along the cascade **"blocks"** the influence.
+We say that the evidence along the cascade **blocks** the influence.
 
 ]
 .kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
@@ -705,11 +709,13 @@ $$\begin{aligned}
 
 ---
 
-class: middle, center
+class: middle
 
-.center.width-25[![](figures/lec5/bn-alarm.svg)]
+.center.width-35[![](figures/lec5/bn-alarm.svg)]
 
-(blackboard example for $P(B|j,m)$)
+<br>
+
+.question[Run the variable elimination algorithm for the query ${\bf P}(B|j,m)$.]
 
 ---
 
@@ -791,7 +797,7 @@ class: middle
 
 # Maximum likelihood estimation
 
-Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \{x\_1, ..., x\_N\}$.
+Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\\{x\_1, ..., x\_N\\\}$.
 
 The *likelihood* of the parameters $\theta$ is the probability of the data given the parameters
 $$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
@@ -804,7 +810,7 @@ $$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
 class: middle
 
 In practice,
-1. Write down the log-likelihood $L$ of the parameters $\theta$.
+1. Write down the log-likelihood $L(\theta) = \log P({\bf d}|\theta)$ of the parameters $\theta$.
 2. Write down the derivative $\frac{\partial L}{\partial \theta}$ of the log-likelihood of the parameters $\theta$.
 3. Find the parameter values $\theta^\*$ such that the derivatives are zero (and check whether the Hessian is negative definite).
 
@@ -825,7 +831,7 @@ What is the fraction $\theta$ of cherry candies?
 Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
 These are i.i.d. observations, therefore
 $$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta) = \theta^c (1-\theta)^l.$$
-Maximize this w.r.t. $\theta$, which is easier for the log-likelihood:
+Maximize this w.r.t. $\theta$, which is easier for the log-likelihood and leads to
 $$\begin{aligned}
 L(\mathbf{d}|\theta) &= \log P(\mathbf{d}|\theta) = c \log \theta + l \log(1-\theta) \\\\
 \frac{\partial L(\mathbf{d}|\theta)}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
@@ -875,7 +881,7 @@ Again, results coincide with intuition.
 
 With small datasets, maximum likelihood estimation can lead to overfitting.
 
-Instead we can treat parameter learning as a .bold[Bayesian inference] problem.
+Instead we can treat parameter learning as a .bold[Bayesian inference] problem:
 - Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
 - Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
@@ -905,9 +911,19 @@ P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
 &= \text{Beta}(\theta|a+1,b).
 \end{aligned}$$
 
-???
+---
 
-Show a live demo!
+class: middle, center
+
+(demo)
+
+---
+
+class: middle
+
+## Case (b)
+
+.center.width-100[![](figures/lec5/caseb-bayesian.png)]
 
 ---
 
