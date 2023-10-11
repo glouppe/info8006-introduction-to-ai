@@ -410,6 +410,19 @@ $P(x,y,z)=P(x)P(y)P(z|x,y)$]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+Proof:
+
+$$P(x,y,z) = P(x)P(y)P(z|x,y)$$
+
+and
+
+$$P(x,y,z) = P(x,y)P(z|x,y)$$
+
+therefore
+
+$$P(x,y) = P(x)P(y)$$
 
 ---
 
@@ -879,9 +892,10 @@ Again, results coincide with intuition.
 
 # Bayesian parameter learning
 
-With small datasets, maximum likelihood estimation can lead to overfitting.
+With small datasets, maximum likelihood estimation can lead to overfitting. The MLE also does not provide a measure of uncertainty about the parameters.
 
 Instead we can treat parameter learning as a .bold[Bayesian inference] problem:
+- Make the parameters $\theta$ random variables and treat them as hidden variables.
 - Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
 - Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
