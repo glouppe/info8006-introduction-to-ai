@@ -792,7 +792,7 @@ class: middle
 
 class: middle
 
-When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probabilities is often difficult. 
+When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probability values is often difficult. 
 
 A workaround is to use a **parameterized** family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and *estimate* the parameters $\theta$ from data.
 
@@ -890,20 +890,23 @@ Again, results coincide with intuition.
 
 ---
 
+class: middle
+
+.question[In case (a), if we unwrap 1 candy and get 1 cherry, what is the MLE? How confident are we in this estimate?]
+
+- With small datasets, maximum likelihood estimation can lead to overfitting. 
+- The MLE does not provide a measure of uncertainty about the parameters.
+
+---
+
 # Bayesian parameter learning
 
-With small datasets, maximum likelihood estimation can lead to overfitting. The MLE also does not provide a measure of uncertainty about the parameters.
-
-Instead we can treat parameter learning as a .bold[Bayesian inference] problem:
+We can treat parameter learning as a .bold[Bayesian inference] problem:
 - Make the parameters $\theta$ random variables and treat them as hidden variables.
 - Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
 - Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
 .question[How does Figure 20.2 (a) should be updated?]
-
-???
-
-E.g., if we unwrap 1 candy and get 1 cherry, then the MLE is $\theta^\*=1$, which is not a reasonable conclusion.
 
 ---
 
