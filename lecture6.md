@@ -820,7 +820,7 @@ $$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{
 is also a Gaussian distribution.
 - .italic[Update step:]<br><br>
 If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
 ---
@@ -971,7 +971,8 @@ class: middle
 
 ## Data assimilation for weather forecasts 
 
-In weather forecasting, filtering is used to combine observations of the atmosphere with numerical models to estimate its current state (data assimilation). 
+In weather forecasting, filtering is used to combine observations of the atmosphere with numerical models to estimate its current state.
+This is called **data assimilation**.
 
 Then, the model is used to predict the future states of the atmosphere.
 

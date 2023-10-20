@@ -930,12 +930,6 @@ P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
 
 ---
 
-class: middle, center
-
-(demo)
-
----
-
 class: middle
 
 ## Case (b)
@@ -950,6 +944,12 @@ class: middle
 
 When the posterior cannot be computed analytically, we can use **maximum a posteriori** (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
 $$\theta^\* = \arg \max\_\theta P(\theta|\mathbf{d}) = \arg \max\_\theta P(\mathbf{d}|\theta) P(\theta).$$
+
+---
+
+class: middle, center
+
+(demo)
 
 ---
 
