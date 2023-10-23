@@ -2,96 +2,518 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 5: Inference in Bayesian networks
+Lecture 5: Probabilistic reasoning
 
 <br><br>
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Reorganize: use BNs as generators by sampling.
-
-Discuss the sampling algorithms with code, to better communicate the inefficiency and intuition => All of this could be done with a notebook.
-
-Skip the entire lecture?
-
 ---
 
 # Today
 
-.grid[
-.kol-1-2[
-- Exact inference
-    - Inference by enumeration
-    - Inference by variable elimination
-- Approximate inference
-    - Ancestral sampling
-    - Rejection sampling
-    - Likelihood weighting
-    - Gibbs sampling
-]
-.kol-1-2[
-<br><br>
-.width-100[![](figures/lec5/bn-cartoon.png)]
-]
-]
+- Bayesian networks
+    - Semantics
+    - Construction
+    - Independence relations
+- Inference
+- Parameter learning
+
+.center.width-65[![](figures/lec5/bn-cartoon.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Representing uncertain knowledge
+
+---
+
+class: middle
+
+The explicit representation of the joint probability distribution grows exponentially with the number of variables.
+
+*Independence* and *conditional independence* assumptions reduce the number of probabilities that need to be specified. They can be represented explicitly in the form of a **Bayesian network**.
 
 ---
 
 # Bayesian networks
 
 .grid[
-.kol-2-3[
-A Bayesian network is a directed acyclic graph in which:
-- Each node corresponds to a *random variable* $X\_i$.
-- Each node $X\_i$ is annotated with a **conditional probability distribution** ${\bf P}(X\_i | \text{parents}(X\_i))$ that quantifies the effect of the parents on the node.
+.kol-3-4[
 
-A Bayesian network implicitly encodes the full joint distribution as the product of the local distributions:
-    $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$$
+A Bayesian network is a .bold[directed acyclic graph] where
+- each **node** corresponds to a random variable;
+    - observed or unobserved
+    - discrete or continuous
+- each **edge** is directed and indicates a direct probabilistic dependency between two variables;
+- each node $X_i$ is annotated with a *conditional probability distribution* $${\bf P}(X_i | \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
+
 ]
-.kol-1-3.center[.width-100[![](figures/lec5/bn-cartoon2.png)]
+.kol-1-4.width-100[![](figures/lec5/example-d.png)]
+]
 
-<br>
+???
 
-.width-70[![](figures/lec5/bn-cartoon3.png)]]
+In the simplest case, conditional distributions are represented as conditional probability tables (CPTs).
+
+---
+
+class: middle
+
+.center.width-40[![](figures/lec5/alarm.png)]
+
+## Example 1
+
+- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
+- The network topology can be defined from domain knowledge:
+    - A burglar can set the alarm off
+    - An earthquake can set the alaram off
+    - The alarm can cause Mary to call
+    - The alarm can cause John to call
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+I am at work, neighbor John calls to say my alarm is ringing, but neighbor
+Mary does not call. Sometimes it's set off by minor earthquakes.
+Is there a burglar?
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec5/burglary2.svg)]
+
+???
+
+Blackboard: example of calculation, as in the next slide.
+
+---
+
+# Semantics
+
+A Bayesian network implicitly encodes the full joint distribution as a product of local distributions, that is
+
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i)).$$
+
+Proof:
+- By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
+- Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$, we have
+$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i)).$$
+- Therefore, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+
+---
+
+class: middle
+
+## Example 1 (continued)
+
+$$
+\begin{aligned}
+P(j, m, a, \lnot b, \lnot e) &= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
+&= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998 \\\\
+&\approx 0.00063
+\end{aligned}
+$$
+
+---
+
+class: middle
+
+## Example 2
+
+.grid[
+.kol-1-2[.width-90[![](figures/lec5/tooth.png)]]
+.kol-1-2[.width-100[![](figures/lec5/dentist-network.svg)]]
+]
+
+The dentist's scenario can be modeled as a Bayesian network with four variables, as shown on the right.
+
+By construction, the topology of the network encodes conditional independence assertions. Each variable is independent of its non-descendants given its parents:
+- $\text{Weather}$ is independent of the other variables.
+- $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+A dentist is examining a patient's teeth. The patient has a cavity, but the dentist does not know this. However, the patient has a toothache, which the dentist observes.
+
+---
+
+class: middle
+
+.grid.center[
+.kol-1-3[.width-70[![](figures/lec5/traffic1.png)]]
+.kol-2-3[.width-80[![](figures/lec5/traffic2.png)]<br><br>]
+]
+
+## Example 3
+
+Edges may correspond to causal relations.
+
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
+.kol-2-5[
+${\bf P}(R)$
+
+| $R$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $0.25$ |
+| $\lnot\text{r}$ | $0.75$ |
+]
+.kol-2-5[
+${\bf P}(T|R)$
+
+| $R$ | $T$ | $P$ |
+| --- | --- | --- |
+| $\text{r}$ | $\text{t}$ | $0.75$ |
+| $\text{r}$ | $\lnot\text{t}$ | $0.25$ |
+| $\lnot\text{r}$ | $\text{t}$ | $0.5$ |
+| $\lnot\text{r}$ | $\lnot\text{t}$ | $0.5$ |
+]
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-Reminder: the topology encodes conditional independence assumptions!
+Causal model
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec5/traffic3.png)]
+
+## Example 3 (bis)
+
+... but edges need not be causal!
+
+.grid.center[
+.kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
+.kol-2-5[
+${\bf P}(T)$
+
+| $T$ | $P$ |
+| --- | --- | --- |
+| $\text{t}$ | $9/16$ |
+| $\lnot\text{t}$ | $7/16$ |
+]
+.kol-2-5[
+${\bf P}(R|T)$
+
+| $T$ | $R$ | $P$ |
+| --- | --- | --- |
+| $\text{t}$ | $\text{r}$ | $1/3$ |
+| $\text{t}$ | $\lnot\text{r}$ | $2/3$ |
+| $\lnot\text{t}$ | $\text{r}$ | $1/7$ |
+| $\lnot\text{t}$ | $\lnot\text{r}$ | $6/7$ |
+]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Diagnostic model
+
+---
+
+# Construction
+
+Bayesian networks can be constructed in any order, provided that the conditional independence assertions are respected.
+
+## Algorithm
+
+1. Choose some **ordering** of the variables $X\_1, ..., X\_n$.
+2. For $i=1$ to $n$:
+    1. Add $X\_i$ to the network.
+    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    3. For each parent, insert a link from the parent to $X\_i$.
+    4. Write down the CPT.
+
+---
+
+class: middle
+
+.center.width-100[
+![](figures/lec5/burglary-mess.svg)
+]
+
+.question[Do these networks represent the same distribution? Are they as compact?]
+
+???
+
+For the left network:
+
+- P (J|M ) = P (J)? No
+- P (A|J, M ) = P (A|J)? P (A|J, M ) = P (A)? No
+- P (B|A, J, M ) = P (B|A)? Yes
+- P (B|A, J, M ) = P (B)? No
+- P (E|B, A, J, M ) = P (E|A)? No
+- P (E|B, A, J, M ) = P (E|A, B)? Yes
+
+---
+
+# Independence relations
+
+Since the topology of a Bayesian network encodes conditional independence assertions, it can be used to answer questions about the independence of variables given some evidence.
+
+<br><br><br>
+
+.center.width-45[![](figures/lec5/xyz.png)]
+
+.center[Example: Are $X$ and $Z$ necessarily independent?]
+
+---
+
+class: middle
+
+## Cascades
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
+- In numbers:
+    - $P(y|x)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot y|\lnot x)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
 .grid[
-.kol-3-4[.center.width-100[![](figures/lec5/burglary2.svg)]]
-.kol-1-4[.center.width-100[![](figures/lec5/alarm.png)]]
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes.
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(x)P(y|x)P(z|y)}{P(x)P(y|x)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+We say that the evidence along the cascade **blocks** the influence.
+
+]
+.kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
+
+$X$: low pressure,
+$Y$: rain,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y|x)P(z|y)$]
 ]
 
-<br>
-$$
-\begin{aligned}
-P(b,\lnot e, a, \lnot j, m) &= P(b)P(\lnot e)P(a|b, \lnot e)P(\lnot j|a)P(m, a) \\\\
-&= 0.001 \times 0.998 \times 0.94 \times 0.1 \times 0.7
-\end{aligned}$$
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
 class: middle
 
-# Exact inference
+.grid[
+.kol-1-2[
+## Common parent
+
+Is $X$ independent of $Z$? No.
+
+Counter-example:
+- Project due causes both forums busy and lab full.
+- In numbers:
+    - $P(x|y)=1$,
+    - $P(\lnot x|\lnot y)=1$,
+    - $P(z|y)=1$,
+    - $P(\lnot z|\lnot y)=1$
+]
+.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
+class: middle
+
+.grid[
+.kol-1-2[
+Is $X$ independent of $Z$, given $Y$? Yes
+
+$$\begin{aligned}
+P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(y)P(x|y)P(z|y)}{P(y)P(x|y)} \\\\
+&= P(z|y)
+\end{aligned}$$
+
+Observing the parent blocks the influence between the children.
+]
+.kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
+
+$X$: forum busy,
+$Y$: project due,
+$Z$: lab full.
+
+$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## v-structures
+
+Are $X$ and $Y$ independent? Yes.
+- The ballgame and the rain cause traffic, but they are not correlated.
+- (Prove it!)
+
+Are $X$ and $Y$ independent given $Z$? No!
+- Seeing traffic puts the rain and the ballgame in competition as explanation.
+- This is **backwards** from the previous cases. Observing a child node *activates* influence between parents.
+]
+.kol-1-2.center[.width-80[![](figures/lec5/v-structure.png)]
+
+$X$: rain,
+$Y$: ballgame,
+$Z$: traffic.
+
+$P(x,y,z)=P(x)P(y)P(z|x,y)$]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Proof:
+
+$$P(x,y,z) = P(x)P(y)P(z|x,y)$$
+
+and
+
+$$P(x,y,z) = P(x,y)P(z|x,y)$$
+
+therefore
+
+$$P(x,y) = P(x)P(y)$$
+
+---
+
+class: middle
+
+## d-separation
+
+Let us assume a complete Bayesian network.
+Are $X\_i$ and $X\_j$ conditionally independent given evidence $Z\_1=z\_1, ..., Z\_m=z\_m$?
+
+Consider all (undirected) paths from $X\_i$ to $X\_j$:
+- If one or more active path, then independence is not guaranteed.
+- Otherwise (i.e., all paths are inactive), then independence is guaranteed.
+
+---
+
+class: middle
+
+.grid[
+.kol-2-3[
+
+A path is **active** if each triple along the path is active:
+- Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
+- Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
+- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
+
+]
+.kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[
+## Example
+
+- $L \perp T' | T$?
+- $L \perp B$?
+- $L \perp B|T$?
+- $L \perp B|T'$?
+- $L \perp B|T, R$?
+
+]
+.kol-1-2.width-80.center[![](figures/lec5/example-d.png)]
+]
+
+???
+
+- Yes
+- Yes
+- (maybe)
+- (maybe)
+- Yes
+
+---
+
+exclude: true
+class: middle
+
+## Local semantics
+
+.center.width-60[![](figures/lec5/nondescendants.svg)]
+
+A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
+
+---
+
+exclude: true
+class: middle
+
+## Global semantics
+
+.center.width-60[![](figures/lec5/markov-blanket.svg)]
+
+A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
+
+---
+
+class: middle
+
 # Inference
 
-Inference is concerned with the problem *computing a marginal and/or a conditional probability distribution* from a joint probability distribution:
+---
+
+class: middle
+
+Inference is concerned with the problem .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
 
 .grid[
 .kol-1-3.center[Simple queries:]
@@ -140,18 +562,17 @@ Z &= \sum_q P(q,e_1,...,e_k) \\\\
 
 class: middle
 
-.pull-right[![](figures/lec5/bn-burglar.png)]
+.width-25.center[![](figures/lec5/bn-alarm.svg)]
 
-Consider the alarm network and the query ${\bf P}(B|j,m)$:<br><br>
-$\begin{aligned}
+Consider the alarm network and the query ${\bf P}(B|j,m)$. We have
+$$\begin{aligned}
 {\bf P}(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a {\bf P}(B,j,m,e,a) \\\\
-&\propto \sum\_e \sum\_a {\bf P}(B,j,m,e,a)
-\end{aligned}$
-
-Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries:<br><br>
-$\begin{aligned}
-{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a)
-\end{aligned}$
+&\propto \sum\_e \sum\_a {\bf P}(B,j,m,e,a).
+\end{aligned}$$
+Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries 
+$$\begin{aligned}
+{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a).
+\end{aligned}$$
 
 ???
 
@@ -171,11 +592,12 @@ Inference by enumeration is slow because the whole joint distribution is joined 
 
 class: middle
 
-Notice that factors that do not depend on the variables in the summations can be factored out, which means that marginalization does not necessarily have to be done at the end:
+Factors that do not depend on the variables in the summations can be factored out, which means that marginalization does not necessarily have to be done at the end, hence saving some computations.
 
+For the alarm network, we have
 $$\begin{aligned}
 {\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a) \\\\
-&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a)
+&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a).
 \end{aligned}$$
 
 ---
@@ -199,7 +621,7 @@ class: middle
 
 .center.width-80[![](figures/lec5/enumeration-tree.png)]
 
-Enumeration is still **inefficient**: there are repeated computations!
+Despite the factoring, inference by enumeration is still **inefficient**. There are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
 - These can be avoided by storing *intermediate results*.
 
@@ -211,11 +633,12 @@ Inefficient because the product is evaluated left-to-right, in a DFS manner.
 
 # Inference by variable elimination
 
-The **variable elimination** (VE) algorithm carries out summations right-to-left and stores intermediate results (called *factors*) to avoid recomputations.
+The .bold[Variable Elimination] algorithm carries out summations right-to-left and stores intermediate factors to avoid recomputations.
 The algorithm interleaves:
 - Joining sub-tables
 - Eliminating hidden variables
 
+<br>
 .center.width-80[![](figures/lec5/elimination.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -224,17 +647,17 @@ The algorithm interleaves:
 
 class: middle
 
-.center.width-30[![](figures/lec5/bn-burglar.png)]
+## Variable Elimination
 
-## Example
+Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
 
-$$\begin{aligned}
-{\bf P}(B|j, m) &\propto {\bf P}(B,j,m) \\\\
-&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a) \\\\
-&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \sum\_a \mathbf{f}\_3(a,B,e) \times \mathbf{f}\_4(a) \times \mathbf{f}\_5(a) \\\\
-&= \mathbf{f}\_1(B) \times \sum\_e \mathbf{f}\_2(e) \times \mathbf{f}\_6(B,e) \quad\text{ (sum out } A\text{)} \\\\
-&= \mathbf{f}\_1(B) \times \mathbf{f}\_7(B) \quad\text{ (sum out } E\text{)} \\\\
-\end{aligned}$$
+1. Start with the initial factors (the local CPTs, instantiated by the evidence).
+2. While there are still hidden variables:
+    1. Pick a hidden variable $H$
+    2. Join all factors mentioning $H$
+    3. Eliminate H
+3. Join all remaining factors
+4. Normalize
 
 ---
 
@@ -301,28 +724,11 @@ $$\begin{aligned}
 
 class: middle
 
-## General Variable Elimination algorithm
+.center.width-35[![](figures/lec5/bn-alarm.svg)]
 
-Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
+<br>
 
-1. Start with the initial factors (the local CPTs, instantiated by the evidence).
-2. While there are still hidden variables:
-    1. Pick a hidden variable $H$
-    2. Join all factors mentioning $H$
-    3. Eliminate H
-3. Join all remaining factors
-4. Normalize
-
----
-
-exclude: true
-class: middle, center
-
-(blackboard example)
-
-???
-
-Prepare this for $P(B|j,m)$.
+.question[Run the variable elimination algorithm for the query ${\bf P}(B|j,m)$.]
 
 ---
 
@@ -335,8 +741,6 @@ Consider the query ${\bf P}(J|b)$:
 $${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
 - $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
 - In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
-
-.pull-right[![](figures/lec5/bn-burglar.png)]
 
 .italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
 
@@ -361,494 +765,202 @@ What is the size of the maximum factor generated for each of the orderings?
 
 class: middle
 
-The computational and space complexity of variable elimination is determined by the **largest factor**.
+The computational and space complexity of variable elimination is determined by the largest factor.
 - The elimination *ordering* can greatly affect the size of the largest factor.
-- Does there always exist an ordering that only results in small factors? **No!**
-    - Greedy heuristic: eliminate whichever variable minimizes the size of the factor to be constructed.
-    - Singly connected networks (polytrees):
-        - Any two nodes are connected by at most one (undirected path).
-        - For these networks, time and space complexity of variable elimination are $O(nd^k)$.
+- The optimal ordering is **NP-hard** to find. There is no known polynomial-time algorithm to find it.
 
 ---
-
-class: middle
-
-## Worst-case complexity?
-
-.center.width-80[![](figures/lec5/3sat.png)]
-
-3SAT is a special case of inference:
-- CSP: $(u\_1 \lor u\_2 \lor u\_3) \wedge (\lnot u\_1 \lor \lnot u\_2 \lor u\_3) \wedge (u\_2 \lor \lnot u\_3 \lor u\_4)$
-- $P(U\_i=0)=P(U\_i=1)=0.5$
-- $C\_1 = U\_1 \lor U\_2 \lor U\_3$; $C\_2 = \lnot U\_1 \lor \lnot  U\_2 \lor U\_3$; $C\_3 = U\_2 \lor \lnot  U\_3 \lor U\_4$
-- $D\_1 = C\_1$; $D\_2 = D\_1 \wedge C\_2$
-- $Y = D\_2 \wedge C\_3$
-
-???
-
-SKIP since Lecture 2b is optional.
-
-3SAT is the problem of determining the satisfiability of a formula in conjunctive normal form, where each clause is limited to a most three literals.
-
----
-
-class: middle
-
-If we can answer whether $P(Y=1)>0$, then we answer whether 3SAT has a solution.
-- By reduction, inference in Bayesian networks is therefore **NP-complete**.
-- There is no known efficient probabilistic inference algorithm in general.
-
-???
-
-Proof by reduction: transforming a problem (here inference) into another (here checking the satisfiability of a formula).
-
----
-
-class: middle
 
 # Approximate inference
 
----
-
-class: middle
-
-Exact inference is **intractable** for most probabilistic models of practical interest.
+Exact inference is *intractable* for most probabilistic models of practical interest.
 (e.g., involving many variables, continuous and discrete, undirected cycles, etc).
 
-.center.width-80[![](figures/lec5/norman1.png)]
-.center.width-100[![](figures/lec5/norman2.png)]
+We must resort to **approximate** inference algorithms:
+- Sampling methods: produce answers by repeatedly generating random numbers from a distribution of interest.
+- Variational methods: formulate inference as an optimization problem.
+- Belief propagation methods: formulate inference as a message-passing algorithm.
+- Machine learning methods: learn an approximation of the target distribution from training examples.
 
 ---
 
 class: middle
 
-## Solution
-
-Abandon exact inference and develop  **approximate** but *faster* inference algorithms:
-- *Sampling methods*: produce answers by repeatedly generating random numbers from a distribution of interest.
-- *Variational methods*: formulate inference as an optimization problem.
-- *Belief propagation methods*: formulate inference as a message-passing algorithm.
-- *Machine learning methods*: learn an approximation of the target distribution from training examples.
-
----
-
-# Sampling methods
-
-Basic idea:
-- Draw $N$ samples from a sampling distribution $S$.
-- Compute an approximate posterior probability $\hat{P}$.
-- Show this approximate converges to the true probability distribution $P$.
-
-## Why sampling?
-
-Generating samples is often much faster than computing the right answer (e.g., with variable elimination).
-
-.center.width-70[![](figures/lec5/sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-# Sampling
-
-How to sample from the distribution of a discrete variable $X$?
-- Assume $k$ discrete outcomes $x_1, ..., x_k$ with probability $P(x_i)$.
-- Assume sampling from the uniform $\mathcal{U}(0,1)$ is possible.
-    - e.g., as enabled by a standard `rand()` function.
-- Divide the $[0,1]$ interval into $k$ regions, with region $i$ having size $P(x_i)$.
-- Sample $u \sim \mathcal{U}(0,1)$ and return the value associated to the region in which $u$ falls.
-
-<br>
-.center.width-60[![](figures/lec5/sampling.png)]
+# Parameter learning
 
 ---
 
 class: middle
 
-.grid[
-.kol-1-3.center[
-$P(C)$
+When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probability values is often difficult. 
 
-| $C$ | $P$ |
-| --- | --- |
-| $\text{red}$ | $0.6$ |
-| $\text{green}$ | $0.1$ |
-| $\text{blue}$ | $0.3$ |
-]
-.kol-2-3[<br>
-$$\begin{aligned}
-0 \leq u < 0.6 &\to C = \text{red} \\\\
-0.6 \leq u < 0.7 &\to C = \text{green} \\\\
-0.7 \leq u < 1 &\to C = \text{blue} \\\\
-\end{aligned}$$
-]
-]
-
-.center.width-70[![](figures/lec5/sampling-colors.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-# Prior sampling
-
-Sampling from a Bayesian network, *without* observed evidence:
-- Sample each variable in turn, **in topological order**.
-- The probability distribution from which the value is sampled is conditioned on the values already assigned to the variable's parents.
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec5/ancestral-sampling.png)]
-
-<br>
-
-.center.width-100[![](figures/lec5/ancestral-sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+A workaround is to use a **parameterized** family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and *estimate* the parameters $\theta$ from data.
 
 ???
 
-Comment on the cartoon:
-- sample first a shape
-- then a color given the shape
+Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distributions $P_\theta$.
 
 ---
 
 class: middle
 
-.center.width-90[![](figures/lec5/as1.png)]
+.center.width-100[![](figures/lec5/parameterized-bn.png)]
 
 ---
 
-class: middle
-count: false
+# Maximum likelihood estimation
 
-.center.width-90[![](figures/lec5/as2.png)]
+Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\\{x\_1, ..., x\_N\\\}$.
 
----
+The *likelihood* of the parameters $\theta$ is the probability of the data given the parameters
+$$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
 
-class: middle
-count: false
-
-.center.width-90[![](figures/lec5/as3.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec5/as4.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec5/as5.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec5/as6.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-90[![](figures/lec5/as7.png)]
+The **maximum likelihood estimate** (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
+$$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
 
 ---
 
 class: middle
 
-## Example
-
-We will collect a bunch of samples from the Bayesian network:
-
-$c, \lnot s, r, w$<br>
-$c, s, r, w$<br>
-$\lnot c, s, r, \lnot w$<br>
-$c, \lnot s, r, w$<br>
-$\lnot c, \lnot s, \lnot r, w$
-
-If we want to know ${\bf P}(W)$:
-- We have counts $\langle w:4, \lnot w:1 \rangle$
-- Normalize to obtain $\hat{{\bf P}}(W) = \langle w:0.8, \lnot w:0.2 \rangle$
-- $\hat{{\bf P}}(W)$ will get closer to the true distribution ${\bf P}(W)$ as we generate more samples.
-
----
-
-class: middle
-
-## Analysis
-
-The probability that prior sampling generates a particular event is
-$$S\_\text{PS}(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | \text{parents}(X\_i)) = P(x\_1,...,x\_n)$$
-i.e., the Bayesian network's joint probability.
-
-Let $N\_\text{PS}(x\_1, ..., x\_n)$ denote the number of samples of an event. We
-define the probability **estimator** $$\hat{P}(x\_1, ..., x\_n) = N\_\text{PS}(x\_1, ..., x\_n) / N.$$
-
----
-
-class: middle
-
-Then,
-$$\begin{aligned}
-\lim\_{N \to \infty} \hat{P}(x\_1,...,x\_n) &= \lim\_{N \to \infty} N\_\text{PS}(x\_1, ..., x\_n) / N \\\\
-&= S\_\text{PS}(x\_1, ..., x\_n) \\\\
-&= P(x\_1, ..., x\_n)
-\end{aligned}$$
-Therefore, prior sampling is *consistent*:
-$$P(x\_1, ..., x\_n) \approx N\_\text{PS}(x\_1, ..., x\_n) / N$$
-
----
-
-# Rejection sampling
-
-Using prior sampling, an estimate $\hat{P}(x|e)$ can be formed from the proportion of samples $x$ **agreeing with the evidence** $e$ among all samples agreeing with the evidence.
-
-<br><br><br>
-.center.width-100[![](figures/lec5/rejection-sampling-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+In practice,
+1. Write down the log-likelihood $L(\theta) = \log P({\bf d}|\theta)$ of the parameters $\theta$.
+2. Write down the derivative $\frac{\partial L}{\partial \theta}$ of the log-likelihood of the parameters $\theta$.
+3. Find the parameter values $\theta^\*$ such that the derivatives are zero (and check whether the Hessian is negative definite).
 
 ???
 
-Cartoon:
-- reject all samples which are not blue (the evidence)
+Note that:
+- evaluating the likelihood may require summing over hidden variables, i.e., inference.
+- finding $\theta^\*$ may be hard; modern optimization techniques help.
 
 ---
 
 class: middle
 
-.center.width-100[![](figures/lec5/rejection-sampling.png)]
+## Case (a)
 
----
+What is the fraction $\theta$ of cherry candies?
 
-class: middle
-
-
-## Analysis
-
-Let consider the posterior probability estimator $\hat{P}(x|e)$ formed by rejection sampling:
-
+Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
+These are i.i.d. observations, therefore
+$$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta) = \theta^c (1-\theta)^l.$$
+Maximize this w.r.t. $\theta$, which is easier for the log-likelihood and leads to
 $$\begin{aligned}
-\hat{P}(x|e) &= N\_\text{PS}(x,e) / N\_\text{PS}(e) \\\\
-&= \frac{N\_\text{PS}(x,e)}{N} / \frac{N\_\text{PS}(e)}{N} \\\\
-&\approx P(x,e) / P(e) \\\\
-&= P(x|e)
+L(\mathbf{d}|\theta) &= \log P(\mathbf{d}|\theta) = c \log \theta + l \log(1-\theta) \\\\
+\frac{\partial L(\mathbf{d}|\theta)}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
+\end{aligned}$$
+Hence $\theta=\frac{c}{N}$.
+
+---
+
+class: middle
+
+## Case (b)
+
+Red and green wrappers depend probabilistically on flavor.
+E.g., the likelihood for a cherry candy in green wrapper is
+$$\begin{aligned}
+&P(\text{cherry}, \text{green}|\theta,\theta\_1, \theta\_2) \\\\
+&= P(\text{cherry}|\theta,\theta\_1, \theta\_2) P(\text{green}|\text{cherry}, \theta,\theta\_1, \theta\_2) \\\\
+&= \theta (1-\theta\_1).
 \end{aligned}$$
 
-Therefore, rejection sampling is *consistent*.
-
-- The standard deviation of the error in each probability is $O(1/\sqrt{n})$, where $n$ is the number of samples used to compute the estimate.
-- **Problem**: many samples are rejected!
-    - Hopelessly expensive if the evidence is unlikely, i.e. if $P(e)$ is small.
-    - Evidence is not exploited when sampling.
-
-???
-
-From the prior sampling analysis, we know that N_PS / N ---> P.
-
----
-
-# Likelihood weighting
-
-Idea: *clamp* the evidence variables, sample the rest.
-- Problem: the resulting sampling distribution is not consistent.
-- Solution: **weight** by probability of evidence given parents.
-
-<br><br><br>
-.center.width-100[![](figures/lec5/likelihood-weighting-cartoon.png)]
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-???
-
-Cartoon: note how blue is now enforced and no longer drawn at random.
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec5/importance-sampling.png)]
-
-???
-
-Probability estimates are built by summing up weights instead of ones and normalizing.
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec5/lw1.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-100[![](figures/lec5/lw2.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-100[![](figures/lec5/lw3.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-100[![](figures/lec5/lw4.png)]
-
----
-
-class: middle
-count: false
-
-.center.width-100[![](figures/lec5/lw5.png)]
-
----
-
-class: middle
-
-## Analysis
-
-The sampling probability for an event with likelihood weighting is
-$$S\_\text{WS}(x,e) = \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)),$$
-where the product is over the non-evidence variables.
-The weight for a given sample $x,e$ is
-$$w(x,e) = \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)),$$
-where the product is over the evidence variables.
-
-The weighted sampling probability is
-$$
-\begin{aligned}
-S\_\text{WS}(x,e) w(x,e) &= \prod\_{i=1}^l P(x\_i|\text{parents}(X\_i)) \prod\_{i=1}^m P(e\_i|\text{parents}(E\_i)) \\\\
-&= P(x,e)
-\end{aligned}
-$$
-
----
-
-class: middle
-
-The estimated posterior probability is computed as follows:
-
+The likelihood for the parameters, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc., is
 $$\begin{aligned}
-\hat{P}(x|e) &\propto N\_\text{WS}(x,e) w(x,e) \\\\
-&\propto S\_\text{WS}(x,e) w(x,e) \\\\
-&\propto P(x,e) \\\\
-&\propto P(x|e).
+P(\mathbf{d}|\theta,\theta\_1, \theta\_2) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
+L =&\,\, c \log \theta + l \log(1-\theta)  +  \\\\
+   &\,\, r\_c \log \theta\_1 + g\_c \log(1-\theta\_1) + \\\\
+   &\,\, r\_l \log \theta\_2 + g\_l \log(1-\theta\_2).
 \end{aligned}$$
 
-Hence likelihood weighting returns *consistent* estimates.
+---
+
+class: middle
+
+The derivatives of $L$ yield 
+$$\begin{aligned}
+\frac{\partial L}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta} = 0 \Rightarrow \theta = \frac{c}{c+l} \\\\
+\frac{\partial L}{\partial \theta\_1} &= \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 \Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
+\frac{\partial L}{\partial \theta\_2} &= \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 \Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}.
+\end{aligned}$$
+
+???
+
+Again, results coincide with intuition.
 
 ---
 
 class: middle
 
-- Likelihood weighting is *helpful*:
-    - The evidence is taken into account to generate a sample.
-    - More samples will reflect the state of the world suggested by the evidence.
-- Likelihood weighting **does not solve all problems**:
-    - Performance degrades as the number of evidence variable increases.
-    - The evidence influences the choice of downstream variables, but not upstream ones.
-        - Ideally, we would like to consider the evidence when we sample each and every variable.
+.question[In case (a), if we unwrap 1 candy and get 1 cherry, what is the MLE? How confident are we in this estimate?]
+
+- With small datasets, maximum likelihood estimation can lead to overfitting. 
+- The MLE does not provide a measure of uncertainty about the parameters.
 
 ---
 
-# Inference by Markov chain simulation
+# Bayesian parameter learning
 
-- **Markov chain Monte Carlo** (MCMC) algorithms are a family of sampling algorithms that generate samples through a Markov chain.
-- They generate a sequence of samples by making random changes to a preceding sample, instead of generating each sample from scratch.
-- Helpful to think of a Bayesian network as being in a particular *current state* specifying a value for each variable and generating a *next state* by making random changes to the current state.
-- Metropolis-Hastings is one of the most famous MCMC methods, of which **Gibbs sampling** is a special case.
+We can treat parameter learning as a .bold[Bayesian inference] problem:
+- Make the parameters $\theta$ random variables and treat them as hidden variables.
+- Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
+- Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
----
-
-class: middle
-
-## Gibbs sampling
-
-- Start with an arbitrary instance $x\_1, ..., x\_n$ consistent with the evidence.
-- Sample one variable at a time, conditioned on all the rest, but keep the evidence fixed.
-- Keep repeating this for a long time.
-
-<br>
-.center.width-100[![](figures/lec5/gibbs-sampling.png)]
+.question[How does Figure 20.2 (a) should be updated?]
 
 ---
 
 class: middle
 
-- Both upstream and downstream variables condition on evidence.
-- In contrast, likelihood weighting only conditions on upstream evidence, and hence the resulting weights might be very small.
+## Case (a)
+
+What is the fraction $\theta$ of cherry candies?
+
+We assume a Beta prior $$P(\theta) = \text{Beta}(\theta|a,b) = \frac{1}{Z} \theta^{a-1} (1-\theta)^{b-1}$$
+where $Z$ is a normalization constant. 
+
+Then, observing a cherry candy yields the posterior
+$$\begin{aligned}
+P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
+&= \theta \text{Beta}(\theta|a,b) \\\\
+&= \theta (1-\theta)^{b-1} \theta^{a-1} (1-\theta)^{b-1} \\\\
+&= \theta^a (1-\theta)^{b-1} \\\\
+&= \text{Beta}(\theta|a+1,b).
+\end{aligned}$$
 
 ---
 
 class: middle
 
-## Example
+## Case (b)
 
-.grid[
-.kol-1-4[
-1) Fix the evidence
-]
-.kol-1-4.width-100[![](figures/lec5/gibbs-init.png)]
-.kol-1-4[
-2) Randomly initialize the other variables
-]
-.kol-1-4.width-100[![](figures/lec5/gibbs-init2.png)]
-]
-
-3) Repeat
-- Choose a non-evidence variable $X$.
-- Resample $X$ from ${\bf P}(X|\text{all other variables})$.
-
-.center.width-100[![](figures/lec5/gibbs-process.png)]
+.center.width-100[![](figures/lec5/caseb-bayesian.png)]
 
 ---
 
 class: middle
 
-## Demo
+## Maximum a posteriori estimation
 
-See `code/lecture5-gibbs.ipynb`.
+When the posterior cannot be computed analytically, we can use **maximum a posteriori** (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
+$$\theta^\* = \arg \max\_\theta P(\theta|\mathbf{d}) = \arg \max\_\theta P(\mathbf{d}|\theta) P(\theta).$$
 
 ---
 
-class: middle
+class: middle, center
 
-
-## Rationale
-
-The sampling process settles into a **dynamic equilibrium** in which the long-run fraction of time spent in each state is exactly proportional to its posterior probability.
-
-See 14.5.2 for a technical proof.
-
+(demo)
 
 ---
 
 # Summary
 
-- Exact inference by variable elimination .
-    - NP-complete on general graphs, but polynomial on polytrees.
-    - space = time, very sensitive to topology.
-- Approximate inference gives reasonable estimates of the true posterior probabilities in a network and can cope with much larger networks than can exact algorithms.
-    - Likelihood weighting does poorly when there is lots of evidence.
-    - Likelihood weighting and Gibbs sampling are generally insensitive to topology.
-    - Convergence can be slow with probabilities close to 1 or 0.
-    - Can handle arbitrary combinations of discrete and continuous variables.
+- A Bayesian Network specifies a full joint distribution. BNs are often exponentially smaller than an explicitly enumerated joint distribution.
+- The topology of a Bayesian network encodes conditional independence assumptions between random variables.
+- Inference is the problem of computing a marginal and/or a conditional probability distribution from a joint probability distribution.
+    - Exact inference is possible for simple Bayesian networks, but is intractable for most probabilistic models of practical interest.
+    - Approximate inference algorithms are used in practice.
+- Parameters of a Bayesian network can be learned from data using maximum likelihood estimation or Bayesian inference.
 
 ---
 

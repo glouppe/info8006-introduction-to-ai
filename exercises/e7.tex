@@ -74,7 +74,7 @@ Assuming a discount factor $\gamma = 1$,
     \item Perform direct utility estimation of the expected utilities $V^\pi(s)$, given the four first trials.
 
     \begin{solution}
-        In this setting, the transition model $P(s' \knowing s, a)$ and the reward function $R(s)$ are unknown. We wish to learn the expected utility $V^\pi$ of the policy $\pi$ without modeling the environment, \ie{} without building approximates $\hat{P}(s' \knowing s, a)$ and $\hat{R}(s)$. The principle of direct utility estimation is to approximate $V^\pi(s)$ by the average utility $\hat{V}(s)$ of the state $s$ within all trial trajectories, \ie{}
+        In this setting, the transition model $P(s' | s, a)$ and the reward function $R(s)$ are unknown. We wish to learn the expected utility $V^\pi$ of the policy $\pi$ without modeling the environment, \ie{} without building approximates $\hat{P}(s' | s, a)$ and $\hat{R}(s)$. The principle of direct utility estimation is to approximate $V^\pi(s)$ by the average utility $\hat{V}(s)$ of the state $s$ within all trial trajectories, \ie{}
         \begin{equation*}
             \hat{V}(s) = \frac{1}{N(s)} \sum_{(i, j) \in I(s)} \sum_{t = 0}^{\infty} \gamma^t r^i_{j + t} \approx V^\pi(s) = \left. \E \sbk*{\sum_{t = 0}^{\infty} \gamma^t R(s_t)} \right|_{s_0 = s}
         \end{equation*}
@@ -121,15 +121,15 @@ Assuming a discount factor $\gamma = 1$,
     \begin{solution}
         Direct utility estimation misses the fact that the expected utilities for different states are not independent, since they obey the Bellman equation for a fixed policy
         \begin{equation*}
-            V^\pi(s) = R(s) + \gamma \sum_{s'} P(s' \knowing s, \pi(s)) V^\pi(s').
+            V^\pi(s) = R(s) + \gamma \sum_{s'} P(s' | s, \pi(s)) V^\pi(s').
         \end{equation*}
         Then, we would like our estimates $\hat{V}(s)$ to verify the Bellman equation, \ie{} to minimize
         \begin{equation*}
-            L = \underset{s' \knowing s}{\E} \sbk*{\rbk*{R(s) + \gamma \hat{V}(s') - \hat{V}(s)}^2} .
+            L = \underset{s' | s}{\E} \sbk*{\rbk*{R(s) + \gamma \hat{V}(s') - \hat{V}(s)}^2} .
         \end{equation*}
         One way to reach this objective is to follow the opposite of its gradient
         \begin{equation*}
-            \nabla L = 2 \underset{s' \knowing s}{\E} \sbk*{\hat{V}(s) - R(s) - \gamma \hat{V}(s')}
+            \nabla L = 2 \underset{s' | s}{\E} \sbk*{\hat{V}(s) - R(s) - \gamma \hat{V}(s')}
         \end{equation*}
         with respect to $\hat{V}(s)$, \ie{} to perform \emph{gradient descent}. Unfortunately, due to the expectation, we don't have access to the true gradient. Instead, we use a \emph{stochastic} approximation of the gradient from observed\footnotemark{} tuples $(s, r, a, s')$ and update $\hat{V}(s)$ as
         \begin{align*}
@@ -206,11 +206,11 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
     \item Apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to $0$.
 
     \begin{solution}
-        As seen in the previous exercise, given trial trajectories of some policy $\pi$, it is possible to estimate its expected utility $V^\pi$ even without knowing the transition model $P(s' \knowing s, a)$ or the reward function $R(s)$ of the environment. However, estimating $V^\pi$ only evaluates the quality of $\pi$, but does not describe how to improve it.
+        As seen in the previous exercise, given trial trajectories of some policy $\pi$, it is possible to estimate its expected utility $V^\pi$ even without knowing the transition model $P(s' | s, a)$ or the reward function $R(s)$ of the environment. However, estimating $V^\pi$ only evaluates the quality of $\pi$, but does not describe how to improve it.
 
         By definition, the optimal policy $\pi^*$ is the one that maximizes the expect utility of the state $s$, \ie{}
         \begin{equation*}
-            \pi^*(s) = \arg \max_a \sum_{s'} P(s' \knowing s, a) V(s')
+            \pi^*(s) = \arg \max_a \sum_{s'} P(s' | s, a) V(s')
         \end{equation*}
         where $V(s) = \max_\pi V^\pi(s)$ is the state-value of $s$. Unfortunately, even if we knew $V$, we could not find the optimal actions without knowing the transition model. However, if we knew the state-action-value $Q(s, a)$ of taking action $a$ in state $s$, we would be able to select the optimal action
         \begin{equation*}
@@ -218,8 +218,8 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         \end{equation*}
         where
         \begin{align*}
-            Q(s, a) & = R(s) + \gamma \sum_{s'} P(s' \knowing s, a) V(s') \\
-            & = R(s) + \gamma \sum_{s'} P(s' \knowing s, a) \max_{a'} Q(s', a')
+            Q(s, a) & = R(s) + \gamma \sum_{s'} P(s' | s, a) V(s') \\
+            & = R(s) + \gamma \sum_{s'} P(s' | s, a) \max_{a'} Q(s', a')
         \end{align*}
         since $V(s) = \max_a Q(s, a)$. Fortunately, state-action-values $Q(s, a)$ can be learned in a model-free fashion using the $Q$-learning algorithm. Similarly to temporal-difference learning, in $Q$-learning, we perform stochastic gradient descent updates
         \begin{align*}
@@ -245,11 +245,11 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         We would like our estimates $\hat{Q}(s, a)$ to satisfy the
         Bellman equation, \ie{} to minimize
         \begin{equation*}
-            L = \underset{s' \knowing s, a}{\E} \sbk*{\rbk*{R(s) + \gamma \max_{a'} \hat{Q}(s', a') - \hat{Q}(s, a)}^2} .
+            L = \underset{s' | s, a}{\E} \sbk*{\rbk*{R(s) + \gamma \max_{a'} \hat{Q}(s', a') - \hat{Q}(s, a)}^2} .
         \end{equation*}
         To reach this objective we follow the opposite of its gradient
         \begin{equation*}
-            \nabla_{\!w} L = 2 \underset{s' \knowing s, a}{\E} \sbk*{\rbk*{\hat{Q}(s, a) - R(s) - \gamma \max_{a'} \hat{Q}(s', a')} \nabla_{\!w} \hat{Q}(s, a)}
+            \nabla_{\!w} L = 2 \underset{s' | s, a}{\E} \sbk*{\rbk*{\hat{Q}(s, a) - R(s) - \gamma \max_{a'} \hat{Q}(s', a')} \nabla_{\!w} \hat{Q}(s, a)}
         \end{equation*}
         with respect to the weights\footnotemark{} $w$ of $\hat{Q}(s, a)$. Once again, due to the expectation, we are forced to use a stochastic approximation of the gradient from observed tuples $(s, a, r, s')$ and to update the weights as
         \begin{equation*}
@@ -323,7 +323,7 @@ The current strategy of the team is to always shoot. Last match, they had severa
 Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
 
 \begin{enumerate}
-    \item Build an estimator of the transition model $P(s' \knowing s, a)$ and, from it, determine the expected utility $V^\pi$ of the team's current policy $\pi$.
+    \item Build an estimator of the transition model $P(s' | s, a)$ and, from it, determine the expected utility $V^\pi$ of the team's current policy $\pi$.
     \begin{solution}
         Given the previous table, we can estimate the transition probabilities for $s \in \cbk{\C, \A}$ and $a = \S$.
 
@@ -342,16 +342,16 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
 
         We can now determine the expected utility $V^\pi$ of the team's current policy $\pi(s) = \S$ using the following Bellman operator
         \begin{equation*}
-            V_{i + 1}^\pi(s) = \sum_{s'} P(s' \knowing s, \pi(s)) \sbk*{R(s, \pi(s), s') + \gamma V_i^\pi(s')} ,
+            V_{i + 1}^\pi(s) = \sum_{s'} P(s' | s, \pi(s)) \sbk*{R(s, \pi(s), s') + \gamma V_i^\pi(s')} ,
         \end{equation*}
         with $V_0^\pi(s) = 0$ for all state $s$. Because the states \F and \G are terminal, their expected utility remains constant and we only have to update \C and \A. For the first iteration,
         \begin{align*}
-            V_1^\pi(\C) & = \sum_{s'} P(s' \knowing \C, \S) \sbk*{R(\C, \S, s') + \gamma V_0^\pi(s')} \\
+            V_1^\pi(\C) & = \sum_{s'} P(s' | \C, \S) \sbk*{R(\C, \S, s') + \gamma V_0^\pi(s')} \\
             & = 0.25 (3 + \gamma \, 0) + 0.25 (-5 + \gamma \, 0) + 0.5 (10 + \gamma \, 0) = 4.5
         \end{align*}
         and
         \begin{align*}
-            V_1^\pi(\A) & = \sum_{s'} P(s' \knowing \A, \S) \sbk*{R(\A, \S, s') + \gamma V_0^\pi(s')} \\
+            V_1^\pi(\A) & = \sum_{s'} P(s' | \A, \S) \sbk*{R(\A, \S, s') + \gamma V_0^\pi(s')} \\
             & = 0.25 (3 + \gamma \, 0) + 0.75 (-10 + \gamma \, 0) = -6.75 .
         \end{align*}
         We repeat the same procedure until $V_{i + 1}^\pi(s) \approx V_i^\pi(s)$ for all state $s$.

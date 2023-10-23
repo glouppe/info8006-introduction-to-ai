@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Course syllabus, Fall 2022
+Course syllabus, Fall 2023
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -17,7 +17,7 @@ This course is given by:
 - Exercise sessions: François Rozet
 - Programming projects: Arnaud Delaunoy, François Rozet
 
-Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) for help.
+Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/fZaSPxsg) for help.
 
 <br>
 .center[
@@ -42,7 +42,7 @@ class: middle
 
 ## Videos
 
-Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD).
+Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD). They are not up-to-date with the current course, but they may still be useful.
 
 .center.width-60[![](figures/course-syllabus/youtube.png)]
 
@@ -83,9 +83,7 @@ class: middle
 
 ---
 
-# Projects
-
-## Programming projects
+# Programming projects
 
 Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty.
 
@@ -93,20 +91,9 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 ---
 
-class: middle
-
-## Reading assignment
-
-Read a scientific paper in Artificial Intelligence.
-
-.center.width-40[![](figures/course-syllabus/alphago-paper.png)]
-
----
-
 # Evaluation
 
 - Written exam (60%)
-    - Short questions on the reading assignment will be part of the exam.
 - Programming projects (40%)
     - Project 1: +0.5
     - Project 2: 20%
@@ -119,9 +106,15 @@ class: middle
 
 ## Honor code
 
-You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .bold[However, under no circumstances, may you base your project on someone else's implementation.] One of the main learning outcomes of the programming projects is for you to better understand the course materials.
+You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.] In particular, the use of large language models (e.g., ChatGPT, Github Copilot) is forbidden$^\*$.
 
-.bold[Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty.]
+Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty office.
+
+.footnote[$^\*$: Unless you build and train your own :-)]
+
+???
+
+One of the main learning outcomes of the programming projects is for you to better understand the course materials. By using someone else's implementation, you are depriving yourself of this learning opportunity. Moreover, you are also depriving yourself of the opportunity to learn how to write good code, which is an important skill for any computer scientist.
 
 ---
 

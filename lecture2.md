@@ -71,9 +71,9 @@ Reflex agents
          to a dot if there is one in its neighborhood.
          No planning is involved to take this decision. ]
 
-.Q[[Q]] Can a reflex agent be rational?
-
 ???
+
+Can a reflex agent be rational?
 
 Yes, provided the correct decision can be made on the basis of the current percept. That is, if the environment is fully observable, deterministic and known.
 
@@ -84,13 +84,12 @@ In the figure, the sequence of actions is clearly suboptimal.
 # Problem-solving agents
 
 Assumptions:
-- *Observable*, *deterministic* (and *known*) environment.
+- *Single-agent*, *observable*, *deterministic* and *known* environment.
 
 Problem-solving agents
-- take decisions based on (hypothesized) consequences of actions;
+- take decisions based on (hypothesized) consequences of actions, by considering **how the world could be**;
 - must have a model of how the world evolves in response to actions;
-- formulate a goal, explicitly;
-- consider **how the world would be**.
+- formulate a goal, explicitly.
 
 .grid[
 .kol-1-2[
@@ -132,6 +131,7 @@ class: middle
 # Search problems
 
 A **search problem** consists of the following components:
+- A representation of the *states* of the agent and its environment.
 - The *initial state* of the agent.
 - A description of the *actions* available to the agent given a state $s$, denoted $\text{actions}(s)$.
 - A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
@@ -408,7 +408,7 @@ class: middle
     - The shallowest goal is not necessarily the optimal one.
     - BFS is optimal only if the path cost is a non-decreasing function of the depth of the node.
 - *Time complexity*:
-    - If the solution is a depth $d$, then the total number of nodes generated before finding this node is $b+b^2+b^3+...+b^d = O(b^d)$
+    - If the solution is at depth $d$, then the total number of nodes generated before finding this node is $b+b^2+b^3+...+b^d = O(b^d)$
 - *Space complexity*:
     - The number of nodes to maintain in memory is the size of the fringe, which will be the largest at the last tier. That is $O(b^d)$
 
@@ -928,9 +928,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Hart, Peter E., Nils J. Nilsson, and Bertram Raphael. "A formal basis for the heuristic determination of minimum cost paths." IEEE transactions on Systems Science and Cybernetics 4.2 (1968): 100-107.

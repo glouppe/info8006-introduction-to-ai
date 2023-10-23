@@ -16,7 +16,7 @@ class BeliefStateAgent(Agent):
         self.ghost = ghost
 
     def transition_matrix(self, walls, position):
-        """Builds the transitiion matrix
+        """Builds the transition matrix
 
             T_t = P(X_t | X_{t-1})
 
@@ -100,7 +100,12 @@ class BeliefStateAgent(Agent):
             if eaten[i]:
                 new_beliefs[i] = np.zeros_like(beliefs[i])
             else:
-                new_beliefs[i] = self.update(walls, beliefs[i], evidences[i], position)
+                new_beliefs[i] = self.update(
+                    walls,
+                    beliefs[i],
+                    evidences[i],
+                    position,
+                )
 
         return new_beliefs
 

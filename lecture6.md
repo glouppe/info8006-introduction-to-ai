@@ -75,9 +75,9 @@ We will consider the world as a *discrete* series of time slices, each of which 
 
 class: middle
 
-We specify:
-- a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables.
-- a **transition model** ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values.
+We specify
+- a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables,
+- a **transition model** ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
 - a **sensor model** ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
 ---
@@ -85,33 +85,18 @@ We specify:
 # Markov processes
 
 ## Markov assumption
-- The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
-- Random processes that satisfy this assumption are called **Markov processes**.
 
----
+The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
 
-class: middle
+Random processes that satisfy this assumption are called **Markov processes**.
 
 ## First-order Markov processes
 
-- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-1}).$$
-- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
+Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-1})$$
+i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 
 <br>
 .center.width-100[![](figures/lec6/markov-process.png)]
-
----
-
-exclude: True
-class: middle
-
-## Second-order Markov processes
-
-- Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-2}, \mathbf{X}\_{t-1}).$$
-- i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-3}$ are conditionally independent given $\mathbf{X}\_{t-1}$ and $\mathbf{X}\_{t-2}$.
-
-<br>
-.center.width-100[![](figures/lec6/markov-process-2.png)]
 
 ---
 
@@ -119,11 +104,11 @@ class: middle
 
 ## Sensor Markov assumption
 
-- Additionally, we make a (first-order) **sensor Markov assumption**: $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t})$$
+We make a (first-order) **sensor Markov assumption** $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t}).$$
 
 ## Stationarity assumption
 
-- The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
+The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
 
 ---
 
@@ -273,9 +258,9 @@ class: middle
 .width-100[![](figures/lec6/prediction.png)]
 
 .width-100[![](figures/lec6/uncertainty.png)]
-
-As time passes, uncertainty "accumulates" if we do not accumulate new evidence.
 ]
+
+As time passes, uncertainty (usually) increases in the absence of new evidence.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -287,7 +272,7 @@ What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
 - Eventually, the distribution converges to a fixed point, called a **stationary distribution**.
 - This distribution is such that
-$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty) $$
+$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
 
 ---
 
@@ -326,8 +311,7 @@ $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
 .center.width-90[![](figures/lec6/observation.png)]
 <br>
 
-What if we collect new observations?
-Beliefs get reweighted, and uncertainty "decreases".
+.center[With new evidence, uncertainty decreases. Beliefs get reweighted. But how?]
 
 ???
 
@@ -341,7 +325,7 @@ class: middle
 
 An agent maintains a **belief state** estimate ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
 
-Recursive Bayesian estimation: ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, {\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$
+This process can be implemented as a recursive Bayesian estimation procedure ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, {\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$ that alternates between two steps:
 - (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
 - (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
 
@@ -349,6 +333,7 @@ Recursive Bayesian estimation: ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) 
 
 class: middle
 
+Formally, the Bayes filter is defined as
 $$
 \begin{aligned}
 {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
@@ -358,7 +343,6 @@ $$
 &\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
 \end{aligned}
 $$
-
 where
 - the normalization constant $$Z = P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
 - in the last expression, the first and second terms are given by the model while the third is obtained recursively.
@@ -374,8 +358,8 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(
 class: middle
 
 We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
-- Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$.
-- The complexity of a forward update is constant (in time and space) with $t$.
+
+Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$. Its complexity is constant (in time and space) with $t$.
 
 ---
 
@@ -440,8 +424,7 @@ python3 run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.py --bs
 
 We want to compute ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
 
-Divide evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$. Then,
-
+Dividing the evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$, we have
 $$
 \begin{aligned}
 {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
@@ -465,7 +448,7 @@ $$
 \begin{aligned}
 {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
 &= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k)
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -504,12 +487,8 @@ Solve on blackboard.
 
 Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]$ is the umbrella sequence.
 
-What is the weather sequence that is the most likely to explain this?
-- Does the absence of umbrella at day 3 means it wasn't raining?
-- Or did the director forget to bring it?
-- If it didn't rain on day 3, perhaps it didn't rain on day 4 either, but the director brought the umbrella just in case?
-
-Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
+- What is the weather sequence that is the most likely to explain this?
+- Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -517,19 +496,28 @@ Among all $2^5$ sequences, is there an (efficient) way to find the most likely o
 
 class: middle
 
-- The most likely sequence  **is not** the sequence of the most likely states!
-- The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
+The most likely sequence  **is not** the sequence of the most likely states!
+
+The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
 $$
 \begin{aligned}
 &\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) )
+&\propto {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) ).
 \end{aligned}
 $$
-- Identical to filtering, except that the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
+
+---
+
+class: middle
+
+This is identical to filtering, except that 
+- the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
 $$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t}),$$
 where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
-- The update has its sum replaced by max, resulting in the **Viterbi algorithm**:
-$$\mathbf{m}\_{1:t+1} = \alpha {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}$$
+- The update has its sum replaced by max.
+
+The resulting algorithm is called the **Viterbi algorithm**, which computes the most likely explanation as
+$$\mathbf{m}\_{1:t+1} \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$
 
 ???
 
@@ -673,7 +661,7 @@ class: middle
 
 ## Uniform
 
-.center.width-60[![](figures/lec5/uniform.png)]
+.center.width-60[![](figures/lec6/uniform.png)]
 
 The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
 $$
@@ -689,7 +677,7 @@ class: middle
 
 ## Normal
 
-.center.width-60[![](figures/lec5/normal.png)]
+.center.width-60[![](figures/lec6/normal.png)]
 
 The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
@@ -707,7 +695,7 @@ class: middle
 
 ## Multivariate normal
 
-.center.width-60[![](figures/lec5/mvn.png)]
+.center.width-60[![](figures/lec6/mvn.png)]
 
 The multivariate normal distribution generalizes to $n$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\mathbf{\Sigma}|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
@@ -781,10 +769,12 @@ $$
 
 # Continuous Bayes filter
 
-The Bayes filter similarly applies to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$, in which case summations are replaced with integrals and probability mass functions with probability densities:
+The Bayes filter extends to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$. 
+
+The summations are replaced with integrals and the probability mass functions with probability densities, giving the recursive Bayesian relation
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &\propto\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t}
+p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &\propto\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
 \end{aligned}
 $$
 where the normalization constant is
@@ -798,7 +788,7 @@ The **Kalman filter** is a special case of the Bayes filter, which assumes:
 - Gaussian prior
 - Linear Gaussian transition model
 - Linear Gaussian sensor model
-  
+
 .grid[
 .kol-1-2.center[
 <br><br><br>
@@ -830,7 +820,7 @@ $$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{
 is also a Gaussian distribution.
 - .italic[Update step:]<br><br>
 If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) = \alpha p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
+$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
 is also a Gaussian distribution.
 
 ---
@@ -956,42 +946,39 @@ $ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation r
 
 class: middle
 
-## 2d tracking by filtering
-
-.center.width-80[![](figures/lec6/kf-filtering.png)]
-
-???
-
-In this example, $\mathbf{X}$ includes the X-Y positions and the X-Y velocities.
-
----
-
-class: middle, black-slide
-
 ## Apollo guidance computer
 
-- The Kalman filter put man on the Moon, literally!
-- The onboard guidance software of Saturn-V used a Kalman filter to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
+The Apollo Guidance Computer used a Kalman filter to estimate the position of the spacecraft. The Kalman filter was used to merge new data with past position measurements to produce an optimal position estimate of the spacecraft.
 
 .grid[
-.kol-1-6[]
-.kol-1-3[.width-100[![](figures/lec6/saturn-v.jpg)]]
-.kol-1-3[.width-100[![](figures/lec6/agc.jpg)]]
+.kol-1-3[.width-100[![](figures/lec6/agc.jpeg)]]
+.kol-2-3[.width-100[![](figures/lec6/apollo.png)]]
 ]
 
 .footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
 
 ---
 
-class: center, black-slide, middle
+class: middle
 
-<iframe width="640" height="400" src="https://www.youtube.com/embed/aNzGCMRnvXQ?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+.center.width-75[![](figures/lec6/moon.png)]
+
+.center[Demo: [tracking an object in space using the Kalman Filter](https://demonstrations.wolfram.com/TrackingAnObjectInSpaceUsingTheKalmanFilter/).]
+
+---
+
+class: middle
+
+## Data assimilation for weather forecasts 
+
+In weather forecasting, filtering is used to combine observations of the atmosphere with numerical models to estimate its current state.
+This is called **data assimilation**.
+
+Then, the model is used to predict the future states of the atmosphere.
 
 ---
 
 class: middle, black-slide
-
-## Data assimilation for weather forecasts solves a filtering problem
 
 .center[
 <iframe width="640" height="400" src="https://www.youtube.com/embed/9c4kXW7btBE?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
@@ -1027,18 +1014,6 @@ Unroll the network through time and run any exact inference algorithm (e.g., var
 - Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
     - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
     - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
-
----
-
-class: middle
-
-## Approximate inference
-
-If exact inference in DBNs intractable, then let's use *approximate inference* instead.
-- Likelihood weighting? Generated samples **pay no attention** to the evidence!
-- The fraction of samples that remain close to the actual series of events drops exponentially with $t$.
-
-$\Rightarrow$ We need a better solution!
 
 ---
 
@@ -1083,23 +1058,6 @@ class: middle
 .center.width-70[![](figures/lec6/pf-demo.png)]
 
 .center[(See demo)]
-
----
-
-class: middle, black-slide, center
-
-.width-50[![](figures/lec6/ragi.jpg)]
-
-The RAGI robot makes use of a particle filter to locate itself within Montefiore.<br>
-(See [RTBF, mars 2019](https://www.rtbf.be/info/regions/liege/detail_liege-l-intelligence-artificielle-vous-accueille-a-l-universite?id=10183022).)
-
----
-
-class: middle
-
-.width-100[![](figures/lec6/ragi-localization.png)]
-
-.footnote[Credits: Tom Ewbank, RAGI.]
 
 ---
 

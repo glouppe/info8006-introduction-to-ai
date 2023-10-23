@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 class: center, black-slide, middle
 
-<iframe width="640" height="400" src="https://www.youtube.com/embed/LJS7Igvk6ZM?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/N7KpcYKRm1M" frameborder="0" allowfullscreen></iframe>
 
 ---
 
@@ -67,6 +67,7 @@ class: middle
 ## Formal definition
 
 A **game** is formally defined as a kind of search problem with the following components:
+- A representation of the *states* of the agents and their environment.
 - The *initial state* $s_0$ of the game.
 - A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
 - A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.
@@ -116,13 +117,9 @@ class: middle
 
 ## Tic-Tac-Toe game tree
 
-.width-100[![](figures/lec3/tictactoe.png)]
+.width-80[![](figures/lec3/tictactoe.png)]
 
----
-
-class: middle
-
-.exercise[What is an optimal strategy (or perfect play)? How do we find it?]
+.question[What is an optimal strategy (or perfect play)? How do we find it?]
 
 ---
 
@@ -211,7 +208,7 @@ class: middle
         - $O(bm)$, if all actions are generated at once, or
         - $O(m)$, if actions are generated one at a time.
 
-.exercise[Do we need to explore the whole game tree?]
+.question[Do we need to explore the whole game tree?]
 
 ---
 
@@ -301,16 +298,16 @@ Chess:
 - $b^d \approx 35^{100} \approx 10^{154}$.
 - For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
 
-Finding the exact solution is completely **infeasible**.
+Finding the exact solution with Minimax remains **intractable**.
 
 ---
 
 # Transposition table
 
-- Repeated states occur frequently because of **transpositions**: different permutations of the move sequence end in a same position.
-- Similar to the `closed` set in Graph-Search, it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+- Repeated states occur frequently because of **transpositions**: distinct permutations of the move sequence end in a same position.
+- Similar to the `closed` set in `Graph-Search` (Lecture 2), it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
 
-.exercise[What data structure should be used to efficiently store and look-up values of positions?]
+.question[What data structure should be used to efficiently store and look-up values of positions?]
 
 ---
 
@@ -323,7 +320,7 @@ Finding the exact solution is completely **infeasible**.
 
 .center.width-100[![](figures/lec3/hminimax.png)]
 
-.exercise[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
+.question[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
 
 ???
 
@@ -472,7 +469,7 @@ class: middle
 
 .center.width-100[![](figures/lec3/expectiminimax.png)]
 
-.exercise[Does taking the rational move mean the agent will be successful?]
+.question[Does taking the rational move mean the agent will be successful?]
 
 ---
 
@@ -552,7 +549,7 @@ class: middle
 
 Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
 
-At a node $n$ during the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
+During the traversal of the branch in the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
 $$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}}.$$
 - The first term  encourages the *exploitation* of higher-reward nodes.
 - The second term encourages the **exploration** of less-visited nodes.
@@ -773,7 +770,7 @@ AlphaGo Zero combines *Monte Carlo tree search* and **deep learning** with exten
 # Summary
 
 - Multi-player games are variants of search problems.
-- The difficulty rise in the fact that opponents may respond arbitrarily.
+- The difficulty is to account for the fact that the opponent may act arbitrarily.
     - The optimal solution is a **strategy**, and not a fixed sequence of actions.
 - *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
     - Due to practical time constraints, exploring the whole game tree is often **infeasible**.

@@ -25,7 +25,7 @@ At the end of this session you should be able to
 
 \section{Beliefs}
 
-Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An agent holds the beliefs $P(A) = 0.4$ and $P(B) = 0.3$. What ranges of probabilities would it be rational for the agent to hold for the events $A \cup B$ and $A \cap B$ ? What if the agent also believes that $P(A \knowing B) = 0.5$ ?
+Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An agent holds the beliefs $P(A) = 0.4$ and $P(B) = 0.3$. What ranges of probabilities would it be rational for the agent to hold for the events $A \cup B$ and $A \cap B$ ? What if the agent also believes that $P(A | B) = 0.5$ ?
 
 \begin{solution}
     \begin{enumerate}
@@ -36,9 +36,9 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
         \end{alignat*}
         This can be illustrated with Venn diagrams.
 
-        \item If the agent believes that $P(A \knowing B) = 0.5$, it should also believe that
+        \item If the agent believes that $P(A | B) = 0.5$, it should also believe that
         \begin{equation*}
-            P(A \cap B) = P(A \knowing B) P(B) = 0.5 \times 0.3 = 0.15,
+            P(A \cap B) = P(A | B) P(B) = 0.5 \times 0.3 = 0.15,
         \end{equation*}
         thanks to Bayes rule. Then, the agent should rationally believe that
         \begin{equation*}
@@ -85,20 +85,20 @@ Given the hereabove probability table, compute the following probabilities:
         \end{equation*}
     \end{solution}
 
-    \item $P(toothache \knowing cavity)$
+    \item $P(toothache | cavity)$
 
     \begin{solution}
         \begin{align*}
-            P(T = 1 \knowing CV = 1) = \frac{P(T = 1, CV = 1)}{P(CV = 1)} & = \frac{\sum_{ct} P(T = 1, ct, CV = 1)}{P(CV = 1)} \\
+            P(T = 1 | CV = 1) = \frac{P(T = 1, CV = 1)}{P(CV = 1)} & = \frac{\sum_{ct} P(T = 1, ct, CV = 1)}{P(CV = 1)} \\
             & = \frac{0.108 + 0.012}{0.2} = 0.6
         \end{align*}
     \end{solution}
 
-    \item $P(cavity \knowing toothache \cup catch)$
+    \item $P(cavity | toothache \cup catch)$
 
     \begin{solution}
         \begin{align*}
-            P(CV = 1 \knowing T = 1 \cup CT = 1) & = \frac{P(T = 1 \cup CT = 1, CV = 1)}{P(T = 1 \cup CT = 1)} \\
+            P(CV = 1 | T = 1 \cup CT = 1) & = \frac{P(T = 1 \cup CT = 1, CV = 1)}{P(T = 1 \cup CT = 1)} \\
             & = \frac{P(CV = 1) - P(T = 0, CT = 0, CV = 1)}{1 - P(T = 0, CT = 0)} \\
             & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
         \end{align*}
@@ -115,8 +115,8 @@ After your yearly checkup, the doctor has bad news and good news. The bad news i
 \begin{solution}
     It is a good news because the conditional probability will drop due to the weak prior value. Indeed,
     \begin{align*}
-        P(d \knowing t) & = \frac{p(t \knowing d) p(d)}{p(t)} \\
-        & = \frac{p(t \knowing d) p(d)}{p(t \knowing d) p(d) + p(t \knowing \neg d) p(\neg d)} \\
+        P(d | t) & = \frac{P(t | d) P(d)}{P(t)} \\
+        & = \frac{P(t | d) P(d)}{P(t | d) P(d) + P(t | \neg d) P(\neg d)} \\
         & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} = \num{0.0098} .
     \end{align*}
 \end{solution}
@@ -128,22 +128,22 @@ After your yearly checkup, the doctor has bad news and good news. The bad news i
 For each of the following statements, either prove it is valid or give a counterexample.
 
 \begin{enumerate}
-    \item If $P(a \knowing b, c) = P(b \knowing a, c)$, then $P(a \knowing c) = P(b \knowing c)$.
+    \item If $P(a | b, c) = P(b | a, c)$, then $P(a | c) = P(b | c)$.
 
     \begin{solution}
-        True. By the conditional probability rule we have $P(a \knowing b, c) P(b, c) = P(b \knowing a, c) P(a, c)$, which by assumption reduces to $P(b, c) = P(a, c)$ and thereby $P(b \knowing c) = P(a \knowing c)$.
+        True. By the conditional probability rule we have $P(a | b, c) P(b, c) = P(b | a, c) P(a, c)$, which by assumption reduces to $P(b, c) = P(a, c)$ and thereby $P(b | c) = P(a | c)$.
     \end{solution}
 
-    \item If $P(a \knowing b, c) = P(a)$, then $P(b \knowing c) = P(b)$.
+    \item If $P(a | b, c) = P(a)$, then $P(b | c) = P(b)$.
 
     \begin{solution}
-        False. The statement $P(a \knowing b, c) = P(a)$ merely states that $a$ is independent of $b$ and $c$, it makes no claim regarding the dependence of $b$ and $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = b$.
+        False. The statement $P(a | b, c) = P(a)$ merely states that $a$ is independent of $b$ and $c$, it makes no claim regarding the dependence of $b$ and $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = b$.
     \end{solution}
 
-    \item If $P(a \knowing b) = P(a)$, then $P(a \knowing b, c) = P(a \knowing c)$.
+    \item If $P(a | b) = P(a)$, then $P(a | b, c) = P(a | c)$.
 
     \begin{solution}
-        False. While the statement $P(a \knowing b) = P(a)$ implies that $a$ is independent of $b$, it does not imply that $a$ is conditionally independent of $b$ given $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = a \vee b$.
+        False. While the statement $P(a | b) = P(a)$ implies that $a$ is independent of $b$, it does not imply that $a$ is conditionally independent of $b$ given $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = a \vee b$.
     \end{solution}
 \end{enumerate}
 
@@ -168,21 +168,21 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
             \begin{subfigure}[c]{0.495\textwidth}
                 \centering
                 \begin{tikzpicture}[node distance = 2cm]
-                    \node[state, align=center] (Y) {$Y$};
-                    \node[state, align=center] (X1) [below left of=Y] {$X_1$};
-                    \node[state, align=center] (X2) [below of=Y] {$X_2$};
-                    \node[state, align=center] (X3) [below right of=Y] {$X_3$};
+                    \node[state] (Y) {$Y$};
+                    \node[state] (X1) [below left of=Y] {$X_1$};
+                    \node[state] (X2) [below of=Y] {$X_2$};
+                    \node[state] (X3) [below right of=Y] {$X_3$};
 
-                    \path[-{>[scale=1.5]}] (Y) edge (X1);
-                    \path[-{>[scale=1.5]}] (Y) edge (X2);
-                    \path[-{>[scale=1.5]}] (Y) edge (X3);
+                    \draw[arrow] (Y) to (X1);
+                    \draw[arrow] (Y) to (X2);
+                    \draw[arrow] (Y) to (X3);
                 \end{tikzpicture}
             \end{subfigure}
             \begin{subfigure}[c]{0.495\textwidth}
                 \centering
                 \begin{tabular}{c|cc}
                     \toprule
-                     $Y$ & $P(Y)$ & $P(X_i = h \knowing Y)$ \\
+                     $Y$ & $P(Y)$ & $P(X_i = h | Y)$ \\
                      \midrule
                      $a$ & $\frac{1}{3}$ & $0.2$ \\
                      $b$ & $\frac{1}{3}$ & $0.6$ \\
@@ -196,17 +196,17 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
     \item Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tail once.
 
     \begin{solution}
-        In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y \knowing X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. Thanks to Bayes rule, we have
+        In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y | X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. Thanks to Bayes rule, we have
         \begin{equation*}
-        P(Y \knowing X_1 = h, X_2 = h, X_3 = t) = \alpha P(X_1 = h, X_2 = h, X_3 = t \knowing Y) P(Y).
+        P(Y | X_1 = h, X_2 = h, X_3 = t) = \alpha P(X_1 = h, X_2 = h, X_3 = t | Y) P(Y).
         \end{equation*}
         But we know that $X_1$, $X_2$ and $X_3$ are independent with respect to $Y$, meaning that
         \begin{equation*}
-            P(X_1, X_2, X_3 \knowing Y) = P(X_1 \knowing Y) P(X_2 \knowing Y) P(X_3 \knowing Y).
+            P(X_1, X_2, X_3 | Y) = P(X_1 | Y) P(X_2 | Y) P(X_3 | Y).
         \end{equation*}
         Then, we have
         \begin{equation*}
-            P(Y \knowing X_1 = h, X_2 = h, X_3 = t) = \alpha \times \frac{1}{3} \times \begin{cases}
+            P(Y | X_1 = h, X_2 = h, X_3 = t) = \alpha \times \frac{1}{3} \times \begin{cases}
                 0.2 \times 0.2 \times 0.8 = \num{0.032} & \text{if } Y = a \\
                 0.6 \times 0.6 \times 0.4 = \num{0.144} & \text{if } Y = b \\
                 0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } Y = c \\
@@ -218,14 +218,14 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
 
 \newpage
 
-\section{Handedness (AIMA, Ex: 14.6)}
+\section{Handedness (AIMA, Ex 14.6)}
 
 Let $H_x$ be a random variable denoting the handedness of an individual $x$, with possible values $l$ or $r$. A common \emph{hypothesis} is that left or right-handedness is inherited by a simple mechanism; that is, there is a gene $G_x$, also with values $l$ or $r$, and $H_x$ turns out the same as $G_x$ with some probability $s$.
 
 Furthermore, the gene itself is equally likely to be inherited from either of the individual's parents, with a small nonzero probability $m$ of a random mutation flipping the gene.
 
 \begin{enumerate}
-    \item Which of the following networks claim that $P(G_{child} \knowing G_{mother}, G_{father}) = P(G_{child})$ ?
+    \item Which of the following networks claim that $P(G_{child} | G_{mother}, G_{father}) = P(G_{child})$ ?
 
     \begin{figure}[h]
         \centering
@@ -249,7 +249,7 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
             \centering
             \begin{tabular}{cc|c}
                 \toprule
-                 $G_{mother}$ & $G_{father}$ & $P(G_{child} = l \knowing G_{mother}, G_{father})$ \\
+                 $G_{mother}$ & $G_{father}$ & $P(G_{child} = l | G_{mother}, G_{father})$ \\
                  \midrule
                  $l$ & $l$ & $1 - m$ \\
                  $l$ & $r$ & $0.5$ \\
@@ -264,7 +264,7 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
     \begin{solution}
         \begin{align*}
             P(G_{child} = l) & = \sum_{g_m} \sum_{g_f} P(G_{child} = l, g_m, g_f) \\
-            & = \sum_{g_m} \sum_{g_f} P(G_{child} = l \knowing g_m, g_f) P(g_m) P(g_f) \\
+            & = \sum_{g_m} \sum_{g_f} P(G_{child} = l | g_m, g_f) P(g_m) P(g_f) \\
             & = (1 - m) q^2 + 0.5 (1 - q) q + 0.5 q (1 - q) + m (1 - q)^2 \\
             & = q + m - 2qm
         \end{align*}
@@ -299,48 +299,48 @@ Considering the hereabove Bayesian network, which of the following statements ar
         This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The two paths that link $B$ and $C$ are $(B, A, C)$ and $(B, D, C)$. $(B, A, C)$ is active because $A$ is unknown ($\wedge$-structure). We cannot guarantee that $B \perp C$.
     \end{solution}
 
-    \item $P(B, C \knowing A) = P(B \knowing A) P(C \knowing A)$
+    \item $P(B, C | A) = P(B | A) P(C | A)$
 
     \begin{solution}
-        This is true iff $B \perp C \knowing A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). We can guarantee that $B \perp C \knowing A$.
+        This is true iff $B \perp C | A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). We can guarantee that $B \perp C | A$.
     \end{solution}
 
-    \item $P(B, C \knowing A, D) =  P(B \knowing A, D) P(C \knowing A, D)$
+    \item $P(B, C | A, D) =  P(B | A, D) P(C | A, D)$
 
     \begin{solution}
-        This is true iff $B \perp C \knowing A, D$. This time, $(B, D, C)$ is active because $D$ is known. We cannot assert that $B \perp C \knowing A, D$.
+        This is true iff $B \perp C | A, D$. This time, $(B, D, C)$ is active because $D$ is known. We cannot assert that $B \perp C | A, D$.
     \end{solution}
 
-    \item $P(B, E \knowing A) = P(B \knowing A) P(E \knowing A)$
+    \item $P(B, E | A) = P(B | A) P(E | A)$
 
     \begin{solution}
-        This is true iff $B \perp E \knowing A$. We know that, knowing $A$, no path between $B$ and $C$ are active. As $C$ is the only parent of $E$, all paths between $B$ and $E$ go trough $C$, meaning that they are not active. We can guarantee that $B \perp E \knowing A$.
+        This is true iff $B \perp E | A$. We know that, knowing $A$, no path between $B$ and $C$ are active. As $C$ is the only parent of $E$, all paths between $B$ and $E$ go trough $C$, meaning that they are not active. We can guarantee that $B \perp E | A$.
     \end{solution}
 
-    \item $P(C \knowing A, D, E) = P(C \knowing A, B, D, E)$
+    \item $P(C | A, D, E) = P(C | A, B, D, E)$
 
     \begin{solution}
-        This is true iff $B \perp C \knowing A, D, E$. Once again, $(B, D, C)$ is active because $D$ is known. We can cannot guarantee that $B \perp C \knowing A, D, E$.
+        This is true iff $B \perp C | A, D, E$. Once again, $(B, D, C)$ is active because $D$ is known. We can cannot guarantee that $B \perp C | A, D, E$.
     \end{solution}
 
-    \item $P(B, E) = \sum_{a, c, d} P(E \knowing c) P(d \knowing B, c) P(c \knowing a) P(B \knowing a) P(a)$
+    \item $P(B, E) = \sum_{a, c, d} P(E | c) P(d | B, c) P(c | a) P(B | a) P(a)$
 
     \begin{solution}
-        Since $$P(B, E) = \sum_{a, c, d} P(a, B, c, d, E),$$ we need to assess whether $$P(A, B, C, D, E) = P(E \knowing C) P(D \knowing B, C) P(C \knowing A) P(B \knowing A) P(A),$$
+        Since $$P(B, E) = \sum_{a, c, d} P(a, B, c, d, E),$$ we need to assess whether $$P(A, B, C, D, E) = P(E | C) P(D | B, C) P(C | A) P(B | A) P(A),$$
         is guaranteed. This factorization corresponds exactly to
         \begin{equation*}
-            P(X_1, \dots, X_n) = \prod_{i = 1}^n P(X_i \knowing parents(X_i)) ,
+            P(X_1, \dots, X_n) = \prod_{i = 1}^n P(X_i | parents(X_i)) ,
         \end{equation*}
         for the considered network, which we know is guaranteed.
     \end{solution}
 \end{enumerate}
 
-For the same network, use inference by variable elimination to compute $P(E \knowing A = 1, B = 1)$.
+For the same network, use inference by variable elimination to compute $P(E | A = 1, B = 1)$.
 
 \begin{solution}
     We have
     \begin{align*}
-        P(E \knowing A = 1, B = 1) & = \alpha \sum_{c, d} P(A = 1, B = 1, c, d, E)\\
+        P(E | A = 1, B = 1) & = \alpha \sum_{c, d} P(A = 1, B = 1, c, d, E)\\
         & = \alpha \sum_{c, d} P(A = 1) P(B = 1| A = 1) P(c| A = 1) P(d|B = 1, c) P(E|c) \\
         & = \alpha P(A = 1) P(B = 1 | A = 1) \sum_{c} P(c|A = 1) P(E|c)\sum_d P(d|B = 1,c) .
     \end{align*}
@@ -361,19 +361,19 @@ For the same network, use inference by variable elimination to compute $P(E \kno
     \end{align*}
     Finally,
     \begin{equation*}
-        P(E \knowing A = 1, B = 1) = \alpha f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
+        P(E | A = 1, B = 1) = \alpha f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
     \end{equation*}
 \end{solution}
 
 \newpage
 
-\section{Car Diagnosis (AIMA, Ex: 14.8)}
+\section{Car Diagnosis (AIMA, Ex 14.8)}
 
 Let be the following Bayesian network describing some features of a car's electrical system and engine. Each variable is Boolean, and the true value indicates that the corresponding aspect of the vehicle is in working order.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/e3_car.eps}
+    \includegraphics[width=0.6\textwidth]{figures/e3_car.pdf}
 \end{figure}
 
 \begin{enumerate}
@@ -419,7 +419,7 @@ Let be the following Bayesian network describing some features of a car's electr
 
 \newpage
 
-\section{Nuclear Power Plant (AIMA, Ex: 14.11)}
+\section{Nuclear Power Plant (AIMA, Ex 14.11)}
 
 In your local nuclear power station, there is an alarm that senses when a temperature gauge exceeds a given threshold. The gauge measures the temperature of the core. Consider the Boolean variables $A$ (alarm sounds), $F_A$ (alarm is faulty), and $F_G$ (gauge is faulty) and the multi-valued nodes $G$ (gauge reading) and $T$ (actual core temperature).
 
@@ -441,7 +441,7 @@ In your local nuclear power station, there is an alarm that senses when a temper
             \centering
             \begin{tabular}{cc|c}
                 \toprule
-                 $T$ & $F_G$ & $P(G = l \knowing T, F_G)$ \\
+                 $T$ & $F_G$ & $P(G = l | T, F_G)$ \\
                  \midrule
                  $l$ & 0 & $x$ \\
                  $l$ & 1 & $y$ \\
@@ -459,7 +459,7 @@ In your local nuclear power station, there is an alarm that senses when a temper
             \centering
             \begin{tabular}{cc|c}
                 \toprule
-                 $G$ & $F_A$ & $P(A = 1 \knowing G, F_A)$ \\
+                 $G$ & $F_A$ & $P(A = 1 | G, F_A)$ \\
                  \midrule
                  $l$ & 0 & 0 \\
                  $l$ & 1 & 0 \\
@@ -473,12 +473,12 @@ In your local nuclear power station, there is an alarm that senses when a temper
     \item Suppose the gauge is not faulty and the alarm is triggered. Calculate an expression for the probability that the temperature of the core is too high, in terms of the various conditional probabilities in the network.
 
     \begin{solution}
-        The probability of interest here is $P(T = h \knowing A = 1, F_G = 0)$. Because the alarm's behavior is deterministic, we can deduce that $G$ indicates high ($h$). Hence, $P(T = h \knowing A = 1, F_G = 0) = P(T = h \knowing A = 1, G = h, F_G = 0)$. We also see that $A \perp T \knowing G$. Therefore, we only need to calculate
+        The probability of interest here is $P(T = h | A = 1, F_G = 0)$. Because the alarm's behavior is deterministic, we can deduce that $G$ indicates high ($h$). Hence, $P(T = h | A = 1, F_G = 0) = P(T = h | A = 1, G = h, F_G = 0)$. We also see that $A \perp T | G$. Therefore, we only need to calculate
         \begin{align*}
-            P(T = h \knowing G = h, F_G = 0) & = \frac{P(T = h, G = h, F_G = 0)}{P(G = h, F_G = 0)} \\
-            & = \frac{P(G = h \knowing T = h, F_G = 0) P(F_G = 0 \knowing T = h) P(T = h)}{\sum_t P(G = h \knowing t, F_G = 0) P(F_G = 0 \knowing t) P(t)} ,
+            P(T = h | G = h, F_G = 0) & = \frac{P(T = h, G = h, F_G = 0)}{P(G = h, F_G = 0)} \\
+            & = \frac{P(G = h | T = h, F_G = 0) P(F_G = 0 | T = h) P(T = h)}{\sum_t P(G = h | t, F_G = 0) P(F_G = 0 | t) P(t)} ,
         \end{align*}
-        which we cannot develop more as we don't know $P(T)$ and $P(F_G \knowing T)$.
+        which we cannot develop more as we don't know $P(T)$ and $P(F_G | T)$.
     \end{solution}
 \end{enumerate}
 

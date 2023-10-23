@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 7: Learning
+Lecture 7: Machine learning and neural networks
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -10,13 +10,10 @@ Prof. Gilles Louppe<br>
 
 ???
 
+R: extend the NN part, check cs188 materials
+R: check early lectures of https://www.eecs.yorku.ca/~kosta/Courses/EECS6322/
 R: prepare one code example, make this more concrete
-
----
-
-class: middle, center
-
-.width-50[![](figures/lec0/map.jpg)]
+R: bishop quote
 
 ---
 
@@ -24,16 +21,16 @@ class: middle, center
 
 .center.width-50[![](figures/lec7/sl-cartoon.png)]
 
-Make our agents capable of self-improvement through a **learning** mechanism.
-- Bayesian learning
-- Supervised learning
-- Unsupervised learning (Bonus)
+Make our agents able to learn from experience.
+- xxx
+- yyy
+- zzz
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
-# Intelligence?
+class: middle
 
 What we cover in this course:
 - Search algorithms, using a state space specified by domain knowledge.
@@ -41,16 +38,14 @@ What we cover in this course:
 - Reasoning about uncertain knowledge, as represented using domain-motivated probabilistic models.
 - Taking optimal decisions, under uncertainty and possibly under partial observation.
 
-Sufficient to implement complex and rational behaviors, in some situations.
-
-.alert[Aren't we missing something?]
+These are all sufficient to implement complex and rational behaviors, in some situations, but they are not sufficient to make our agents capable of self-improvement through a **learning** mechanism.
 
 ???
 
 Is that intelligence? Aren't we missing a critical component?
 => Learning component
 
-The auestion is then to determine what should be pre-defined from what should be learned.
+The question is then to determine what should be pre-defined from what should be learned.
 
 ---
 
@@ -67,231 +62,6 @@ What if the environment is **unknown**?
 
 class: middle
 
-.center.width-80[![](figures/lec7/learning-agent.svg)]
-
-???
-
-- Performance element:
-    - The current system for selecting actions.
-- The *critic* observes the world and passes information to the *learning element*.
-    - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
-- The problem generator identifies certain areas of behavior in need of improvement and suggest experiments.
-
----
-
-class: middle
-
-The design of the **learning element** is dictated by:
-- What type of performance element is used.
-- Which functional component is to be learned.
-- How that functional component is represented.
-- What kind of feedback is available.
-
-<br><br>
-.center.width-80[![](figures/lec7/table-components.png)]
-
----
-
-class: middle
-
-# Bayesian learning
-
----
-
-# Bayesian learning
-
-Frame **learning** as a Bayesian update of a probability distribution ${\bf P}(H)$ over a hypothesis space, where
-- $H$ is the hypothesis variable
-- values are $h\_1$, $h\_2$, ...
-- the prior is ${\bf P}(H)$,
-- $\mathbf{d}$ is the observed data.
-
----
-
-class: middle
-
-Given data, each hypothesis has a posterior probability
-$$P(h\_i|\mathbf{d}) = \frac{P(\mathbf{d}|h\_i) P(h\_i)}{P(\mathbf{d})},$$ where $P(\mathbf{d}|h\_i)$ is the likelihood of the hypothesis.
-
----
-
-class: middle
-
-Predictions use a likelihood-weighted average over the hypotheses:
-$$P(X|\mathbf{d}) = \sum\_i P(X|\mathbf{d}, h\_i) P(h\_i | \mathbf{d}) = \sum\_i P(X|h\_i) P(h\_i | \mathbf{d})$$
-No need to pick one best-guess hypothesis!
-
----
-
-class: middle
-
-## Example
-
-Suppose there are five kinds of bags of candies. Assume a prior ${\bf P}(H)$:
-- $P(h\_1)=0.1$, with $h\_1$: 100% cherry candies
-- $P(h\_2)=0.2$, with $h\_2$: 75% cherry candies + 25% lime candies
-- $P(h\_3)=0.4$, with $h\_3$: 50% cherry candies + 50% lime candies
-- $P(h\_4)=0.2$, with $h\_4$: 25% cherry candies + 75% lime candies
-- $P(h\_5)=0.1$, with $h\_5$: 100% lime candies
-
-<br>
-.center.width-70[![](figures/lec7/candies.png)]
-
----
-
-class: middle
-
-
-Then we observe candies drawn from some bag:
-
-.center.width-40[![](figures/lec7/all-limes.png)]
-
-- What kind of bag is it?
-- What flavor will the next candy be?
-
----
-
-class: middle
-
-## Posterior probability of hypotheses
-
-.center.width-60[![](figures/lec7/posterior-candies.png)]
-
----
-
-class: middle
-
-## Prediction probability
-
-.center.width-60[![](figures/lec7/prediction-candies.png)]
-
-- This example illustrates the fact that the Bayesian prediction eventually agrees with the true hypothesis.
-- The posterior probability of any false hypothesis eventually vanishes (under weak assumptions).
-
----
-
-# Maximum a posteriori
-
-Summing over the hypothesis space is often *intractable*.
-
-Instead,
-**maximum a posteriori** (MAP)  estimation consists in using the hypothesis
-$$
-\begin{aligned}
-h\_\text{MAP} &= \arg \max\_{h\_i} P(h\_i | \mathbf{d}) \\\\
-&= \arg \max\_{h\_i} P(\mathbf{d}|h\_i) P(h\_i) \\\\
-&= \arg \max\_{h\_i} \log P(\mathbf{d}|h\_i) + \log P(h\_i)
-\end{aligned}$$
-
-- Log terms can be be viewed as (the negative number of) bits to encode data given hypothesis + bits to encode hypothesis.
-    - This is the basic idea of minimum description length learning, i.e., Occam's razor.
-- Finding the MAP hypothesis is often much easier than Bayesian learning.
-    - It requires solving an optimization problem instead of a large summation problem.
-
----
-
-# Maximum likelihood
-
-For large data sets, the prior ${\bf P(}H)$ becomes *irrelevant*.
-
-In this case, **maximum likelihood estimation** (MLE) consists in using the hypothesis
-$$h\_\text{MLE} = \arg \max\_{h\_i} P(\mathbf{d} | h\_i).$$
-
-- Identical to MAP for uniform prior.
-- Maximum likelihood estimation is the standard (non-Bayesian) statistical learning method.
-
----
-
-class: middle
-
-## Recipe
-
-- Choose a **parameterized** family of models to describe the data (e.g., a Bayesian network).
-- Write down the log-likelihood $L$ of the parameters $\theta$.
-- Write down the derivative of the log likelihood of the parameters $\theta$.
-- Find the parameter values $\theta^\*$ such that the derivatives are zero and check whether the Hessian is negative definite.
-
-???
-
-Note that:
-- evaluating the likelihood may require summing over hidden variables, i.e., inference.
-- finding $\theta^\*$ may be hard; modern optimization techniques help.
-
----
-
-# Parameter estimation in Bayesian networks
-
-.center.width-100[![](figures/lec7/parameterized-bn.png)]
-
----
-
-class: middle
-
-## MLE, case (a)
-
-What is the fraction $\theta$ of cherry candies?
-- Any $\theta \in [0,1]$ is possible: continuum of hypotheses $h\_\theta$.
-- $\theta$ is a **parameter** for this binomial family of models.
-
-Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
-These are i.i.d. observations, therefore
-$$P(\mathbf{d}|h\_\theta) = \prod\_{j=1}^N P(d\_j | h\_\theta) = \theta^c (1-\theta)^l.$$
-Maximize this w.r.t. $\theta$, which is easier for the log-likelihood:
-$$\begin{aligned}
-L(\mathbf{d}|h\_\theta) &= \log P(\mathbf{d}|h\_\theta) = c \log \theta + l \log(1-\theta) \\\\
-\frac{d L(\mathbf{d}|h\_\theta)}{d \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
-\end{aligned}$$
-Hence $\theta=\frac{c}{N}$.
-
-???
-
-Highlight that using the empirical estimate as an estimator of the mean can be viewed as consequence of
-- deciding on a probabilistic model
-- maximum likelihood estimation under this model
-
-Seems sensible, but causes problems with $0$ counts!
-
----
-
-class: middle
-
-## MLE, case (b)
-
-Red and green wrappers depend probabilistically on flavor.
-E.g., the likelihood for a cherry candy in green wrapper:
-$$\begin{aligned}
-&P(\text{cherry}, \text{green}|h\_{\theta,\theta\_1, \theta\_2}) \\\\
-&= P(\text{cherry}|h\_{\theta,\theta\_1, \theta\_2}) P(\text{green}|\text{cherry}, h\_{\theta,\theta\_1, \theta\_2}) \\\\
-&= \theta (1-\theta\_1).
-\end{aligned}$$
-
-The likelihood for the data, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc., is:
-$$\begin{aligned}
-P(\mathbf{d}|h\_{\theta,\theta\_1, \theta\_2}) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
-L =&\,\, c \log \theta + l \log(1-\theta)  +  \\\\
-   &\,\, r\_c \log \theta\_1 + g\_c \log(1-\theta\_1) + \\\\
-   &\,\, r\_l \log \theta\_2 + g\_l \log(1-\theta\_2)
-\end{aligned}$$
-
----
-
-class: middle
-
-Derivatives of $L$ contain only the relevant parameter:
-$$\begin{aligned}
-\frac{\partial L}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta} = 0 \Rightarrow \theta = \frac{c}{c+l} \\\\
-\frac{\partial L}{\partial \theta\_1} &= \frac{r\_c}{\theta\_1} - \frac{g\_c}{1-\theta\_1} = 0 \Rightarrow \theta\_1 = \frac{r\_c}{r\_c + g\_c} \\\\
-\frac{\partial L}{\partial \theta\_2} &= \frac{r\_l}{\theta\_2} - \frac{g\_l}{1-\theta\_2} = 0 \Rightarrow \theta\_2 = \frac{r\_l}{r\_l + g\_l}
-\end{aligned}$$
-
-???
-
-Again, results coincide with intuition.
-
----
-
-class: middle
-
 # Machine learning
 
 ---
@@ -303,7 +73,7 @@ class: middle
 .width-40[![](figures/lec7/dog.jpg)]
 ]
 
-.exercise[How would you write a computer program that recognizes cats from dogs?]
+.question[How would you write a computer program that recognizes cats from dogs?]
 
 ---
 

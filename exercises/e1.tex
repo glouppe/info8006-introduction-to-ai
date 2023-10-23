@@ -28,13 +28,13 @@ At the end of this session you should be able to
 \begin{figure}[h]
     \centering
     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
-        \node[state, align=center] (S) {S(tart)\\$h=11$};
-        \node[state, align=center] (A) [above right of=S] {A\\$h=20$};
-        \node[state, align=center] (B) [right of=S] {B\\$h=12$};
-        \node[state, align=center] (C) [below right of=S] {C\\$h=10$};
-        \node[state, align=center] (D) [below right of=B] {D\\$h=3$};
-        \node[state, align=center] (E) [above right of=B] {E\\$h=19$};
-        \node[state, align=center] (G) [right of=D] {G(oal)};
+        \node[state] (S) {S(tart)\\$h=11$};
+        \node[state] (A) [above right of=S] {A\\$h=20$};
+        \node[state] (B) [right of=S] {B\\$h=12$};
+        \node[state] (C) [below right of=S] {C\\$h=10$};
+        \node[state] (D) [below right of=B] {D\\$h=3$};
+        \node[state] (E) [above right of=B] {E\\$h=19$};
+        \node[state] (G) [right of=D] {G(oal)};
 
         \path[-] (S) edge node[fill=white] {1} (A);
         \path[-] (S) edge node[fill=white] {4} (B);
@@ -51,30 +51,34 @@ At the end of this session you should be able to
 
 For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm (lecture 2, slide 62) and give the order in which the states, represented by the nodes of this undirected graph, are expanded, as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 
+\begin{solution}
+    \newpage
+\end{solution}
+
 \begin{enumerate}
     \item Depth-First Search (DFS)
 
     \begin{solution}
-        We use a Last-In First-Out (LIFO) fringe, \ie{} a \emph{stack}, to perform the search. In this stack, we keep track of the states that are reachable from the visited (closed) states. These states are annotated with the state they were expanded from, which allows to reconstruct the path at the end. At each step, the state at the \emph{top} of the stack is \emph{popped}. If it was not visited previously, it is expanded, which consists in \emph{pushing} its neighbors to the top of the stack.
+        We use a Last-In First-Out (LIFO) fringe, \ie{} a \emph{stack}, to perform the search. In this stack, we keep track of the states that are reachable from the visited (closed) states. These states are annotated with the state they were expanded from, which allows to reconstruct the path at the end. At each step, the state at the \emph{top} of the stack is \emph{popped}. If it was not visited previously, it is expanded, which consists in \emph{pushing} its neighbors to the \emph{top} of the stack.
 
         \begin{table}[H]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (LIFO stack) & Closed & Expand \\
+                Fringe (LIFO stack) & Closed \\
                 \midrule
-                S & & S \\
-                C(S), B(S), A(S) & S & A(S) \\
-                C(S), B(S), B(A) & S, A & B(A) \\
-                C(S), E(B), D(B), C(B) & S, A, B & C(B) \\
-                E(B), D(B) & S, A, B, C & D(B) \\
-                E(B), G(D), E(D) & S, A, B, C, D & E(D) \\
-                G(D), G(E) & S, A, B, C, D, E & G(E) \\
+                S & \\
+                C(S) B(S) A(S) & S \\
+                C(S) B(S) B(A) & S A \\
+                C(S) B(S) E(B) D(B) C(B) & S A B \\
+                C(S) B(S) E(B) D(B) & S A B C \\
+                C(S) B(S) E(B) G(D) E(D) & S A B C D \\
+                C(S) B(S) E(B) G(D) G(E) & S A B C D E \\
                 \bottomrule
             \end{tabular}
         \end{table}
 
-        For readability, we don't write the nodes currently in the fringe that are already in the closed set, since they will never be expanded.
+        For readability, nodes that are already in the closed set are not added to the fringe.
 
         Expansion: S, A, B, C, D, E, G. Path: S, A, B, D, E, G.
     \end{solution}
@@ -86,22 +90,27 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
         \begin{table}[h]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (FIFO queue) & Closed & Expand \\
+                Fringe (FIFO queue) & Closed \\
                 \midrule
-                S & & S \\
-                C(S), B(S), A(S) & S & A(S) \\
-                B(A), C(S), B(S) & S, A & B(S) \\
-                E(B), D(B), C(B), C(S) & S, A, B & C(S) \\
-                E(B), D(B) & S, A, B, C & D(B) \\
-                G(D), E(D), E(B) & S, A, B, C, D & E(B) \\
-                G(E), G(D) & S, A, B, C, D, E & G(D) \\
+                S & \\
+                C(S) B(S) A(S) & S \\
+                B(A) C(S) B(S) & S A \\
+                E(B) D(B) C(B) B(A) C(S) & S A B \\
+                E(B) D(B) C(B) B(A) & S A B C \\
+                E(B) D(B) & S A B C \\
+                G(D) E(D) E(B) & S A B C D \\
+                G(E) G(D) & S A B C D E \\
                 \bottomrule
             \end{tabular}
         \end{table}
 
         Expansion: S, A, B, C, D, E, G. Path: S, B, D, G.
+    \end{solution}
+
+    \begin{solution}
+        \newpage
     \end{solution}
 
     \item Uniform-Cost search (UCS)
@@ -111,17 +120,19 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
         \begin{table}[h]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (priority queue) & Closed & Expand \\
+                Fringe (priority queue) & Closed \\
                 \midrule
-                S(0) & & S(0) \\
-                B(S, 4), C(S, 3), A(S, 1) & S & A(S, 1) \\
-                B(A, 6), B(S, 4), C(S, 3) & S, A & C(S, 3) \\
-                B(A, 6), B(C, 5), B(S, 4) & S, A, C & B(S, 4) \\
-                D(B, 11), E(B, 9) & S, A, C, B & E(B, 9) \\
-                D(B, 11), D(E, 10) & S, A, C, B, E & D(E, 10) \\
-                G(D, 20) & S, A, C, B, E, D & G(D, 20) \\
+                S(0) & \\
+                B(S, 4) C(S, 3) A(S, 1) & S \\
+                B(A, 6) B(S, 4) C(S, 3) & S A \\
+                B(A, 6) B(C, 5) B(S, 4) & S A C \\
+                D(B, 11) E(B, 9) B(A, 6) B(C, 5) & S A C B \\
+                D(B, 11) E(B, 9) & S A C B \\
+                G(E, 29) D(B, 11) D(E, 10) & S A C B E \\
+                G(E, 29) G(D, 20) D(B, 11) & S A C B E D \\
+                G(E, 29) G(D, 20) & S A C B E D \\
                 \bottomrule
             \end{tabular}
         \end{table}
@@ -136,20 +147,20 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
         \begin{table}[h]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (priority queue) & Closed & Expand \\
+                Fringe (priority queue) & Closed \\
                 \midrule
-                S(11) & & S(11) \\
-                A(S, 20), B(S, 12), C(S, 10) & S & C(S, 10) \\
-                A(S, 20), B(C, 12), B(S, 12) & S, C & B(S, 12) \\
-                A(S, 20), E(B, 19), D(B, 3) & S, C, B & D(B, 3) \\
-                A(S, 20), E(D, 19), E(B, 19), G(D, 0) & S, C, B, D & G(D, 0) \\
+                S(11) & \\
+                A(S, 20) B(S, 12) C(S, 10) & S \\
+                A(S, 20) B(S, 12) B(C, 12) & S C \\
+                A(S, 20) A(B, 20) E(B, 19) B(S, 12) D(B, 3) & S C B \\
+                A(S, 20) A(B, 20) E(D, 19) E(B, 19) B(S, 12) G(D, 0) & S C B D \\
                 \bottomrule
             \end{tabular}
         \end{table}
 
-        Expansion: S, C, B, D, G. Path: S, B, D, G.
+        Expansion: S, C, B, D, G. Path: S, C, B, D, G.
     \end{solution}
 
     \item \Astar{}
@@ -170,30 +181,31 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
         \item Is the heuristic consistent ? If not, can we apply \textsc{Graph-Search} ?
 
         \begin{solution}
-            In a graph, a heuristic $h$ is consistent if $h(n) \leq c(n, n') + h(n')$ for all node $n'$ reachable from $n$, where $c(n, n')$ is the step cost from $n$ to $n'$. Because this graph is undirected, unless $c(n, n') \geq \abs{h(n') - h(n)}$ for all pair of neighbors $(n, n')$ (which is not the case), it cannot be consistent.
+            In a graph, a heuristic $h$ is consistent if $h(n) \leq c(n, n') + h(n')$ for all node $n'$ reachable from $n$, where $c(n, n')$ is the step cost from $n$ to $n'$. Because this graph is undirected, unless $c(n, n') \geq \abs{h(n') - h(n)}$ for all pairs of neighbors $(n, n')$ (which is not the case), it cannot be consistent.
 
             This is problematic as it could create situations where a node has been expanded within a path that is not optimal, and cannot be re-expanded later on within the optimal one. Hence, the algorithm loses its optimality.
 
-            Fortunately, there is a modification of \textsc{Graph-Search} that can handle inconsistent heuristics. If we annotate the nodes in the closed set with the priority at which they were expanded, we obtain the capacity to re-expand a node if it has a better (lower) priority than before. The priority in the closed set is then updated.
+            Fortunately, there is a modification of \textsc{Graph-Search} that can handle inconsistent heuristics. If we annotate the nodes in the closed set with the priority at which they were expanded, we can re-expand a node if it has a better (lower) priority than before. The priority in the closed set is then updated.
         \end{solution}
     \end{enumerate}
 
     \begin{solution}
-        We apply the modified algorithm with the admissible heuristic.
+        We apply the modified algorithm with the admissible heuristic. For readability, nodes that are already in the closed set with a lower priority are not added to the fringe.
 
         \begin{table}[h]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (priority queue) & Closed & Expand \\
+                Fringe (priority queue) & Closed \\
                 \midrule
-                S(11) & & S(11) \\
-                A(S, 21), B(S, 16), C(S, 13) & S(11) & C(S, 13) \\
-                A(S, 21), B(C, 17), B(S, 16) & S(11), C(13) & B(S, 16) \\
-                A(B, 29), A(S, 21), E(B, 20), D(B, 14) & S(11), C(13), B(16) & D(B, 14) \\
-                A(B, 29), E(D, 23), G(D, 21), A(S, 21), E(B, 20) & S(11), C(13), B(16), D(14) & E(B, 20) \\
-                A(B, 29), G(D, 21), A(S, 21), D(E, 13) & S(11), C(13), B(16), D(14), E(20) & D(E, 13) \\
-                A(B, 29), G(D, 21), A(S, 21), G(D, 20) & S(11), C(13), B(16), D(13), E(20) & G(D, 20) \\
+                S(11) & \\
+                A(S, 21) B(S, 16) C(S, 13) & S(11) \\
+                A(S, 21) B(C, 17) B(S, 16) & S(11) C(13) \\
+                A(B, 29) A(S, 21) E(B, 20) B(C, 17) D(B, 14) & S(11) C(13) B(16) \\
+                A(B, 29) E(D, 23) G(D, 21) A(S, 21) E(B, 20) B(C, 17) & S(11) C(13) B(16) D(14) \\
+                A(B, 29) E(D, 23) G(D, 21) A(S, 21) E(B, 20) & S(11) C(13) B(16) D(14) \\
+                G(E, 29) A(B, 29) E(D, 23) G(D, 21) A(S, 21) \textcolor{red}{D(E, 13)} & S(11) C(13) B(16) \textcolor{red}{D(14)} E(20) \\
+                G(E, 29) A(B, 29) E(D, 23) G(D, 21) A(S, 21) G(D, 20) & S(11) C(13) B(16) D(13) E(20) \\
                 \bottomrule
             \end{tabular}
         \end{table}
@@ -211,7 +223,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
     \includegraphics[width=0.3\linewidth]{figures/e1_maze.png}
 \end{figure}
 
-Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent’s direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent’s goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
+Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in$ (N, S, E, W). With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent's direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent's goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
 
 As an example, in the hereabove maze, if the agent is initially stationary, it might first turn to the east using \texttt{right}, then move one square east using \texttt{faster}, then two more squares east using \texttt{faster} again. However, the agent will have to slow to take the turn.
 
@@ -228,7 +240,7 @@ As an example, in the hereabove maze, if the agent is initially stationary, it m
         The maximum branching factor is 3, and this happens when the agent is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
     \end{solution}
 
-    \item Is the Manhattan distance from the agent’s location to the exit’s location admissible?
+    \item Is the Manhattan distance from the agent's location to the exit's location admissible?
 
     \begin{solution}
         No because it does not take the velocity of the agent into account. For instance, in a long straight path, the number of steps could be smaller than the number of squares.
@@ -296,12 +308,12 @@ Consider a graph search problem where all edges have a unit cost and the optimal
 \begin{figure}[h]
     \centering
     \scalebox{0.75}{\begin{tikzpicture}[node distance = 4cm]
-        \node[state, align=center] (S) {S(tart)};
-        \node[state, align=center] (A) [above right of=S] {A};
-        \node[state, align=center] (B) [right of=A] {B};
-        \node[state, align=center] (C) [below of=B] {C};
-        \node[state, align=center] (D) [below right of=B] {D};
-        \node[state, align=center] (G) [below of=D] {G(oal)};
+        \node[state] (S) {S(tart)};
+        \node[state] (A) [above right of=S] {A};
+        \node[state] (B) [right of=A] {B};
+        \node[state] (C) [below of=B] {C};
+        \node[state] (D) [below right of=B] {D};
+        \node[state] (G) [below of=D] {G(oal)};
 
         \path[-] (S) edge node[fill=white] {1} (A);
         \path[-] (S) edge node[fill=white] {12} (G);
