@@ -283,55 +283,71 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/e3_independence.png}
+    \begin{tikzpicture}[node distance = 2.5cm]
+        \node[state] (A) {$A$};
+        \node[state] (B) [below of=A] {$B$};
+        \node[state] (C) [right of=B] {$C$};
+        \node[state] (D) [below of=B] {$D$};
+        \node[state] (E) [below right of=C] {$E$};
+        \node[state] (F) [left of=B] {$F$};
+
+        \draw[arrow] (A) to (B);
+        \draw[arrow] (A) to (C);
+        \draw[arrow] (B) to (D);
+        \draw[arrow] (C) to (D);
+        \draw[arrow] (C) to (E);
+        \draw[arrow] (A) to (F);
+        \draw[arrow] (B) to (F);
+    \end{tikzpicture}
 \end{figure}
 
 Considering the hereabove Bayesian network, which of the following statements are enforced by the network structure?
 
 \begin{solution}
-    We apply the d-separation\footnote{Slides 64 and 65, Lecture 4.} algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triples are active.
+    We apply the d-separation\footnote{Slides 64 and 65, Lecture 4.} algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triplets are active.
 \end{solution}
 
 \begin{enumerate}
     \item $P(B, C) = P(B) P(C)$
 
     \begin{solution}
-        This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The two paths that link $B$ and $C$ are $(B, A, C)$ and $(B, D, C)$. $(B, A, C)$ is active because $A$ is unknown ($\wedge$-structure). We cannot guarantee that $B \perp C$.
+        This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The three paths that link $B$ and $C$ are $(B, A, C)$, $(B, D, C)$ and $(B, F, A, C)$. $(B, A, C)$ is active because $A$ is unknown ($\wedge$-structure). We cannot guarantee that $B \perp C$.
     \end{solution}
 
     \item $P(B, C | A) = P(B | A) P(C | A)$
 
     \begin{solution}
-        This is true iff $B \perp C | A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). We can guarantee that $B \perp C | A$.
+        This is true iff $B \perp C | A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). In $(B, F, A, C)$, the triplet $(B, F, A)$ is active, but $(F, A, C)$ is not. We can guarantee that $B \perp C | A$.
     \end{solution}
 
-    \item $P(B, C | A, D) =  P(B | A, D) P(C | A, D)$
+    \item $P(F, E) = P(F) P(E)$
 
     \begin{solution}
-        This is true iff $B \perp C | A, D$. This time, $(B, D, C)$ is active because $D$ is known. We cannot assert that $B \perp C | A, D$.
+        This is true iff $F \perp E$. The four paths that link $F$ and $E$ are $(F, A, C, E)$, $(F, A, B, D, C, E)$, $(F, B, A, C, E)$ and $(F, B, D, C, E)$. In $(F, A, C, E)$, the triplets $(F, A, C)$ ($\wedge$-structure) and $(A, C, E)$ are both active. We cannot guarantee that $F \perp E$.
     \end{solution}
 
-    \item $P(B, E | A) = P(B | A) P(E | A)$
+    \item $P(F | A, D, E) = P(F | A, D)$
 
     \begin{solution}
-        This is true iff $B \perp E | A$. We know that, knowing $A$, no path between $B$ and $C$ are active. As $C$ is the only parent of $E$, all paths between $B$ and $E$ go trough $C$, meaning that they are not active. We can guarantee that $B \perp E | A$.
+        This is true iff $F \perp E | A, D$. This time, the triplets $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive ($\wedge$-structure, but $A$ is known). In $(F, B, D, C, E)$, $(F, B, D)$ is active \footnote{Knowing an extremity of a triplet does not impact whether it is active or not. Only the center variable is important.}, $(B, D, C)$ is active ($\vee$-structure, but $D$ is known) and $(D, C, E)$ is active. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E | A, D$.
     \end{solution}
 
-    \item $P(C | A, D, E) = P(C | A, B, D, E)$
+    \item $P(B, E) = \sum_{a, c, d, f} P(a) P(B | a) P(c | a) P(d | B, c) P(E | c) P(f | a, B)$
 
     \begin{solution}
-        This is true iff $B \perp C | A, D, E$. Once again, $(B, D, C)$ is active because $D$ is known. We can cannot guarantee that $B \perp C | A, D, E$.
-    \end{solution}
-
-    \item $P(B, E) = \sum_{a, c, d} P(E | c) P(d | B, c) P(c | a) P(B | a) P(a)$
-
-    \begin{solution}
-        Since $$P(B, E) = \sum_{a, c, d} P(a, B, c, d, E),$$ we need to assess whether $$P(A, B, C, D, E) = P(E | C) P(D | B, C) P(C | A) P(B | A) P(A),$$
-        is guaranteed. This factorization corresponds exactly to
+        We notice that
+        \begin{equation*}
+            P(A, B, C, D, E, F) = P(A) P(B | A) P(C | A) P(D | B, C) P(E | C) P(F | A, B)
+        \end{equation*}
+        corresponds exactly to
         \begin{equation*}
             P(X_1, \dots, X_n) = \prod_{i = 1}^n P(X_i | parents(X_i)) ,
         \end{equation*}
-        for the considered network, which we know is guaranteed.
+        for the considered network, which we know is guaranteed. We also known that
+        \begin{equation*}
+            P(B, E) = \sum_{a, c, d, f} P(a, B, c, d, E, f)
+        \end{equation*}
+        Hence, the initial statement is always true.
     \end{solution}
 \end{enumerate}
 
