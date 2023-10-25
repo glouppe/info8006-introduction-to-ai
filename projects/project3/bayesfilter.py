@@ -28,8 +28,8 @@ class BeliefStateAgent(Agent):
 
         Returns:
             The W x H x W x H transition matrix T_t. The element (i, j, k, l)
-            of T_t is the probability P(X_t = (i, j) | X_{t-1} = (k, l)) for
-            the ghost to move from (k, l) to (i, j).
+            of T_t is the probability P(X_t = (k, l) | X_{t-1} = (i, j)) for
+            the ghost to move from (i, j) to (k, l).
         """
 
         pass
