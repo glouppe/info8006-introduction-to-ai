@@ -479,10 +479,10 @@ class: middle
 
 ## Convolutional layers
 
-A convolutional layer is defined by a set of $K$ kernels $\mathbf{u}\_{k}$ of size $h \times w \times c$, where $h$ and $w$ are the height and width of the kernel, and $c$ is the number of channels of the input.
+A convolutional layer is defined by a set of $K$ kernels $\mathbf{u}$ of size $c\times h \times w$, where $h$ and $w$ are the height and width of the kernel, and $c$ is the number of channels of the input.
 
 Assuming as input a 3D tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$, the output of the convolutional layer is a set of $K$ feature maps of size $H' \times W'$, where $H' = H - h + 1$ and $W' = W - w + 1$. Each feature map $\mathbf{o}$ is the result of convolving the input with a kernel, that is
-$$\mathbf{o}\_{j,i} = \sum\_{c=0}^{C-1} (\mathbf{x}\_c \circledast \mathbf{u}\_c)[j,i] = \sum\_{c=0}^{C-1}  \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{c,n+j,m+i} \mathbf{u}\_{c,n,m}$$
+$$\mathbf{o}\_{j,i} = \sum\_{c=0}^{C-1} (\mathbf{x}\_c \circledast \mathbf{u}\_{c})[j,i] = \sum\_{c=0}^{C-1}  \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{c,n+j,m+i} \mathbf{u}\_{c,n,m}$$
 
 ---
 
@@ -532,6 +532,10 @@ A convolutional network combines convolutional, pooling<br> and fully connected 
 class: middle, center
 
 (Step-by-step code example)
+
+???
+
+See also https://poloclub.github.io/cnn-explainer/
 
 ---
 
