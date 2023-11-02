@@ -565,6 +565,42 @@ A recurrent network playing Mario Kart.
 
 ---
 
+# Transformers
+
+Transformers are a type of neural network architecture that are based on self-attention mechanisms instead of fully connected or convolutional layers. 
+
+For language, transformers are trained as classifiers 
+$$p(w\_t | w\_{1:t-1})$$
+where $w\_t$ is the next word in the sequence and $w\_{1:t-1}$ are the previous words.
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec7/transformer.svg)]
+
+---
+
+class: middle
+
+.width-100[![](./figures/lec0/scaling-power-law.png)]
+
+A brutal simplicity: 
+
+- The more data, the better the model.
+- The more parameters, the better the model.
+- The more compute, the better the model.
+
+???
+
+The simplicity behind transformers is brutal. You'd think that there is more sophistication behind the scenes, but there is not. It is just a neural network that guesses the next words.
+
+Not only that, but the research community has also found that the performance of transformers follows a power law. The more data, the better the model. The more parameters, the better the model. The more compute, the better the model. No matter how much data, parameters, and compute you have, you can always do better by increasing them, and there is no sign of saturation yet.
+
+This is a very different paradigm than what we used to do in deep learning, where we would spend a lot of time designing the architecture of the neural network. Here, the architecture is always the same, and the only thing that matters is the amount of data, the number of parameters, and the amount of compute.
+
+---
+
 class: middle
 
 # AI beyond Pacman
