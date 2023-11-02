@@ -506,6 +506,12 @@ $$
 \end{aligned}
 $$
 
+???
+
+Let’s focus in particular on paths that reach the state `Rain 5 = true`. 
+
+Because of the Markov property, it follows that the most likely path to the state `Rain 5 = true` consists of the most likely path to some state at time 4, followed by a transition to `Rain 5 = true`; and the state at time 4 that will become part of the path to `Rain 5 = true` is whichever maximizes the likelihood of that path.
+
 ---
 
 class: middle
@@ -517,7 +523,7 @@ where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to st
 - The update has its sum replaced by max.
 
 The resulting algorithm is called the **Viterbi algorithm**, which computes the most likely explanation as
-$$\mathbf{m}\_{1:t+1} \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$
+$$\mathbf{m}\_{1:t+1} \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$ Its complexity is linear in $t$, the length of the sequence.
 
 ???
 
