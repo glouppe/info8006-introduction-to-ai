@@ -326,9 +326,9 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \end{itemize}
         In a \href{https://wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
 
-        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined by
+        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined\footnote{The stationarity of the wind implies that $\V\sbk{w_0} = \V\sbk{w_1} = \V\sbk{\alpha w_0 + \Delta w} = \alpha^2 \V\sbk{w_0} + \sigma_w^2$, and therefore, $\V\sbk{w_0} = \frac{\sigma_w^2}{1 - \alpha^2}.$} by
         \begin{equation*}
-            \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0.0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
+            \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
         \end{equation*}
         Then, our transition model is defined by
         \begin{equation*}
