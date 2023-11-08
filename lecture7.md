@@ -59,25 +59,25 @@ class: middle
 ---
 
 count: false
+class: middle
+
+.center.width-60[![](figures/lec7/cat2.png)]
+
+
+---
+
+count: false
 class: black-slide, middle
-
-.center.width-50[![](figures/lec7/cat2.png)]
-
-.center[The good old-fashioned approach.]
+background-image: url(./figures/lec7/cat3.png)
+background-size: cover
 
 ---
 
 count: false
 class: black-slide, middle
 
-.center.width-80[![](figures/lec7/cat3.png)]
-
----
-
-count: false
-class: black-slide, middle
-
-.center.width-80[![](figures/lec7/cat4.png)]
+background-image: url(./figures/lec7/cat4.png)
+background-size: cover
 
 ---
 
@@ -150,7 +150,7 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 <br><br>
 
 To learn the conditional distribution $p(y|\mathbf{x})$, we maximize
-$$p(y|\mathbf{x}) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{2\sigma^2}\right)$$
+$$p(y|\mathbf{x}) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{1}{2}\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{\sigma^2}\right)$$
 w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$.
 
 --
@@ -378,6 +378,10 @@ These units can be composed *in parallel* to form a **layer** with $q$ outputs:
 $$\mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})$$
 where  $\mathbf{h} \in \mathbb{R}^q$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{W} \in \mathbb{R}^{d\times q}$, $b \in \mathbb{R}^d$ and where $\sigma(\cdot)$ is upgraded to the element-wise sigmoid function.
 
+???
+
+Draw on the blackboard.
+
 ---
 
 class: middle
@@ -546,6 +550,10 @@ When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be
 For example,
 $$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x} + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
 where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
+
+???
+
+Skip or go fast.
 
 ---
 
