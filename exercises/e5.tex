@@ -8,6 +8,8 @@
 \subtitle{Exercises 5 -- Learning}
 \date{\today}
 
+\def\ReLU{\mathrm{ReLU}}
+
 \begin{document}
 
 \maketitle
@@ -297,6 +299,49 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
 \newpage
 
+\section{ReLU}
+
+For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\mathrm{ReLU}(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that matches exactly the function over $\R$.
+
+\begin{center}
+    \begin{tikzpicture}[
+        declare function={
+            relu(\x) = max(\x, 0);
+            a(\x) = relu(\x) + relu(-\x) + 1;
+            b(\x) = relu(\x - 2) -relu(-\x - 2);
+            c(\x) = relu(-relu(-\x + 2) + 4) - 2;
+            d(\x) = relu(-relu(2 * \x / 3) - relu(-\x / 2) + 2);
+        }
+    ]
+        \begin{axis}[
+            axis x line=middle,
+            axis y line=middle,
+            grid=major,
+            ymin=-5, ymax=5, ytick={-5,...,5}, ylabel=$y$,
+            xmin=-5, xmax=5, xtick={-5,...,5}, xlabel=$x$,
+            domain=-5:5, samples=11,
+        ]
+            \addplot[NavyBlue, thick] {a(x)};
+            \addplot[Red, thick] {b(x)};
+            \addplot[ForestGreen, thick] {c(x)};
+            \addplot[Fuchsia, thick] {d(x)};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+For example, $y = \ReLU(x + 2) - \ReLU(-2x)$ is a valid function.
+
+\begin{solution}
+    \begin{enumerate}
+        \item \textcolor{NavyBlue}{$y = \ReLU(x) - \ReLU(-x) + 1$}
+        \item \textcolor{Red}{$y = \ReLU(x - 2) - \ReLU(-x - 2)$}
+        \item \textcolor{ForestGreen}{$y = \ReLU(-\ReLU(-x + 2) + 4) - 2$}
+        \item \textcolor{Fuchsia}{$y = \ReLU(-\ReLU(\frac{2}{3} x) - \ReLU(-\frac{1}{2} x) + 2)$}
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
 \section{Escape game (January 2022)}
 
 A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(x, y)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\N(0, 1)$.
@@ -395,16 +440,16 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
 
         \begin{table}[H]
             \centering
-            \begin{tabular}{l|l|c}
+            \begin{tabular}{l|l}
                 \toprule
-                Fringe (priority queue) & Closed & Expand \\
+                Fringe (priority queue) & Closed \\
                 \midrule
-                11(9.5) & & 11 \\
-                21(8.5), 12(8.0) & 11 & 12 \\
-                21(8.5), 22(7.0), 13(6.5) & 11, 12 & 13 \\
-                21(8.5), 14(7.0), 22(7.0), 23(5.5) & 11, 12, 13 & 23 \\
-                21(8.5), 14(7.0), 22(7.0), 24(5.0), 33(4.5) & 11, 12, 13, 23 & 33 \\
-                21(8.5), 14(7.0), 22(7.0), 32(6.0), 24(5.0), 43(3.5), 34(3.0) & 11, 12, 13, 23, 33 & 34 \\
+                11(9.5) & \\
+                21(8.5) 12(8.0) & 11 \\
+                21(8.5) 22(7.0) 13(6.5) & 11 12 \\
+                21(8.5) 14(7.0) 22(7.0) 23(5.5) & 11 12 13\\
+                21(8.5) 14(7.0) 22(7.0) 24(5.0) 33(4.5) & 11 12 13 23 \\
+                21(8.5) 14(7.0) 22(7.0) 32(6.0) 24(5.0) 43(3.5) 34(3.0) & 11 12 13 23 33 \\
                 \bottomrule
             \end{tabular}
         \end{table}
