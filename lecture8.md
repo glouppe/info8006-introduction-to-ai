@@ -699,9 +699,3 @@ class: end-slide, center
 count: false
 
 The end.
-
----
-
-# References
-
-- Åström, Karl J. "Optimal control of Markov processes with incomplete state information." Journal of Mathematical Analysis and Applications 10.1 (1965): 174-205.

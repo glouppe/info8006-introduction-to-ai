@@ -24,7 +24,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 2 | _No class_
 | November 9 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4b: Kalman [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 10 | Deadline of Project 2 |
-| November 16 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
+| November 16 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br>Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 5: Learning [[PDF][e5]] [[solutions][e5s]] |
 | November 23 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]<br>Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] |
 | November 30 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]]  | 
 | December 7 | Q&As <br> Correction of a past exam  |
