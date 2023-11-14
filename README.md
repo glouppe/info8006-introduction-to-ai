@@ -97,6 +97,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [August 2021](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2021.pdf)
 - [January 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022.pdf) ([solutions](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2022-solutions.pdf))
 - [August 2022](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2022.pdf)
+- [January 2023](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2023.pdf) 
+- [August 2023](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2023.pdf)
 
 Materials covered by the exam are listed [here](https://glouppe.github.io/info8006-introduction-to-ai/pdf/info8006-grid.pdf).
 
