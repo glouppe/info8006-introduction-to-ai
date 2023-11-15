@@ -301,7 +301,7 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
 \section{ReLU}
 
-For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\mathrm{ReLU}(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that matches exactly the function over $\R$.
+For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\mathrm{ReLU}(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that exactly matches the function over $\R$.
 
 \begin{center}
     \begin{tikzpicture}[
@@ -314,12 +314,13 @@ For each of the piecewise-linear functions below, write a function $y = f(x)$ as
         }
     ]
         \begin{axis}[
-            axis x line=middle,
-            axis y line=middle,
+            width=7cm,
+            height=7cm,
             grid=major,
-            ymin=-5, ymax=5, ytick={-5,...,5}, ylabel=$y$,
-            xmin=-5, xmax=5, xtick={-5,...,5}, xlabel=$x$,
-            domain=-5:5, samples=11,
+            ymin=-6, ymax=6, ylabel=$y$,
+            xmin=-6, xmax=6, xlabel=$x$,
+            domain=-6:6,
+            samples=12 + 1,
         ]
             \addplot[NavyBlue, thick] {a(x)};
             \addplot[Red, thick] {b(x)};
@@ -455,6 +456,70 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
         \end{table}
     \end{solution}
 \end{enumerate}
+
+\newpage
+
+\section{Convolution}
+
+Represent the convolution $x \circledast u$ of each of the following signals $x$
+
+\newcommand{\signal}[1]{%
+\begin{tikzpicture}
+    \begin{axis}[%
+        width=8cm,
+        height=4cm,
+        axis x line=middle,
+        axis y line=none,
+        domain=0:19,
+        samples=20,
+        xmin=-1,
+        xmax=20,
+        ymin=-1,
+        ymax=+1,
+        xmajorticks=false,
+        ymajorticks=false,
+    ]
+        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
+    \end{axis}
+\end{tikzpicture}
+}
+
+\newcommand{\kernel}[1]{%
+\begin{tikzpicture}
+    \begin{axis}[%
+        width=3cm,
+        height=4cm,
+        axis x line=middle,
+        axis y line=none,
+        domain=0:3,
+        samples=4,
+        xmin=-1,
+        xmax=4,
+        ymin=-1,
+        ymax=+1,
+        xmajorticks=false,
+        ymajorticks=false,
+    ]
+        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
+    \end{axis}
+\end{tikzpicture}
+}
+
+\vspace{1ex}
+
+\signal{2 * (mod(x, 10) < 5) - 1}
+\signal{mod(x, 5) / 2 - 1}
+
+\signal{abs(mod(x, 10) - 5) / 2.5 - 1}
+\signal{cos(360 * x / 15.29)}
+
+with each of the following convolution kernels $u$.
+
+\vspace{1ex}
+
+\kernel{x / 1.5 - 1}
+\kernel{1 - 2 * (x < 2)}
+\kernel{1 - 2 * (mod(x, 3) == 0)}
 
 \newpage
 
