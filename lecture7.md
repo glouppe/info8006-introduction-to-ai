@@ -451,10 +451,6 @@ background-size: cover
 
 # Neural networks for images
 
-???
-
-The game consists of a number of chaotic scenes bursting with activities. Waldo shows up somewhere in each, typically lurking in some unlikely location. The reader’s goal is to locate him. Despite his characteristic outfit, this can be surprisingly difficult, due to the large number of distractions. However, what Waldo looks like does not depend upon where Waldo is located. We could sweep the image with a Waldo detector that could assign a score to each patch, indicating the likelihood that the patch contains Waldo
-
 ---
 
 class: middle
@@ -462,7 +458,7 @@ class: middle
 
 The MLP architecture is appropriate for tabular data, but not for images.
 We want to design a neural architecture such that:
-- in the earliest layers, the network respond similarly to similar patches of the image, regardless of their location;
+- in the earliest layers, the network responds similarly to similar patches of the image, regardless of their location;
 - the earliest layers focus on local regions of the image, without regard for the contents of the image in distant regions;
 - in the later layers, the network combines the information from the earlier layers to focus on larger and larger regions of the image, eventually combining all the information from the image to classify the image into a category.
 
@@ -573,7 +569,7 @@ See also https://poloclub.github.io/cnn-explainer/
 When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states, where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
 
 For example,
-$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x} + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
+$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x}\_t + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
 where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
 
 ???
@@ -680,9 +676,10 @@ Improving Tuberculosis Monitoring with Deep Learning
 # Summary
 
 - Learning is a key element of intelligence.
-- Supervised learning is used to learn functions from a set of training examples.
-    - Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
-    - Neural networks are defined as a composition of squashed linear models.
+- Supervised learning is used to learn functions or conditional probability distributions from a set of training examples.
+- Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
+- Neural networks are defined as a composition of squashed linear models. They are universal function approximators and can be trained using gradient descent.
+- Deep learning is a subfield of machine learning that uses neural networks with many layers.
 
 ???
 

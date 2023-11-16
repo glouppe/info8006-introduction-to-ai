@@ -10,6 +10,12 @@ Prof. Gilles Louppe<br>
 
 ---
 
+class: middle, center
+
+.width-50[![](figures/lec0/map.png)]
+
+---
+
 # Today
 
 .center.width-50[![](figures/lec8/intro.png)]
