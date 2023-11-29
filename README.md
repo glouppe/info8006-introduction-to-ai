@@ -28,8 +28,8 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | November 23 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] |
 | November 30 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]<br>Exercises 6: Making decisions [[PDF][e6]] [[solutions][e6s]] | 
 | December 7 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] <br> Correction of a past exam  <br> Q&As |
-| December 8 | Deadline of Project 3 |
 | December 14 | _No class_  | 
+| December 15 | Deadline of Project 3 |
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
@@ -85,7 +85,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
 - Part 1: [Search algorithms](projects/project1) (due by October 13)
 - Part 2: [Adversarial search](projects/project2) (due by November 10)
-- Part 3: [Bayes filter](projects/project3) (due by December 8)
+- Part 3: [Bayes filter](projects/project3) (due by December 15)
 
 ## Previous exams
 
