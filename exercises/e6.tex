@@ -63,7 +63,7 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
         where $\gamma \in (0, 1]$ is the discount factor. For a policy $\pi : S \mapsto A$ to be optimal, it should maximize its \emph{expected} utility
         \begin{align*}
             V^\pi(s_0) & = \E \sbk*{\sum_{t = 0}^\infty \gamma^t R(s_t)} \\
-            & = \max_\pi R(s_0) + \gamma \, \E \sbk*{V^\pi(s_1)} \\
+            & = R(s_0) + \gamma \, \E \sbk*{V^\pi(s_1)} \\
             & = R(s_0) + \gamma \sum_{s_1} P(s_1 | s_0, \pi(s_0)) V^\pi(s_1),
         \end{align*}
         where the states $s_{t+1} \sim P(s | s_t, \pi(s_t))$. Therefore, we define the value $V(s)$ of a state $s$ is its maximum expected utility, \ie{}
