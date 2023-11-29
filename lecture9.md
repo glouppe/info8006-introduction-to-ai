@@ -256,7 +256,7 @@ Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
 A **model-based** agent estimates approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
 
 - Step 1: Learn an empirical MDP.
-  - Estimate $\hat{P}(s'|s,a)$ from empirical samples $(s,a,s')$ (as in Lecture 5) or with supervised learning (as in Lecture 7).
+  - Estimate $\hat{P}(s'|s,a)$ from empirical samples $(s,a,s')$ or with supervised learning.
   - Discover each $\hat{R}(s)$ for each $s$.
 - Step 2: Evaluate $\pi$ using $\hat{P}$ and $\hat{R}$, e.g. as
   $$V(s)  = \hat{R}(s) + \gamma \sum\_{s'} \hat{P}(s'|s,\pi(s)) V(s').$$
@@ -280,10 +280,11 @@ Policy $\pi$:
 .kol-3-4[
 .smaller-x[
 Trajectories:
-- $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(E, -1, \text{north}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)$
+
+$(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(E, -1, \text{north}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)$
 
 ]
 ]
@@ -292,17 +293,19 @@ Trajectories:
 .grid.smaller-x[
 .kol-1-2[
 Learned transition model $\hat{P}$:
-- $\hat{P}(C|B, \text{east}) = 1$
-- $\hat{P}(D|C, \text{east}) = 0.75$
-- $\hat{P}(A|C, \text{east}) = 0.25$
-- (...)
+
+$\hat{P}(C|B, \text{east}) = 1$<br>
+$\hat{P}(D|C, \text{east}) = 0.75$<br>
+$\hat{P}(A|C, \text{east}) = 0.25$<br>
+$(...)$
 ]
 .kol-1-2[
 Learned reward $\hat{R}$:
-- $\hat{R}(B) = -1$
-- $\hat{R}(C) = -1$
-- $\hat{R}(D) = +10$
-- (...)
+
+$\hat{R}(B) = -1$<br>
+$\hat{R}(C) = -1$<br>
+$\hat{R}(D) = +10$ <br>
+$(...)$
 ]
 ]
 
@@ -341,10 +344,11 @@ Policy $\pi$:
 .kol-3-4[
 .smaller-x[
 Trajectories:
-- $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(E, -1, \text{north}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
-- $(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)$
+
+$(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(E, -1, \text{north}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
+$(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)$
 ]
 ]
 ]

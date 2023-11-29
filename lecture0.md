@@ -629,8 +629,8 @@ class: middle
 - Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
 - Lecture 3: Adversarial search
-- Lecture 4: Representing uncertain knowledge
-- Lecture 5: Inference in Bayesian networks
+- Lecture 4: Quantifying uncertainty
+- Lecture 5: Probabilistic reasoning
 - Lecture 6: Reasoning over time
 - Lecture 7: Machine learning and neural networks
 - Lecture 8: Making decisions

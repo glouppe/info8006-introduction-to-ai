@@ -15,16 +15,13 @@ class: middle
 - Lecture 0: Artificial intelligence
 - Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
-- .inactive[Lecture 2b: Constraint satisfaction problems (optional)]
 - Lecture 3: Adversarial search
-- Lecture 4: Representing uncertain knowledge
-- Lecture 5: Inference in Bayesian networks
+- Lecture 4: Quantifying uncertainty
+- Lecture 5: Probabilistic reasoning
 - Lecture 6: Reasoning over time
-- Lecture 7: Learning
+- Lecture 7: Machine learning and neural networks
 - Lecture 8: Making decisions
 - Lecture 9: Reinforcement learning
-- .inactive[Lecture 10: Communication (optional)]
-- Lecture 11: Artificial General Intelligence and beyond 
 
 ---
 
