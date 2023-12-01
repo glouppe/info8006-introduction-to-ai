@@ -30,6 +30,7 @@ Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2
 | December 7 | Exercises 7: Reinforcement learning [[PDF][e7]] [[solutions][e7s]] <br> Correction of a past exam  <br> Q&As |
 | December 14 | _No class_  | 
 | December 15 | Deadline of Project 3 |
+| -- | All slides [[PDF](https://glouppe.github.io/info8006-introduction-to-ai/pdf/all.pdf)] |
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
