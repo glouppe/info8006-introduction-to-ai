@@ -405,6 +405,143 @@ In this particular case, the insect must pass through a series of partially floo
 
 \newpage
 
+\section{Pacmen (January 2023)}
+
+Pacman and his friends have decided to combine forces and go on the offensive, and are now chasing ghosts! In a grid of size $M \times N$, Pacman and $P - 1$ of his friends are moving around to collectively eliminate all of the ghosts in the grid by stepping on the same square as each of them. Moving into the same square as a ghost will eliminate it from the grid. At every turn, Pacman and his friends may choose one of the four (\texttt{north}, \texttt{south}, \texttt{east}, \texttt{west}) actions but may not collide with each other. In other words, any action that would result in two or more Pacmen occupying the same square will result in no movement for either of the Pacmen. Additionally, Pacman and his friends are \emph{indistinguishable} from each other. There are a total of $G$ ghosts, which are also indistinguishable from each other and cannot move.
+
+Treating this as a search problem, we consider each configuration of the grid to be a state, and the goal state to be the configuration where all ghosts have been eliminated from the board. The cost of each turn (all Pacmen move once) is $1$. Below is an example starting state, as well as an example of goal state.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[x=0.8cm, y=0.8cm]
+        \draw (3, -0.5) node {Initial state example};
+        \draw[step=1, black, thin] (0,0) grid (6,6);
+
+        \draw[black, thin, fill=yellow] (0.5, 0.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (0.5, 0.72) circle (0.05);
+
+        \draw[black, thin, fill=yellow] (3.5, 3.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (3.5, 3.72) circle (0.05);
+
+        \draw[black, thin, fill=yellow] (2.5, 5.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (2.5, 5.72) circle (0.05);
+
+        \path[fill=blue] (1.5, 1.5) -- ++(0:0.33) arc (0:180:0.33) --
+        cycle;
+        \path[fill=blue] (1.5-0.33,1.5) rectangle ++(2*0.33,-0.33);
+        \fill[white] (1.6, 1.62) circle (0.05);
+        \fill[white] (1.4, 1.62) circle (0.05);
+
+        \path[fill=blue] (0.5, 1.5) -- ++(0:0.33) arc (0:180:0.33) --
+        cycle;
+        \path[fill=blue] (0.5-0.33,1.5) rectangle ++(2*0.33,-0.33);
+        \fill[white] (0.6, 1.62) circle (0.05);
+        \fill[white] (0.4, 1.62) circle (0.05);
+
+        \path[fill=blue] (4.5, 2.5) -- ++(0:0.33) arc (0:180:0.33) --
+        cycle;
+        \path[fill=blue] (4.5-0.33,2.5) rectangle ++(2*0.33,-0.33);
+        \fill[white] (4.6, 2.62) circle (0.05);
+        \fill[white] (4.4, 2.62) circle (0.05);
+
+        \path[fill=blue] (5.5, 5.5) -- ++(0:0.33) arc (0:180:0.33) --
+        cycle;
+        \path[fill=blue] (5.5-0.33,5.5) rectangle ++(2*0.33,-0.33);
+        \fill[white] (5.6, 5.62) circle (0.05);
+        \fill[white] (5.4, 5.62) circle (0.05);
+    \end{tikzpicture}
+    \hspace{1cm}
+    \begin{tikzpicture}[x=0.8cm, y=0.8cm]
+        \draw (3, -0.5) node {Final state example};
+        \draw[step=1, black, thin] (0,0) grid (6,6);
+
+        \draw[black, thin, fill=yellow] (1.5, 1.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (1.5, 1.72) circle (0.05);
+
+        \draw[black, thin, fill=yellow] (2.5, 3.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (2.5, 3.72) circle (0.05);
+
+        \draw[black, thin, fill=yellow] (2.5, 4.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+        \fill[black] (2.5, 4.72) circle (0.05);
+    \end{tikzpicture}
+\end{figure}
+
+Suppose that Pacman has no friends ($P=1$).
+
+\begin{enumerate}
+    \item What is the size of the minimal state space representation? Explain your answer.
+
+    \begin{solution}
+        The state $s$ is fully described with the position of Pacman and a boolean for each ghost (eaten or not). The size of the state space is therefore $M \times N \times 2^G$. We don't need to save the position of the ghosts within the state because they never change.
+    \end{solution}
+
+    \item Explain whether each of the following heuristics is admissible, consistent, neither, or both.
+    \begin{itemize}[leftmargin=*]
+        \item $h_1(s) =$ the sum of the Manhattan distances from Pacman to every ghost.
+        \item $h_2(s) =$ the number of ghosts times the maximum Manhattan distance between Pacman and any of the ghosts.
+        \item $h_3(s) =$ the number of remaining ghosts.
+    \end{itemize}
+
+    \begin{solution}
+        A heuristic $h(s)$ is admissible if $0 \leq h(s) \leq h^*(s)$ where $h^*(s)$ is the true forward cost. A heuristic is consistent if $h(s) - h(s') \leq c(s, s')$, where $c(s, s')$ is the cost from $s$ to $s'$. Note that a non-admissible heuristic cannot be consistent.
+
+        In the following state $s$, $h_1(s) = 2 + 3 + 4$ and $h_2(s) = 3 \times 4$ are larger than $h^*(s) = 4$ (not admissible) and $h_1(s) - h_1(s') = 3$ and $h_2(s) - h_2(s') = 3$ are larger than $c(s, s') = 1$ (not consistent).
+
+        \begin{center}
+        \begin{tikzpicture}
+            \draw[step=1, black, thin] (0,0) grid (5,1);
+
+            \draw[black, thin, fill=yellow] (0.5, 0.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
+            \fill[black] (0.5, 0.72) circle (0.05);
+
+            \path[fill=blue] (2.5, 0.5) -- ++(0:0.33) arc (0:180:0.33) --
+            cycle;
+            \path[fill=blue] (2.5-0.33,0.5) rectangle ++(2*0.33,-0.33);
+            \fill[white] (2.6, 0.62) circle (0.05);
+            \fill[white] (2.4, 0.62) circle (0.05);
+
+            \path[fill=blue] (3.5, 0.5) -- ++(0:0.33) arc (0:180:0.33) --
+            cycle;
+            \path[fill=blue] (3.5-0.33,0.5) rectangle ++(2*0.33,-0.33);
+            \fill[white] (3.6, 0.62) circle (0.05);
+            \fill[white] (3.4, 0.62) circle (0.05);
+
+            \path[fill=blue] (4.5, 0.5) -- ++(0:0.33) arc (0:180:0.33) --
+            cycle;
+            \path[fill=blue] (4.5-0.33,0.5) rectangle ++(2*0.33,-0.33);
+            \fill[white] (4.6, 0.62) circle (0.05);
+            \fill[white] (4.4, 0.62) circle (0.05);
+        \end{tikzpicture}
+        \end{center}
+
+        Conversely, for any state $s$, $h_3(s)$ is a lower bound for the number of remaining turns (admissible) and $h_3(s) - h_3(s')$ is either $0$ or $1$, which is lower than $c(s, s') = 1$ (consistent).
+    \end{solution}
+\end{enumerate}
+
+Suppose that Pacman has exactly one less friend than the number of ghosts ($P=G$).
+
+\begin{enumerate}[resume]
+    \item What is the size of the minimal state space representation? Explain your answer.
+
+    \begin{solution}
+        The state $s$ is fully described with the position of each Pacman and a boolean for each ghost (eaten or not). The size of the state space is therefore (at most) $(M \times N)^P \times 2^G$. Alternatively, the position of the Pacmen can also be represented by $M \times N$ booleans, which would result in $2^{M \times N} \times 2^G$ states. Depending on $P$, the latter representation could be smaller or larger.
+    \end{solution}
+
+    \item Explain whether each of the following heuristics is admissible, consistent, neither, or both.
+    \begin{itemize}[leftmargin=*]
+        \item $h_4(s) =$ the largest of the Manhattan distances between each Pacman and its closest ghost.
+        \item $h_5(s) =$ the smallest of the Manhattan distances between each Pacman and its closest ghost.
+        \item $h_6(s) =$ the number of remaining ghosts.
+        \item $h_7(s) =$ the number of remaining ghosts divided by $P$.
+     \end{itemize}
+
+     \begin{solution}
+        $h_4$ and $h_6$ could be larger than the number of remaining turns (not admissible, not consistent). $h_5$ and $h_7$ are admissible and consistent.
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
 \section*{Supplementary materials}
 
 \begin{itemize}
