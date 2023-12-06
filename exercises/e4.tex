@@ -499,6 +499,79 @@ Assuming discrete random variables and given the probability tables $P(H_0)$, $P
 
 \newpage
 
+\section{Oral exam (January 2023)}
+
+You are waiting for an oral exam for which the professor is known to be moody. Some students have difficult questions while others have easy ones. You learned from your seniors that if a student has difficult questions, there is a 40\% chance that the next student will also have difficult ones. If a student has easy questions, there is 70\% chance that the next student will also have easy ones. You observe the students that come out of the professor's office. They either look happy, neutral or sad. You assume that, if their questions were difficult, there are 20\% and 60\% chance that they look respectively happy and sad. If their questions were easy, there are 50\% and 30\% chance that they look respectively happy and sad.
+
+\begin{enumerate}
+    \item Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{difficult}, \texttt{easy}\}$ is the difficulty of the questions for the $t$-th student and the evidence $E_t \in \{\texttt{happy}, \texttt{neutral}, \texttt{sad}\}$ is the emotion you observe.
+    \begin{solution}
+        \begin{align*}
+            f_0 = P(X_0) & = \mat{0.5 \\ 0.5} \\
+            T = P(X_t | X_{t-1}) & = \mat{0.4 & 0.6 \\ 0.3 & 0.7} \\
+            B = P(E_t | X_t) & = \mat{0.2 & 0.2 & 0.6 \\ 0.5 & 0.2 & 0.3}
+        \end{align*}
+    \end{solution}
+
+    \item At some point, the professor decides that one in two students will come out of their office by another exit, which prevents you from observing them. Sketch a Bayesian network describing this new process.%
+
+    \begin{solution}
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[
+            node distance=1.5cm,
+            hidden/.style={state},
+            observed/.style={state, fill=gray!20},
+        ]
+            \node[hidden] (X0) {$X_0$};
+            \node[hidden] (X1) [right of=X0] {$X_1$};
+            \node[hidden] (X2) [right of=X1] {$X_2$};
+            \node[hidden] (X3) [right of=X2]  {$X_3$};
+            \node[hidden] (X4) [right of=X3]  {$X_4$};
+            \node[hidden] (X5) [right of=X4]  {$X_5$};
+            \node[circle] (X6) [right of=X5] {$\dots$};
+
+            \draw[arrow] (X0) to (X1);
+            \draw[arrow] (X1) to (X2);
+            \draw[arrow] (X2) to (X3);
+            \draw[arrow] (X3) to (X4);
+            \draw[arrow] (X4) to (X5);
+            \draw[arrow] (X5) to (X6);
+
+            \node[observed] (E1) [below of=X1] {$E_1$};
+            \node[observed] (E3) [below of=X3] {$E_3$};
+            \node[observed] (E5) [below of=X5] {$E_5$};
+
+            \draw[arrow] (X1) to (E1);
+            \draw[arrow] (X3) to (E3);
+            \draw[arrow] (X5) to (E5);
+        \end{tikzpicture}
+    \end{figure}
+    \end{solution}
+
+    \item Express, in terms of the HMM components, the distribution $P(X_t | e_{1:t:2})$ of the difficulty for $t$-th student given your observations $e_{1:t:2}$ of half of the previous students. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
+
+    \begin{solution}
+        Denoting $f_t = P(X_t | e_{1:t:2})$,
+        \begin{align*}
+            f_{2n} & = T^T \, f_{2n-1} \\
+            f_{2n + 1} & = \alpha \, O_{2n+1} \, T^T \, f_{2n}
+        \end{align*}
+    \end{solution}
+
+    \item Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{sad}, \texttt{happy})$, compute the probability that the 3rd student has difficult questions.
+    \begin{solution}
+        \begin{align*}
+            f_1 & = \alpha_1 \, O_1 \, T^T f_0 = \alpha_1 \mat{0.6 & 0 \\ 0 & 0.3} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5 \\ 0.5} \approx \mat{0.5185 \\ 0.4815} \\
+            f_2 & = T^T f_1 = \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5185 \\ 0.4815} \approx \mat{0.3519 \\ 0.6481} \\
+            f_3 & = \alpha_3 \, O_3 \, T^T f_2 = \alpha_3 \mat{0.2 & 0 \\ 0 & 0.5} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.3519 \\ 0.6481} \approx \mat{0.1678 \\ 0.8322} \\
+        \end{align*}
+        Finally, $P(X_3 = \texttt{difficult} | e_{1:3:2}) \approx 0.1678$.
+    \end{solution}
+\end{enumerate}
+
+\newpage
+
 \section*{Supplementary materials}
 
 \begin{itemize}
