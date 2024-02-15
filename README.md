@@ -1,6 +1,6 @@
-# INFO8006 - Introduction to Artificial Intelligence
+# INFO8006 Introduction to Artificial Intelligence
 
-Lectures for INFO8006 - Introduction to Artificial Intelligence, ULiège, Fall 2023.
+Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 2023.
 
 - Instructor: Gilles Louppe
 - Teaching assistants: Arnaud Delaunoy, François Rozet
