@@ -8,6 +8,11 @@ Course syllabus, Fall 2023
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+Q&A: ask me anything (during the course, on any topic, questions collected on a platform)
+Give examples more related to engineering and science. Focus on people rather than technology.
+
 ---
 
 # Us

@@ -11,6 +11,7 @@ Prof. Gilles Louppe<br>
 ???
 
 R: Check https://www.youtube.com/watch?v=pd0JmT6rYcI + https://t.co/FA8sYGSv3K
+R: Check https://x.com/rickyrobinett/status/1825581674870055189?t=1Zi0InWlpiuQ9p1USDmRvw&s=03
 
 ---
 
