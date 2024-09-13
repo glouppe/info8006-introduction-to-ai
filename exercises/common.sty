@@ -27,6 +27,27 @@
     \end{center}
 }
 
+% Quiz
+\newcommand*{\startquiz}{\renewcommand{\labelitemi}{$\square$} \section*{Quiz}}
+\newcommand*{\solitem}{\item[\begin{solution}$\blacksquare$\end{solution}]}
+    
+% Theory box
+
+\RequirePackage[many]{tcolorbox}
+\RequirePackage{multicol}
+\RequirePackage{wrapfig}
+
+\newtcolorbox{thbox}[1]{
+    enhanced,
+    sharp corners,
+    breakable, 
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    boxrule=0pt,
+    fonttitle=\bfseries,
+    title=#1}
+\newcommand*{\thighlight}[1]{\textcolor{cyan}{#1}}
+
 % Graphs
 
 \RequirePackage{tikz}
@@ -55,15 +76,14 @@
 
 \renewcommand{\thesection}{Exercise \arabic{section}}
 
-\RequirePackage{catchfile}
+% \RequirePackage{catchfile}
 \RequirePackage{environ}
 
-\CatchFileEdef{\NOSOL}{"|kpsewhich --var-value NOSOL"}{\endlinechar=-1}
-
-\if\NOSOL1
-    \NewEnviron{solution}{}
+\ifdefined\NOSOL
+  \NewEnviron{solution}{}
+  \renewcommand*{\solitem}{\item}
 \else
-    \NewEnviron{solution}{\BODY}
+  \NewEnviron{solution}{\textcolor{teal}{\BODY}}
 \fi
 
 %%%%%%%%%%%
@@ -72,6 +92,7 @@
 
 \DeclareOption{nosolutions}{
     \RenewEnviron{solution}{}
+    \renewcommand*{\solitem}{\item}
 }
 
 \ProcessOptions\relax

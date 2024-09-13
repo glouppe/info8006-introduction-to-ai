@@ -4,9 +4,8 @@
 \usepackage{sleek}
 \usepackage{common}
 
-\title{Introduction to Artificial Intelligence (INFO8006)}
-\subtitle{Exercises 1 -- Solving problems by searching}
-\date{\today}
+\title{INFO8006 - Introduction to Artificial Intelligence}
+\subtitle{Exercise session 1}
 
 \def\Astar{$\text{A}^*$}
 
@@ -14,14 +13,113 @@
 
 \maketitle
 
-\section*{Learning outcomes}
+\begin{thbox}{Search problem formulation}
+    A \thighlight{search problem} is defined by    
+    \begin{itemize}
+        \item A representation for \thighlight{states}.
+        \item The \thighlight{initial} state of the agent.
+        \item A set of \thighlight{actions} allowed in every state \thighlight{$s$}.
+        \item A \thighlight{transition model $s' = result(s,a)$} that returns the resulting state \thighlight{$s'$} for using action \thighlight{$a$} in state \thighlight{$s$}. 
+        \item A \thighlight{goal test} which determines if the problem is solved in state \thighlight{$s$}.
+        \item A \thighlight{path cost} that assigns a numerical cost to each path. We assume the later to be a sum of positive step costs \thighlight{$c(s,a,s')$} along the path. 
+    \end{itemize}
+\end{thbox}
 
-At the end of this session you should be able to
-\begin{itemize}[noitemsep]
-    \item formulate search problems rigorously;
-    \item analyze the algorithms to perform uninformed search (depth-first, breadth-first, uniform-cost) and informed search (greedy, \Astar{});
-    \item apply these algorithms in fully observable and deterministic environments.
+\begin{thbox}{Searching strategy}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Depth-First Search} uses a stack (LIFO) for the \thighlight{\textit{fringe}}.
+    \item \textbf{Breadth-First Search} uses a queue (FIFO) for the \thighlight{\textit{fringe}}.
+    \item \textbf{Uniform-Cost Search} uses a priority queue for the \thighlight{\textit{fringe}},\\where the priority is the \thighlight{cumulative cost $g(n)$}.
+    \item \textbf{Greedy Search} uses a priority queue for the \thighlight{\textit{fringe}},\\where the priority is a \thighlight{heuristic $h(n)$}.
+    \item \textbf{A* Search} uses a priority queue for the \thighlight{\textit{fringe}},\\where the priority is the sum of both \thighlight{heuristic $h(n)$ and cumulative cost $g(n)$}.
 \end{itemize}
+\end{thbox}
+
+\begin{thbox}{Heuristic}
+    A \thighlight{heuristic function $h(n)$} estimates the cost of the cheapest path from node \thighlight{$n$} to a goal state.\\
+    A \thighlight{heuristic} is \thighlight{admissible} if
+    $$0 \leq h(n) \leq h^*(n)$$
+    with $h^*(n)$ being the tightest \thighlight{heuristic}, i.e. the true \thighlight{cumulative cost}.\\
+    A \thighlight{heuristic} is \thighlight{consistent} if
+    $$h(n) \leq c(n,a,n') + h(n')$$
+    for all node-action-resulting node triplets \thighlight{$(n,a,n')$}.
+\end{thbox}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.9\linewidth]{figures/graph-search.png}
+\end{figure}
+
+
+\textbf{In session exercises:} Ex. 1, Ex. 2.1-3-4 
+
+\newpage
+
+\section{Path finding}
+
+Tram'Ardent deployed a new robot to help them on the finishing touches of Liège worksite. This robot's goal is to convey weeds that were removed by the gardeners to a container. Its goal is to move as fast as possible each pile of grass to a container. Assuming that 
+\begin{itemize}
+    \item the fuel cost used by the robot is negligible
+    \item the robot can only navigate on guides that are placed in a rectangular grid configuration and can locate itself on the grid
+    \item there is only one pile and one container by zone (i.e. by grid) for which positions are known by the robot
+    \item the speed of the robot is constant and the grass loading/unloading is instantaneous
+    \item the robot can only carry a limited weight of grass at once
+    % \item some nodes on the grid take twice the time to cross because the terrain is rugged
+    \item the robot can know the initial weight of grass on the pile.
+\end{itemize}
+For a given grid
+
+\begin{enumerate}
+    \item Formulate a corresponding search problem.
+    
+    \begin{solution}
+        \textbf{State representation}: Assuming a $H\times W$ grid, the state is represented by the position $(i,j) \in \{1,...,W\}\times \{1,...,H\}$ of the robot, the remaining weight of grass $w_G$ and a flag $L$ indicating whether the robot is loaded or not. Following other assumptions, we also define the location of the pile and the container respectively by $P = (i_p,j_p)$ and $C = (i_c,j_c)$ as well as the weight limit of the robot $w_{max}$.\\
+        
+        \textbf{Initial state}: No specific information is given, we can assume it starts anywhere on the grid, unloaded. $s_0 = (i_0, j_0, w_{G0}, False)$\\
+        
+        \textbf{Actions}: $a \in \{LEFT, UP, RIGHT, DOWN\}$\\
+        
+        \textbf{Transition model}: \[(i,j)' = \begin{cases*}
+            (i+1,j)\ &\text{if $a = RIGHT$ and $i < W$}\\
+            (i,j+1)\ &\text{if $a = UP$ and $j < H$}\\
+            (i-1,j)\ &\text{if $a = LEFT$ and $i > 1$}\\
+            (i,j-1)\ &\text{if $a = DOWN$ and $j > 1$}\\
+            (i,j)\ &\text{otherwise}
+        \end{cases*}\]\\
+        \[w_G' = \begin{cases*}
+            w_G - min(w_G, w_{max})\ &\text{if $(i,j)' == P$}\\
+            w_G\ &\text{otherwise}
+        \end{cases*}\]\\
+        \[L' = \begin{cases*}
+            \text{\textbf{True} if $L$ and $(i,j)' \not = C$}\\
+            \text{\textbf{True} if $w_G > 0$ and $(i,j)' == P$}\\
+            \text{\textbf{False} otherwise}
+        \end{cases*}\]\\
+        
+        \textbf{Goal test}: $goal(s) = \text{ not }L$ and $w_G == 0$\\
+        
+        \textbf{Step cost}: Under the given assumptions, every step from one node to another is equivalent. Then $c(s,a,s') = 1$ is relevant. Note that it could be any constant step cost.\\
+    \end{solution}
+    \item Knowing that the terrain can be rugged at specific places, causing slow down of the robot, propose an admissible heuristic which estimates the remaining cost at any node.
+    
+    \begin{solution}
+        As usual, in grid problem, Manhattan distance or Euclidean distance is admissible as long as the step cost is 1 everywhere\footnote{Choosing a constant step cost $K > 1$ does not break admissibility in this case. If $K \in [0,1[$, then $h(s)$ is not admissible but $Kh(s)$ is.}. However, the robot can go back and forth if $w_G > w_{max}$. Then an admissible heuristic would be
+        \[h(s) = \begin{cases*}
+            |i_c - i| + |j_c - j| + 2\ceil{\frac{w_G}{w_{max}}}\big(|i_c - i_p| + |j_c - j_p|\big)\ &\text{if $L$}\\
+            |i_p - i| + |j_p - j| + \big(2\ceil{\frac{w_G}{w_{max}}} - 1\big)\big(|i_c - i_p| + |j_c - j_p|\big)\ &\text{if not $L$}
+        \end{cases*}\]
+        which would have been the true remaining cost if the terrain was not rugged.
+    \end{solution}
+
+    \item Now the robot can move in diagonal. Is your heuristic still admissible? If not, what should you change? What if the robot is twice as fast diagonally?
+
+    \begin{solution}
+        The Manhattan distance cannot be used anymore, only the Euclidean distance would be admissible (amongst the previous proposals) or any other function dominated by the Euclidean distance.\\
+        If the robot moves in diagonal twice faster, you should divide the distance by a factor 2 (equivalent to say that the cost is 0.5 in diagonals). The most limiting case being a perfect diagonal going from $P$ to $C$.
+    \end{solution}
+\end{enumerate}
+
+\newpage 
 
 \section{Search algorithms}
 
@@ -51,9 +149,9 @@ At the end of this session you should be able to
 
 For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm (lecture 2, slide 62) and give the order in which the states, represented by the nodes of this undirected graph, are expanded, as well as the final path returned by the algorithm. If two nodes are in competition to be expanded, the conflict is resolved by alphabetical order.
 
-\begin{solution}
-    \newpage
-\end{solution}
+% \begin{solution}
+%     \newpage
+% \end{solution}
 
 \begin{enumerate}
     \item Depth-First Search (DFS)
@@ -109,9 +207,9 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
         Expansion: S, A, B, C, D, E, G. Path: S, B, D, G.
     \end{solution}
 
-    \begin{solution}
-        \newpage
-    \end{solution}
+    % \begin{solution}
+    %     \newpage
+    % \end{solution}
 
     \item Uniform-Cost search (UCS)
 
@@ -216,7 +314,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
 \newpage
 
-\section{Maze Car (UC Berkeley CS188, Spring 2014)}
+\section{Maze Car (CS188, Spring 2014)}
 
 \begin{figure}[h]
     \centering
@@ -276,7 +374,7 @@ As an example, in the hereabove maze, if the agent is initially stationary, it m
 
 \newpage
 
-\section{Heuristics (UC Berkeley CS188, Spring 2019)}
+\section{Heuristics (CS188, Spring 2019)}
 
 Consider a graph search problem where all edges have a unit cost and the optimal solution has cost $C^*$. Let $h(n)$ be a heuristic which is $\max \cbk{h^*(n) - k, 0}$, where $h^*(n)$ is the true forward cost of $n$ and $k \leq C^*$ is a non-negative constant.
 
@@ -378,7 +476,7 @@ For each of the following search algorithms, give the order in which states are 
 
 \newpage
 
-\section{The hive (UC Berkeley CS188, Spring 2019)}
+\section{The hive (CS188, Spring 2019)}
 
 The hive of insects needs your help. You control an insect in a rectangular maze-like environment of size $M \times N$, as shown on the Figure below. At each time-step, the insect can move into a free adjacent cell or stay in its current location. All actions have a unit cost.
 
@@ -405,7 +503,7 @@ In this particular case, the insect must pass through a series of partially floo
 
 \newpage
 
-\section{Pacmen (January 2023)}
+\section{Pacmen (INFO8006, January 2023)}
 
 Pacman and his friends have decided to combine forces and go on the offensive, and are now chasing ghosts! In a grid of size $M \times N$, Pacman and $P - 1$ of his friends are moving around to collectively eliminate all of the ghosts in the grid by stepping on the same square as each of them. Moving into the same square as a ghost will eliminate it from the grid. At every turn, Pacman and his friends may choose one of the four (\texttt{north}, \texttt{south}, \texttt{east}, \texttt{west}) actions but may not collide with each other. In other words, any action that would result in two or more Pacmen occupying the same square will result in no movement for either of the Pacmen. Additionally, Pacman and his friends are \emph{indistinguishable} from each other. There are a total of $G$ ghosts, which are also indistinguishable from each other and cannot move.
 
@@ -542,18 +640,45 @@ Suppose that Pacman has exactly one less friend than the number of ghosts ($P=G$
 
 \newpage
 
-\section*{Supplementary materials}
+\startquiz
 
+The \Astar algorithm, in its graph version is ...
 \begin{itemize}
-    \item Search (UC Berkeley CS188, Spring 2014 Section 0).
-
-    \qrcode{http://ai.berkeley.edu/sections/section_0_v55LOfoUUwiW1k6Nchnk3Dw6WQuTW8.pdf}
-
-    \item Search (UC Berkeley CS188, Spring 2014 Section 1).
-
-    \qrcode{http://ai.berkeley.edu/sections/section_1_0hzy6TFupb1Z3bckfRXdC5KYpsdZOE.pdf}
-
-    \item Chapter 3 of the reference textbook.
+    \item always optimal.
+    \item always optimal if the heuristic is admissible.
+    \solitem always optimal if the heuristic is consistent.
+    \item never optimal when there are cycles.
 \end{itemize}
 
+In a fully observable but stochastic game, if a simple reflex agent is presented the same state several times, it will ...
+\begin{itemize}
+    \solitem take the same action every time.
+    \item take a different action every time.
+    \item take a different action most of the time.
+    \item take the same action most of the time.
+\end{itemize}
+
+Which of the following statements about heuristics are true ?
+\begin{itemize}
+    \item $h(n) = 0 \ \forall n$ can speed up \Astar compared to UCS.
+    \item If a heuristic is admissible, it is guaranteed to be consistent.
+    \item The average step cost $h(n) = \frac{1}{\#a}\sum_a c(n,a,n')$ is admissible.
+    \solitem The true remaining cost dominates all admissible heuristics.
+\end{itemize}
+
+The black-jack game is ...
+\begin{itemize}
+    \item discrete, multi-agent and deterministic.
+    \solitem partially-observable, stochastic and multi-agent.
+    \item partially-observable, episodic and single-agent.
+    \item None of the above.
+\end{itemize}
+
+A goal-based planning agent ...
+\begin{itemize}
+    \item cannot decide which action to take next if the transition model is wrong.
+    \item ignores the consequences of its actions to take decisions.
+    \solitem can be implemented using the greedy search algorithm.
+    \item need a Markovian system to be optimal.
+\end{itemize}
 \end{document}

@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 set -e
 
@@ -16,7 +16,7 @@ rename 's/e(\d)/exercises-$1-solutions/' *.pdf
 mv *.pdf ../pdf
 
 for file in $FILES; do
-    NOSOL=1 pdflatex -halt-on-error -interaction=nonstopmode $file
+    pdflatex -halt-on-error -interaction=nonstopmode "\def\NOSOL{}\input{$file}"
 done
 
 rename 's/e/exercises-/' *.pdf
