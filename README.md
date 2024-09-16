@@ -15,7 +15,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | ---- | ----- |
 | September 19 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
 | September 26 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial Project 0 [[Link](projects/project1)]|
-| October 3 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[solutions][e1s]] |
+| October 3 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] | [[solutions][e1s]] |
 | October 10 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search |
 | October 17 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty |
 | October 24 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>_No exercises_|
@@ -24,7 +24,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | November 14 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time |
 | November 21 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 28 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning  |
-| December 5 | _No lecture_ <br> Exercises 8: Making decisions [[PDF][e6]] [[solutions][e6s]] <br>  Exercises 9: Reinforcement learning |
+| December 5 | _No lecture_ <br> Exercises 8: Making decisions <br>  Exercises 9: Reinforcement learning |
 | December 12 | _No class_ |
 | December 19 | _No class_ | 
 
