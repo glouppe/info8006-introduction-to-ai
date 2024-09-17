@@ -39,222 +39,45 @@ class GhostAgent(Agent):
         util.raiseNotDefined()
 
 
-class EastRandyGhost(GhostAgent):
-    """A stochastic ghost which favor EAST direction when legal"""
+class AfraidGhost(GhostAgent):
+    """A stochastic ghost which favors actions that makes it move away from Pacman."""
 
-    def __init__(self, index, p=0.5):
+    def __init__(self, index, fear=1.0):
         super().__init__(index)
-        self.p = p
+
+        self.fear = fear
 
     def getDistribution(self, state):
-        """
-        Returns a distribution such that
-        if East is in legal actions, then
-        selects it with probability 'p'.
-        """
-
         legal = state.getLegalActions(self.index)
+        if Directions.STOP in legal:
+            legal.remove(Directions.STOP)
+
+        pacman_position = state.getPacmanPosition()
+        ghost_position = state.getGhostPosition(self.index)
+        distance = manhattanDistance(ghost_position, pacman_position)
+
         dist = util.Counter()
 
-        if Directions.EAST in legal:
-            for action in legal:
-                if action == Directions.EAST:
-                    dist[action] = self.p
-                else:
-                    dist[action] = (1.0 - self.p) / (len(legal) - 1)
-        else:
-            for action in legal:
-                dist[action] = 1.0
+        for a in legal:
+            succ_position = state.generateSuccessor(self.index, a).getGhostPosition(self.index)
+            succ_distance = manhattanDistance(succ_position, pacman_position)
+
+            dist[a] = 2**self.fear if succ_distance >= distance else 1
 
         dist.normalize()
 
         return dist
 
 
-class DumbyGhost(GhostAgent):
-    """A dumb ghost."""
-
-    def getDistribution(self, state):
-        dist = util.Counter()
-        legal = state.getLegalActions(self.index)
-        current = state.getGhostState(self.index).configuration.direction
-        if current == Directions.STOP:
-            current = Directions.NORTH
-        left = Directions.LEFT[current]
-        if left in legal:
-            dist[left] = 1.0
-        elif current in legal:
-            dist[current] = 1.0
-        elif Directions.RIGHT[current] in legal:
-            dist[Directions.RIGHT[current]] = 1.0
-        elif Directions.LEFT[left] in legal:
-            dist[Directions.LEFT[left]] = 1.0
-        dist.normalize()
-        return dist
-
-
-class GreedyGhost(GhostAgent):
-    """A greedy ghost."""
-
-    def __init__(self, index, prob_attack=1.0, prob_scaredFlee=1.0):
-        super().__init__(index)
-        self.prob_attack = prob_attack
-        self.prob_scaredFlee = prob_scaredFlee
-
-    def getDistribution(self, state):
-        # Read variables from state
-        ghostState = state.getGhostState(self.index)
-        legalActions = state.getLegalActions(self.index)
-        pos = state.getGhostPosition(self.index)
-        isScared = ghostState.scaredTimer > 0
-
-        speed = 1
-        if isScared:
-            speed = 0.5
-
-        actionVectors = [
-            Actions.directionToVector(
-                a, speed) for a in legalActions]
-        newPositions = [(pos[0] + a[0], pos[1] + a[1]) for a in actionVectors]
-        pacmanPosition = state.getPacmanPosition()
-
-        # Select best actions given the state
-        distancesToPacman = [
-            manhattanDistance(
-                pos, pacmanPosition) for pos in newPositions]
-        if isScared:
-            bestScore = max(distancesToPacman)
-            bestProb = self.prob_scaredFlee
-        else:
-            bestScore = min(distancesToPacman)
-            bestProb = self.prob_attack
-        bestActions = [[
-            action for action,
-            distance in zip(
-                legalActions,
-                distancesToPacman) if distance == bestScore][0]]
-
-        # Construct distribution
-        dist = util.Counter()
-        for a in bestActions:
-            dist[a] = bestProb / len(bestActions)
-        for a in legalActions:
-            dist[a] += (1 - bestProb) / len(legalActions)
-        dist.normalize()
-
-        return dist
-
-
-class SmartyGhost(GhostAgent):
-    """A smart ghost"""
+class FearlessGhost(AfraidGhost):
+    """A stochastic ghost which does not favor any action."""
 
     def __init__(self, index):
-        super().__init__(index)
-        self.fscore = None
-        self.gscore = None
-        self.wasScared = False
-        self.corners = None
-        self.gghost = GreedyGhost(index)
+        super().__init__(index, fear=0.0)
 
-    def _pathsearch(self, state, fscore_in, gscore_in, goal):
-        fringe = PriorityQueue()
-        closed = np.full(
-            (state.data.layout.width,
-             state.data.layout.height),
-            False)
-        initpos = tuple(map(lambda x: int(x),
-                            state.getGhostPosition(self.index)))
-        if gscore_in is not None:
-            gscore = gscore_in
-        else:
-            gscore = np.full(
-                (state.data.layout.width, state.data.layout.height), np.inf)
-            gscore[initpos] = 0
-        if fscore_in is not None:
-            fscore = fscore_in
-        else:
-            fscore = np.full(
-                (state.data.layout.width, state.data.layout.height), np.inf)
-            fscore[initpos] = manhattanDistance(goal, initpos)
-        fringe.push((state, [], closed), fscore[initpos])
-        openset = np.full(
-            (state.data.layout.width, state.data.layout.height), False)
-        openset[initpos] = True
-        while not fringe.isEmpty():
-            _, node = fringe.pop()
-            curNode, actions, closed = node
-            if curNode.getGhostPosition(self.index) == goal:
-                return actions[0], fscore, gscore
-            closed = np.copy(closed)
-            ghostpos = tuple(
-                map(lambda x: int(x), curNode.getGhostPosition(self.index)))
-            closed[ghostpos] = True
-            openset[ghostpos] = False
-            succs = [(curNode.generateSuccessor(self.index, action), action)
-                     for action in curNode.getLegalActions(self.index)]
 
-            for succNode in succs:
-                action = succNode[1]
-                succNode = succNode[0]
+class TerrifiedGhost(AfraidGhost):
+    """A stochastic ghost which heavily favors actions that makes it move away from Pacman."""
 
-                succghostpos = tuple(
-                    map(lambda x: int(x),
-                        succNode.getGhostPosition(self.index)))
-                tentative_gscore = gscore[succghostpos] + 1
-                tentative_fscore = tentative_gscore + \
-                    manhattanDistance(goal, succghostpos)
-
-                if closed[succghostpos]:
-                    if tentative_fscore <= fscore[succghostpos]:
-                        closed[succghostpos] = False
-                    else:
-                        continue
-
-                if not openset[succghostpos]:
-                    openset[succghostpos] = True
-                elif tentative_gscore >= gscore[succghostpos]:
-                    continue
-
-                gscore[succghostpos] = tentative_gscore
-                fscore[succghostpos] = tentative_fscore
-                fringe.push(
-                    (succNode,
-                     actions + [action],
-                        closed),
-                    fscore[succghostpos])
-        return actions[0], fscore, gscore
-
-    def getDistribution(self, state):
-        if self.corners is None:
-            self.corners = [
-                (1,
-                 1),
-                (1,
-                 state.data.layout.height),
-                (state.data.layout.width,
-                 1),
-                (state.data.layout.width,
-                 state.data.layout.height)]
-        ghostState = state.getGhostState(self.index)
-        isScared = ghostState.scaredTimer > 0
-        dist = util.Counter()
-        legalActions = state.getLegalActions(self.index)
-        for a in legalActions:
-            dist[a] = 0
-        ghostpos = state.getGhostPosition(self.index)
-        goal = state.getPacmanPosition() if not isScared \
-            else self.corners[
-            np.argmax(list(map(lambda pos:
-                               manhattanDistance(pos,
-                                                 ghostpos),
-                               self.corners)))
-        ]
-        if not isScared:
-            a, self.fscore, self.gscore = self._pathsearch(
-                state, self.fscore, self.gscore, goal)
-            dist[a] = 1
-        else:
-            dist = self.gghost.getDistribution(state)
-
-        self.wasScared = isScared
-        return dist
+    def __init__(self, index):
+        super().__init__(index, fear=3.0)

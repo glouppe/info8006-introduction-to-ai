@@ -3,9 +3,9 @@
 <p align="center"><img src="pacman_game.png" width="50%"></p>
 
 The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
-- [Project 1](project1): you have to implement a Search agent for eating all the food dots as quickly as possible.
-- [Project 2](project2): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
-- [Project 3](project3): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
+- [Project 0](project0): you have to implement a Search agent for eating all the food dots as quickly as possible.
+- [Project 1](project1): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
+- [Project 2](project2): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
 
 ## Installation
 
@@ -158,10 +158,7 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The purpose of the projects is to give you an opportunity to have a practical approach of the core concepts of the course. However, you might be stuck during your work progression. Although we are glad to help you to figure out how to solve your various issues, the relevance of our guidance strongly relies on the specificity of your questions, which implies that you have at least tried to solve your issues by referring to the lectures.
 
-You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office with the following schedule:
-
-- Wednesday: 12PM - 2PM (Arnaud Delaunoy, R.103)
-- Monday: 12PM - 2PM (François Rozet, I.112)
+You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office on Wednesday 12PM-2PM (Arnaud Delaunoy, R.103).
 
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can be outside the duty periods mentioned above. Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
 

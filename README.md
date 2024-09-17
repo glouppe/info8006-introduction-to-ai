@@ -20,11 +20,13 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | October 17 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty |
 | October 24 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>_No exercises_|
 | October 31 | _No class_ |
+| November 3 | Deadline for Project 1 |
 | November 7 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4: Probabilistic reasoning |
 | November 14 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time |
 | November 21 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 28 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning  |
 | December 5 | _No lecture_ <br> Exercises 8: Making decisions <br>  Exercises 9: Reinforcement learning |
+| December 8 | Deadline for Project 2 |
 | December 12 | _No class_ |
 | December 19 | _No class_ | 
 
@@ -80,9 +82,9 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 1: [Search algorithms](projects/project1) (tutorial session in class)
-- Part 2: [Adversarial search](projects/project2) (due by TBD)
-- Part 3: [Bayes filter](projects/project3) (due by TBD)
+- Part 0: [Search algorithms](projects/project1) (tutorial session in class)
+- Part 1: [Adversarial search](projects/project2) (due by November 3)
+- Part 2: [Bayes filter](projects/project3) (due by December 8)
 
 ## Previous exams
 

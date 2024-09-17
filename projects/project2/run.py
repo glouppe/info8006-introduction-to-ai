@@ -5,18 +5,16 @@ import random
 
 from pacman_module.pacman import runGame
 from pacman_module.ghostAgents import (
-    DumbyGhost,
-    GreedyGhost,
-    SmartyGhost,
-    EastRandyGhost,
+    AfraidGhost,
+    FearlessGhost,
+    TerrifiedGhost,
 )
 
 
 GHOSTS = {
-    'dumby': DumbyGhost,
-    'greedy': GreedyGhost,
-    'smarty': SmartyGhost,
-    'eastrandy': EastRandyGhost,
+    'afraid': AfraidGhost,
+    'fearless': FearlessGhost,
+    'terrified': TerrifiedGhost,
 }
 
 
@@ -26,22 +24,37 @@ if __name__ == '__main__':
     parser.add_argument(
         '-a',
         '--agent',
-        default='humanagent',
-        help='Python module containing a `PacmanAgent` class.',
+        default='bayesfilter',
+        help='Python module containing `PacmanAgent` and `BeliefStateAgent` classes.',
     )
 
     parser.add_argument(
         '-g',
         '--ghost',
         choices=list(GHOSTS.keys()),
-        default='greedy',
+        default='afraid',
         help='Ghost agent from the `ghostAgents` module.',
+    )
+
+    parser.add_argument(
+        '-ng',
+        '--nghosts',
+        type=int,
+        default=1,
+        help='The maximum number of ghost agents.',
+    )
+
+    parser.add_argument(
+        '--visible',
+        action='store_true',
+        default=False,
+        help='Whether ghosts are visbile or not.',
     )
 
     parser.add_argument(
         '-l',
         '--layout',
-        default='small_adv',
+        default='large_filter',
         help='Maze layout from the `layouts` directory.',
     )
 
@@ -67,16 +80,18 @@ if __name__ == '__main__':
     random.seed(args.seed)
     np.random.seed(args.seed)
 
-    score, time, nodes = runGame(
+    module = importlib.import_module(args.agent)
+
+    score, time, _ = runGame(
         layout_name=args.layout,
-        pacman=importlib.import_module(args.agent).PacmanAgent(),
-        ghosts=[GHOSTS[args.ghost](1)],
-        beliefstateagent=None,
+        pacman=module.PacmanAgent(),
+        ghosts=[GHOSTS[args.ghost](i+1) for i in range(args.nghosts)],
+        beliefstateagent=module.BeliefStateAgent(args.ghost),
         displayGraphics=not args.nographics,
         expout=0.0,
-        hiddenGhosts=False,
+        hiddenGhosts=not args.visible,
+        edibleGhosts=True,
     )
 
     print(f"Score: {score}")
     print(f"Computation time: {time}")
-    print(f"Expanded nodes: {nodes}")
