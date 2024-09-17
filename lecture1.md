@@ -35,8 +35,9 @@ class: middle
   take *actions* through actuators.
 
 - The agent behavior is described by the **agent function**, or **policy**, that
-  maps percept histories to actions:
-  $$f : \mathcal{P}^* \to \mathcal{A}$$
+  maps percept histories to actions,
+  $$\pi : \mathcal{P}^* \to \mathcal{A},$$
+  where $\mathcal{P}$ is the set of all possible percepts and $\mathcal{A}$ is the set of all possible actions.
 
 ---
 
@@ -101,15 +102,30 @@ Can it be implemented in a *small* and **efficient** agent program?
 
 # Rational agents
 
-- Informally, a *rational agent* is an agent that does the "right thing".
+- A **rational agent** acts so as to achieve the *best expected* outcome.
 - A **performance measure** evaluates a sequence of environment
   states caused by the agent's behavior.
 - A rational agent is an agent that chooses whichever action that **maximizes** the
   *expected* value of the performance measure, given the percept sequence to date.
 
-.center[![](figures/lec1/rational-agent-cartoon.png)]
+.alert[Rationality only concerns .bold[what] decisions are made (not the thought process behind them, human-like or not).]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center[![](figures/lec0/max-utility.png)
+
+In this course, Artificial intelligence = **Maximizing expected performance**
+]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+Underline the importance of *expected*.
 
 ---
 
@@ -130,25 +146,27 @@ The characteristics of the performance measure, environment, action space and
 percepts dictate approaches for selecting rational actions.
 They are summarized as the **task environment**.
 
-## Example 1: a self-driving car
-- *performance measure*: safety, destination, legality, comfort, ...
-- *environment*: streets, highways, traffic, pedestrians, weather, ...
-- *actuators*: steering, accelerator, brake, horn, speaker, display, ...
-- *sensors*: video, accelerometers, gauges, engine sensors, GPS, ...
-
-???
-
-We will later call these the reward, the environment, the actions and the observations.
+## Example 1: a chess-playing agent
+- performance measure: win, draw, lose, ...
+- environment: chess board, opponent, ...
+- actuators: move pieces, ...
+- sensors: board state, opponent moves, ...
 
 ---
 
 class: middle
 
-## Example 2: an Internet shopping agent
-- *performance measure*: price, quality, appropriateness, efficiency
-- *environment*: current and future WWW sites, vendors, shippers
-- *actuators*: display to user, follow URL, fill in form, ...
-- *sensors*: web pages (text, graphics, scripts)
+## Example 2: a self-driving car
+- performance measure: safety, destination, legality, comfort, ...
+- environment: streets, highways, traffic, pedestrians, weather, ...
+- actuators: steering, accelerator, brake, horn, speaker, display, ...
+- sensors: video, accelerometers, gauges, engine sensors, GPS, ...
+
+## Example 3: a medical diagnosis system
+- performance measure: patient health, cost, time, ...
+- environment: patient, hospital, medical records, ...
+- actuators: diagnosis, treatment, referral, ...
+- sensors: medical records, lab results, ...
 
 ---
 

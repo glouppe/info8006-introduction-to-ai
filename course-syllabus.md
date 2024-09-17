@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Course syllabus, Fall 2023
+Course syllabus, Fall 2024
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -17,17 +17,17 @@ Give examples more related to engineering and science. Focus on people rather th
 
 # Us
 
-This course is given by:
+This course is given by
 - Theoretical lectures: Gilles Louppe
-- Exercise sessions: François Rozet
-- Programming projects: Arnaud Delaunoy, François Rozet
+- Exercise sessions: Gilles Louppe, Gérôme Andry, and student instructors
+- Programming projects: Arnaud Delaunoy
 
-Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/fZaSPxsg) for help.
+Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/Y8UP2SBu2h) for help.
 
 <br>
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/frozet.jpeg)] &nbsp;
+.circle.width-20[![](figures/course-syllabus/gerome.jpg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/arnaud.jpg)]
 ]
 
@@ -48,6 +48,8 @@ class: middle
 ## Videos
 
 Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD). They are not up-to-date with the current course, but they may still be useful.
+
+Lectures will also be recorded and made available on [MyUnicast](https://my.unicast.uliege.be/).
 
 .center.width-60[![](figures/course-syllabus/youtube.png)]
 
@@ -71,7 +73,7 @@ class: middle
 
 ## CS188
 
-- Some lessons, exercises, and various other materials are partially adapted from [CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/su21/), from UC Berkeley. 
+- Some lessons, exercises, and various other materials are partially adapted from [CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/), from UC Berkeley. 
 - Cartoons that you will see in those slides were all originally made for CS188. 
 
 <br>
@@ -81,10 +83,12 @@ class: middle
 
 # Exercise sessions
 
-- Exercice sessions are held every week after the lecture.
-- Prepare the exercises proposed the previous week.
-- Use this time to get answers to your questions, and not to transcribe everything from the blackboard.
-- Solutions are provided for all exercises. 
+- Exercise sessions are held every week after the lecture.
+- You will work on exercises by yourself or in small groups, with our help.
+    - Your active participation is expected.
+    - The exercises are designed to help you understand the materials and prepare for the exam.
+    - Use this time to get answers to your questions.
+- Solutions are provided for all exercises.
 
 ---
 
@@ -100,10 +104,23 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 - Written exam (60%)
 - Programming projects (40%)
-    - Project 1: +0.5
+    - Project 0: 0% (tutorial of September 26)
+    - Project 1: 20%
     - Project 2: 20%
-    - Project 3: 20%
     - Programming projects are **mandatory** for presenting the exam.
+
+---
+
+class: middle
+
+## Evaluation of the projects
+
+- Projects are evaluated **automatically** on Gradescope.
+- Preliminary tests are provided to help you debug your code.
+- However, the final grade will be based on additional tests that are not provided.
+    - It is part of the learning experience to design your own tests.
+    - It is not because the public tests pass that your code is correct.
+- The efficiency of your code will also be taken into account, beyond its correctness.
 
 ---
 
@@ -115,7 +132,7 @@ You may consult papers, books, online references, or publicly available implemen
 
 Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty office.
 
-.footnote[$^\*$: Unless you build and train your own :-)]
+.footnote[*: Unless you build and train your own :-)]
 
 ???
 

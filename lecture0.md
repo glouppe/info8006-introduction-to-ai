@@ -8,11 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: Check https://www.youtube.com/watch?v=pd0JmT6rYcI + https://t.co/FA8sYGSv3K
-R: Check https://x.com/rickyrobinett/status/1825581674870055189?t=1Zi0InWlpiuQ9p1USDmRvw&s=03
-
 ---
 
 class: middle, center
@@ -61,92 +56,110 @@ What is interesting with the guess-the-next-word problem is that it is a very si
 
 ---
 
-class: middle, center
-
-```
-John plays the ___
-```
-
-???
-
-Let's start with a simple example.
-
-Suppose we want to predict the next word in the sentence "John plays the ___".
-
-What is the next word?
-
-There are many possibilities, but plausible possibilities are instruments such as "piano", "guitar", or "violin". 
-
-This one was easy.
-
----
-
-class: middle, center
+class: middle
 count: false
 
 ```
-John plays the piano and Mary plays the ____
+In the 1960s, Armstrong ____
 ```
 
 ???
 
-Now, suppose we want to predict the next word in the sentence "John plays the piano and Mary plays the ___". What is the next word?
+Ambiguous! Louis Armstrong or Neil Armstrong?
 
-Just like before, we have to predict the next word following "plays the" but the context is now different.
-
-It feels now more likely that the next word is "guitar", "violin" or "cello" than "piano" because "piano" is already used in the sentence.
-
-This one was a bit harder.
+Possible completions: played, sang, walked, flew
 
 ---
 
-class: middle, center
+class: middle
 count: false
 
 ```
-John plays the piano and Paul plays the ____
+In the 1960s, Armstrong performed ___
 ```
 
 ???
 
-Now, suppose we want to predict the next word in the sentence "John plays the piano and Paul plays the ___". What is the next word?
+Now leaning towards Louis Armstrong.
 
-Again, we have to predict the next word following "plays the" but the context is different.
-
-Because the second person is now Paul, the context hints that John and Paul are the Beatles, and that the next word is likely to be "guitar" or "bass", not "violin" or "cello".
-
-How do we know that? We know that because we have external knowledge about the world that we can use to make a prediction. In this case, we know that John and Paul are the Beatles, and that the Beatles play the piano and the bass.
+Possible completions: jazz, music, trumpet solos, ...
 
 ---
 
-class: middle, center
+class: middle
+count: false
 
-.width-60[![](./figures/lec0/transformer.svg)]
+```
+In the 1960s, Armstrong performed a moonwalk ___
+```
 
 ???
 
-This simple idea of guessing the next word is the basis of the transformer, a neural network architecture that has become the de facto standard for many AI tasks.
+Twist!
 
-At its core, the transformer builds a representation of the context of a word, and uses it to predict the next word. The canonical architecture is made of an encoder, which builds the representation of the context, and a decoder, which uses it to predict the next word. The encoder and decoder are made of many layers which are used to process the context and to make the prediction.
-
-The transformer is a neural architecture that can be used for many tasks, such as machine translation, question answering, text summarization, etc. However, in its decoder-only form, its most impressive application is language modeling, which is the task of predicting the next word in a sentence.
-
-The transformer is one of the many neural network architectures that exist in deep learning. What's new is that it is a general-purpose architecture that can be used for many tasks. We used to have dedicated architectures for each task, but this is less and less the case.
+Possible completions: on stage, during a concert, in a jazz club, ...
 
 ---
 
-class: black-slide
-background-image: url(./figures/lec0/soundboard.jpg)
-background-size: cover
+class: middle
+count: false
+
+```
+In the 1960s, Armstrong performed a moonwalk on the ___
+```
 
 ???
 
-In practice, the transformer is implemented as a regular computer program. It takes as input a sequence of tokens, which are the words of a sentence, and outputs a sequence of tokens, which are the words of the next sentence. At initialization, the parameters of the neural network are set to random values, which results in random and wrong predictions. To make correct predictions, the parameters of the neural network must be adjusted, or trained, on a large corpus of text. More precisely, the parameters can be optimized with a training procedure to minimize the error between the predicted next word and the actual next word.
+Dramatic shift of context!
 
-Training a transformer is a bit like training a dog. You show it a lot of examples, and it learns to predict the next word. If it predicts the wrong word, you give it a negative feedback, and if it predicts the right word, you give it a positive feedback.
+Most likely completion: moon
 
 ---
 
+class: middle
+count: false
+
+```
+In the 1960s, Armstrong performed a moonwalk on the lunar ___
+```
+
+???
+
+Further narrowing down the context!
+
+Possible completions: surface, landscape, terrain, ...
+
+---
+
+class: middle
+count: false
+
+```
+In the 1960s, Armstrong performed a moonwalk on the lunar surface 
+and said ___
+```
+
+???
+
+Very specific context!
+
+Possible completions: "That's one small step for man, one giant leap for mankind."
+
+---
+
+class: middle
+
+This explains why large language models ...
+- invent things and cannot cite sources;
+- never produce the same answers;
+- cannot count, compute, or reason*;
+- can hardly correct their own mistakes once they have been made.
+
+.footnote[*: At least not with a vanilla transformer and a greedy decoding strategy.]
+
+---
+
+exclude: true
 class: middle
 
 .center.width-100[![](figures/lec0/tokens.png)]
@@ -161,6 +174,7 @@ For this reason, big tech companies have been able to train transformers on very
 
 ---
 
+exclude: true
 class: middle, center
 
 .center.width-90[![](./figures/lec0/prompt.png)]
@@ -179,46 +193,11 @@ Similarly, ChatGPT and other chatbots are transformers that are repurposed to an
 
 ---
 
-class: middle
+class: middle, black-slide, center
 
-.width-100[![](./figures/lec0/scaling-power-law.png)]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/fWWCdqyYRPI" frameborder="0" allowfullscreen></iframe>
 
-A brutal simplicity: 
-
-- The more data, the better the model.
-- The more parameters, the better the model.
-- The more compute, the better the model.
-
-???
-
-The simplicity behind transformers is brutal. You'd think that there is more sophistication behind the scenes, but there is not. It is just a neural network that guesses the next words.
-
-Not only that, but the research community has also found that the performance of transformers follows a power law. The more data, the better the model. The more parameters, the better the model. The more compute, the better the model. No matter how much data, parameters, and compute you have, you can always do better by increasing them, and there is no sign of saturation yet.
-
-This is a very different paradigm than what we used to do in deep learning, where we would spend a lot of time designing the architecture of the neural network. Here, the architecture is always the same, and the only thing that matters is the amount of data, the number of parameters, and the amount of compute.
-
----
-
-class: black-slide, center
-background-image: url(./figures/lec0/robot.png)
-
-<br>
-
-<p class="shadow">Why does it work? How does complexity arise from<br> the simplicity of guessing the next `____`?</p>
-
-???
-
-Alright, so we have seen that transformers are very simple. So simple that it is hard to believe that they work so well.
-
-And indeed, why do they work? How does complexity arise from the simplicity of guessing the next word?
-
-The immediate answer is that it works because the transformer has seen the answer before. All the answers are in the training data and have been memorized.
-
-However, when trained on a large corpus, a neural network cannot memorize the entire training data. It must have learned a compressed representation of the training data. 
-
-One such representation is hypothetically a beginning of some kind of understanding of the world, stored compactly in the weights of the neural network, and that can be used to predict the next word.
-
-This is a very exciting hypothesis, but it is still a hypothesis. We do not know for sure that this is the case. 
+Not just text, but also images and sounds.
 
 ---
 
@@ -232,7 +211,7 @@ class: middle, center
 
 .width-70[![](figures/lec0/terminator.png)]
 
-"With artificial intelligence we are summoning the demon" -- Elon Musk
+"With artificial intelligence we are summoning the demon" -- Elon Musk, 2014.
 
 ???
 
@@ -245,7 +224,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/DsBGaHywRhs" frameborder="0" allowfullscreen></iframe>
 
-Geoffrey Hinton
+Geoffrey Hinton, 2023.
 
 ---
 
@@ -253,7 +232,7 @@ class: middle, center
 
 .width-60[![](figures/lec0/washing-machine.png)]
 
-"We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab.
+"We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab, 2017.
 
 ???
 
@@ -265,40 +244,29 @@ class: middle, center, black-slide
 
 <iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen allow="autoplay"></iframe>
 
-Yann LeCun
+Yann LeCun, 2018.
 
 ---
 
-# A definition?
+class: middle, center, black-slide
 
-Artificial intelligence is the science of making machines or programs that:
-.center.grid[
-.kol-1-4[]
-.kol-1-4[
-.caption[Think like people]
-.width-100[![](figures/lec0/ai-think-people.png)]
-]
-.kol-1-4[
-.caption[Think rationally]
-.width-100[![](figures/lec0/ai-think-rationally.png)]]
-]
-.grid[
-.kol-1-4[]
-.kol-1-4[
-.caption[Act like people]
-.width-100[![](figures/lec0/ai-act-people.png)]
-]
-.kol-1-4[
-.caption[Act rationally]
-.width-100[![](figures/lec0/ai-act-rationally.png)]
-]
-]
+<iframe width="600" height="450" src="https://www.youtube.com/embed/YdaRd_vitLw" frameborder="0" allowfullscreen></iframe>
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+Yann LeCun, 2023.
+
+---
+
+# A definition of AI?
+
+<br>
+
+.center.circle.width-40[![](figures/lec0/minsky.png)]
+
+.center["Artificial intelligence is the science of making machines do things that would require intelligence if done by men." -- Marvin Minsky, 1968.]
 
 ???
 
-Textbook definition(s) from AIMA.
+But what is intelligence anyway? 
 
 ---
 
@@ -359,30 +327,21 @@ so exactly like pigeons that they can fool even other pigeons.
 
 ---
 
-# Rational agents
-
-- A **rational agent** acts so as to achieve the *best expected* outcome.
-
-- Rationality only concerns *what* decisions are made (not the thought process behind them, human-like or not).
-
-- Goals are expressed in terms of the **performance** or **utility** of outcomes. Being rational means maximizing its expected performance.
-
-- The standard of rationality is general and mathematically well defined.
-
----
-
 class: middle
 
-.center[![](figures/lec0/max-utility.png)
+## A modern definition of AI
 
-In this course, Artificial intelligence = **Maximizing expected performance**
-]
+An ‘AI system’ is a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments. -- European AI Act, Article 3, 2024.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[[Regulation (EU) 2024/1689](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ%3AL_202401689#d1e2090-1-1).]
 
 ???
 
-Underline the importance of *expected*.
+Very broad definition! 
+
+Does encompass modern deep learning models, but also many other systems.
+
+Is a thermostat an AI system?
 
 ---
 
@@ -392,15 +351,10 @@ Underline the importance of *expected*.
 - 1943: McCulloch and Pitts: Boolean circuit model of the brain.
 - 1950: Turing's "Computing machinery and intelligence".
 
-
----
-
-class: middle
-
 ## 1950-1970: Excitement and expectations
 - 1950s: Early AI programs, including Samuel's checkers program,
 Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
-- 1956: Dartmouth meeting: "Aritificial Intelligence" adopted.
+- 1956: Dartmouth meeting: "Artificial Intelligence" adopted.
 - 1958: Rosenblatt invents the perceptron.
 - 1965: Robinson's complete algorithm for logical reasoning.
 - 1966-1974: AI discovers computational complexity.
@@ -447,90 +401,235 @@ class: middle
 
 ---
 
-# What can an AI do today?
+class: middle
 
-- Translate spoken Chinese to spoken English, live?
-- Answer multiple choice questions, as good as an 8th grader?
-- Solve university math problems?
-- Prove mathematical theorems?
-- Converse with a person for an hour?
-- Play decently at Chess? Go? Poker? Soccer?
-- Drive a car safely on a parking lot? in New York? in Germany?
-- Identify skin cancer better than a dermatologist?
-- Write computer code? 
-- Tell a funny story?
-- Paint like Vangogh? Compose music?
-- Show common sense?
+# The deep learning revolution
 
 ---
 
-class: middle, center, black-slide
+class: middle
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/Nu-nlQqFCKg" frameborder="0" allowfullscreen></iframe>
+.center.width-40[![](./figures/lec0/ml-0.png)]
 
-Speech translation and synthesis (2012)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/7gh6_U7Nfjs" frameborder="0" allowfullscreen></iframe>
-
-Speech synthesis and question answering (Google, 2018)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/V1eYniJ0Rnk" frameborder="0" allowfullscreen></iframe>
-
-Playing Atari games (2013)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/g-dKXOlsf98" frameborder="0" allowfullscreen></iframe>
-
-Beat the best human Go players (2016)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/gn4nRCC9TwQ" frameborder="0" allowfullscreen></iframe>
-
-Learning to walk (2017)
+.footnote[Credits: François Fleuret, 2023.]
 
 ???
 
-Single algorithm for learning! Nothing is hardcoded.
+When you start a project in artificial intelligence or machine learning, one of the very first steps, and this is something I keep repeating to my students, is to look at the data. Take the raw data and visualize it.
 
-Similar to a baby learning to walk.
+The data I want to start with today is related to blood pressure. We have a dataset of 30 patients, with their age and their blood pressure shown as points on the plot. This is a very simple dataset, and the problem is not very interesting in itself, but it is a good example to illustrate how we can use machine learning to make predictions.
+
+Let's start with a simple question: can we predict the blood pressure of a patient based on his or her age?
+
+In other words, can we write a computer program that, given the age of a patient, will make a guess about his or her blood pressure?
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-1.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+???
+
+The machine learning approach to this problem is not hardcode some made-up computer program that would take the age of a patient and return a blood pressure. Instead, the machine learning approach is to write a computer program that will learn to make predictions by itself, by looking at the data.
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-2.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+???
+
+To do so, we need to define a model, a mathematical function that will take the age of a patient as input and return a prediction of his or her blood pressure. 
+
+Often, this model is a function with parameters. The parameters are the knobs of the model, and we will tune them to make the best predictions.
+
+The simplest example is the linear model, which is a function of the form `y = ax + b`, where `a` and `b` are the parameters to be learned, the two knobs that we can turn to change the behavior of the model.
+
+To find the best parameter values, we will use the data to train the model. This means that we will show the model the data, make it make predictions, and then adjust its parameters to reduce the error between its predictions and the true blood pressure values.
+
+This process can be described mathematically and implemented in a computer program. This is what we call the training of the model.
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-3.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-4.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-5.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-6.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-7.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+count: false
+
+.width-100[![](./figures/lec0/ml-8.png)]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+---
+
+class: middle
+
+Deep learning .bold[scales up] the statistical and machine learning approaches by
+- using larger models known as neural networks,
+- training on larger datasets,
+- using more compute resources.
+
+.grid[
+.kol-3-4.width-70.center[![](./figures/lec0/mlp.png)]
+.kol-1-4.width-90.center[![](./figures/lec0/imagenet.jpeg)<br>![](./figures/lec0/titan.jpg)]
+]
+
+???
+
+[Talk about the slide first.]
+
+Scaling up the statistical and machine learning approaches by brute force in these three dimensions has been key to the success of deep learning.
+
+---
+
+class: middle
+
+Specialized neural networks can be trained achieve super-human performance on many complex tasks that were previously thought to be out of reach for machines.
+
+.width-100[![](./figures/lec0/tasks-1.png)]
+
+.width-100[![](./figures/lec0/tasks-2.png)]
+
+.center[(Top) Scene understanding, pose estimation, geometric reasoning.<br>
+(Bottom) Planning, Image captioning, Question answering.]
+
+.footnote[Credits: François Fleuret, 2023.]
+
+???
+
+Following this approach, deep learning has been successful in tasks that were previously considered hard for computers, such as understanding images, speech, or text.
+
+In particular, specialized neural networks can be trained to solve a large variety of problems, from scene understanding to geometric reasoning, from planning to question answering.
+
+While these problems can be perceived as artificial and not really important in their own right, they actually form a set of primitive tasks that are found in many domains of application. 
+
+---
+
+class: middle
+
+Neural networks form .bold[primitives] that can be transferred to many domains. 
+
+.grid[
+.kol-1-3.center.width-100[![](./figures/lec0/cytomine2.png)]
+.kol-1-3.center.width-80[![](./figures/lec0/mri.jpg)]
+.kol-1-3.center.width-80[![](./figures/lec0/melanoma.jpg)]
+]
+.width-100[![](./figures/lec0/sbi-cardio.png)]
+
+.center[(Top) Analysis of histological slides, denoising of MRI images, nevus detection.<br>
+(Bottom) Whole-body hemodynamics reconstruction from PPG signals.]
+
+???
+
+For example, in health and medicine, the same specialized neural networks that are used to annotate scenes can be used to analyze biomedical images, such as histological slides.
+
+Specialized neural networks can also be used to denoise MRI images, to detect nevus, or to reconstruct whole-body hemodynamics from PPG signals, if some of you have an Apple Watch.
+
+As a matter of fact, the adoption of AI and deep learning in health and medicine has been growing steadily over the past decade, with many applications in medical imaging, genomics, and many more. 
+
+These applications however, are often deeply embedded in the tools used by healthcare professionals, and are not always visible to the public.
+
+---
+
+class: middle
+
+## The breakthrough
+
+.grid[
+.kol-1-2.center[.width-100[<br>![](./figures/lec0/attention.png) 
+
+Vaswani et al., 2017.]]
+.kol-1-2[.width-100[![](./figures/lec0/transformer.svg)]]
+]
+
+---
+
+class: middle
+
+.width-100[![](./figures/lec0/scaling-power-law.png)]
+
+A brutal simplicity: 
+- The more data, the better the model.
+- The more parameters, the better the model.
+- The more compute, the better the model.
+
+Scaling up further to gigantic models, datasets, and compute resources keeps pushing the boundaries of what is possible, .bold[with no sign of slowing down].
 
 ---
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/yyLa6xIK9Qs" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/-dWfl7Dhb0o" frameborder="0" allowfullscreen></iframe>
 
-Playing soccer (2018)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/tF4DML7FIWk" frameborder="0" allowfullscreen></iframe>
-
-... although some robots might now do better (2021).
+Conversational AI assistants (Anthropic, 2024)
 
 ---
 
 class: middle, center, black-slide
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/qhUvQiKec2U" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/o5uvDZ8srHA" frameborder="0" allowfullscreen></iframe>
 
-Driving a car (NVIDIA, 2016)
+Code assistants (Cursor, 2024)
+
+---
+
+exclude: true
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/oYUcl_cqKcs" frameborder="0" allowfullscreen></iframe>
+
+Object detection, pose estimation, segmentation (Meta AI, 2023)
 
 ---
 
@@ -542,38 +641,6 @@ Autonomous cars (Waymo, 2022)
 
 ---
 
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/8USTGyUhnJk" frameborder="0" allowfullscreen></iframe>
-
-Driving on Mars (NASA/JPL, 2021)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="640" height="400" src="https://www.youtube.com/embed/FUUT6IrQjo4" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Predicting extreme weather events (NVIDIA, 2023)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="640" height="400" src="https://www.youtube.com/embed/_eNUtLHXJkc" frameborder="0" volume="0" allowfullscreen></iframe>
-
-Improving Tuberculosis Monitoring with Deep Learning (NVIDIA, 2020)
-
----
-
-class: middle, black-slide, center
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
-
-Solving protein folding (Deepmind, AlphaFold, 2020)
-
----
-
 class: middle, black-slide, center
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/zrcxLZmOyNA" frameborder="0" allowfullscreen></iframe>
@@ -582,31 +649,87 @@ Powering the future of clean energy (NVIDIA, 2023)
 
 ---
 
-class: middle, center, black-slide
+class: middle, black-slide, center
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/4RfD5JiXt3A" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
 
-Write computer code (Github Copilot X, 2023)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/7c1lKFFF6dM" frameborder="0" allowfullscreen></iframe>
-
-Learning to sort waste<br>(ULiège, 2021)
+How AI is advancing medicine (Google, 2018)
 
 ---
 
-class: middle, center, black-slide
+class: middle, center
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/J9Th_WYu6Eg" frameborder="0" allowfullscreen></iframe>
+Deep learning can also .bold[solve problems that no one could solve before].
 
-Cow behaviour recognition (Francois Lievens, ULiège, 2022)
+???
+
+Beyond the basic work that can be automated, the most exciting applications of AI, at least for the scientist in me, is the fact that deep learning can also be used to solve problems that no one could solve before. To make discoveries. 
+
+I have many examples in mind, but I will only mention a few today, to give you a sense of what is possible. I will focus on health and medicine, but the same is true in many other domains.
 
 ---
 
-# What is missing?
+class: middle
+
+## AlphaFold: From a sequence of amino acids to a 3D structure
+
+.grid[
+.kol-2-3.center.width-100[![](./figures/lec0/alphafold-nature.png)]
+.kol-1-3.center.width-100[![](./figures/lec0/alphafold-prediction.gif)]
+]
+
+???
+
+The first example is AlphaFold, a neural network based on the trasnformer architecture that can predict the 3D structure of a protein from its amino acid sequence.
+
+This problem is important because the 3D structure of a protein determines its function, and understanding protein function is key to understanding biology and designing new drugs.
+
+However, determining the 3D structure of a protein experimentally is difficult and expensive, taking up to months just to solve a single structure. 
+
+AlphaFold has been a breakthrough in this area, and has been able to predict the 3D structure of proteins with high accuracy, in just a couple of minutes for the longest sequences.
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
+
+AI for Science (Deepmind, AlphaFold, 2020)
+
+---
+
+class: middle
+
+## Drug discovery with graph neural networks
+
+.center.width-80[![](./figures/lec0/cell.png)]
+
+???
+
+A second example is the use of graph neural networks to discover new drugs.
+
+Discovering new drugs is a complex and expensive search problem, where the goal is to find molecules that will bind to a target protein and modulate its function. Unfortunately, this problem is difficult for two reasons:
+- first, the search space is huge -- the space all possible pharmacologically active molecules is estimated to be in the order of 10^60 molecules.
+- second, the binding of a molecule to a protein is a complex process that is difficult to model. Laboratory experiments are necessary to evaluate the binding of a molecule to a protein, and these experiments are expensive and time-consuming.
+
+Graph neural networks have been a breakthrough in this area, and have been able to predict the properties of molecules with high accuracy. 
+
+In a sense, they can serve as a virtual laboratory that can be used to pre-screen millions of molecules in a matter of hours, thereby reducing the laboratory work to only the most promising candidates.
+
+---
+
+class: middle
+
+## GraphCast: fast and accurate weather forecasts
+
+.center.width-75[![](./figures/lec0/graphcast.jpg)]
+
+---
+
+exclude: true
+class: middle
+
+## What is missing?
 
 Intelligence is not just about **pattern recognition**, which is something most of these works are based on.
 
