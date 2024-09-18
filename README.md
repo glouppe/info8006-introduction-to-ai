@@ -82,9 +82,9 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 0: [Search algorithms](projects/project1) (tutorial session in class)
-- Part 1: [Adversarial search](projects/project2) (due by November 3)
-- Part 2: [Bayes filter](projects/project3) (due by December 8)
+- Part 0: [Search algorithms](projects/project0) (tutorial session in class)
+- Part 1: [Adversarial search](projects/project1) (due by November 3)
+- Part 2: [Bayes filter](projects/project2) (due by December 8)
 
 ## Previous exams
 
