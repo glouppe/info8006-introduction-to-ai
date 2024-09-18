@@ -8,11 +8,6 @@ Course syllabus, Fall 2024
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-Q&A: ask me anything (during the course, on any topic, questions collected on a platform)
-Give examples more related to engineering and science. Focus on people rather than technology.
-
 ---
 
 # Us
@@ -88,7 +83,7 @@ class: middle
     - Your active participation is expected.
     - The exercises are designed to help you understand the materials and prepare for the exam.
     - Use this time to get answers to your questions.
-- Solutions are provided for all exercises.
+- Solutions will be provided for all exercises.
 
 ---
 

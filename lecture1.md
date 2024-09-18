@@ -18,8 +18,21 @@ class: middle
 
 # Agents and environments
 
-<br><br>
-.width-80.center[![](figures/lec1/agent-environment.svg)]
+<br><br><br>
+
+.grid[
+.kol-1-5.center[
+<br><br><br>
+Percepts $s$
+]
+.kol-3-5.center[
+.width-95[![](figures/lec8/loop.png)]
+]
+.kol-1-5[
+<br><br><br>
+Actions $a$
+]
+]
 
 ???
 
@@ -34,10 +47,8 @@ class: middle
 - An **agent** is an entity that *perceives* its environment through sensors and
   take *actions* through actuators.
 
-- The agent behavior is described by the **agent function**, or **policy**, that
-  maps percept histories to actions,
-  $$\pi : \mathcal{P}^* \to \mathcal{A},$$
-  where $\mathcal{P}$ is the set of all possible percepts and $\mathcal{A}$ is the set of all possible actions.
+- The agent behavior is described by its **policy**, a function $$\pi : \mathcal{P}^* \to \mathcal{A}$$ that maps
+  percept sequences to actions.
 
 ---
 
@@ -47,6 +58,7 @@ class: middle
 
 .width-20.center[![](figures/lec1/pacman.png)]
 
+Let us consider a 2-cell world with a Pacman agent.
 - Percepts: location and content, e.g. $(\text{left cell}, \text{no food})$
 - Actions: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
 
@@ -60,7 +72,7 @@ class: middle
 
 ## Pacman agent
 
-Partial tabulation of a simple Pacman agent function:
+The policy of a Pacman agent is a function that maps percept sequences to actions. It can be implemented as a table.
 
 | Percept sequence | Action |
 | ---------------- | ------ |
@@ -88,10 +100,11 @@ Run the program!
 
 class: middle
 
-## The optimal Pacman?
+## The optimal policy?
 
-What is the **right** agent function?
-How to formulate the *goal* of Pacman?
+What is the  optimal agent policy?
+
+How to even formulate the goal of Pacman?
 - 1 point per food dot collected up to time $t$?
 - 1 point per food dot collected up to time $t$, minus one per move?
 - penalize when too many food dots are left not collected?
@@ -102,8 +115,7 @@ Can it be implemented in a *small* and **efficient** agent program?
 
 # Rational agents
 
-- A **rational agent** acts so as to achieve the *best expected* outcome.
-- A **performance measure** evaluates a sequence of environment
+- A performance measure evaluates a sequence of environment
   states caused by the agent's behavior.
 - A rational agent is an agent that chooses whichever action that **maximizes** the
   *expected* value of the performance measure, given the percept sequence to date.
@@ -228,7 +240,7 @@ What about Pacman?
 # Agent programs
 
 Our goal is to design an **agent program** that implements the agent
-function. 
+policy. 
 
 Agent programs can be designed and implemented in many ways:
 
@@ -242,7 +254,7 @@ Agent programs can be designed and implemented in many ways:
 # Reflex agents
 
 
-Reflex agents
+Reflex agents ...
 - choose an action based on current percept (and maybe memory);
 - may have memory or model of the world's current state;
 - do not consider the futur consequences of their actions.
@@ -311,7 +323,7 @@ class: middle
 
 # Planning agents
 
-Planning agents:
+Planning agents ...
 - ask "what if?";
 - make decisions based on (hypothesized) consequences of actions;
 - must have a model of how the world evolves in response to actions;

@@ -219,15 +219,6 @@ Triggers a rich imagination fueled by science-fiction.
 
 ---
 
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/DsBGaHywRhs" frameborder="0" allowfullscreen></iframe>
-
-Geoffrey Hinton, 2023.
-
----
-
 class: middle, center
 
 .width-60[![](figures/lec0/washing-machine.png)]
@@ -245,6 +236,14 @@ class: middle, center, black-slide
 <iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen allow="autoplay"></iframe>
 
 Yann LeCun, 2018.
+
+---
+
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/DsBGaHywRhs" frameborder="0" allowfullscreen></iframe>
+
+Geoffrey Hinton, 2023.
 
 ---
 
