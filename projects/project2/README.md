@@ -27,9 +27,12 @@ $ python run.py --ghost afraid --nghosts 1 --layout large_filter --seed 42
 When several ghosts are present in the maze, they all run the same policy (e.g. all `afraid`). The random seed of the game can be changed with the `--seed` option.
 
 ## Evaluation
+Your project will be evaluated based on the correctness of each of the components (transition_matrix function, observation_matrix function, update (bayes filter) function and pacman controller) and code style. To avoid error propagation, your update function will be evaluated while coupled with our own implementation of transition_matrix and observation_matrix functions. That way any error in the transition_matrix and observation_matrix functions will not impact the correctness of your update function. Public tests only perform sanity checks (correct ouput shape, check if the output is a valid probability distribution, ...). The correctness tests are private and **we encourage you to make your own tests** to test the correctness of your implementation. 
 
 Your project will be evaluated as follow:
 
-- **Bayes filter** : We evaluate the correctness of each component.
-- **Pacman controller**: We evaluate whether you agent is able to eat the ghosts.
-- **Code style** : No points are awarded if your code is not PEP-8 compliant.
+- **transition_matrix function** (25%): We evaluate the correctness of the component.
+- **observation_matrix function** (25%): We evaluate the correctness of the component.
+- **update function** (25%): We evaluate the correctness of the component.
+- **Pacman controller** (20%): We evaluate whether you agent is able to eat the ghosts in a reasonable amount of time.
+- **Code style** (5%): You are awarded the maximal grade if your code is PEP-8 compliant and no points otherwise. This test is public.
