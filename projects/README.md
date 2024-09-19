@@ -51,9 +51,9 @@ From now, it is assumed that `pacman` is activated.
 
 ## Instructions
 
-All parts (1, 2 & 3) of the project must be carried out in groups of maximum 3 students. You must keep the same group across all parts. For each part, login to [Gradescope](https://www.gradescope.com/) with your `@student.uliege.be` account and submit the requested deliverables. Don't forget to add other group members for each submission.
+All parts (1 & 2) of the project must be carried out in groups of maximum 3 students. You must keep the same group across all parts. For each part, login to [Gradescope](https://www.gradescope.com/) with your `@student.uliege.be` account and submit the requested deliverables. Don't forget to add other group members for each submission.
 
-We tolerate only **one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the two other parts. In case of *more than one delay*, the concerned parts will receive a *0/20* grade.
+We tolerate only **one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the other part. In case of *more than one delay*, the concerned parts will receive a *0/20* grade.
 
 ## Typical mistakes and bad practices
 
