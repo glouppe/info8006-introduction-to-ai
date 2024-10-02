@@ -305,7 +305,7 @@ Finding the exact solution with Minimax remains **intractable**.
 # Transposition table
 
 - Repeated states occur frequently because of **transpositions**: distinct permutations of the move sequence end in a same position.
-- Similar to the `closed` set in `Graph-Search` (Lecture 2), it is worthwhile to store the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+- Similarly to the `closed` set in `Graph-Search` (Lecture 2), it is worth storing the evaluation of a state such that further occurrences of the state do not have to be recomputed.
 
 .question[What data structure should be used to efficiently store and look-up values of positions?]
 

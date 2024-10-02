@@ -192,12 +192,14 @@ class: middle
 
 class: middle
 
+- Representation of states: the city we are in.
+    - $s \in \\{ \text{in}(\text{Arad}), \text{in}(\text{Bucharest}), \ldots \\}$
 - Initial state = the city we start in.
     - $s_0 = \text{in}(\text{Arad})$
 - Actions = Going from the current city to the cities that are directly connected to it.
     - $\text{actions}(s_0) = \\{ \text{go}(\text{Sibiu}), \text{go}(\text{Timisoara}), \text{go}(\text{Zerind}) \\}$
 - Transition model = The city we arrive in after driving to it.
-    - $\text{result}(\text{in}(Arad), \text{go}(Zerind)) = \text{in}(Zerind)$
+    - $\text{result}(\text{in}(\text{Arad}), \text{go}(\text{Zerind})) = \text{in}(\text{Zerind})$
 - Goal test: whether we are in Bucharest.
     - $s \in \\{ \text{in}(\text{Bucharest}) \\}$
 - Step cost: distances between cities.
@@ -848,8 +850,6 @@ Node $C$ is expanded too early!
 ---
 
 class: middle
-
-
 
 .grid[
 .kol-2-3[## Consistent heuristics
