@@ -426,7 +426,6 @@ class: middle
 - In real life, many unpredictable external events can put us into unforeseen situations.
 - Games that mirror this unpredictability are called **stochastic games**. They include a random element, such as:
     - explicit randomness: rolling a dice;
-    - unpredictable opponents: ghosts respond randomly;
     - actions may fail: when moving a robot, wheels might slip.
 
 <br>
@@ -457,6 +456,8 @@ class: middle
 
 - This tree corresponds to a game with two dices
 - What is the best move? The best move cannot be determined anymore, because it depends on chance.
+
+=> Assume the 2nd player is rational and plays optimally and that the 3rd player (corresponding to chance nodes) is random.
 
 ---
 
@@ -550,7 +551,7 @@ class: middle
 Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
 
 During the traversal of the branch in the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
-$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}}.$$
+$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.$$
 - The first term  encourages the *exploitation* of higher-reward nodes.
 - The second term encourages the **exploration** of less-visited nodes.
 - The constant $c>0$ controls the trade-off between exploitation and exploration.
