@@ -53,12 +53,12 @@
     When the game is stochastic, we can use the minimax algorithm on the expected value of a state. We have to insert intermediate \thighlight{chance nodes} between moves to account for th \thighlight{distribution over actions}.
     The algorithm becomes 
     \[
-    \text{\texttt{Expectiminimax}($s$)} = 
+    \text{Expectiminimax($s$)} = 
     \begin{cases}
-        \text{\texttt{Utility}($s$)} & \text{if \texttt{Terminal}($s$)}\\
-        max_a \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$a$))} & \text{if \texttt{Player}($s$) = MAX}\\
-        min_a \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$a$))} & \text{if \texttt{Player}($s$) = MIN}\\
-        \sum_r P(r) \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$r$))} & \text{if \texttt{Player}($s$) = CHANCE}.
+        \text{Utility($s$)} & \text{if Terminal($s$)}\\
+        max_a \text{Expectiminimax(Result($s$,$a$))} & \text{if Player($s$) = MAX}\\
+        min_a \text{Expectiminimax(Result($s$,$a$))} & \text{if Player($s$) = MIN}\\
+        \sum_r P(r) \text{Expectiminimax(Result($s$,$r$))} & \text{if Player($s$) = CHANCE}.
     \end{cases}
     \]
 \end{thbox}
@@ -389,7 +389,7 @@ In Monte Carlo Tree Search (MCTS), in the formula
         \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
     \end{equation*}
 which of the following is true?
-\begin{enumerate}
+\begin{itemize}
     \solitem The first term encourages the exploitation of higher-reward nodes, while the second encourages the exploration of
     less-visited nodes.
     \item The first term encourages the exploration of less-visited nodes, while the second term encourages the exploitation
@@ -397,7 +397,7 @@ which of the following is true?
     \item The first term encourages the exploitation of highly-visited nodes, while the second term encourages the exploration
     of lesser-rewarding nodes.
     \item The first term encourages the exploration of lesser-rewarding nodes, while the second term encourages the exploitation of highly-visited nodes.
-\end{enumerate}
+\end{itemize}
 
 In adversarial search,
 \begin{itemize}
