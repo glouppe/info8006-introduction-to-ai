@@ -11,38 +11,58 @@
 
 \maketitle
 
-\newpage
+\begin{thbox}{Game formulation}
+    A \thighlight{search problem} is defined by    
+    \begin{itemize}
+        \item A representation for \thighlight{states}.
+        \item The \thighlight{initial} state of the agent.
+        \item A \thighlight{player} function \thighlight{$p = player(s)$} which defines who moves in \thighlight{$s$}.
+        \item A set of \thighlight{actions} allowed in every state \thighlight{$s$}.
+        \item A \thighlight{transition model $s' = result(s,a)$} that returns the resulting state \thighlight{$s'$} for using action \thighlight{$a$} in state \thighlight{$s$}. 
+        \item A \thighlight{terminal test} which determines if the game is over.
+        \item A \thighlight{utility} function \thighlight{$utility(s,p)$} that assigns a final numerical value to \thighlight{player $p$} in terminal \thighlight{state $s$}. 
+    \end{itemize}
+\end{thbox}
 
-\section{21 misery game (January 2019)}
+% \begin{thbox}{Zero-sum game}
+%     In a zero-sum game, the total \thighlight{utility} to all players is constant, \ie{}
+%     $$
+%     \sum_p\ utility(s,p) = K\ \forall s.
+%     $$
+% \end{thbox}
+\begin{thbox}{Adversarial search}
+    In a two-player game, agent share the same \thighlight{utility}. 
+    The first want to minimize it (MIN agent) whereas the other wants the opposite (MAX agent).
+    Assuming that MAX moves first and is the agent that we want to win, the problem can be framed as a search problem where
+    \begin{itemize}
+        \item A goal state is a \thighlight{terminal state} where MAX wins.
+        \item MAX agent need a model of its opponent.
+    \end{itemize}
 
-The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
-
-\begin{enumerate}
-    \item Define the search problem associated with the 2-player version of the \enquote{21} game.
-
-    \begin{solution}
-        Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{0, 1}$, where $v$ is the current value of the counter and $p$ the player to play next.
-        \begin{description}
-            \item[Initial state] $s_0 = (1, 0)$.
-            \item[Player function] $player(s = (v, p)) = p$.
-            \item[Actions] $actions(s) = \cbk{1, 2, 3}$.
-            \item[Transition model] For an action $a \in actions(s)$, $$result(s = (v, p), a) = (v + a,  p + 1 \bmod 2).$$
-            \item[Terminal test] $terminal(s = (v, p))$ is true if $v \geq 21$, false otherwise.
-            \item[Utility function] $utility(s) = 1$ if $p = 0$, $0$ otherwise.
-        \end{description}
-    \end{solution}
-
-    \item For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules has \enquote{21} except that you should not say 5 or more. Show the whole game tree.
-    \item Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
-    \item Mark the nodes that would be pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.
-
-    \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.9\textwidth]{figures/e2_21.pdf}
-        \end{figure}
-    \end{solution}
-\end{enumerate}
+    The \thighlight{minimax value} is the largest utility accessible for MAX from a state \thighlight{$s$}, assuming MIN acts optimally.
+\end{thbox}
+\begin{thbox}{H-minimax}
+    Searching the exact minimax solution is most of the time not feasible. One way to bypass this issue is by cutting the search.
+    To do so, we define 
+    \begin{itemize}
+        \item An \thighlight{evaluation function $eval(s)$} that estimates the utility that would be reached from a \thighlight{state $s$}.
+        \item A \thighlight{cutoff test $cutoff(s,d)$} that replaces the \thighlight{terminal test}. The later determines if the search must be stopped at \thighlight{depth $d$} in \thighlight{state $s$}.
+    \end{itemize}
+\end{thbox}
+\begin{thbox}{expectiminimax}
+    When the game is stochastic, we can use the minimax algorithm on the expected value of a state. We have to insert intermediate \thighlight{chance nodes} between moves to account for th \thighlight{distribution over actions}.
+    The algorithm becomes 
+    \[
+    \text{\texttt{Expectiminimax}($s$)} = 
+    \begin{cases}
+        \text{\texttt{Utility}($s$)} & \text{if \texttt{Terminal}($s$)}\\
+        max_a \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$a$))} & \text{if \texttt{Player}($s$) = MAX}\\
+        min_a \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$a$))} & \text{if \texttt{Player}($s$) = MIN}\\
+        \sum_r P(r) \text{\texttt{Expectiminimax}(\texttt{Result}($s$,$r$))} & \text{if \texttt{Player}($s$) = CHANCE}.
+    \end{cases}
+    \]
+\end{thbox}
+\textbf{In session exercises:} Ex. 1, Ex. 2 
 
 \newpage
 
@@ -85,12 +105,12 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
     \item Show the whole game tree starting from an empty grid down to depth 2 (one X and one O on the board), taking symmetry into account.
     \item Annotate your tree with the evaluations of all the positions at depth 2.
     \item Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
-    \item Mark the nodes that would be pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.
 
     \begin{solution}
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.8\textwidth]{figures/e2_tictactoe.pdf}
+            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
         \end{figure}
     \end{solution}
 
@@ -107,72 +127,6 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
         This heuristic does not preserve the Minimax \emph{ordering} of intermediate states.
     \end{solution}
 
-\end{enumerate}
-
-\newpage
-
-\section{Quiz}
-
-\begin{enumerate}
-    \item In a fully observable, turn-taking, zero-sum game between two perfectly rational players, does it help the first player to know what strategy the second player is using, \ie{} what actions the second player will take? What if the second player is not rational ?
-
-    \begin{solution}
-        Since the actions taken by a perfectly rational player are always the optimal ones, the first player can already guess the moves of the second by observing the state of the game, which actually corresponds to the Minimax algorithm. Therefore, knowing the actions doesn't help.
-
-        However, if the second player is not rational, it could be better to follow another strategy than Minimax, especially if the second player's strategy is known.
-    \end{solution}
-
-    \item What is a quiescent state?
-
-    \begin{solution}
-        A state in which the outcome of a game is unlikely to vary a lot in the near future. For instance, in chess, if a player has a lot more pieces than the other, the outcome of the game is likely already known, and should not change in the next few moves.
-    \end{solution}
-
-    \item In Monte Carlo Tree Search (MCTS), what is encouraged by each term of the sum in the formula
-    \begin{equation*}
-        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
-    \end{equation*}
-    and what is $c$?
-
-    \begin{solution}
-        The first term encourages the \emph{exploitation} of states we believe to be \enquote{good}, which allows to improve our beliefs for these states. The second term encourages the \emph{exploration} of states we don't have a lot of information about. The constant $c$ controls the trade-of between exploitation and exploration.
-    \end{solution}
-\end{enumerate}
-
-\newpage
-
-\section{Chess and transposition table (AIMA, Ex 5.15)}
-
-Suppose you have a chess program that can evaluate 16 million nodes per second.
-
-\begin{enumerate}
-    \item Decide on a compact representation of a game state for storage in a transposition table.
-
-    \begin{solution}
-        There are 32 pieces and we need to specify their positions in a $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \qty{6}{bits} ($2^6 = 64$), for a total of \qty{24}{o} per state.
-    \end{solution}
-
-    \item About how many entries can you fit in a \qty{4}{\giga o} in-memory table?
-
-    \begin{solution}
-        We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{160e6}$ states in the table.
-    \end{solution}
-
-    \item Will that be enough for the three minutes of search allocated for one move?
-
-    \begin{solution}
-        It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.880e9}$ evaluated nodes.
-    \end{solution}
-
-    \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
-
-    \begin{solution}
-        We can perform
-        \begin{equation*}
-            \frac{\num{3.2e9}}{\num{16e6}} \times \frac{1}{20} = 10
-        \end{equation*}
-        table lookups in the same amount of time as a single evaluation. This demonstrates the importance of transposition tables.
-    \end{solution}
 \end{enumerate}
 
 \newpage
@@ -211,13 +165,38 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
             \includegraphics[width=0.6\textwidth]{figures/e2_minimax_3.pdf}
         \end{figure}
     \end{solution}
+\end{enumerate}
 
-    \item Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not.
+\newpage
+
+\section{21 misery game (January 2019)}
+
+The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
+
+\begin{enumerate}
+    \item Define the search problem associated with the 2-player version of the \enquote{21} game.
 
     \begin{solution}
-        No nodes can be pruned. There will always be the possibility that an as-yet-unvisited leaf of the current parent chance node will have a very high value, which increases the overall average value for that chance node. For example, when we see that leaf 4 has a value of 2, which is much less than the value of the left chance node, 7, at this point we cannot make any assumptions about how the value of the middle chance node will ultimately be more or less in value than the left chance node. As it turns out, the leaf 5 has a value of 15, which brings the expected value of the middle chance node to 8, which is greater than the value of the left chance node.
+        Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{0, 1}$, where $v$ is the current value of the counter and $p$ the player to play next.
+        \begin{description}
+            \item[Initial state] $s_0 = (1, 0)$.
+            \item[Player function] $player(s = (v, p)) = p$.
+            \item[Actions] $actions(s) = \cbk{1, 2, 3}$.
+            \item[Transition model] For an action $a \in actions(s)$, $$result(s = (v, p), a) = (v + a,  p + 1 \bmod 2).$$
+            \item[Terminal test] $terminal(s = (v, p))$ is true if $v \geq 21$, false otherwise.
+            \item[Utility function] $utility(s) = 1$ if $p = 0$, $0$ otherwise.
+        \end{description}
+    \end{solution}
 
-        In the case where there is an upper bound to the value of a leaf node, there is a possibility of pruning: suppose that an upper bound of +10 applies only to the children of the rightmost chance node. In this case, after seeing that leaf 7 has a value of 6 and leaf 8 has a value of 5, the best possible value that the rightmost chance node can take on is $\frac{6+5+10}{3} = 7$, which is less than 8, the value of the middle chance node. Therefore, it is possible to prune leaf 9 in this case.
+    \item For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules has \enquote{21} except that you should not say 5 or more. Show the whole game tree.
+    \item Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
+
+    \begin{solution}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\textwidth]{figures/e2_21.pdf}
+            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
+        \end{figure}
     \end{solution}
 \end{enumerate}
 
@@ -365,5 +344,84 @@ Consider the following two-player turn-taking game which initial configuration i
     \end{solution}
 \end{enumerate}
 
+\newpage
+
+\section{Chess and transposition table (AIMA, Ex 5.15)}
+
+Suppose you have a chess program that can evaluate 16 million nodes per second.
+
+\begin{enumerate}
+    \item Decide on a compact representation of a game state for storage in a transposition table.
+
+    \begin{solution}
+        There are 32 pieces and we need to specify their positions in a $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \qty{6}{bits} ($2^6 = 64$), for a total of \qty{24}{B} per state.
+    \end{solution}
+
+    \item About how many entries can you fit in a \qty{4}{\giga B} in-memory table?
+
+    \begin{solution}
+        We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{160e6}$ states in the table.
+    \end{solution}
+
+    \item Will that be enough for the three minutes of search allocated for one move?
+
+    \begin{solution}
+        It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.880e9}$ evaluated nodes.
+    \end{solution}
+
+    \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
+
+    \begin{solution}
+        We can perform
+        \begin{equation*}
+            \frac{\num{3.2e9}}{\num{16e6}} \times \frac{1}{20} = 10
+        \end{equation*}
+        table lookups in the same amount of time as a single evaluation. This demonstrates the importance of transposition tables.
+    \end{solution}
+\end{enumerate}
+
+\newpage 
+
 \startquiz
+
+In Monte Carlo Tree Search (MCTS), in the formula
+    \begin{equation*}
+        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
+    \end{equation*}
+which of the following is true?
+\begin{enumerate}
+    \solitem The first term encourages the exploitation of higher-reward nodes, while the second encourages the exploration of
+    less-visited nodes.
+    \item The first term encourages the exploration of less-visited nodes, while the second term encourages the exploitation
+    of higher-reward nodes.
+    \item The first term encourages the exploitation of highly-visited nodes, while the second term encourages the exploration
+    of lesser-rewarding nodes.
+    \item The first term encourages the exploration of lesser-rewarding nodes, while the second term encourages the exploitation of highly-visited nodes.
+\end{enumerate}
+
+In adversarial search,
+\begin{itemize}
+    \item The horizon effect arises when the search is stuck in a cycle.
+    \item The horizon effect arises when the evaluation function is perfect.
+    \item The deeper in the tree the evaluation function is buried, the more the quality of the evaluation matters.
+    \solitem If not looked deep enough, bad moves may appear as good moves, because their consequences are hidden beyond
+    the search horizon.
+\end{itemize}
+
+A quiescent state is 
+\begin{itemize}
+    \item A state in which the game will loop indefinitely.
+    \item A state in which an agent is stuck.
+    \solitem A state in which the outcome of a game is unlikely to vary a lot in the near future.
+    \item A state in which the MAX agent is certain to win.
+\end{itemize}
+
+Minimax algorithm
+\begin{itemize}
+    \solitem Cannot fail more against a sub-optimal agent than an optimal one.
+    \solitem Can fail more often if the opponent is sub-optimal but predictable and that we underestimate the opponent strategy.
+    \solitem Does not ensure that the MAX agent always wins.
+    \solitem All of the above.
+\end{itemize}
+
 \end{document}
