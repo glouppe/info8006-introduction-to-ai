@@ -96,7 +96,7 @@ An agent is rational if it chooses the action that yields the **highest expected
 # Uncertainty
 
 General setup:
-- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., senso(it is too much work or irrealistic to define an exact model)r readings).
+- *Observed* variables or evidence: agent knows certain things about the state of the world (e.g., sensor readings).
 - **Unobserved** variables: agent needs to reason about other aspects that are uncertain (e.g., where the ghost is).
 - (Probabilistic) *model*: agent knows or believes something about how the observed variables relate to the unobserved variables.
 
@@ -148,7 +148,7 @@ where $\mathcal{P}(\Omega)$ the power set of $\Omega$.
 
 The axioms really do constrain the degrees of belief an agent can have concerning logically related propositions.
 
-De Finetti's theorem implies that no rational agent can have beliefs that violate the axioms of probability.
+De Finetti's theorem implies that no rational agent can have beliefs that violate the axioms of probability. Put otherwise, rational beliefs must obey the axioms of probability.
 
 $P$ can be universal (Frequentist), subjective (Bayesian). It is a choice we make. It can even be parameterized and then learned from data (Lecture 5 and 7).
 
@@ -404,8 +404,6 @@ Probabilistic **inference** is the problem of computing a desired probability fr
     - e.g., $P(\text{on time} | \text{no reported accidents}, \text{rain}) = 0.8$
     - e.g., $P(\text{ghost in } [3,2] | \text{red in } [3,2]) = 0.99$
     - Observing new evidence causes *beliefs to be updated*.
-
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -796,6 +794,8 @@ class: middle
 .width-25[![](./figures/lec4/exoplanet-residuals.png)]
 .width-70[![](./figures/lec4/exoplanet-corner.png)]
 ]
+
+.footnote[Credits: [Vasist et al](https://arxiv.org/abs/2301.06575), 2023.]
 
 ---
 
