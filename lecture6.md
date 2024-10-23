@@ -88,7 +88,7 @@ We specify
 
 The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
 
-Random processes that satisfy this assumption are called **Markov processes**.
+Random processes that satisfy this assumption are called **Markov processes** or **Markov chains**.
 
 ## First-order Markov processes
 
@@ -118,9 +118,9 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 .center.width-100[![](figures/lec6/smoothing-dbn.svg)]
 <br>
 
-A Markov process can be described as a *growable* Bayesian network, unrolled infinitely through time, with a specified **restricted structure** between time steps.
+A Markov chain coupled with a sensor model can be represented as a *growable* Bayesian network, unrolled infinitely through time.
 
-Therefore, the *joint distribution* of all variables up to $t$ in a (first-order) Markov process is
+The *joint distribution* of all its variables up to $t$ is
 $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
 
 ---
@@ -481,9 +481,18 @@ Solve on blackboard.
 
 ---
 
-.pull-right.width-80[![](figures/lec6/weather.png)]
-
 # Most likely explanation
+
+<br>
+.center.width-100[![](figures/lec6/sherlock-mostlikely.png)]
+
+.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle 
+
+.center.width-80[![](figures/lec6/weather.png)]
 
 Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]$ is the umbrella sequence.
 
@@ -1006,6 +1015,16 @@ Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables ov
 DBNs are a generalization of HMMs and of the Kalman filter.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.pull-right[![](figures/lec6/icu.png)]
+
+## Application: ICU monitoring
+
+.center.width-100[![](figures/lec6/icu-data.png)]
 
 ---
 
