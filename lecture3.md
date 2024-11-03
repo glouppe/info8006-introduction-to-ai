@@ -105,7 +105,7 @@ class: middle
 <br>
 .center.width-40[![](figures/lec3/zero-sum-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -132,7 +132,7 @@ class: middle
 <br><br><br>
 .center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -152,7 +152,7 @@ class: middle
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -377,7 +377,7 @@ class: middle, black-slide
 
 .caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -396,7 +396,7 @@ class: middle, black-slide
 
 .caption[Cutoff at depth 10, evaluation = the closer to the dot, the better.]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -411,7 +411,7 @@ class: middle, black-slide
 
 .center.width-70[![](figures/lec3/multi-agent-tree.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -431,7 +431,7 @@ class: middle
 <br>
 .center.width-40[![](figures/lec3/random-opponent-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -442,7 +442,7 @@ class: middle
 
 .center.width-30[![](figures/lec3/random-player.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -571,7 +571,7 @@ class: middle
 
 What if our assumptions are incorrect?]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -602,7 +602,7 @@ class: middle, black-slide
 Minimax Pacman ($P_1$) vs. Adversarial ghost ($P_2$)
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -622,7 +622,7 @@ class: middle, black-slide
 Minimax Pacman ($P_1$) vs. Random ghost ($P_4$)
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -640,7 +640,7 @@ class: middle, black-slide
 Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -658,7 +658,7 @@ class: middle, black-slide
 Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 

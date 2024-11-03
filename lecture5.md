@@ -21,7 +21,7 @@ Prof. Gilles Louppe<br>
 
 .center.width-65[![](figures/lec5/bn-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -74,7 +74,7 @@ class: middle
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -137,7 +137,7 @@ By construction, the topology of the network encodes conditional independence as
 - $\text{Weather}$ is independent of the other variables.
 - $\text{Toothache}$ and $\text{Catch}$ are conditionally independent given $\text{Cavity}$.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -178,7 +178,7 @@ ${\bf P}(T|R)$
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -216,7 +216,7 @@ ${\bf P}(R|T)$
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -297,7 +297,7 @@ $Z$: traffic.
 $P(x,y,z)=P(x)P(y|x)P(z|y)$]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -325,7 +325,7 @@ $Z$: traffic.
 $P(x,y,z)=P(x)P(y|x)P(z|y)$]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -354,7 +354,7 @@ $Z$: lab full.
 $P(x,y,z)=P(y)P(x|y)P(z|y)$]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -381,7 +381,7 @@ $Z$: lab full.
 $P(x,y,z)=P(y)P(x|y)P(z|y)$]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -408,7 +408,7 @@ $Z$: traffic.
 $P(x,y,z)=P(x)P(y)P(z|x,y)$]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -453,7 +453,7 @@ A path is **active** if each triple along the path is active:
 .kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -534,7 +534,7 @@ Inference is concerned with the problem .bold[computing a marginal and/or a cond
 
 .center.width-30[![](figures/lec5/query-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -586,7 +586,7 @@ class: middle
 
 Inference by enumeration is slow because the whole joint distribution is joined up before summing out the hidden variables.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -641,7 +641,7 @@ The algorithm interleaves:
 <br>
 .center.width-80[![](figures/lec5/elimination.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

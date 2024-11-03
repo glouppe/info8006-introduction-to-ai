@@ -36,7 +36,7 @@ class: middle, center
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -215,7 +215,7 @@ The real world is absurdly **complex**.
 .width-75.center[![](figures/lec2/search-problems-models.png)]
 .center[Search problems are **models**.]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -340,7 +340,7 @@ Number of nodes in a tree = $\frac{b^{m+1}-1}{b-1}$
 <br><br>
 .width-100[![](figures/lec2/dfs-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -381,7 +381,7 @@ class: middle
 <br><br>
 .width-100[![](figures/lec2/bfs-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -462,7 +462,7 @@ Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
 <br><br>
 .width-100[![](figures/lec2/ucs-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -529,7 +529,7 @@ the fringe in decreasing order of *desirability*.
 <br>
 .width-100[![](figures/lec2/gs-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -594,7 +594,7 @@ class: middle
 <br><br>
 .width-100[![](figures/lec2/as-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -744,7 +744,7 @@ A*
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 

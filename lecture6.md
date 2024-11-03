@@ -30,7 +30,7 @@ Maintain a **belief state** about the world, and update it as time passes and ev
 
 .alert[Do not overlook this lecture!]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -44,7 +44,7 @@ class: middle, black-slide
 .bold[Pacman revenge]: How to make good use of the sonar readings?
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -142,7 +142,7 @@ class: middle
 - ${\bf P}(\text{Rain}\_{t+2} | \text{Rain}\_{t})$?
 ]]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -195,7 +195,7 @@ $\begin{aligned}
 ]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -209,7 +209,7 @@ $${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P
 
 - Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -222,7 +222,7 @@ class: middle, black-slide
 
 .center[Random dynamics]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -235,7 +235,7 @@ class: middle, black-slide
 
 .center[Circular dynamics]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -248,7 +248,7 @@ class: middle, black-slide
 
 .center[Whirlpool dynamics]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -262,7 +262,7 @@ class: middle
 
 As time passes, uncertainty (usually) increases in the absence of new evidence.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -407,7 +407,7 @@ class: middle, black-slide
 Ghostbusters with a Bayes filter
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -486,7 +486,7 @@ Solve on blackboard.
 <br>
 .center.width-100[![](figures/lec6/sherlock-mostlikely.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -499,7 +499,7 @@ Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]
 - What is the weather sequence that is the most likely to explain this?
 - Among all $2^5$ sequences, is there an (efficient) way to find the most likely one?
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -658,7 +658,7 @@ Formally, we want to estimate **continuous** state variables such as
 
 We assume *discrete* time steps.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -1014,7 +1014,7 @@ Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables ov
 
 DBNs are a generalization of HMMs and of the Kalman filter.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -1056,7 +1056,7 @@ This scales to high dimensions!
 
 .center.width-50[![](figures/lec6/robot.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -1066,7 +1066,7 @@ class: middle
 
 .center.width-100[![](figures/lec6/particle-filter.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

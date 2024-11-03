@@ -12,16 +12,13 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-.center.width-50[![](figures/lec7/sl-cartoon.png)]
+.center.width-60[![](figures/lec7/sl-cartoon.png)]
 
-Make our agents able to learn from experience.
+Learning from data is a key component of artificial intelligence. In this lecture, we will introduce the principles of:
 - Machine learning
-- Deep learning
-  - Multi-layer perceptron
-  - Convolutional neural networks
-  - Recurrent neural networks
+- Neural networks
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -32,6 +29,8 @@ class: middle
 What if the environment is **unknown**?
 - Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 - It exposes the agent to reality rather than trying to hardcode reality into the agent's program.
+
+More generally, learning is useful for any task where it is difficult to write a program that performs the task but easy to obtain examples of desired behavior.
 
 ---
 
@@ -96,26 +95,33 @@ class: middle
 
 Let $\mathbf{d} \sim p(\mathbf{x}, y)$ be a dataset of $N$ example input-output pairs
     $$\mathbf{d} = \\\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\\},$$
-where $\mathbf{x}\_i$ are the input values and $y_i$ are the corresponding output values.
+where $\mathbf{x}\_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values.
 
-From this data, we want to identify a probabilistic model $$p(y|\mathbf{x})$$ that best explains the data.
+From this data, we want to identify a probabilistic model $$p\_\theta(y|\mathbf{x})$$ that best explains the data.
 
 ]
-.kol-1-3[.center.width-80[![](figures/lec7/latent.svg)]]
+.kol-1-3[<br><br>.center.width-80[![](figures/lec7/latent.svg)]]
 ]
 
 ---
 
 class: middle
 
-## Feature vectors
+.center.width-60[![](figures/lec7/IntroModels.svg)]
 
-- Inputs $\mathbf{x} \in \mathbb{R}^d$ are described as real-valued vectors of $d$ attributes or features values.
-- If the data is not originally expressed as real-valued vectors, then it needs to be prepared and transformed to this format.
+.center[Regression ($y \in \mathbb{R}$) and classification ($y \in \\\\{0, 1, ..., C-1\\\\}$) problems.]
 
-.center.width-80[![](figures/lec7/features.png)]
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+---
+
+class: middle
+
+.center.width-60[![](figures/lec7/IntroModels2a.svg)]
+
+.center[Supervised learning with structured outputs ($y \in \mathcal{Y}$).]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -126,7 +132,7 @@ Let us first assume that $y \in \mathbb{R}$.
 <br>
 .center.width-90[![](figures/lec7/lr-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -137,13 +143,15 @@ Do it on the blackboard.
 class: middle
 
 .grid[
-.kol-1-5[.center.width-100[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-60[![](figures/lec7/lr-latent.png)]]
+.kol-1-5[<br>.center.width-100[![](figures/lec7/latent.svg)]]
+.kol-4-5[.center.width-50[![](figures/lec7/lr-gaussian.svg)]]
 ]
 
 Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y|\\mathbf{x})$, that is
 $$p(y|\mathbf{x}) = \mathcal{N}(y | \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
 where $\mathbf{w}$ and $b$ are parameters to determine.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -157,16 +165,29 @@ w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_
 
 count: false
 
-
 By constraining the derivatives of the log-likelihood to $0$, we arrive to the problem of minimizing
-$$\sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
-Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance.
+$$\mathcal{L}(\mathbf{w},b) = \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
+Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance. 
 
 ---
 
 class: middle
 
-.center.width-80[![](figures/lec7/lq.png)]
+.center.width-45[![](figures/lec7/lr-sum-squares.svg)]
+
+.center[
+  
+Minimizing the negative log-likelihood of a linear Gaussian model reduces to minimizing the sum of squared residuals.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+If we absorb the bias term $b$ into the weight vector $\mathbf{w}$ by adding a constant feature $x_0=1$ to the input vector $\mathbf{x}$, the solution $\mathbf{w}^\*$ is given analytically by
+$$\mathbf{w}^\* = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y},$$
+where $\mathbf{X}$ is the input matrix made of the stacked input vectors $\mathbf{x}_j$ (including the constant feature) and $\mathbf{y}$ is the output vector made of the output values $y_j$.
 
 ---
 
@@ -177,7 +198,7 @@ Let us now assume $y \in \\{0,1\\}$.
 <br>
 .center.width-50[![](figures/lec7/classif-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -192,7 +213,7 @@ looks like a soft heavyside:
 
 ???
 
-This model is core building block of deep neural networks!
+This model is the core building block of deep neural networks!
 
 ---
 
@@ -207,17 +228,21 @@ $$\begin{aligned}
 &= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
 \end{aligned}$$
 
-This loss is an instance of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y|\mathbf{x}\_i$ and $q=\hat{Y}|\mathbf{x}\_i$.
+This loss is an estimator of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y|\mathbf{x}\_i$ and $q=\hat{Y}|\mathbf{x}\_i$. 
+
+Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and $b$.
 
 ---
 
-# Gradient descent
+class: middle
+
+## Gradient descent
 
 Let $\mathcal{L}(\theta)$ denote a loss function defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
 
 To minimize $\mathcal{L}(\theta)$, **gradient descent** uses local linear information to iteratively move towards a (local) minimum.
 
-For $\theta\_0 \in \mathbb{R}^d$, a first-order approximation around $\theta\_0$ can be defined as
+For $\theta\_0$, a first-order approximation around $\theta\_0$ can be defined as
 $$\hat{\mathcal{L}}(\epsilon; \theta\_0) = \mathcal{L}(\theta\_0) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{2\gamma}||\epsilon||^2.$$
 
 .center.width-50[![](figures/lec7/gd-good-0.png)]
@@ -302,7 +327,9 @@ class: middle, center
 
 ---
 
-# Apprenticeship
+class: middle
+
+## Example: imitation learning in Pacman
 
 Can we learn to play Pacman only from observations?
 - Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
@@ -312,11 +339,7 @@ Can we learn to play Pacman only from observations?
 
 .center.width-70[![](figures/lec7/pacman.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-???
-
-<span class="Q">[Q]</span> How is this (very) different from reinforcement learning?
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -330,7 +353,7 @@ class: middle, black-slide
 The agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -343,7 +366,7 @@ class: middle, black-slide
 
 <br><br>]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -358,7 +381,7 @@ After two training episodes, the ML-based agents plays.<br>
 No more Minimax!
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -370,49 +393,279 @@ class: middle
 
 ---
 
-# Multi-layer perceptron
+# Shallow networks
 
-So far we considered the logistic unit $h=\sigma\left(\mathbf{w}^T \mathbf{x} + b\right)$, where $h \in \mathbb{R}$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{w} \in \mathbb{R}^d$ and $b \in \mathbb{R}$.
-
-These units can be composed *in parallel* to form a **layer** with $q$ outputs:
-$$\mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})$$
-where  $\mathbf{h} \in \mathbb{R}^q$, $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{W} \in \mathbb{R}^{d\times q}$, $b \in \mathbb{R}^d$ and where $\sigma(\cdot)$ is upgraded to the element-wise sigmoid function.
-
-???
-
-Draw on the blackboard.
+A shallow network is a function $$f : \mathbb{R}^{d\_\text{in}} \to \mathbb{R}^{d\_\text{out}}$$ that maps multi-dimensional inputs $\mathbf{x}$ to multi-dimensional outputs $\mathbf{y}$ through a hidden layer $\mathbf{h} = [h\_0, h\_1, ..., h\_{q-1}] \in \mathbb{R}^q $, such that
+$$\begin{aligned}
+h\_j &= \sigma\left(\sum\_{i=0}^{d\_\text{in} - 1} w\_{ji} x\_i + b\_j  \right) \\\\
+y\_k &= \sum\_{j=0}^{q-1} v\_{kj} h\_j + c\_k,
+\end{aligned}$$
+where $w\_{ji}$, $b\_j$, $v\_{kj}$ and $c\_k$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$, $k=0, ..., d\_\text{out}-1$) are the model parameters and $\sigma$ is an activation function.
 
 ---
 
 class: middle
 
-Similarly, layers can be composed *in series*, such that:
+## Single-input single-output networks
+
+We first consider the case where $d\_\text{in} = 1$ and $d\_\text{out} = 1$ for the single-input single-output network
+$$y = v\_{0} \sigma(w\_{0} x + b\_0) + v\_{1} \sigma(w\_{1} x + b\_1) + v\_{2} \sigma(w\_{2} x + b\_2) + c$$
+where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$ are the model parameters and where the activation function $\sigma$ is $\text{ReLU}(\cdot) = \max(0, \cdot)$.
+
+.center.width-40[![](figures/lec7/ShallowReLU.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ShallowFunctions.svg)]
+
+This network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+.center.width-70[![](figures/lec7/ShallowBuildUp.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ShallowNet.svg)]
+
+a) The input $x$ is on the left, the hidden units $h_0$, $h_1$ and $h_2$ are in the middle, and the output $y$ is on the right. Computation flows from left to right. 
+
+b) More compact representation of the same network where we omit the bias terms, the weight labels and the activation functions.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Universal approximation theorem
+
+The number $q$ of hidden units $h\_j$ in a measure of the .italic[capacity] of the shallow network. With $\text{ReLU}$ activation functions, the hidden units define (up to) $q$ joints in the input space, hence defining $q+1$ linear regions in the output space.
+
+The **universal approximation theorem** states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ShallowApproximate.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Multivariate outputs
+
+To extend the network to multivariate outputs $\mathbf{y} = [y\_0, y\_1, .., y\_{d\_\text{out} - 1}]$, we simply add more output units as linear combinations of the hidden units. 
+
+For example, a network with two output units $y\_0$ and $y\_1$ might have the following structure:
+$$\begin{aligned}
+h\_0 &= \sigma\left( w\_0 x + b\_0 \right) \\\\
+h\_1 &= \sigma\left( w\_1 x + b\_1 \right) \\\\
+h\_2 &= \sigma\left( w\_2 x + b\_2 \right) \\\\
+h\_3 &= \sigma\left( w\_3 x + b\_3 \right) \\\\
+y\_0 &= v\_{00} h\_0 + v\_{01} h\_1 + v\_{02} h\_2 + v\_{03} h\_3 + c\_0 \\\\
+y\_1 &= v\_{10} h\_0 + v\_{11} h\_1 + v\_{12} h\_2 + v\_{13} h\_3 + c\_1
+\end{aligned}$$
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ShallowNetTwoOutputs.svg)]
+
+a) With two output units, the network can model two functions of the input $x$. 
+
+b) The four joints of these functions are constrained to be at the same positions, but the slopes and heights of the functions can vary independently.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Multivariate inputs
+
+To extend the network to multivariate inputs $\mathbf{x} = [x\_0, x\_1, ..., x\_{d\_{\text{in}}-1}]$, we extend the linear relations between the input and the hidden units. 
+
+For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ and a scalar output $y$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
+$$\begin{aligned}
+h\_0 &= \sigma\left( w\_{00} x\_0 + w\_{01} x\_1 + b\_0 \right) \\\\
+h\_1 &= \sigma\left( w\_{10} x\_0 + w\_{11} x\_1 + b\_1 \right) \\\\
+h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
+\end{aligned}$$
+
+The hidden units are then combined to produce the output $y$ as
+$$y = v\_0 h\_0 + v\_1 h\_1 + v\_2 h\_2 + c.$$
+
+---
+
+class: middle
+
+.center.width-60[![](figures/lec7/ShallowBuildUp2D.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+# Deep networks
+
+We first consider the composition two shallow networks, where the output of the first network is fed as input to the second network as
+$$\begin{aligned}
+h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
+h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
+h\_2 &= \sigma\left( w\_{2} x + b\_2 \right) \\\\
+y &= v\_{0} h\_0 + v\_{1} h\_1 + v\_{2} h\_2 + c \\\\
+h\_0' &= \sigma\left( w'\_{0} y + b'\_0 \right) \\\\
+h\_1' &= \sigma\left( w'\_{1} y + b'\_1 \right) \\\\
+h\_2' &= \sigma\left( w'\_{2} y + b'\_2 \right) \\\\
+y' &= v'\_{0} h\_0' + v'\_{1} h\_1' + v'\_{2} h\_2' + c'.
+\end{aligned}$$
+
+.center.width-85[![](figures/lec7/DeepConcat1.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+With $\text{ReLU}$ activation functions, this network also describes a family of piecewise linear functions. However, each linear region defined by the hidden units of the first network is further divided by the hidden units of the second network.
+
+.center.width-80[![](figures/lec7/DeepConcat2.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/DeepFold.svg)]
+
+a) The first network folds the input space back on itself.
+
+b) The second network applies its function to the folded space.
+
+c) The final output is revealed by unfolding the folded space.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+Similarly, composing a multivariate shallow network with a shallow network further divides the input space into more linear regions.
+
+.center.width-100[![](figures/lec7/DeepTwoLayer2D.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+
+---
+
+class: middle
+
+## From composing shallow networks to deep networks
+
+Since the operation from $[h\_0, h\_1, h\_2]$ to $y$ is linear and the operation from $y$ to $[h'\_0, h'\_1, h'\_2]$ is also linear, their composition in series is linear. 
+
+It follows that the composition of the two shallow networks is a special case of a deep network with two hidden layers where the first layer is defined as
+$$\begin{aligned}
+h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
+h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
+h\_2 &= \sigma\left( w\_{2} x + b\_2 \right),
+\end{aligned}$$
+the second layer is defined as
+$$\begin{aligned}
+h\_0' &= \sigma\left( w'\_{00} h\_0 + w'\_{01} h\_1 + w'\_{02} h\_2 + b'\_0 \right) \\\\
+h\_1' &= \sigma\left( w'\_{10} h\_0 + w'\_{11} h\_1 + w'\_{12} h\_2 + b'\_1 \right) \\\\
+h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right)
+\end{aligned}$$
+and the output is defined as
+$$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/DeepTwoLayer.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+.center.width-70[![](figures/lec7/DeepBuildUp.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+
+---
+
+class: middle
+
+## General formulation
+
+The computation of a hidden layer can be written in matrix form as
+$$\begin{aligned}
+\mathbf{h} &= \begin{bmatrix} h\_0 \\\\ h\_1 \\\\ \vdots \\\\ h\_{q-1} \end{bmatrix} = \sigma\left( \begin{bmatrix} w\_{00} & w\_{01} & \cdots & w\_{0(d\_\text{in}-1)} \\\\ w\_{10} & w\_{11} & \cdots & w\_{1(d\_\text{in}-1)} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ w\_{(q-1)0} & w\_{(q-1)1} & \cdots & w\_{(q-1)(d\_\text{in}-1)} \end{bmatrix} \begin{bmatrix} x\_0 \\\\ x\_1 \\\\ \vdots \\\\ x\_{d\_\text{in}-1} \end{bmatrix} + \begin{bmatrix} b\_0 \\\\ b\_1 \\\\ \vdots \\\\ b\_{q-1} \end{bmatrix} \right) \\\\
+&= \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})
+\end{aligned}$$
+where $\mathbf{W} \in \mathbb{R}^{d\_\text{in} \times q}$ is the weight matrix of the hidden layer and $\mathbf{b} \in \mathbb{R}^{q}$ is the bias vector of the hidden layer.
+
+---
+
+class: middle
+
+Hidden layers can be composed in series to form a deep network with $L$ layers such that
 $$\begin{aligned}
 \mathbf{h}\_0 &= \mathbf{x} \\\\
-\mathbf{h}\_1 &= \sigma(\mathbf{W}\_1^T \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
-... \\\\
-\mathbf{h}\_L &= \sigma(\mathbf{W}\_L^T \mathbf{h}\_{L-1} + \mathbf{b}\_L) \\\\
-f(\mathbf{x}; \theta) &= \mathbf{h}\_L
+\mathbf{h}\_1 &= \sigma(\mathbf{W}^T\_1 \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
+\mathbf{h}\_2 &= \sigma(\mathbf{W}^T\_2 \mathbf{h}\_1 + \mathbf{b}\_2) \\\\
+\vdots \\\\
+\mathbf{h}\_L &= \sigma(\mathbf{W}^T\_L \mathbf{h}\_{L-1} + \mathbf{b}\_L) \\\\
+\mathbf{y} &= \mathbf{h}\_L,
 \end{aligned}$$
-where $\theta$ denotes the model parameters $\\{ \mathbf{W}\_k, \mathbf{b}\_k, ... | k=1, ..., L\\}$ and can be determined through gradient descent.
+where $\mathbf{W}\_\ell \in \mathbb{R}^{q\_{l-1} \times q\_\ell}$ is the weight matrix of the $\ell$-th layer, $\mathbf{b}\_\ell \in \mathbb{R}^{q\_\ell}$ is the bias vector of the $\ell$-th layer, and $\mathbf{h}\_\ell \in \mathbb{R}^{q\_\ell}$ is the hidden vector of the $\ell$-th layer.
 
-This model is the **multi-layer perceptron**, also known as the fully connected feedforward network.
-
----
-
-class: middle
-
-.width-100[![](figures/lec7/mlp.svg)]
-
-.footnote[Credits: [Dive into Deep Learning](https://d2l.ai/chapter_multilayer-perceptrons/mlp.html), 2023.]
+This model is the feedforward neural network/fully connected network/multilayer perceptron (MLP).
 
 ---
 
 class: middle
 
-- For binary classification, the width $q$ of the last layer $L$ is set to $1$, which results in a single output $h\_L \in [0,1]$ that models the probability $p(y=1|\mathbf{x})$.
+## Activation functions
+
+The choice of the activation function $\sigma$ is crucial for the expressiveness of the network and the optimization of the model parameters. 
+
+.center.width-100[![](figures/lec7/ShallowActivations.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Output layers
+
+- For regression, the width $q$ of the last layer $L$ is set to the dimensionality of the output $d\_\text{out}$ and the activation function is the identity $\sigma(\cdot) = \cdot$, which results in a vector $\mathbf{h}\_L \in \mathbb{R}^{d\_\text{out}}$.
+- For binary classification, the width $q$ of the last layer $L$ is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output $h\_L \in [0,1]$ that models the probability $p(y=1|\mathbf{x})$.
 - For multi-class classification, the sigmoid activation $\sigma$ in the last layer can be generalized to produce a vector $\mathbf{h}\_L \in \bigtriangleup^C$ of probability estimates $p(y=i|\mathbf{x})$.
-<br><br>
 This activation is the $\text{Softmax}$ function, where its $i$-th output is defined as
 $$\text{Softmax}(\mathbf{z})\_i = \frac{\exp(z\_i)}{\sum\_{j=1}^C \exp(z\_j)},$$
 for $i=1, ..., C$.
@@ -421,21 +674,13 @@ for $i=1, ..., C$.
 
 class: middle
 
-Activation functions are key to the expressiveness of neural networks. They are usually chosen to be non-linear, such as the sigmoid function $\sigma(x) = \frac{1}{1 + \exp(-x)}$ or the ReLU function $\text{ReLU}(x) = \max(0, x)$.
+## Loss functions
 
-.center[
-![](figures/lec7/af-Sigmoid.png)
-![](figures/lec7/af-Tanh.png)
-![](figures/lec7/af-ReLU.png)
-![](figures/lec7/af-LeakyReLU.png)
+The parameters (e.g., $\mathbf{W}\_\ell$ and $\mathbf{b}\_\ell$ for each layer $\ell$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_j, \mathbf{y}\_j) \\\}$ of input-output pairs.
 
-<br>
-
-![](figures/lec7/af-ELU.png)
-![](figures/lec7/af-SELU.png)
-![](figures/lec7/af-Softplus.png)
-![](figures/lec7/af-Swish.png)
-]
+The loss function is derived from the likelihood: 
+- For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} (\mathbf{y}\_j - f(\mathbf{x}\_j; \theta))^2$.
+- For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} \sum\_{i=1}^C y\_{ij} \log f\_{i}(\mathbf{x}\_j; \theta)$.
 
 ---
 
@@ -445,18 +690,18 @@ class: middle, center
 
 ---
 
-class: black-slide
-background-image: url(./figures/lec7/waldo-football.jpg)
-background-size: cover
+class: middle
 
-# Neural networks for images
+## MLPs on images?
+
+The MLP architecture is appropriate for tabular data, but not for images.
+- Each pixel of an image is a feature, leading to a high-dimensional input vector.
+- Each hidden unit is connected to all input units, leading to a high-dimensional weight matrix.
 
 ---
 
 class: middle
 
-
-The MLP architecture is appropriate for tabular data, but not for images.
 We want to design a neural architecture such that:
 - in the earliest layers, the network responds similarly to similar patches of the image, regardless of their location;
 - the earliest layers focus on local regions of the image, without regard for the contents of the image in distant regions;
@@ -519,9 +764,12 @@ class: middle
 
 ---
 
-class: black-slide
-background-image: url(./figures/lec7/waldo-mask.jpg)
-background-size: cover
+class: middle
+
+Convolutional layers are a special case of fully connected layers where each hidden unit is connected to a local region of the input through shared weights. 
+- The connectivity allows the network to learn local patterns in the input.
+- Weight sharing allows the network to learn the same patterns at different locations in the input.
+
 
 ---
 
@@ -544,16 +792,6 @@ class: middle
 
 ---
 
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/zj_JlVqWK1M?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-A convolutional network combines convolutional, pooling<br> and fully connected layers.
-]
-
----
-
 class: middle, center
 
 (Step-by-step code example)
@@ -561,40 +799,6 @@ class: middle, center
 ???
 
 See also https://poloclub.github.io/cnn-explainer/
-
----
-
-# Recurrent networks
-
-When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states, where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
-
-For example,
-$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x}\_t + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
-where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
-
-???
-
-Skip or go fast.
-
----
-
-class: middle
-
-Notice how this is similar to filtering and dynamic decision networks:
-- $\mathbf{h}\_t$ can be viewed as some current belief state;
-- $\mathbf{x}\_{1:T}$ is a sequence of observations;
-- $\mathbf{h}\_{t+1}$ is computed from the current belief state $\mathbf{h}\_t$ and the latest evidence $\mathbf{x}\_t$ through some fixed computation (in this case a neural network, instead of being inferred from the assumed dynamics).
-- $\mathbf{h}\_t$ can also be used to decide on some action, through another network $f$ such that $a\_t = f(\mathbf{h}\_t;\theta)$.
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/Ipi40cb_RsI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-A recurrent network playing Mario Kart.
-]
 
 ---
 
@@ -675,16 +879,11 @@ Improving Tuberculosis Monitoring with Deep Learning
 
 # Summary
 
-- Learning is a key element of intelligence.
-- Supervised learning is used to learn functions or conditional probability distributions from a set of training examples.
-- Linear models are simple predictive models, effective on some tasks but usually insufficiently expressive.
-- Neural networks are defined as a composition of squashed linear models. They are universal function approximators and can be trained using gradient descent.
-- Deep learning is a subfield of machine learning that uses neural networks with many layers.
-
-???
-
-- Reinforcement learning = learning to behave in an unknown environment from sparse rewards.
-- Unsupervised learning = learning a model of the world by observing it.
+- Deep learning is a powerful tool for learning from data.
+- Neural networks are composed of layers of neurons that are connected to each other.
+- The weights of the connections are learned by minimizing a loss function.
+- Convolutional networks are used for image processing.
+- Transformers are used for language processing.
 
 ---
 

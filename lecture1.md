@@ -122,7 +122,7 @@ Can it be implemented in a *small* and **efficient** agent program?
 
 .alert[Rationality only concerns .bold[what] decisions are made (not the thought process behind them, human-like or not).]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -133,7 +133,7 @@ class: middle
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -262,7 +262,7 @@ Reflex agents ...
 <br>
 .center.width-50[![](figures/lec1/reflex-agent-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -332,7 +332,7 @@ Planning agents ...
 <br>
 .center.width-50[![](figures/lec1/plan-agent-cartoon.png)]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 

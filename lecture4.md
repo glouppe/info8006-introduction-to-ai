@@ -40,7 +40,7 @@ Motivate why this is important in AI (and this is not just one more probability 
 
 .alert[Do not overlook this lecture!]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -66,7 +66,7 @@ Sensor readings tell how close a square is to the ghost:
 ]
 Sensors are **noisy**, but we know the probability values $P(\text{color}|\text{distance})$, for all colors and all distances.
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -77,7 +77,7 @@ class: middle, black-slide
   <source src="./figures/lec4/gb-noprob.mp4" type="video/mp4">
 </video>]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -219,7 +219,7 @@ ${\bf P}(W)$
 .kol-1-2[.width-100[![](figures/lec4/pw.png)]]
 ]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
@@ -565,7 +565,7 @@ $$
 
 The original 32-entry table reduces to one 8-entry and one 4-entry table (assuming 4 values for $\text{Weather}$ and boolean values otherwise).
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -618,7 +618,7 @@ $$
 
 In this case, the representation of the joint distribution reduces to $2+2+1$ independent numbers (instead of $2^n-1$).
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -755,7 +755,7 @@ class: middle, black-slide
   <source src="./figures/lec4/gb-prob.mp4" type="video/mp4">
 </video>]
 
-.footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
