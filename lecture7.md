@@ -524,7 +524,7 @@ class: middle
 
 # Deep networks
 
-We first consider the composition two shallow networks, where the output of the first network is fed as input to the second network as
+We first consider the composition of two shallow networks, where the output of the first network is fed as input to the second network as
 $$\begin{aligned}
 h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
 h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
@@ -556,10 +556,9 @@ class: middle
 
 .center.width-100[![](figures/lec7/DeepFold.svg)]
 
-a) The first network folds the input space back on itself.
-
-b) The second network applies its function to the folded space.
-
+The folding interpretation of a deep network:<br>
+a) The first network folds the input space back on itself.<br>
+b) The second network applies its function to the folded space.<br>
 c) The final output is revealed by unfolding the folded space.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
@@ -766,10 +765,13 @@ class: middle
 
 class: middle
 
-Convolutional layers are a special case of fully connected layers where each hidden unit is connected to a local region of the input through shared weights. 
+.center.width-90[![](figures/lec7/Conv2a.svg)]
+
+Convolutional layers (c-f) are a special case of fully connected layers (a-b) where hidden units are connected to local regions of the input through shared weights (the kernels).
 - The connectivity allows the network to learn local patterns in the input.
 - Weight sharing allows the network to learn the same patterns at different locations in the input.
 
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -802,19 +804,71 @@ See also https://poloclub.github.io/cnn-explainer/
 
 ---
 
+# Recurrent networks
+
+When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states, where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
+
+For example,
+$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x}\_t + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
+where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
+
+???
+
+Skip or go fast.
+
+---
+
+class: middle
+
+Notice how this is similar to filtering and dynamic decision networks:
+- $\mathbf{h}\_t$ can be viewed as some current belief state;
+- $\mathbf{x}\_{1:T}$ is a sequence of observations;
+- $\mathbf{h}\_{t+1}$ is computed from the current belief state $\mathbf{h}\_t$ and the latest evidence $\mathbf{x}\_t$ through some fixed computation (in this case a neural network, instead of being inferred from the assumed dynamics).
+- $\mathbf{h}\_t$ can also be used to decide on some action, through another network $f$ such that $a\_t = f(\mathbf{h}\_t;\theta)$.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/Ipi40cb_RsI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+
+A recurrent network playing Mario Kart.
+]
+
+---
+
 # Transformers
 
-Transformers are a type of neural network architecture that are based on self-attention mechanisms instead of fully connected or convolutional layers. 
+Transformers are deep neural networks at the core of large-scale language models.
 
-For language, transformers are trained as classifiers 
-$$p(w\_t | w\_{1:t-1})$$
+<br>
+
+.center.width-100[![](figures/lec7/transformer-next.png)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+For language modeling, transformers define an .bold[autoregressive model] that predicts the next word in a sequence given the previous words. 
+
+Formally,
+$$p(w\_{1:t})= p(w\_1) \prod\_{t=2}^T p(w\_t|w\_{1:t-1}),$$
 where $w\_t$ is the next word in the sequence and $w\_{1:t-1}$ are the previous words.
 
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec7/transformer.svg)]
+.center.width-100[![](figures/lec7/TransformerDecoder.svg)]
+
+The decoder-only transformer is a stack of $K$ transformer blocks that process the input sequence in parallel using (masked) self-attention.
+
+The output of the last block is used to predict the next word in the sequence, as in a regular classifier.
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -822,19 +876,11 @@ class: middle
 
 .width-100[![](./figures/lec0/scaling-power-law.png)]
 
-A brutal simplicity: 
+## Scaling laws
 
 - The more data, the better the model.
 - The more parameters, the better the model.
 - The more compute, the better the model.
-
-???
-
-The simplicity behind transformers is brutal. You'd think that there is more sophistication behind the scenes, but there is not. It is just a neural network that guesses the next words.
-
-Not only that, but the research community has also found that the performance of transformers follows a power law. The more data, the better the model. The more parameters, the better the model. The more compute, the better the model. No matter how much data, parameters, and compute you have, you can always do better by increasing them, and there is no sign of saturation yet.
-
-This is a very different paradigm than what we used to do in deep learning, where we would spend a lot of time designing the architecture of the neural network. Here, the architecture is always the same, and the only thing that matters is the amount of data, the number of parameters, and the amount of compute.
 
 ---
 
@@ -867,13 +913,11 @@ Hydranet (Tesla, 2021)
 
 ---
 
-class: black-slide, middle
+class: middle, black-slide, center
 
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/_eNUtLHXJkc?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
 
-Improving Tuberculosis Monitoring with Deep Learning
-]
+How machine learning is advancing medicine (Google, 2018)
 
 ---
 
