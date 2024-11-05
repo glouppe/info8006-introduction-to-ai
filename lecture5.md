@@ -949,7 +949,7 @@ $$\theta^\* = \arg \max\_\theta P(\theta|\mathbf{d}) = \arg \max\_\theta P(\math
 
 class: middle, center
 
-(demo)
+(Step-by-step code example)
 
 ---
 
