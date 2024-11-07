@@ -556,7 +556,8 @@ class: middle
 
 .center.width-100[![](figures/lec7/DeepFold.svg)]
 
-The folding interpretation of a deep network:<br>
+Folding interpretation of a deep network:
+
 a) The first network folds the input space back on itself.<br>
 b) The second network applies its function to the folded space.<br>
 c) The final output is revealed by unfolding the folded space.
@@ -642,7 +643,7 @@ $$\begin{aligned}
 \end{aligned}$$
 where $\mathbf{W}\_\ell \in \mathbb{R}^{q\_{l-1} \times q\_\ell}$ is the weight matrix of the $\ell$-th layer, $\mathbf{b}\_\ell \in \mathbb{R}^{q\_\ell}$ is the bias vector of the $\ell$-th layer, and $\mathbf{h}\_\ell \in \mathbb{R}^{q\_\ell}$ is the hidden vector of the $\ell$-th layer.
 
-This model is the feedforward neural network/fully connected network/multilayer perceptron (MLP).
+This model is known as the feedforward neural network, the fully connected network, or the .bold[multilayer perceptron] (MLP).
 
 ---
 
