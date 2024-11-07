@@ -251,8 +251,8 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
 
         For $\sigma$ we have
         \begin{align*}
-            \dfrac{\partial LL}{\partial \sigma} &= -\dfrac{1}{\sigma}\bigg(N -\sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}\bigg)\\
-            &\propto N -\dfrac{1}{2\var}\sum_i (h_i - \omega s_i - H_0)^2\\
+            \dfrac{\partial LL}{\partial \sigma} &= -\dfrac{1}{\sigma}\bigg(N -\sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg)\\
+            &\propto N -\dfrac{1}{\var}\sum_i (h_i - \omega s_i - H_0)^2\\
             &= 0
         \end{align*}
         which gives $\boxed{\var_{\text{MLE}} = \dfrac{1}{N}\sum_i (h_i - \omega s_i - H_0)^2}$.
@@ -769,7 +769,7 @@ The Normal distribution ${\cal N}(\mu,\sigma)$ is described by the density funct
 \begin{itemize}
 \item $p(x) = \frac{1}{\sigma} \exp\left(-(z+\exp(-z))\right)$, with $z = \frac{x-\mu}{\sigma}$.
 \item $p(x) = \frac{1}{2\sigma} \exp\left(-\frac{|x-\mu|}{\sigma}\right)$.
-\solitem $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
+\solitem $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$.
 \item $p(x) = 1 \,/\, \pi\sigma \left[1 + \left(\frac{x-\mu}{\sigma}\right)^2\right]$.
 \end{itemize}
 
@@ -807,7 +807,7 @@ In a Bayesian network
     \item A cascade triplet is active if the center node is observed.
 \end{itemize}
 
-In a one node Bayesian network with a binary variable following a Bernoulli distribution. If we observe $T$ positive realisations and $F$ negative ones,
+In a one node Bayesian network with a binary variable following a Bernoulli distribution. If we observe $T$ positive realizations and $F$ negative ones,
 \begin{itemize}
     \item the maximum likelihood estimate of the positive probability is $\dfrac{T}{F}$.
     \item the maximum likelihood estimate of the positive probability is $\dfrac{T + F}{T}$.
