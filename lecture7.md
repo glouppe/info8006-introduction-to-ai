@@ -402,6 +402,10 @@ y\_k &= \sum\_{j=0}^{q-1} v\_{kj} h\_j + c\_k,
 \end{aligned}$$
 where $w\_{ji}$, $b\_j$, $v\_{kj}$ and $c\_k$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$, $k=0, ..., d\_\text{out}-1$) are the model parameters and $\sigma$ is an activation function.
 
+???
+
+Draw the (generic) architecture of a shallow network.
+
 ---
 
 class: middle
@@ -420,11 +424,14 @@ where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, 
 
 class: middle
 
-.center.width-100[![](figures/lec7/ShallowFunctions.svg)]
+.center.width-100[![](figures/lec7/ShallowNet.svg)]
 
-This network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
+a) The input $x$ is on the left, the hidden units $h_0$, $h_1$ and $h_2$ are in the middle, and the output $y$ is on the right. Computation flows from left to right. 
+
+b) More compact representation of the same network where we omit the bias terms, the weight labels and the activation functions.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
 
 ---
 
@@ -438,11 +445,9 @@ class: middle
 
 class: middle
 
-.center.width-100[![](figures/lec7/ShallowNet.svg)]
+.center.width-100[![](figures/lec7/ShallowFunctions.svg)]
 
-a) The input $x$ is on the left, the hidden units $h_0$, $h_1$ and $h_2$ are in the middle, and the output $y$ is on the right. Computation flows from left to right. 
-
-b) More compact representation of the same network where we omit the bias terms, the weight labels and the activation functions.
+This network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
@@ -502,15 +507,12 @@ class: middle
 
 To extend the network to multivariate inputs $\mathbf{x} = [x\_0, x\_1, ..., x\_{d\_{\text{in}}-1}]$, we extend the linear relations between the input and the hidden units. 
 
-For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ and a scalar output $y$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
+For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
 $$\begin{aligned}
 h\_0 &= \sigma\left( w\_{00} x\_0 + w\_{01} x\_1 + b\_0 \right) \\\\
 h\_1 &= \sigma\left( w\_{10} x\_0 + w\_{11} x\_1 + b\_1 \right) \\\\
 h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
 \end{aligned}$$
-
-The hidden units are then combined to produce the output $y$ as
-$$y = v\_0 h\_0 + v\_1 h\_1 + v\_2 h\_2 + c.$$
 
 ---
 
@@ -589,11 +591,11 @@ h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
 h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
 h\_2 &= \sigma\left( w\_{2} x + b\_2 \right),
 \end{aligned}$$
-the second layer is defined as
+the second layer is defined from the outputs of the first layer as
 $$\begin{aligned}
 h\_0' &= \sigma\left( w'\_{00} h\_0 + w'\_{01} h\_1 + w'\_{02} h\_2 + b'\_0 \right) \\\\
 h\_1' &= \sigma\left( w'\_{10} h\_0 + w'\_{11} h\_1 + w'\_{12} h\_2 + b'\_1 \right) \\\\
-h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right)
+h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right),
 \end{aligned}$$
 and the output is defined as
 $$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
@@ -626,7 +628,7 @@ $$\begin{aligned}
 \mathbf{h} &= \begin{bmatrix} h\_0 \\\\ h\_1 \\\\ \vdots \\\\ h\_{q-1} \end{bmatrix} = \sigma\left( \begin{bmatrix} w\_{00} & w\_{01} & \cdots & w\_{0(d\_\text{in}-1)} \\\\ w\_{10} & w\_{11} & \cdots & w\_{1(d\_\text{in}-1)} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ w\_{(q-1)0} & w\_{(q-1)1} & \cdots & w\_{(q-1)(d\_\text{in}-1)} \end{bmatrix} \begin{bmatrix} x\_0 \\\\ x\_1 \\\\ \vdots \\\\ x\_{d\_\text{in}-1} \end{bmatrix} + \begin{bmatrix} b\_0 \\\\ b\_1 \\\\ \vdots \\\\ b\_{q-1} \end{bmatrix} \right) \\\\
 &= \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})
 \end{aligned}$$
-where $\mathbf{W} \in \mathbb{R}^{d\_\text{in} \times q}$ is the weight matrix of the hidden layer and $\mathbf{b} \in \mathbb{R}^{q}$ is the bias vector of the hidden layer.
+where $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{d\_\text{in} \times q}$ is the weight matrix of the hidden layer and $\mathbf{b} \in \mathbb{R}^{q}$ is the bias vector.
 
 ---
 
@@ -695,7 +697,7 @@ class: middle
 ## MLPs on images?
 
 The MLP architecture is appropriate for tabular data, but not for images.
-- Each pixel of an image is a feature, leading to a high-dimensional input vector.
+- Each pixel of an image is an input feature, leading to a high-dimensional input vector.
 - Each hidden unit is connected to all input units, leading to a high-dimensional weight matrix.
 
 ---
@@ -761,6 +763,10 @@ class: middle
 .center[![](figures/lec7/3d-conv.gif)]
 
 .footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
+
+???
+
+Give some intuition about the interpretation of the convolution in terms of similarity between the input and the kernel.
 
 ---
 
