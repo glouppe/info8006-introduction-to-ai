@@ -8,6 +8,10 @@ Lecture 7: Machine learning and neural networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+!!! The transition, motivation and intuition towards CNNs should be improved. This is going too fast and not explained as clearly as MLPs.
+
 ---
 
 # Today

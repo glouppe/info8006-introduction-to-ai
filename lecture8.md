@@ -290,7 +290,7 @@ class: middle
 Among all policies the agent could execute, the **optimal policy** is the policy $\pi\_s^\*$ that maximizes the expected utility:
 $$\pi\_s^\* = \arg \max\_\pi V^\pi(s)$$
 
-Because of discounted utilities, the optimal policy is *independent* of the starting state $s$. Therefore we simply write $\pi^\*$.
+Because of discounted utilities, the optimal policy is *independent* of the starting state $s$ (see later). Therefore we simply write $\pi^\*$.
 
 ---
 
@@ -396,6 +396,12 @@ then $$||V\_{i+1}-V||<\epsilon$$
 
 ---
 
+class: middle, center
+
+(Step-by-step code example)
+
+---
+
 class: middle
 
 ## Convergence
@@ -487,6 +493,12 @@ This hybrid algorithm is called **modified policy iteration**.
 class: middle
 
 .center.width-100[![](figures/lec8/policy-iteration.png)]
+
+---
+
+class: middle, center
+
+(Step-by-step code example)
 
 ---
 

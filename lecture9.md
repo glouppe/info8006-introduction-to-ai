@@ -8,6 +8,10 @@ Lecture 9: Reinforcement Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
+???
+
+R: add example with the cruise control system.
+
 ---
 
 # Today
