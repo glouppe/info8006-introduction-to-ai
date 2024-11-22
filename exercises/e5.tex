@@ -411,104 +411,104 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
 \begin{enumerate}
     \item You wish to predict the state of the ball given the perceptions of a participant. Define the components of a Kalman filter in this context.
 
-    % \begin{solution}
-    %     The Kalman filter is a special case of the continuous Bayes filter, which assumes
-    %     \begin{itemize}
-    %         \item a Gaussian prior
-    %         \begin{equation*}
-    %             p(x_0) = \N(x_0 | \mu_0, \Sigma_0),
-    %         \end{equation*}
-    %         \item a linear Gaussian transition model
-    %         \begin{equation*}
-    %             p(x_t | x_{t-1}) = \N(x_t | F x_{t-1} + u, \Sigma_x)
-    %         \end{equation*}
-    %         \item and a linear Gaussian sensor model
-    %         \begin{equation*}
-    %             p(e_t | x_t) = \N(e_t | H x_t + v, \Sigma_e).
-    %         \end{equation*}
-    %     \end{itemize}
-    %     In a \href{https://wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
+    \begin{solution}
+        The Kalman filter is a special case of the continuous Bayes filter, which assumes
+        \begin{itemize}
+            \item a Gaussian prior
+            \begin{equation*}
+                p(x_0) = \N(x_0 | \mu_0, \Sigma_0),
+            \end{equation*}
+            \item a linear Gaussian transition model
+            \begin{equation*}
+                p(x_t | x_{t-1}) = \N(x_t | F x_{t-1} + u, \Sigma_x)
+            \end{equation*}
+            \item and a linear Gaussian sensor model
+            \begin{equation*}
+                p(e_t | x_t) = \N(e_t | H x_t + v, \Sigma_e).
+            \end{equation*}
+        \end{itemize}
+        In a \href{https://wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
 
-    %     In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined\footnote{The stationarity of the wind implies that $\V\sbk{w_0} = \V\sbk{w_1} = \V\sbk{\alpha w_0 + \Delta w} = \alpha^2 \V\sbk{w_0} + \sigma_w^2$, and therefore, $\V\sbk{w_0} = \frac{\sigma_w^2}{1 - \alpha^2}.$} by
-    %     \begin{equation*}
-    %         \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
-    %     \end{equation*}
-    %     Then, our transition model is defined by
-    %     \begin{equation*}
-    %         F = \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha}, \quad u = \mat{0 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_x = \mat{0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sigma_w^2} .
-    %     \end{equation*}
-    %     It should be noted that only the wind has a non-null variance in $\Sigma_x$, since the transitions of the position, velocity and acceleration are \emph{deterministic}.
+        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined\footnote{The stationarity of the wind implies that $\V\sbk{w_0} = \V\sbk{w_1} = \V\sbk{\alpha w_0 + \Delta w} = \alpha^2 \V\sbk{w_0} + \sigma_w^2$, and therefore, $\V\sbk{w_0} = \frac{\sigma_w^2}{1 - \alpha^2}.$} by
+        \begin{equation*}
+            \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
+        \end{equation*}
+        Then, our transition model is defined by
+        \begin{equation*}
+            F = \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha}, \quad u = \mat{0 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_x = \mat{0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sigma_w^2} .
+        \end{equation*}
+        It should be noted that only the wind has a non-null variance in $\Sigma_x$, since the transitions of the position, velocity and acceleration are \emph{deterministic}.
 
-    %     Concerning the sensor model, the evidence is a perturbed, but unbiased, perception of the acceleration, that is
-    %     \begin{align*}
-    %         e_t & \sim \N(\ddot{p}_t, \sigma_e^2) ,
-    %     \end{align*}
-    %     which translates to
-    %     \begin{equation*}
-    %         H = \mat{0 & 0 & 1 & 0}, \quad v = 0 \quad \text{and} \quad \Sigma_e = \sigma_e^2 .
-    %     \end{equation*}
-    % \end{solution}
+        Concerning the sensor model, the evidence is a perturbed, but unbiased, perception of the acceleration, that is
+        \begin{align*}
+            e_t & \sim \N(\ddot{p}_t, \sigma_e^2) ,
+        \end{align*}
+        which translates to
+        \begin{equation*}
+            H = \mat{0 & 0 & 1 & 0}, \quad v = 0 \quad \text{and} \quad \Sigma_e = \sigma_e^2 .
+        \end{equation*}
+    \end{solution}
 
     \item Express the distribution $p(x_t | e_{1:t})$ with respect to the components defined previously.
 
-    % \begin{solution}
-    %     This task corresponds exactly to filtering, \ie{} inferring the distribution
-    %     \begin{align*}
-    %         p(x_t | e_{1:t}) & = \alpha \, p(e_t | x_t, e_{1:t-1}) \, p(x_t | e_{1:t-1}) \\
-    %         & = \alpha \, p(e_t | x_t) \int p(x_t, x_{t-1} | e_{1:t-1}) \d{x_{t-1}} .
-    %     \end{align*}
-    %     In the latter expression, the integral corresponds to the marginalization of the joint distribution
-    %     \begin{equation*}
-    %         p(x_t, x_{t-1} | e_{1:t-1}) = p(x_t | x_{t-1}) \, p(x_{t-1} | e_{1:t-1}) .
-    %     \end{equation*}
-    %     Because the transition model $p(x_t | x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
-    %     \begin{equation*}
-    %         p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
-    %     \end{equation*}
-    %     and
-    %     \begin{equation*}
-    %         p(x_t | e_{1:t-1}) = \N\rbk[\Big]{x_t | \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
-    %     \end{equation*}
-    %     Similarly, because the sensor model $p(e_t | x_t)$ is linear Gaussian, we have the joint distribution
-    %     \begin{equation*}
-    %         p\rbk*{ \mat{x_t \\ e_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg| \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
-    %     \end{equation*}
-    %     Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
-    %     \begin{equation*}
-    %         p(x_t | e_{1:t}) = \N\rbk[\Big]{x_t | \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
-    %     \end{equation*}
-    %     where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
-    % \end{solution}
+    \begin{solution}
+        This task corresponds exactly to filtering, \ie{} inferring the distribution
+        \begin{align*}
+            p(x_t | e_{1:t}) & = \alpha \, p(e_t | x_t, e_{1:t-1}) \, p(x_t | e_{1:t-1}) \\
+            & = \alpha \, p(e_t | x_t) \int p(x_t, x_{t-1} | e_{1:t-1}) \d{x_{t-1}} .
+        \end{align*}
+        In the latter expression, the integral corresponds to the marginalization of the joint distribution
+        \begin{equation*}
+            p(x_t, x_{t-1} | e_{1:t-1}) = p(x_t | x_{t-1}) \, p(x_{t-1} | e_{1:t-1}) .
+        \end{equation*}
+        Because the transition model $p(x_t | x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
+        \begin{equation*}
+            p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
+        \end{equation*}
+        and
+        \begin{equation*}
+            p(x_t | e_{1:t-1}) = \N\rbk[\Big]{x_t | \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
+        \end{equation*}
+        Similarly, because the sensor model $p(e_t | x_t)$ is linear Gaussian, we have the joint distribution
+        \begin{equation*}
+            p\rbk*{ \mat{x_t \\ e_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg| \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
+        \end{equation*}
+        Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
+        \begin{equation*}
+            p(x_t | e_{1:t}) = \N\rbk[\Big]{x_t | \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
+        \end{equation*}
+        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
+    \end{solution}
 
     \item Represent the transition and sensor models as a dynamic Bayesian network.
 
-    % \begin{solution}
-    %     \begin{figure}[H]
-    %         \centering
-    %         \begin{tikzpicture}[node distance = 2cm]
-    %             \node[state] (p) {$p_{t-1}$};
-    %             \node[state] (dp) [below of=p] {$\dot{p}_{t-1}$};
-    %             \node[state] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
-    %             \node[state] (w) [below of=ddp] {$w_{t-1}$};
-    %             \node[state] (pb) [right of=p] {$p_t$};
-    %             \node[state] (dpb) [right of=dp] {$\dot{p}_t$};
-    %             \node[state] (ddpb) [right of=ddp] {$\ddot{p}_t$};
-    %             \node[state] (wb) [right of=w] {$w_t$};
-    %             \node[state] (e) [right of=ddpb] {$e_t$};
+    \begin{solution}
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance = 2cm]
+                \node[state] (p) {$p_{t-1}$};
+                \node[state] (dp) [below of=p] {$\dot{p}_{t-1}$};
+                \node[state] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
+                \node[state] (w) [below of=ddp] {$w_{t-1}$};
+                \node[state] (pb) [right of=p] {$p_t$};
+                \node[state] (dpb) [right of=dp] {$\dot{p}_t$};
+                \node[state] (ddpb) [right of=ddp] {$\ddot{p}_t$};
+                \node[state] (wb) [right of=w] {$w_t$};
+                \node[state] (e) [right of=ddpb] {$e_t$};
 
-    %             \draw[arrow] (p) to (pb);
-    %             \draw[arrow] (p) to (ddpb);
-    %             \draw[arrow] (dp) to (pb);
-    %             \draw[arrow] (dp) to (dpb);
-    %             \draw[arrow] (dp) to (ddpb);
-    %             \draw[arrow] (ddp) to (pb);
-    %             \draw[arrow] (ddp) to (dpb);
-    %             \draw[arrow] (w) to (ddpb);
-    %             \draw[arrow] (w) to (wb);
-    %             \draw[arrow] (ddpb) to (e);
-    %         \end{tikzpicture}
-    %     \end{figure}
-    % \end{solution}
+                \draw[arrow] (p) to (pb);
+                \draw[arrow] (p) to (ddpb);
+                \draw[arrow] (dp) to (pb);
+                \draw[arrow] (dp) to (dpb);
+                \draw[arrow] (dp) to (ddpb);
+                \draw[arrow] (ddp) to (pb);
+                \draw[arrow] (ddp) to (dpb);
+                \draw[arrow] (w) to (ddpb);
+                \draw[arrow] (w) to (wb);
+                \draw[arrow] (ddpb) to (e);
+            \end{tikzpicture}
+        \end{figure}
+    \end{solution}
 \end{enumerate}
 
 \newpage
