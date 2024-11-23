@@ -8,10 +8,6 @@ Lecture 9: Reinforcement Learning
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-R: add example with the cruise control system.
-
 ---
 
 # Today
@@ -509,7 +505,7 @@ The agent **does not** learn the true utilities or the true optimal policy!
 class: middle
 
 The resulting policy is **greedy** and **suboptimal**:
-- The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as the true environment.
+- The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as the true environment since they are based on the samples obtained by the agent's policy, which biases the learning.
 - Therefore, what is optimal in the learned model can be suboptimal in the true environment.
 
 ---
@@ -719,7 +715,7 @@ class: middle
 
 ## Approximate Q-Learning
 
-Using a feature-based representation, the Q-table can now be replaced with a function approximator, such as a linear model:
+Using a feature-based representation, the Q-table can now be replaced with a function approximator, such as a linear model 
 $$Q(s,a) = w\_1 f\_1(s,a) + w\_2 f\_2(s,a) + ... + w\_d f\_d(s,a).$$
 
 Upon the transition $(s, r, a, s')$, the update becomes
@@ -799,7 +795,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/W4joe3zzglU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Robotic manipulation (I)
+Robotic manipulation
 ]
 
 ---
@@ -807,16 +803,10 @@ Robotic manipulation (I)
 class: middle, black-slide
 
 .center[
-<video controls preload="auto" height="500" width="700">
-  <source src="https://www.festo.com/group/en/repo/assets/media/BionicSoftHand_Making-of_en_720x405.mp4" type="video/mp4">
-</video>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/fBiataDpGIo?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Robotic manipulation (II)
+Drone racing
 ]
-
-???
-
-Nice example merging disciplines from engineering (mechanics, electronics) together with artificial intelligence.
 
 ---
 
