@@ -25,7 +25,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | November 14 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
 | November 21 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 28 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning [[PDF][e6]] [[Solutions][e6s]]|
-| December 5 | _No lecture_ <br> Exercises 8: Making decisions <br>  Exercises 9: Reinforcement learning |
+| December 5 | _No lecture_ <br> Exercises 8: Making decisions & RL [[PDF][e7]]|
 | December 8 | Deadline for Project 2 |
 | December 12 | _No class_ |
 | December 19 | _No class_ | 
