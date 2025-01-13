@@ -61,7 +61,7 @@ Feel free to contact us
 
 class: middle
 
-## Beyond Pacman
+## Beyond ChatGPT and Pacman
 
 Artificial intelligence algorithms are transforming science, engineering and society.
 

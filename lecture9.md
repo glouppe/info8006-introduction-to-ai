@@ -573,7 +573,7 @@ Although temporal difference learning provides a way to estimate $V^\pi$ in a mo
 .grid[
 .kol-1-2[
 - The state-value $V(s)$ of the state $s$ is the expected utility starting in $s$ and acting optimally.
-- The state-action-value $Q(s,a)$ of the q-state $(s,a)$ is the expected utility starting out having taken action $a$ from $s$ and thereafter acting optimally.
+- The state-action-value $Q(s,a)$ of the q-state $(s,a)$ is the expected utility starting out having taken action $a$ from $s$ and thereafter acting optimally. Therefore $V(s) = \max\_a Q(s,a)$.
 ]
 .kol-1-2.width-100[![](figures/lec9/optimal-quantities.png)]
 ]
