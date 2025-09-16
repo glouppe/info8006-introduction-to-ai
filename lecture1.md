@@ -128,7 +128,7 @@ Can it be implemented in a *small* and **efficient** agent program?
 
 class: middle
 
-.center[![](figures/lec0/max-utility.png)
+.center[![](figures/lec1/max-utility.png)
 
 In this course, Artificial intelligence = **Maximizing expected performance**
 ]

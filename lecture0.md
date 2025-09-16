@@ -163,45 +163,13 @@ This explains why large language models ...
 
 ---
 
-exclude: true
 class: middle
 
-.center.width-100[![](figures/lec0/tokens.png)]
+.center.circle.width-30[![](figures/lec0/ilya.jpg)]
 
-???
+.italic[What does it mean to predict the next token well enough? It's actually [...] a deeper question than it seems. Predicting the next token well means that you understand the underlying reality that led to the creation of that token.]
 
-Fortunately, each sentence contains many guess-the-next-word problems that can be used to train a transformer. [For instance, the sentence "John plays the piano and Paul plays the ___" contains 8 instances of the problem, one for each word.]
-
-Contrary to what we used to face in deep learning, acquiring data is therefore cheap and easy. There is no need to manually label the data, which is a tedious and expensive process. Instead, collecting data is as simple as downloading a large corpus of text from the internet.
-
-For this reason, big tech companies have been able to train transformers on very large corpora of text, literally large parts of the internet counting hundreds of billions of tokens, which only they can collect.
-
----
-
-exclude: true
-class: middle, center
-
-.center.width-90[![](./figures/lec0/prompt.png)]
-
-???
-
-Alright, so we have a transformer that has been trained on a large corpus of text. How do we use it?
-
-After pre-training, a transformer is not very useful by itself just yet. It is like a dog that has been trained to guess the next word, but that cannot do anything else. To be useful, transformers must be fine-tuned or instructed to answer questions.
-
-To do so, we can use a technique called prompt engineering or in-context learning, which consists in writing a prompt, a short text that contains instructions of a task to solve and some context. The prompt is then fed to the transformer, which is used to complete the prompt. The continuation of the prompt, obtained by guessing the next words, is likely to be consistent with the instructions and to answer the question. That's it!
-
-As an example, the prompt in the slide can be used to instruct a transformer to translate English to French. The prompt contains a description of the task, together with a few examples of translations. The transformer is then used to complete the prompt, which results in a translation.
-
-Similarly, ChatGPT and other chatbots are transformers that are repurposed to answer questions by using prompts that instruct them to answer questions, in the form of a conversation.
-
----
-
-class: middle, black-slide, center
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/fWWCdqyYRPI" frameborder="0" allowfullscreen></iframe>
-
-Not just text, but also images and sounds.
+.pull-right[Ilya Sutskever, 2023.]
 
 ---
 
@@ -585,6 +553,102 @@ These applications however, are often deeply embedded in the tools used by healt
 
 ---
 
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/hA_-MkU0Nfw" frameborder="0" allowfullscreen></iframe>
+
+Autonomous cars (Waymo, 2022)
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/zrcxLZmOyNA" frameborder="0" allowfullscreen></iframe>
+
+Powering the future of clean energy (NVIDIA, 2023)
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
+
+How AI is advancing medicine (Google, 2018)
+
+---
+
+
+class: middle, center
+
+Deep learning can also .bold[solve problems that no one could solve before].
+
+???
+
+Beyond the basic work that can be automated, the most exciting applications of AI, at least for the scientist in me, is the fact that deep learning can also be used to solve problems that no one could solve before. To make discoveries. 
+
+I have many examples in mind, but I will only mention a few today, to give you a sense of what is possible. I will focus on health and medicine, but the same is true in many other domains.
+
+---
+
+class: middle
+
+## AlphaFold: From a sequence of amino acids to a 3D structure
+
+.grid[
+.kol-2-3.center.width-100[![](./figures/lec0/alphafold-nature.png)]
+.kol-1-3.center[.width-100[![](./figures/lec0/alphafold-prediction.gif)]
+.width-80[![](./figures/lec0/nobel.jpg)]]
+]
+
+???
+
+The first example is AlphaFold, a neural network based on the trasnformer architecture that can predict the 3D structure of a protein from its amino acid sequence.
+
+This problem is important because the 3D structure of a protein determines its function, and understanding protein function is key to understanding biology and designing new drugs.
+
+However, determining the 3D structure of a protein experimentally is difficult and expensive, taking up to months just to solve a single structure. 
+
+AlphaFold has been a breakthrough in this area, and has been able to predict the 3D structure of proteins with high accuracy, in just a couple of minutes for the longest sequences.
+
+---
+
+class: middle, black-slide, center
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
+
+AI for Science (Deepmind, AlphaFold, 2020)
+
+---
+
+
+class: middle
+
+## Drug discovery with graph neural networks
+
+.center.width-80[![](./figures/lec0/cell.png)]
+
+???
+
+A second example is the use of graph neural networks to discover new drugs.
+
+Discovering new drugs is a complex and expensive search problem, where the goal is to find molecules that will bind to a target protein and modulate its function. Unfortunately, this problem is difficult for two reasons:
+- first, the search space is huge -- the space all possible pharmacologically active molecules is estimated to be in the order of 10^60 molecules.
+- second, the binding of a molecule to a protein is a complex process that is difficult to model. Laboratory experiments are necessary to evaluate the binding of a molecule to a protein, and these experiments are expensive and time-consuming.
+
+Graph neural networks have been a breakthrough in this area, and have been able to predict the properties of molecules with high accuracy. 
+
+In a sense, they can serve as a virtual laboratory that can be used to pre-screen millions of molecules in a matter of hours, thereby reducing the laboratory work to only the most promising candidates.
+
+---
+
+class: middle
+
+## GraphCast: fast and accurate weather forecasts
+
+.center.width-75[![](./figures/lec0/graphcast.jpg)]
+
+---
+
 class: middle
 
 ## The breakthrough
@@ -627,105 +691,77 @@ Code assistants (Cursor, 2024)
 
 ---
 
-exclude: true
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/oYUcl_cqKcs" frameborder="0" allowfullscreen></iframe>
-
-Object detection, pose estimation, segmentation (Meta AI, 2023)
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/hA_-MkU0Nfw" frameborder="0" allowfullscreen></iframe>
-
-Autonomous cars (Waymo, 2022)
-
----
-
 class: middle, black-slide, center
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/zrcxLZmOyNA" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/fWWCdqyYRPI" frameborder="0" allowfullscreen></iframe>
 
-Powering the future of clean energy (NVIDIA, 2023)
-
----
-
-class: middle, black-slide, center
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
-
-How AI is advancing medicine (Google, 2018)
-
----
-
-class: middle, center
-
-Deep learning can also .bold[solve problems that no one could solve before].
-
-???
-
-Beyond the basic work that can be automated, the most exciting applications of AI, at least for the scientist in me, is the fact that deep learning can also be used to solve problems that no one could solve before. To make discoveries. 
-
-I have many examples in mind, but I will only mention a few today, to give you a sense of what is possible. I will focus on health and medicine, but the same is true in many other domains.
+Not just text, but also images and sounds (OpenAI, 2024)
 
 ---
 
 class: middle
 
-## AlphaFold: From a sequence of amino acids to a 3D structure
+# Now what?
+
+---
+
+
+class: middle
+
+.center.width-10[![](figures/lec0/icons/la-science.png)]
+
+## The good
+
+- AI is a tool capable of automating tedious tasks.
+- AI can solve complex tasks that no one could solve before.
+- The human-machine interface is changing radically, with conversational assistants making digital tools more accessible.
+- Progress continues at a breakneck pace.
+
+---
+
+class: middle
+
+.center.width-10[![](figures/lec0/icons/la-pollution-de-lair.png)]
+
+## The bad
+
+- Deep learning models are difficult to inspect, debug and explain.
+- AI systems can fail in unexpected and catastrophic ways, despite apparent precision.
+- AI generates a lot of low-quality content ("AI slop") that pollutes information and devalues human creative work.
+- Deep learning models have become very large and require significant computational resources, with significant environmental consequences.
+
+---
+
+class: middle
 
 .grid[
-.kol-2-3.center.width-100[![](./figures/lec0/alphafold-nature.png)]
-.kol-1-3.center.width-100[![](./figures/lec0/alphafold-prediction.gif)]
+.kol-1-3[<br>.center.width-100[![](./figures/lec0/report.png)]]
+.kol-2-3[.center.width-100[![](./figures/lec0/energy.png)]]
 ]
 
-???
+"AI is a moderate but rapidly growing contributor to global environmental impacts through energy use and greenhouse gas (GHG) emissions. Current estimates indicate that .bold[data centres and data transmission account for an estimated 1% of global energy-related GHG emissions, with AI consuming 10–28% of data centre energy capacity]. AI energy demand is expected to grow substantially [...]"
 
-The first example is AlphaFold, a neural network based on the trasnformer architecture that can predict the 3D structure of a protein from its amino acid sequence.
-
-This problem is important because the 3D structure of a protein determines its function, and understanding protein function is key to understanding biology and designing new drugs.
-
-However, determining the 3D structure of a protein experimentally is difficult and expensive, taking up to months just to solve a single structure. 
-
-AlphaFold has been a breakthrough in this area, and has been able to predict the 3D structure of proteins with high accuracy, in just a couple of minutes for the longest sequences.
-
----
-
-class: middle, black-slide, center
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/gg7WjuFs8F4" frameborder="0" allowfullscreen></iframe>
-
-AI for Science (Deepmind, AlphaFold, 2020)
+.footnote[Credits: [Bengio et al.](https://arxiv.org/abs/2501.17805), 2025 (arXiv:2501.17805).]
 
 ---
 
 class: middle
 
-## Drug discovery with graph neural networks
+.center.width-10[![](figures/lec0/icons/cybercriminalite.png)]
 
-.center.width-80[![](./figures/lec0/cell.png)]
+## The ugly
 
-???
-
-A second example is the use of graph neural networks to discover new drugs.
-
-Discovering new drugs is a complex and expensive search problem, where the goal is to find molecules that will bind to a target protein and modulate its function. Unfortunately, this problem is difficult for two reasons:
-- first, the search space is huge -- the space all possible pharmacologically active molecules is estimated to be in the order of 10^60 molecules.
-- second, the binding of a molecule to a protein is a complex process that is difficult to model. Laboratory experiments are necessary to evaluate the binding of a molecule to a protein, and these experiments are expensive and time-consuming.
-
-Graph neural networks have been a breakthrough in this area, and have been able to predict the properties of molecules with high accuracy. 
-
-In a sense, they can serve as a virtual laboratory that can be used to pre-screen millions of molecules in a matter of hours, thereby reducing the laboratory work to only the most promising candidates.
+- AI models are biased and can perpetuate discrimination.
+- Malicious uses of AI are becoming more frequent (deep fakes, bots, manipulation, etc).
+- In all areas of society, a dependence on AI is settling in, with risks of dehumanization, loss of control, and loss of cognitive skills.
 
 ---
 
 class: middle
 
-## GraphCast: fast and accurate weather forecasts
+.center.width-100[![](figures/lec0/critical-thinking.png)]
 
-.center.width-75[![](./figures/lec0/graphcast.jpg)]
+"Students who used ChatGPT while completing SAT-style essays showed the lowest levels of brain activity. Furthermore, their writing became increasingly formulaic, forgettable, and lacking original thought. Over time, students became increasingly passive and disengaged. Many couldn’t recall what they’d written or revise their work without AI support, proof that .bold[they weren’t truly learning]."
 
 ---
 

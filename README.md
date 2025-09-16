@@ -1,11 +1,11 @@
 # INFO8006 Introduction to Artificial Intelligence
 
-Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 2024.
+Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 2025.
 
 - Instructor: Gilles Louppe
-- Teaching assistants: Gérôme Andry, Arnaud Delaunoy
-- When: Fall 2024, Thursday 8:30 AM to 12:30 AM
-- Classroom: B31/Laurent (4/89)
+- Teaching assistants: Gérôme Andry, Fanny Bodart
+- When: Fall 2025, Thursday 8:30 AM to 12:30 AM
+- Classroom: B28/Mania Pavella
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
 - Discord: [https://discord.gg/Y8UP2SBu2h](https://discord.gg/Y8UP2SBu2h)
 
@@ -13,21 +13,21 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 
 | Date | Topic |
 | ---- | ----- |
-| September 19 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
-| September 26 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial: [Project 0](projects/project0) |
-| October 3 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[Solutions][e1s]] |
-| October 10 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[Solutions][e2s]]|
-| October 17 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] [[Solutions][e3s]]|
-| October 24 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>_No exercises_|
-| October 31 | _No class_ |
-| November 3 | Deadline for Project 1 |
-| November 7 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4: Probabilistic reasoning [[PDF][e4]] [[Solutions][e4s]]|
-| November 14 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
-| November 21 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
-| November 28 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning [[PDF][e6]] [[Solutions][e6s]]|
+| September 18 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
+| September 25 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial: [Project 0](projects/project0) |
+| October 2 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[Solutions][e1s]] |
+| October 9 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[Solutions][e2s]]|
+| October 16 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] [[Solutions][e3s]]|
+| October 23 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>_No exercises_|
+| October 30 | _No class_ |
+| November 6 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4: Probabilistic reasoning [[PDF][e4]] [[Solutions][e4s]]|
+| November 13 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
+| November 16 | Deadline for Project 1 |
+| November 20 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
+| November 27 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning [[PDF][e6]] [[Solutions][e6s]]|
 | December 5 | _No lecture_ <br> Exercises 8: Making decisions & RL [[PDF][e7]] [[Solutions][e7s]]|
-| December 8 | Deadline for Project 2 |
-| December 12 | _No class_ |
+| December 12 | Exercises 9: Past exam |
+| December 14 | Deadline for Project 2 |
 | December 19 | _No class_ | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
@@ -87,8 +87,8 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
 - Part 0: [Search algorithms](projects/project0) (tutorial session in class)
-- Part 1: [Adversarial search](projects/project1) (due by November 3)
-- Part 2: [Bayes filter](projects/project2) (due by December 8)
+- Part 1: [Adversarial search](projects/project1) (due by November 16)
+- Part 2: [Bayes filter](projects/project2) (due by December 14)
 
 ## Previous exams
 
@@ -104,6 +104,8 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 - [August 2023](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2023.pdf)
 - [January 2024](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2024.pdf) 
 - [August 2024](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2024.pdf)
+- [January 2025](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-january2025.pdf) 
+- [August 2025](https://glouppe.github.io/info8006-introduction-to-ai/pdf/exam-august2025.pdf)
 
 Materials covered by the exam are listed [here](https://glouppe.github.io/info8006-introduction-to-ai/pdf/info8006-grid.pdf).
 
@@ -111,6 +113,7 @@ Materials covered by the exam are listed [here](https://glouppe.github.io/info80
 
 ### Previous editions
 
+- [2024-2025](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2024)
 - [2023-2024](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2023)
 - [2022-2023](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2022)
 - [2021-2022](https://github.com/glouppe/info8006-introduction-to-ai/tree/info8006-2021)

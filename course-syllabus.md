@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Course syllabus, Fall 2024
+Course syllabus, Fall 2025
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -14,8 +14,8 @@ Prof. Gilles Louppe<br>
 
 This course is given by
 - Theoretical lectures: Gilles Louppe
-- Exercise sessions: Gilles Louppe, Gérôme Andry, and student instructors
-- Programming projects: Arnaud Delaunoy
+- Exercise sessions: Gilles Louppe, Gérôme Andry, Fanny Bodart
+- Programming projects: Fanny Bodart
 
 Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/Y8UP2SBu2h) for help.
 
@@ -23,7 +23,7 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
 .circle.width-20[![](figures/course-syllabus/gerome.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/arnaud.jpg)]
+.circle.width-20[![](figures/course-syllabus/fanny.jpg)]
 ]
 
 ---
@@ -42,9 +42,9 @@ class: middle
 
 ## Videos
 
-Videos from Fall 2020 are available at [https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD). They are not up-to-date with the current course, but they may still be useful.
+- Lectures from Fall 2024 are available on [MyUnicast](https://my.unicast.uliege.be/) and on [YouTube](https://youtube.com/playlist?list=PLLqXZ_E-UXly_dVpKfgzuga61h7z8XjbK&si=iGWYBiF-jZNuItl3).
 
-Lectures will also be recorded and made available on [MyUnicast](https://my.unicast.uliege.be/).
+- Videos from Fall 2020 are available on [YouTube](https://youtube.com/playlist?list=PLLqXZ_E-UXlybvRU7vgaYMTbxZdT73ZFD). They are not up-to-date with the current course, but they may still be useful.
 
 .center.width-60[![](figures/course-syllabus/youtube.png)]
 
@@ -99,7 +99,7 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 - Written exam (60%)
 - Programming projects (40%)
-    - Project 0: 0% (tutorial of September 26)
+    - Project 0: 0% (tutorial of September 25)
     - Project 1: 20%
     - Project 2: 20%
     - Programming projects are **mandatory** for presenting the exam.
