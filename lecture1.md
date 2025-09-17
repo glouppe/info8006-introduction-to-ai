@@ -23,7 +23,7 @@ class: middle
 .grid[
 .kol-1-5.center[
 <br><br><br>
-Percepts $s$
+Percepts $e$
 ]
 .kol-3-5.center[
 .width-95[![](figures/lec8/loop.png)]
@@ -34,21 +34,16 @@ Actions $a$
 ]
 ]
 
-???
-
-Roomba example
-
 ---
 
 class: middle
 
 ## Agents
 
-- An **agent** is an entity that *perceives* its environment through sensors and
-  take *actions* through actuators.
+- An agent is an entity that *perceives* its environment through sensors and takes **actions** through actuators.
 
-- The agent behavior is described by its **policy**, a function $$\pi : \mathcal{P}^* \to \mathcal{A}$$ that maps
-  percept sequences to actions.
+- The agent behavior is described by its policy, a function $$\pi : \mathcal{P}^* \to \mathcal{A}$$ that maps
+  percept sequences $e\_1, ..., e\_t$ to actions $a$.
 
 ---
 
@@ -59,8 +54,8 @@ class: middle
 .width-20.center[![](figures/lec1/pacman.png)]
 
 Let us consider a 2-cell world with a Pacman agent.
-- Percepts: location and content, e.g. $(\text{left cell}, \text{no food})$
-- Actions: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
+- Percepts $e$: location and content, e.g. $(\text{left cell}, \text{no food})$
+- Actions $a$: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
 
 ???
 
@@ -70,9 +65,7 @@ Take the time to explain that the game is here different from the actual Pacman.
 
 class: middle
 
-## Pacman agent
-
-The policy of a Pacman agent is a function that maps percept sequences to actions. It can be implemented as a table.
+The .bold[policy] of a Pacman agent is a function that maps percept sequences to actions. It can be implemented as a table.
 
 | Percept sequence | Action |
 | ---------------- | ------ |
@@ -82,7 +75,11 @@ The policy of a Pacman agent is a function that maps percept sequences to action
 | $(\text{left cell}, \text{food})$     | $\text{eat}$ |
 | $(\text{left cell}, \text{no food}), (\text{left cell}, \text{no food})$     | $\text{go right}$ |
 | $(\text{left cell}, \text{no food}), (\text{left cell}, \text{food})$     | $\text{eat}$ |
-| (...) | (...) |
+| $\ldots$ | $\ldots$ |
+
+???
+
+The size of the table grows exponentially with the (maximum) length of the percept sequence!
 
 ---
 
@@ -90,7 +87,7 @@ class: middle, center, black-slide
 
 .width-100.center[![](figures/lec1/pacman-world.jpg)]
 
-What about the actual Pacman?
+What about the actual Pacman?<br> How would you design its agent program to play optimally?
 
 ???
 
@@ -98,27 +95,11 @@ Run the program!
 
 ---
 
-class: middle
-
-## The optimal policy?
-
-What is the  optimal agent policy?
-
-How to even formulate the goal of Pacman?
-- 1 point per food dot collected up to time $t$?
-- 1 point per food dot collected up to time $t$, minus one per move?
-- penalize when too many food dots are left not collected?
-
-Can it be implemented in a *small* and **efficient** agent program?
-
----
-
 # Rational agents
 
-- A performance measure evaluates a sequence of environment
-  states caused by the agent's behavior.
-- A rational agent is an agent that chooses whichever action that **maximizes** the
-  *expected* value of the performance measure, given the percept sequence to date.
+A sequence of environment states is evaluated by a .bold[performance measure].
+
+An agent is .bold[rational] if it chooses actions that maximize the expected value of the performance measure, given the percept sequence to date.
 
 .alert[Rationality only concerns .bold[what] decisions are made (not the thought process behind them, human-like or not).]
 
@@ -161,7 +142,7 @@ They are summarized as the **task environment**.
 ## Example 1: a chess-playing agent
 - performance measure: win, draw, lose, ...
 - environment: chess board, opponent, ...
-- actuators: move pieces, ...
+- actions: move pieces, ...
 - sensors: board state, opponent moves, ...
 
 ---
@@ -171,13 +152,13 @@ class: middle
 ## Example 2: a self-driving car
 - performance measure: safety, destination, legality, comfort, ...
 - environment: streets, highways, traffic, pedestrians, weather, ...
-- actuators: steering, accelerator, brake, horn, speaker, display, ...
+- actions: steering, accelerator, brake, horn, speaker, display, ...
 - sensors: video, accelerometers, gauges, engine sensors, GPS, ...
 
 ## Example 3: a medical diagnosis system
 - performance measure: patient health, cost, time, ...
 - environment: patient, hospital, medical records, ...
-- actuators: diagnosis, treatment, referral, ...
+- actions: diagnosis, treatment, referral, ...
 - sensors: medical records, lab results, ...
 
 ---
@@ -222,9 +203,8 @@ static? discrete? single agents? Known?
 - Backgammon
 - Taxi driving
 - Medical diagnosis
-- Image analysis
 - Part-picking robot
-- Refinery controller
+- ChatGPT
 - The real world
 
 ---
@@ -243,11 +223,12 @@ Our goal is to design an **agent program** that implements the agent
 policy. 
 
 Agent programs can be designed and implemented in many ways:
-
 - with tables
 - with rules
 - with search algorithms
 - with learning algorithms
+
+The best design depends on the task environment.
 
 ---
 
@@ -278,23 +259,20 @@ Solution to huge tables: forget about the past!
 
 Compress them using condition-action rules.
 
-
-
 ---
 
 class: middle
-- *Simple reflex agents* select actions on the basis of the current percept,
-  ignoring the rest of the percept history.
-- They implement **condition-action rules** that match the
-  current percept to an action. Rules provide a way to *compress* the function table.
-- They can only work in a *Markovian* environment, that is if the correct
-  decision can be made on the basis of only the current percept.
-  In other words, if the environment is fully observable.
 
-???
+.bold[Simple reflex agents] select actions on the basis of the current percept,
+ignoring the rest of the percept history.
 
-Example (autonomous car): If a car in front of you slow down, you should break.
-The color and model of the car, the music on the radio or the weather are all irrelevant.
+They are implemented by condition-action rules that match the
+current percept to an action. Rules provide a way to *compress* the function table.
+
+They can only work if the correct
+decision can be made on the basis of only the current percept only, which is rarely the case in practice unless the environment is Markovian and fully observable.
+
+.question[Examples: Smoke detectors, automatic doors, traffic lights, etc.]
 
 ---
 
@@ -314,10 +292,13 @@ Then map this state to an action.
 
 class: middle
 
-- *Model-based agents* handle partial observability of the environment by keeping track of the part of the world they cannot see now.
-- The internal state of model-based agents is updated on the basis of a **model** which determines:
-  - how the environment evolves independently of the agent;
-  - how the agent actions affect the world.
+.bold[Model-based reflex agents] handle partial observability of the environment by keeping track of the part of the world they cannot see now.
+
+They maintain an internal state that is updated on the basis of a **model** which determines:
+- how the environment evolves independently of the agent;
+- how the agent actions affect the world.
+
+.question[Example: robot vacuum cleaner, smart thermostats, etc.]
 
 ---
 
@@ -350,14 +331,15 @@ It is not easy to map a state to an action because goals are not explicit in con
 
 class: middle
 
-- Decision process:
-    1. generate possible sequences of actions
-    2. predict the resulting states
-    3. assess **goals** in each.
-- A *goal-based agent* chooses an action that will achieve the goal.
-    - More general than rules. Goals are rarely explicit in condition-action rules.
-    - Finding action sequences that achieve goals is difficult.
-      *Search* and *planning* are two strategies.
+The decision process of a .bold[goal-based agent] can be summarized as follows:
+1. generate possible sequences of actions;
+2. predict the resulting states;
+3. assess **goals** in each;
+4. select the first action of a sequence where the goal is achieved.
+
+Finding action sequences that achieve goals is difficult. *Search* and *planning* are two strategies.
+
+.question[Examples: GPS navigation system, game-playing agents.]
 
 ---
 
@@ -375,14 +357,17 @@ Often there are several sequences of actions that achieve a goal. We should pick
 
 class: middle
 
-- *Goals* are often not enough to generate high-quality behavior. Goals only provide binary assessment of performance.
-- A **utility function** scores any given sequence of environment states.
-    - The utility function is an internalization of the performance measure.
-- A rational utility-based agent chooses an action that **maximizes the expected utility of its outcomes**.
+Goals are often not enough to generate high-quality behavior. Goals only provide binary assessment of performance.
+
+Instead, a .bold[utility function] scores any given sequence of environment states. The higher the score, the better the sequence.
+
+A rational utility-based agent chooses an action that **maximizes the expected utility of its outcomes**.
+
+.question[Examples: self-driving cars, ]
 
 ???
 
-Example (autonomous car): There are many ways to arrive to destination, but some are quicker or more reliable.
+Note that the utility function is different from the performance measure, which is only used to evaluate the agent's behavior. The utility function is an internalization of the performance measure.
 
 ---
 
@@ -395,26 +380,26 @@ Example (autonomous car): There are many ways to arrive to destination, but some
 
 class: middle
 
-- *Learning agents* are capable of **self-improvement**. They can become more
-  competent than their initial knowledge alone might allow.
-- They can make changes to any of the knowledge components by:
-    - learning how the *world* evolves;
-    - learning what are the *consequences* of actions;
-    - learning the utility of actions through *rewards*.
+.bold[Learning agents] improve their performance and adapt to new circumstances by learning from their experiences. They are capable of self-improvement.
+
+They can make changes to any of the knowledge components by:
+- learning how the *world* evolves;
+- learning what are the *consequences* of actions;
+- learning the utility of actions through *rewards*.
+
+.question[Examples: robots.]
 
 ---
 
-class: middle
+class: middle, black-slide
 
-## A learning autonomous car
+.center[
+<iframe width="600" height="450" src="https://www.youtube.com/embed/xAXvfVTgqr0" frameborder="0" allowfullscreen></iframe>
 
-- *Performance element*:
-    - The current system for selecting actions and driving.
-- The *critic* observes the world and passes information to the *learning element*.
-    - E.g., the car makes a quick left turn across three lanes of traffic. The critic observes shocking language from the other drivers and informs bad action.
-    - The learning element tries to modifies the performance element to avoid reproducing this situation in the future.
-- The *problem generator* identifies certain areas of behavior in need of improvement and suggest experiments.
-    - E.g., trying out the brakes on different surfaces in different weather conditions.
+Learning to walk in the real world in one hour (Wu et al., 2022).
+]
+
+.footnote[Credits: [Wu et al.](https://danijar.com/project/daydreamer/), 2022.]
 
 ---
 

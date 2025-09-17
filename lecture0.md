@@ -8,10 +8,6 @@ Lecture 0: Artificial Intelligence
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-https://www.linkedin.com/posts/sashaluccioniphd_measuring-the-environmental-impact-of-ai-activity-7364670712260825090-RNo7/
-
 ---
 
 class: middle, center
