@@ -139,7 +139,8 @@ class GameState:
 
         # Let agent's logic deal with its action's effects on the board
         if agentIndex == 0:  # Pacman is moving
-            state.data._eaten = [False for i in range(state.getNumAgents())]
+            if not hasattr(state.data, "beliefStates"):
+                state.data._eaten = [False for i in range(state.getNumAgents())]
             PacmanRules.applyAction(state, action)
         elif state.data.agentStates[agentIndex].agtType > 0:                # A ghost is moving
             GhostRules.applyAction(state, action, agentIndex)
@@ -231,14 +232,14 @@ class GameState:
     def getGhostBeliefStates(self):
         return np.copy(self.data.beliefStates)
 
-    def getNoisyGhostDistances(self):
-        ghosts_pos = self.getGhostPositions()
-        manhattan_distances = [manhattanDistance(self.getPacmanPosition(), x) for x in ghosts_pos]
-        #Returns [x ~ P(lbd)] for lbd in 'manhattan_distances' list
-        num_ghosts = len(ghosts_pos)
-        for i in range(num_ghosts):
-            manhattan_distances[i] = np.random.poisson(lam=manhattan_distances[i])
-        return manhattan_distances 
+    def getGhostNoisyDistances(self):
+        pacman = self.getPacmanPosition()
+        ghosts = self.getGhostPositions()
+        distances = [manhattanDistance(pacman, g) for g in ghosts]
+        return [d + np.random.binomial(n=4, p=0.5) - 2 for d in distances]
+
+    def getGhostEaten(self):
+        return deepcopy(self.data._eaten[1:])
 
     def getNumAgents(self):
         return len(self.data.agentStates)
@@ -326,11 +327,22 @@ class GameState:
 
         return str(self.data)
 
-    def initialize(self, layout, numGhostAgents=1000, hiddenGhosts=False,beliefStateAgent=None):
+    def initialize(
+            self,
+            layout,
+            numGhostAgents=1000,
+            hiddenGhosts=False,
+            edibleGhosts=False,
+            beliefStateAgent=None):
         """
         Creates an initial game state from a layout array (see layout.py).
         """
-        self.data.initialize(layout, numGhostAgents, isGhostVisible=not hiddenGhosts, beliefStateAgent=beliefStateAgent)
+        self.data.initialize(
+            layout,
+            numGhostAgents,
+            isGhostVisible=not hiddenGhosts,
+            edibleGhosts=edibleGhosts,
+            beliefStateAgent=beliefStateAgent)
 
 ############################################################################
 #                     THE HIDDEN SECRETS OF PACMAN                         #
@@ -361,11 +373,19 @@ class ClassicGameRules:
             beliefStateAgent,
             display,
             quiet=False,
-            catchExceptions=False, hiddenGhosts=False):
-        
-        agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + ([beliefStateAgent] if beliefStateAgent is not None else []) 
+            catchExceptions=False,
+            hiddenGhosts=False,
+            edibleGhosts=False):
+
+        agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()] + ([beliefStateAgent] if beliefStateAgent is not None else [])
+
         initState = GameState()
-        initState.initialize(layout, len(ghostAgents), hiddenGhosts=hiddenGhosts, beliefStateAgent=beliefStateAgent)
+        initState.initialize(
+            layout,
+            len(ghostAgents),
+            hiddenGhosts=hiddenGhosts,
+            edibleGhosts=edibleGhosts,
+            beliefStateAgent=beliefStateAgent)
         game = Game(agents, display, self, catchExceptions=catchExceptions)
         game.state = initState
         self.initialState = initState.deepCopy()
@@ -494,11 +514,11 @@ class GhostRules:
         possibleActions = Actions.getPossibleActions(
             conf, state.data.layout.walls)
         reverse = Actions.reverseDirection(conf.direction)
-        if Directions.STOP in possibleActions:
+        if Directions.STOP in possibleActions and not hasattr(state.data, "beliefStates"):
             possibleActions.remove(Directions.STOP)
-        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
+        if not hasattr(state.data, "beliefStates") and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
-        
+
         return possibleActions
     getLegalActions = staticmethod(getLegalActions)
 
@@ -515,9 +535,9 @@ class GhostRules:
         reverse = Actions.reverseDirection(conf.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
-        if "beliefStates" not in dir(state.data) and reverse in possibleActions and len(possibleActions) > 1:
+        if not hasattr(state.data, "beliefStates") and reverse in possibleActions and len(possibleActions) > 1:
             possibleActions.remove(reverse)
-        
+
         return possibleActions
     getLegalActionsAtPositionAndDirection = staticmethod(getLegalActionsAtPositionAndDirection)
 
@@ -529,7 +549,7 @@ class GhostRules:
 
         ghostState = state.data.agentStates[ghostIndex]
         speed = GhostRules.GHOST_SPEED
-        if ghostState.scaredTimer > 0:
+        if ghostState.scaredTimer > 0 and not hasattr(state.data, "beliefStates"):
             speed /= 2.0
         vector = Actions.directionToVector(action, speed)
         ghostState.configuration = ghostState.configuration.generateSuccessor(
@@ -548,12 +568,12 @@ class GhostRules:
         pacmanPosition = state.getPacmanPosition()
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
             for index in range(1, len(state.data.agentStates)):
-                if state.data.agentStates[index].agtType != -1:            
+                if state.data.agentStates[index].agtType != -1:
                     ghostState = state.data.agentStates[index]
                     ghostPosition = ghostState.configuration.getPosition()
                     if GhostRules.canKill(pacmanPosition, ghostPosition):
                         GhostRules.collide(state, ghostState, index)
-        elif state.data.agentStates[agentIndex].agtType != -1:    
+        elif state.data.agentStates[agentIndex].agtType != -1:
             ghostState = state.data.agentStates[agentIndex]
             ghostPosition = ghostState.configuration.getPosition()
             if GhostRules.canKill(pacmanPosition, ghostPosition):
@@ -564,9 +584,13 @@ class GhostRules:
         if ghostState.scaredTimer > 0:
             state.data.scoreChange += 200
             GhostRules.placeGhost(state, ghostState)
-            ghostState.scaredTimer = 0
-            # Added for first-person
             state.data._eaten[agentIndex] = True
+            if not hasattr(state.data, "beliefStates"):
+                ghostState.scaredTimer = 0
+            else:
+                if np.all(state.data._eaten[1:]) and not state.data._lose:
+                    state.data.scoreChange += 500
+                    state.data._win = True
         else:
             if not state.data._win:
                 state.data.scoreChange -= 500
@@ -580,7 +604,12 @@ class GhostRules:
     canKill = staticmethod(canKill)
 
     def placeGhost(state, ghostState):
-        ghostState.configuration = ghostState.start
+        if not hasattr(state.data, "beliefStates"):
+            ghostState.configuration = ghostState.start
+        else:
+            voidConfiguration = deepcopy(ghostState.start)
+            voidConfiguration.pos = (-10, -10)
+            ghostState.configuration = voidConfiguration
     placeGhost = staticmethod(placeGhost)
 
 #############################
@@ -916,7 +945,9 @@ def runGame(
         ghosts,
         beliefstateagent,
         displayGraphics,
-        expout=np.inf,hiddenGhosts=False):
+        expout=np.inf,
+        hiddenGhosts=False,
+        edibleGhosts=False):
     display = graphicsDisplay.PacmanGraphics(
         1.0, frameTime=0.1) if displayGraphics else textDisplay.NullGraphics()
     import __main__
@@ -924,5 +955,14 @@ def runGame(
     lay = layout.getLayout(layout_name)
 
     rules = ClassicGameRules(expout)
-    game = rules.newGame(lay, pacman, ghosts, beliefstateagent, display, False, False, hiddenGhosts=hiddenGhosts)
+    game = rules.newGame(
+        lay,
+        pacman,
+        ghosts,
+        beliefstateagent,
+        display,
+        False,
+        False,
+        hiddenGhosts=hiddenGhosts,
+        edibleGhosts=edibleGhosts)
     return game.run()

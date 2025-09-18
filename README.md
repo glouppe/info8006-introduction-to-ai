@@ -14,7 +14,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | Date | Topic |
 | ---- | ----- |
 | September 18 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
-| September 25 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial: [Project 0](projects/project0) |
+| September 25 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial: [Project 0](projects/project0), [Project 0 bis](projects/project0bis) |
 | October 2 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]]|
 | October 9 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]]|
 | October 16 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty [[PDF][e3]]|
@@ -86,9 +86,11 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 0: [Search algorithms](projects/project0) (tutorial session in class)
-- Part 1: [Adversarial search](projects/project1) (due by November 16)
-- Part 2: [Bayes filter](projects/project2) (due by December 14)
+- Part 0: (tutorial session in class)
+    - [Search algorithms](projects/project0)
+    - [Adversarial search](projects/project0bis)
+- Part 1: [Bayes Filter](projects/project1) (due by November 16)
+- Part 2: Imitation Learning (due by December 14)
 
 ## Previous exams
 

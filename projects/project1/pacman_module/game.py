@@ -432,7 +432,7 @@ class GameStateData:
             self.capsules = prevState.capsules[:]
             self.agentStates = self.copyAgentStates(prevState.agentStates)
             self.layout = prevState.layout
-            self._eaten = prevState._eaten
+            self._eaten = deepcopy(prevState._eaten)
             self.score = prevState.score
             try:
                 self.beliefStates = np.copy(prevState.beliefStates)
@@ -564,7 +564,13 @@ class GameStateData:
             return '3'
         return 'E'
 
-    def initialize(self, layout, numGhostAgents, isGhostVisible=True, beliefStateAgent=None):
+    def initialize(
+            self,
+            layout,
+            numGhostAgents,
+            isGhostVisible=True,
+            edibleGhosts=False,
+            beliefStateAgent=None):
         """
         Creates an initial game state from a layout array (see layout.py).
         """
@@ -585,8 +591,8 @@ class GameStateData:
                     continue  # Max ghosts reached already
                 else:
                     numGhosts += 1
-                    #If ghost is not visible, it is Project Part III
-                    #Here we choose a random initial location
+                    # If beliefStateAgent is specified, it is Project Part III
+                    # Here we choose a random initial location
                     if beliefStateAgent is not None:
                         pos = layout.getRandomLegalGhostPosition()
             agt = AgentState(
@@ -594,6 +600,8 @@ class GameStateData:
                         pos,
                         Directions.STOP, visible=isGhostVisible if not isPacman else True),
                     agtType)
+            if edibleGhosts:
+                agt.scaredTimer = float("inf")
             self.agentStates.append(agt)
         self._eaten = [False for a in self.agentStates]
         if beliefStateAgent is not None:
@@ -601,6 +609,14 @@ class GameStateData:
             Create a uniform prior on the belief state
             """
             uniformBelief = np.full((self.layout.width,self.layout.height), 1.0/(self.layout.width*self.layout.height))
+
+            for x in range(self.layout.width):
+                for y in range(self.layout.height):
+                    if self.layout.walls[x][y]:
+                        uniformBelief[x][y] = 0.
+
+            uniformBelief = uniformBelief/np.sum(uniformBelief)
+
             agtState = AgentState(
                           Configuration(
                              -1,
