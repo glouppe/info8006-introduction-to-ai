@@ -61,15 +61,10 @@ Reflex agents
 - do not consider the future consequences of their actions;
 - consider only **how the world is now**.
 
-.grid[
-.kol-1-2[
-.width-100[![](figures/lec2/pacman-reflex.png)]]
-.kol-1-2[
-.width-100[![](figures/lec2/pacman-reflex2.png)]]
-]
-.caption[For example, a simple reflex agent based on condition-action rules could move<br>
-         to a dot if there is one in its neighborhood.
-         No planning is involved to take this decision. ]
+Reflexes are sufficient for taking rational actions in *fully observable*, *deterministic* and *known* environments.
+
+However, it is .bold[difficult to implement] for complex tasks, as determining the immediate action that results in the best long-term outcome is more naturally expressed in terms of planning.
+
 
 ???
 
@@ -90,16 +85,6 @@ Problem-solving agents
 - take decisions based on (hypothesized) consequences of actions, by considering **how the world could be**;
 - must have a model of how the world evolves in response to actions;
 - formulate a goal, explicitly.
-
-.grid[
-.kol-1-2[
-.width-100[![](figures/lec2/pacman-goal.png)]
-]
-.kol-1-2[
-.width-100[![](figures/lec2/pacman-goal2.png)]
-]
-]
-.caption[A planning agent looks for sequences of actions to eat all the dots.]
 
 ---
 
@@ -611,6 +596,12 @@ class: middle
 .center.width-80[![](figures/lec2/shakey.jpg)]
 ]
 ]
+
+---
+
+class: center, middle, black-slide
+
+<iframe width="600" height="400" src="https://www.youtube.com/embed/7bsEN8mwUB8" frameborder="0" allowfullscreen></iframe>
 
 ---
 

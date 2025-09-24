@@ -361,9 +361,9 @@ Goals are often not enough to generate high-quality behavior. Goals only provide
 
 Instead, a .bold[utility function] scores any given sequence of environment states. The higher the score, the better the sequence.
 
-A rational utility-based agent chooses an action that **maximizes the expected utility of its outcomes**.
+A rational utility-based agent chooses an action that .bold[maximizes the expected utility of its outcomes].
 
-.question[Examples: self-driving cars, ]
+.question[Examples: self-driving cars, recommendation systems.]
 
 ???
 

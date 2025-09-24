@@ -150,9 +150,9 @@ Possible completions: "That's one small step for man, one giant leap for mankind
 class: middle
 
 This explains why large language models ...
-- invent things and cannot cite sources;
 - never produce the same answers;
 - cannot count, compute, or reason*;
+- invent things and cannot cite sources;
 - can hardly correct their own mistakes once they have been made.
 
 .footnote[*: At least not with a vanilla transformer and a greedy decoding strategy.]
@@ -201,7 +201,7 @@ The reality is quite different...
 
 class: middle, center, black-slide
 
-<iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen allow="autoplay"></iframe>
+<iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen></iframe>
 
 Yann LeCun, 2018.
 
