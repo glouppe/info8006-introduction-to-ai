@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 class: center, black-slide, middle
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/N7KpcYKRm1M" frameborder="0" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/LJS7Igvk6ZM" frameborder="0" allowfullscreen></iframe>
 
 ---
 
@@ -202,7 +202,7 @@ class: middle
 ## Minimax efficiency
 
 - Assume $\text{minimax}(s)$ is implemented using its recursive definition.
-- How *efficient* is minimax?
+- How efficient is minimax?
     - Time complexity: same as DFS, i.e., $O(b^m)$.
     - Space complexity:
         - $O(bm)$, if all actions are generated at once, or
@@ -279,12 +279,12 @@ class: middle
 ## Properties of $\alpha$-$\beta$ search
 
 - Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
-- *Time complexity*:
+- Time complexity:
     - The effectiveness depends on the order in which the states are examined.
     - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
         - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
         - Equivalent to an effective branching factor $\sqrt{b}$.
-- *Space complexity*: $O(m)$, as for Minimax.
+- Space complexity: $O(m)$, as for Minimax.
 
 ---
 
@@ -305,7 +305,7 @@ Finding the exact solution with Minimax remains **intractable**.
 # Transposition table
 
 - Repeated states occur frequently because of **transpositions**: distinct permutations of the move sequence end in a same position.
-- Similarly to the `closed` set in `Graph-Search` (Lecture 2), it is worth storing the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+- Similarly to the `closed` set in graph search (Lecture 2), it is worth storing the evaluation of a state such that further occurrences of the state do not have to be recomputed.
 
 .question[What data structure should be used to efficiently store and look-up values of positions?]
 
@@ -526,7 +526,7 @@ The algorithm searches the game tree as follows:
 3. *Simulation*: play a random playout from $n'$.
 4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $n'$ to the root.
 
-Repeat 1-4 for as long the time budget allows. Pick the best next direct move.
+Repeat 1-4 for as long the time budget allows. Pick the best next direct move as the child of the root with the highest $N(n)$.
 
 ---
 
@@ -680,7 +680,7 @@ First computer player by Christopher Strachey.
 
 ## 1994
 
-The computer program *Chinook* ends the 40-year-reign of human champion Marion Tinsley.
+The computer program .bold[Chinook] ends the 40-year-reign of human champion Marion Tinsley.
 - Library of opening moves from grandmasters;
 - A deep search algorithm;
 - A good move evaluation function (based on a linear model);
