@@ -8,6 +8,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 - Classroom: B28/Mania Pavella
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
 - Discord: [https://discord.gg/Y8UP2SBu2h](https://discord.gg/Y8UP2SBu2h)
+- Office: I87b (Gérôme and Fanny), Thursday 12:30 AM to 3 PM
 
 ## Agenda
 
