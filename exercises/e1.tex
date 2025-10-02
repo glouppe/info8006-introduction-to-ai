@@ -39,7 +39,7 @@
     A \thighlight{heuristic function $h(n)$} estimates the cost of the cheapest path from node \thighlight{$n$} to a goal state.\\
     A \thighlight{heuristic} is \thighlight{admissible} if
     $$0 \leq h(n) \leq h^*(n)$$
-    with $h^*(n)$ being the tightest \thighlight{heuristic}, i.e. the true \thighlight{cumulative cost}.\\
+    with $h^*(n)$ being the tightest \thighlight{heuristic}, i.e. the true \thighlight{remaining cost to the closest goal}.\\
     A \thighlight{heuristic} is \thighlight{consistent} if
     $$h(n) \leq c(n,a,n') + h(n')$$
     for all node-action-resulting node triplets \thighlight{$(n,a,n')$}.
@@ -266,7 +266,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
         \item Is the heuristic admissible ? If not, make it admissible.
 
         \begin{solution}
-            A heuristic $h$ is admissible if $0 \leq h(n) \leq h^*(n)$, where $h^*(n)$ is the true forward cost of $n$. In the graph, $h(\text{E}) = 19$ is larger than $h^*(\text{E}) = 11$, making $h$ non-admissible. This is problematic as it means E (and G) would be expanded before D.
+            A heuristic $h$ is admissible if $0 \leq h(n) \leq h^*(n)$, where $h^*(n)$ is the true forward cost of $n$. In the graph, $h(\text{E}) = 19$ is larger than $h^*(\text{E}) = 11$, making $h$ non-admissible. This is problematic as it means E (and G) would not be expanded before D.
 
             Setting $h(\text{E}) = 11$ is sufficient to make $h$ admissible.
         \end{solution}
