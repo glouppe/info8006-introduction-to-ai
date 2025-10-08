@@ -17,19 +17,19 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | September 18 | [Course syllabus][syllabus] [[PDF][syllabus-pdf]] <br> Lecture 0: [Introduction to artificial intelligence][l0] [[PDF][l0-pdf]] <br> Lecture 1: [Intelligent agents][l1] [[PDF][l1-pdf]] |
 | September 25 | Lecture 2: [Solving problems by searching][l2] [[PDF][l2-pdf]] <br> Tutorial: [Project 0](projects/project0), [Project 0 bis](projects/project0bis) |
 | October 2 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[Solutions][e1s]]|
-| October 9 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]]|
-| October 16 | Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br>Exercises 3: Quantifying uncertainty [[PDF][e3]]|
-| October 23 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]<br>_No exercises_|
+| October 9 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] |
+| October 16 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]  <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] <br> Exercises 4: Probabilistic reasoning [[PDF][e4]] |
+| October 23 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br>Exercises 4: Probabilistic reasoning (continued) [[PDF][e4]] |
 | October 30 | _No class_ |
-| November 6 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 4: Probabilistic reasoning [[PDF][e4]]|
-| November 13 |  Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]]  <br> Exercises 5: Reasoning over time [[PDF][e5]]|
+| November 6 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] |
+| November 13 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
 | November 16 | Deadline for Project 1 |
-| November 20 |Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]]  <br> Exercises 6: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
-| November 27 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 7: Machine learning [[PDF][e6]]|
-| December 5 | _No lecture_ <br> Exercises 8: Making decisions & RL [[PDF][e7]]|
-| December 12 | Exercises 9: Past exam |
+| November 20 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] |
+| November 27 |_No lecture_  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
+| December 5 | _No lecture_ <br> Exercises 8: Past exam |
+| December 12 | _No lecture_ 
 | December 14 | Deadline for Project 2 |
-| December 19 | _No class_ | 
+| December 19 | _No lecture_ | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
@@ -78,10 +78,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 [e6s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-6-solutions.pdf
 [e7]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-7.pdf
 [e7s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-7-solutions.pdf
-[e8]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-8.pdf
-[e8s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-8-solutions.pdf
-[e9]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-9.pdf
-[e9s]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/exercises-9-solutions.pdf
+
 
 ## Pacman programming projects
 
