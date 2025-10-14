@@ -7,7 +7,7 @@ You are requested to deliver:
 
 ## Instructions
 
-In this third part of the project, Pacman got tired of ghosts wandering around him, so he bought a magic gun that make the ghosts edible. But while he shot them, he figured out that the gun also made them invisible. Fortunately, he also got his hands on a rusty distance sensor. The sensor returns a noisy Manhattan distance between pacman and each ghost, which Pacman can use as evidence to find the ghost positions. The noisy distance, denoted $e$, results from the addition of noise to the true Manhattan distance, the noise being sampled from a binomial distribution centered around 0. 
+In this project, Pacman got tired of ghosts wandering around him, so he bought a magic gun that make the ghosts edible. But while he shot them, he figured out that the gun also made them invisible. Fortunately, he also got his hands on a rusty distance sensor. The sensor returns a noisy Manhattan distance between pacman and each ghost, which Pacman can use as evidence to find the ghost positions. The noisy distance, denoted $e$, results from the addition of noise to the true Manhattan distance, the noise being sampled from a binomial distribution centered around 0. 
 
 $$e = \text{ManhattanDistance}(\text{Pacman}, \text{Ghost}) + z - np \qquad z \sim \text{Binom}(n, p),$$
 
@@ -27,12 +27,17 @@ $ python run.py --ghost afraid --nghosts 1 --layout large_filter --seed 42
 When several ghosts are present in the maze, they all run the same policy (e.g. all `afraid`). The random seed of the game can be changed with the `--seed` option.
 
 ## Evaluation
-Your project will be evaluated based on the correctness of each of the components (transition_matrix function, observation_matrix function, update (bayes filter) function and pacman controller) and code style. To avoid error propagation, your update function will be evaluated while coupled with our own implementation of transition_matrix and observation_matrix functions. That way any error in the transition_matrix and observation_matrix functions will not impact the correctness of your update function. Public tests only perform sanity checks (correct ouput shape, check if the output is a valid probability distribution, ...). The correctness tests are private and **we encourage you to make your own tests** to test the correctness of your implementation. 
+Your project will be evaluated based on the correctness of each of the components (transition_matrix function, observation_matrix function, update (bayes filter) function and pacman controller) and code style. To avoid error propagation, your update function will be evaluated while coupled with our own implementation of transition_matrix and observation_matrix functions. That way any error in the transition_matrix and observation_matrix functions will not impact the correctness of your update function.
 
 Your project will be evaluated as follow:
 
 - **transition_matrix function** (25%): We evaluate the correctness of the component.
 - **observation_matrix function** (25%): We evaluate the correctness of the component.
 - **update function** (25%): We evaluate the correctness of the component.
-- **Pacman controller** (20%): We evaluate whether you agent is able to eat the ghosts in a reasonable amount of time.
+- **Pacman controller** (20%): We evaluate whether you agent is able to eat the (three) ghosts in a reasonable amount of time. For this test, your score for each layout and ghost type falls into one of four ranges:
+    - Below 500 → the score is far too low and incurs the full penalty.
+    - 500–700 → the score is below expectations and receives a smaller, half penalty.
+    - 700–900 → the remaining penalty decreases linearly as the score approaches 900.
+    - 900 or higher → full credit is awarded with no penalty.
+
 - **Code style** (5%): You are awarded the maximal grade if your code is PEP-8 compliant and no points otherwise. This test is public.
