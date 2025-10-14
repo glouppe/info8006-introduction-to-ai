@@ -20,7 +20,7 @@ Your task is to design an intelligent agent based on the Bayes filter algorithm 
 1. Implement the **Bayes filter** algorithm to compute Pacman's belief state of the ghost positions. To do so, fill in the three methods `transition_matrix`, `observation_matrix` and `update` of the `BeliefStateAgent` class. `update` must rely on `transition_matrix` and `observation_matrix`.
 2. Implement a Pacman agent whose goal is to eat all the ghosts as fast as possible. However, at each step, the agent only has access to its own position and the current belief state of the ghost positions. To do so, fill in the `_get_action` method of the `PacmanAgent` class.
 
-To get started, download and extract the [archive](../project2.zip?raw=true) of the project in the directory of your choice. Use the following command to run your Bayes filter implementation against a single `afraid` ghost in the `large_filter` layout:
+To get started, download and extract the [archive](../project1.zip?raw=true) of the project in the directory of your choice. Use the following command to run your Bayes filter implementation against a single `afraid` ghost in the `large_filter` layout:
 ```console
 $ python run.py --ghost afraid --nghosts 1 --layout large_filter --seed 42
 ```
@@ -34,10 +34,10 @@ Your project will be evaluated as follow:
 - **transition_matrix function** (25%): We evaluate the correctness of the component.
 - **observation_matrix function** (25%): We evaluate the correctness of the component.
 - **update function** (25%): We evaluate the correctness of the component.
-- **Pacman controller** (20%): We evaluate whether you agent is able to eat the (three) ghosts in a reasonable amount of time. For this test, your score for each layout and ghost type falls into one of four ranges:
+- **Pacman controller** (20%): We evaluate whether your agent is able to eat 3 ghosts in a reasonable amount of time. For this test, your score for each layout and ghost type falls into one of the following four ranges:
     - Below 500 → the score is far too low and incurs the full penalty.
-    - 500–700 → the score is below expectations and receives a smaller, half penalty.
-    - 700–900 → the remaining penalty decreases linearly as the score approaches 900.
+    - 500-700 → the score is below expectations and receives a smaller, half penalty.
+    - 700-900 → the remaining penalty decreases linearly as the score approaches 900.
     - 900 or higher → full credit is awarded with no penalty.
 
 - **Code style** (5%): You are awarded the maximal grade if your code is PEP-8 compliant and no points otherwise. This test is public.
