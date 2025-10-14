@@ -141,7 +141,15 @@ By construction, the topology of the network encodes conditional independence as
 
 ???
 
-A dentist is examining a patient's teeth. The patient has a cavity, but the dentist does not know this. However, the patient has a toothache, which the dentist observes.
+Setup:
+- Weather: sunny (s) or rainy (r)
+- Cavity: cavity (c) or no cavity (¬c)
+- Toothache: toothache (t) or no toothache (¬t)
+- Catch: catch (h) or no catch (¬h) with dental probe
+
+Assumptions:
+- the weather is independent of the other variables (hence the absence of edges from Weather to other nodes);
+- toothache and catch are conditionally independent given cavity (hence the absence of edges between Toothache and Catch).
 
 ---
 
@@ -182,7 +190,7 @@ ${\bf P}(T|R)$
 
 ???
 
-Causal model
+Causal model: rain causes traffic and the Bayesian network represents this causal relationship.
 
 ---
 
@@ -220,7 +228,7 @@ ${\bf P}(R|T)$
 
 ???
 
-Diagnostic model
+Diagnostic model: traffic correlates with rain and the Bayesian network represents this correlation. The edge does not represent a causal relationship.
 
 ---
 
@@ -806,6 +814,15 @@ class: middle
 
 .center.width-100[![](figures/lec5/parameterized-bn.png)]
 
+???
+
+Use the box of chalks example:
+
+Assume a Bernoulli distribution of parameter $\theta$ for the binary variable denoting the color of a chalk:
+- Red chalk with probability $1-\theta$.
+- White chalk with probability $\theta$.
+We draw $N$ chalks i.i.d. and observe $c$ white chalks and $l=N-c$ red chalks. How to estimate $\theta$?
+
 ---
 
 # Maximum likelihood estimation
@@ -927,6 +944,10 @@ P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
 &= \theta^a (1-\theta)^{b-1} \\\\
 &= \text{Beta}(\theta|a+1,b).
 \end{aligned}$$
+
+???
+
+Intuition: a Beta prior encodes a belief on the fraction of cherry candies. Observing a cherry candy increases this, observing a lime candy decreases it.
 
 ---
 
