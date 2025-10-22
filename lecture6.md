@@ -120,7 +120,7 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 
 A Markov chain coupled with a sensor model can be represented as a *growable* Bayesian network, unrolled infinitely through time.
 
-The *joint distribution* of all its variables up to $t$ is
+The joint distribution of all its variables up to $t$ is
 $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
 
 ---
@@ -143,14 +143,6 @@ class: middle
 ]]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-60[![](figures/lec6/weather-transition.png)]
-
-The transition model ${\bf P}(\text{Rain}\_t | \text{Rain}\_{t-1})$ can equivalently be represented by a state transition diagram.
 
 ---
 
@@ -270,7 +262,7 @@ As time passes, uncertainty (usually) increases in the absence of new evidence.
 
 What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
-- Eventually, the distribution converges to a fixed point, called a **stationary distribution**.
+- Eventually, the distribution may converge to a fixed distribution, called a **stationary distribution**.
 - This distribution is such that
 $${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
 
@@ -306,28 +298,15 @@ $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
 
 # Filtering
 
-<br><br>
+We want to compute a belief state ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and maintain it as time passes and new evidence $\mathbf{e}\_{t+1}$ is collected.
 
-.center.width-90[![](figures/lec6/observation.png)]
-<br>
-
-.center[With new evidence, uncertainty decreases. Beliefs get reweighted. But how?]
-
-???
-
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1} | \mathbf{e}\_{1:t})$$
-
----
-
-class: middle
-
-## Bayes filter
-
-An agent maintains a **belief state** estimate ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and updates it as new evidences $\mathbf{e}\_{t+1}$ are collected.
-
-This process can be implemented as a recursive Bayesian estimation procedure ${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = f(\mathbf{e}\_{t+1}, {\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t}))$ that alternates between two steps:
+This process can be implemented using the .bold[Bayes filter] algorithm, which alternates between prediction and update steps:
 - (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
 - (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+
+.center.width-40[![](figures/lec6/pacman-ghosts.png)]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
@@ -505,7 +484,7 @@ Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]
 
 class: middle
 
-The most likely sequence  **is not** the sequence of the most likely states!
+The most likely sequence  .bold[is not] the sequence of the most likely states!
 
 The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
 $$
@@ -921,10 +900,9 @@ unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observ
 
 class: middle
 
-## General Kalman update
+## Kalman update equations
 
 The same derivations generalize to multivariate normal distributions.
-
 Assuming the transition and sensor models
 $$
 \begin{aligned}
@@ -932,30 +910,88 @@ p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{
 p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}}),
 \end{aligned}
 $$
-we arrive at the following general update equations:
+the prediction step yields
 $$
 \begin{aligned}
-\mu\_{t+1} &= \mathbf{F}\mathbf{\mu}\_t + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t) \\\\
-\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \\\\
-\mathbf{K}\_{t+1} &= (\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x) \mathbf{H}^T (\mathbf{H}(\mathbf{F}\mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_x)\mathbf{H}^T + \mathbf{\Sigma}\_e)^{-1}
-\end{aligned}$$
-where $\mathbf{K}\_{t+1}$ is the Kalman gain matrix.
+p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) &= \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d\mathbf{x}\_t \\\\
+&= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{\mu}\_{t+1}^-, \mathbf{\Sigma}\_{t+1}^-)
+\end{aligned}
+$$
+where
+$$
+\begin{aligned}
+\mathbf{\mu}\_{t+1}^- &= \mathbf{F} \mathbf{\mu}\_t \\\\
+\mathbf{\Sigma}\_{t+1}^- &= \mathbf{F} \mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_{\mathbf{x}}.
+\end{aligned}
+$$
 
-???
+---
 
-Note that $\mathbf{\Sigma}\_{t+1}$ and $\mathbf{K}\_{t+1}$ are independent of the evidence. Therefore, they can be computed offline.
+class: middle
 
-These equations intuitively make sense.
+The update step yields the final Kalman filter equations,
+$$
+\begin{aligned}
+p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{\mu}\_{t+1}, \mathbf{\Sigma}\_{t+1}) 
+\end{aligned}
+$$
+where
+$$
+\begin{aligned}
+\mathbf{\mu}\_{t+1} &= \mathbf{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{\mu}\_{t+1}^-) \\\\
+\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) \mathbf{\Sigma}\_{t+1}^- \\\\
+\mathbf{K}\_{t+1} &= \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{\Sigma}\_{\mathbf{e}})^{-1}
+\end{aligned}
+$$
+in which $\mathbf{K}\_{t+1}$ is called the .bold[Kalman gain] and represents the relative weight given to the new observation versus the prediction.
 
-Consider
-the update for the mean state estimate $\mu\_{t+1}$.
-- The term  $\mathbf{F}\mathbf{\mu}\_t$ is the predicted state at $t + 1$,
-- so
-$\mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ is the predicted observation.
-- Therefore, the term $\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{F} \mathbf{\mu}\_t$ represents the error in
-the predicted observation.
-- This is multiplied by $ \mathbf{K}\_{t+1}$ to correct the predicted state; hence,
-$ \mathbf{K}\_{t+1}$ is a measure of how seriously to take the new observation relative to the prediction.
+---
+
+# Particle filter
+
+When the transition and sensor models are non-linear and/or non-Gaussian, the Kalman filter is not applicable. 
+
+The .bold[particle filter] is a sampling-based approximate inference algorithm for general continuous state-space models.
+
+<br>
+.center.width-60[![](figures/lec6/robot.png)]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+## Core idea
+
+- A particle filter approximates the filtering distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ using a set $\\{ \mathbf{x}\_t^i \\}$ of samples called .bold[particles].
+- The particles are propagated over time using the transition model.
+- The particles are weighted according to the likelihood of the evidence given the particle's state. 
+- Low-weight particles are discarded, and high-weight particles are duplicated (resampling).
+
+This scales to high dimensions!
+
+---
+
+class: middle
+
+## Update cycle
+
+.center.width-100[![](figures/lec6/particle-filter.png)]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec6/pf-algorithm.png)]
+
+---
+
+class: middle
+
+# Applications
 
 ---
 
@@ -982,14 +1018,34 @@ class: middle
 
 ---
 
+class: middle, black-slide
+
+## Robot localization
+
+Filtering algorithms such as the Kalman filter and the particle filter are widely used for robot localization, i.e., estimating the position and orientation of a robot based on sensor data and a motion model.
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/xqjVTE7QvOg?cc_load_policy=1&hl=en&version=3" frameborder="0" allowfullscreen></iframe>
+]
+
+---
+
+class: middle, black-slide
+
+.center.width-90[![](figures/lec6/satellite.gif)]
+
+## Data assimilation for weather 
+
+Filtering is used to combine observations of the atmosphere with numerical models to estimate its current state and initialize weather forecasts.
+
+---
+
 class: middle
 
-## Data assimilation for weather forecasts 
+.center.width-80[![](figures/lec6/dynamical.svg)]
 
-In weather forecasting, filtering is used to combine observations of the atmosphere with numerical models to estimate its current state.
-This is called **data assimilation**.
-
-Then, the model is used to predict the future states of the atmosphere.
+Formally, the goal of .bold[data assimilation] is to estimate plausible atmospheric trajectories $x\_{1:T}$ given one or more noisy observations $y\_{1:T}$ as the posterior $$p(x\_{1:T} | y\_{1:T}) \propto \prod\_{t=1}^T p(y\_t | x\_t) p(x\_t | x\_{t-1}),$$
+where the transition model $p(x\_t | x\_{t-1})$ is given by a numerical weather prediction model and the sensor model $p(y\_t | x\_t)$ describes the observation process from satellites, radars, weather stations, etc.
 
 ---
 
@@ -1001,88 +1057,33 @@ class: middle, black-slide
 
 ---
 
-# Dynamic Bayesian networks
 
-.grid[
-.kol-2-3[.center.width-100[![](figures/lec6/dbn-cartoon.png)]]
-.kol-1-3[.center.width-80[![](figures/lec6/robot-dbn1.svg)]]
+class: middle
+
+.avatars[![](figures/lec6/faces/gerome.jpg)![](figures/lec6/faces/sacha.jpg)![](figures/lec6/faces/frozet.jpg)![](figures/lec6/faces/victor.jpg)![](figures/lec6/faces/omer.jpg)![](figures/lec6/faces/mathias.jpg)![](figures/lec6/faces/elise.jpg)]
+
+## From Montefiore... 
+
+Appa (Andry et al, 2025) is a deep neural network for data assimilation. It is made of three components:
+- a 500M-parameter .bold[autoencoder] that compresses the data space $x$ into a latent space $z$ with a 450x compression factor;
+- a 1B-parameter .bold[latent diffusion model] that generates latent trajectories $z\_{1:L}$;
+- a .bold[posterior sampling algorithm] adapted from MMPS (Rozet et al, 2024) that samples from the posterior distribution $p(z\_{1:L} | y)$.
+
+.footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720).]
+
+---
+
+class: middle
+
+.center[
+<video poster="" id="video" controls="" muted="" loop="" width="70%" autoplay>
+        <source src="https://montefiore-sail.github.io/appa/static/videos/reanalysis/reanalysis_1week.mp4" type="video/mp4">
+</video>
+
+Reanalysis of past data $p(x\_{1:L} | y\_{1:L})$.
 ]
 
-Dynamics Bayesian networks (DBNs) can be used for tracking multiple variables over time, using multiple sources of evidence. Idea:
-- Repeat a fixed Bayes net structure at each time $t$.
-- Variables from time $t$ condition on those from $t-1$.
-
-DBNs are a generalization of HMMs and of the Kalman filter.
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-.pull-right[![](figures/lec6/icu.png)]
-
-## Application: ICU monitoring
-
-.center.width-100[![](figures/lec6/icu-data.png)]
-
----
-
-class: middle
-
-## Exact inference
-
-.center.width-100[![](figures/lec6/dbn-unrolling.svg)]
-
-Unroll the network through time and run any exact inference algorithm (e.g., variable elimination)
-- Problem: inference cost for each update grows with $t$.
-- Rollup filtering: add slice $t+1$, sum out slice $t$ using variable elimination.
-    - Largest factor is $O(d^{n+k})$ and the total update cost per step is $O(nd^{n+k})$.
-    - Better than HMMs, which is $O(d^{2n})$, but still **infeasible** for large numbers of variables.
-
----
-
-# Particle filter
-
- Basic idea:
-- Maintain a finite population of samples, called **particles**.
-    - The representation of our beliefs is a list of $N$ particles.
-- Ensure the particles track the high-likelihood regions of the
-state space.
-- Throw away samples that have very low weight, according to the evidence.
-- Replicate those that have high weight.
-
-This scales to high dimensions!
-
-.center.width-50[![](figures/lec6/robot.png)]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-## Update cycle
-
-.center.width-100[![](figures/lec6/particle-filter.png)]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec6/pf-algorithm.png)]
-
----
-
-class: middle
-
-## Robot localization
-
-.center.width-70[![](figures/lec6/pf-demo.png)]
-
-.center[(See demo)]
+.footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720). ]
 
 ---
 

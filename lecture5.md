@@ -621,6 +621,8 @@ Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
 - $n$ is the number of variables.
 - $d$ is the size of their domain.
 
+Note that this assumes that variables are enumerated in topological order.
+
 ---
 
 class: middle
@@ -629,7 +631,7 @@ class: middle
 
 .center.width-80[![](figures/lec5/enumeration-tree.png)]
 
-Despite the factoring, inference by enumeration is still **inefficient**. There are repeated computations!
+Despite the factorization, inference by enumeration is still **inefficient**. There are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
 - These can be avoided by storing *intermediate results*.
 
@@ -839,7 +841,7 @@ $$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
 
 class: middle
 
-In practice,
+When possible analytically,
 1. Write down the log-likelihood $L(\theta) = \log P({\bf d}|\theta)$ of the parameters $\theta$.
 2. Write down the derivative $\frac{\partial L}{\partial \theta}$ of the log-likelihood of the parameters $\theta$.
 3. Find the parameter values $\theta^\*$ such that the derivatives are zero (and check whether the Hessian is negative definite).
@@ -940,7 +942,7 @@ Then, observing a cherry candy yields the posterior
 $$\begin{aligned}
 P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
 &= \theta \text{Beta}(\theta|a,b) \\\\
-&= \theta (1-\theta)^{b-1} \theta^{a-1} (1-\theta)^{b-1} \\\\
+&= \theta \theta^{a-1} (1-\theta)^{b-1} \\\\
 &= \theta^a (1-\theta)^{b-1} \\\\
 &= \text{Beta}(\theta|a+1,b).
 \end{aligned}$$
