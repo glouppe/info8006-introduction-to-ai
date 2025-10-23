@@ -2,7 +2,7 @@
 
 \usepackage[english]{babel}
 \usepackage{sleek}
-\usepackage{common}
+\usepackage[nosolutions]{common}
 
 \title{Introduction to Artificial Intelligence (INFO8006)}
 \subtitle{Exercise session 4}
@@ -45,6 +45,21 @@
     \mathbf{\theta^*} = \underset{\theta}{argmax}P(\mathbf{\theta}\mid \mathcal{D}).
     $$
 \end{thbox}
+
+\begin{thbox}{d-separation}
+In a Bayesian network ...\\
+
+If \thighlight{all path} from one variable to another are \thighlight{inactive}, those variables are \thighlight{independent}.\\
+
+If \thighlight{at least one path} from one variable to another is \thighlight{active},  we \thighlight{cannot conclude} on their independence.\\
+
+A path is \thighlight{active} is \thighlight{ALL} the triples within the path are \thighlight{active}.
+\end{thbox}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.9\linewidth]{figures/triplets.png}
+\end{figure}    
 
 \newpage
 
