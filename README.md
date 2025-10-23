@@ -19,7 +19,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | October 2 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[Solutions][e1s]]|
 | October 9 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[Solutions][e2s]]|
 | October 16 | Lecture 5: [Probabilistic reasoning][l5] (continued) [[PDF][l5-pdf]] <br> Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]  <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] [[Solutions][e3s]]|
-| October 23 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued) <br>Exercises 4: Probabilistic reasoning [[PDF][e4]] |
+| October 23 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued) <br>Exercises 4: Probabilistic reasoning [[PDF][e4]] [[Solutions][e4s]]|
 | October 30 | _No class_ |
 | November 6 | Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] |
 | November 13 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
