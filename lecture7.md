@@ -880,6 +880,14 @@ A convolutional neural network (CNN) is a deep neural network that uses convolut
 
 class: middle
 
+.center.width-100[![](figures/lec7/convnet-pattern.png)]
+
+.center[Interleaving convolutional and pooling layers enables the network to learn hierarchical features from local to global patterns.]
+
+---
+
+class: middle
+
 .center.width-70[![](figures/lec7/ConvAlex.svg)]
 
 .center[The AlexNet architecture for image classification (Krizhevsky et al., 2012).]
