@@ -1032,7 +1032,6 @@ class: middle, black-slide
 
 ---
 
-
 class: middle
 
 .avatars[![](figures/lec6/faces/gerome.jpg)![](figures/lec6/faces/sacha.jpg)![](figures/lec6/faces/frozet.jpg)![](figures/lec6/faces/victor.jpg)![](figures/lec6/faces/omer.jpg)![](figures/lec6/faces/mathias.jpg)![](figures/lec6/faces/elise.jpg)]

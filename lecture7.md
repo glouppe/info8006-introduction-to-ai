@@ -8,14 +8,6 @@ Lecture 7: Machine learning and neural networks
 Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
-???
-
-!!! The transition, motivation and intuition towards CNNs should be improved. This is going too fast and not explained as clearly as MLPs.
-
-XXX evaluation protocol
-
-XXX revisit the examples?
-
 ---
 
 # Today
@@ -38,7 +30,7 @@ What if the environment is **unknown**?
 - Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 - It exposes the agent to reality rather than trying to hardcode reality into the agent's program.
 
-More generally, learning is useful for any task where it is difficult to write a program that performs the task but easy to obtain examples of desired behavior.
+.success[More generally, learning is useful for any task where it is difficult to write a program that performs the task but easy to obtain examples of desired behavior.]
 
 ---
 
@@ -55,7 +47,7 @@ class: middle
 .width-40[![](figures/lec7/dog.jpg)]
 ]
 
-.question[How would you write a computer program that recognizes cats from dogs?]
+.center[How would you write a computer program that recognizes cats from dogs?]
 
 ---
 
@@ -92,7 +84,7 @@ class: middle
 
 .center.width-100[![](figures/lec7/catordog-flow.gif)]
 
-.center[The deep learning approach.]
+.center[The deep learning approach: train a highly parameterized model<br> to produce correct outputs (e.g., class labels) from inputs (e.g., images).]
 
 ---
 
@@ -165,7 +157,7 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 
 <br><br>
 
-To learn the conditional distribution $p(y|\mathbf{x})$, we maximize
+Following the principle of maximum likelihood estimation, we maximize
 $$p(y|\mathbf{x}) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{1}{2}\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{\sigma^2}\right)$$
 w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$.
 
@@ -246,14 +238,19 @@ class: middle
 
 ## Gradient descent
 
-Let $\mathcal{L}(\theta)$ denote a loss function defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
+Let $\mathcal{L}(\theta)$ denote a loss function (e.g., the negative log-likelihood) defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
 
-To minimize $\mathcal{L}(\theta)$, **gradient descent** uses local linear information to iteratively move towards a (local) minimum.
+To minimize $\mathcal{L}(\theta)$, **gradient descent** relies on 1st-order Taylor approximations
+$$\mathcal{L}(\theta + \epsilon) \approx \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta)$$
+and adds a quadratic regularization term to ensure that the approximation is valid only in a neighborhood of $\theta$, leading to the approximation
+$$\hat{\mathcal{L}}(\epsilon; \theta) = \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta) + \frac{1}{2\gamma} \|\epsilon\|^2,$$
+where $\gamma > 0$ controls the size of the neighborhood.
 
-For $\theta\_0$, a first-order approximation around $\theta\_0$ can be defined as
-$$\hat{\mathcal{L}}(\epsilon; \theta\_0) = \mathcal{L}(\theta\_0) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{2\gamma}||\epsilon||^2.$$
+---
 
-.center.width-50[![](figures/lec7/gd-good-0.png)]
+class: middle
+
+.center[![](figures/lec7/gd-good-0.png)]
 
 ---
 
@@ -337,17 +334,36 @@ class: middle, center
 
 class: middle
 
+## Measuring performance
+
+ML models are trained to minimize the loss $\mathcal{L}(\theta)$ on a training dataset $\mathbf{d}\_\text{train}$. However, a low training loss does not guarantee good performance on unseen data, as the model may have memorized the training data.
+
+To assess its generalization performance, a model should be evaluated on a separate test dataset $\mathbf{d}\_\text{test}$ that was not used during training. This evaluation provides an estimate of how well the model will perform on new, unseen data.
+
+<br>
+.center.width-100[![](figures/lec7/PerfMNIST1DResults.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
 ## Example: imitation learning in Pacman
 
 Can we learn to play Pacman only from observations?
 - Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
 - State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
 - We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
-- This is a multiclass classification problem that can be solved by combining binary classifers.
+- This is a multiclass classification problem.
 
 .center.width-70[![](figures/lec7/pacman.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+!!! This year's project is about imitation learning in Pacman.
 
 ---
 
@@ -403,16 +419,24 @@ class: middle
 
 # Shallow networks
 
-A shallow network is a function $$f : \mathbb{R}^{d\_\text{in}} \to \mathbb{R}^{d\_\text{out}}$$ that maps multi-dimensional inputs $\mathbf{x}$ to multi-dimensional outputs $\mathbf{y}$ through a hidden layer $\mathbf{h} = [h\_0, h\_1, ..., h\_{q-1}] \in \mathbb{R}^q $, such that
-$$\begin{aligned}
-h\_j &= \sigma\left(\sum\_{i=0}^{d\_\text{in} - 1} w\_{ji} x\_i + b\_j  \right) \\\\
-y\_k &= \sum\_{j=0}^{q-1} v\_{kj} h\_j + c\_k,
-\end{aligned}$$
-where $w\_{ji}$, $b\_j$, $v\_{kj}$ and $c\_k$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$, $k=0, ..., d\_\text{out}-1$) are the model parameters and $\sigma$ is an activation function.
+<br>
+.center.width-100[![](figures/lec7/ShallowTerminology.svg)]
 
-???
+A shallow network is a function $$f : \mathbb{R}^{d\_\text{in}} \to \mathbb{R}^{d\_\text{out}}$$ that maps multi-dimensional inputs $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ to multi-dimensional outputs $\mathbf{y} \in \mathbb{R}^{d\_\text{out}}$ through a hidden layer $\mathbf{h} = [h\_0, h\_1, ..., h\_{q-1}] \in \mathbb{R}^q$.
 
-Draw the (generic) architecture of a shallow network.
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+The hidden layer is a non-linear transformation of the input, such that
+$$h\_j = \sigma\left(\sum\_{i=0}^{d\_\text{in} - 1} w\_{ji} x\_i + b\_j  \right)$$
+for $j=0, ..., q-1$, where $w\_{ji}$ and $b\_j$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$) are the model parameters and $\sigma$ is an activation function.
+
+The output layer is a linear transformation of the hidden layer, such that
+$$y\_k = \sum\_{j=0}^{q-1} v\_{kj} h\_j + c\_k$$
+for $k=0, ..., d\_\text{out}-1$, where $v\_{kj}$ and $c\_k$ ($j=0, ..., q-1$, $k=0, ..., d\_\text{out}-1$) are the model parameters.
 
 ---
 
@@ -424,22 +448,10 @@ We first consider the case where $d\_\text{in} = 1$ and $d\_\text{out} = 1$ for 
 $$y = v\_{0} \sigma(w\_{0} x + b\_0) + v\_{1} \sigma(w\_{1} x + b\_1) + v\_{2} \sigma(w\_{2} x + b\_2) + c$$
 where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$ are the model parameters and where the activation function $\sigma$ is $\text{ReLU}(\cdot) = \max(0, \cdot)$.
 
-.center.width-40[![](figures/lec7/ShallowReLU.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
----
-
-class: middle
-
+<br>
 .center.width-100[![](figures/lec7/ShallowNet.svg)]
 
-a) The input $x$ is on the left, the hidden units $h_0$, $h_1$ and $h_2$ are in the middle, and the output $y$ is on the right. Computation flows from left to right. 
-
-b) More compact representation of the same network where we omit the bias terms, the weight labels and the activation functions.
-
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
 
 ---
 
@@ -455,7 +467,7 @@ class: middle
 
 .center.width-100[![](figures/lec7/ShallowFunctions.svg)]
 
-This network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
+This shallow network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
@@ -465,9 +477,9 @@ class: middle
 
 ## Universal approximation theorem
 
-The number $q$ of hidden units $h\_j$ in a measure of the .italic[capacity] of the shallow network. With $\text{ReLU}$ activation functions, the hidden units define (up to) $q$ joints in the input space, hence defining $q+1$ linear regions in the output space.
+The **universal approximation theorem** states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units. 
 
-The **universal approximation theorem** states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy.
+For example, for 1d input and 1d output, any continuous function $f: \mathbb{R} \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
 
 ---
 
@@ -515,12 +527,16 @@ class: middle
 
 To extend the network to multivariate inputs $\mathbf{x} = [x\_0, x\_1, ..., x\_{d\_{\text{in}}-1}]$, we extend the linear relations between the input and the hidden units. 
 
+.center.width-50[![](figures/lec7/ShallowNetTwoInputs.svg)]
+
 For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
 $$\begin{aligned}
 h\_0 &= \sigma\left( w\_{00} x\_0 + w\_{01} x\_1 + b\_0 \right) \\\\
 h\_1 &= \sigma\left( w\_{10} x\_0 + w\_{11} x\_1 + b\_1 \right) \\\\
 h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
 \end{aligned}$$
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -566,7 +582,7 @@ class: middle
 
 .center.width-100[![](figures/lec7/DeepFold.svg)]
 
-Folding interpretation of a deep network:
+The composition of two shallow networks can be interpreted as a folding operation in three steps:
 
 a) The first network folds the input space back on itself.<br>
 b) The second network applies its function to the folded space.<br>
@@ -593,24 +609,7 @@ class: middle
 
 Since the operation from $[h\_0, h\_1, h\_2]$ to $y$ is linear and the operation from $y$ to $[h'\_0, h'\_1, h'\_2]$ is also linear, their composition in series is linear. 
 
-It follows that the composition of the two shallow networks is a special case of a deep network with two hidden layers where the first layer is defined as
-$$\begin{aligned}
-h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
-h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
-h\_2 &= \sigma\left( w\_{2} x + b\_2 \right),
-\end{aligned}$$
-the second layer is defined from the outputs of the first layer as
-$$\begin{aligned}
-h\_0' &= \sigma\left( w'\_{00} h\_0 + w'\_{01} h\_1 + w'\_{02} h\_2 + b'\_0 \right) \\\\
-h\_1' &= \sigma\left( w'\_{10} h\_0 + w'\_{11} h\_1 + w'\_{12} h\_2 + b'\_1 \right) \\\\
-h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right),
-\end{aligned}$$
-and the output is defined as
-$$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
-
----
-
-class: middle
+It follows that the composition of the two shallow networks is a special case of a deep network with two hidden layers.
 
 .center.width-100[![](figures/lec7/DeepTwoLayer.svg)]
 
@@ -620,18 +619,36 @@ class: middle
 
 class: middle
 
-.center.width-70[![](figures/lec7/DeepBuildUp.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
+Mathematically, the first layer is defined as
+$$\begin{aligned}
+h\_0 &= \sigma\left( w\_{0} x + b\_0 \right) \\\\
+h\_1 &= \sigma\left( w\_{1} x + b\_1 \right) \\\\
+h\_2 &= \sigma\left( w\_{2} x + b\_2 \right),
+\end{aligned}$$
+while the second layer is defined from the outputs of the first layer as
+$$\begin{aligned}
+h\_0' &= \sigma\left( w'\_{00} h\_0 + w'\_{01} h\_1 + w'\_{02} h\_2 + b'\_0 \right) \\\\
+h\_1' &= \sigma\left( w'\_{10} h\_0 + w'\_{11} h\_1 + w'\_{12} h\_2 + b'\_1 \right) \\\\
+h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right),
+\end{aligned}$$
+and the output as
+$$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
 
 ---
 
 class: middle
 
-## General formulation
+.center.width-70[![](figures/lec7/DeepBuildUp.svg)]
 
-The computation of a hidden layer can be written in matrix form as
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Multilayer perceptron
+
+We first note that the computation of a hidden layer with $q$ hidden units can be written in matrix form as
 $$\begin{aligned}
 \mathbf{h} &= \begin{bmatrix} h\_0 \\\\ h\_1 \\\\ \vdots \\\\ h\_{q-1} \end{bmatrix} = \sigma\left( \begin{bmatrix} w\_{00} & w\_{01} & \cdots & w\_{0(d\_\text{in}-1)} \\\\ w\_{10} & w\_{11} & \cdots & w\_{1(d\_\text{in}-1)} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ w\_{(q-1)0} & w\_{(q-1)1} & \cdots & w\_{(q-1)(d\_\text{in}-1)} \end{bmatrix} \begin{bmatrix} x\_0 \\\\ x\_1 \\\\ \vdots \\\\ x\_{d\_\text{in}-1} \end{bmatrix} + \begin{bmatrix} b\_0 \\\\ b\_1 \\\\ \vdots \\\\ b\_{q-1} \end{bmatrix} \right) \\\\
 &= \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})
@@ -642,18 +659,32 @@ where $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ is the input vector, $\mathbf{W
 
 class: middle
 
-Hidden layers can be composed in series to form a deep network with $L$ layers such that
+Using this notation, layers can be composed in series to form a deep network with $K$ hidden layers such that
 $$\begin{aligned}
 \mathbf{h}\_0 &= \mathbf{x} \\\\
 \mathbf{h}\_1 &= \sigma(\mathbf{W}^T\_1 \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
 \mathbf{h}\_2 &= \sigma(\mathbf{W}^T\_2 \mathbf{h}\_1 + \mathbf{b}\_2) \\\\
 \vdots \\\\
-\mathbf{h}\_L &= \sigma(\mathbf{W}^T\_L \mathbf{h}\_{L-1} + \mathbf{b}\_L) \\\\
-\mathbf{y} &= \mathbf{h}\_L,
+\mathbf{h}\_K &= \sigma(\mathbf{W}^T\_K \mathbf{h}\_{K-1} + \mathbf{b}\_K) \\\\
+\mathbf{y} &= \sigma(\mathbf{W}^T\_{y} \mathbf{h}\_K + \mathbf{b}\_{y})
 \end{aligned}$$
-where $\mathbf{W}\_\ell \in \mathbb{R}^{q\_{l-1} \times q\_\ell}$ is the weight matrix of the $\ell$-th layer, $\mathbf{b}\_\ell \in \mathbb{R}^{q\_\ell}$ is the bias vector of the $\ell$-th layer, and $\mathbf{h}\_\ell \in \mathbb{R}^{q\_\ell}$ is the hidden vector of the $\ell$-th layer.
+where $\mathbf{W}\_k \in \mathbb{R}^{q\_{k-1} \times q\_k}$ is the weight matrix of the $k$-th hidden layer and $\mathbf{b}\_k \in \mathbb{R}^{q\_k}$ is the bias vector of the $k$-th layer.
 
-This model is known as the feedforward neural network, the fully connected network, or the .bold[multilayer perceptron] (MLP).
+The resulting function $f(\mathbf{x}; \theta)$ is a highly non-linear mapping from inputs $\mathbf{x}$ to outputs $\mathbf{y}$, where $\theta$ denotes the set of all model parameters. This architecture is known as the .bold[multilayer perceptron].
+
+---
+
+class: middle
+
+A shallow network with one input, one output, and $q$ hidden units can create up to $q+1$ linear regions and is defined by $O(q)$ parameters.
+
+A deep network with $K$ hidden layers, each with $q$ hidden units, can create up to $(q+1)^K$ linear regions and is defined by $O(Kq^2)$ parameters.
+
+<br>
+
+.center.width-100[![](figures/lec7/DeepParams.svg)]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -661,7 +692,18 @@ class: middle
 
 ## Activation functions
 
+Activation functions $\sigma: \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network, enabling the model to learn complex functions.
+
+Common activation functions include:
+- Sigmoid: $\sigma(x) = \frac{1}{1 + \exp(-x)}$, which maps inputs to the range $(0, 1)$.
+- Hyperbolic tangent (tanh): $\sigma(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}$, which maps inputs to the range $(-1, 1)$.
+- Rectified Linear Unit (ReLU): $\sigma(x) = \max(0, x)$, which introduces sparsity and mitigates the vanishing gradient problem.
+
 The choice of the activation function $\sigma$ is crucial for the expressiveness of the network and the optimization of the model parameters. 
+
+---
+
+class: middle
 
 .center.width-100[![](figures/lec7/ShallowActivations.svg)]
 
@@ -671,11 +713,11 @@ The choice of the activation function $\sigma$ is crucial for the expressiveness
 
 class: middle
 
-## Output layers
+## Output layers $\mathbf{y}=\sigma(\mathbf{W}^T\_y \mathbf{h}\_K + \mathbf{b}\_y)$
 
-- For regression, the width $q$ of the last layer $L$ is set to the dimensionality of the output $d\_\text{out}$ and the activation function is the identity $\sigma(\cdot) = \cdot$, which results in a vector $\mathbf{h}\_L \in \mathbb{R}^{d\_\text{out}}$.
-- For binary classification, the width $q$ of the last layer $L$ is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output $h\_L \in [0,1]$ that models the probability $p(y=1|\mathbf{x})$.
-- For multi-class classification, the sigmoid activation $\sigma$ in the last layer can be generalized to produce a vector $\mathbf{h}\_L \in \bigtriangleup^C$ of probability estimates $p(y=i|\mathbf{x})$.
+- For regression, the width $q$ of the output layer is set to the dimensionality of the output $d\_\text{out}$ and the activation function is the identity $\sigma(\cdot) = \cdot$.
+- For binary classification, the width $q$ of the output layer is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output that models the probability $p(y=1|\mathbf{x})$.
+- For multi-class classification, the sigmoid activation $\sigma$ in the output layer can be generalized to produce a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y=i|\mathbf{x})$.
 This activation is the $\text{Softmax}$ function, where its $i$-th output is defined as
 $$\text{Softmax}(\mathbf{z})\_i = \frac{\exp(z\_i)}{\sum\_{j=1}^C \exp(z\_j)},$$
 for $i=1, ..., C$.
@@ -686,7 +728,7 @@ class: middle
 
 ## Loss functions
 
-The parameters (e.g., $\mathbf{W}\_\ell$ and $\mathbf{b}\_\ell$ for each layer $\ell$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_j, \mathbf{y}\_j) \\\}$ of input-output pairs.
+The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_j, \mathbf{y}\_j) \\\}$ of input-output pairs.
 
 The loss function is derived from the likelihood: 
 - For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} (\mathbf{y}\_j - f(\mathbf{x}\_j; \theta))^2$.
@@ -700,33 +742,25 @@ class: middle, center
 
 ---
 
-class: middle
-
-## MLPs on images?
-
-The MLP architecture is appropriate for tabular data, but not for images.
-- Each pixel of an image is an input feature, leading to a high-dimensional input vector.
-- Each hidden unit is connected to all input units, leading to a high-dimensional weight matrix.
-
----
-
-class: middle
-
-We want to design a neural architecture such that:
-- in the earliest layers, the network responds similarly to similar patches of the image, regardless of their location;
-- the earliest layers focus on local regions of the image, without regard for the contents of the image in distant regions;
-- in the later layers, the network combines the information from the earlier layers to focus on larger and larger regions of the image, eventually combining all the information from the image to classify the image into a category.
-
----
-
 # Convolutional networks
 
-Convolutional neural networks extend fully connected architectures with
-- convolutional layers acting as local feature detectors;
-- pooling layers acting as spatial down-samplers.
+Images have properties that suggest the need for specialized architectures:
+- They are high-dimensional inputs (e.g., $512 \times 512$ pixels = 262144 inputs).
+- Nearby pixels are strongly correlated.
+- The same patterns can appear at different locations in the image.
+- Patterns are hierarchical: simple patterns combine to form more complex patterns.
+- The interpretation of an image is stable under geometric transformations. 
 
-<br>
-.center.width-80[![](figures/lec7/convnet-pattern.png)]
+.alert[The MLP architecture would fail to exploit these properties, leading to poor performance and high computational cost.]
+
+---
+
+class: middle
+background-image: url('figures/lec7/wally.jpg')
+background-size: contain
+background-position: center
+
+.footnote[Credits: Martin Handford, [Where's Wally?](https://en.wikipedia.org/wiki/Where%27s_Wally%3F) series.]
 
 ---
 
@@ -734,24 +768,72 @@ class: middle
 
 ## 1d convolution
 
-For the one-dimensional input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\mathbf{u} \in \mathbb{R}^w$, the discrete **convolution** $\mathbf{x} \circledast \mathbf{u}$ is a vector of size $W - w + 1$ such that
+For the one-dimensional input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete **convolution** $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
 $$\begin{aligned}
-(\mathbf{x} \circledast \mathbf{u})[i] &= \sum\_{m=0}^{w-1} \mathbf{x}\_{m+i}  \mathbf{u}\_m .
+(\mathbf{x} \circledast \omega)[i] &= \sum\_{m=0}^{w-1} \mathbf{x}\_{m+i}  \omega\_m .
 \end{aligned}
 $$
 
+.italic[
+Technically, $\circledast$ denotes the cross-correlation operator.
+However, most machine learning libraries call it convolution.
+]
+
 ---
 
-class: middle 
+class: middle
 
-Convolutions can implement differential operators:
-$$(0,0,0,0,1,2,3,4,4,4,4) \circledast (-1,1) = (0,0,0,1,1,1,1,0,0,0) $$
-.center.width-100[![](figures/lec7/conv-op1.png)]
-or crude template matchers:
-$$(0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0) \circledast (1, 0, 1) = (3, 0, 3, 0, 0, 0, 3, 0, 6, 0, 3, 0)$$
-.center.width-100[![](figures/lec7/conv-op2.png)]
+.center.width-100[![](figures/lec7/Conv1.svg)]
 
-.footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
+<br>
+.center[1d convolution with a kernel $\omega = (\omega\_1, \omega\_2, \omega\_3)$ applied to the input signal $\mathbf{x}$. <br>
+The output is obtained by sliding the kernel over the input and computing the inner product at each position.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## 2d convolution
+
+For the 2d input tensor $\mathbf{x} \in \mathbb{R}^{H \times W}$ and the 2d convolutional kernel $\omega \in \mathbb{R}^{h \times w}$, the discrete **convolution** $\mathbf{x} \circledast \omega$ is a matrix of size $(H-h+1) \times (W-w+1)$ such that
+$$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{n+j,m+i} \omega_{n,m}$$
+
+???
+
+Draw: Explain the intuition behind the sum of element-wise products which reduces to an inner product between the kernel and a region of the input.
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/Conv2D.svg)]
+
+.center[2d convolution with a kernel $\omega  \in \mathbb{R}^{3 \times 3}$ applied to the input signal $\mathbf{x}$.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Channels
+
+The 2d convolution can be extended to tensors with multiple channels.
+
+For the 3d input tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$ and the 3d convolutional kernel $\omega \in \mathbb{R}^{C \times h \times w}$, the discrete 2d convolution $\mathbf{x} \circledast \omega$ is a 2d tensor of size $(H-h+1) \times (W-w+1)$ such that
+$$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{c=0}^{C-1}\sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{c,n+j,m+i} \omega_{c,n,m}$$
+
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ConvImage.svg)]
+
+.center[2d convolution applied to a color image with three channels (R, G, B).]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -759,34 +841,7 @@ class: middle
 
 ## Convolutional layers
 
-A convolutional layer is defined by a set of $K$ kernels $\mathbf{u}$ of size $c\times h \times w$, where $h$ and $w$ are the height and width of the kernel, and $c$ is the number of channels of the input.
-
-Assuming as input a 3D tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$, the output of the convolutional layer is a set of $K$ feature maps of size $H' \times W'$, where $H' = H - h + 1$ and $W' = W - w + 1$. Each feature map $\mathbf{o}$ is the result of convolving the input with a kernel, that is
-$$\mathbf{o}\_{j,i} = (\mathbf{x} \circledast \mathbf{u})[j,i] = \sum\_{c=0}^{C-1}  \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{c,n+j,m+i} \mathbf{u}\_{c,n,m}$$
-
----
-
-class: middle
-
-.center[![](figures/lec7/3d-conv.gif)]
-
-.footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
-
-???
-
-Give some intuition about the interpretation of the convolution in terms of similarity between the input and the kernel.
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec7/Conv2a.svg)]
-
-Convolutional layers (c-f) are a special case of fully connected layers (a-b) where hidden units are connected to local regions of the input through shared weights (the kernels).
-- The connectivity allows the network to learn local patterns in the input.
-- Weight sharing allows the network to learn the same patterns at different locations in the input.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+A convolutional layer is defined by a set of $K$ kernels $\omega_k$ of size $C \times h \times w$. It applies the 2d convolution operation to the input tensor $\mathbf{x}$ of size $C \times H \times W$ to produce a set of $K$ feature maps $\mathbf{o}\_k$.
 
 ---
 
@@ -803,9 +858,34 @@ $$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,rj+n,si+m}.$$
 
 class: middle
 
-.center[![](figures/lec7/3d-pooling.gif)]
+.center.width-100[![](figures/lec7/ConvDown.svg)]
 
-.footnote[Credits: Francois Fleuret, [EE559 Deep Learning](https://fleuret.org/ee559/), EPFL.]
+.center[Subsampling, max-pooling and average-pooling with a pooling area of size $2 \times 2$.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Convolutional neural networks (CNNs)
+
+A convolutional neural network (CNN) is a deep neural network that uses convolutional layers and pooling layers to process multi-dimensional inputs such as images.
+
+- Convolutional layers extract local features from the input while preserving spatial relationships.
+- Pooling layers reduce the spatial dimensions of the feature maps, allowing the network to capture more global features.
+- Fully connected layers at the end of the network combine the extracted features to make predictions.
+
+---
+
+class: middle
+
+.center.width-70[![](figures/lec7/ConvAlex.svg)]
+
+.center[The AlexNet architecture for image classification (Krizhevsky et al., 2012).]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
 
 ---
 
@@ -816,40 +896,6 @@ class: middle, center
 ???
 
 See also https://poloclub.github.io/cnn-explainer/
-
----
-
-# Recurrent networks
-
-When the input is a sequence $\mathbf{x}\_{1:T}$, the feedforward network can be made **recurrent** by computing a sequence $\mathbf{h}\_{1:T}$ of hidden states, where $\mathbf{h}\_{t}$ is a function of both $\mathbf{x}\_{t}$ and the previous hidden states in the sequence.
-
-For example,
-$$\mathbf{h}\_{t} = \sigma(\mathbf{W}\_{xh}^T \mathbf{x}\_t + \mathbf{W}\_{hh}^T \mathbf{h}\_{t-1} + \mathbf{b}),$$
-where $\mathbf{h}\_{t-1}$ is the previous hidden state in the sequence.
-
-???
-
-Skip or go fast.
-
----
-
-class: middle
-
-Notice how this is similar to filtering and dynamic decision networks:
-- $\mathbf{h}\_t$ can be viewed as some current belief state;
-- $\mathbf{x}\_{1:T}$ is a sequence of observations;
-- $\mathbf{h}\_{t+1}$ is computed from the current belief state $\mathbf{h}\_t$ and the latest evidence $\mathbf{x}\_t$ through some fixed computation (in this case a neural network, instead of being inferred from the assumed dynamics).
-- $\mathbf{h}\_t$ can also be used to decide on some action, through another network $f$ such that $a\_t = f(\mathbf{h}\_t;\theta)$.
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/Ipi40cb_RsI?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-A recurrent network playing Mario Kart.
-]
 
 ---
 
