@@ -12,6 +12,10 @@ Prof. Gilles Louppe<br>
 
 !!! The transition, motivation and intuition towards CNNs should be improved. This is going too fast and not explained as clearly as MLPs.
 
+XXX evaluation protocol
+
+XXX revisit the examples?
+
 ---
 
 # Today
@@ -887,11 +891,13 @@ class: middle
 
 .width-100[![](./figures/lec0/scaling-power-law.png)]
 
-## Scaling laws
+## Scaling laws 
 
 - The more data, the better the model.
 - The more parameters, the better the model.
 - The more compute, the better the model.
+
+(... at least until 2024-2025.)
 
 ---
 

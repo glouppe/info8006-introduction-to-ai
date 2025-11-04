@@ -669,11 +669,11 @@ where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
 
 class: middle
 
-## Normal
+## Gaussian
 
 .center.width-60[![](figures/lec6/normal.png)]
 
-The normal (or Gaussian) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
+The Gaussian (or Normal) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
 where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
 
@@ -687,19 +687,19 @@ Comment that
 
 class: middle
 
-## Multivariate normal
+## Multivariate Gaussian
 
 .center.width-60[![](figures/lec6/mvn.png)]
 
-The multivariate normal distribution generalizes to $n$ random variables. Its (joint) density function is defined as
+The multivariate Gaussian distribution generalizes to $n$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\mathbf{\Sigma}|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
-where $\mathbf{m} \in \mathbb{R}^n$ and $\mathbf{\Sigma} \in \mathbb{R}^{n\times n}$ is positive semi-definite.
+where $\mathbf{m} \in \mathbb{R}^n$ is the mean vector and $\mathbf{\Sigma} \in \mathbb{R}^{n\times n}$ is the covariance matrix.
 
 ---
 
 class: middle
 
-## Cheat sheet for Gaussian models (Särkkä, 2013)
+## Cheat sheet for Gaussian distributions (Särkkä, 2013)
 
 If $\mathbf{x}$ and $\mathbf{y}$ have the joint Gaussian distribution 
 $$
@@ -768,7 +768,7 @@ The Bayes filter extends to **continuous** state and evidence variables $\mathbf
 The summations are replaced with integrals and the probability mass functions with probability densities, giving the recursive Bayesian relation
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) &\propto\, p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
+p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) \propto  p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
 \end{aligned}
 $$
 where the normalization constant is
@@ -788,7 +788,7 @@ The **Kalman filter** is a special case of the Bayes filter, which assumes:
 <br><br><br>
 ![](figures/lec6/lg-model1.png)
 
-$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{\Sigma}\_{\mathbf{x}})$
+$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})$
 
 Transition model
 
@@ -796,7 +796,7 @@ Transition model
 .kol-1-2.center[
 ![](figures/lec6/lg-model2.png)
 
-$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{C} \mathbf{x}\_t + \mathbf{d}, \mathbf{\Sigma}\_{\mathbf{e}})$
+$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R})$
 
 Sensor model
 ]
@@ -806,33 +806,8 @@ Sensor model
 
 class: middle
 
-## Filtering Gaussian distributions
+## 1d Gaussian random walk 
 
-- .italic[Prediction step:]<br><br>
-If the distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is Gaussian and the transition model $p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t})$ is linear Gaussian, then the one-step predicted distribution given by
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) = \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_{t}) p(\mathbf{x}\_{t} | \mathbf{e}\_{1:t}) d\mathbf{x}\_t $$
-is also a Gaussian distribution.
-- .italic[Update step:]<br><br>
-If the prediction $p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$ is Gaussian and the sensor model $p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1})$ is linear Gaussian, then after conditioning on new evidence, the updated distribution
-$$p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) \propto p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t})$$
-is also a Gaussian distribution.
-
----
-
-class: middle
-
-Therefore, for the Kalman filter,  $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ is a multivariate Gaussian distribution $\mathcal{N}(\mathbf{x}\_t | \mathbf{\mu}\_t, \mathbf{\Sigma}\_t)$ for all $t$.
-
-- Filtering reduces to the computation of the parameters $\mu_t$ and  $\mathbf{\Sigma}\_t$.
-- By contrast, for general (non-linear, non-Gaussian) processes, the description of the posterior grows **unboundedly** as $t \to \infty$.
-
----
-
-class: middle
-
-## 1D example
-
-Gaussian random walk:
 - Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 | \mu\_0, \sigma\_0^2) $$
 - The transition model adds random perturbations of constant variance:
     $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_{t+1}|x\_t, \sigma\_x^2)$$
@@ -902,12 +877,12 @@ class: middle
 
 ## Kalman update equations
 
-The same derivations generalize to multivariate normal distributions.
+The same derivations generalize to multivariate Gaussian distributions.
 Assuming the transition and sensor models
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{F} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{x}}) \\\\
-p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{\Sigma}\_{\mathbf{e}}),
+p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t, \mathbf{Q}) \\\\
+p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{R}),
 \end{aligned}
 $$
 the prediction step yields
@@ -921,7 +896,7 @@ where
 $$
 \begin{aligned}
 \mathbf{\mu}\_{t+1}^- &= \mathbf{F} \mathbf{\mu}\_t \\\\
-\mathbf{\Sigma}\_{t+1}^- &= \mathbf{F} \mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{\Sigma}\_{\mathbf{x}}.
+\mathbf{\Sigma}\_{t+1}^- &= \mathbf{F} \mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{Q}.
 \end{aligned}
 $$
 
@@ -940,7 +915,7 @@ $$
 \begin{aligned}
 \mathbf{\mu}\_{t+1} &= \mathbf{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{\mu}\_{t+1}^-) \\\\
 \mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) \mathbf{\Sigma}\_{t+1}^- \\\\
-\mathbf{K}\_{t+1} &= \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{\Sigma}\_{\mathbf{e}})^{-1}
+\mathbf{K}\_{t+1} &= \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{R})^{-1}
 \end{aligned}
 $$
 in which $\mathbf{K}\_{t+1}$ is called the .bold[Kalman gain] and represents the relative weight given to the new observation versus the prediction.
@@ -1066,8 +1041,8 @@ class: middle
 
 Appa (Andry et al, 2025) is a deep neural network for data assimilation. It is made of three components:
 - a 500M-parameter .bold[autoencoder] that compresses the data space $x$ into a latent space $z$ with a 450x compression factor;
-- a 1B-parameter .bold[latent diffusion model] that generates latent trajectories $z\_{1:L}$;
-- a .bold[posterior sampling algorithm] adapted from MMPS (Rozet et al, 2024) that samples from the posterior distribution $p(z\_{1:L} | y)$.
+- a 1B-parameter .bold[latent diffusion model] that generates latent trajectories $z\_{1:T}$;
+- a .bold[posterior sampling algorithm] adapted from MMPS (Rozet et al, 2024) that samples from the posterior distribution $p(z\_{1:T} | y\_{1:T})$.
 
 .footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720).]
 
@@ -1080,7 +1055,7 @@ class: middle
         <source src="https://montefiore-sail.github.io/appa/static/videos/reanalysis/reanalysis_1week.mp4" type="video/mp4">
 </video>
 
-Reanalysis of past data $p(x\_{1:L} | y\_{1:L})$.
+Reanalysis of past data $p(x\_{1:T} | y\_{1:T})$.
 ]
 
 .footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720). ]
