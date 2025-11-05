@@ -895,8 +895,8 @@ $$
 where
 $$
 \begin{aligned}
-\mathbf{\mu}\_{t+1}^- &= \mathbf{F} \mathbf{\mu}\_t \\\\
-\mathbf{\Sigma}\_{t+1}^- &= \mathbf{F} \mathbf{\Sigma}\_t \mathbf{F}^T + \mathbf{Q}.
+\mathbf{\mu}\_{t+1}^- &= \mathbf{A} \mathbf{\mu}\_t \\\\
+\mathbf{\Sigma}\_{t+1}^- &= \mathbf{A} \mathbf{\Sigma}\_t \mathbf{A}^T + \mathbf{Q}.
 \end{aligned}
 $$
 
