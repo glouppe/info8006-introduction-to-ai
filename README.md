@@ -26,10 +26,10 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | November 16 | Deadline for Project 1 |
 | November 20 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] |
 | November 27 |Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
-| December 5 | _No lecture_ <br> Exercises 8: Past exam |
-| December 12 | _No lecture_ 
+| December 4 | _No lecture_ <br> Exercises 8: Past exam |
+| December 11 | _No lecture_ 
 | December 14 | Deadline for Project 2 |
-| December 19 | _No lecture_ | 
+| December 18 | _No lecture_ | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
