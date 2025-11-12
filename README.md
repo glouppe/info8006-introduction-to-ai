@@ -88,7 +88,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
     - [Search algorithms](projects/project0)
     - [Adversarial search](projects/project0bis)
 - Part 1: [Bayes Filter](projects/project1) (due by November 16)
-- Part 2: Imitation Learning (due by December 14)
+- Part 2: [Imitation Learning](projects/project2) (due by December 14)
 
 ## Previous exams
 

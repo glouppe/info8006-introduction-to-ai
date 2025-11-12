@@ -46,7 +46,7 @@ $ python run.py
 to see your agent perform in a game. Pay attention that the score obtained by your agent on a test layout does **NOT** reflect its performance compared to that of the expert it is trying to imitate, and therefore does not represent the score obtained on the leaderboard. 
 
 
-To get started, download and extract the [archive](./project2.zip?raw=true) of the project in the directory of your choice. 
+To get started, download and extract the [archive](../project2.zip?raw=true) of the project in the directory of your choice. 
 
 **Note:** by “*may be completed accordingly,*” we mean that we are proposing a structure for your code. The use of our structure is entirely optional and is provided solely for your convenience. 
 
