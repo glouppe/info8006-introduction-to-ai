@@ -7,8 +7,9 @@ You are requested to deliver:
 - A file named `data.py` containing the handling of the dataset,
 - A file named `train.py` containing the training loop of your model,
 - A file named `pacmanagent.py` containing the implementation of an agent whose decisions are based on the predictions of your model,
-- A file named `submission.csv` containing the action predictions for each game state contained in the `pacman_test.pkl` file. The predictions must follow the same order as the states appear in `pacman_test.pkl`. A file `write_submission.py` and an example `example_submission.csv` is provided to help you write your predictions in the right format. 
+- A file named `submission.csv` containing the action predictions for each game state contained in the `pacman_test.pkl` file. The predictions must follow the same order as the states appear in `pacman_test.pkl`. A file `write_submission.py` and an example `example_submission.csv` is provided to help you write your predictions in the right format.
 - A file named `pacman_model.pth` of your saved final model.
+- A file named `run.py` allowing us to run your agent on a test layout.
 
 ## Installation and preparation
 
