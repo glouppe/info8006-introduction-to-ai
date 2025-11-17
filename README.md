@@ -21,8 +21,8 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | October 16 | Lecture 5: [Probabilistic reasoning][l5] (continued) [[PDF][l5-pdf]] <br> Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]  <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] [[Solutions][e3s]]|
 | October 23 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued) <br>Exercises 4: Probabilistic reasoning [[PDF][e4]] [[Solutions][e4s]]|
 | October 30 | _No class_ |
-| November 6 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued)<br>Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] |
-| November 13 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] |
+| November 6 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued)<br>Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
+| November 13 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] [[Solutions][e5s]]|
 | November 16 | Deadline for Project 1 |
 | November 20 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] |
 | November 27 |Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
