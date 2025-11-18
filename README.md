@@ -24,12 +24,12 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | November 6 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued)<br>Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
 | November 13 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] [[Solutions][e5s]]|
 | November 16 | Deadline for Project 1 |
-| November 20 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] |
-| November 27 |Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
-| December 4 | _No lecture_ <br> Exercises 8: Past exam |
-| December 11 | _No lecture_ 
+| November 20 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] |
+| November 27 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] (continued) |
+| December 4 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
+| December 12 | _No lecture_ <br> Exercises 8: Past exam | 
 | December 14 | Deadline for Project 2 |
-| December 18 | _No lecture_ | 
+| December 19 | _No lecture_ | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
 [syllabus-pdf]: https://glouppe.github.io/info8006-introduction-to-ai/pdf/course-syllabus.pdf
