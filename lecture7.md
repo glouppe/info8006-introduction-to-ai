@@ -165,7 +165,7 @@ w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_
 
 count: false
 
-By constraining the derivatives of the log-likelihood to $0$, we arrive to the problem of minimizing
+After simplification, we arrive to the problem of minimizing
 $$\mathcal{L}(\mathbf{w},b) = \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
 Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance. 
 
@@ -480,6 +480,10 @@ class: middle
 The **universal approximation theorem** states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units. 
 
 For example, for 1d input and 1d output, any continuous function $f: \mathbb{R} \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
+
+???
+
+Build a composition of \sum v_j ReLU(w_j x + b_j) to approximate any continuous function.
 
 ---
 
