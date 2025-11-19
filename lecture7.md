@@ -766,6 +766,15 @@ background-position: center
 
 .footnote[Credits: Martin Handford, [Where's Wally?](https://en.wikipedia.org/wiki/Where%27s_Wally%3F) series.]
 
+???
+
+Highlights:
+- Large image with many pixels. Processing it with a fully connected layer would require a huge number of parameters.
+- Nearby pixels are strongly correlated as they form parts of a same object.
+- Parts combine to form objects: eyes, nose, mouth form a face; arms, legs, torso form a person; trees, people, buildings form a scene.
+- Patterns (people, objects) appear at different locations. Detecting them should not require learning separate parameters for each location.
+- If we slightly move or rotate the image, we should still be able to recognize the objects in it. 
+
 ---
 
 class: middle
@@ -777,6 +786,7 @@ $$\begin{aligned}
 (\mathbf{x} \circledast \omega)[i] &= \sum\_{m=0}^{w-1} \mathbf{x}\_{m+i}  \omega\_m .
 \end{aligned}
 $$
+Optionally, the input $\mathbf{x}$ can be padded with $p$ zeros on each side before applying the convolution, resulting in an output of size $W - w + 1 + 2p$. Setting $p = \frac{w-1}{2}$ (for odd $w$) preserves the input size.
 
 .italic[
 Technically, $\circledast$ denotes the cross-correlation operator.
@@ -803,6 +813,7 @@ class: middle
 
 For the 2d input tensor $\mathbf{x} \in \mathbb{R}^{H \times W}$ and the 2d convolutional kernel $\omega \in \mathbb{R}^{h \times w}$, the discrete **convolution** $\mathbf{x} \circledast \omega$ is a matrix of size $(H-h+1) \times (W-w+1)$ such that
 $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{n+j,m+i} \omega_{n,m}$$
+As for 1d convolution, padding can be applied to both spatial dimensions of the input to control the output size.
 
 ???
 
@@ -847,6 +858,8 @@ class: middle
 
 A convolutional layer is defined by a set of $K$ kernels $\omega_k$ of size $C \times h \times w$. It applies the 2d convolution operation to the input tensor $\mathbf{x}$ of size $C \times H \times W$ to produce a set of $K$ feature maps $\mathbf{o}\_k$.
 
+Each kernel $\omega_k$ acts as a feature detector that scans the input tensor and produces a feature map $\mathbf{o}\_k$ specific to that feature. 
+
 ---
 
 class: middle
@@ -874,7 +887,7 @@ class: middle
 
 ## Convolutional neural networks (CNNs)
 
-A convolutional neural network (CNN) is a deep neural network that uses convolutional layers and pooling layers to process multi-dimensional inputs such as images.
+A convolutional neural network (CNN) is a deep neural network that uses convolutional layers, pooling layers, and fully connected layers to process multi-dimensional inputs such as images.
 
 - Convolutional layers extract local features from the input while preserving spatial relationships.
 - Pooling layers reduce the spatial dimensions of the feature maps, allowing the network to capture more global features.
@@ -898,6 +911,16 @@ class: middle
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
+---
+
+class: middle
+
+.center.width-100[![](figures/lec7/ConvVGG.svg)]
+
+.center[The VGG architecture for image classification (Simonyan and Zisserman, 2014).]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
 
 ---
 
@@ -913,7 +936,7 @@ See also https://poloclub.github.io/cnn-explainer/
 
 # Transformers
 
-Transformers are deep neural networks at the core of large-scale language models.
+Transformers are deep neural networks at the core of large language models.
 
 <br>
 
