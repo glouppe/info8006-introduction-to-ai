@@ -16,7 +16,7 @@ You are requested to deliver:
 The following packages must be installed in your `pacman` environment to successfully complete this project:
 ```console
 $ conda activate pacman
-$ conda install torch 
+$ conda install pytorch 
 $ conda install pandas
 ```
 To get familiar with the PyTorch library, neural networks and how to train them, we have provided a completed notebook [`mnist.ipynb`](./mnist.ipynb) that solves an inpainting task on the MNIST dataset using a multi-layer perceptron (MLP).
