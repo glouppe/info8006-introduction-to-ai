@@ -764,6 +764,9 @@ background-image: url('figures/lec7/wally.jpg')
 background-size: contain
 background-position: center
 
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+.center[Where's Wally?]
+
 .footnote[Credits: Martin Handford, [Where's Wally?](https://en.wikipedia.org/wiki/Where%27s_Wally%3F) series.]
 
 ???

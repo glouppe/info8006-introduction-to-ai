@@ -225,7 +225,13 @@ $V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2 + ...$
 
 ???
 
-Explain what coherent means.
+Explain what coherent means:
+
+Coherent means that the utility assignments do not lead to contradictions in preferences.
+
+- For example, if an agent prefers sequence A over sequence B, and sequence B over sequence C, then it should also prefer sequence A over sequence C.
+- Similarly, if an agent prefers a sequence starting with reward r0 over another sequence starting with the same reward r0, then it should also prefer the remaining parts of those sequences in the same order.
+
 
 ---
 
@@ -290,7 +296,11 @@ class: middle
 Among all policies the agent could execute, the **optimal policy** is the policy $\pi\_s^\*$ that maximizes the expected utility:
 $$\pi\_s^\* = \arg \max\_\pi V^\pi(s)$$
 
-Because of discounted utilities, the optimal policy is *independent* of the starting state $s$ (see later). Therefore we simply write $\pi^\*$.
+Because of discounted utilities, the optimal policy is *independent* of the starting state $s$. Therefore we simply write $\pi^\*$.
+
+???
+
+If policy $\pi^\*\_a$ is optimal for state $a$ and policy $\pi^\*\_b$ is optimal for state $b$, then, when they reach a third state $c$, both policies must prescribe the same action. Otherwise, we could improve one of the policies by switching to the other one at $c$. Therefore, the optimal policy must be the same for all states.
 
 ---
 
@@ -414,6 +424,24 @@ $$||V\_{i+1} - V'\_{i+1}||\_\infty \leq \gamma ||V\_i - V'\_i||\_\infty.$$
 - Therefore, any two approximations must get closer to each other, and in particular any approximation must get closer to the true $V$.
 
 $\Rightarrow$ Value iteration always converges to a unique solution of the Bellman equations whenever $\gamma < 1$.
+
+---
+
+class: middle
+
+.italic[Proof.] 
+
+$$\begin{aligned}
+&=||V\_{i+1} - V'\_{i+1}||\_\infty \\\\
+&= \max\_s |V\_{i+1}(s) - V'\_{i+1}(s)| \\\\
+&= \max\_s \left| R(s) + \gamma\max\_a \sum\_{s'} P(s'|s,a) V\_i(s') - R(s) - \gamma\max\_a \sum\_{s'} P(s'|s,a) V'\_i(s') \right| \\\\
+&= \gamma \max\_s \left| \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') - \max\_a \sum\_{s'} P(s'|s,a) V'\_i(s') \right| \\\\
+&\leq \gamma \max\_s \max\_a \left| \sum\_{s'} P(s'|s,a) V\_i(s') - \sum\_{s'} P(s'|s,a) V'\_i(s') \right| \\\\
+&= \gamma \max\_s \max\_a \left| \sum\_{s'} P(s'|s,a) (V\_i(s') - V'\_i(s')) \right| \\\\
+&\leq \gamma \max\_s \max\_a \sum\_{s'} P(s'|s,a) |V\_i(s') - V'\_i(s')| \\\\
+&\leq \gamma \max\_s \max\_a \sum\_{s'} P(s'|s,a) ||V\_i - V'\_i||\_\infty \\\\
+&= \gamma ||V\_i - V'\_i||\_\infty
+\end{aligned}$$
 
 ---
 
@@ -656,7 +684,7 @@ class: middle
 Although we have reduced POMDPs to MDPs, the Belief MDP we obtain has a **continuous** (and usually high-dimensional) state space.
 - None of the algorithms described earlier directly apply.
 - In fact, solving POMDPs remains a difficult problem for which there is no known efficient exact algorithm.
-- Yet, Nature is a POMDP.
+- Yet, most real-world decision making problems are partially observable.
 
 ---
 
