@@ -26,8 +26,8 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | November 16 | Deadline for Project 1 |
 | November 20 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] [[Solutions][e6s]]|
 | November 27 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] (continued) [[Solutions][e6s]] |
-| December 4 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] |
-| December 11 | _No lecture_ <br> Exercises 7: Making decisions & RL [[PDF][e7]] (continued) <br> Exercises 8: Past exam | 
+| December 4 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] [[Solutions][e7s]]|
+| December 11 | _No lecture_ <br> Exercises 7: Making decisions & RL [[PDF][e7]] (continued) [[Solutions][e7s]]<br> Exercises 8: Past exam | 
 | December 14 | Deadline for Project 2 |
 | December 18 | _No lecture_ | 
 
