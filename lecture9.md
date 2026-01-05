@@ -386,10 +386,6 @@ where $\alpha$ is the *learning rate* parameter.
 
 ???
 
-Instead waiting for a complete trajectory to update $V^\pi(s)$, ...
-
-...
-
 - If $r + \gamma V^\pi(s') > V^\pi(s)$ then the prediction $V^\pi(s)$ underestimates the value, hence the increment.
 - If $r + \gamma V^\pi(s') < V^\pi(s)$ then the prediction $V^\pi(s)$ overestimates the value, hence the decrement.
 
@@ -755,12 +751,6 @@ class: middle
 Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the *DQN* algorithm.
 
 .center.width-100[![](figures/lec9/dqn.png)]
-
----
-
-class: middle, center
-
-(demo)
 
 ---
 

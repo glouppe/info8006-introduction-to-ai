@@ -432,7 +432,7 @@ class: middle
 .italic[Proof.] 
 
 $$\begin{aligned}
-&=||V\_{i+1} - V'\_{i+1}||\_\infty \\\\
+&||V\_{i+1} - V'\_{i+1}||\_\infty \\\\
 &= \max\_s |V\_{i+1}(s) - V'\_{i+1}(s)| \\\\
 &= \max\_s \left| R(s) + \gamma\max\_a \sum\_{s'} P(s'|s,a) V\_i(s') - R(s) - \gamma\max\_a \sum\_{s'} P(s'|s,a) V'\_i(s') \right| \\\\
 &= \gamma \max\_s \left| \max\_a \sum\_{s'} P(s'|s,a) V\_i(s') - \max\_a \sum\_{s'} P(s'|s,a) V'\_i(s') \right| \\\\

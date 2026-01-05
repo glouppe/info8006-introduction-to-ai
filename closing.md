@@ -41,10 +41,11 @@ This course is designed as an introduction to the many other courses available a
 - DATS0001: Foundations of Data Science
 - INFO8010: Deep Learning
 - INFO8004: Advanced Machine Learning
-- INFO8003: Optimal decision making for complex problems
+- INFO8003: Reinforcement Learning
+- INFO9023: Machine Learning Systems Design
 - INFO0948: Introduction to Intelligent Robotics
 - ELEN0016: Computer vision
-- SPATXXXX: Machine Learning in Space Sciences (from 2023-2024)
+- SPAT0263: Machine Learning in Space Sciences 
 
 ---
 
