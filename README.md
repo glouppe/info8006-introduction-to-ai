@@ -3,7 +3,7 @@
 Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 2025.
 
 - Instructor: Gilles Louppe
-- Teaching assistants: Gérôme Andry, Fanny Bodart
+- Teaching assistants: Gérôme Andry, Fanny Bodart, Thomas Savary
 - When: Fall 2025, Thursday 8:30 AM to 12:30 AM
 - Classroom: B28/Mania Pavella
 - Contact: [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be)
