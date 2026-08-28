@@ -66,6 +66,77 @@
     Specifically, for \thighlight{HMM}, the \thighlight{stationary distribution} $\mathbf{f}$ is a distribution such that
     $$\mathbf{f} = \mathbf{T}^T\mathbf{f}.$$
 \end{thbox}
+
+
+\begin{thbox}{Algebra review: matrix multiplication and index notation}
+\begin{align*}
+    \mathbf{C} &= \mathbf{A}\mathbf{B}
+&\Leftrightarrow\quad
+\mathbf{C}_{i,j} &= \sum_{u} \mathbf{A}_{i,u} \mathbf{B}_{u,j},
+\quad \forall\, i,j. \\
+\mathbf{d} &= \mathbf{A} \mathbf{f} &\Leftrightarrow\quad
+\mathbf{d}_{i} &= \sum_{u} \mathbf{A}_{i,u} \mathbf{f}_{u},
+\quad \forall\, i.
+\end{align*}
+\end{thbox}
+
+\newpage
+\begin{thbox}{Cheat sheet for Gaussian models}
+From the joint 
+\[
+p
+\begin{pmatrix}
+    \mathbf{x}\\
+    \mathbf{y}
+\end{pmatrix}
+= \N
+\begin{pmatrix}
+    \begin{pmatrix}
+        \mathbf{a}\\
+        \mathbf{b}
+    \end{pmatrix},
+    \begin{pmatrix}
+        \mathbf{A} & \mathbf{C}\\
+        \mathbf{C^T} & \mathbf{B}
+    \end{pmatrix}
+\end{pmatrix},
+\]
+the marginal and conditional distributions are given by
+\begin{align*}
+    p(\mathbf{x}) &= \N(\mathbf{a}, \mathbf{A})\\
+    p(\mathbf{y}) &= \N(\mathbf{b}, \mathbf{B})\\
+    p(\mathbf{x \mid y}) &= \N(\mathbf{a + CB^{-1}(y - b)}, \mathbf{A - CB^{-1}C^T})\\
+    p(\mathbf{y \mid x}) &= \N(\mathbf{b + C^T A^{-1}(x - a)}, \mathbf{B - C^T A^{-1}C}).
+\end{align*}
+On the other hand, from 
+\begin{align*}
+    p(\mathbf{x}) &= \N(\mathbf{m}, \mathbf{P})\\
+    p(\mathbf{y \mid x}) &= \N(\mathbf{Hx + u}, \mathbf{R}),
+\end{align*}
+we can recover the joint distribution as
+\[
+p
+\begin{pmatrix}
+    \mathbf{x}\\
+    \mathbf{y}
+\end{pmatrix}
+= \N
+\begin{pmatrix}
+    \begin{pmatrix}
+        \mathbf{m}\\
+        \mathbf{Hm + u}
+    \end{pmatrix},
+    \begin{pmatrix}
+        \mathbf{P} & \mathbf{PH^T}\\
+        \mathbf{HP} & \mathbf{HPH^T + R}
+    \end{pmatrix}
+\end{pmatrix},
+\]
+\end{thbox}
+
+
+
+
 \textbf{In session exercices:} Ex. 1, Ex. 2
 \newpage 
 
@@ -127,6 +198,26 @@ You are waiting for an oral exam for which the professor is known to be moody. S
             f_{2n} & = T^T \, f_{2n-1} \\
             f_{2n + 1} & = \alpha \, O_{2n+1} \, T^T \, f_{2n}
         \end{align*}
+   The two formulae above can be readily derived from an example. For $2n = 4$:
+\begin{align*}
+   \forall x_4:\, P(X_4 = x_4 | e_{1,3}) & = \sum _{x_3} P(X_4 = x_4 | X_3 = x_3, e_{1,3}) P(X_3 = x_3 | e_{1,3} )  \\
+   &= \sum _{x_3} P(X_4 = x_4 | X_3 = x_3) P(X_3 = x_3 | e_{1,3} ) \quad \text{(Under the Markov assumption)}\\
+   \Leftrightarrow \forall j: f_{4,j} &= \sum _u T_{u,j} f_{3,u} \\
+   &= \sum _u (T^T)_{j,u} f_{3,u} \\
+   \Leftrightarrow f_4 = T^T f_3
+\end{align*}
+
+For $2n+1 = 3$:
+\begin{align*}
+    \forall x_3:\, P(X_3 = x_3 | e_{1,3}) &= \alpha P(e_3 | X_3 = x_3, e_1) P(X_3 = x_3 | e_1) \, \,\text{(As $P(A|B,C)P(B|C)=P(B|A,C)P(A|C)$)}\\
+    &= \alpha P(e_3 | X_3 = x_3) P(X_3 = x_3 | e_1) \quad \text{(Under the Markov assumption)} \\
+    &= \alpha P(e_3 | X_3 = x_3) \sum _{x_2} P(X_3 = x_3 | X_2 = x_2, e_1)P(X_2 = x_2 | e_1) \\
+    &= \alpha P(e_3 | X_3 = x_3) \sum _{x_2} P(X_3 = x_3 | X_2 = x_2)P(X_2 = x_2 | e_1) \quad \text{(Markov assumption)} \\
+    \Leftrightarrow \forall i: \, f_{3,i} &= \alpha B_{i,e_3} \sum _u T_{u,i} f_{2,u} \\
+    &= \alpha B_{i,e_3} \sum _u (T^T)_{i,u} f_{2,u}\\
+    &= \alpha \sum_j O_{3,i,j} \sum _u (T^T)_{j,u} f_{2,u} \quad \text{(As $O_3$ is a diagonal matrix )} \\
+    \Leftrightarrow f_3 = \alpha  O_3 T^T f_2
+\end{align*}
     \end{solution}
 
     \item Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{sad}, \texttt{happy})$, compute the probability that the 3rd student has difficult questions.
@@ -404,9 +495,9 @@ You more or less remember your Newtonian mechanics class and model the movement 
     p_t & = p_{t-1} + \Delta t \, \dot{p}_{t-1} + \frac{1}{2} {\Delta t}^2 \, \ddot{p}_{t-1} \\
     \dot{p}_t & = \dot{p}_{t-1} + \Delta t \, \ddot{p}_{t-1} \\
     \ddot{p}_t & = \rho w_{t-1} - \kappa \, p_{t-1} - \eta \, \dot{p}_{t-1} \\
-    w_t & \sim \N(\alpha w_{t-1}, \sigma_w^2)
+    w_t | w_{t-1} & \sim \N(\alpha w_{t-1}, \sigma_w^2)
 \end{align*}
-where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocity and acceleration of the ball at timestep $t$, $w_t$ is the wind at timestep $t$, $\Delta t$ is the time elapsed between $t-1$ and $t$, $\rho$ is the thrust coefficient of the wind, $\kappa$ is the stiffness of the spring, $\eta$ is the friction coefficient of the platform and $\alpha$ is the persistence of the wind. You estimate that the ball starts \qty{10 \pm 0.5}{\meter} at the left of the spring with a negligible speed \qty{0 \pm 0.1}{\meter\per\second} and acceleration \qty{0 \pm 0.1}{\meter\per\second\squared}. You assume that the wind has a stationary distribution. Finally, you assume that the human perception of acceleration follows an unbiased Gaussian distribution.
+where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocity and acceleration of the ball at timestep $t$, $w_t$ is the wind at timestep $t$, $\Delta t$ is the time elapsed between $t-1$ and $t$, $\rho$ is the thrust coefficient of the wind, $\kappa$ is the stiffness of the spring, $\eta$ is the friction coefficient of the platform and $\alpha$ is the persistence of the wind. You estimate that the ball starts \qty{10 \pm 0.5}{\meter} at the left of the spring with a negligible speed \qty{0 \pm 0.1}{\meter\per\second} and acceleration \qty{0 \pm 0.1}{\meter\per\second\squared}. You assume that the wind has a stationary distribution. You assume that the human perception of acceleration follows an unbiased Gaussian distribution. You also assume that a good model to describe the uncertainty in your initial guess of the ball's state is a Gaussian model, with the standard deviation given by your estimated bounds.
 
 \begin{enumerate}
     \item You wish to predict the state of the ball given the perceptions of a participant. Define the components of a Kalman filter in this context.
@@ -427,29 +518,145 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
                 p(e_t | x_t) = \N(e_t | H x_t + v, \Sigma_e).
             \end{equation*}
         \end{itemize}
+
+        
+        
         In a \href{https://wikipedia.org/wiki/Multivariate_normal_distribution}{multivariate Gaussian distribution} $x = \mat{x_1 & x_2 & \dots & x_n}^T \sim \N(\mu, \Sigma)$, the first argument is the \emph{mean vector} and the second is the \emph{covariance matrix}. The mean vector is the vector of the variable means, \ie{} $\mu_i = \E\sbk{x_i}$. An element $\Sigma_{ij}$ of the covariance matrix is the covariance between the variables $x_i$ and $x_j$, \ie{} $\Sigma_{ij} = \E\sbk{(x_i - \mu_i) (x_j - \mu_j)}$. If $x_i$ is independent from $x_j$, their covariance is null by definition, \ie{} $\Sigma_{ij} = 0$. Interestingly, the diagonal elements $\Sigma_{ii}$ are the variable variances $\V\sbk{x_i} = \E\sbk{(x_i - \mu_i)^2}$.
 
-        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$ and according to the provided information, the prior is defined\footnote{The stationarity of the wind implies that $\V\sbk{w_0} = \V\sbk{w_1} = \V\sbk{\alpha w_0 + \Delta w} = \alpha^2 \V\sbk{w_0} + \sigma_w^2$, and therefore, $\V\sbk{w_0} = \frac{\sigma_w^2}{1 - \alpha^2}.$} by
-        \begin{equation*}
-            \mu_0 = \mat{10 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_0 = \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0 & \frac{\sigma_w^2}{1 - \alpha^2}} .
-        \end{equation*}
-        Then, our transition model is defined by
-        \begin{equation*}
-            F = \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha}, \quad u = \mat{0 \\ 0 \\ 0 \\ 0} \quad \text{and} \quad \Sigma_x = \mat{0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sigma_w^2} .
-        \end{equation*}
-        It should be noted that only the wind has a non-null variance in $\Sigma_x$, since the transitions of the position, velocity and acceleration are \emph{deterministic}.
+        As a Kalman filter always relies on the same assumptions, the methodology outlined below can be applied directly, regardless of the problem under consideration:
 
-        Concerning the sensor model, the evidence is a perturbed, but unbiased, perception of the acceleration, that is
+        \begin{enumerate}
+            \item identify the state variables;
+            \item identify the linear system, and derive the transition model and the sensor model;
+            \item identify the prior $p(x_0)$;
+            \item deduce $p(x_t | e_{1:t})$ using the Gaussian identities (point 2 of this exercise).
+        \end{enumerate}
+
+        \underline{a) Identify the states variables}
+        
+        The state $X_t$ comprises all the dynamic variables (i.e. the variables that evolve over time) of the system.
+            
+        In our case, the state $X_t$ is a 4-dimensional vector $\mat{p_t & \dot{p}_t & \ddot{p}_t & w_t}^T$.
+
+        \underline{b) Identify the linear system, and derive the transition model and the sensor model}
+
+        The Kalman filter assumes a linear system with Gaussian noise. A canonical representation of such a system is as follows:
         \begin{align*}
-            e_t & \sim \N(\ddot{p}_t, \sigma_e^2) ,
+            X_t &= F X_{t-1} + u +\epsilon \\
+            E_t &= H X_t + v + \gamma
         \end{align*}
-        which translates to
-        \begin{equation*}
-            H = \mat{0 & 0 & 1 & 0}, \quad v = 0 \quad \text{and} \quad \Sigma_e = \sigma_e^2 .
-        \end{equation*}
-    \end{solution}
 
-    \item Express the distribution $p(x_t | e_{1:t})$ with respect to the components defined previously.
+        where $\epsilon \sim \mathcal{N}(0, \Sigma_x)$ represents the Gaussian uncertainty in the transition model, and $\gamma \sim \mathcal{N}(0, \Sigma_e)$ represents the Gaussian sensor noise.
+
+       By recalling the fundamental properties of Gaussian distributions, the distributions of the transition model and the sensor model can be readily derived from the canonical representation.
+
+       For $X_t | X_{t-1}$:
+       \begin{align*}
+            X_t | X_{t-1} &\sim \N(\cdot) \quad \text{(Sum of Gaussian r.v. with scalars)} \\
+            \E\sbk{ X_t | X_{t-1}} & = \E\sbk{ F X_{t-1} + u +\epsilon | X_{t-1}}\\
+            &= \E\sbk{ F X_{t-1} | X_{t-1}} + \E\sbk{u} + \E\sbk{\epsilon} \\
+            &= F X_{t-1} + u \\
+            \V\sbk{X_t | X_{t-1}} &= \V\sbk{ F X_{t-1} + u +\epsilon | X_{t-1}} \\
+            &= \V\sbk{ F X_{t-1} | X_{t-1}} + \V\sbk{u} + \V\sbk{\epsilon} \\
+            &= \Sigma_x \\
+            \Rightarrow p(x_t | x_{t_1}) &= \N \left( x_t | Fx_{t-1} + u, \Sigma_x \right)
+        \end{align*}
+
+        For $E_t | X_t$:
+         \begin{align*}
+            E_t | X_{t} &\sim \N(\cdot) \quad \text{(Sum of Gaussian r.v. with scalars)} \\
+            \E\sbk{ E_t | X_{t}} & = \E\sbk{ H X_{t} + v +\gamma | X_{t}}\\
+            &= \E\sbk{ H X_{t} | X_{t}} + \E\sbk{v} + \E\sbk{\gamma} \\
+            &= H X_{t} + v \\
+            \V\sbk{E_t | X_{t}} &= \V\sbk{ H X_{t} + v +\gamma | X_{t}} \\
+            &= \V\sbk{ H X_{t} | X_{t}} + \V\sbk{v} + \V\sbk{\gamma} \\
+            &= \Sigma_e \\
+            \Rightarrow p(e_t | x_{t}) &= \N \left( e_t | Hx_{t} + v, \Sigma_e \right)
+        \end{align*}
+
+        In our case, the linear system that must be identified is as follows:
+
+        \begin{align*}
+            \mat{p_t \\ \dot{p}_t \\ \ddot{p}_t \\ w_t} &=\mat{F_{11} & F_{12} & F_{13} & F_{14} \\ F_{21} & F_{22} & F_{23} & F_{24} \\ F_{31} & F_{32} & F_{33} & F_{34} \\ F_{41} & F_{42} & F_{43} & F_{44}} \mat{p_{t-1} \\ \dot{p}_{t-1} \\ \ddot{p}_{t-1} \\ w_{t-1}} + \mat{u_1 \\ u_2 \\ u_3 \\ u_4} + \epsilon \\
+            \mat{e_t} &= \mat{H_{11} & H_{12} & H_{13} & H_{14}} \mat{p_{t} \\ \dot{p}_{t} \\ \ddot{p}_{t} \\ w_{t}} + \mat{v_1 } + \gamma
+        \end{align*}
+
+        Although it is easy from the statement to identify the F and u factors for the first three states ($p_t$, $\dot{p}_t$, $\ddot{p}_t$), the F and u factors associated with $w_t$, i.e. $F_{4,:}$ and $u_4$, are difficult to identify because the transition model for $w_t$ is not given in the canonical form.
+
+        By recalling the fundamental properties of Gaussian distributions, the canonical form can be easily recovered:
+
+        \begin{align*}
+            w_t | w_{t-1}\sim \N(\alpha w_{t-1}, \sigma^2_w) \quad \Leftrightarrow \quad w_t = \alpha w_{t-1} + 0 +\xi, \, \xi \sim \N(0, \sigma^2_w)
+        \end{align*}
+        Convincing oneself of the equivalence between the two formulae above can be done quickly by inspecting the type of distribution, the mean, and the variance for $w_t$ in the right-hand side expression, as was done for $X_t | X_{t-1}$ or $E_t | X_t$.
+
+        The matrices $F$ and $H$ can now be found by identification:
+         \begin{align*}
+            \mat{p_t \\ \dot{p}_t \\ \ddot{p}_t \\ w_t} &=\mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha} \mat{p_{t-1} \\ \dot{p}_{t-1} \\ \ddot{p}_{t-1} \\ w_{t-1}} + \mat{0 \\ 0 \\ 0 \\ 0} + \epsilon \\
+            \mat{e_t} &= \mat{0 & 0 & 1 & 0} \mat{p_{t} \\ \dot{p}_{t} \\ \ddot{p}_{t} \\ w_{t}} + \mat{0} + \gamma
+        \end{align*}
+
+        It remains only to determine the uncertainty in the transition model and the sensor noise, i.e. to specify:
+
+        \begin{align*}
+            \epsilon \sim& \N \left( \mat{0 \\ 0 \\ 0 \\ 0}, \mat{\Sigma_{x, 11} & \Sigma_{x, 12} & \Sigma_{x, 13} & \Sigma_{x, 14} \\ \Sigma_{x, 21} & \Sigma_{x, 22} & \Sigma_{x, 23} & \Sigma_{x, 24} \\ \Sigma_{x, 31} & \Sigma_{x, 32} & \Sigma_{x, 33} & \Sigma_{x, 34} \\ \Sigma_{x, 41} & \Sigma_{x, 42} & \Sigma_{x, 43} & \Sigma_{x, 44}  }  \right) \\
+            \gamma \sim& \N \left( \mat{0}, \mat{\Sigma_{e, 11}}\right)
+        \end{align*}
+        No uncertainty is associated with the transition model of the first three states $\mat{p_t & \dot p_t & \ddot p_t}$ and the uncertainty on the wind is $\sigma^2_w$. Therefore, $\Sigma_{x,44}$ is the only non-zero component of $\Sigma_x$ and is equal to $\sigma^2_w$. Regarding the sensor model, the uncertainty is not given. Let us call it $\sigma^2_e$.
+
+        To sum up, the transition model is given by:
+        \begin{equation*}
+                p(x_t | x_{t-1}) = \N\left(x_t \mid \mat{1 & \Delta t & \frac{1}{2} {\Delta t}^2 & 0 \\ 0 & 1 & \Delta t & 0 \\ -\kappa & -\eta & 0 & \rho \\ 0 & 0 & 0 & \alpha} x_{t-1} + \mat{0 \\ 0 \\ 0 \\ 0}, \mat{0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sigma_w^2}\right)
+        \end{equation*}
+        The sensor model is given by:
+            \begin{equation*}
+                p(e_t | x_t) = \N\left(e_t | \mat{0 & 0 & 1 & 0} x_t + \mat{0}, \sigma^2_e\right).
+            \end{equation*}
+
+        \underline{c) Identify the prior}
+
+        \begin{equation*}
+            p\left( \mat{p_0 \\ \dot{p}_0 \\ \ddot{p}_0 \\ w_0} \right) = \N \left( \mat{p_0 \\ \dot{p}_0 \\ \ddot{p}_0 \\ w_0}  \mid  \mat{\mu_{0,1} \\ \mu_{0,2} \\ \mu_{0,3} \\ \mu_{0,4}},  \mat{\Sigma_{0, 11} & \Sigma_{0, 12} & \Sigma_{0, 13} & \Sigma_{0, 14} \\ \Sigma_{0, 21} & \Sigma_{0, 22} & \Sigma_{0, 23} & \Sigma_{0, 24} \\ \Sigma_{0, 31} & \Sigma_{0, 32} & \Sigma_{0, 33} & \Sigma_{0, 34} \\ \Sigma_{0, 41} & \Sigma_{0, 42} & \Sigma_{0, 43} & \Sigma_{0, 44}  } \right)
+        \end{equation*}
+        From the statement, the following distributions are straightforward:
+        \begin{align*}
+            p_0 \sim \N(10, 0.5^2) \\
+            \dot p_0 \sim \N(0, 0.1^2) \\
+            \ddot p_0 \sim \N(0, 0.1^2) 
+        \end{align*}
+
+        The stationarity of the wind implies that the variance and the mean are time invariant:
+        \begin{align*}
+        \V\sbk{w_0} &= \V\sbk{w_1} = \V\sbk{\alpha w_0 + \xi} = \alpha^2 \V\sbk{w_0} + \sigma_w^2 \\ \Rightarrow \V\sbk{w_0} &= \frac{\sigma_w^2}{1 - \alpha^2}\\
+        \E\sbk{w_0} &= \E\sbk{w_1} = \E\sbk{\alpha w_0 + \xi} = \alpha \E\sbk{w_0} + 0 \\ \Rightarrow \E\sbk{w_0} &= 0 \quad \text{(Assuming $\alpha \neq 0$)}\\
+        \Rightarrow w_0 &\sim \N (0, \frac{\sigma_w^2}{1 - \alpha^2}) 
+        \end{align*}
+
+       As no links between the uncertainties of the initial states are mentioned in the statement, we can assume that the initial states are independent. Therefore, $\Sigma_{0,ij}=0 \quad \forall i \neq j$. The prior is:
+       \begin{equation*}
+       p\left( \mat{p_0 \\ \dot{p}_0 \\ \ddot{p}_0 \\ w_0} \right) = \N \left( \mat{p_0 \\ \dot{p}_0 \\ \ddot{p}_0 \\ w_0}  \mid  \mat{0.5^2 & 0 & 0 & 0 \\ 0 & 0.1^2 & 0 & 0 \\ 0 & 0 & 0.1^2 & 0 \\ 0 & 0 & 0 & \frac{\sigma_w^2}{1 - \alpha^2}} \right)
+       \end{equation*}
+
+       \end{solution}
+        
+        
+
+
+        
+
+        
+        
+
+        
+
+        
+
+        
+    
+
+        
+
+    \item Express the distribution $p(x_t | e_{1:t})$ with respect to the components defined previously. Use the cheat sheet for Gaussian models.
 
     \begin{solution}
         This task corresponds exactly to filtering, \ie{} inferring the distribution
@@ -461,23 +668,73 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \begin{equation*}
             p(x_t, x_{t-1} | e_{1:t-1}) = p(x_t | x_{t-1}) \, p(x_{t-1} | e_{1:t-1}) .
         \end{equation*}
-        Because the transition model $p(x_t | x_{t-1})$ is linear Gaussian, if the previous belief $p(x_{t-1} | e_{1:t-1})$ is a (multivariate) Gaussian distribution $\N(\mu_{t-1}, \Sigma_{t-1})$, we have
-        \begin{equation*}
+        As all distributions (previous belief, transition model and sensor model)\footnote{Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.} are linear Gaussian, the distribution $p(x_t | e_{1:t})$ is also linear Gaussian and its expression can be found thanks to the Gaussian cheat sheet.
+
+        Understanding all the mathematical steps done to recover the expression:
+        $$ p(x_t | e_{1:t}) = \alpha \, p(e_t | x_t, e_{1:t-1}) \int p(x_t | , x_{t-1} ) p(x_{t-1} |e_{1:t-1})\d{x_{t-1}}$$
+        allows to easily use the cheat sheet.
+
+        \begin{enumerate}
+            \item $p(x_t | e_{1:t}) = \alpha \, p(e_t | x_t, e_{1:t-1}) \, p(x_t | e_{1:t-1})$
+
+            \underline{The conditioning of $x_t$ on $e_t$ is reversed.}
+            
+           The cheat sheet tells us that, from $p(e_t | x_t, e_{1:t-1})$\footnote{Equivalent to $p(e_t | x_t)$ under the Markov assumption.} and $p(x_t | e_{1:t-1})$, whose analytical expressions are easily deductible, we can recover the expression of the joint distribution:
+            \begin{equation*}
+                p\begin{pmatrix}
+                    x_t | e_{1:t-1} \\
+                    e_t | e_{1:t-1}
+                \end{pmatrix}.
+            \end{equation*}
+            Here, $x_t$ plays the role of "$x$" in the cheat sheet, $e_t$ plays the role of "$y$", and all distributions are conditioned on $e_{1:t-1}$.
+
+            From the recovered joint, it is easy to reverse the conditioning with the cheat sheet:
+            \begin{equation*}
+                \text{"$p(x|y)$"} \qquad \Rightarrow \qquad p(x_t | e_t, e_{1:t-1}) 
+            \end{equation*}
+
+            Although the analytical expression of $p(e_t | x_t)$ is known (it is the sensor model), some work is still required to derive the analytical expression of $p(x_t | e_{1:t-1})$.
+
+            \item $p(x_t | e_{1:t-1})= \int p(x_t | x_{t-1}, e_{1:t-1})p(x_{t-1}|e_{1:t-1})dx_{t-1}$
+
+            \underline{The distribution $p(x_t, x_{t-1} | e_{1:t-1})$ is marginalised over $x_{t-1}|e_{1:t-1}$.}
+
+            From $p(x_t | x_{t-1}, e_{1:t-1})$ (the sensor model)\footnote{Equivalent to $p(x_t | x_{t-1})$ under the Markov assumption.} and $p(x_{t-1}| e_{1:t-1})$ (the previous belief),we can recover the expression of the joint distribution:
+            \begin{equation*}
+                p\begin{pmatrix}
+                    x_{t-1} | e_{1:t-1} \\
+                    x_t | e_{1:t-1}
+                \end{pmatrix}.
+            \end{equation*}
+            Here, $x_{t-1}$ plays the role of "$x$" in the cheat sheet, $x_{t}$ plays the role of "$y$", and all distributions are conditioned on $e_{1:t-1}$.
+
+            From the joint distribution, we can recover the analytical expression of $p(x_t | e_{1:t-1})$, which corresponds to "$p(y)$" in the cheat sheet.
+
+            \item \underline{Putting all together}
+            
+            \textit{Steb (b)}
+            \begin{equation*}
             p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \mat{\mu_{t-1} \\ F \mu_{t-1} + u}, \mat{ \Sigma_{t-1} & \Sigma_{t-1} F^T \\ F \Sigma_{t-1} & F \Sigma_{t-1} F^T + \Sigma_x } }
         \end{equation*}
-        and
         \begin{equation*}
-            p(x_t | e_{1:t-1}) = \N\rbk[\Big]{x_t | \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
+            \Rightarrow p(x_t | e_{1:t-1}) = \N\rbk[\Big]{x_t | \underbrace{F \mu_{t-1} + u}_{\mu_*}, \underbrace{F \Sigma_{t-1} F^T + \Sigma_x}_{\Sigma_*} } .
         \end{equation*}
-        Similarly, because the sensor model $p(e_t | x_t)$ is linear Gaussian, we have the joint distribution
+
+        \textit{step (a)}
+
         \begin{equation*}
             p\rbk*{ \mat{x_t \\ e_t} \Bigg| \, e_{1:t-1} } = \N\rbk*{ \mat{x_t \\ e_t} \Bigg| \mat{\mu_* \\ H \mu_* + v}, \mat{ \Sigma_* & \Sigma_* H^T \\ H \Sigma_* & H \Sigma_* H^T + \Sigma_e } }.
         \end{equation*}
-        Then, from the cheat sheet for Gaussian models (slide 47, lecture 6) we have
         \begin{equation*}
-            p(x_t | e_{1:t}) = \N\rbk[\Big]{x_t | \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
+            \Rightarrow p(x_t | e_{1:t}) = \N\rbk[\Big]{x_t | \underbrace{\mu_* + K (e_t - H \mu_* - v)}_{\mu_t}, \underbrace{\Sigma_* - K H \Sigma_*}_{\Sigma_t} }
         \end{equation*}
-        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. Since the prior $p(x_0)$ is Gaussian by assumption, all beliefs are Gaussian as well, by induction.
+        where $K = \Sigma_* H^T (H \Sigma_* H^T + \Sigma_e)^{-1}$ is the Kalman gain matrix. The matrices $F$, $H$, $\Sigma_x$, $\Sigma_y$, $u$, $v$ are the same as those defined in the previous point.
+
+        \end{enumerate}
+        
+
+        
+        
     \end{solution}
 
     \item Represent the transition and sensor models as a dynamic Bayesian network.
@@ -510,6 +767,157 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
         \end{figure}
     \end{solution}
 \end{enumerate}
+\newpage 
+
+\section{Robot state estimation (INFO8006, January 2024)}
+Let us consider a continuous first-order Markov process describing the motion of a robot in a one-dimensional world. On average, the robot moves forward by a distance $b$ at each
+timestep. The robot’s position $x_t$ at time $t$ is not directly observable, but can be estimated using a sensor that measures the distance between the robot and the sensor. Assuming,
+\begin{itemize}
+    \item the sensor is fixed at position 0,
+    \item  a Gaussian prior $\N (x_0|\mu_0, \sigma^2_0)$ on the initial position of the robot,
+    \item a Gaussian transition model $\N (x_{t+1}|x_t + b,\sigma ^2 _x)$,
+    \item a Gaussian observation model $\N (e_t |x_t,\sigma ^2_e)$,
+\end{itemize}
+ 
+derive the update equations of the Bayes filter. More specifically, since the belief distribution
+is Gaussian, derive the update equations of its mean $\mu_{t+1}$ and variance $\sigma ^2 _{t+1}$.
+
+Do the update equations make sense in the following limiting cases? Use your physical intuition.
+\begin{itemize}
+    \item The sensor is extremely noisy.
+    \item The sensor is perfect.
+    \item The transition model is extremely noisy.
+    \item The transition model is perfect.
+\end{itemize}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \underline{Identify the states variables}
+
+        $x_t$, the robot's position.
+
+        \item \underline{Identify the linear system, and derive the transition model and the sensor model}
+
+        \begin{align*}
+            X_t &= F X_{t-1} + u +\epsilon \\
+            E_t &= H X_t + v + \gamma \\
+            \epsilon \sim \N(0, \Sigma_x) &\quad \gamma \sim \N(0, \Sigma_e)
+        \end{align*}
+
+        with $F=1$, $u=b$, $\Sigma_x = \sigma^2_x$, $H=1$, $v=0$, $\Sigma_e = \sigma^2_e$.
+
+        \item \underline{Identify the prior}
+        
+        $p(x_0)=\N (x_0|\mu_0, \sigma^2_0)$
+
+        \item \underline{Putting all together}
+
+        \textit{Marginalization step}
+
+        \begin{align*}
+        \begin{cases}
+            p(\mathbf{x}) &= \N(\mathbf{m}, \mathbf{P}) \\
+            p(\mathbf{y \mid x}) &= \N(\mathbf{Hx + u}, \mathbf{R}) \\
+             p \begin{pmatrix}  \mathbf{x}\\ \mathbf{y} \end{pmatrix} &= \N \begin{pmatrix}\begin{pmatrix} \mathbf{m}\\ \mathbf{Hm + u}\end{pmatrix},\begin{pmatrix} \mathbf{P} & \mathbf{PH^T}\\  \mathbf{HP} & \mathbf{HPH^T + R}\end{pmatrix}\end{pmatrix}\\
+             &= \N\begin{pmatrix} \begin{pmatrix}       \mathbf{a}\\ \mathbf{b}\end{pmatrix},    \begin{pmatrix}  \mathbf{A} & \mathbf{C}\\      \mathbf{C^T} & \mathbf{B} \end{pmatrix}\end{pmatrix} \\
+             p(\mathbf{y}) &= \N(\mathbf{b}, \mathbf{B})
+        \end{cases}\\
+        \end{align*}
+        $$\Leftrightarrow$$
+        \begin{align*}
+        \begin{cases}
+           p(x_{t-1}| e_{1:t-1}) & = \N(\mu_{t-1}, \sigma^2_{t-1}) \\
+            p(x_t | x_{t-1}, e_{1:t-1}) &= \N(1 \cdot x_{t-1} + b, \sigma^2_x) \\
+             p\rbk*{ \mat{x_{t-1} \\ x_t} \Bigg| \, e_{1:t-1} } &= \N \begin{pmatrix}\begin{pmatrix} \mu_{t-1}\\ 1 \cdot \mu_{t-1} + b\end{pmatrix},\begin{pmatrix} \sigma^2_{t-1} & \sigma^2_{t-1} \cdot 1\\  1 \cdot \sigma^2_{t-1} & 1 \cdot \sigma^2_{t-1} \cdot 1 + \sigma^2_{x}\end{pmatrix}\end{pmatrix}\\ 
+             p(x_t | e_{1:t-1}) &= \N(\mu_{t-1}+b, \sigma^2_{t-1}+\sigma^2_{x})
+        \end{cases}\\
+        \end{align*}
+
+        \textit{Reverse the conditioning}
+
+        \begin{align*}
+        \begin{cases}
+            p(\mathbf{x}) &= \N(\mathbf{m}, \mathbf{P}) \\
+            p(\mathbf{y \mid x}) &= \N(\mathbf{Hx + u}, \mathbf{R}) \\
+             p \begin{pmatrix}  \mathbf{x}\\ \mathbf{y} \end{pmatrix} &= \N \begin{pmatrix}\begin{pmatrix} \mathbf{m}\\ \mathbf{Hm + u}\end{pmatrix},\begin{pmatrix} \mathbf{P} & \mathbf{PH^T}\\  \mathbf{HP} & \mathbf{HPH^T + R}\end{pmatrix}\end{pmatrix}\\
+             &= \N\begin{pmatrix} \begin{pmatrix}       \mathbf{a}\\ \mathbf{b}\end{pmatrix},    \begin{pmatrix}  \mathbf{A} & \mathbf{C}\\      \mathbf{C^T} & \mathbf{B} \end{pmatrix}\end{pmatrix} \\
+             p(\mathbf{x} | \mathbf{y})&= \N(\mathbf{a + CB^{-1}(y - b)}, \mathbf{A - CB^{-1}C^T})
+        \end{cases}\\
+        \end{align*}
+        $$\Leftrightarrow$$
+        \begin{align*}
+        \begin{cases}
+            p(x_t | e_{1:t-1}) &= \N(\mu_{t-1}+b, \sigma^2_{t-1}+\sigma^2_{x}) \\
+            p(e_t | x_t, e_{1:t-1}) &= \N(1 \cdot x_t + 0, \sigma^2_e) \\
+            p\rbk*{ \mat{x_{t} \\ e_t} \Bigg| \, e_{1:t-1} } &= \N \begin{pmatrix}\begin{pmatrix} \mu_{t-1}+ b\\ 1 \cdot (\mu_{t-1} + b)+0\end{pmatrix},\begin{pmatrix} \sigma^2_{t-1}+ \sigma^2_{x} & (\sigma^2_{t-1}+ \sigma^2_{x}) \cdot 1\\  1 \cdot (\sigma^2_{t-1}+ \sigma^2_{x}) & 1 \cdot (\sigma^2_{t-1}+ \sigma^2_{x}) \cdot 1 + \sigma^2_{e}\end{pmatrix}\end{pmatrix}\\ 
+             p(x_t | e_{1:t})&= \N\left(\mu_{t-1} + b + \frac{\sigma^2_{t-1}+ \sigma^2_x}{\sigma^2_{t-1}+ \sigma^2_x + \sigma^2_e}(e_t - (\mu_{t-1}+b)), \sigma^2_{t-1} + \sigma^2_x - \frac{(\sigma^2_{t-1}+\sigma^2_x)^2}{\sigma^2_{t-1}+\sigma^2_x+\sigma^2_e}\right)
+        \end{cases}\\
+        \end{align*}
+
+        The update equations of the mean $\mu_{t+1}$ and the variance $\sigma ^2 _{t+1}$ are:
+        \begin{align*}
+            \mu_{t+1} &= \mu_t + b + \frac{\sigma^2_t + \sigma^2_x}{\sigma^2_t + \sigma^2_x + \sigma^2_e}(e_{t+1}- (\mu_t + b))\\
+            \sigma^2_{t+1}&=(\sigma^2_t +\sigma^2_x)(1-\frac{\sigma^2_t + \sigma^2_x}{\sigma^2_t + \sigma^2_x + \sigma^2_        e})\\
+            &= \frac{(\sigma^2_t + \sigma^2_x)\sigma^2_e}{\sigma^2_t + \sigma^2_x + \sigma^2_e}
+        \end{align*}
+
+        Note: Although the systematic methodology is cumbersome for this simple exercise, it allows more complex problems to be solved easily (cf. previous exercise). An experimented student can go straight to the point!
+    \end{enumerate}
+
+    \begin{itemize}
+    \item \underline{The sensor is extremely noisy.}
+    
+    With $\sigma^2_e \rightarrow + \infty$, the update equations become:
+    \begin{align*}
+            \mu_{t+1} &= \mu_t + b \\
+            \sigma^2_{t+1} &= (\sigma^2_t + \sigma^2_x)
+    \end{align*}
+    As expected, the optimal strategy is to completely ignore the observations and rely solely on the initial belief and the transition model. The uncertainty is indeed the combination of the uncertainty in the transition model and the uncertainty of the previous state, which ultimately originates from the uncertainty in the initial belief.
+    
+
+    
+    \item \underline{The sensor is perfect.}
+
+    With $\sigma^2_e \rightarrow  0$, the update equations become:
+    \begin{align*}
+            \mu_{t+1} &= e_{t+1}\\
+            \sigma^2_{t+1}  &= 0
+        \end{align*}
+        As expected, the optimal strategy is to rely solely on the observations. Consequently, no uncertainty arises when estimating the robot's position.
+
+    
+    \item \underline{The transition model is extremely noisy.}
+
+    With $\sigma^2_x \rightarrow + \infty$, the update equations become:
+    \begin{align*}
+            \mu_{t+1} &= e_{t+1}\\
+            \sigma^2_{t+1}&= \frac{( \sigma^2_x)\sigma^2_e}{\sigma^2_x } \\
+            &= \sigma^2_e
+        \end{align*}
+
+    As expected, the optimal strategy is to rely solely on the observations, since nothing reliable can be obtained after applying the transition model. Consequently, the uncertainty in the estimation is that of the sensor model.
+
+    
+    \item \underline{The transition model is perfect.}
+
+    With $\sigma^2_x \rightarrow 0$, the update equations become:
+    \begin{align*}
+            \mu_{t+1} &= \mu_t + b + \frac{\sigma^2_t }{\sigma^2_t + \sigma^2_e}(e_{t+1}- (\mu_t + b))\\
+            \sigma^2_{t+1}&=(\sigma^2_t +\sigma^2_x)(1-\frac{\sigma^2_t + \sigma^2_x}{\sigma^2_t + \sigma^2_x + \sigma^2_        e})\\
+            &= \frac{\sigma^2_t \sigma^2_e}{\sigma^2_t  + \sigma^2_e}
+        \end{align*}
+    Although it may seem surprising to still observe the effect of the observations on the estimation, the result is actually perfectly sensible when recalling that an uncertainty $\sigma^2_0$ is associated with the first estimate. If the initial position of the robot is known ($\sigma^2_0 \rightarrow 0$), then the update equations with the perfect transition model become:
+    \begin{align*}
+            \mu_{t+1} &= \mu_t + b \\
+            \sigma^2_{t+1}&=0
+        \end{align*}
+
+    
+    As expected, the optimal strategy is to rely solely on the initial position and the transition model and no uncertainty is associated with the estimation.
+
+\end{itemize}
+\end{solution}
+
 
 \newpage
 
