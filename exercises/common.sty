@@ -76,14 +76,19 @@
 
 \renewcommand{\thesection}{Exercise \arabic{section}}
 
-% \RequirePackage{catchfile}
 \RequirePackage{environ}
+\RequirePackage{xcolor}
 
 \ifdefined\NOSOL
   \NewEnviron{solution}{}
   \renewcommand*{\solitem}{\item}
 \else
-  \NewEnviron{solution}{\textcolor{teal}{\BODY}}
+  \NewEnviron{solution}{%
+    \begingroup
+    \color{teal}
+    \BODY
+    \endgroup
+  }
 \fi
 
 %%%%%%%%%%%

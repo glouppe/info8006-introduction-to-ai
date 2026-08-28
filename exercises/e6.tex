@@ -3,6 +3,11 @@
 \usepackage[english]{babel}
 \usepackage{sleek}
 \usepackage{common}
+\usepackage{booktabs}
+\usetikzlibrary{matrix,positioning}
+\usepackage{subcaption}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \title{Introduction to Artificial Intelligence (INFO8006)}
 \subtitle{Exercise session 6}
@@ -480,7 +485,7 @@ Let us consider a neural network $f$ with one hidden layer taking as input a sca
             $$
             which gives an updated $w_8$ equal to $1.08$.
         \end{solution}
-        \item Verify that the value of the loss function has decreased after the update.
+        \item Verify if the value of the loss function has decreased after the update.
         
         \begin{solution}
             With the updated $w_8$, we have $\hat{y} = -13.8$ which gives a loss equal to $1.44$. The previous loss value was $4$, we indeed decreased the loss. 
@@ -490,7 +495,7 @@ Let us consider a neural network $f$ with one hidden layer taking as input a sca
 
 \newpage
 
-\section{Convolution}
+\section{1D Convolution}
 
 Represent the convolution $x \circledast u$ of each of the following signals $x$
 
@@ -500,20 +505,25 @@ Represent the convolution $x \circledast u$ of each of the following signals $x$
         width=8cm,
         height=4cm,
         axis x line=middle,
-        axis y line=none,
+        axis y line=middle,
+        axis line style={->},
         domain=0:19,
         samples=20,
         xmin=-1,
         xmax=20,
         ymin=-1,
-        ymax=+1,
+        ymax=1,
         xmajorticks=false,
-        ymajorticks=false,
+        ymajorticks=true,
+        ytick={1},
+        yticklabels={1},
+        yticklabel style={anchor=east},
     ]
         \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
     \end{axis}
 \end{tikzpicture}
 }
+
 
 \newcommand{\kernel}[1]{%
 \begin{tikzpicture}
@@ -521,7 +531,7 @@ Represent the convolution $x \circledast u$ of each of the following signals $x$
         width=3cm,
         height=4cm,
         axis x line=middle,
-        axis y line=none,
+        axis y line=middle,
         domain=0:3,
         samples=4,
         xmin=-1,
@@ -529,7 +539,10 @@ Represent the convolution $x \circledast u$ of each of the following signals $x$
         ymin=-1,
         ymax=+1,
         xmajorticks=false,
-        ymajorticks=false,
+        ymajorticks=true,
+        ytick={1},
+        yticklabels={1},
+        yticklabel style={anchor=east},
     ]
         \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
     \end{axis}
@@ -551,6 +564,1333 @@ with each of the following convolution kernels $u$.
 \kernel{x / 1.5 - 1}
 \kernel{1 - 2 * (x < 2)}
 \kernel{1 - 2 * (mod(x, 3) == 0)}
+
+\newpage
+\section{2D Convolution}
+\begin{enumerate}
+    \item 
+    Represent the 2D convolution $x \circledast u$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
+    
+ \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+            |[fill=gray!10]| 0.1 & |[fill=gray!30]| 0.3 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!40]| 0.4 \\
+            |[fill=gray!20]| 0.2 & |[fill=gray!50]| 0.5 & |[fill=gray!80]| 0.8 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
+            |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!100]| 1.0 & |[fill=gray!80]| 0.8 & |[fill=gray!50]| 0.5 \\
+            |[fill=gray!20]| 0.2 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
+            |[fill=gray!10]| 0.1 & |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!50]| 0.5 & |[fill=gray!20]| 0.2 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+    
+    with the following convolution kernel $u$
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+             0.2 &
+             0.6 &
+            0.9 \\
+            0.4 &
+           0.8 &
+            0.3 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+    Is the result dependent on the choice of coordinate system (i.e. on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $u[j,i]$)?
+
+    \begin{solution}
+        The result is equivariant to the choice of coordinate system. The resulting feature map, as drawn on the sheet of paper, remains the same. Only the interpretation of which pixel is represented by $(x \circledast u)[j,i]$ changes.
+
+        \begin{tikzpicture}
+        \foreach \i in {0,1,2} {
+            \foreach \j in {0,1,2,3} {
+                \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
+            }
+        }
+    
+        \node at (0.7,-0.4)  {1.46};
+        \node at (2.1,-0.4)  {2.28};
+        \node at (3.5,-0.4)  {1.99};
+    
+        \node at (0.7,-1.2)  {2.08};
+        \node at (2.1,-1.2)  {2.53};
+        \node at (3.5,-1.2)  {2.04};
+    
+        \node at (0.7,-2.0)  {2.23};
+        \node at (2.1,-2.0)  {2.63};
+        \node at (3.5,-2.0)  {2.14};
+    
+        \node at (0.7,-2.8)  {1.78};
+        \node at (2.1,-2.8)  {2.16};
+        \node at (3.5,-2.8)  {1.61};
+    \end{tikzpicture}
+
+
+       
+    \end{solution}
+    
+    \item
+    The image $x$ now is a coloured image and has tree channels (one for the red colour, one for the green colour and one for the blue colour):
+
+    \begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.30\textwidth}
+        \centering
+        $x[0,:,:]$
+        
+         \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+            |[fill=red!10]| 0.1 & |[fill=red!30]| 0.3 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9  \\
+            |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 & \\
+            |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 &  \\
+            |[fill=red!20]| 0.2 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9 & |[fill=red!70]| 0.7 \\
+        };
+    \end{tikzpicture}
+        % First content
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.30\textwidth}
+        \centering
+       
+        $x[1,:,:]$
+        
+        \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
+            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2& |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
+            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 &  \\
+            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
+        };
+    \end{tikzpicture}
+        
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.30\textwidth}
+        \centering
+        $x[2,:,:]$
+        
+        \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
+            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2& |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
+            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 &  \\
+            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
+        };
+    \end{tikzpicture}
+    \end{minipage}
+
+\end{figure}
+
+   
+
+    Represent the 2D convolution $x \circledast u$ with the following convolution kernel $u$
+
+    \begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.30\textwidth}
+        \centering
+        $u[0,:,:]$
+        
+         \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+             0.2 &
+             0.6 &
+            0.9 \\
+            0.4 &
+           0.8 &
+            0.3 \\
+        };
+    \end{tikzpicture}
+        % First content
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.30\textwidth}
+        \centering
+       
+        $u[1,:,:]$
+        
+        \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+             0.1 &
+             0.1 &
+            0.1 \\
+            0.1 &
+           0.1 &
+            0.1 \\
+        };
+    \end{tikzpicture}
+        
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.30\textwidth}
+        \centering
+        $u[2,:,:]$
+        
+       \begin{tikzpicture}
+        \matrix[
+            matrix of nodes,
+            nodes={
+                draw,
+                minimum width=8mm,
+                minimum height=8mm,
+                inner sep=0pt,
+                anchor=center
+            },
+            row sep=-\pgflinewidth,
+            column sep=-\pgflinewidth,
+        ] {
+             0.2 &
+             0.2 &
+            0.2 \\
+            0.2 &
+           0.2 &
+            0.2 \\
+        };
+    \end{tikzpicture}
+    
+    \end{minipage}
+
+\end{figure}
+    Is the result dependent on the choice of coordinate system? What happens if the channels of $x$ are shuffled ?
+
+    \begin{solution}
+
+  The dimension corresponding to the channels cannot be interchanged with those corresponding to the height or width of the image while preserving the validity and correctness of the operation. This result makes sense, since the operation is a 2D convolution applied to a three-dimensional tensor. Changing the order of the channels in $x$ will also lead to a different convolution result. For the 2D coordinate system used to describe the spatial dimensions of the images at each channel (width and height), the same result as in the previous point holds.
+     
+        \begin{tikzpicture}
+            \foreach \i in {0,1} {
+                \foreach \j in {0,1,2} {
+                    \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
+                }
+            }
+        
+            \node at (0.7,-0.4) {1.82};
+            \node at (2.1,-0.4) {2.76};
+        
+            \node at (0.7,-1.2) {2.44};
+            \node at (2.1,-1.2) {3.01};
+        
+            \node at (0.7,-2.0) {2.59};
+            \node at (2.1,-2.0) {3.11};
+        \end{tikzpicture}
+    \end{solution}
+\end{enumerate}
+
+
+
+
+\newpage
+
+\section{Problem Statement, Output Layer, Loss Function}
+
+A dataset $d$ consists of $N=500$ images of cats and dogs, with exactly one cat or one dog appearing in each image. Each image has a spatial resolution of $32\times32$ pixels and is encoded in RGB format using three channels of real-valued entries. The first channel represents the red component of the image, the second channel represents the green component, and the third channel represents the blue component.
+
+
+You would like to formulate a supervised learning problem in order to develop a deep learning model suited to a given task.
+
+You are interested in three different tasks:
+
+\begin{enumerate}
+    \item Assign a beauty score (a real-valued quantity) to a given image.
+    \item Whether the image contains a cat or a dog.
+    \item Whether each pixel of an image belongs to a cat, a dog or the background.
+\end{enumerate}
+
+For each problem, you want to identify a probabilistic model in the form $p_\theta(y \mid x)$ from a dataset that you will construct: 
+$$d = \left( (x_0, y_0), (x_1, y_2), ...   \right).$$
+
+\begin{enumerate}
+    \item For each task, define the random variables $X$ and $Y$, specify their respective dimensions, and explain what $\theta$ represents.
+
+
+    \begin{solution}
+    For each task, $\theta$ represents the parameters of the model being developed. $X$ is the distribution of the image given as input to the model ($X \in \mathbb{R}^{3,32,32}$). 
+
+    For the first task, $Y$ is the distribution of the beauty score associated with an image. $Y \in \mathbb{R}$.
+
+   For the second task, $Y$ is a binary random variable indicating whether the image contains a dog (let's say $Y=1$ in this case) or a cat ($Y=0$). $Y \in \Delta^2$.
+
+   For the third case, $Y$ is a collection of categorical random variables $P_{u,v}$, each one associated with each pixel of the image $X$:
+    \[
+    Y = \bigcup_{v=0}^{31} \bigcup_{u=0}^{31} P_{u,v}.
+    \]
+Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background. $P_{u,v} \in \Delta^3$.
+
+
+    \end{solution}
+\end{enumerate}
+
+Once the task has been formulated, you construct the dataset $d$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.
+
+
+\begin{enumerate}
+   
+    \item[2.] Show that finding the parameters $\theta$ that maximize the likelihood of your model over a sample of $d$,
+    \[
+    p\left(
+    (x_i,y_i) \mid \theta
+    \right),
+    \]
+    is equivalent to finding the parameters $\theta$ that maximize the probability of the modelled conditional distribution over this sample,
+    \[
+    p\left(
+   y_i \,\middle|\, x_i,\theta
+    \right).
+    \]
+    \begin{solution}
+        \begin{align*}
+            \arg \max_{\theta} \left\{ p\left( (x_i, y_i) \mid \theta\right) \right\} &= \arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i \mid \theta)\right\}\\
+            &=\arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i)\right\}\, \text{(As the model is over $Y|X$, not $X$.)}\\
+            &=\arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) \right\}
+        \end{align*}
+    \end{solution}
+\end{enumerate}
+
+After reviewing the literature, you choose a model for $p_\theta (y | x) = p(y | x, \theta)$.
+
+For the first task, you assume that a suitable model is to model $Y \mid X$ as a Gaussian distribution with homoscedastic variance. For the second task, a suitable model is a Bernoulli distribution. For the third task, a suitable model is a categorical distribution.
+\begin{enumerate}
+    \item[3.] For each task, propose a suitable loss function to train your neural network. Propose also an output layer for your neural network in the form
+    \[
+    y = \sigma\left(W_y h + b_y\right).
+    \]
+Let $h$ denote the output of the layer immediately preceding the output layer, with dimension $d_o$ ($h \in \mathbb{R}^{d_o}$). Specify the dimensions of $y$, $W_y$, and $b_y$ and give an example of a suitable non-linear activation function $\sigma$ for each task.
+
+\textit{Hint:} For each task, which parameter of the distribution $p_\theta (y |x)$ is estimated by your neural network?
+
+\begin{solution}
+    For the first task, the statistical model is:
+    \begin{align*}
+        Y|X &\sim \N\left(\mu (X), \sigma^2 \right)\\
+        \rightarrow p(y|x) &\propto \exp\left(-\frac{1}{2}\frac{(y - \mu(x))^2}{\sigma^2} \right)
+    \end{align*}
+    The neural network estimates the mean of the Gaussian distribution and outputs $\hat{\mu}(X;\theta)$.
+    
+    For the second task:
+    \begin{align*}
+        Y|X &\sim \text{Bern}\left(q (X)\right)\\
+        \rightarrow p(y|x) &\propto q(x)^{y}(1-q(x))^{(1-y)}
+    \end{align*}
+    The neural network estimates the probability that the image contains a dog and outputs $\hat{q}(X;\theta)$.
+
+    For the third task:
+    \begin{align*}
+        Y|X &\sim \text{Categ}\left(q_1 (X), q_2 (X), q_3(X)\right)\\
+        \rightarrow p(y|x) &\propto (q_1(x))^{\mathbb{I}(y=\text{dog} )}(q_2(x))^{\mathbb{I}(y = \text{cat})}(q_3(x))^{\mathbb{I}(y=\text{background})}
+    \end{align*}
+    with $q_1(x)+q_2(x)+q_3(x) = 1$ and with $\mathbb{I}(y=\alpha )$ being 1 if the pixel $y$ belongs to the class $\alpha$, $0$ otherwise.
+    The neural network estimates the probability that each pixel belongs to a dog, a cat, or the background. It outputs $\hat{q}_1(X;\theta)$, $\hat{q}_2(X;\theta)$, and $\hat{q}_3(X;\theta)$, corresponding to the probabilities that a pixel belongs to a dog, a cat, or the background, respectively.
+
+    From the statistical model, and assuming that the samples $(x_i,y_i)$ are independent and identically distributed, a loss function can be derived to maximize the likelihood of the model given the observed dataset $d$:
+    \begin{align*}
+        \theta_{MLE} &= \arg \max_\theta p(d|\theta) \\
+        &= \arg \max_\theta p((x_0, y_0), (x_1,y_1), ... | \theta)\\
+        &= \arg \max _\theta \prod_{i=0}^{500} p(x_i, y_i |\theta ) \\
+        &= \arg \max _\theta \prod_{i=0}^{500} p(y_i| x_i,  \theta )  \\
+        &= \arg \max _\theta \sum_{i=0}^{500} \log (p(y_i| x_i, \theta )) \\
+        &= \arg \min _\theta \sum_{i=0}^{500} -\log (p(y_i| x_i, \theta )) \\
+        &= \arg \min_\theta \mathcal{L}(\theta,d)
+    \end{align*}
+
+    For the first task with Gaussian likelihood, the loss is the mean squared error:
+    $$\mathcal{L}(\theta,d) = \frac{1}{500} \sum _{(x_i, y_i)\in d}(y_i - \hat \mu (x_i ; \theta))^2$$
+
+    For the second task with a Bernoulli likelihood, the loss is the binary cross-entropy:
+    $$\mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d}y_i \log(\hat q(x_i; \theta)) + (1-y_i)\log (1- \hat q(x_i;\theta)) $$
+
+    For the third task with categorical likelihood, the loss is the cross-entropy:
+    $$\mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d} \frac{1}{32 \times 32}\sum_{u=0}^{31} \sum_{v=0}^{31}\sum_{c=0}^2    y_{i, c, uv} \log(\hat q_c(x_i; \theta)) $$
+
+    Regarding the output layer, the linear projection
+    $$ W_y h + b_y$$
+    must map the output $h$ of the preceding layer of the neural network to the desired output dimension.
+
+
+    For the first task:
+    $$W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1$$
+    For the second task:
+    $$W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1$$
+    For the third task:
+    $$W_y \in \mathbb{R}^{32, 32, 3, d_o} \quad b_y \in \mathbb{R} ^{ 32 , 32, 3}$$
+    The non-linear activation function $\sigma$ should map the projected output to the valid range of values for $y$.
+    For the first task, we can choose the identity:
+    $$\sigma (\cdot) = \cdot$$
+    For the second task, we can choose a sigmoid activation to map the projected values between 0 and 1:
+    $$\sigma(\cdot) = \frac{1}{1+\exp(-\cdot)}$$
+    For the third task, we can choose the Softmax activation to obtain logits for the three values associated for each pixel $j,i$:
+    $$\sigma(y_{j,i,u}) = \frac{\exp(y_{j,i,u})}{\sum_{u=0}^2\exp(y_{j,i,u})} \quad \forall i,j,u$$
+    
+
+    
+
+    
+
+
+\end{solution}
+
+
+\end{enumerate}
+
+You want to solve a new task: estimate the age of the dog or the cat in the image. To simplify the problem, you consider the age as an unrestricted real-valued quantity. After some reflection, it becomes clear that directly inferring the age from the image is not a good idea. If the type of animal (cat or dog) were first estimated, it would be much easier to estimate the animal's age from the image and this information.
+\begin{enumerate}
+    \item[4.] Formulate the task in the context of supervised learning and explain all the elements appearing in $p_\theta(y \mid x)$. What mathematical quantity is estimated by the neural network ?
+    
+    \begin{solution}
+        $y \sim Y$ is the age of the animal in the picture ($Y \in \mathbb{R}$).
+
+        $x \sim X$ is the picture ($X \in \mathbb{R}^{3,32,32}$).
+        
+        $\theta$ is the parameters of the model.
+
+        The problem is a regression problem. The neural network should give an estimate of $\E\{ Y|X\}$.
+    \end{solution}
+    
+    \item[5.] Draw a Bayesian network modelling the image, the type of animal and its age. Find a new expression for
+    $p(y \mid x) = p(y \mid x)$ that makes the effect of the type of the animal in the image explicit.
+
+    \begin{solution}
+        Let $A$ denote the random variable describing the type of animal present in the image (let's say $A=1$ if it is a dog). The animal type $A$ depends on the image $X$ and influences the age $Y$. Thus, the age $Y$ depends on both the image $X$ and the animal type $A$.
+
+        
+        \begin{tikzpicture}[
+        node distance=1cm,
+        every node/.style={
+            circle,
+            draw,
+            minimum size=10mm,
+            inner sep=0pt
+        },
+        >=stealth
+    ]
+    
+        \node (X) {$X$};
+        \node (A) [below left=0.5cm and 0.5cm of X] {$A$};
+        \node (Y) [below=1.5cm of X] {$Y$};
+    
+        \draw[->] (X) -- (A);
+        \draw[->] (X) -- (Y);
+        \draw[->] (A) -- (Y);
+    
+    \end{tikzpicture}
+
+    \begin{align*}
+       p(y| x) &= \sum _a p(y|A=a,x)p(A=a|x)\\
+       &=p(y|A=1,x)p(A=1|x) + p(y|A=0, x) (1-p(A=0 |x))
+    \end{align*}
+    \end{solution}
+
+    \item[7.] Consider a large neural network designed to solve the task, divided into multiple submodules, each implemented as a separate neural network. Use the image classification model developed above as one of these submodules. Define the inputs and outputs of the additional submodules required to solve the task. Relate the resulting architecture to the mathematical expression derived above. Which submodule estimates each of the distributions appearing in this expression?
+    
+    \textit{Hint:} Derive an expression for $\E\{Y\mid X\}$ using the Bayesian network, explicitly accounting for the animal type $A$.
+
+    \begin{solution}
+        The neural network gives an estimate of the conditional expectation:
+        \begin{align*}
+            \E\{Y|X \} &= \E \{ \E \{Y|X, A, \}\}\\
+            &=\sum_a \E \{Y|X, A=a \} p(A=a|X)\\
+            &=\E \{Y|X, A=1,  \} p(A=1|X) + \E \{Y|X, A=0 \} (1-p(A=1|X)) 
+        \end{align*}
+
+        The expression can also be obtained directly by applying the expectation operator $\E_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in Question 5.
+
+        The expected age is therefore a weighted mean of the age inferred under the assumption that the image contains a dog and the age inferred under the assumption that it contains a cat, with each age weighted by the corresponding probability.
+
+        The first submodule is the image classification model developed
+        previously. With parameters $\phi$, it takes an image $x$ as input and estimates the probability that the image contains a dog:
+        $$\hat q (x;\phi) \approx p(A=1| x) = 1 - p(A=0| x)$$
+
+        The second submodule, with parameters $\xi$, takes the image $x$
+        as input and estimates the expected age of the animal under the assumption that it is a dog:
+        $$\hat \mu_d (x ; \xi) \approx \E\{Y\mid x,A=1\}$$
+        
+        A third submodule, with parameters $\psi$, takes the
+        image $X$ as input and estimates the expected age under the assumption that it is a cat:
+        $$\hat \mu_c (x ; \psi) \approx \E\{Y\mid x,A=0\}$$
+
+        The final estimated age can then be reconstructed from the outputs of these submodules.
+    \end{solution}
+    
+\end{enumerate}
+
+\newpage
+
+\section{Shallow Network Expressiveness (INFO8006, August 2026, adapted)}
+
+We consider a neural network for binary classification that takes as input a 2D point
+$(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability
+$\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is
+defined as
+\begin{align*}
+    h_1 &= \operatorname{ReLU}(x_1-1),\\
+    h_2 &= \operatorname{ReLU}(x_2-2),\\
+    \hat{y} &= \sigma(h_1+h_2-2),
+\end{align*}
+where
+\[
+    \operatorname{ReLU}(z)=\max(0,z)
+\]
+is the rectified linear unit and
+\[
+    \sigma(z)=\frac{1}{1+e^{-z}}
+\]
+is the sigmoid function.
+
+The predicted class is
+\[
+    \hat{c}=
+    \begin{cases}
+        1, & \text{if } \hat{y}\geq 0.5,\\
+        0, & \text{otherwise}.
+    \end{cases}
+\]
+
+\begin{enumerate}
+
+    \item[(a)]
+    Draw the computation graph representing the neural network. Use circled nodes for
+    variables (inputs, outputs, and intermediate values) and squared nodes for
+    operations (addition, ReLU, and sigmoid).
+
+    \begin{solution}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.7\linewidth]{figures/shalow_drawing.png}
+        \end{figure}
+    \end{solution}
+
+
+    \item[(b)]
+    The ReLU activation functions divide the input space into several regions,
+    depending on whether each hidden unit is active ($h_i>0$) or inactive
+    ($h_i=0$).
+
+    \begin{enumerate}
+
+        \item[(i)]
+        Identify and characterize these regions in terms of conditions on $x_1$ and
+        $x_2$.
+
+        \begin{solution}
+
+        The two ReLU units are characterized by
+        \begin{align*}
+            x_1 > 1
+            &\quad\Longrightarrow\quad
+            h_1=x_1-1>0,\\
+            x_1 \leq 1
+            &\quad\Longrightarrow\quad
+            h_1=0,
+        \end{align*}
+        and
+        \begin{align*}
+            x_2 > 2
+            &\quad\Longrightarrow\quad
+            h_2=x_2-2>0,\\
+            x_2 \leq 2
+            &\quad\Longrightarrow\quad
+            h_2=0.
+        \end{align*}
+
+        Therefore, four regions can be distinguished:
+
+        \begin{enumerate}
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1>1\\
+                x_2>2
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                h_1=x_1-1\\
+                h_2=x_2-2
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1>1\\
+                x_2\leq2
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                h_1=x_1-1\\
+                h_2=0
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1\leq1\\
+                x_2>2
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                h_1=0\\
+                h_2=x_2-2
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1\leq1\\
+                x_2\leq2
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                h_1=0\\
+                h_2=0
+            \end{array}
+            \right.
+            \]
+
+    \end{enumerate}
+
+        \end{solution}
+
+
+        \item[(ii)]
+        For each region, give a simplified expression for the output probability
+        $\hat{y}$ as a function of $x_1$ and $x_2$.
+
+        \begin{solution}
+
+
+\begin{enumerate}
+
+    \item
+    For $x_1>1$ and $x_2>2$,
+    \begin{align*}
+        \hat{y}
+        &=\sigma(h_1+h_2-2)\\
+        &=\sigma((x_1-1)+(x_2-2)-2)\\
+        &=\sigma(x_1+x_2-5)\\
+        &=\boxed{\frac{1}{1+e^{-(x_1+x_2-5)}}}.
+    \end{align*}
+
+    \item
+    For $x_1>1$ and $x_2\leq2$,
+    \begin{align*}
+        \hat{y}
+        &=\sigma(h_1+h_2-2)\\
+        &=\sigma((x_1-1)+0-2)\\
+        &=\sigma(x_1-3)\\
+        &=\boxed{\frac{1}{1+e^{-(x_1-3)}}}.
+    \end{align*}
+
+    \item
+    For $x_1\leq1$ and $x_2>2$,
+    \begin{align*}
+        \hat{y}
+        &=\sigma(h_1+h_2-2)\\
+        &=\sigma(0+(x_2-2)-2)\\
+        &=\sigma(x_2-4)\\
+        &=\boxed{\frac{1}{1+e^{-(x_2-4)}}}.
+    \end{align*}
+
+    \item
+    For $x_1\leq1$ and $x_2\leq2$,
+    \begin{align*}
+        \hat{y}
+        &=\sigma(0+0-2)\\
+        &=\sigma(-2)\\
+        &=\boxed{\frac{1}{1+e^2}}.
+    \end{align*}
+
+\end{enumerate}
+
+
+\end{solution}
+
+
+    \item[(c)]
+    Plot the decision boundary $\hat{y}=0.5$ of the classifier on the grid below.
+    Clearly indicate which region(s) are classified as class $1$ and which are
+    classified as class $0$.
+
+    \begin{solution}
+
+    Remembering that the sigmoid is strictly increasing and:
+        \[
+            \sigma(0)=0.5,
+        \]
+        the decision boundaries can be easily plotted.
+
+        \begin{enumerate}
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1>1\\
+                x_2>2 \\
+                \hat y \geq 0.5
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                x_2 \geq -x_1 + 5 \\
+                \hat c = 1
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1>1\\
+                x_2\leq2 \\
+                \hat y \geq 0.5
+                
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                x_1 \geq 3\\
+                \hat c = 1
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1\leq1\\
+                x_2>2 \\
+                \hat y \geq 0.5
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                x_2 \geq 4 \\
+                \hat c = 1
+            \end{array}
+            \right.
+            \]
+
+            \item
+            \[
+            \left\{
+            \begin{array}{l}
+                x_1\leq1\\
+                x_2\leq2 \\
+                \hat y \geq 5
+            \end{array}
+            \right.
+            \quad\Longrightarrow\quad
+            \left\{
+            \begin{array}{l}
+                \{x_1 , x_2 \} \in \phi\\
+                \hat c = 1
+            \end{array}
+            \right.
+            \]
+
+        \end{enumerate}
+
+        We have $\hat c = 0$ in the other regions. The decision boundary is plotted below in thick black:
+
+        
+
+        
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=10cm,
+            height=8cm,
+            xmin=-1,
+            xmax=6,
+            ymin=-1,
+            ymax=7,
+            axis lines=middle,
+            xlabel={$x_1$},
+            ylabel={$x_2$},
+            grid=both,
+            xtick={-1,0,...,6},
+            ytick={-1,0,...,7},
+            axis line style={->},
+            enlargelimits=false,
+        ]
+
+        % ReLU boundaries
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:7,
+        ] ({1},{x});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] ({x},{2});
+
+        % Decision boundary: x1 + x2 = 5
+        \addplot[
+            very thick,
+            domain=1:3,
+        ] ({x},{5-x});
+
+        % Decision boundary: x1 = 3
+        \addplot[
+            very thick,
+            domain=-1:2,
+        ] ({3},{x});
+
+        % Decision boundary: x2 = 4
+        \addplot[
+            very thick,
+            domain=-1:1,
+        ] ({x},{4});
+
+        % Class labels
+        \node at (axis cs:4.8,5.8) {\Large $\hat c = 1$};
+        \node at (axis cs:1,1) {\Large$\hat c = 0$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+\end{solution}
+
+
+    \item[(d)]
+    We now consider a modified network with a third hidden unit:
+    \begin{align*}
+        h_1 &= \operatorname{ReLU}(x_1-1),\\
+        h_2 &= \operatorname{ReLU}(x_2-2),\\
+        h_3 &= \operatorname{ReLU}(-2x_1-x_2+5),\\
+        \hat{y} &= \sigma(h_1+h_2+h_3-2).
+    \end{align*}
+
+    On a new grid, plot the new decision boundary and compare it to the original one. What is the effect of adding $h_3$?
+
+    \begin{solution}
+
+    The new unit is active when
+    \[
+        -2x_1 + -x_2 + 5 > 0
+    \]
+
+    The three hidden units define seven different linear regions:
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=10cm,
+            height=8cm,
+            xmin=-1,
+            xmax=6,
+            ymin=-1,
+            ymax=7,
+            axis lines=middle,
+            xlabel={$x_1$},
+            ylabel={$x_2$},
+            grid=both,
+            xtick={-1,0,...,6},
+            ytick={-1,0,...,7},
+            axis line style={->},
+            enlargelimits=false,
+        ]
+
+        % ReLU boundaries
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:7,
+        ] ({1},{x});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] ({x},{2});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] ({x},{2});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] {5-2*x};
+
+
+
+        % Class labels
+        \node at (axis cs:0.5,0.5) {\Large $ \boxed{1}$};
+        \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
+        \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
+        \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
+        \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
+        \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
+        \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+For each region: the class $1$ is predicted for:
+\begin{enumerate}
+    \item[1.]
+
+    \begin{equation*}
+        -2 \geq 0 \rightarrow \{ x_1 ,x_2\} \in \phi
+    \end{equation*}
+
+    
+    \item[2.]
+    \begin{equation*}
+        x_2 \geq 4
+    \end{equation*}
+    
+
+    
+    \item[3.]
+
+     \begin{equation*}
+        x_1 \leq \frac{1}{2}
+    \end{equation*}
+
+    
+    \item[4.]
+    \begin{equation*}
+        x_1 \geq 3
+    \end{equation*}
+
+    
+    \item[5.]
+     \begin{equation*}
+        x_2 \geq -x_1 + 5
+    \end{equation*}
+    
+
+    
+    \item[6.]
+    \begin{equation*}
+        x_2 \leq -x_1 + 2
+    \end{equation*}
+
+    
+    \item[7.]
+     \begin{equation*}
+        x_1 \leq 0
+    \end{equation*}
+    \end{enumerate}
+
+    The decision boundary is shown below:
+
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=10cm,
+            height=8cm,
+            xmin=-1,
+            xmax=6,
+            ymin=-4,
+            ymax=7,
+            axis lines=middle,
+            xlabel={$x_1$},
+            ylabel={$x_2$},
+            grid=both,
+            xtick={-1,0,...,6},
+            ytick={-4,-3,...,7},
+            axis line style={->},
+            enlargelimits=false,
+        ]
+
+        % ReLU boundaries
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-4:7,
+        ] ({1},{x});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] ({x},{2});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] ({x},{2});
+
+        \addplot[
+            dashed,
+            thick,
+            opacity=0.4,
+            domain=-1:6,
+        ] {5-2*x};
+
+        % Decision boundary: x2 = 4
+        \addplot[
+            very thick,
+            domain=-1:0.5,
+        ] ({x},{4});
+
+        \addplot[
+            very thick,
+            domain=4:7,
+        ] ({0.5},{x});
+
+        \addplot[
+            very thick,
+            domain=-4:-1,
+        ] ({3},{x});
+
+        \addplot[
+            very thick,
+            domain=3:6,
+        ] ({x},{-x+2});
+
+
+
+        % Class labels
+         \node at (axis cs:2.0,3.0) {\Large $ \hat c = 0$};
+         \node at (axis cs:-0.5,5.5) {\Large $ \hat c = 1$};
+         \node at (axis cs:4.2,-3.0) {\Large $ \hat c = 1$};
+        % \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
+        % \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
+        % \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
+        % \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
+        % \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
+        % \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+The third ReLU unit partitions the input space into more linear regions, allowing the network to represent a more complex decision boundary. In regions where the unit is inactive, the decision boundary remains unchanged. In regions where it is active, the additional term can significantly change the decision boundary.
+
+    \end{solution}
+
+\end{enumerate}
+\end{enumerate}
+\newpage
+
+\section{Neural Network Parameters}
+
+Sandrine and Karl, two long-time data scientist friends, each decide to
+design a neural network to solve a challenging task: compressing a high-definition color image  in a HD 720p resolution ($1280\times720$ pixels).
+
+To do so, both decide to use an encoder network and a decoder network. The first network, the \emph{encoder}, transforms the input image into a low-dimensional latent representation which constitutes the compressed representation. The second network, the
+\emph{decoder}, reconstructs the original image as faithfully as possible from this low-dimensional representation.
+
+
+Sandrine decides to use a multilayer perceptron with ReLU nonlinear
+activations for her encoder. Each block $i$ of her encoder therefore consists of a linear
+projection followed by the nonlinear activation:
+\[
+    h_i = \sigma\left(W_i h_{i-1}+b_i\right).
+\]
+
+The HD color image is represented using three channels corresponding to the
+red, green, and blue components. Sandrine flattens the image into a
+single vector before feeding it to the network.
+
+The dimensions of the different units throughout Sandrine's encoder are given
+below:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figures/sandr_graph.png}
+\end{figure}
+
+
+\begin{enumerate}
+    \item How many trainable parameters does Sandrine's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+
+    \begin{solution}
+        
+   
+    The dimension of $W_i$ and $b_i$ for each layer are:
+    \begin{enumerate}
+        \item 
+            \begin{equation*}
+                W_1 ^{921600 \times 2764800} \quad b_1^{921600}
+            \end{equation*}
+
+        \item 
+        \begin{equation*}
+                W_2 ^{460800 \times 921600} \quad b_2^{460800}
+            \end{equation*}
+
+        \item 
+        \begin{equation*}
+                W_3 ^{460800 \times 460800} \quad b_3^{460800}
+            \end{equation*}
+
+        \item
+        \begin{equation*}
+                W_4 ^{230400 \times 460800} \quad b_4^{230400}
+            \end{equation*}
+    \end{enumerate}
+    The total number of parameters is:
+    \begin{align*}
+        N_{\mathrm{param}}
+        &= 921600 \times 2764800 + 921600
+           + 460800 \times 921600 + 460800 \\
+        &\quad + 460800 \times 460800 + 460800
+           + 230400 \times 460800 + 230400 \\
+        &= \boxed{3\,033\,907\,430\,400}.
+    \end{align*}
+
+    Thus, using $32$ bits per parameter, the memory required to store the
+    parameters is
+    \begin{align*}
+    M
+    &=\frac{12\,135\,629\,721\,600}{2^{40}}\ \mathrm{TB}\\
+    &\approx \boxed{11.04\ \mathrm{TB}}.
+    \end{align*}
+    Clearly, the Sandrine's encoder in infeasible.
+     \end{solution}
+
+    \item What is the compression ratio achieved by Sandrine's encoder?
+    
+    \begin{solution}
+        \begin{equation*}
+            \eta = 1 - \frac{230400}{3\times 1280 \times 720} = 92 \%
+        \end{equation*}
+    \end{solution}
+\end{enumerate}
+
+Karl decides to use a convolutional neural network, also with ReLU
+nonlinear activations for his encoder.
+
+Each block of the network consists of a convolutional layer with $3\times3$
+kernels, followed by a ReLU activation and a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
+
+The HD color image is still represented using three channels corresponding to the red, green, and blue components. The dimensions of the different units throughout Karl's encoder are given below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/Karl_graph.png}
+\end{figure}
+
+\begin{enumerate}
+    \item[(c)] How many parameters does Karl's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+
+    \begin{solution}
+        Let the input of a block be
+        \[
+            h \in \mathbb{R}^{a\times b\times c},
+        \]
+        where $a$ denotes the number of input channels, and $b$ and $c$ denote the
+        height and width of the feature maps, respectively.
+        
+        Before the convolution, the input is padded with a border of zeros of width
+        $1$. The padded input therefore has shape
+        \[
+            h_p \in \mathbb{R}^{a\times(b+2)\times(c+2)}.
+        \]
+        
+        A convolutional kernel of spatial size $3\times3$ must span all $a$ input
+        channels. Consequently, each kernel has shape
+        \[
+            a\times3\times3
+        \]
+        and therefore contains
+        \[
+            9a
+        \]
+        trainable weights. If the convolutional layer contains $k$ kernels, the total
+        number of weights is
+        \[
+            \boxed{9ak}.
+        \]
+        As each kernel also has a bias, the total number of trainable parameters is
+        \[
+            \boxed{9ak+k=k(9a+1)}.
+        \]
+        
+        Because the input is padded by one pixel on each side and the convolution uses
+        a $3\times3$ kernel, the spatial dimensions are preserved:
+        \[
+            (b+2)-3+1=b,
+            \qquad
+            (c+2)-3+1=c.
+        \]
+        Therefore, the output of the convolutional layer has shape
+        \[
+            k\times b\times c.
+        \]
+        
+        The ReLU does not modify the dimensions. Finally, the $2\times2$ max-pooling layer reduces each spatial dimension by a factor of $2$.
+        Assuming $b$ and $c$ are even, the output of the block has shape
+        \[
+            \boxed{k\times\frac{b}{2}\times\frac{c}{2}}.
+        \]
+        The number of kernels and their shapes throughout the network are:
+        \begin{enumerate}
+            \item $4$ kernels of shape $3\times3\times3$,
+        
+            \item $8$ kernels of shape $4\times3\times3$,
+        
+            \item $32$ kernels of shape $8\times3\times3$,
+        
+            \item $16$ kernels of shape $32\times3\times3$.
+        \end{enumerate}
+        
+        The total number of parameters is therefore
+        \begin{align*}
+            N_{\mathrm{param}}
+            &=4(3\times3\times3+1)
+              +8(4\times3\times3+1)\\
+            &\quad
+              +32(8\times3\times3+1)
+              +16(32\times3\times3+1)\\
+            &=4(28)+8(37)+32(73)+16(289)\\
+            &=112+296+2336+4624\\
+            &=\boxed{7368}.
+        \end{align*}
+        Thus, using $32$ bits per parameter, the memory required to store the parameters is
+        \begin{align*}
+        M
+        &= 7368\times32\ \text{bits}\\
+        &= \frac{29\,472}{2^{20}}\ \text{MB}\\
+        &\approx \boxed{0.0281\ \text{MB}}.
+    \end{align*}
+    Karl's encoder clearly fits in a laptop.
+    \end{solution}
+    
+    
+
+    \item[(d)] What is the compression ratio achieved by Karl's encoder?
+    \begin{solution}
+        \begin{equation*}
+            \eta = 1 - \frac{16 \times 160 \times 90}{3\times 1280 \times 720} = 92 \%
+        \end{equation*}
+    \end{solution}
+\end{enumerate}
+
+
+
+
 
 \newpage
 

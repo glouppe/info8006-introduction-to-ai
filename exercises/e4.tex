@@ -2,7 +2,8 @@
 
 \usepackage[english]{babel}
 \usepackage{sleek}
-\usepackage[nosolutions]{common}
+%\usepackage[nosolutions]{common}
+\usepackage[]{common}
 
 \title{Introduction to Artificial Intelligence (INFO8006)}
 \subtitle{Exercise session 4}
@@ -532,7 +533,7 @@ Considering the hereabove Bayesian network, which of the following statements ar
     \item $P(B, C | A) = P(B | A) P(C | A)$
 
     \begin{solution}
-        This is true iff $B \perp C | A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). In $(B, F, A, C)$, the triplet $(B, F, A)$ is active, but $(F, A, C)$ is not. We can guarantee that $B \perp C | A$.
+        This is true iff $B \perp C | A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). In $(B, F, A, C)$, the triplet $(B, F, A)$ is not active ($\vee$-structure).  $(F, A, C)$ is not active either. We can guarantee that $B \perp C | A$.
     \end{solution}
 
     \item $P(F, E) = P(F) P(E)$
@@ -588,7 +589,7 @@ For the same network, use inference by variable elimination to compute $P(E | A 
         f_6(C) & = \sum_d f_5(C, d) \\
         f_7(C, E) & = f_3(C) \times f_4(E, C) \times f_6(C) \\
         f_8(E) & = \sum_c f_7(c, E) \\
-        f_9(E) & = f_1 \times f_2 \times f_7(E) .
+        f_9(E) & = f_1 \times f_2 \times f_8(E) .
     \end{align*}
     Finally,
     \begin{equation*}

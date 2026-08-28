@@ -89,12 +89,12 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
             S & \subset \mathbb{N} \times \cbk{0, 1} \\
             A(s = (s_1, s_2)) & = \begin{cases}
                 \cbk{d, c} & \text{if } s_1 < 6 \text{ and } s_2 = 0 \\
-                \cbk{c} & \text{if } s_2 = 0 \\
+                \cbk{c} & \text{if }  s_1 \geq 6 \text{ and } s_2 = 0\\
                 \cbk{} & \text{otherwise}
             \end{cases} \\
-            P(s' = (s_1', s_2') | s = (s_1, 0), a) & = \begin{cases}
-                1 & \text{if } s_1' = s_1 \text{ and } s_2' = 1 \text{ and } a = c \\
-                \frac{1}{3} & \text{if } s_1' - s_1 \in \cbk{2, 3, 4} \text{ and } s_2' = 0 \text{ and } a = d \\
+            P(s' = (s_1', s_2') | s = (s_1, s_2), a) & = \begin{cases}
+                1 & \text{if } s_2 = 0 \text{ and }  s_1' = s_1 \text{ and } s_2' = 1 \text{ and } a = c \\
+                \frac{1}{3} & \text{if } s_2 = 0 \text{ and } s_1' - s_1 \in \cbk{2, 3, 4} \text{ and } s_2' = 0 \text{ and } a = d \\
                 0 & \text{otherwise}
             \end{cases} \\
             R(s = (s_1, s_2)) & = \begin{cases}
@@ -162,6 +162,24 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
 
             Each iteration of this algorithm takes $\mathcal{O}(\abs{S}^2 \abs{A})$ operations.
 
+            With the state utilities $V(s)$ obtained, the optimal policy can be deduced with:
+            \begin{align*}
+            \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V(s') .
+        \end{align*}
+         \begin{table}[H]
+                \centering
+                \begin{tabular}{c|cccccc|cccccc}
+                    \toprule
+                    $s_1$    & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
+                    $s_2$    & \multicolumn{6}{c|}{0}   & \multicolumn{6}{c}{1}    \\
+                    \midrule
+                    $\pi^*(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
+                    \bottomrule
+                \end{tabular}
+            \end{table}
+
+         
+
             \item In policy iteration, we estimate the optimal policy $\pi^*$ by policy estimates $\pi_i$ and update them with
             \begin{equation*}
                 \pi_{i+1}(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' | s, a) V^{\pi_i}(s'),
@@ -190,10 +208,13 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
                     $V_0(s)$   & 0 & 0 & 0 & 0 & 0 & 0    & 1 & 3 & 4 & 5 & 6 & 0    \\
                     $\pi_0(s)$ & $c$ & $c$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
                     $V_1(s)$   & 1 & 3 & 4 & 5 & 6 & 0    & 1 & 3 & 4 & 5 & 6 & 0    \\
+                    $V_2(s)$   & 1 & 3 & 4 & 5 & 6 & 0    & 1 & 3 & 4 & 5 & 6 & 0    \\
                     $\pi_1(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
-                    $V_2(s)$   & $\frac{12}{3}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $V_3(s)$   & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
+                    $V_3(s)$   & $\frac{12}{3}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
+                    $V_4(s)$   & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
+                    $V_5(s)$   & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     $\pi_3(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
+                    $V_6(s)= V_5(s) (\rightarrow\pi_3(s) = \pi^*(s) $)   & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     \bottomrule
                 \end{tabular}
             \end{table}
@@ -401,7 +422,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         \begin{align*}
             \hat{Q}(A, 0) & \gets (1 - \alpha) \hat{Q}(A, 0) + \alpha \rbk*{2 + \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} = \frac{1}{4} 0 + \frac{3}{4} \rbk{2 + \frac{1}{2} 0} = \frac{+3}{2} \\
             \hat{Q}(C, 1) & \gets (1 - \alpha) \hat{Q}(C, 1) + \alpha \rbk*{-2 + \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} = \frac{1}{4} 0 + \frac{3}{4} \rbk{-2 + \frac{1}{2} \frac{3}{2}} = \frac{-15}{16} \\
-            \hat{Q}(B, 1) & \gets (1 - \alpha) \hat{Q}(B, 1) + \alpha \rbk*{2 + \gamma \max \cbk{\hat{Q}(B, 0), \hat{Q}(B, 1)}} = \frac{1}{4} 0 + \frac{3}{4} \rbk{1 + \frac{1}{2} 0} = \frac{+3}{4} \\
+            \hat{Q}(B, 1) & \gets (1 - \alpha) \hat{Q}(B, 1) + \alpha \rbk*{1 + \gamma \max \cbk{\hat{Q}(B, 0), \hat{Q}(B, 1)}} = \frac{1}{4} 0 + \frac{3}{4} \rbk{1 + \frac{1}{2} 0} = \frac{+3}{4} \\
             \hat{Q}(A, 0) & \gets (1 - \alpha) \hat{Q}(A, 0) + \alpha \rbk*{-1 + \gamma \max \cbk{\hat{Q}(B, 0), \hat{Q}(B, 1)}} = \frac{1}{4} \frac{3}{2} + \frac{3}{4} \rbk{-1 + \frac{1}{2} \frac{3}{4}} = \frac{-3}{32} \\
             \hat{Q}(B, 1)  & \gets \dots
         \end{align*}
