@@ -1067,14 +1067,14 @@ You want to solve a new task: estimate the age of the dog or the cat in the imag
     \begin{solution}
         The neural network gives an estimate of the conditional expectation:
         \begin{align*}
-            \E\{Y|X \} &= \E \{ \E \{Y|X, A, \}\}\\
+            \E\{Y|X \} &= \E \{ \E \{Y|X, A \}\}\\
             &=\sum_a \E \{Y|X, A=a \} p(A=a|X)\\
             &=\E \{Y|X, A=1,  \} p(A=1|X) + \E \{Y|X, A=0 \} (1-p(A=1|X)) 
         \end{align*}
 
-        The expression can also be obtained directly by applying the expectation operator $\E_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in Question 5.
+        The expression can also be obtained directly by applying the expectation operator $\mathbb{E}_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in point~5.
 
-        The expected age is therefore a weighted mean of the age inferred under the assumption that the image contains a dog and the age inferred under the assumption that it contains a cat, with each age weighted by the corresponding probability.
+        The expected age is therefore a weighted mean of the age inferred under the assumption that the image contains a dog and the age inferred under the assumption that it contains a cat. Each age is weighted by the corresponding probability.
 
         The first submodule is the image classification model developed
         previously. With parameters $\phi$, it takes an image $x$ as input and estimates the probability that the image contains a dog:
