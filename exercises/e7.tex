@@ -142,9 +142,18 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
             \begin{equation*}
                 V(s = (s_1, 1)) = R(s) .
             \end{equation*}
-            Let $V_0(s) = R(s)$ be our first value estimate.
+            Let $V_0(s) = R(s)$ be our first value estimate. For example, for the first term of the first iteration, we have:
+            \begin{align*}
+                &V_1(s_1 = 0, s_2 = 0) = R(s_1 = 0, s_2 = 0) +\\
+                &\gamma \max \left\{ \underbrace{P( s'=(0, 1) | s=(0, 0 ), c)\, V_0 (s'=(0, 1))}_{a=c} ; \underbrace{P(s'=(2,0)|s=(0,0), d)\, V_0(s'=(2,0))+ ...}_{a=d}  \right\}
+            \end{align*}
+             \begin{align*}
+                \rightarrow V_1(s_1 = 0, s_2 = 0) &=0 +1 \max \left\{ 1 \times 1; \frac{1}{3}\times 0 + \frac{1}{3}\times 0 + \frac{1}{3}\times 0\right\} \\
+                &=1
+            \end{align*}
+            
 
-            \begin{table}[h]
+            \begin{table}[H]
                 \centering
                 \begin{tabular}{c|cccccc|cccccc}
                     \toprule
