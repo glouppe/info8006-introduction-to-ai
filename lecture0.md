@@ -149,23 +149,21 @@ Possible completions: "That's one small step for man, one giant leap for mankind
 
 class: middle
 
-This explains why large language models ...
-- never produce the same answers;
-- cannot count, compute, or reason*;
-- invent things and cannot cite sources;
-- can hardly correct their own mistakes once they have been made.
+.center.circle.width-30[![](figures/lec0/ilya.jpg)]
 
-.footnote[*: At least not with a vanilla transformer and a greedy decoding strategy.]
+.quote[What does it mean to predict the next token well enough? It's actually [...] a deeper question than it seems. Predicting the next token well means that you understand the underlying reality that led to the creation of that token. .author[Ilya Sutskever, 2023]]
 
 ---
 
 class: middle
 
-.center.circle.width-30[![](figures/lec0/ilya.jpg)]
+This explains why a model that only guesses the next word ...
+- gives different answers to the same question;
+- cannot count, compute, or reason;
+- invents things and cannot cite sources;
+- can hardly correct its own mistakes once they have been made.
 
-.italic[What does it mean to predict the next token well enough? It's actually [...] a deeper question than it seems. Predicting the next token well means that you understand the underlying reality that led to the creation of that token.]
-
-.pull-right[Ilya Sutskever, 2023.]
+.question[How do we go from here to agents that use computers and prove theorems?]
 
 ---
 
@@ -175,61 +173,13 @@ class: middle
 
 ---
 
-class: middle, center
-
-.width-70[![](figures/lec0/terminator.png)]
-
-"With artificial intelligence we are summoning the demon" -- Elon Musk, 2014.
-
-???
-
-Triggers a rich imagination fueled by science-fiction.
-
----
-
-class: middle, center
-
-.width-60[![](figures/lec0/washing-machine.png)]
-
-"We're really closer to a smart washing machine than Terminator" -- Fei-Fei Li, Director of Stanford AI Lab, 2017.
-
-???
-
-The reality is quite different...
-
----
-
-class: middle, center, black-slide
-
-<iframe frameborder="0" width="600" height="480" src="https://www.dailymotion.com/embed/video/x7kvtfn" allowfullscreen></iframe>
-
-Yann LeCun, 2018.
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/DsBGaHywRhs" frameborder="0" allowfullscreen></iframe>
-
-Geoffrey Hinton, 2023.
-
----
-
-class: middle, center, black-slide
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/YdaRd_vitLw" frameborder="0" allowfullscreen></iframe>
-
-Yann LeCun, 2024.
-
----
-
 # A definition of AI?
 
 <br>
 
 .center.circle.width-40[![](figures/lec0/minsky.png)]
 
-.center["Artificial intelligence is the science of making machines do things that would require intelligence if done by men." -- Marvin Minsky, 1968.]
+.quote[Artificial intelligence is the science of making machines do things that would require intelligence if done by men. .author[Marvin Minsky, 1968]]
 
 ???
 
@@ -263,34 +213,19 @@ The Turing test is an *operational* definition of intelligence.
 
 class: middle
 
-An agent would not pass the Turing test without the following **requirements**:
+In 2025, a language model was judged to be the human .bold[73%] of the time, more often than the humans themselves.
 
-- natural language processing
-- knowledge representation
-- automated reasoning
-- machine learning
-- computer vision (total Turing test)
-- robotics (total Turing test)
+.center.width-60[![](figures/lec0/cargo-plane.jpg)]
 
-Despite being proposed more than 75 years ago, the Turing test is *still relevant*
-today.
+.quote[Aeronautical engineering texts do not define the goal of their field as making "machines that fly so exactly like pigeons that they can fool even other pigeons." .author[Russell and Norvig]]
 
----
+.footnote[Credits: [Jones and Bergen](https://arxiv.org/abs/2503.23674), 2025 (arXiv:2503.23674).]
 
-class: middle
+???
 
-The Turing test tends to focus on *human-like errors*, *linguistic tricks*, etc.
+The 2025 result: GPT-4.5, prompted to adopt a humanlike persona, in a standard three-party test (an interrogator chats with a human and a machine at the same time, then picks the human). Later published in PNAS.
 
-However, it seems more important to study the **principles** underlying intelligence than to replicate an exemplar.
-
----
-
-class: middle, center, black-slide
-
-.center.width-80[![](figures/lec0/cargo-plane.jpg)]
-
-Aeronautics is not defined as the field of making machines<br> that fly
-so exactly like pigeons that they can fool even other pigeons.
+Machines now pass the Turing test, which says more about the test than about intelligence. The test rewards human-like errors and linguistic tricks. It is more important to study the principles underlying intelligence than to replicate an exemplar.
 
 ---
 
@@ -298,7 +233,7 @@ class: middle
 
 ## A modern definition of AI
 
-An ‘AI system’ is a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments. -- European AI Act, Article 3, 2024.
+.quote[‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments. .author[EU AI Act, Article 3, 2024]]
 
 .footnote[[Regulation (EU) 2024/1689](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ%3AL_202401689#d1e2090-1-1).]
 
@@ -356,7 +291,7 @@ class: middle
 
 class: middle
 
-## 1990-Present: Statistical approaches
+## 1990-2022: Statistical approaches
 - 1985-1995: The return of neural networks.
 - 1988-: Resurgence of probability, focus on uncertainty, general increase in technical depth.
 - 1995-2010: New fade of neural networks.
@@ -364,7 +299,19 @@ class: middle
 - 2010-: Availability of fast commodity hardware (GPUs).
 - 2012-: Resurgence of neural networks with  deep learning approaches.
 - 2017: Attention is all you need (transformers).
+
+---
+
+class: middle
+
+## 2022-Present: From assistants to agents
 - 2022: ChatGPT released to the public.
+- 2024: Reasoning models write before answering.
+- 2024: Nobel Prizes in Physics (Hopfield, Hinton) and Chemistry (Baker, Hassabis, Jumper).
+- 2025: Barto and Sutton receive the Turing Award for reinforcement learning.
+- 2025: Gold-medal score at the International Mathematical Olympiad.
+- 2025-: Agents that write code and use computers.
+- 2026: Agents claim a proof for the Navier–Stokes Millennium Problem.
 
 ---
 
@@ -647,6 +594,12 @@ class: middle
 
 class: middle
 
+# From neural networks to agents
+
+---
+
+class: middle
+
 ## The breakthrough
 
 .grid[
@@ -667,17 +620,136 @@ A brutal simplicity:
 - The more parameters, the better the model.
 - The more compute, the better the model.
 
-Scaling up further to gigantic models, datasets, and compute resources keeps pushing the boundaries of what is possible, .bold[with no sign of slowing down].
+Scaling up further to gigantic models, datasets, and compute resources keeps pushing the boundaries of what is possible, .bold[with no sign of slowing down]$^\*$.
 
-.footnote[Credits: [Kaplan et al.](https://arxiv.org/abs/2001.08361), 2020 (arXiv:2001.08361).]
+.footnote[*: At least up to 2025. Credits: [Kaplan et al.](https://arxiv.org/abs/2001.08361), 2020 (arXiv:2001.08361).]
+
+???
+
+The footnote: scaling pretraining alone is now bending. Since 2024, scaling also spends computation at inference time, which comes a few slides later with test-time scaling.
 
 ---
 
-class: middle, center, black-slide
+class: middle
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/-dWfl7Dhb0o" frameborder="0" allowfullscreen></iframe>
+.top-right[![](./figures/lec0/icons/speech-bubble.png)]
 
-Conversational AI assistants (Anthropic, 2024)
+## A role-playing transformer
+
+The same next-word predictor, with a different prompt:
+
+.prompt-box[
+A helpful assistant is having a conversation with a user.
+
+\[User\]: What should I visit in Liège?<br>
+\[Assistant\]: \_\_\_
+]
+
+The model continues the document. Out comes the assistant.
+
+???
+
+The model is not an assistant. It writes one. It has read millions of dialogues, so it knows how a document of this shape continues.
+
+ChatGPT, Claude and Gemini are transformers continuing a story about a helpful assistant. Replace the first line with "a sarcastic pirate" and the same model writes a sarcastic pirate.
+
+---
+
+class: middle
+
+.top-right[![](./figures/lec0/icons/thinking.png)]
+
+## Reasoning by writing
+
+As you would scribble on a whiteboard before answering a hard question, reasoning models .bold[write their thoughts down] before answering.
+
+.prompt-box[
+\[User\]: How many times does the letter r appear in "strawberry"?
+
+.italic[\[Assistant, .red[thinking]\]: Let me spell it out: s, t, r, a, w, b, e, r, r, y.
+The letter r is at positions 3, 8 and 9. [continues for as long as needed]]
+
+\[Assistant\]: Three times.
+]
+
+???
+
+Still next-word prediction. The draft is a scratchpad: each token of reasoning is computed from the previous ones, so a long draft buys computation that a one-shot answer cannot.
+
+Reasoning models appeared in 2024 (OpenAI o1) and are now the default.
+
+Counting letters was a textbook failure of models answering in one shot.
+
+---
+
+class: middle
+
+.center.width-80[![](./figures/lec0/s1.png)]
+
+.center[Test-time scaling: letting the model think longer improves its answers.]
+
+.footnote[Credits: [Muennighoff et al.](https://arxiv.org/abs/2501.19393), 2025 (arXiv:2501.19393).]
+
+???
+
+A second scaling law. Until 2024, scaling meant bigger models trained on more data. Since 2024, it also means more computation at inference: the same weights, allowed to write more before answering, solve harder problems.
+
+The x-axis is the number of thinking tokens, the y-axis the accuracy on hard math and science questions. Roughly log-linear, like the training scaling laws.
+
+The price is paid at every query, in time and energy.
+
+---
+
+class: middle
+
+## Learning to reason
+
+.grid[
+.kol-1-2[
+Nobody writes the reasoning for the model. It is learned by .bold[reinforcement learning]: the model tries, a program checks the final answer, and successful attempts are reinforced.
+
+Over training, the model learns by itself to think longer, to check its work and to change strategy.
+]
+.kol-1-2[.width-100[![](./figures/lec0/deepseek-r1-length.png)]]
+]
+
+.footnote[Credits: [Guo et al.](https://doi.org/10.1038/s41586-025-09422-z), Nature, 2025 (DeepSeek-R1).]
+
+???
+
+DeepSeek-R1 (January 2025). The model is rewarded mainly for correct final answers on math and code problems. The plot shows the average length of its responses growing during training: nobody asked for longer thinking; it emerged because it pays off.
+
+This is reinforcement learning, the topic of Lecture 9. Barto and Sutton received the Turing Award in 2025 for its foundations.
+
+---
+
+class: middle
+
+## From assistant to agent
+
+If a model can .bold[think] by writing, it can also .bold[act] by writing.
+
+.prompt-box[
+\[Assistant\]: Let me run the tests.
+
+\[Tool call\]: bash("pytest tests/")
+
+\[Tool result\]: 41 passed, 2 failed: test_search.py::test_astar ...
+
+\[Assistant\]: The heuristic in astar() is not admissible. Let me fix it.
+]
+
+A transformer in a loop, whose .bold[tool calls] are intercepted, executed, and fed back into the conversation, is an .bold[agent]. The program that runs this loop is its .bold[harness].
+
+???
+
+The model writes text that looks like a command. A program around it watches for that pattern, runs the command, and pastes the result back. The model reads the result and continues.
+
+Tools can be anything: a shell, a browser, a file system, a database, another model.
+
+The harness is everything around the model: instructions and context, tools, memory across long tasks, permissions and sandboxing, sub-agents. Examples: Claude Code, Codex. The same model can do much better or much worse depending on its harness.
+
+This is the agent of Lecture 1: tool results are its percepts, tool calls its actions.
 
 ---
 
@@ -697,6 +769,73 @@ Not just text, but also images and sounds (OpenAI, 2024)
 
 ---
 
+class: middle, center, black-slide
+
+<iframe width="600" height="450" src="https://www.youtube.com/embed/1QNsdr-Qx_I" frameborder="0" allowfullscreen></iframe>
+
+Agents that use computers (OpenAI, GPT-6 Astra, 2026)
+
+???
+
+Released on September 3, 2026. OpenAI's claim: "anything you can do on a computer, Astra can do for you." State of the art on computer use, software engineering and science, according to OpenAI.
+
+It is also the first OpenAI model to reach the "Critical" level of their internal cybersecurity scale, which is why some of its capabilities are restricted.
+
+---
+
+class: middle
+
+## Swarms
+
+One agent works in sequence. A .bold[swarm] runs many agents in parallel:
+- an orchestrator splits the problem and assigns sub-tasks;
+- groups of agents explore different approaches and share intermediate results;
+- verifiers check what comes back;
+- the best results are merged, and the loop continues.
+
+Computation at inference now scales in two directions: .bold[longer] (thinking) and .bold[wider] (more agents).
+
+???
+
+Coding harnesses and research assistants now spawn sub-agents routinely.
+
+Next: a swarm of about 10,000 agents.
+
+---
+
+class: middle
+
+## The Navier–Stokes problem
+
+.grid[
+.kol-1-2[
+Can a fluid that starts smooth reach .bold[infinite speed] in finite time? A Millennium Prize Problem, open for about 90 years.
+
+On September 8, 2026, OpenAI claimed a proof:
+- 10,000 agents, 88 hours;
+- proof checked by Lean.
+]
+.kol-1-2[.width-100[![](./figures/lec0/navier-stokes.png)]]
+]
+
+.footnote[Credits: [OpenAI](https://openai.com/index/navier-stokes-solution/), 2026; [Nature](https://www.nature.com/articles/d41586-026-02842-5), 2026.]
+
+???
+
+The Navier–Stokes equations describe fluids as a continuum: weather, aircraft, blood flow. Leray (1934) showed that solutions exist in a generalized sense; whether they stay smooth was open. The claimed proof builds a vortex, pushed by a smooth force, that spirals inward and stretches, so that its speed blows up while its energy stays finite.
+
+The agents ran an unreleased OpenAI model, had tools (a cached copy of the internet, code execution) and were organized in groups that shared results. They wrote about 130 billion tokens; the Lean check took 17 more hours. A simpler problem, the Euler equations without viscosity, fell first: nearly 100 agents, about 50 hours. OpenAI then moved its agents to Navier–Stokes.
+
+Everything from the previous slides is in this run: reasoning, computation at inference, tools, a harness, a swarm and a verifier.
+
+The result is one week old and has not been refereed. The Lean check is strong evidence.
+
+Questions to mention:
+- Credit. Alpöge and Buckmaster had released a result on the Euler equations the day before, obtained with Claude and Codex. OpenAI recognizes their priority on it; Buckmaster questioned how OpenAI's system arrived at the same approach, which OpenAI says it found independently (Nature, Fortune, September 2026).
+- Insight. A proof found by 10,000 agents answers the question, but may teach mathematicians little. Terence Tao: "The indiscriminate strip-mining of open problems for solutions may destroy the ecosystem from which the next generation of mathematical techniques, problems, and practitioners would have developed."
+
+---
+
 class: middle
 
 # Now what?
@@ -713,6 +852,7 @@ class: middle
 - AI is a tool capable of automating tedious tasks.
 - AI can solve complex tasks that no one could solve before.
 - The human-machine interface is changing radically, with conversational assistants making digital tools more accessible.
+- Agents carry out long, multi-step tasks, from software engineering to mathematics.
 - Progress continues at a breakneck pace.
 
 ---
@@ -725,6 +865,7 @@ class: middle
 
 - Deep learning models are difficult to inspect, debug and explain.
 - AI systems can fail in unexpected and catastrophic ways, despite apparent precision.
+- Agents act on the world: their mistakes compound over long tasks, and their capabilities (e.g., in cybersecurity) can be misused.
 - AI generates a lot of low-quality content ("AI slop") that pollutes information and devalues human creative work.
 - Deep learning models have become very large and require significant computational resources, with significant environmental consequences.
 
@@ -737,7 +878,7 @@ class: middle
 .kol-2-3[.center.width-100[![](./figures/lec0/energy.png)]]
 ]
 
-"AI is a moderate but rapidly growing contributor to global environmental impacts through energy use and greenhouse gas (GHG) emissions. Current estimates indicate that .bold[data centres and data transmission account for an estimated 1% of global energy-related GHG emissions, with AI consuming 10–28% of data centre energy capacity]. AI energy demand is expected to grow substantially [...]"
+"General-purpose AI is a moderate but rapidly growing contributor to global environmental impacts through energy use and greenhouse gas (GHG) emissions. Current estimates indicate that .bold[data centres and data transmission account for an estimated 1% of global energy-related GHG emissions, with AI consuming 10–28% of data centre energy capacity]. AI energy demand is expected to grow substantially [...]"
 
 .footnote[Credits: [Bengio et al.](https://arxiv.org/abs/2501.17805), 2025 (arXiv:2501.17805).]
 
@@ -765,6 +906,29 @@ class: middle
 
 ---
 
+class: middle, black-slide
+
+.grid[
+.kol-1-3[.width-90[![](figures/lec0/atrophy-cover.jpg)]]
+.kol-2-3[
+<br>
+
+# Atrophy
+
+.italic[A noir novella. Freshman year of computer science. An AI tab always open.]
+
+.quote[That's the thing nobody warns you about. Not that it will fail. That it won't.]
+
+[glouppe.github.io/atrophy](https://glouppe.github.io/atrophy/), in English and in French.
+]
+]
+
+???
+
+My novella (2026), about a student in your situation: first year of computer science, with an AI tab always open. Its page notes: "Every sentence by Claude."
+
+---
+
 exclude: true
 class: middle
 
@@ -783,6 +947,21 @@ It is about *modeling the world*:
 class: middle
 
 # INFO8006 Introduction to AI
+
+---
+
+class: middle
+
+## Why this course?
+
+The systems of the previous slides are built on the ideas of this course:
+- an agent in a loop with its environment (Lecture 1);
+- reasoning as search, and planning against an adversary (Lectures 2 and 3);
+- beliefs under uncertainty, and over time (Lectures 4 to 6);
+- neural networks and learning from data (Lecture 7);
+- decisions and reinforcement learning, which teaches models to reason (Lectures 8 and 9).
+
+We build these ideas from first principles, on problems small enough to understand exactly why an agent behaves as it does.
 
 ---
 
@@ -814,24 +993,6 @@ class: middle
 By the end of this course, you will have built autonomous agents that efficiently make decisions in fully informed, partially observable and adversarial settings. Your agents will draw inferences in uncertain and unknown environments and optimize actions for arbitrary reward structures. 
 
 The models and algorithms you will learn in this course apply to a wide variety of artificial intelligence problems and will serve as the foundation for further study in any application area (from engineering and science, to business and medicine) you choose to pursue.
-
----
-
-class: middle
-
-## Goals and philosophy
-
-.italic[General]
-- Understand the landscape of artificial intelligence.
-- Be able to write from scratch, debug and run (some) AI algorithms.
-
-.italic[Well-established and state-of-the-art algorithms] 
-- Good old-fashioned AI: well-established algorithms for intelligent agents and their mathematical foundations.
-- Introduction to materials new from research ($\leq$ 5 years old).
-- Understand some of the open questions and challenges in the field.
-
-.italic[Practical]
-- Fun and challenging course projects.
 
 ---
 
