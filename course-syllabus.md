@@ -60,7 +60,7 @@ class: middle
 
 The core content of this course is based on the following textbook:
 
-> .italic[Stuart Russel, Peter Norvig. "Artificial Intelligence: A Modern Approach", Third Edition, Global Edition.]
+> .italic[Stuart Russell, Peter Norvig. "Artificial Intelligence: A Modern Approach", Fourth Edition, Global Edition.]
 
 This textbook is **recommended**. It covers both the theory and the exercises.
 
