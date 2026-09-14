@@ -22,12 +22,10 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | October 29 | _No class_ |
 | November 5 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued)<br>Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
 | November 12 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time (continued) [[notebook](code/exercises-4-kalman.ipynb)] [[Solutions][e5s]]|
-| November 15 | Deadline for Project 1 |
 | November 19 | Lecture 7: [Machine learning and neural networks][l7] (continued) [[PDF][l7-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] [[Solutions][e6s]]|
 | November 26 | Lecture 8: [Making decisions][l8] [[PDF][l8-pdf]] <br> Exercises 6: Machine learning [[PDF][e6]] (continued) [[Solutions][e6s]] |
 | December 3 | Lecture 9: [Reinforcement Learning][l9] [[PDF][l9-pdf]]  <br> Exercises 7: Making decisions & RL [[PDF][e7]] [[Solutions][e7s]]|
 | December 10 | _No lecture_ <br> Exercises 7: Making decisions & RL [[PDF][e7]] (continued) [[Solutions][e7s]]<br> Exercises 8: Past exam | 
-| December 13 | Deadline for Project 2 |
 | December 17 | _No lecture_ | 
 
 [syllabus]: https://glouppe.github.io/info8006-introduction-to-ai/?p=course-syllabus.md
@@ -86,8 +84,8 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 - Part 0: (tutorial session in class)
     - [Search algorithms](projects/project0)
     - [Adversarial search](projects/project0bis)
-- Part 1: [Bayes Filter](projects/project1) (due by November 15)
-- Part 2: [Imitation Learning](projects/project2) (due by December 13)
+- Part 1: [Bayes Filter](projects/project1) (TBD.)
+- Part 2: [Imitation Learning](projects/project2) (TBD.)
 
 ## Setup
 
