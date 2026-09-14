@@ -80,12 +80,11 @@ class: middle
 
 # Exercise sessions
 
-- Exercise sessions are held every week after the lecture.
-- You will work on exercises by yourself or in small groups, with our help.
-    - Your active participation is expected.
-    - The exercises are designed to help you understand the materials and prepare for the exam.
-    - Use this time to get answers to your questions.
-- Solutions will be provided for all exercises.
+- Every week, after the lecture.
+- You solve exercises alone or in small groups, and ask us when you are stuck.
+- Solutions are provided for all exercises.
+
+.success[The written exam (70% of the grade) asks problems of the same kind, and you sit it alone, without documents. Reading a solution does not teach you to produce one. An AI assistant can solve the exercises for you, but it cannot sit the exam.]
 
 ---
 
