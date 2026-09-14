@@ -902,17 +902,16 @@ class: middle
 class: middle, black-slide
 
 .grid[
-.kol-1-3[.width-90[![](figures/lec0/atrophy-cover.jpg)]]
-.kol-2-3[
+.kol-1-2[.center.width-80[![](figures/lec0/atrophy-cover.jpg)]]
+.kol-1-2[
 <br>
 
-# Atrophy
+<p style="font-family: Georgia, 'Times New Roman', serif; font-size: 1.7em; line-height: 1.3; margin: 0 0 0.6em 0;">That’s the thing nobody warns you about.</p>
 
-.italic[A noir novella. Freshman year of computer science. An AI tab always open.]
+<p style="font-family: Georgia, 'Times New Roman', serif; font-size: 1.7em; line-height: 1.3; margin: 0 0 1.6em 0; color: #c79140;">Not that it will fail.<br>That it&nbsp;won’t.</p>
 
-.quote[That's the thing nobody warns you about. Not that it will fail. That it won't.]
-
-[glouppe.github.io/atrophy](https://glouppe.github.io/atrophy/), in English and in French.
+.italic[Atrophy], a novella<br>
+[glouppe.github.io/atrophy](https://glouppe.github.io/atrophy/)
 ]
 ]
 
