@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Course syllabus, Fall 2025
+Course syllabus, Fall 2026
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -14,16 +14,16 @@ Prof. Gilles Louppe<br>
 
 This course is given by
 - Theoretical lectures: Gilles Louppe
-- Exercise sessions: Gilles Louppe, Gérôme Andry, Fanny Bodart
-- Programming projects: Fanny Bodart
+- Exercise sessions: Gilles Louppe, Fanny Bodart, Thomas Savary
+- Programming projects: Fanny Bodart, Thomas Savary
 
 Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/Y8UP2SBu2h) for help.
 
 <br>
 .center[
 .circle.width-20[![](figures/course-syllabus/gilles.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/gerome.jpg)] &nbsp;
-.circle.width-20[![](figures/course-syllabus/fanny.jpg)]
+.circle.width-20[![](figures/course-syllabus/fanny.jpg)] &nbsp;
+.circle.width-20[![](figures/course-syllabus/thomas.jpg)]
 ]
 
 ---
@@ -33,6 +33,8 @@ Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@monte
 The schedule and slides are available at [github.com/glouppe/info8006-introduction-to-ai](https://github.com/glouppe/info8006-introduction-to-ai).
 - In HTML and in PDFs.
 - Minor updates up to the day before the lesson.
+
+Official course description: [engagements pédagogiques](https://www.programmes.uliege.be/cocoon/20262027/cours/INFO8006-1.html).
 
 .center.width-80[![](figures/course-syllabus/slides.png)]
 
@@ -97,12 +99,14 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
 
 # Evaluation
 
-- Written exam (60%)
-- Programming projects (40%)
-    - Project 0: 0% (tutorial of September 25)
-    - Project 1: 20%
-    - Project 2: 20%
+- Written exam (70%)
+- Programming projects (30%)
+    - Project 0: 0% (tutorial of September 24)
+    - Project 1: 15%
+    - Project 2: 15%
     - Programming projects are **mandatory** for presenting the exam.
+
+.alert[A minimum of 8/20 is required for the written exam. Below that, the exam grade becomes the final grade.]
 
 ---
 
@@ -116,6 +120,7 @@ class: middle
     - It is part of the learning experience to design your own tests.
     - It is not because the public tests pass that your code is correct.
 - The efficiency of your code will also be taken into account, beyond its correctness.
+- Projects also include an **oral defense**: you answer questions on your own code, justify your design decisions, and may be asked to modify or extend your implementation.
 
 ---
 
@@ -123,15 +128,23 @@ class: middle
 
 ## Honor code
 
-You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.] In particular, the use of large language models (e.g., ChatGPT, Github Copilot) is forbidden$^\*$.
+You may consult papers, books, online references, or publicly available implementations for ideas that you may want to adapt and incorporate into your projects, so long as you clearly cite your sources in your code and your writeup. .italic[However, under no circumstances, may you base your project on someone else's implementation.]
 
 Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will all be reported to the Faculty office.
-
-.footnote[*: Unless you build and train your own :-)]
 
 ???
 
 One of the main learning outcomes of the programming projects is for you to better understand the course materials. By using someone else's implementation, you are depriving yourself of this learning opportunity. Moreover, you are also depriving yourself of the opportunity to learn how to write good code, which is an important skill for any computer scientist.
+
+---
+
+class: middle
+
+## Use of AI tools
+
+.success[AI assistants are .bold[allowed], without restriction.]
+
+The rule is simple: everything you submit, you must be able to explain. Submitting a solution you do not understand, because an AI assistant produced it, will be strongly penalized.
 
 ---
 

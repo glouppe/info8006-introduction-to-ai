@@ -14,3 +14,9 @@ doc/
 # Python
 __pycache__/
 *.pyc
+.venv/
+.ipynb_checkpoints/
+
+# Planning notes and assistant guidance
+TODO.md
+CLAUDE.md
