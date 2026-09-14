@@ -84,13 +84,13 @@ class: middle
 - You solve exercises alone or in small groups, and ask us when you are stuck.
 - Solutions are provided for all exercises.
 
-.success[The written exam (70% of the grade) asks problems of the same kind, and you sit it alone, without documents. Reading a solution does not teach you to produce one. An AI assistant can solve the exercises for you, but it cannot sit the exam.]
+.success[The written exam asks problems of the same kind, and you sit it alone, without documents. Reading a solution does not teach you to produce one.]
 
 ---
 
 # Programming projects
 
-Implement an intelligent agent for playing **Pacman**. The project will be divided into three parts, with increasing levels of difficulty.
+Implement an intelligent agent for playing .bold[Pacman].
 
 .center.width-40[![](figures/course-syllabus/pacman.png)]
 
@@ -103,7 +103,6 @@ Implement an intelligent agent for playing **Pacman**. The project will be divid
     - Project 0: 0% (tutorial of September 24)
     - Project 1: 15%
     - Project 2: 15%
-    - Programming projects are **mandatory** for presenting the exam.
 
 .alert[A minimum of 8/20 is required for the written exam. Below that, the exam grade becomes the final grade.]
 
@@ -113,13 +112,8 @@ class: middle
 
 ## Evaluation of the projects
 
-- Projects are evaluated **automatically** on Gradescope.
-- Preliminary tests are provided to help you debug your code.
-- However, the final grade will be based on additional tests that are not provided.
-    - It is part of the learning experience to design your own tests.
-    - It is not because the public tests pass that your code is correct.
-- The efficiency of your code will also be taken into account, beyond its correctness.
-- Projects also include an **oral defense**: you answer questions on your own code, justify your design decisions, and may be asked to modify or extend your implementation.
+- Projects are evaluated .bold[automatically] on Gradescope.
+- Projects also include an .bold[oral defense]: you answer questions on your own code, justify your design decisions, and may be asked to modify or extend your implementation.
 
 ---
 
