@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Regenerate the PDF of every slide deck staged for commit, and add it to the commit.
+# Enable once per clone with: git config core.hooksPath .githooks
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+decks=$(git diff --cached --name-only --diff-filter=ACMR -- 'lecture*.md' course-syllabus.md closing.md)
+[ -n "$decks" ] || exit 0
+
+echo "pre-commit: exporting PDFs for" $decks >&2
+pdfs=$(uv run --no-project --with playwright python scripts/export_pdf.py $decks)
+git add $pdfs

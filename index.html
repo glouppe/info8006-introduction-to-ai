@@ -4,69 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFO8006: Introduction to Artificial Intelligence</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./assets/fonts.css">
     <link rel="stylesheet" href="./assets/katex.min.css">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="./assets/grid.css">
   </head>
   <body>
-    <textarea id="source" style="display: none;"></textarea>
     <script src="./assets/remark.min.js"></script>
     <script src="./assets/katex.min.js"></script>
     <script src="./assets/auto-render.min.js"></script>
 
     <script>
-      function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      // Decks are loaded with ?p=<deck>.md. Only Markdown files next to this page are accepted.
+      var deck = new URLSearchParams(window.location.search).get("p");
+
+      function message(text) {
+        return "class: middle, center, title-slide\n\n# Introduction to Artificial Intelligence\n\n" + text;
       }
 
-      var sourceFile = getParameterByName("p");
+      function start(source) {
+        remark.create({source: source, highlightStyle: "tomorrow"}, function () {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false},
+              {left: "\\[", right: "\\]", display: true},
+              {left: "\\(", right: "\\)", display: false},
+            ]
+          });
 
-      var fallbackContent = "class: middle, center, title-slide\n\n# Introduction to Artificial Intelligence\n\nNo lecture specified.\n\nUse `?p=lecture0.md` to load a lecture.";
-
-      var options = {
-        highlightStyle: "tomorrow"
-      };
-
-      if (sourceFile) {
-        options.sourceUrl = sourceFile;
-      } else {
-        options.source = fallbackContent;
-      }
-
-      var renderMath = function() {
-        renderMathInElement(document.body, {
-          delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "$", right: "$", display: false},
-            {left: "\\[", right: "\\]", display: true},
-            {left: "\\(", right: "\\)", display: false},
-          ]
-        });
-      };
-
-      var slideshow = remark.create(options, function() {
-        renderMath();
-
-        // Update page title based on lecture subtitle (e.g., "Lecture 7: Attention and transformers")
-        if (sourceFile) {
-          var firstSlide = document.querySelector('.remark-slide-content');
-          if (firstSlide) {
-            var text = firstSlide.textContent;
-            var match = text.match(/Lecture\s+\d+[:\s]+([^\n]+)/i);
-            if (match) {
-              document.title = match[0].trim() + " | INFO8006";
-            }
+          // Name the tab after the lecture (e.g., "Lecture 7: Machine learning and neural networks | INFO8006")
+          var firstSlide = document.querySelector(".remark-slide-content");
+          var match = firstSlide && firstSlide.textContent.match(/Lecture\s+\d+[:\s]+([^\n]+)/i);
+          if (match) {
+            document.title = match[0].trim() + " | INFO8006";
           }
-        }
-      });
+        });
+      }
+
+      if (!deck) {
+        start(message("No lecture specified.\n\nUse `?p=lecture0.md` to load a lecture."));
+      } else if (!/^[\w.-]+\.md$/.test(deck)) {
+        start(message("Invalid lecture name."));
+      } else {
+        fetch(deck)
+          .then(function (response) {
+            if (!response.ok) throw new Error(response.status + " " + response.statusText);
+            return response.text();
+          })
+          .then(start, function (error) {
+            start(message("Could not load `" + deck + "` (" + error.message + ")."));
+          });
+      }
     </script>
   </body>
 </html>
