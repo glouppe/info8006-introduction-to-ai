@@ -276,6 +276,27 @@ img {
     content: "— ";
 }
 
+.prompt-box {
+    background: #e0eef8;
+    border-left: 3px solid #0095ff;
+    border-radius: 4px;
+    padding: 0.8em 1em;
+    font-family: 'Source Code Pro', 'Menlo', monospace;
+    font-size: 1em;
+    color: #2a2a2a;
+}
+
+.top-right {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+.top-right img {
+    width: 4em;
+    height: auto;
+}
+
 
 /* Placement ---------------------------------------------------------------- */
 
