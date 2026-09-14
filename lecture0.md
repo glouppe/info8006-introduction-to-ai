@@ -805,18 +805,11 @@ Next: a swarm of about 10,000 agents.
 
 class: middle
 
-## The Navier–Stokes problem
+.center.width-50[![](./figures/lec0/navier-stokes.png)]
 
-.grid[
-.kol-1-2[
-Can a fluid that starts smooth reach .bold[infinite speed] in finite time? A Millennium Prize Problem, open for about 90 years.
+.bold[The Navier–Stokes problem]. Can a fluid that starts smooth reach .bold[infinite speed] in finite time? A Millennium Prize Problem, open for about 90 years.
 
-On September 8, 2026, OpenAI claimed a proof:
-- 10,000 agents, 88 hours;
-- proof checked by Lean.
-]
-.kol-1-2[.width-100[![](./figures/lec0/navier-stokes.png)]]
-]
+On September 8, 2026, OpenAI claimed a proof using a swarm of 10,000 agents running in parallel for 88 hours. It produced a formal proof checked by Lean.
 
 .footnote[Credits: [OpenAI](https://openai.com/index/navier-stokes-solution/), 2026; [Nature](https://www.nature.com/articles/d41586-026-02842-5), 2026.]
 
