@@ -19,7 +19,7 @@ background-color: #343541
 
 The elephant in the room. ChatGPT.
 
-In november 2022, OpenAI released ChatGPT, a chatbot interface to GPT-3, a neural network trained on a very large corpus of text.
+In November 2022, OpenAI released ChatGPT, a chatbot interface to GPT-3.5, a neural network trained on a very large corpus of text.
 
 For the first time, the public got access through a simple web interface to a model that can generate text that is indistinguishable from human-written text. You can ask any question to the model, and it will answer, however complex or bizarre the question is.
 
@@ -219,7 +219,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/YdaRd_vitLw" frameborder="0" allowfullscreen></iframe>
 
-Yann LeCun, 2023.
+Yann LeCun, 2024.
 
 ---
 
@@ -272,7 +272,7 @@ An agent would not pass the Turing test without the following **requirements**:
 - computer vision (total Turing test)
 - robotics (total Turing test)
 
-Despite being proposed almost 70 years ago, the Turing test is *still relevant*
+Despite being proposed more than 75 years ago, the Turing test is *still relevant*
 today.
 
 ---
@@ -332,7 +332,7 @@ class: middle
 
 .width-60.center[![](figures/lec0/dartmouth.jpg)]
 
-## The Darthmouth workshop (1956)
+## The Dartmouth workshop (1956)
 
 .italic[The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be *so precisely described* that a machine can be made to simulate it.]
 
@@ -401,7 +401,7 @@ count: false
 
 ???
 
-The machine learning approach to this problem is not hardcode some made-up computer program that would take the age of a patient and return a blood pressure. Instead, the machine learning approach is to write a computer program that will learn to make predictions by itself, by looking at the data.
+The machine learning approach to this problem is not to hardcode some made-up computer program that would take the age of a patient and return a blood pressure. Instead, the machine learning approach is to write a computer program that will learn to make predictions by itself, by looking at the data.
 
 ---
 
@@ -502,7 +502,7 @@ Scaling up the statistical and machine learning approaches by brute force in the
 
 class: middle
 
-Specialized neural networks can be trained achieve super-human performance on many complex tasks that were previously thought to be out of reach for machines.
+Specialized neural networks can be trained to achieve super-human performance on many complex tasks that were previously thought to be out of reach for machines.
 
 .width-100[![](./figures/lec0/tasks-1.png)]
 
@@ -598,7 +598,7 @@ class: middle
 
 ???
 
-The first example is AlphaFold, a neural network based on the trasnformer architecture that can predict the 3D structure of a protein from its amino acid sequence.
+The first example is AlphaFold, a neural network based on the transformer architecture that can predict the 3D structure of a protein from its amino acid sequence.
 
 This problem is important because the 3D structure of a protein determines its function, and understanding protein function is key to understanding biology and designing new drugs.
 
@@ -628,7 +628,7 @@ class: middle
 A second example is the use of graph neural networks to discover new drugs.
 
 Discovering new drugs is a complex and expensive search problem, where the goal is to find molecules that will bind to a target protein and modulate its function. Unfortunately, this problem is difficult for two reasons:
-- first, the search space is huge -- the space all possible pharmacologically active molecules is estimated to be in the order of 10^60 molecules.
+- first, the search space is huge -- the space of all possible pharmacologically active molecules is estimated to be in the order of 10^60 molecules.
 - second, the binding of a molecule to a protein is a complex process that is difficult to model. Laboratory experiments are necessary to evaluate the binding of a molecule to a protein, and these experiments are expensive and time-consuming.
 
 Graph neural networks have been a breakthrough in this area, and have been able to predict the properties of molecules with high accuracy. 
@@ -669,6 +669,8 @@ A brutal simplicity:
 
 Scaling up further to gigantic models, datasets, and compute resources keeps pushing the boundaries of what is possible, .bold[with no sign of slowing down].
 
+.footnote[Credits: [Kaplan et al.](https://arxiv.org/abs/2001.08361), 2020 (arXiv:2001.08361).]
+
 ---
 
 class: middle, center, black-slide
@@ -683,7 +685,7 @@ class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/o5uvDZ8srHA" frameborder="0" allowfullscreen></iframe>
 
-Code assistants (Cursor, 2024)
+Code assistants (Cursor; Electroscope, 2024)
 
 ---
 
@@ -759,6 +761,8 @@ class: middle
 
 "Students who used ChatGPT while completing SAT-style essays showed the lowest levels of brain activity. Furthermore, their writing became increasingly formulaic, forgettable, and lacking original thought. Over time, students became increasingly passive and disengaged. Many couldn’t recall what they’d written or revise their work without AI support, proof that .bold[they weren’t truly learning]."
 
+.footnote[Credits: [TIME](https://time.com/7295195/ai-chatgpt-google-learning-school/), 2025 (image); [Oxford Learning](https://oxfordlearning.com/is-chatgpt-harming-students-thinking-skills-heres-what-parents-need-to-know/), 2025 (quote); study by [Kosmyna et al.](https://arxiv.org/abs/2506.08872), 2025 (arXiv:2506.08872).]
+
 ---
 
 exclude: true
@@ -787,7 +791,7 @@ class: middle
 - Lecture 0: Artificial intelligence
 - Lecture 1: Intelligent agents
 - Lecture 2: Solving problems by searching
-- Lecture 3: Adversarial search
+- Lecture 3: Games and adversarial search
 - Lecture 4: Quantifying uncertainty
 - Lecture 5: Probabilistic reasoning
 - Lecture 6: Reasoning over time
@@ -843,7 +847,7 @@ This course is designed as an introduction to the many other courses available a
 - INFO8010: Deep Learning
 - INFO8004: Advanced Machine Learning
 - INFO9023: Machine Learning Systems Design
-- INFO8003: Optimal decision making for complex problems
+- INFO8003: Reinforcement learning
 - INFO0948: Introduction to Intelligent Robotics
 - INFO9014: Knowledge representation and reasoning
 - ELEN0016: Computer vision
