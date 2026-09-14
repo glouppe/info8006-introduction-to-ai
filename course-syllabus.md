@@ -62,7 +62,7 @@ The core content of this course is based on the following textbook:
 
 > .italic[Stuart Russell, Peter Norvig. "Artificial Intelligence: A Modern Approach", Fourth Edition, Global Edition.]
 
-This textbook is **recommended**. It covers both the theory and the exercises.
+This textbook is .bold[recommended]. It covers both the theory and the exercises.
 
 ---
 
@@ -70,7 +70,7 @@ class: middle
 
 ## CS188
 
-- Some lessons, exercises, and various other materials are partially adapted from [CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/), from UC Berkeley. 
+- Lectures, exercises, and various other materials are partially adapted from [CS188 Introduction to Artificial Intelligence](https://inst.eecs.berkeley.edu/~cs188/), from UC Berkeley. 
 - Cartoons that you will see in those slides were all originally made for CS188. 
 
 <br>
