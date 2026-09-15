@@ -1,0 +1,316 @@
+\ProvidesPackage{exercises}[2026/09/15 INFO8006 exercise sheets, in the style of the 2026 exams]
+
+% Use with the exam class, as the exams do:
+%
+%   \documentclass[11pt, a4paper]{exam}
+%   \usepackage[english]{babel}
+%   \usepackage{exercises}
+%
+%   \title{\bfseries INFO8006 Introduction to Artificial Intelligence}
+%   \author{Exercise session 3: Quantifying uncertainty}
+%   \date{}
+%
+%   \begin{document}
+%   \maketitle
+%
+%   \begin{recap}
+%       \topic{Chain rule}
+%       Any joint distribution ... \term{defined term} ...
+%   \end{recap}
+%
+%   \begin{exercises}[1, 2, 3, 5]    % the exercises done in session, optional
+%       \titledquestion{Bag of coins}
+%
+%       Statement ...
+%       \begin{parts}
+%           \part Sub-question ...
+%           \begin{solution} ... \end{solution}
+%       \end{parts}
+%
+%       \titledquestion{Handedness \aima{14.6}}
+%       ...
+%   \end{exercises}
+%
+%   \begin{quiz}
+%       \item Question ...
+%       \begin{enumerate}[label=$\bigcirc$]
+%           \item A wrong choice.
+%           \item \correct{The correct choice.}
+%       \end{enumerate}
+%   \end{quiz}
+%   \end{document}
+%
+% Solutions and correct choices are printed unless \NOSOL is defined, which
+% compile.sh does for the student version.
+
+%%%%%%%%%%
+% Layout %
+%%%%%%%%%%
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage{microtype}
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{needspace}
+
+\pagestyle{foot}
+\cfoot{\thepage}
+
+%%%%%%%%%%%%%%%
+% Mathematics %
+%%%%%%%%%%%%%%%
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\RequirePackage{siunitx}
+
+\sisetup{separate-uncertainty, separate-uncertainty-units=single}
+
+\DeclarePairedDelimiter\rbk{(}{)}
+\DeclarePairedDelimiter\cbk{\{}{\}}
+\DeclarePairedDelimiter\sbk{[}{]}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand*{\fact}[1]{#1!}
+\AtBeginDocument{\renewcommand*{\d}[1]{\operatorname{d}\!{#1}}}% after hyperref, which redefines \d
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+
+\newcommand*{\E}{\mathbb{E}}
+\newcommand*{\V}{\mathbb{V}}
+\newcommand*{\N}{\mathcal{N}}
+\newcommand*{\U}{\mathcal{U}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\Z}{\mathbb{Z}}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Text, figures and tables %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage[inline]{enumitem}
+\RequirePackage{csquotes}
+\RequirePackage{comment}
+\RequirePackage{graphicx}
+\RequirePackage[skip=1.5ex]{caption}
+\RequirePackage{subcaption}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{multirow}
+
+\captionsetup{labelsep=period}
+
+\newcommand*{\ie}{\emph{i.e.}\@}
+\newcommand*{\eg}{\emph{e.g.}\@}
+\newcommand*{\cf}{\emph{cf.}\@}
+\newcommand*{\blindfootnote}{\gdef\@thefnmark{}\@footnotetext}
+
+%%%%%%%%%%%%
+% Graphics %
+%%%%%%%%%%%%
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{
+    automata,
+    arrows.meta,
+    shapes.geometric,
+    matrix,
+    positioning,
+}
+
+\tikzset{
+    every node/.style={align=center},
+    square/.style={
+        regular polygon,
+        regular polygon sides=4,
+        inner sep=0,
+    },
+    arrow/.style={arrows={-{>[scale=1.5]}}},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sections: recap, exercises, quiz %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Section heading: centered small caps between two rules
+\newcommand*{\exercises@heading}[1]{%
+    \par\bigskip\medskip\needspace{6\baselineskip}%
+    \noindent
+    \leaders\vrule height 3.6pt depth -3.1pt\hfill
+    \quad{\large\scshape\textls[100]{#1}}\quad
+    \leaders\vrule height 3.6pt depth -3.1pt\hfill
+    \null\par
+    \nopagebreak\vspace{1.1\baselineskip}%
+}
+
+% Theory recap, in the notation of the slides
+\newenvironment{recap}{%
+    \exercises@heading{Recap}%
+    \setlength{\parindent}{0pt}%
+    \setlength{\parskip}{0.5\baselineskip}%
+}{%
+    \par
+}
+
+% A topic of the recap
+\newcommand*{\topic}[1]{%
+    \par\medskip\needspace{4\baselineskip}%
+    {\bfseries #1\par}%
+    \nopagebreak
+}
+
+% A term defined in the recap
+\newcommand*{\term}[1]{\emph{#1}}
+
+% Exercises, on a new page; the optional argument lists the exercises done in session
+\newenvironment{exercises}[1][]{%
+    \clearpage
+    \exercises@heading{Exercises}%
+    \ifx\relax#1\relax\else
+        \noindent\textit{In session:} exercises #1.\par\medskip
+    \fi
+    \begin{questions}%
+}{%
+    \end{questions}%
+}
+
+% Multiple choice questions, formatted as in the exams: \item for each question,
+% then \begin{enumerate}[label=$\bigcirc$] for its choices. In the exams, these lists
+% sit inside a question, itself a list: an invisible list with no margin gives them
+% the same depth, hence the same spacing and indentation.
+\newenvironment{quiz}{%
+    \exercises@heading{Quiz}%
+    \setlist[enumerate, 2]{beginpenalty=10000, midpenalty=10000}% keep a question with its choices
+    \interlinepenalty=\@M % and its lines and displayed formulas together
+    \predisplaypenalty=\@M
+    \postdisplaypenalty=\@M
+    \list{}{%
+        \setlength{\leftmargin}{0pt}%
+        \setlength{\labelwidth}{0pt}%
+        \setlength{\itemindent}{0pt}%
+        \setlength{\topsep}{0pt}%
+    }%
+    \item\relax
+    \begin{enumerate}%
+}{%
+    \end{enumerate}%
+    \endlist
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Exercises and their parts %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title of an exercise goes on its own line: leave a blank line after \titledquestion{...}
+\qformat{\large\bfseries Exercise \thequestion\quad\thequestiontitle\hfill}
+
+% The source of an exercise, in its title: \aima{5.9} for Russell and Norvig,
+% \source{CS188, Fall 2019} or \source{Exam, January 2019} otherwise
+\newcommand*{\source}[1]{{\mdseries(#1)}}
+\newcommand*{\aima}[1]{\source{AIMA~#1}}
+
+% A group of exercises inside the exercises section, before its first exercise:
+% \exercisegroup{Supplementary exercises}. Centered small caps, kept with that exercise.
+% A list refuses paragraphs before its first item (\par and \everypar check it), even in
+% a box: the heading uses the primitive \@@par in a box, and checks the space left on the
+% page itself, as \needspace would, without starting a paragraph.
+\newcommand*{\exercisegroup}[1]{%
+    \penalty-100
+    \begingroup
+        \dimen@=12\baselineskip
+        \dimen@ii=\pagegoal
+        \advance\dimen@ii-\pagetotal
+        \ifdim\dimen@>\dimen@ii
+            \ifdim\dimen@ii>\z@\vfil\fi
+            \penalty-\@M
+        \fi
+    \endgroup
+    \vspace{\medskipamount}%
+    \vbox{\everypar{}\let\par\@@par\centering\scshape\textls[80]{#1}\@@par}%
+    \nopagebreak
+}
+
+% The exam class defines \titledquestion inside the questions environment, before
+% running this hook: wrap it there, to keep an exercise title with the first lines
+% of its statement.
+\renewcommand{\questionshook}{%
+    \setlength{\leftmargin}{0pt}%
+    \setlength{\labelwidth}{-\labelsep}%
+    \setlength{\topsep}{0pt}%
+    \setlength{\itemsep}{\bigskipamount}%
+    \let\exercises@titledquestion\titledquestion
+    \def\titledquestion##1{\needspace{6\baselineskip}\global\exercises@paras=2 \exercises@titledquestion{##1}}%
+}
+
+% Keep a part label, (a), with the first lines of the part. The exam class defines \part
+% inside the parts environment, before running this hook. An exercise that opens with
+% its parts, without a statement, also keeps its title with part (a): a counter, set by
+% \titledquestion and decreased by every paragraph, tells whether a statement came first.
+\newcount\exercises@paras
+\AddToHook{para/begin}{\global\advance\exercises@paras\m@ne}
+\renewcommand{\partshook}{%
+    \ifnum\exercises@paras>0 \@beginparpenalty=\@M\fi
+    \let\exercises@part\part
+    \def\part{%
+        \ifnum\exercises@paras>0
+            \global\exercises@paras=0
+        \else
+            \needspace{3\baselineskip}%
+        \fi
+        \@beginparpenalty=\@lowpenalty
+        \exercises@part}%
+}
+
+%%%%%%%%%%%%%
+% Solutions %
+%%%%%%%%%%%%%
+
+% As in the exams: unframed, in color
+\ifx\NOSOL\undefined
+    \printanswers
+\else
+    \noprintanswers
+\fi
+
+\colorlet{SolutionColor}{blue!75!black}
+\unframedsolutions
+\SolutionEmphasis{\color{SolutionColor}}
+\renewcommand{\solutiontitle}{\noindent\textit{Solution.}\enspace}
+
+% Printed solutions are plain paragraphs. The exam class passes even unframed solutions
+% through its frame machinery, which forces a page break before a solution that does not
+% fit, leaving the question it answers alone at the bottom of the page. Here a solution
+% stays with the text it answers, and "Solution." with a list, a centered figure or a
+% table that opens it.
+\renewenvironment{TheSolution}{%
+    \par\nopagebreak
+    \vspace{\parskip}%
+    \leftskip=0pt
+    \rightskip=0pt
+    \solutiontitle
+    \ignorespaces
+}{%
+    \unskip\par
+}
+\AddToHook{env/solution/begin}{\@beginparpenalty=\@M}
+
+% The correct choice of a multiple choice question, highlighted in the solutions
+\newcommand{\correct}[1]{\ifprintanswers{\color{SolutionColor}#1}\else#1\fi}
+
+%%%%%%%%%
+% Links %
+%%%%%%%%%
+
+\RequirePackage[hidelinks]{hyperref}
+
+\endinput

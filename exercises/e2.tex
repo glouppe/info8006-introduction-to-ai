@@ -1,79 +1,77 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[11pt, a4paper]{exam}
 
 \usepackage[english]{babel}
-\usepackage{sleek}
-\usepackage{common}
+\usepackage{exercises}
 
-\title{INFO8006 - Introduction to Artificial Intelligence}
-\subtitle{Exercise session 2}
+\title{\bfseries INFO8006 Introduction to Artificial Intelligence}
+\author{Exercise session 2: Games and adversarial search}
+\date{}
 
 \begin{document}
 
 \maketitle
 
-\begin{thbox}{Game formulation}
-    A \thighlight{search problem} is defined by    
+\begin{recap}
+    \topic{Games}
+    A \term{game} is formally defined as a kind of search problem with the following components:
     \begin{itemize}
-        \item A representation for \thighlight{states}.
-        \item The \thighlight{initial} state of the agent.
-        \item A \thighlight{player} function \thighlight{$p = player(s)$} which defines who moves in \thighlight{$s$}.
-        \item A set of \thighlight{actions} allowed in every state \thighlight{$s$}.
-        \item A \thighlight{transition model $s' = result(s,a)$} that returns the resulting state \thighlight{$s'$} for using action \thighlight{$a$} in state \thighlight{$s$}. 
-        \item A \thighlight{terminal test} which determines if the game is over.
-        \item A \thighlight{utility} function \thighlight{$utility(s,p)$} that assigns a final numerical value to \thighlight{player $p$} in terminal \thighlight{state $s$}. 
+        \item a representation of the \term{states} of the agents and their environment;
+        \item the \term{initial state} $s_0$ of the game;
+        \item a function $\text{player}(s)$ that defines which \term{player} $p \in \{1, \ldots, N\}$ has the move in state $s$;
+        \item a description of the legal \term{actions} (or \term{moves}) available to a state $s$, denoted $\text{actions}(s)$;
+        \item a \term{transition model} that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$;
+        \item a \term{terminal test} which determines whether the game is over;
+        \item a \term{utility function} $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
     \end{itemize}
-\end{thbox}
+    Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the \term{game tree}, whose nodes are game states and whose edges are actions.
 
-% \begin{thbox}{Zero-sum game}
-%     In a zero-sum game, the total \thighlight{utility} to all players is constant, \ie{}
-%     $$
-%     \sum_p\ utility(s,p) = K\ \forall s.
-%     $$
-% \end{thbox}
-\begin{thbox}{Adversarial search}
-    In a two-player game, agent share the same \thighlight{utility}. 
-    The first want to minimize it (MIN agent) whereas the other wants the opposite (MAX agent).
-    Assuming that MAX moves first and is the agent that we want to win, the problem can be framed as a search problem where
-    \begin{itemize}
-        \item A goal state is a \thighlight{terminal state} where MAX wins.
-        \item MAX agent need a model of its opponent.
-    \end{itemize}
+    \topic{Zero-sum games}
+    In a \term{zero-sum game}, the total payoff to all players is constant for all games. For two-player games, agents share the same utility function, but one wants to maximize it while the other wants to minimize it: MAX maximizes the game's $\text{utility}$ function and MIN minimizes it. We assume a deterministic, turn-taking, two-player zero-sum game with perfect information, in which MAX moves first.
 
-    The \thighlight{minimax value} is the largest utility accessible for MAX from a state \thighlight{$s$}, assuming MIN acts optimally.
-\end{thbox}
-\begin{thbox}{H-minimax}
-    Searching the exact minimax solution is most of the time not feasible. One way to bypass this issue is by cutting the search.
-    To do so, we define 
-    \begin{itemize}
-        \item An \thighlight{evaluation function $eval(s)$} that estimates the utility that would be reached from a \thighlight{state $s$}.
-        \item A \thighlight{cutoff test $cutoff(s,d)$} that replaces the \thighlight{terminal test}. The later determines if the search must be stopped at \thighlight{depth $d$} in \thighlight{state $s$}.
-    \end{itemize}
-\end{thbox}
-\begin{thbox}{expectiminimax}
-    When the game is stochastic, we can use the minimax algorithm on the expected value of a state. We have to insert intermediate \thighlight{chance nodes} between moves to account for th \thighlight{distribution over actions}.
-    The algorithm becomes 
+    \topic{Minimax}
+    In a game, the opponent (MIN) may react arbitrarily to a move. Therefore, MAX must define a contingent \term{strategy}, which specifies its moves in the initial state and in the states resulting from every possible response by MIN. The \term{minimax value} $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an optimal adversary (MIN),
     \[
-    \text{Expectiminimax($s$)} = 
-    \begin{cases}
-        \text{Utility($s$)} & \text{if Terminal($s$)}\\
-        max_a \text{Expectiminimax(Result($s$,$a$))} & \text{if Player($s$) = MAX}\\
-        min_a \text{Expectiminimax(Result($s$,$a$))} & \text{if Player($s$) = MIN}\\
-        \sum_r P(r) \text{Expectiminimax(Result($s$,$r$))} & \text{if Player($s$) = CHANCE}.
-    \end{cases}
+        \text{minimax}(s) = \begin{cases}
+            \text{utility}(s) & \text{if } \text{terminal-test}(s) \\
+            \max_{a \in \text{actions}(s)} \text{minimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MAX} \\
+            \min_{a \in \text{actions}(s)} \text{minimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MIN}.
+        \end{cases}
     \]
-\end{thbox}
-\textbf{In session exercises:} Ex. 1, Ex. 2 
+    The optimal next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
 
-\newpage
+    \topic{H-Minimax}
+    Under time constraints, the search is cut earlier: the $\text{utility}(s)$ function is replaced with a heuristic \term{evaluation function} $\text{eval}(s)$ that estimates the state utility, and the terminal test by a \term{cutoff test} $\text{cutoff-test}(s, d)$ that decides when to stop expanding a state $s$ at depth $d$,
+    \[
+        \text{h-minimax}(s, d) = \begin{cases}
+            \text{eval}(s) & \text{if } \text{cutoff-test}(s, d) \\
+            \max_{a \in \text{actions}(s)} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if } \text{player}(s) = \text{MAX} \\
+            \min_{a \in \text{actions}(s)} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if } \text{player}(s) = \text{MIN}.
+        \end{cases}
+    \]
+    Ideally, the evaluation function should order states in the same way as in Minimax.
 
-\section{Tic-Tac-Toe (AIMA, Ex 5.9)}
+    \topic{Expectiminimax}
+    In \term{stochastic games}, the random element is modeled with \term{chance nodes} that map a state-action pair to the set of possible outcomes, along with their respective probability. States no longer have a definite $\text{minimax}$ value, but we can calculate the \term{expected} value of a state under optimal play by the opponent, \ie{} the average over all possible outcomes of the chance nodes,
+    \[
+        \text{expectiminimax}(s) = \begin{cases}
+            \text{utility}(s) & \text{if } \text{terminal-test}(s) \\
+            \max_a \text{expectiminimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MAX} \\
+            \min_a \text{expectiminimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MIN} \\
+            \sum_r P(r) \text{expectiminimax}(\text{result}(s, r)) & \text{if } \text{player}(s) = \text{CHANCE}.
+        \end{cases}
+    \]
+\end{recap}
+
+\begin{exercises}[1, 2]
+
+\titledquestion{Tic-tac-toe \aima{5.9}}
 
 Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players win before the grid is full, its a draw.
 
-We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $eval(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
+We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\mathit{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
 
-\begin{enumerate}
-    \item Define the search problem associated with the Tic-Tac-Toe game.
+\begin{parts}
+    \part Define the search problem associated with the Tic-Tac-Toe game.
 
     \begin{solution}
         Let a state of the game be a matrix $s = (s_{ij}) \in \cbk{-1, 0, 1}^{3 \times 3}$, where the values $-1$, $0$ and $1$ respectively denote O, empty and X cells.
@@ -84,128 +82,121 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
             \end{equation*}
             \item[Player function] The next player should be X if there are as many X's as O's on the grid and O otherwise. Choosing $+1$ for X and $-1$ for O,
             \begin{equation*}
-                player(s) = \begin{cases}
+                \mathit{player}(s) = \begin{cases}
                     +1 & \text{if } \sum_{i, j} s_{ij} = 0 \\
                     -1 & \text{otherwise}
                 \end{cases}
             \end{equation*}
-            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $actions(s) = \cbk{(i, j): s_{ij} = 0}$.
-            \item[Transition model] For an action $(i, j) \in actions(s)$, $result(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = player(s)$.
-            \item[Terminal test] $terminal(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
-            \item[Utility function] $utility(s) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
+            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $\mathit{actions}(s) = \cbk{(i, j): s_{ij} = 0}$.
+            \item[Transition model] For an action $(i, j) \in \mathit{actions}(s)$, $\mathit{result}(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = \mathit{player}(s)$.
+            \item[Terminal test] $\mathit{terminal}(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
+            \item[Utility function] $\mathit{utility}(s) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
         \end{description}
     \end{solution}
 
-    \item Approximately how many possible game states of Tic-Tac-Toe are there?
+    \part Approximately how many possible game states of Tic-Tac-Toe are there?
 
     \begin{solution}
         If we disregard unreachable states, we have $3^{3 \times 3} = \num{19683}$ possible states and $\fact{9} = \num{362880}$ possible games.
     \end{solution}
 
-    \item Show the whole game tree starting from an empty grid down to depth 2 (one X and one O on the board), taking symmetry into account.
-    \item Annotate your tree with the evaluations of all the positions at depth 2.
-    \item Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
+    \part Show the whole game tree starting from an empty grid down to depth 2 (one X and one O on the board), taking symmetry into account.
+
+    \part Annotate your tree with the evaluations of all the positions at depth 2.
+
+    \part Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.8\textwidth]{figures/e2_tictactoe.pdf}
+        \begin{center}
+            \includegraphics[width=0.8\linewidth]{figures/e2_tictactoe.pdf}
+            \captionsetup{type=figure}
             \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
-        \end{figure}
+        \end{center}
     \end{solution}
 
-    \item Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $eval(s)$ is misleading.
+    \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\mathit{eval}(s)$ is misleading.
 
     \begin{solution}
         This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning.
 
-        \begin{figure}[h]
-            \centering
-            \includegraphics[width=0.3\textwidth]{figures/e2_misleading.pdf}
-        \end{figure}
+        \begin{center}
+            \includegraphics[width=0.3\linewidth]{figures/e2_misleading.pdf}
+        \end{center}
 
         This heuristic does not preserve the Minimax \emph{ordering} of intermediate states.
     \end{solution}
+\end{parts}
 
-\end{enumerate}
+\titledquestion{Minimax \source{CS188, Fall 2019}}
 
-\newpage
+\begin{center}
+    \includegraphics[width=0.6\linewidth]{figures/e2_minimax_0.pdf}
+\end{center}
 
-\section{Minimax (CS188, Fall 2019)}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/e2_minimax_0.pdf}
-\end{figure}
-
-\begin{enumerate}
-    \item Consider the zero-sum game tree shown above. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player. Assuming both players act optimally, fill in the Minimax value of each node.
+\begin{parts}
+    \part Consider the zero-sum game tree shown above. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player. Assuming both players act optimally, fill in the Minimax value of each node.
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.6\textwidth]{figures/e2_minimax_1.pdf}
-        \end{figure}
+        \begin{center}
+            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_1.pdf}
+        \end{center}
     \end{solution}
 
-    \item Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
+    \part Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.6\textwidth]{figures/e2_minimax_2.pdf}
-        \end{figure}
+        \begin{center}
+            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_2.pdf}
+        \end{center}
     \end{solution}
 
-    \item  Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the Expectminimax value of each node. The game tree is redrawn below for your convenience.
+    \part Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the Expectminimax value of each node. The game tree is redrawn below for your convenience.
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.6\textwidth]{figures/e2_minimax_3.pdf}
-        \end{figure}
+        \begin{center}
+            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_3.pdf}
+        \end{center}
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage
-
-\section{21 misery game (January 2019)}
+\titledquestion{21 misery game \source{Exam, January 2019}}
 
 The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
 
-\begin{enumerate}
-    \item Define the search problem associated with the 2-player version of the \enquote{21} game.
+\begin{parts}
+    \part Define the search problem associated with the 2-player version of the \enquote{21} game.
 
     \begin{solution}
         Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{0, 1}$, where $v$ is the current value of the counter and $p$ the player to play next.
         \begin{description}
             \item[Initial state] $s_0 = (1, 0)$.
-            \item[Player function] $player(s = (v, p)) = p$.
-            \item[Actions] $actions(s) = \cbk{1, 2, 3}$.
-            \item[Transition model] For an action $a \in actions(s)$, $$result(s = (v, p), a) = (v + a,  p + 1 \bmod 2).$$
-            \item[Terminal test] $terminal(s = (v, p))$ is true if $v \geq 21$, false otherwise.
-            \item[Utility function] $utility(s) = 1$ if $p = 0$, $0$ otherwise.
+            \item[Player function] $\mathit{player}(s = (v, p)) = p$.
+            \item[Actions] $\mathit{actions}(s) = \cbk{1, 2, 3}$.
+            \item[Transition model] For an action $a \in \mathit{actions}(s)$,
+            \[
+                \mathit{result}(s = (v, p), a) = (v + a, p + 1 \bmod 2).
+            \]
+            \item[Terminal test] $\mathit{terminal}(s = (v, p))$ is true if $v \geq 21$, false otherwise.
+            \item[Utility function] $\mathit{utility}(s) = 1$ if $p = 0$, $0$ otherwise.
         \end{description}
     \end{solution}
 
-    \item For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules has \enquote{21} except that you should not say 5 or more. Show the whole game tree.
-    \item Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
+    \part For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules has \enquote{21} except that you should not say 5 or more. Show the whole game tree.
+
+    \part Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.9\textwidth]{figures/e2_21.pdf}
+        \begin{center}
+            \includegraphics[width=0.9\linewidth]{figures/e2_21.pdf}
+            \captionsetup{type=figure}
             \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
-        \end{figure}
+        \end{center}
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage
+\titledquestion{Leapfrog \aima{5.8}}
 
-\section{Leapfrog (AIMA, Ex 5.8)}
-
-\begin{figure}[h]
-    \centering
+\begin{center}
     \begin{tikzpicture}
         \draw[step=1cm, black, thin] (0, 0) grid (4, 1);
         \node at (0.5, -0.5) {1};
@@ -215,43 +206,43 @@ The game \enquote{21} is played with any number of players who take turns increa
         \node[draw, circle] at (0.5, 0.5) {$A$};
         \node[draw, circle] at (3.5, 0.5) {$B$};
     \end{tikzpicture}
-\end{figure}
+\end{center}
 
 Consider the following two-player turn-taking game which initial configuration is shown in the figure above. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
 
-\begin{enumerate}
-    \item Define the search problem associated with this game.
+\begin{parts}
+    \part Define the search problem associated with this game.
 
     \begin{solution}
         Let a state of the game be a tuple $s = (i, j, p) \in \cbk{1, 2, 3, 4}^2 \times \cbk{0, 1}$, where $i$ and $j$ are the respective positions of $A$ and $B$ and $p$ is $0$ when it is $A$'s turn and $1$ when it is $B$'s.
         \begin{description}
             \item[Initial state] $s_0 = (1, 4, 0)$.
-            \item[Player function] $player(s = (i, j, p)) = p$.
-            \item[Actions] $actions(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
-            \item[Transition model] For an available action $a \in actions(s)$,
+            \item[Player function] $\mathit{player}(s = (i, j, p)) = p$.
+            \item[Actions] $\mathit{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
+            \item[Transition model] For an available action $a \in \mathit{actions}(s)$,
             \begin{equation*}
-                result(s = (i, j, p), a) = \begin{cases}
-                    (next(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{right} \\
-                    (prev(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{left} \\
-                    (i, next(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{right} \\
-                    (i, prev(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{left}
+                \mathit{result}(s = (i, j, p), a) = \begin{cases}
+                    (\mathit{next}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{right} \\
+                    (\mathit{prev}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{left} \\
+                    (i, \mathit{next}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{right} \\
+                    (i, \mathit{prev}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{left}
                 \end{cases}
             \end{equation*}
             where
             \begin{align*}
-                next(x, y) & = \begin{cases}
+                \mathit{next}(x, y) & = \begin{cases}
                     y + 1 & \text{if } x + 1 = y \\
                     x + 1 & \text{otherwise}
                 \end{cases} \\
-                prev(x, y) & = \begin{cases}
+                \mathit{prev}(x, y) & = \begin{cases}
                     y - 1 & \text{if } x - 1 = y \\
                     x - 1 & \text{otherwise}
                 \end{cases} .
             \end{align*}
-            \item[Terminal test] $terminal(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
+            \item[Terminal test] $\mathit{terminal}(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
             \item[Utility function]
             \begin{equation*}
-                utility(s = (i, j, p)) = \begin{cases}
+                \mathit{utility}(s = (i, j, p)) = \begin{cases}
                     +1 & \text{if } i = 4 \\
                     -1 & \text{if } j = 1
                 \end{cases} .
@@ -259,15 +250,14 @@ Consider the following two-player turn-taking game which initial configuration i
         \end{description}
     \end{solution}
 
-    \item Draw the complete game tree, using the following conventions:
+    \part Draw the complete game tree, using the following conventions:
     \begin{itemize}
         \item Put each terminal state in a square box and annotate it with its game value.
         \item Put loop states (states that already appear on the path to the root) in double square boxes. Since their value is unclear, annotate them with a \enquote{?} symbol.
     \end{itemize}
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
+        \begin{center}
             \scalebox{0.75}{\begin{tikzpicture}[node distance = 2.5cm]
                 \node[state] (N0) {$(1, 4, 0)$};
                 \node[state] (N1) [right of=N0] {$(2, 4, 1)$};
@@ -292,22 +282,21 @@ Consider the following two-player turn-taking game which initial configuration i
                 \draw[arrow] (N7) to (N9);
                 \draw[arrow] (N9) to (N10);
             \end{tikzpicture}}
-        \end{figure}
+        \end{center}
     \end{solution}
 
-    \item Explain why the standard minimax algorithm would fail on this game.
+    \part Explain why the standard minimax algorithm would fail on this game.
 
     \begin{solution}
         The Minimax algorithm is designed to work on finite acyclic game trees. In our case, the tree is not acyclic, which leads the standard Minimax algorithm into infinite loops.
     \end{solution}
 
-    \item Annotate each node with its backed-up minimax value. Explain how you handled the \enquote{?} values and why.
+    \part Annotate each node with its backed-up minimax value. Explain how you handled the \enquote{?} values and why.
 
     \begin{solution}
         We handle the \enquote{?} values by assuming that a player only chooses to go in loop states if no winning action is available. That is, $A$ (resp. $B$) prefers $+1$ (resp. $-1$) to \enquote{?}, but \enquote{?} to $-1$ (resp. $+1$).
 
-        \begin{figure}[H]
-            \centering
+        \begin{center}
             \scalebox{0.75}{\begin{tikzpicture}[node distance=2.5cm]
                 \node[state] (N0) {$(1, 4, 0)$\\$+1$};
                 \node[state] (N1) [right of=N0] {$(2, 4, 1)$\\$+1$};
@@ -332,44 +321,42 @@ Consider the following two-player turn-taking game which initial configuration i
                 \draw[arrow] (N7) to (N9);
                 \draw[arrow] (N9) to (N10);
             \end{tikzpicture}}
-        \end{figure}
+        \end{center}
 
         Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than Minimax must be used.
     \end{solution}
 
-    \item This 4-cell game can be generalized to $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
+    \part This 4-cell game can be generalized to $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
 
     \begin{solution}
         We already know that $A$ wins if $n = 4$ and it is quick to verify that $B$ wins if $n = 3$. For $n \geq 5$, we notice that the three first states are $(1, n, 0)$, $(2, n, 1)$ and $(2, n - 1, 0)$. For optimal players, the state $(2, n - 1, 0)$ is equivalent (in the sense that the winner is the same) to the initial state of the game with $n - 2$ cells. Likewise, the outcome for $n$ cells is the same as for $n + 2$ cells and, by induction, for $n + 2k$ ($k \geq 0$) cells. Therefore, we have that $A$ wins games with $4 + 2k$ cells (even) and loses those with $3 + 2k$ cells (odd).
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage
-
-\section{Chess and transposition table (AIMA, Ex 5.15)}
+\titledquestion{Chess and transposition table \aima{5.15}}
 
 Suppose you have a chess program that can evaluate 16 million nodes per second.
 
-\begin{enumerate}
-    \item Decide on a compact representation of a game state for storage in a transposition table.
+\begin{parts}
+    \part Decide on a compact representation of a game state for storage in a transposition table.
 
     \begin{solution}
         There are 32 pieces and we need to specify their positions in a $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \qty{6}{bits} ($2^6 = 64$), for a total of \qty{24}{B} per state.
     \end{solution}
 
-    \item About how many entries can you fit in a \qty{4}{\giga B} in-memory table?
+    \part About how many entries can you fit in a \qty{4}{\giga B} in-memory table?
 
     \begin{solution}
         We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{160e6}$ states in the table.
     \end{solution}
 
-    \item Will that be enough for the three minutes of search allocated for one move?
+    \part Will that be enough for the three minutes of search allocated for one move?
 
     \begin{solution}
         It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.880e9}$ evaluated nodes.
     \end{solution}
 
-    \item How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
+    \part How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
 
     \begin{solution}
         We can perform
@@ -378,50 +365,46 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
         \end{equation*}
         table lookups in the same amount of time as a single evaluation. This demonstrates the importance of transposition tables.
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage 
+\end{exercises}
 
-\startquiz
-
-In Monte Carlo Tree Search (MCTS), in the formula
+\begin{quiz}
+    \item In Monte Carlo Tree Search (MCTS), in the formula
     \begin{equation*}
         \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
     \end{equation*}
-which of the following is true?
-\begin{itemize}
-    \solitem The first term encourages the exploitation of higher-reward nodes, while the second encourages the exploration of
-    less-visited nodes.
-    \item The first term encourages the exploration of less-visited nodes, while the second term encourages the exploitation
-    of higher-reward nodes.
-    \item The first term encourages the exploitation of highly-visited nodes, while the second term encourages the exploration
-    of lesser-rewarding nodes.
-    \item The first term encourages the exploration of lesser-rewarding nodes, while the second term encourages the exploitation of highly-visited nodes.
-\end{itemize}
+    which of the following is true?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item \correct{The first term encourages the exploitation of higher-reward nodes, while the second encourages the exploration of less-visited nodes.}
+        \item The first term encourages the exploration of less-visited nodes, while the second term encourages the exploitation of higher-reward nodes.
+        \item The first term encourages the exploitation of highly-visited nodes, while the second term encourages the exploration of lesser-rewarding nodes.
+        \item The first term encourages the exploration of lesser-rewarding nodes, while the second term encourages the exploitation of highly-visited nodes.
+    \end{enumerate}
 
-In adversarial search,
-\begin{itemize}
-    \item The horizon effect arises when the search is stuck in a cycle.
-    \item The horizon effect arises when the evaluation function is perfect.
-    \item The deeper in the tree the evaluation function is buried, the more the quality of the evaluation matters.
-    \solitem If not looked deep enough, bad moves may appear as good moves, because their consequences are hidden beyond
-    the search horizon.
-\end{itemize}
+    \item In adversarial search,
+    \begin{enumerate}[label=$\bigcirc$]
+        \item The horizon effect arises when the search is stuck in a cycle.
+        \item The horizon effect arises when the evaluation function is perfect.
+        \item The deeper in the tree the evaluation function is buried, the more the quality of the evaluation matters.
+        \item \correct{If not looked deep enough, bad moves may appear as good moves, because their consequences are hidden beyond the search horizon.}
+    \end{enumerate}
 
-A quiescent state is 
-\begin{itemize}
-    \item A state in which the game will loop indefinitely.
-    \item A state in which an agent is stuck.
-    \solitem A state in which the outcome of a game is unlikely to vary a lot in the near future.
-    \item A state in which the MAX agent is certain to win.
-\end{itemize}
+    \item A quiescent state is
+    \begin{enumerate}[label=$\bigcirc$]
+        \item A state in which the game will loop indefinitely.
+        \item A state in which an agent is stuck.
+        \item \correct{A state in which the outcome of a game is unlikely to vary a lot in the near future.}
+        \item A state in which the MAX agent is certain to win.
+    \end{enumerate}
 
-Minimax algorithm
-\begin{itemize}
-    \solitem Cannot fail more against a sub-optimal agent than an optimal one.
-    \solitem Can fail more often if the opponent is sub-optimal but predictable and that we underestimate the opponent strategy.
-    \solitem Does not ensure that the MAX agent always wins.
-    \solitem All of the above.
-\end{itemize}
+    \item Minimax algorithm
+    \begin{enumerate}[label=$\bigcirc$]
+        \item \correct{Cannot fail more against a sub-optimal agent than an optimal one.}
+        \item \correct{Can fail more often if the opponent is sub-optimal but predictable and that we underestimate the opponent strategy.}
+        \item \correct{Does not ensure that the MAX agent always wins.}
+        \item \correct{All of the above.}
+    \end{enumerate}
+\end{quiz}
 
 \end{document}

@@ -1,60 +1,161 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[11pt, a4paper]{exam}
 
 \usepackage[english]{babel}
-\usepackage{sleek}
-\usepackage{common}
-\usepackage{booktabs}
-\usetikzlibrary{matrix,positioning}
-\usepackage{subcaption}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
+\usepackage{exercises}
 
-\title{Introduction to Artificial Intelligence (INFO8006)}
-\subtitle{Exercise session 6}
+\newcommand{\ReLU}{\mathrm{ReLU}}
 
-\def\ReLU{\mathrm{ReLU}}
+\newcommand{\signal}[1]{%
+\begin{tikzpicture}
+    \begin{axis}[%
+        width=8cm,
+        height=4cm,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style={->},
+        domain=0:19,
+        samples=20,
+        xmin=-1,
+        xmax=20,
+        ymin=-1,
+        ymax=1,
+        xmajorticks=false,
+        ymajorticks=true,
+        ytick={1},
+        yticklabels={1},
+        yticklabel style={anchor=east},
+    ]
+        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
+    \end{axis}
+\end{tikzpicture}
+}
+
+\newcommand{\kernel}[1]{%
+\begin{tikzpicture}
+    \begin{axis}[%
+        width=3cm,
+        height=4cm,
+        axis x line=middle,
+        axis y line=middle,
+        domain=0:3,
+        samples=4,
+        xmin=-1,
+        xmax=4,
+        ymin=-1,
+        ymax=+1,
+        xmajorticks=false,
+        ymajorticks=true,
+        ytick={1},
+        yticklabels={1},
+        yticklabel style={anchor=east},
+    ]
+        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
+    \end{axis}
+\end{tikzpicture}
+}
+
+\title{\bfseries INFO8006 Introduction to Artificial Intelligence}
+\author{Exercise session 6: Machine learning}
+\date{}
 
 \begin{document}
 
 \maketitle
 
-\begin{thbox}{Multilayer perceptron}
-    For an \thighlight{input vector} $\mathbf{x} \in \mathbb{R}^d$ and  \thighlight{activation function} $\sigma(.)$, a MLP with $L$ layers can be written as 
-    \begin{align*}
-        \mathbf{h}_0 &= \mathbf{x}\\
-        \mathbf{h}_1 &= \sigma(\mathbf{W}_1^T\mathbf{h}_0 + \mathbf{b}_1)\\
-        &\vdots\\
-        \mathbf{h}_L &= \sigma(\mathbf{W}_L^T\mathbf{h}_{L-1} + \mathbf{b}_L)\\
-        \mathbf{y} &= \mathbf{h}_L
-    \end{align*}
-    with $\mathbf{h}_l \in \mathbb{R}^{q_l}$ defined as the the \thighlight{hidden vector}, $\mathbf{W}_l \in \mathbb{R}^{q_{l-1} \times q_l}$ the \thighlight{weight matrix} and $\mathbf{b}_l \in \mathbb{R}^{q_l}$ the \thighlight{bias vector} of the $l$-th layer.
-\end{thbox}
-\begin{thbox}{Training loop}
-    For a given \thighlight{input-output training pair} $(x, y)$, a \thighlight{neural network} $\Phi_\theta(.)$ \thighlight{parameterized} by $\theta$, a \thighlight{loss function} $\mathcal{L}(.)$ and a \thighlight{learning rate} $\lambda$:
-    \begin{enumerate}
-        \item Compute all intermediate values in the network for the given input $x$ up to the output prediction $\hat{y} = \Phi_\theta(x)$. This is known as the \thighlight{forward pass}.
-        \item Compute the symbolic \thighlight{gradient} of the loss w.r.t. every parameters $g_i(.) = \frac{\partial \mathcal{L}}{\partial \theta_i}$ using the chain rule.
-        \item Evaluate the loss for your training point as $\mathcal{L}(y,\hat{y})$.
-        \item Backpropagate the loss and the activations through the network to compute the gradient values $g_i$. This is known as the \thighlight{backward pass}.
-        \item Update every parameter using their gradient as 
-        $$
-        \theta_i \leftarrow \theta_i - \lambda g_i.
-        $$
-    \end{enumerate}
-\end{thbox}
-\begin{thbox}{Universal approximation theorem}
-    The \thighlight{universal approximation theorem} states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy.
-\end{thbox}
-\textbf{In session exercices}: Ex. 1, Ex. 2, Ex. 5
-\newpage
+\begin{recap}
+    \topic{Problem statement}
+    Let $\mathbf{d} \sim p(\mathbf{x}, y)$ be a dataset of $N$ example input-output pairs
+    \[
+        \mathbf{d} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \ldots, (\mathbf{x}_N, y_N)\},
+    \]
+    where $\mathbf{x}_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values. From this data, we want to identify a probabilistic model $p_\theta(y \mid \mathbf{x})$ that best explains the data. The problem is a \term{regression} problem if $y \in \mathbb{R}$ and a \term{classification} problem if $y \in \{0, 1, \ldots, C-1\}$.
 
-\section{Escape game (January 2022)}
+    \topic{Multilayer perceptron}
+    A hidden layer with $q$ hidden units computes
+    \[
+        \mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b}),
+    \]
+    where $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{d_{\text{in}} \times q}$ is the \term{weight matrix}, $\mathbf{b} \in \mathbb{R}^q$ is the \term{bias vector} and $\sigma$ is an activation function. A network with a single hidden layer is a \term{shallow network}. Layers composed in series form a deep network with $K$ hidden layers,
+    \begin{align*}
+        \mathbf{h}_0 & = \mathbf{x} \\
+        \mathbf{h}_1 & = \sigma(\mathbf{W}_1^T \mathbf{h}_0 + \mathbf{b}_1) \\
+        & \vdots \\
+        \mathbf{h}_K & = \sigma(\mathbf{W}_K^T \mathbf{h}_{K-1} + \mathbf{b}_K) \\
+        \mathbf{y} & = \sigma(\mathbf{W}_y^T \mathbf{h}_K + \mathbf{b}_y),
+    \end{align*}
+    where $\mathbf{W}_k \in \mathbb{R}^{q_{k-1} \times q_k}$ is the weight matrix and $\mathbf{b}_k \in \mathbb{R}^{q_k}$ is the bias vector of the $k$-th layer. The resulting function $f(\mathbf{x}; \theta)$, where $\theta$ denotes the set of all model parameters, is a \term{multilayer perceptron}.
+
+    \topic{Activation functions}
+    Activation functions $\sigma : \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network. Common activation functions include
+    \begin{itemize}
+        \item the sigmoid $\sigma(x) = \frac{1}{1 + \exp(-x)}$, which maps inputs to the range $(0, 1)$;
+        \item the hyperbolic tangent $\sigma(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}$, which maps inputs to the range $(-1, 1)$;
+        \item the rectified linear unit $\sigma(x) = \ReLU(x) = \max(0, x)$.
+    \end{itemize}
+
+    \topic{Output layers}
+    The output layer $\mathbf{y} = \sigma(\mathbf{W}_y^T \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
+    \begin{itemize}
+        \item for regression, its width is the dimensionality $d_{\text{out}}$ of the output and its activation function is the identity $\sigma(\cdot) = \cdot$;
+        \item for binary classification, its width is $1$ and its activation function is the sigmoid, which models the probability $p(y = 1 \mid \mathbf{x})$;
+        \item for multi-class classification, the \term{softmax} function produces a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y = i \mid \mathbf{x})$, where
+        \[
+            \mathrm{Softmax}(\mathbf{z})_i = \frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)} \quad \text{for } i = 1, \ldots, C.
+        \]
+    \end{itemize}
+
+    \topic{Loss functions}
+    The parameters $\theta$ of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \{(\mathbf{x}_j, \mathbf{y}_j)\}$ of $N$ input-output pairs. The loss function is derived from the likelihood:
+    \begin{itemize}
+        \item for regression, assuming a Gaussian likelihood, the loss is the \term{mean squared error}
+        \[
+            \mathcal{L}(\theta) = \frac{1}{N} \sum_{(\mathbf{x}_j, \mathbf{y}_j) \in \mathbf{d}} (\mathbf{y}_j - f(\mathbf{x}_j; \theta))^2;
+        \]
+        \item for classification, assuming a categorical likelihood, the loss is the \term{cross-entropy}
+        \[
+            \mathcal{L}(\theta) = -\frac{1}{N} \sum_{(\mathbf{x}_j, \mathbf{y}_j) \in \mathbf{d}} \sum_{i=1}^C y_{ij} \log f_i(\mathbf{x}_j; \theta).
+        \]
+    \end{itemize}
+
+    \topic{Gradient descent}
+    To minimize a loss function $\mathcal{L}(\theta)$, \term{gradient descent} updates the model parameters iteratively using the update rule
+    \[
+        \theta_{t+1} = \theta_t - \gamma \nabla_\theta \mathcal{L}(\theta_t),
+    \]
+    where $\theta_0$ are the initial parameters of the model and $\gamma$ is the \term{learning rate}.
+
+    \topic{Backpropagation}
+    The gradient $\nabla_\theta \mathcal{L}(\theta)$ is computed for a training pair $(\mathbf{x}, \mathbf{y})$ in two passes through the network:
+    \begin{enumerate}
+        \item the \term{forward pass} computes all intermediate values of the network, from the input $\mathbf{x}$ up to the prediction $f(\mathbf{x}; \theta)$, and the loss;
+        \item the \term{backward pass} applies the chain rule from the loss back to the input, reusing the intermediate values of the forward pass, to obtain the partial derivative of the loss with respect to every parameter.
+    \end{enumerate}
+
+    \topic{Universal approximation theorem}
+    The \term{universal approximation theorem} states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units.
+
+    \topic{Convolution}
+    For the 1d input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete \term{convolution} $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
+    \[
+        (\mathbf{x} \circledast \omega)[i] = \sum_{m=0}^{w-1} \mathbf{x}_{m+i} \omega_m.
+    \]
+    Padding the input with $p$ zeros on each side results in an output of size $W - w + 1 + 2p$. For the 3d input tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$ with $C$ channels and the 3d convolutional kernel $\omega \in \mathbb{R}^{C \times h \times w}$, the 2d convolution $\mathbf{x} \circledast \omega$ is a 2d tensor of size $(H - h + 1) \times (W - w + 1)$ such that
+    \[
+        (\mathbf{x} \circledast \omega)[j, i] = \sum_{c=0}^{C-1} \sum_{n=0}^{h-1} \sum_{m=0}^{w-1} \mathbf{x}_{c, n+j, m+i} \omega_{c, n, m}.
+    \]
+
+    \topic{Convolutional neural networks}
+    A \term{convolutional layer} is defined by a set of $K$ kernels $\omega_k$ of size $C \times h \times w$. It applies the 2d convolution to the input tensor $\mathbf{x}$ of size $C \times H \times W$ to produce a set of $K$ feature maps $\mathbf{o}_k$. With a pooling area of size $h \times w$, \term{max-pooling} maps a tensor $\mathbf{x} \in \mathbb{R}^{C \times (rh) \times (sw)}$ to a tensor $\mathbf{o} \in \mathbb{R}^{C \times r \times s}$ by keeping the maximum of each area. A \term{convolutional neural network} (CNN) uses convolutional layers, pooling layers and fully connected layers.
+\end{recap}
+
+\begin{exercises}[1, 2, 5]
+
+\titledquestion{Escape game \source{Exam, January 2022}}
 
 A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(x, y)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\N(0, 1)$.
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|cc}
+\begin{center}
+    \begin{tabular}{ccc}
         \toprule
         $i$ & Starting room & Measured best time \\
         \midrule
@@ -65,7 +166,7 @@ A new virtual escape game came out, and you decide to play it. You arrive in a $
         5 & $(1, 2)$ & $8.5$ \\
         \bottomrule
     \end{tabular}
-\end{table}
+\end{center}
 
 From the leaderboard, you wish to learn a heuristic approximating the best time to get to the exit, starting from room $(x, y)$. You decide to use a small neural network as approximator, described by the following parametric function,
 \begin{align*}
@@ -74,28 +175,27 @@ From the leaderboard, you wish to learn a heuristic approximating the best time 
 \end{align*}
 where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights of the neural network.
 
-\begin{enumerate}
-    \item Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
+\begin{parts}
+    \part Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
 
-    \begin{table}[h]
-        \centering
-        \begin{tabular}{c|cccccc}
+    \begin{center}
+        \begin{tabular}{ccccccc}
             \toprule
             Set & $w_1$ & $w_2$ & $w_3$ & $w_4$ & $w_5$ & $w_6$ \\
             \midrule
-            $\phi_A$ &$-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
-            $\phi_B$ &$-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
-            $\phi_C$ &$-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
+            $\phi_A$ & $-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
+            $\phi_B$ & $-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
+            $\phi_C$ & $-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
             \bottomrule
         \end{tabular}
-    \end{table}
+    \end{center}
 
     \begin{solution}
         A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $d$ is the leaderboard and consists of independent position-time tuples $(x_i, y_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(x, y)$, approximated by a neural network $h(x, y; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
         \begin{align*}
-            \phi_{\text{MLE}} & = \arg\max_\phi p(d | \phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i | \phi) \\ \displaybreak
-            & = \arg\max_\phi \prod_{i=1}^5 p(t_i | x_i, y_i, \phi) \, p(x_i, y_i) \\
+            \phi_{\text{MLE}} & = \arg\max_\phi p(d \mid \phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(t_i \mid x_i, y_i, \phi) \, p(x_i, y_i) \\
             & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \\
             & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(x_i, y_i; \phi))^2}{2}}} \\
             & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2
@@ -109,14 +209,14 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
         The best set is $\phi_A$.
     \end{solution}
 
-    \item You now assume a Gaussian prior $\N(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
+    \part You now assume a Gaussian prior $\N(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
 
     \begin{solution}
         Now that we hold a prior belief on the parameters, our task is to find the most likely set of parameters given the data, that is maximum a posteriori (MAP) estimation.
         \begin{align*}
-            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi | d) \\
-            & = \arg\max_\phi p(d | \phi) p(\phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i | \phi) \prod_{j=1}^6 p(w_j) \\
+            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi \mid d) \\
+            & = \arg\max_\phi p(d \mid \phi) p(\phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \prod_{j=1}^6 p(w_j) \\
             & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
             & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
         \end{align*}
@@ -129,7 +229,7 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
         The best set is $\phi_B$.
     \end{solution}
 
-    \item Discuss the procedure you would implement on a computer to find the optimal set of parameters, had the table above not been provided.
+    \part Discuss the procedure you would implement on a computer to find the optimal set of parameters, had the table above not been provided.
 
     \begin{solution}
         If the table is not provided, it is intractable to evaluate and compare all possible sets of parameters. However, we still want to minimize the MLE (or MAP) objective $L(\phi)$. We can improve a set of parameters $\phi$ by following the opposite of the objective's gradient $\nabla_{\! \phi} L(\phi)$, \ie{} performing \emph{gradient descent} steps
@@ -138,115 +238,109 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
         \end{equation*}
         where $\gamma$ is the learning rate.
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage
+\titledquestion{Neural network representations \source{CS188, Spring 2024}}
 
-\section{Neural network representations (CS188, Spring 2024)}
 You are given a number of functions (a-h) of a single variable, $x$, which are graphed below. For each network structure proposed afterwards, indicate which functions they are able to represent. When possible, indicate appropriate values for the parameters.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=.9\linewidth]{figures/nnfunctions.png}
-\end{figure}
+\begin{center}
+    \includegraphics[width=0.9\linewidth]{figures/nnfunctions.png}
+\end{center}
 
-\begin{enumerate}
-    \item We start with a linear transformation of the scalar input $x$, weight
-$w$, and output $y$, such that $y = wx$.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.4\linewidth]{figures/linearnet.png}
-\end{figure}
+\begin{parts}
+    \part We start with a linear transformation of the scalar input $x$, weight $w$, and output $y$, such that $y = wx$.
+
+    \begin{center}
+        \includegraphics[width=0.4\linewidth]{figures/linearnet.png}
+    \end{center}
 
     \begin{solution}
         This network can only represent (a), with $w = 2$. Since there is no bias term, the line must pass through the origin.
     \end{solution}
-    
-    \item We then introduce a bias term $b$, such that $y = wx+b$.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.4\linewidth]{figures/affinenet.png}
-\end{figure}
+
+    \part We then introduce a bias term $b$, such that $y = wx+b$.
+
+    \begin{center}
+        \includegraphics[width=0.4\linewidth]{figures/affinenet.png}
+    \end{center}
 
     \begin{solution}
         (a) with $w = 2$ and $b = 0$, and (b) with $w = 4$ and $b = -5$.
     \end{solution}
-    
-    \item We now introduce a non-linearity $\sigma (.)$ into the network. We use the ReLU non-linearity, which has the form ReLU(x) = max(0, x).
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.4\linewidth]{figures/onerelu.png}
-\end{figure}
+
+    \part We now introduce a non-linearity $\sigma (.)$ into the network. We use the ReLU non-linearity, which has the form ReLU(x) = max(0, x).
+
+    \begin{center}
+        \includegraphics[width=0.4\linewidth]{figures/onerelu.png}
+    \end{center}
 
     \begin{solution}
         With the output coming directly from the ReLU, this cannot produce any values less than zero. It can produce (c) with $w = 2$ and $b = -5$, and (d) with $w = -2$ and $b = -5$.
     \end{solution}
-    
-    \item Now we consider neural networks with multiple affine transformations, as depicted below. 
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.6\linewidth]{figures/doubleaffine.png}
-\end{figure}
+
+    \part Now we consider neural networks with multiple affine transformations, as depicted below.
+
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{figures/doubleaffine.png}
+    \end{center}
 
     \begin{solution}
         Applying multiple affine transformations (with no non-linearity in between) is not any more powerful than a single affine function: $w_2(w_1x + b_1) + b_2 = w_2w_1x + w_2b_1 + b_2$, so this is just a affine function with different coefficients. The functions we can represent are the same as in 1, if we choose $w_1 = w$, $w_2 = 1$, $b_1 = 0$, $b_2 = b$: (a) with $w_1 = 2$, $w_2 = 1$, $b_1 = 0$, $b_2 = 0$, and (b) with $w_1 = 4$, $w_2 = 1$, $b_1 = 0$, $b_2 = -5$.
     \end{solution}
-    
-    \item We now add a ReLU non-linearity to the network between the affine transformations.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.6\linewidth]{figures/onehidden.png}
-\end{figure}
+
+    \part We now add a ReLU non-linearity to the network between the affine transformations.
+
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{figures/onehidden.png}
+    \end{center}
 
     \begin{solution}
         (c), (d), and (e). The affine transformation after the ReLU is capable of stretching (or flipping) and shifting the ReLU output in the vertical dimension. The parameters to produce these are: (c) with $w_1 = 2$, $b_1 = -5$, $w_2 = 1$, $b_2 = 0$, (d) with $w_1 = -2$, $b_1 = -5$, $w_2 = 1$, $b_2 = 0$, and (e) with $w_1 = 1$, $b_1 = -2$, $w_2 = -1$, $b_2 = 1$.
     \end{solution}
-    
-    \item Now we add another hidden layer to the network, as depicted below. You do not have to guess parameters values anymore.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.8\linewidth]{figures/twolhidden.png}
-\end{figure}
+
+    \part Now we add another hidden layer to the network, as depicted below. You do not have to guess parameters values anymore.
+
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{figures/twolhidden.png}
+    \end{center}
 
     \begin{solution}
-        (c), (d), (e), and (f). The network can represent all the same functions as Q5 (because note that we could have $w_2 = 1$ and $b_2 = 0$). In addition it can represent (f): the first ReLU can produce the first flat segment, the affine transformation can flip and shift the resulting curve, and then the second ReLU can produce the second flat segment (with the final affine layer not doing anything). Note that (h) cannot be produced since its line has only one flat segment (and the affine layers can only scale, shift, and flip the graph in the vertical dimension; they can’t rotate the graph).
+        (c), (d), (e), and (f). The network can represent all the same functions as Q5 (because note that we could have $w_2 = 1$ and $b_2 = 0$). In addition it can represent (f): the first ReLU can produce the first flat segment, the affine transformation can flip and shift the resulting curve, and then the second ReLU can produce the second flat segment (with the final affine layer not doing anything). Note that (h) cannot be produced since its line has only one flat segment (and the affine layers can only scale, shift, and flip the graph in the vertical dimension; they can't rotate the graph).
     \end{solution}
-    
-    \item We’d like to consider using a neural net with just one hidden layer, but larger. Let’s first consider using just two affine functions, with no nonlinearity in between. You do not have to guess parameters values anymore.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.7\linewidth]{figures/2hiddenlin.png}
-\end{figure}
+
+    \part We'd like to consider using a neural net with just one hidden layer, but larger. Let's first consider using just two affine functions, with no nonlinearity in between. You do not have to guess parameters values anymore.
+
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{figures/2hiddenlin.png}
+    \end{center}
 
     \begin{solution}
         (a) and (b). With no non-linearity, this reduces to a single affine function (in the same way as Q4).
     \end{solution}
-    
-    \item Now we’ll add a non-linearity between the two affine layers, to produce the neural network below with a
-hidden layer of size 2. You do not have to guess parameters values anymore.
-    \begin{figure}[h!]
-    \centering
-    \includegraphics[width=.7\linewidth]{figures/2hiddennl.png}
-\end{figure}
+
+    \part Now we'll add a non-linearity between the two affine layers, to produce the neural network below with a hidden layer of size 2. You do not have to guess parameters values anymore.
+
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{figures/2hiddennl.png}
+    \end{center}
 
     \begin{solution}
-        All functions except for (g). Note that we can recreate any network from (5) by setting $w_4$ to 0, so this allows us to produce (c), (d) and (e). To produce the rest of the functions, note that $h_1$ and $h_2$ will be two independent functions with a flat part lying on the x-axis, and a portion with positive slope. The final layer takes a weighted sum of these two functions. To produce (a) and (b), the flat portion of one ReLU should start at the point where the other ends ($x = 0$ for (a), or $x = 1$ for (b). The final layer then vertically flips the ReLU sloping down and adds it to the one sloping up, producing a single sloped line. To produce (h), the ReLU sloping down should have its flat portion end (at $x = 0$ before the other’s flat portion begins (at $x = 3$). The down-sloping one is again flipped and added to the up-sloping. To produce (f), both ReLUs should have equal slope, which will cancel to produce the first flat portion above the x-axis.
+        All functions except for (g). Note that we can recreate any network from (5) by setting $w_4$ to 0, so this allows us to produce (c), (d) and (e). To produce the rest of the functions, note that $h_1$ and $h_2$ will be two independent functions with a flat part lying on the x-axis, and a portion with positive slope. The final layer takes a weighted sum of these two functions. To produce (a) and (b), the flat portion of one ReLU should start at the point where the other ends ($x = 0$ for (a), or $x = 1$ for (b). The final layer then vertically flips the ReLU sloping down and adds it to the one sloping up, producing a single sloped line. To produce (h), the ReLU sloping down should have its flat portion end (at $x = 0$ before the other's flat portion begins (at $x = 3$). The down-sloping one is again flipped and added to the up-sloping. To produce (f), both ReLUs should have equal slope, which will cancel to produce the first flat portion above the x-axis.
     \end{solution}
 
-    \item Are there functions that can't be represented by all proposed networks? If yes, explain why and what you would need to model them.
-    
+    \part Are there functions that can't be represented by all proposed networks? If yes, explain why and what you would need to model them.
+
     \begin{solution}
-        Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, ... (see slide 48 of the "Machine learning and neural networks" lecture).\\
-        
-        However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of part 8 should be sufficient.\\
+        Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, \ldots{} (see slide 48 of the ``Machine learning and neural networks'' lecture).
+
+        However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of part 8 should be sufficient.
 
         Note that the logarithm function is only defined on $\mathbb{R}^+$. If our network is made of activation functions defined on $\mathbb{R}$, we will never be able to restrict the domain of the learned function to only real positive. However, you can be as accurate as you want on the desired domain, but it makes no sense to evaluate your network elsewhere for this problem.
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-\newpage 
-
-\section{ReLU}
+\titledquestion{Piecewise-linear functions}
 
 For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\mathrm{ReLU}(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that exactly matches the function over $\R$.
 
@@ -288,140 +382,143 @@ For example, $y = \ReLU(x + 2) - \ReLU(-2x)$ is a valid function.
     \end{enumerate}
 \end{solution}
 
-\newpage
+\titledquestion{Binary classification \source{CS188, Spring 2024}}
 
-\section{Classification (CS188, Spring 2024)}
 Consider the following simple neural network for binary classification. Here $x$ is a single real-valued input feature with an associated class $y$ (0 or 1). There are two weight parameters $w_1$ and $w_2$, and non-linearity functions $g_1$ and $g_2$. The network will output a value $a_2$ between 0 and 1, representing the probability of being in class 1. We will be using a loss function $\mathcal{L}$ to compare the prediction $a_2$ with the true class $y$.
 
-\begin{figure}[h!]
-    \centering
+\begin{center}
     \includegraphics[width=\linewidth]{figures/classif_2.png}
-\end{figure}
+\end{center}
 
-\begin{enumerate}
-    \item Write down the forward pass on this network, writing the output values for each node $z_1$, $a_1$, $z_2$ and $a_2$ in terms of the node’s input values.
-    
+\begin{parts}
+    \part Write down the forward pass on this network, writing the output values for each node $z_1$, $a_1$, $z_2$ and $a_2$ in terms of the node's input values.
+
     \begin{solution}
         \begin{align*}
-            z_1 &= w_1 x\\
-            a_1 &= g_1(z_1) = g_1(w_1 x)\\
-            z_2 &= w_2 a_1 = w_2 g_1(w_1 x)\\
+            z_1 &= w_1 x \\
+            a_1 &= g_1(z_1) = g_1(w_1 x) \\
+            z_2 &= w_2 a_1 = w_2 g_1(w_1 x) \\
             a_2 &= g_2(z_2) = g_2(w_2 g_1(w_1 x))
         \end{align*}
     \end{solution}
-    
-    \item Derive the arguments of the loss $\mathcal{L}(a_2, y)$ in terms of the input $x$, weights $w_i$, and activation functions $g_i$.
+
+    \part Derive the arguments of the loss $\mathcal{L}(a_2, y)$ in terms of the input $x$, weights $w_i$, and activation functions $g_i$.
 
     \begin{solution}
-        The argument $a_2$ has been derived in the previous question. We have 
-        $$
-        a_2 = g_2(w_2 g_1(w_1 x)).
-        $$
+        The argument $a_2$ has been derived in the previous question. We have
+        \[
+            a_2 = g_2(w_2 g_1(w_1 x)).
+        \]
         For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}^N$ where $y_i$ acts as a target for the network.
     \end{solution}
 
-    \item Using the chain rule, differentiate $\mathcal{L}$ w.r.t. $w_2$. Write your expression as a product of partial derivatives at each node: i.e. the partial derivative of the node’s output with respect to its inputs. (Hint: the series of expressions you wrote in part 1 will be helpful; you may use any of those variables.)
+    \part Using the chain rule, differentiate $\mathcal{L}$ w.r.t. $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in part 1 will be helpful; you may use any of those variables.)
 
     \begin{solution}
-        $$
-        \dfrac{\partial \mathcal{L}}{\partial w_2} = \dfrac{\partial \mathcal{L}}{\partial a_2} \dfrac{\partial a_2}{\partial z_2} \dfrac{\partial z_2}{\partial w_2} 
-        $$
+        \[
+            \dfrac{\partial \mathcal{L}}{\partial w_2} = \dfrac{\partial \mathcal{L}}{\partial a_2} \dfrac{\partial a_2}{\partial z_2} \dfrac{\partial z_2}{\partial w_2}
+        \]
     \end{solution}
 
-    \item Motivate a choice for the output activation function $g_2$ given the nature of the problem. Motivate also a loss function. Give the expression of the gradients of both functions w.r.t. to their inputs.
+    \part Motivate a choice for the output activation function $g_2$ given the nature of the problem. Motivate also a loss function. Give the expression of the gradients of both functions w.r.t. to their inputs.
 
     \begin{solution}
         From the statement
-        \begin{enumerate}
+        \begin{enumerate}[label=(\alph*)]
             \item we know that we are in a classification problem (specifically, a binary classification),
             \item we know that the output $a_2$ should be between 0 and 1 and represents the probability $p(Y = 1 \mid x)$.
         \end{enumerate}
-        From (b), we have $a_2: \mathbb{R} \mapsto [0,1]$. A typical choice that fulfill this requirement is the sigmoid function $\sigma(z) = \dfrac{1}{1 + e^{-z}}$. The gradient of the sigmoid w.r.t. its input is 
-        $$
-        \dfrac{\partial \sigma(z)}{\partial z} = \dfrac{e^{-z}}{(1 + e^{-z})^2} = \sigma(z)\sigma(-z) = \sigma(z)(1-\sigma(z)).
-        $$
-        For the loss function, either we remember the cross-entropy loss seen in the theoretical lecture, or we compute it from maximum likelihood estimation.\\
+        From (b), we have $a_2: \mathbb{R} \mapsto [0,1]$. A typical choice that fulfill this requirement is the sigmoid function $\sigma(z) = \dfrac{1}{1 + e^{-z}}$. The gradient of the sigmoid w.r.t. its input is
+        \[
+            \dfrac{\partial \sigma(z)}{\partial z} = \dfrac{e^{-z}}{(1 + e^{-z})^2} = \sigma(z)\sigma(-z) = \sigma(z)(1-\sigma(z)).
+        \]
+        For the loss function, either we remember the cross-entropy loss seen in the theoretical lecture, or we compute it from maximum likelihood estimation.
 
         The likelihood of a pair $(x, y)$ can be derived from our model as
-        $$
-        \begin{cases}
-            \text{if } y = 1\  \text{ then }\ P(Y = y \mid x) = \text{NN}_{\theta}(x)\\
-            \text{if } y = 0\  \text{ then }\ P(Y = y \mid x) = 1 -\text{NN}_{\theta}(x)
-        \end{cases}
-        $$
-        where $\text{NN}_{\theta}$ is the neural network parameterized by $\theta = [w_1, w_2]$. Denoting $\text{NN}_{\theta}(x) = a_2$, the likelihood expression for one pair can be reformulated as 
-        $$
-        L(x, y; \theta) = y\log a_2 + (1-y) \log (1 - a_2).
-        $$
+        \[
+            \begin{cases}
+                \text{if } y = 1\ \text{ then }\ P(Y = y \mid x) = \text{NN}_{\theta}(x) \\
+                \text{if } y = 0\ \text{ then }\ P(Y = y \mid x) = 1 -\text{NN}_{\theta}(x)
+            \end{cases}
+        \]
+        where $\text{NN}_{\theta}$ is the neural network parameterized by $\theta = [w_1, w_2]$. Denoting $\text{NN}_{\theta}(x) = a_2$, the likelihood expression for one pair can be reformulated as
+        \[
+            L(x, y; \theta) = y\log a_2 + (1-y) \log (1 - a_2).
+        \]
         Since we want to maximize the likelihood, but minimize the loss, we can set the latter to
-        $$
-        \mathcal{L}(a_2, y) = -y\log a_2 - (1-y) \log (1 - a_2)
-        $$
+        \[
+            \mathcal{L}(a_2, y) = -y\log a_2 - (1-y) \log (1 - a_2)
+        \]
         which corresponds to the binary cross-entropy loss. The gradient of the loss w.r.t. $a_2$ is
-        $$
-        \dfrac{\partial \mathcal{L}(a_2, y)}{\partial a_2} = -\dfrac{y}{a_2} + \dfrac{(1-y)}{(1-a_2)} = \dfrac{a_2 - y}{a_2(1- a_2)}.
-        $$
+        \[
+            \dfrac{\partial \mathcal{L}(a_2, y)}{\partial a_2} = -\dfrac{y}{a_2} + \dfrac{(1-y)}{(1-a_2)} = \dfrac{a_2 - y}{a_2(1- a_2)}.
+        \]
     \end{solution}
-    
-    \item We set the loss function to the binary cross-entropy $$\mathcal{L}(a_2, y) = -y\log a_2 - (1-y) \log (1 - a_2),$$ and $g_1$ and $g_2$ are both sigmoid functions $\sigma(z) = \frac{1}{1 + e^{-z}}$. If you made this choice in the previous question, use your results to get the expression of $\frac{\partial \mathcal{L}}{\partial w_2}$. Otherwise, start by expressing $\frac{\partial \sigma(z)}{\partial z}$ and $\frac{\partial \mathcal{L}}{\partial a_2}$.
+
+    \part We set the loss function to the binary cross-entropy
+    \[
+        \mathcal{L}(a_2, y) = -y\log a_2 - (1-y) \log (1 - a_2),
+    \]
+    and $g_1$ and $g_2$ are both sigmoid functions $\sigma(z) = \frac{1}{1 + e^{-z}}$. If you made this choice in the previous question, use your results to get the expression of $\frac{\partial \mathcal{L}}{\partial w_2}$. Otherwise, start by expressing $\frac{\partial \sigma(z)}{\partial z}$ and $\frac{\partial \mathcal{L}}{\partial a_2}$.
 
     \begin{solution}
         We first miss $\frac{\partial z_2}{\partial w_2}$ which is
-        $$
-            \frac{\partial z_2}{\partial w_2} =  \frac{\partial}{\partial w_2} (w_2a_1) = a_1.
-        $$
+        \[
+            \frac{\partial z_2}{\partial w_2} = \frac{\partial}{\partial w_2} (w_2a_1) = a_1.
+        \]
         Plugging all the partial derivatives to the expression found in part 3, we have
         \begin{align*}
             \dfrac{\partial \mathcal{L}}{\partial w_2} &= \dfrac{a_2 - y}{a_2 (1 - a_2)} g_2(z_2)(1 - g_2(z_2)) a_1 \\
-            &= \dfrac{a_2 - y}{a_2 (1 - a_2)} a_2(1 - a_2) a_1\\
+            &= \dfrac{a_2 - y}{a_2 (1 - a_2)} a_2(1 - a_2) a_1 \\
             &= (a_2 - y) a_1
         \end{align*}
-    
     \end{solution}
 
-    \item Now use the chain rule to express $\frac{\partial \mathcal{L}}{\partial w_1}$ as a product of partial derivatives at each node of interest.
+    \part Now use the chain rule to express $\frac{\partial \mathcal{L}}{\partial w_1}$ as a product of partial derivatives at each node of interest.
 
     \begin{solution}
-        $$
-        \frac{\partial \mathcal{L}}{\partial w_1} = \dfrac{\partial \mathcal{L}}{\partial a_2} \dfrac{\partial a_2}{\partial z_2} \dfrac{\partial z_2}{\partial a_1} \dfrac{\partial a_1}{\partial z_1} \dfrac{\partial z_1}{\partial w_1}
-        $$
+        \[
+            \frac{\partial \mathcal{L}}{\partial w_1} = \dfrac{\partial \mathcal{L}}{\partial a_2} \dfrac{\partial a_2}{\partial z_2} \dfrac{\partial z_2}{\partial a_1} \dfrac{\partial a_1}{\partial z_1} \dfrac{\partial z_1}{\partial w_1}
+        \]
     \end{solution}
 
-    \item Finally, write $\dfrac{\partial \mathcal{L}}{\partial w_1}$ in terms of $x$, $y$, $w_i$, $a_i$, $z_i$.
+    \part Finally, write $\dfrac{\partial \mathcal{L}}{\partial w_1}$ in terms of $x$, $y$, $w_i$, $a_i$, $z_i$.
 
     \begin{solution}
-        We first need to compute 
-        $$
-            \frac{\partial a_1}{\partial z_1} =  g_1(z_1)(1 - g_1(z_1)) = a_1(1-a_1)
-        $$
+        We first need to compute
+        \[
+            \frac{\partial a_1}{\partial z_1} = g_1(z_1)(1 - g_1(z_1)) = a_1(1-a_1)
+        \]
         similarly to $\frac{\partial a_2}{\partial z_2}$, and
-        $$
-            \frac{\partial z_1}{\partial w_1} =  \frac{\partial}{\partial w_1} (w_1x) = x.
-        $$
-        Then, we get 
-        $$
+        \[
+            \frac{\partial z_1}{\partial w_1} = \frac{\partial}{\partial w_1} (w_1x) = x.
+        \]
+        Then, we get
+        \[
             \frac{\partial \mathcal{L}}{\partial w_1} = (a_2 - y)w_2 a_1(1-a_1)x.
-        $$
+        \]
     \end{solution}
 
-    \item What is the gradient descent update for $w_1$ with step-size $\lambda$ in terms of the values computed above?
+    \part What is the gradient descent update for $w_1$ with step-size $\lambda$ in terms of the values computed above?
 
     \begin{solution}
-        $$
-        w_1 \leftarrow w_1 - \lambda (a_2 - y)w_2 a_1(1-a_1)x.
-        $$
+        \[
+            w_1 \leftarrow w_1 - \lambda (a_2 - y)w_2 a_1(1-a_1)x.
+        \]
         You see here the importance of the forward pass. Iteratively, when receiving the input $x$, we compute all the intermediate activations (here, $a_1$ and $a_2$) and the loss (given $y$). Then, we propagate backward (from the output to the input) the values following the chain rule for the gradient of the loss w.r.t. parameters of interest. Finally, we update the parameters using the computed gradient.
     \end{solution}
-\end{enumerate}
-\newpage
+\end{parts}
 
-% neural networks
+\titledquestion{Training loop \source{Exam, January 2024}}
 
-\section{Training loop (INFO8006, January 2024)}
-Let us consider a neural network $f$ with one hidden layer taking as input a scalar $x \in \mathbb{R}$ and producing as output a scalar $y=f(x;\theta) \in \mathbb{R}$. The neural network is defined as $$f(x; \theta) = w_1 \text{ReLU}(w_2 x + w_3) + w_4 \text{ReLU}(w_5 x + w_6) + w_7 \text{ReLU}(w_8 x + w_9),$$ where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6, w_7, w_8, w_9)$ is the set of parameters and $\text{ReLU}(x) = \max(x, 0)$ is the rectified linear unit function.
+Let us consider a neural network $f$ with one hidden layer taking as input a scalar $x \in \mathbb{R}$ and producing as output a scalar $y=f(x;\theta) \in \mathbb{R}$. The neural network is defined as
+\[
+    f(x; \theta) = w_1 \text{ReLU}(w_2 x + w_3) + w_4 \text{ReLU}(w_5 x + w_6) + w_7 \text{ReLU}(w_8 x + w_9),
+\]
+where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6, w_7, w_8, w_9)$ is the set of parameters and $\text{ReLU}(x) = \max(x, 0)$ is the rectified linear unit function.
 
-\begin{enumerate}
-    \item Draw the computation graph representing the neural network and the flow of information from inputs to outputs. Your diagram should be a directed graph that follows the following conventions:
+\begin{parts}
+    \part Draw the computation graph representing the neural network and the flow of information from inputs to outputs. Your diagram should be a directed graph that follows the following conventions:
     \begin{itemize}
         \item circled nodes correspond to variables (input, output, parameters or intermediate variables),
         \item squared nodes correspond to primitive operations (addition, multiplication, ReLU) and produce an intermediate variable as output,
@@ -429,681 +526,604 @@ Let us consider a neural network $f$ with one hidden layer taking as input a sca
     \end{itemize}
 
     \begin{solution}
-        \begin{figure}[h!]
-            \centering
+        \begin{center}
             \includegraphics[width=\linewidth]{figures/examnet.png}
-        \end{figure}
+        \end{center}
     \end{solution}
-    
-    \item For $\theta = (-1, \frac{1}{2}, 0, -4, 1, -2, 4, 1, -5)$, draw the function $y = f(x; \theta)$ for $x \in [-10, 10]$.
+
+    \part For $\theta = (-1, \frac{1}{2}, 0, -4, 1, -2, 4, 1, -5)$, draw the function $y = f(x; \theta)$ for $x \in [-10, 10]$.
 
     \begin{solution}
-        \begin{figure}[h!]
-            \centering
+        \begin{center}
             \includegraphics[width=\linewidth]{figures/relunet.png}
-        \end{figure}
+        \end{center}
     \end{solution}
-    \newpage
-    \item Using the data point $(x, y) = (10, -15)$ and the value of $\theta$ given above, we want to fine-tune the parameter $w_8$ of the neural network such that $f(x; \theta)$ produces a more accurate prediction of $y$.
 
-    \begin{enumerate}
-        \item Evaluate the squared error loss at the data point $(x, y) = (10, -15)$ and the current value of $\theta$.
+    \part Using the data point $(x, y) = (10, -15)$ and the value of $\theta$ given above, we want to fine-tune the parameter $w_8$ of the neural network such that $f(x; \theta)$ produces a more accurate prediction of $y$.
+
+    \begin{subparts}
+        \subpart Evaluate the squared error loss at the data point $(x, y) = (10, -15)$ and the current value of $\theta$.
+
         \begin{solution}
             \begin{align*}
-                f(10, \theta) &= -17\\
-            \mathcal{L}(\hat{y} &= -17, y=-15) = (17 - 15)^2 = 4    
+                f(10, \theta) &= -17 \\
+                \mathcal{L}(\hat{y} = -17, y=-15) &= (17 - 15)^2 = 4
             \end{align*}
         \end{solution}
-        \item Derive an expression for the derivative of the squared error loss with respect to $w_8$.
+
+        \subpart Derive an expression for the derivative of the squared error loss with respect to $w_8$.
+
         \begin{solution}
-        The loss is
-        $$
-        \mathcal{L}(\hat{y}, y) = (\hat{y} - y)^2.
-        $$
-        We compute the gradient 
-        \begin{align*}
-            \dfrac{\partial \mathcal{L}}{\partial w_8} &= \dfrac{\partial \mathcal{L}}{\partial \hat{y}}\dfrac{\partial \hat{y}}{\partial c_4}\dfrac{\partial c_4}{\partial c_3}\dfrac{\partial c_3}{\partial c_2}\dfrac{\partial c_2}{\partial c_1}\dfrac{\partial c_1}{\partial w_8}\\
-            &= 2(\hat{y} - y)w_7\dfrac{\partial c_3}{\partial c_2}x.
-        \end{align*}
-        We need to compute forward activations to compute the gradient value. $\dfrac{\partial c_3}{\partial c_2}$ will be 1 if $c_2 > 0$ else $0$ by definition of the ReLU. We have
-        \begin{align*}
-            \hat{y} &= -17\\
-            y &= -15\\
-            w_7 &= 4\\
-            x &= 10\\
-            c_2 &= w_8x + w_9 = 5 \Rightarrow \dfrac{\partial c_3}{\partial c_2} = 1
-        \end{align*}
-        which gives a gradient equal to $-160$.
+            The loss is
+            \[
+                \mathcal{L}(\hat{y}, y) = (\hat{y} - y)^2.
+            \]
+            We compute the gradient
+            \begin{align*}
+                \dfrac{\partial \mathcal{L}}{\partial w_8} &= \dfrac{\partial \mathcal{L}}{\partial \hat{y}}\dfrac{\partial \hat{y}}{\partial c_4}\dfrac{\partial c_4}{\partial c_3}\dfrac{\partial c_3}{\partial c_2}\dfrac{\partial c_2}{\partial c_1}\dfrac{\partial c_1}{\partial w_8} \\
+                &= 2(\hat{y} - y)w_7\dfrac{\partial c_3}{\partial c_2}x.
+            \end{align*}
+            We need to compute forward activations to compute the gradient value. $\dfrac{\partial c_3}{\partial c_2}$ will be 1 if $c_2 > 0$ else $0$ by definition of the ReLU. We have
+            \begin{align*}
+                \hat{y} &= -17 \\
+                y &= -15 \\
+                w_7 &= 4 \\
+                x &= 10 \\
+                c_2 &= w_8x + w_9 = 5 \Rightarrow \dfrac{\partial c_3}{\partial c_2} = 1
+            \end{align*}
+            which gives a gradient equal to $-160$.
         \end{solution}
 
-        \item Update the parameter $w_8$ using one step of gradient descent with a learning rate $\gamma = 0.0005$.
-        
+        \subpart Update the parameter $w_8$ using one step of gradient descent with a learning rate $\gamma = 0.0005$.
+
         \begin{solution}
             The gradient step is given by
-            $$
-            w_8 \leftarrow w_8 - \gamma \dfrac{\partial \mathcal{L}}{\partial w_8}
-            $$
+            \[
+                w_8 \leftarrow w_8 - \gamma \dfrac{\partial \mathcal{L}}{\partial w_8}
+            \]
             which gives an updated $w_8$ equal to $1.08$.
         \end{solution}
-        \item Verify if the value of the loss function has decreased after the update.
-        
+
+        \subpart Verify if the value of the loss function has decreased after the update.
+
         \begin{solution}
-            With the updated $w_8$, we have $\hat{y} = -13.8$ which gives a loss equal to $1.44$. The previous loss value was $4$, we indeed decreased the loss. 
+            With the updated $w_8$, we have $\hat{y} = -13.8$ which gives a loss equal to $1.44$. The previous loss value was $4$, we indeed decreased the loss.
         \end{solution}
-    \end{enumerate}
-\end{enumerate}
+    \end{subparts}
+\end{parts}
 
-\newpage
-
-\section{1D Convolution}
+\titledquestion{1d convolution}
 
 Represent the convolution $x \circledast u$ of each of the following signals $x$
 
-\newcommand{\signal}[1]{%
-\begin{tikzpicture}
-    \begin{axis}[%
-        width=8cm,
-        height=4cm,
-        axis x line=middle,
-        axis y line=middle,
-        axis line style={->},
-        domain=0:19,
-        samples=20,
-        xmin=-1,
-        xmax=20,
-        ymin=-1,
-        ymax=1,
-        xmajorticks=false,
-        ymajorticks=true,
-        ytick={1},
-        yticklabels={1},
-        yticklabel style={anchor=east},
-    ]
-        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
-    \end{axis}
-\end{tikzpicture}
-}
+\begin{center}
+    \signal{2 * (mod(x, 10) < 5) - 1}
+    \signal{mod(x, 5) / 2 - 1}
 
-
-\newcommand{\kernel}[1]{%
-\begin{tikzpicture}
-    \begin{axis}[%
-        width=3cm,
-        height=4cm,
-        axis x line=middle,
-        axis y line=middle,
-        domain=0:3,
-        samples=4,
-        xmin=-1,
-        xmax=4,
-        ymin=-1,
-        ymax=+1,
-        xmajorticks=false,
-        ymajorticks=true,
-        ytick={1},
-        yticklabels={1},
-        yticklabel style={anchor=east},
-    ]
-        \addplot+[ycomb,black,thick,mark options={fill=white}] {#1};
-    \end{axis}
-\end{tikzpicture}
-}
-
-\vspace{1ex}
-
-\signal{2 * (mod(x, 10) < 5) - 1}
-\signal{mod(x, 5) / 2 - 1}
-
-\signal{abs(mod(x, 10) - 5) / 2.5 - 1}
-\signal{cos(360 * x / 15.29)}
+    \signal{abs(mod(x, 10) - 5) / 2.5 - 1}
+    \signal{cos(360 * x / 15.29)}
+\end{center}
 
 with each of the following convolution kernels $u$.
 
-\vspace{1ex}
+\begin{center}
+    \kernel{x / 1.5 - 1}
+    \kernel{1 - 2 * (x < 2)}
+    \kernel{1 - 2 * (mod(x, 3) == 0)}
+\end{center}
 
-\kernel{x / 1.5 - 1}
-\kernel{1 - 2 * (x < 2)}
-\kernel{1 - 2 * (mod(x, 3) == 0)}
+\titledquestion{2d convolution}
 
-\newpage
-\section{2D Convolution}
-\begin{enumerate}
-    \item 
-    Represent the 2D convolution $x \circledast u$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
-    
- \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-            |[fill=gray!10]| 0.1 & |[fill=gray!30]| 0.3 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!40]| 0.4 \\
-            |[fill=gray!20]| 0.2 & |[fill=gray!50]| 0.5 & |[fill=gray!80]| 0.8 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
-            |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!100]| 1.0 & |[fill=gray!80]| 0.8 & |[fill=gray!50]| 0.5 \\
-            |[fill=gray!20]| 0.2 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
-            |[fill=gray!10]| 0.1 & |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!50]| 0.5 & |[fill=gray!20]| 0.2 \\
-        };
-    \end{tikzpicture}
-\end{figure}
-    
+\begin{parts}
+    \part Represent the 2D convolution $x \circledast u$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
+
+    \begin{center}
+        \begin{tikzpicture}
+            \matrix[
+                matrix of nodes,
+                nodes={
+                    draw,
+                    minimum width=8mm,
+                    minimum height=8mm,
+                    inner sep=0pt,
+                    anchor=center
+                },
+                row sep=-\pgflinewidth,
+                column sep=-\pgflinewidth,
+            ] {
+                |[fill=gray!10]| 0.1 & |[fill=gray!30]| 0.3 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!40]| 0.4 \\
+                |[fill=gray!20]| 0.2 & |[fill=gray!50]| 0.5 & |[fill=gray!80]| 0.8 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
+                |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!100]| 1.0 & |[fill=gray!80]| 0.8 & |[fill=gray!50]| 0.5 \\
+                |[fill=gray!20]| 0.2 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
+                |[fill=gray!10]| 0.1 & |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!50]| 0.5 & |[fill=gray!20]| 0.2 \\
+            };
+        \end{tikzpicture}
+    \end{center}
+
     with the following convolution kernel $u$
-    \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-             0.2 &
-             0.6 &
-            0.9 \\
-            0.4 &
-           0.8 &
-            0.3 \\
-        };
-    \end{tikzpicture}
-\end{figure}
-    Is the result dependent on the choice of coordinate system (i.e. on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $u[j,i]$)?
+
+    \begin{center}
+        \begin{tikzpicture}
+            \matrix[
+                matrix of nodes,
+                nodes={
+                    draw,
+                    minimum width=8mm,
+                    minimum height=8mm,
+                    inner sep=0pt,
+                    anchor=center
+                },
+                row sep=-\pgflinewidth,
+                column sep=-\pgflinewidth,
+            ] {
+                0.2 &
+                0.6 &
+                0.9 \\
+                0.4 &
+                0.8 &
+                0.3 \\
+            };
+        \end{tikzpicture}
+    \end{center}
+
+    Is the result dependent on the choice of coordinate system (\ie{} on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $u[j,i]$)?
 
     \begin{solution}
         The result is equivariant to the choice of coordinate system. The resulting feature map, as drawn on the sheet of paper, remains the same. Only the interpretation of which pixel is represented by $(x \circledast u)[j,i]$ changes.
 
-        \begin{tikzpicture}
-        \foreach \i in {0,1,2} {
-            \foreach \j in {0,1,2,3} {
-                \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
-            }
-        }
-    
-        \node at (0.7,-0.4)  {1.46};
-        \node at (2.1,-0.4)  {2.28};
-        \node at (3.5,-0.4)  {1.99};
-    
-        \node at (0.7,-1.2)  {2.08};
-        \node at (2.1,-1.2)  {2.53};
-        \node at (3.5,-1.2)  {2.04};
-    
-        \node at (0.7,-2.0)  {2.23};
-        \node at (2.1,-2.0)  {2.63};
-        \node at (3.5,-2.0)  {2.14};
-    
-        \node at (0.7,-2.8)  {1.78};
-        \node at (2.1,-2.8)  {2.16};
-        \node at (3.5,-2.8)  {1.61};
-    \end{tikzpicture}
+        \begin{center}
+            \begin{tikzpicture}
+                \foreach \i in {0,1,2} {
+                    \foreach \j in {0,1,2,3} {
+                        \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
+                    }
+                }
 
+                \node at (0.7,-0.4)  {1.46};
+                \node at (2.1,-0.4)  {2.28};
+                \node at (3.5,-0.4)  {1.99};
 
-       
+                \node at (0.7,-1.2)  {2.08};
+                \node at (2.1,-1.2)  {2.53};
+                \node at (3.5,-1.2)  {2.04};
+
+                \node at (0.7,-2.0)  {2.23};
+                \node at (2.1,-2.0)  {2.63};
+                \node at (3.5,-2.0)  {2.14};
+
+                \node at (0.7,-2.8)  {1.78};
+                \node at (2.1,-2.8)  {2.16};
+                \node at (3.5,-2.8)  {1.61};
+            \end{tikzpicture}
+        \end{center}
     \end{solution}
-    
-    \item
-    The image $x$ now is a coloured image and has tree channels (one for the red colour, one for the green colour and one for the blue colour):
 
-    \begin{figure}[H]
-    \centering
+    \part The image $x$ now is a coloured image and has tree channels (one for the red colour, one for the green colour and one for the blue colour):
 
-    \begin{minipage}{0.30\textwidth}
-        \centering
-        $x[0,:,:]$
-        
-         \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-            |[fill=red!10]| 0.1 & |[fill=red!30]| 0.3 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9  \\
-            |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 & \\
-            |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 &  \\
-            |[fill=red!20]| 0.2 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9 & |[fill=red!70]| 0.7 \\
-        };
-    \end{tikzpicture}
-        % First content
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.30\textwidth}
-        \centering
-       
-        $x[1,:,:]$
-        
-        \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
-            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2& |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
-            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 &  \\
-            |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
-        };
-    \end{tikzpicture}
-        
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.30\textwidth}
-        \centering
-        $x[2,:,:]$
-        
-        \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
-            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2& |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
-            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 &  \\
-            |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
-        };
-    \end{tikzpicture}
-    \end{minipage}
+    \begin{center}
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $x[0,:,:]$
 
-\end{figure}
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    |[fill=red!10]| 0.1 & |[fill=red!30]| 0.3 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9  \\
+                    |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 & \\
+                    |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 &  \\
+                    |[fill=red!20]| 0.2 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9 & |[fill=red!70]| 0.7 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $x[1,:,:]$
 
-   
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
+                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2& |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
+                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 &  \\
+                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $x[2,:,:]$
+
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
+                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2& |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
+                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 &  \\
+                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+    \end{center}
 
     Represent the 2D convolution $x \circledast u$ with the following convolution kernel $u$
 
-    \begin{figure}[H]
-    \centering
+    \begin{center}
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $u[0,:,:]$
 
-    \begin{minipage}{0.30\textwidth}
-        \centering
-        $u[0,:,:]$
-        
-         \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-             0.2 &
-             0.6 &
-            0.9 \\
-            0.4 &
-           0.8 &
-            0.3 \\
-        };
-    \end{tikzpicture}
-        % First content
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.30\textwidth}
-        \centering
-       
-        $u[1,:,:]$
-        
-        \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-             0.1 &
-             0.1 &
-            0.1 \\
-            0.1 &
-           0.1 &
-            0.1 \\
-        };
-    \end{tikzpicture}
-        
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.30\textwidth}
-        \centering
-        $u[2,:,:]$
-        
-       \begin{tikzpicture}
-        \matrix[
-            matrix of nodes,
-            nodes={
-                draw,
-                minimum width=8mm,
-                minimum height=8mm,
-                inner sep=0pt,
-                anchor=center
-            },
-            row sep=-\pgflinewidth,
-            column sep=-\pgflinewidth,
-        ] {
-             0.2 &
-             0.2 &
-            0.2 \\
-            0.2 &
-           0.2 &
-            0.2 \\
-        };
-    \end{tikzpicture}
-    
-    \end{minipage}
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    0.2 &
+                    0.6 &
+                    0.9 \\
+                    0.4 &
+                    0.8 &
+                    0.3 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $u[1,:,:]$
 
-\end{figure}
-    Is the result dependent on the choice of coordinate system? What happens if the channels of $x$ are shuffled ?
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    0.1 &
+                    0.1 &
+                    0.1 \\
+                    0.1 &
+                    0.1 &
+                    0.1 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.30\linewidth}
+            \centering
+            $u[2,:,:]$
+
+            \begin{tikzpicture}
+                \matrix[
+                    matrix of nodes,
+                    nodes={
+                        draw,
+                        minimum width=8mm,
+                        minimum height=8mm,
+                        inner sep=0pt,
+                        anchor=center
+                    },
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth,
+                ] {
+                    0.2 &
+                    0.2 &
+                    0.2 \\
+                    0.2 &
+                    0.2 &
+                    0.2 \\
+                };
+            \end{tikzpicture}
+        \end{minipage}
+    \end{center}
+
+    Is the result dependent on the choice of coordinate system? What happens if the channels of $x$ are shuffled?
 
     \begin{solution}
+        The dimension corresponding to the channels cannot be interchanged with those corresponding to the height or width of the image while preserving the validity and correctness of the operation. This result makes sense, since the operation is a 2D convolution applied to a three-dimensional tensor. Changing the order of the channels in $x$ will also lead to a different convolution result. For the 2D coordinate system used to describe the spatial dimensions of the images at each channel (width and height), the same result as in the previous point holds.
 
-  The dimension corresponding to the channels cannot be interchanged with those corresponding to the height or width of the image while preserving the validity and correctness of the operation. This result makes sense, since the operation is a 2D convolution applied to a three-dimensional tensor. Changing the order of the channels in $x$ will also lead to a different convolution result. For the 2D coordinate system used to describe the spatial dimensions of the images at each channel (width and height), the same result as in the previous point holds.
-     
-        \begin{tikzpicture}
-            \foreach \i in {0,1} {
-                \foreach \j in {0,1,2} {
-                    \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
+        \begin{center}
+            \begin{tikzpicture}
+                \foreach \i in {0,1} {
+                    \foreach \j in {0,1,2} {
+                        \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
+                    }
                 }
-            }
-        
-            \node at (0.7,-0.4) {1.82};
-            \node at (2.1,-0.4) {2.76};
-        
-            \node at (0.7,-1.2) {2.44};
-            \node at (2.1,-1.2) {3.01};
-        
-            \node at (0.7,-2.0) {2.59};
-            \node at (2.1,-2.0) {3.11};
-        \end{tikzpicture}
+
+                \node at (0.7,-0.4) {1.82};
+                \node at (2.1,-0.4) {2.76};
+
+                \node at (0.7,-1.2) {2.44};
+                \node at (2.1,-1.2) {3.01};
+
+                \node at (0.7,-2.0) {2.59};
+                \node at (2.1,-2.0) {3.11};
+            \end{tikzpicture}
+        \end{center}
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-
-
-
-\newpage
-
-\section{Problem Statement, Output Layer, Loss Function}
+\titledquestion{Problem statement, output layer and loss function}
 
 A dataset $d$ consists of $N=500$ images of cats and dogs, with exactly one cat or one dog appearing in each image. Each image has a spatial resolution of $32\times32$ pixels and is encoded in RGB format using three channels of real-valued entries. The first channel represents the red component of the image, the second channel represents the green component, and the third channel represents the blue component.
-
 
 You would like to formulate a supervised learning problem in order to develop a deep learning model suited to a given task.
 
 You are interested in three different tasks:
-
 \begin{enumerate}
     \item Assign a beauty score (a real-valued quantity) to a given image.
     \item Whether the image contains a cat or a dog.
     \item Whether each pixel of an image belongs to a cat, a dog or the background.
 \end{enumerate}
 
-For each problem, you want to identify a probabilistic model in the form $p_\theta(y \mid x)$ from a dataset that you will construct: 
-$$d = \left( (x_0, y_0), (x_1, y_2), ...   \right).$$
+For each problem, you want to identify a probabilistic model in the form $p_\theta(y \mid x)$ from a dataset that you will construct:
+\[
+    d = \left( (x_0, y_0), (x_1, y_2), \ldots \right).
+\]
 
-\begin{enumerate}
-    \item For each task, define the random variables $X$ and $Y$, specify their respective dimensions, and explain what $\theta$ represents.
-
+\begin{parts}
+    \part For each task, define the random variables $X$ and $Y$, specify their respective dimensions, and explain what $\theta$ represents.
 
     \begin{solution}
-    For each task, $\theta$ represents the parameters of the model being developed. $X$ is the distribution of the image given as input to the model ($X \in \mathbb{R}^{3,32,32}$). 
+        For each task, $\theta$ represents the parameters of the model being developed. $X$ is the distribution of the image given as input to the model ($X \in \mathbb{R}^{3,32,32}$).
 
-    For the first task, $Y$ is the distribution of the beauty score associated with an image. $Y \in \mathbb{R}$.
+        For the first task, $Y$ is the distribution of the beauty score associated with an image. $Y \in \mathbb{R}$.
 
-   For the second task, $Y$ is a binary random variable indicating whether the image contains a dog (let's say $Y=1$ in this case) or a cat ($Y=0$). $Y \in \Delta^2$.
+        For the second task, $Y$ is a binary random variable indicating whether the image contains a dog (let's say $Y=1$ in this case) or a cat ($Y=0$). $Y \in \Delta^2$.
 
-   For the third case, $Y$ is a collection of categorical random variables $P_{u,v}$, each one associated with each pixel of the image $X$:
-    \[
-    Y = \bigcup_{v=0}^{31} \bigcup_{u=0}^{31} P_{u,v}.
-    \]
-Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background. $P_{u,v} \in \Delta^3$.
-
-
+        For the third case, $Y$ is a collection of categorical random variables $P_{u,v}$, each one associated with each pixel of the image $X$:
+        \[
+            Y = \bigcup_{v=0}^{31} \bigcup_{u=0}^{31} P_{u,v}.
+        \]
+        Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background. $P_{u,v} \in \Delta^3$.
     \end{solution}
-\end{enumerate}
 
-Once the task has been formulated, you construct the dataset $d$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.
+    \uplevel{Once the task has been formulated, you construct the dataset $d$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.}
 
-
-\begin{enumerate}
-   
-    \item[2.] Show that finding the parameters $\theta$ that maximize the likelihood of your model over a sample of $d$,
+    \part Show that finding the parameters $\theta$ that maximize the likelihood of your model over a sample of $d$,
     \[
-    p\left(
-    (x_i,y_i) \mid \theta
-    \right),
+        p\left( (x_i,y_i) \mid \theta \right),
     \]
     is equivalent to finding the parameters $\theta$ that maximize the probability of the modelled conditional distribution over this sample,
     \[
-    p\left(
-   y_i \,\middle|\, x_i,\theta
-    \right).
+        p\left( y_i \,\middle|\, x_i,\theta \right).
     \]
+
     \begin{solution}
         \begin{align*}
-            \arg \max_{\theta} \left\{ p\left( (x_i, y_i) \mid \theta\right) \right\} &= \arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i \mid \theta)\right\}\\
-            &=\arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i)\right\}\, \text{(As the model is over $Y|X$, not $X$.)}\\
+            \arg \max_{\theta} \left\{ p\left( (x_i, y_i) \mid \theta\right) \right\} &= \arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i \mid \theta)\right\} \\
+            &=\arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) p(x_i)\right\} \\
+            & \qquad \, \text{(As the model is over $Y \mid X$, not $X$.)} \\
             &=\arg \max_{\theta} \left\{ p\left( y_i \mid x_i, \theta\right) \right\}
         \end{align*}
     \end{solution}
-\end{enumerate}
 
-After reviewing the literature, you choose a model for $p_\theta (y | x) = p(y | x, \theta)$.
+    \uplevel{After reviewing the literature, you choose a model for $p_\theta (y \mid x) = p(y \mid x, \theta)$.
 
-For the first task, you assume that a suitable model is to model $Y \mid X$ as a Gaussian distribution with homoscedastic variance. For the second task, a suitable model is a Bernoulli distribution. For the third task, a suitable model is a categorical distribution.
-\begin{enumerate}
-    \item[3.] For each task, propose a suitable loss function to train your neural network. Propose also an output layer for your neural network in the form
+    For the first task, you assume that a suitable model is to model $Y \mid X$ as a Gaussian distribution with homoscedastic variance. For the second task, a suitable model is a Bernoulli distribution. For the third task, a suitable model is a categorical distribution.}
+
+    \part For each task, propose a suitable loss function to train your neural network. Propose also an output layer for your neural network in the form
     \[
-    y = \sigma\left(W_y h + b_y\right).
+        y = \sigma\left(W_y h + b_y\right).
     \]
-Let $h$ denote the output of the layer immediately preceding the output layer, with dimension $d_o$ ($h \in \mathbb{R}^{d_o}$). Specify the dimensions of $y$, $W_y$, and $b_y$ and give an example of a suitable non-linear activation function $\sigma$ for each task.
+    Let $h$ denote the output of the layer immediately preceding the output layer, with dimension $d_o$ ($h \in \mathbb{R}^{d_o}$). Specify the dimensions of $y$, $W_y$, and $b_y$ and give an example of a suitable non-linear activation function $\sigma$ for each task.
 
-\textit{Hint:} For each task, which parameter of the distribution $p_\theta (y |x)$ is estimated by your neural network?
+    \textit{Hint:} For each task, which parameter of the distribution $p_\theta (y \mid x)$ is estimated by your neural network?
 
-\begin{solution}
-    For the first task, the statistical model is:
-    \begin{align*}
-        Y|X &\sim \N\left(\mu (X), \sigma^2 \right)\\
-        \rightarrow p(y|x) &\propto \exp\left(-\frac{1}{2}\frac{(y - \mu(x))^2}{\sigma^2} \right)
-    \end{align*}
-    The neural network estimates the mean of the Gaussian distribution and outputs $\hat{\mu}(X;\theta)$.
-    
-    For the second task:
-    \begin{align*}
-        Y|X &\sim \text{Bern}\left(q (X)\right)\\
-        \rightarrow p(y|x) &\propto q(x)^{y}(1-q(x))^{(1-y)}
-    \end{align*}
-    The neural network estimates the probability that the image contains a dog and outputs $\hat{q}(X;\theta)$.
+    \begin{solution}
+        For the first task, the statistical model is:
+        \begin{align*}
+            Y \mid X &\sim \N\left(\mu (X), \sigma^2 \right) \\
+            \rightarrow p(y \mid x) &\propto \exp\left(-\frac{1}{2}\frac{(y - \mu(x))^2}{\sigma^2} \right)
+        \end{align*}
+        The neural network estimates the mean of the Gaussian distribution and outputs $\hat{\mu}(X;\theta)$.
 
-    For the third task:
-    \begin{align*}
-        Y|X &\sim \text{Categ}\left(q_1 (X), q_2 (X), q_3(X)\right)\\
-        \rightarrow p(y|x) &\propto (q_1(x))^{\mathbb{I}(y=\text{dog} )}(q_2(x))^{\mathbb{I}(y = \text{cat})}(q_3(x))^{\mathbb{I}(y=\text{background})}
-    \end{align*}
-    with $q_1(x)+q_2(x)+q_3(x) = 1$ and with $\mathbb{I}(y=\alpha )$ being 1 if the pixel $y$ belongs to the class $\alpha$, $0$ otherwise.
-    The neural network estimates the probability that each pixel belongs to a dog, a cat, or the background. It outputs $\hat{q}_1(X;\theta)$, $\hat{q}_2(X;\theta)$, and $\hat{q}_3(X;\theta)$, corresponding to the probabilities that a pixel belongs to a dog, a cat, or the background, respectively.
+        For the second task:
+        \begin{align*}
+            Y \mid X &\sim \text{Bern}\left(q (X)\right) \\
+            \rightarrow p(y \mid x) &\propto q(x)^{y}(1-q(x))^{(1-y)}
+        \end{align*}
+        The neural network estimates the probability that the image contains a dog and outputs $\hat{q}(X;\theta)$.
 
-    From the statistical model, and assuming that the samples $(x_i,y_i)$ are independent and identically distributed, a loss function can be derived to maximize the likelihood of the model given the observed dataset $d$:
-    \begin{align*}
-        \theta_{MLE} &= \arg \max_\theta p(d|\theta) \\
-        &= \arg \max_\theta p((x_0, y_0), (x_1,y_1), ... | \theta)\\
-        &= \arg \max _\theta \prod_{i=0}^{500} p(x_i, y_i |\theta ) \\
-        &= \arg \max _\theta \prod_{i=0}^{500} p(y_i| x_i,  \theta )  \\
-        &= \arg \max _\theta \sum_{i=0}^{500} \log (p(y_i| x_i, \theta )) \\
-        &= \arg \min _\theta \sum_{i=0}^{500} -\log (p(y_i| x_i, \theta )) \\
-        &= \arg \min_\theta \mathcal{L}(\theta,d)
-    \end{align*}
+        For the third task:
+        \begin{align*}
+            Y \mid X &\sim \text{Categ}\left(q_1 (X), q_2 (X), q_3(X)\right) \\
+            \rightarrow p(y \mid x) &\propto (q_1(x))^{\mathbb{I}(y=\text{dog} )}(q_2(x))^{\mathbb{I}(y = \text{cat})}(q_3(x))^{\mathbb{I}(y=\text{background})}
+        \end{align*}
+        with $q_1(x)+q_2(x)+q_3(x) = 1$ and with $\mathbb{I}(y=\alpha )$ being 1 if the pixel $y$ belongs to the class $\alpha$, $0$ otherwise. The neural network estimates the probability that each pixel belongs to a dog, a cat, or the background. It outputs $\hat{q}_1(X;\theta)$, $\hat{q}_2(X;\theta)$, and $\hat{q}_3(X;\theta)$, corresponding to the probabilities that a pixel belongs to a dog, a cat, or the background, respectively.
 
-    For the first task with Gaussian likelihood, the loss is the mean squared error:
-    $$\mathcal{L}(\theta,d) = \frac{1}{500} \sum _{(x_i, y_i)\in d}(y_i - \hat \mu (x_i ; \theta))^2$$
+        From the statistical model, and assuming that the samples $(x_i,y_i)$ are independent and identically distributed, a loss function can be derived to maximize the likelihood of the model given the observed dataset $d$:
+        \begin{align*}
+            \theta_{\text{MLE}} &= \arg \max_\theta p(d \mid \theta) \\
+            &= \arg \max_\theta p((x_0, y_0), (x_1,y_1), \ldots \mid \theta) \\
+            &= \arg \max _\theta \prod_{i=0}^{500} p(x_i, y_i \mid \theta ) \\
+            &= \arg \max _\theta \prod_{i=0}^{500} p(y_i \mid x_i, \theta ) \\
+            &= \arg \max _\theta \sum_{i=0}^{500} \log (p(y_i \mid x_i, \theta )) \\
+            &= \arg \min _\theta \sum_{i=0}^{500} -\log (p(y_i \mid x_i, \theta )) \\
+            &= \arg \min_\theta \mathcal{L}(\theta,d)
+        \end{align*}
 
-    For the second task with a Bernoulli likelihood, the loss is the binary cross-entropy:
-    $$\mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d}y_i \log(\hat q(x_i; \theta)) + (1-y_i)\log (1- \hat q(x_i;\theta)) $$
+        For the first task with Gaussian likelihood, the loss is the mean squared error:
+        \[
+            \mathcal{L}(\theta,d) = \frac{1}{500} \sum _{(x_i, y_i)\in d}(y_i - \hat \mu (x_i ; \theta))^2
+        \]
 
-    For the third task with categorical likelihood, the loss is the cross-entropy:
-    $$\mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d} \frac{1}{32 \times 32}\sum_{u=0}^{31} \sum_{v=0}^{31}\sum_{c=0}^2    y_{i, c, uv} \log(\hat q_c(x_i; \theta)) $$
+        For the second task with a Bernoulli likelihood, the loss is the binary cross-entropy:
+        \[
+            \mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d}y_i \log(\hat q(x_i; \theta)) + (1-y_i)\log (1- \hat q(x_i;\theta))
+        \]
 
-    Regarding the output layer, the linear projection
-    $$ W_y h + b_y$$
-    must map the output $h$ of the preceding layer of the neural network to the desired output dimension.
+        For the third task with categorical likelihood, the loss is the cross-entropy:
+        \[
+            \mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d} \frac{1}{32 \times 32}\sum_{u=0}^{31} \sum_{v=0}^{31}\sum_{c=0}^2 y_{i, c, uv} \log(\hat q_c(x_i; \theta))
+        \]
 
+        Regarding the output layer, the linear projection
+        \[
+            W_y h + b_y
+        \]
+        must map the output $h$ of the preceding layer of the neural network to the desired output dimension.
 
-    For the first task:
-    $$W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1$$
-    For the second task:
-    $$W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1$$
-    For the third task:
-    $$W_y \in \mathbb{R}^{32, 32, 3, d_o} \quad b_y \in \mathbb{R} ^{ 32 , 32, 3}$$
-    The non-linear activation function $\sigma$ should map the projected output to the valid range of values for $y$.
-    For the first task, we can choose the identity:
-    $$\sigma (\cdot) = \cdot$$
-    For the second task, we can choose a sigmoid activation to map the projected values between 0 and 1:
-    $$\sigma(\cdot) = \frac{1}{1+\exp(-\cdot)}$$
-    For the third task, we can choose the Softmax activation to obtain logits for the three values associated for each pixel $j,i$:
-    $$\sigma(y_{j,i,u}) = \frac{\exp(y_{j,i,u})}{\sum_{u=0}^2\exp(y_{j,i,u})} \quad \forall i,j,u$$
-    
+        For the first task:
+        \[
+            W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1
+        \]
+        For the second task:
+        \[
+            W_y \in \mathbb{R}^{1, d_o} \quad b_y \in \mathbb{R} ^1
+        \]
+        For the third task:
+        \[
+            W_y \in \mathbb{R}^{32, 32, 3, d_o} \quad b_y \in \mathbb{R} ^{ 32 , 32, 3}
+        \]
+        The non-linear activation function $\sigma$ should map the projected output to the valid range of values for $y$. For the first task, we can choose the identity:
+        \[
+            \sigma (\cdot) = \cdot
+        \]
+        For the second task, we can choose a sigmoid activation to map the projected values between 0 and 1:
+        \[
+            \sigma(\cdot) = \frac{1}{1+\exp(-\cdot)}
+        \]
+        For the third task, we can choose the Softmax activation to obtain logits for the three values associated for each pixel $j,i$:
+        \[
+            \sigma(y_{j,i,u}) = \frac{\exp(y_{j,i,u})}{\sum_{u=0}^2\exp(y_{j,i,u})} \quad \forall i,j,u
+        \]
+    \end{solution}
 
-    
+    \uplevel{You want to solve a new task: estimate the age of the dog or the cat in the image. To simplify the problem, you consider the age as an unrestricted real-valued quantity. After some reflection, it becomes clear that directly inferring the age from the image is not a good idea. If the type of animal (cat or dog) were first estimated, it would be much easier to estimate the animal's age from the image and this information.}
 
-    
+    \part Formulate the task in the context of supervised learning and explain all the elements appearing in $p_\theta(y \mid x)$. What mathematical quantity is estimated by the neural network?
 
-
-\end{solution}
-
-
-\end{enumerate}
-
-You want to solve a new task: estimate the age of the dog or the cat in the image. To simplify the problem, you consider the age as an unrestricted real-valued quantity. After some reflection, it becomes clear that directly inferring the age from the image is not a good idea. If the type of animal (cat or dog) were first estimated, it would be much easier to estimate the animal's age from the image and this information.
-\begin{enumerate}
-    \item[4.] Formulate the task in the context of supervised learning and explain all the elements appearing in $p_\theta(y \mid x)$. What mathematical quantity is estimated by the neural network ?
-    
     \begin{solution}
         $y \sim Y$ is the age of the animal in the picture ($Y \in \mathbb{R}$).
 
         $x \sim X$ is the picture ($X \in \mathbb{R}^{3,32,32}$).
-        
+
         $\theta$ is the parameters of the model.
 
-        The problem is a regression problem. The neural network should give an estimate of $\E\{ Y|X\}$.
+        The problem is a regression problem. The neural network should give an estimate of $\E\{ Y \mid X\}$.
     \end{solution}
-    
-    \item[5.] Draw a Bayesian network modelling the image, the type of animal and its age. Find a new expression for
-    $p(y \mid x) = p(y \mid x)$ that makes the effect of the type of the animal in the image explicit.
+
+    \part Draw a Bayesian network modelling the image, the type of animal and its age. Find a new expression for $p(y \mid x) = p(y \mid x)$ that makes the effect of the type of the animal in the image explicit.
 
     \begin{solution}
         Let $A$ denote the random variable describing the type of animal present in the image (let's say $A=1$ if it is a dog). The animal type $A$ depends on the image $X$ and influences the age $Y$. Thus, the age $Y$ depends on both the image $X$ and the animal type $A$.
 
-        
-        \begin{tikzpicture}[
-        node distance=1cm,
-        every node/.style={
-            circle,
-            draw,
-            minimum size=10mm,
-            inner sep=0pt
-        },
-        >=stealth
-    ]
-    
-        \node (X) {$X$};
-        \node (A) [below left=0.5cm and 0.5cm of X] {$A$};
-        \node (Y) [below=1.5cm of X] {$Y$};
-    
-        \draw[->] (X) -- (A);
-        \draw[->] (X) -- (Y);
-        \draw[->] (A) -- (Y);
-    
-    \end{tikzpicture}
+        \begin{center}
+            \begin{tikzpicture}[
+                node distance=1cm,
+                every node/.style={
+                    circle,
+                    draw,
+                    minimum size=10mm,
+                    inner sep=0pt
+                },
+                >=stealth
+            ]
 
-    \begin{align*}
-       p(y| x) &= \sum _a p(y|A=a,x)p(A=a|x)\\
-       &=p(y|A=1,x)p(A=1|x) + p(y|A=0, x) (1-p(A=0 |x))
-    \end{align*}
+                \node (X) {$X$};
+                \node (A) [below left=0.5cm and 0.5cm of X] {$A$};
+                \node (Y) [below=1.5cm of X] {$Y$};
+
+                \draw[->] (X) -- (A);
+                \draw[->] (X) -- (Y);
+                \draw[->] (A) -- (Y);
+
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{align*}
+            p(y \mid x) &= \sum _a p(y \mid A=a,x)p(A=a \mid x) \\
+            &=p(y \mid A=1,x)p(A=1 \mid x) + p(y \mid A=0, x) (1-p(A=0 \mid x))
+        \end{align*}
     \end{solution}
 
-    \item[7.] Consider a large neural network designed to solve the task, divided into multiple submodules, each implemented as a separate neural network. Use the image classification model developed above as one of these submodules. Define the inputs and outputs of the additional submodules required to solve the task. Relate the resulting architecture to the mathematical expression derived above. Which submodule estimates each of the distributions appearing in this expression?
-    
+    \part Consider a large neural network designed to solve the task, divided into multiple submodules, each implemented as a separate neural network. Use the image classification model developed above as one of these submodules. Define the inputs and outputs of the additional submodules required to solve the task. Relate the resulting architecture to the mathematical expression derived above. Which submodule estimates each of the distributions appearing in this expression?
+
     \textit{Hint:} Derive an expression for $\E\{Y\mid X\}$ using the Bayesian network, explicitly accounting for the animal type $A$.
 
     \begin{solution}
         The neural network gives an estimate of the conditional expectation:
         \begin{align*}
-            \E\{Y|X \} &= \E \{ \E \{Y|X, A \}\}\\
-            &=\sum_a \E \{Y|X, A=a \} p(A=a|X)\\
-            &=\E \{Y|X, A=1,  \} p(A=1|X) + \E \{Y|X, A=0 \} (1-p(A=1|X)) 
+            \E\{Y \mid X \} &= \E \{ \E \{Y \mid X, A \}\} \\
+            &=\sum_a \E \{Y \mid X, A=a \} p(A=a \mid X) \\
+            &=\E \{Y \mid X, A=1, \} p(A=1 \mid X) + \E \{Y \mid X, A=0 \} (1-p(A=1 \mid X))
         \end{align*}
 
         The expression can also be obtained directly by applying the expectation operator $\mathbb{E}_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in point~5.
 
         The expected age is therefore a weighted mean of the age inferred under the assumption that the image contains a dog and the age inferred under the assumption that it contains a cat. Each age is weighted by the corresponding probability.
 
-        The first submodule is the image classification model developed
-        previously. With parameters $\phi$, it takes an image $x$ as input and estimates the probability that the image contains a dog:
-        $$\hat q (x;\phi) \approx p(A=1| x) = 1 - p(A=0| x)$$
+        The first submodule is the image classification model developed previously. With parameters $\phi$, it takes an image $x$ as input and estimates the probability that the image contains a dog:
+        \[
+            \hat q (x;\phi) \approx p(A=1 \mid x) = 1 - p(A=0 \mid x)
+        \]
 
-        The second submodule, with parameters $\xi$, takes the image $x$
-        as input and estimates the expected age of the animal under the assumption that it is a dog:
-        $$\hat \mu_d (x ; \xi) \approx \E\{Y\mid x,A=1\}$$
-        
-        A third submodule, with parameters $\psi$, takes the
-        image $X$ as input and estimates the expected age under the assumption that it is a cat:
-        $$\hat \mu_c (x ; \psi) \approx \E\{Y\mid x,A=0\}$$
+        The second submodule, with parameters $\xi$, takes the image $x$ as input and estimates the expected age of the animal under the assumption that it is a dog:
+        \[
+            \hat \mu_d (x ; \xi) \approx \E\{Y\mid x,A=1\}
+        \]
+
+        A third submodule, with parameters $\psi$, takes the image $X$ as input and estimates the expected age under the assumption that it is a cat:
+        \[
+            \hat \mu_c (x ; \psi) \approx \E\{Y\mid x,A=0\}
+        \]
 
         The final estimated age can then be reconstructed from the outputs of these submodules.
     \end{solution}
-    
-\end{enumerate}
+\end{parts}
 
-\newpage
+\titledquestion{Shallow network expressiveness \source{Exam, August 2026, adapted}}
 
-\section{Shallow Network Expressiveness (INFO8006, August 2026, adapted)}
-
-We consider a neural network for binary classification that takes as input a 2D point
-$(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability
-$\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is
-defined as
+We consider a neural network for binary classification that takes as input a 2D point $(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability $\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is defined as
 \begin{align*}
-    h_1 &= \operatorname{ReLU}(x_1-1),\\
-    h_2 &= \operatorname{ReLU}(x_2-2),\\
+    h_1 &= \operatorname{ReLU}(x_1-1), \\
+    h_2 &= \operatorname{ReLU}(x_2-2), \\
     \hat{y} &= \sigma(h_1+h_2-2),
 \end{align*}
 where
@@ -1120,697 +1140,610 @@ The predicted class is
 \[
     \hat{c}=
     \begin{cases}
-        1, & \text{if } \hat{y}\geq 0.5,\\
+        1, & \text{if } \hat{y}\geq 0.5, \\
         0, & \text{otherwise}.
     \end{cases}
 \]
 
-\begin{enumerate}
-
-    \item[(a)]
-    Draw the computation graph representing the neural network. Use circled nodes for
-    variables (inputs, outputs, and intermediate values) and squared nodes for
-    operations (addition, ReLU, and sigmoid).
+\begin{parts}
+    \part Draw the computation graph representing the neural network. Use circled nodes for variables (inputs, outputs, and intermediate values) and squared nodes for operations (addition, ReLU, and sigmoid).
 
     \begin{solution}
-        \begin{figure}[H]
-            \centering
+        \begin{center}
             \includegraphics[width=0.7\linewidth]{figures/shalow_drawing.png}
-        \end{figure}
+        \end{center}
     \end{solution}
 
+    \part The ReLU activation functions divide the input space into several regions, depending on whether each hidden unit is active ($h_i>0$) or inactive ($h_i=0$).
 
-    \item[(b)]
-    The ReLU activation functions divide the input space into several regions,
-    depending on whether each hidden unit is active ($h_i>0$) or inactive
-    ($h_i=0$).
-
-    \begin{enumerate}
-
-        \item[(i)]
-        Identify and characterize these regions in terms of conditions on $x_1$ and
-        $x_2$.
+    \begin{subparts}
+        \subpart Identify and characterize these regions in terms of conditions on $x_1$ and $x_2$.
 
         \begin{solution}
+            The two ReLU units are characterized by
+            \begin{align*}
+                x_1 > 1
+                &\quad\Longrightarrow\quad
+                h_1=x_1-1>0, \\
+                x_1 \leq 1
+                &\quad\Longrightarrow\quad
+                h_1=0,
+            \end{align*}
+            and
+            \begin{align*}
+                x_2 > 2
+                &\quad\Longrightarrow\quad
+                h_2=x_2-2>0, \\
+                x_2 \leq 2
+                &\quad\Longrightarrow\quad
+                h_2=0.
+            \end{align*}
 
-        The two ReLU units are characterized by
-        \begin{align*}
-            x_1 > 1
-            &\quad\Longrightarrow\quad
-            h_1=x_1-1>0,\\
-            x_1 \leq 1
-            &\quad\Longrightarrow\quad
-            h_1=0,
-        \end{align*}
-        and
-        \begin{align*}
-            x_2 > 2
-            &\quad\Longrightarrow\quad
-            h_2=x_2-2>0,\\
-            x_2 \leq 2
-            &\quad\Longrightarrow\quad
-            h_2=0.
-        \end{align*}
+            Therefore, four regions can be distinguished:
 
-        Therefore, four regions can be distinguished:
+            \begin{enumerate}
+                \item
+                \[
+                    \left\{
+                    \begin{array}{l}
+                        x_1>1 \\
+                        x_2>2
+                    \end{array}
+                    \right.
+                    \quad\Longrightarrow\quad
+                    \left\{
+                    \begin{array}{l}
+                        h_1=x_1-1 \\
+                        h_2=x_2-2
+                    \end{array}
+                    \right.
+                \]
 
-        \begin{enumerate}
+                \item
+                \[
+                    \left\{
+                    \begin{array}{l}
+                        x_1>1 \\
+                        x_2\leq2
+                    \end{array}
+                    \right.
+                    \quad\Longrightarrow\quad
+                    \left\{
+                    \begin{array}{l}
+                        h_1=x_1-1 \\
+                        h_2=0
+                    \end{array}
+                    \right.
+                \]
 
-            \item
-            \[
-            \left\{
-            \begin{array}{l}
-                x_1>1\\
-                x_2>2
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                h_1=x_1-1\\
-                h_2=x_2-2
-            \end{array}
-            \right.
-            \]
+                \item
+                \[
+                    \left\{
+                    \begin{array}{l}
+                        x_1\leq1 \\
+                        x_2>2
+                    \end{array}
+                    \right.
+                    \quad\Longrightarrow\quad
+                    \left\{
+                    \begin{array}{l}
+                        h_1=0 \\
+                        h_2=x_2-2
+                    \end{array}
+                    \right.
+                \]
 
-            \item
-            \[
-            \left\{
-            \begin{array}{l}
-                x_1>1\\
-                x_2\leq2
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                h_1=x_1-1\\
-                h_2=0
-            \end{array}
-            \right.
-            \]
-
-            \item
-            \[
-            \left\{
-            \begin{array}{l}
-                x_1\leq1\\
-                x_2>2
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                h_1=0\\
-                h_2=x_2-2
-            \end{array}
-            \right.
-            \]
-
-            \item
-            \[
-            \left\{
-            \begin{array}{l}
-                x_1\leq1\\
-                x_2\leq2
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                h_1=0\\
-                h_2=0
-            \end{array}
-            \right.
-            \]
-
-    \end{enumerate}
-
+                \item
+                \[
+                    \left\{
+                    \begin{array}{l}
+                        x_1\leq1 \\
+                        x_2\leq2
+                    \end{array}
+                    \right.
+                    \quad\Longrightarrow\quad
+                    \left\{
+                    \begin{array}{l}
+                        h_1=0 \\
+                        h_2=0
+                    \end{array}
+                    \right.
+                \]
+            \end{enumerate}
         \end{solution}
 
-
-        \item[(ii)]
-        For each region, give a simplified expression for the output probability
-        $\hat{y}$ as a function of $x_1$ and $x_2$.
+        \subpart For each region, give a simplified expression for the output probability $\hat{y}$ as a function of $x_1$ and $x_2$.
 
         \begin{solution}
+            \begin{enumerate}
+                \item For $x_1>1$ and $x_2>2$,
+                \begin{align*}
+                    \hat{y}
+                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma((x_1-1)+(x_2-2)-2) \\
+                    &=\sigma(x_1+x_2-5) \\
+                    &=\boxed{\frac{1}{1+e^{-(x_1+x_2-5)}}}.
+                \end{align*}
 
+                \item For $x_1>1$ and $x_2\leq2$,
+                \begin{align*}
+                    \hat{y}
+                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma((x_1-1)+0-2) \\
+                    &=\sigma(x_1-3) \\
+                    &=\boxed{\frac{1}{1+e^{-(x_1-3)}}}.
+                \end{align*}
 
-\begin{enumerate}
+                \item For $x_1\leq1$ and $x_2>2$,
+                \begin{align*}
+                    \hat{y}
+                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma(0+(x_2-2)-2) \\
+                    &=\sigma(x_2-4) \\
+                    &=\boxed{\frac{1}{1+e^{-(x_2-4)}}}.
+                \end{align*}
 
-    \item
-    For $x_1>1$ and $x_2>2$,
-    \begin{align*}
-        \hat{y}
-        &=\sigma(h_1+h_2-2)\\
-        &=\sigma((x_1-1)+(x_2-2)-2)\\
-        &=\sigma(x_1+x_2-5)\\
-        &=\boxed{\frac{1}{1+e^{-(x_1+x_2-5)}}}.
-    \end{align*}
+                \item For $x_1\leq1$ and $x_2\leq2$,
+                \begin{align*}
+                    \hat{y}
+                    &=\sigma(0+0-2) \\
+                    &=\sigma(-2) \\
+                    &=\boxed{\frac{1}{1+e^2}}.
+                \end{align*}
+            \end{enumerate}
+        \end{solution}
+    \end{subparts}
 
-    \item
-    For $x_1>1$ and $x_2\leq2$,
-    \begin{align*}
-        \hat{y}
-        &=\sigma(h_1+h_2-2)\\
-        &=\sigma((x_1-1)+0-2)\\
-        &=\sigma(x_1-3)\\
-        &=\boxed{\frac{1}{1+e^{-(x_1-3)}}}.
-    \end{align*}
-
-    \item
-    For $x_1\leq1$ and $x_2>2$,
-    \begin{align*}
-        \hat{y}
-        &=\sigma(h_1+h_2-2)\\
-        &=\sigma(0+(x_2-2)-2)\\
-        &=\sigma(x_2-4)\\
-        &=\boxed{\frac{1}{1+e^{-(x_2-4)}}}.
-    \end{align*}
-
-    \item
-    For $x_1\leq1$ and $x_2\leq2$,
-    \begin{align*}
-        \hat{y}
-        &=\sigma(0+0-2)\\
-        &=\sigma(-2)\\
-        &=\boxed{\frac{1}{1+e^2}}.
-    \end{align*}
-
-\end{enumerate}
-
-
-\end{solution}
-
-
-    \item[(c)]
-    Plot the decision boundary $\hat{y}=0.5$ of the classifier on the grid below.
-    Clearly indicate which region(s) are classified as class $1$ and which are
-    classified as class $0$.
+    \part Plot the decision boundary $\hat{y}=0.5$ of the classifier on the grid below. Clearly indicate which region(s) are classified as class $1$ and which are classified as class $0$.
 
     \begin{solution}
-
-    Remembering that the sigmoid is strictly increasing and:
+        Remembering that the sigmoid is strictly increasing and:
         \[
             \sigma(0)=0.5,
         \]
         the decision boundaries can be easily plotted.
 
         \begin{enumerate}
-
             \item
             \[
-            \left\{
-            \begin{array}{l}
-                x_1>1\\
-                x_2>2 \\
-                \hat y \geq 0.5
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                x_2 \geq -x_1 + 5 \\
-                \hat c = 1
-            \end{array}
-            \right.
+                \left\{
+                \begin{array}{l}
+                    x_1>1 \\
+                    x_2>2 \\
+                    \hat y \geq 0.5
+                \end{array}
+                \right.
+                \quad\Longrightarrow\quad
+                \left\{
+                \begin{array}{l}
+                    x_2 \geq -x_1 + 5 \\
+                    \hat c = 1
+                \end{array}
+                \right.
             \]
 
             \item
             \[
-            \left\{
-            \begin{array}{l}
-                x_1>1\\
-                x_2\leq2 \\
-                \hat y \geq 0.5
-                
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                x_1 \geq 3\\
-                \hat c = 1
-            \end{array}
-            \right.
+                \left\{
+                \begin{array}{l}
+                    x_1>1 \\
+                    x_2\leq2 \\
+                    \hat y \geq 0.5
+                \end{array}
+                \right.
+                \quad\Longrightarrow\quad
+                \left\{
+                \begin{array}{l}
+                    x_1 \geq 3 \\
+                    \hat c = 1
+                \end{array}
+                \right.
             \]
 
             \item
             \[
-            \left\{
-            \begin{array}{l}
-                x_1\leq1\\
-                x_2>2 \\
-                \hat y \geq 0.5
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                x_2 \geq 4 \\
-                \hat c = 1
-            \end{array}
-            \right.
+                \left\{
+                \begin{array}{l}
+                    x_1\leq1 \\
+                    x_2>2 \\
+                    \hat y \geq 0.5
+                \end{array}
+                \right.
+                \quad\Longrightarrow\quad
+                \left\{
+                \begin{array}{l}
+                    x_2 \geq 4 \\
+                    \hat c = 1
+                \end{array}
+                \right.
             \]
 
             \item
             \[
-            \left\{
-            \begin{array}{l}
-                x_1\leq1\\
-                x_2\leq2 \\
-                \hat y \geq 5
-            \end{array}
-            \right.
-            \quad\Longrightarrow\quad
-            \left\{
-            \begin{array}{l}
-                \{x_1 , x_2 \} \in \phi\\
-                \hat c = 1
-            \end{array}
-            \right.
+                \left\{
+                \begin{array}{l}
+                    x_1\leq1 \\
+                    x_2\leq2 \\
+                    \hat y \geq 5
+                \end{array}
+                \right.
+                \quad\Longrightarrow\quad
+                \left\{
+                \begin{array}{l}
+                    \{x_1 , x_2 \} \in \phi \\
+                    \hat c = 1
+                \end{array}
+                \right.
             \]
-
         \end{enumerate}
 
         We have $\hat c = 0$ in the other regions. The decision boundary is plotted below in thick black:
 
-        
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=10cm,
+                    height=8cm,
+                    xmin=-1,
+                    xmax=6,
+                    ymin=-1,
+                    ymax=7,
+                    axis lines=middle,
+                    xlabel={$x_1$},
+                    ylabel={$x_2$},
+                    grid=both,
+                    xtick={-1,0,...,6},
+                    ytick={-1,0,...,7},
+                    axis line style={->},
+                    enlargelimits=false,
+                ]
 
-        
+                % ReLU boundaries
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:7,
+                ] ({1},{x});
 
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] ({x},{2});
 
+                % Decision boundary: x1 + x2 = 5
+                \addplot[
+                    very thick,
+                    domain=1:3,
+                ] ({x},{5-x});
 
+                % Decision boundary: x1 = 3
+                \addplot[
+                    very thick,
+                    domain=-1:2,
+                ] ({3},{x});
 
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=10cm,
-            height=8cm,
-            xmin=-1,
-            xmax=6,
-            ymin=-1,
-            ymax=7,
-            axis lines=middle,
-            xlabel={$x_1$},
-            ylabel={$x_2$},
-            grid=both,
-            xtick={-1,0,...,6},
-            ytick={-1,0,...,7},
-            axis line style={->},
-            enlargelimits=false,
-        ]
+                % Decision boundary: x2 = 4
+                \addplot[
+                    very thick,
+                    domain=-1:1,
+                ] ({x},{4});
 
-        % ReLU boundaries
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:7,
-        ] ({1},{x});
+                % Class labels
+                \node at (axis cs:4.8,5.8) {\Large $\hat c = 1$};
+                \node at (axis cs:1,1) {\Large$\hat c = 0$};
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] ({x},{2});
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
 
-        % Decision boundary: x1 + x2 = 5
-        \addplot[
-            very thick,
-            domain=1:3,
-        ] ({x},{5-x});
-
-        % Decision boundary: x1 = 3
-        \addplot[
-            very thick,
-            domain=-1:2,
-        ] ({3},{x});
-
-        % Decision boundary: x2 = 4
-        \addplot[
-            very thick,
-            domain=-1:1,
-        ] ({x},{4});
-
-        % Class labels
-        \node at (axis cs:4.8,5.8) {\Large $\hat c = 1$};
-        \node at (axis cs:1,1) {\Large$\hat c = 0$};
-
-        \end{axis}
-    \end{tikzpicture}
-\end{figure}
-
-\end{solution}
-
-
-    \item[(d)]
-    We now consider a modified network with a third hidden unit:
+    \part We now consider a modified network with a third hidden unit:
     \begin{align*}
-        h_1 &= \operatorname{ReLU}(x_1-1),\\
-        h_2 &= \operatorname{ReLU}(x_2-2),\\
-        h_3 &= \operatorname{ReLU}(-2x_1-x_2+5),\\
+        h_1 &= \operatorname{ReLU}(x_1-1), \\
+        h_2 &= \operatorname{ReLU}(x_2-2), \\
+        h_3 &= \operatorname{ReLU}(-2x_1-x_2+5), \\
         \hat{y} &= \sigma(h_1+h_2+h_3-2).
     \end{align*}
 
     On a new grid, plot the new decision boundary and compare it to the original one. What is the effect of adding $h_3$?
 
     \begin{solution}
+        The new unit is active when
+        \[
+            -2x_1 + -x_2 + 5 > 0
+        \]
 
-    The new unit is active when
-    \[
-        -2x_1 + -x_2 + 5 > 0
-    \]
+        The three hidden units define seven different linear regions:
 
-    The three hidden units define seven different linear regions:
-    \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=10cm,
-            height=8cm,
-            xmin=-1,
-            xmax=6,
-            ymin=-1,
-            ymax=7,
-            axis lines=middle,
-            xlabel={$x_1$},
-            ylabel={$x_2$},
-            grid=both,
-            xtick={-1,0,...,6},
-            ytick={-1,0,...,7},
-            axis line style={->},
-            enlargelimits=false,
-        ]
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=10cm,
+                    height=8cm,
+                    xmin=-1,
+                    xmax=6,
+                    ymin=-1,
+                    ymax=7,
+                    axis lines=middle,
+                    xlabel={$x_1$},
+                    ylabel={$x_2$},
+                    grid=both,
+                    xtick={-1,0,...,6},
+                    ytick={-1,0,...,7},
+                    axis line style={->},
+                    enlargelimits=false,
+                ]
 
-        % ReLU boundaries
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:7,
-        ] ({1},{x});
+                % ReLU boundaries
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:7,
+                ] ({1},{x});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] ({x},{2});
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] ({x},{2});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] ({x},{2});
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] ({x},{2});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] {5-2*x};
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] {5-2*x};
 
+                % Class labels
+                \node at (axis cs:0.5,0.5) {\Large $ \boxed{1}$};
+                \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
+                \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
+                \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
+                \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
+                \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
+                \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
 
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
 
-        % Class labels
-        \node at (axis cs:0.5,0.5) {\Large $ \boxed{1}$};
-        \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
-        \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
-        \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
-        \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
-        \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
-        \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
+        For each region: the class $1$ is predicted for:
+        \begin{enumerate}
+            \item[1.]
+            \begin{equation*}
+                -2 \geq 0 \rightarrow \{ x_1 ,x_2\} \in \phi
+            \end{equation*}
 
-        \end{axis}
-    \end{tikzpicture}
-\end{figure}
+            \item[2.]
+            \begin{equation*}
+                x_2 \geq 4
+            \end{equation*}
 
-For each region: the class $1$ is predicted for:
-\begin{enumerate}
-    \item[1.]
+            \item[3.]
+            \begin{equation*}
+                x_1 \leq \frac{1}{2}
+            \end{equation*}
 
-    \begin{equation*}
-        -2 \geq 0 \rightarrow \{ x_1 ,x_2\} \in \phi
-    \end{equation*}
+            \item[4.]
+            \begin{equation*}
+                x_1 \geq 3
+            \end{equation*}
 
-    
-    \item[2.]
-    \begin{equation*}
-        x_2 \geq 4
-    \end{equation*}
-    
+            \item[5.]
+            \begin{equation*}
+                x_2 \geq -x_1 + 5
+            \end{equation*}
 
-    
-    \item[3.]
+            \item[6.]
+            \begin{equation*}
+                x_2 \leq -x_1 + 2
+            \end{equation*}
 
-     \begin{equation*}
-        x_1 \leq \frac{1}{2}
-    \end{equation*}
+            \item[7.]
+            \begin{equation*}
+                x_1 \leq 0
+            \end{equation*}
+        \end{enumerate}
 
-    
-    \item[4.]
-    \begin{equation*}
-        x_1 \geq 3
-    \end{equation*}
+        The decision boundary is shown below:
 
-    
-    \item[5.]
-     \begin{equation*}
-        x_2 \geq -x_1 + 5
-    \end{equation*}
-    
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=10cm,
+                    height=8cm,
+                    xmin=-1,
+                    xmax=6,
+                    ymin=-4,
+                    ymax=7,
+                    axis lines=middle,
+                    xlabel={$x_1$},
+                    ylabel={$x_2$},
+                    grid=both,
+                    xtick={-1,0,...,6},
+                    ytick={-4,-3,...,7},
+                    axis line style={->},
+                    enlargelimits=false,
+                ]
 
-    
-    \item[6.]
-    \begin{equation*}
-        x_2 \leq -x_1 + 2
-    \end{equation*}
+                % ReLU boundaries
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-4:7,
+                ] ({1},{x});
 
-    
-    \item[7.]
-     \begin{equation*}
-        x_1 \leq 0
-    \end{equation*}
-    \end{enumerate}
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] ({x},{2});
 
-    The decision boundary is shown below:
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] ({x},{2});
 
-    \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=10cm,
-            height=8cm,
-            xmin=-1,
-            xmax=6,
-            ymin=-4,
-            ymax=7,
-            axis lines=middle,
-            xlabel={$x_1$},
-            ylabel={$x_2$},
-            grid=both,
-            xtick={-1,0,...,6},
-            ytick={-4,-3,...,7},
-            axis line style={->},
-            enlargelimits=false,
-        ]
+                \addplot[
+                    dashed,
+                    thick,
+                    opacity=0.4,
+                    domain=-1:6,
+                ] {5-2*x};
 
-        % ReLU boundaries
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-4:7,
-        ] ({1},{x});
+                % Decision boundary: x2 = 4
+                \addplot[
+                    very thick,
+                    domain=-1:0.5,
+                ] ({x},{4});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] ({x},{2});
+                \addplot[
+                    very thick,
+                    domain=4:7,
+                ] ({0.5},{x});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] ({x},{2});
+                \addplot[
+                    very thick,
+                    domain=-4:-1,
+                ] ({3},{x});
 
-        \addplot[
-            dashed,
-            thick,
-            opacity=0.4,
-            domain=-1:6,
-        ] {5-2*x};
+                \addplot[
+                    very thick,
+                    domain=3:6,
+                ] ({x},{-x+2});
 
-        % Decision boundary: x2 = 4
-        \addplot[
-            very thick,
-            domain=-1:0.5,
-        ] ({x},{4});
+                % Class labels
+                \node at (axis cs:2.0,3.0) {\Large $ \hat c = 0$};
+                \node at (axis cs:-0.5,5.5) {\Large $ \hat c = 1$};
+                \node at (axis cs:4.2,-3.0) {\Large $ \hat c = 1$};
+                % \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
+                % \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
+                % \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
+                % \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
+                % \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
+                % \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
 
-        \addplot[
-            very thick,
-            domain=4:7,
-        ] ({0.5},{x});
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
 
-        \addplot[
-            very thick,
-            domain=-4:-1,
-        ] ({3},{x});
-
-        \addplot[
-            very thick,
-            domain=3:6,
-        ] ({x},{-x+2});
-
-
-
-        % Class labels
-         \node at (axis cs:2.0,3.0) {\Large $ \hat c = 0$};
-         \node at (axis cs:-0.5,5.5) {\Large $ \hat c = 1$};
-         \node at (axis cs:4.2,-3.0) {\Large $ \hat c = 1$};
-        % \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
-        % \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
-        % \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
-        % \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
-        % \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
-        % \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
-
-        \end{axis}
-    \end{tikzpicture}
-\end{figure}
-
-The third ReLU unit partitions the input space into more linear regions, allowing the network to represent a more complex decision boundary. In regions where the unit is inactive, the decision boundary remains unchanged. In regions where it is active, the additional term can significantly change the decision boundary.
-
+        The third ReLU unit partitions the input space into more linear regions, allowing the network to represent a more complex decision boundary. In regions where the unit is inactive, the decision boundary remains unchanged. In regions where it is active, the additional term can significantly change the decision boundary.
     \end{solution}
+\end{parts}
 
-\end{enumerate}
-\end{enumerate}
-\newpage
+\titledquestion{Neural network parameters}
 
-\section{Neural Network Parameters}
+Sandrine and Karl, two long-time data scientist friends, each decide to design a neural network to solve a challenging task: compressing a high-definition color image  in a HD 720p resolution ($1280\times720$ pixels).
 
-Sandrine and Karl, two long-time data scientist friends, each decide to
-design a neural network to solve a challenging task: compressing a high-definition color image  in a HD 720p resolution ($1280\times720$ pixels).
+To do so, both decide to use an encoder network and a decoder network. The first network, the \emph{encoder}, transforms the input image into a low-dimensional latent representation which constitutes the compressed representation. The second network, the \emph{decoder}, reconstructs the original image as faithfully as possible from this low-dimensional representation.
 
-To do so, both decide to use an encoder network and a decoder network. The first network, the \emph{encoder}, transforms the input image into a low-dimensional latent representation which constitutes the compressed representation. The second network, the
-\emph{decoder}, reconstructs the original image as faithfully as possible from this low-dimensional representation.
-
-
-Sandrine decides to use a multilayer perceptron with ReLU nonlinear
-activations for her encoder. Each block $i$ of her encoder therefore consists of a linear
-projection followed by the nonlinear activation:
+Sandrine decides to use a multilayer perceptron with ReLU nonlinear activations for her encoder. Each block $i$ of her encoder therefore consists of a linear projection followed by the nonlinear activation:
 \[
     h_i = \sigma\left(W_i h_{i-1}+b_i\right).
 \]
 
-The HD color image is represented using three channels corresponding to the
-red, green, and blue components. Sandrine flattens the image into a
-single vector before feeding it to the network.
+The HD color image is represented using three channels corresponding to the red, green, and blue components. Sandrine flattens the image into a single vector before feeding it to the network.
 
-The dimensions of the different units throughout Sandrine's encoder are given
-below:
-\begin{figure}[H]
-    \centering
+The dimensions of the different units throughout Sandrine's encoder are given below:
+
+\begin{center}
     \includegraphics[width=0.4\linewidth]{figures/sandr_graph.png}
-\end{figure}
+\end{center}
 
-
-\begin{enumerate}
-    \item How many trainable parameters does Sandrine's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+\begin{parts}
+    \part How many trainable parameters does Sandrine's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
 
     \begin{solution}
-        
-   
-    The dimension of $W_i$ and $b_i$ for each layer are:
-    \begin{enumerate}
-        \item 
+        The dimension of $W_i$ and $b_i$ for each layer are:
+        \begin{enumerate}
+            \item
             \begin{equation*}
                 W_1 ^{921600 \times 2764800} \quad b_1^{921600}
             \end{equation*}
 
-        \item 
-        \begin{equation*}
+            \item
+            \begin{equation*}
                 W_2 ^{460800 \times 921600} \quad b_2^{460800}
             \end{equation*}
 
-        \item 
-        \begin{equation*}
+            \item
+            \begin{equation*}
                 W_3 ^{460800 \times 460800} \quad b_3^{460800}
             \end{equation*}
 
-        \item
-        \begin{equation*}
+            \item
+            \begin{equation*}
                 W_4 ^{230400 \times 460800} \quad b_4^{230400}
             \end{equation*}
-    \end{enumerate}
-    The total number of parameters is:
-    \begin{align*}
-        N_{\mathrm{param}}
-        &= 921600 \times 2764800 + 921600
-           + 460800 \times 921600 + 460800 \\
-        &\quad + 460800 \times 460800 + 460800
-           + 230400 \times 460800 + 230400 \\
-        &= \boxed{3\,033\,907\,430\,400}.
-    \end{align*}
+        \end{enumerate}
+        The total number of parameters is:
+        \begin{align*}
+            N_{\mathrm{param}}
+            &= 921600 \times 2764800 + 921600
+               + 460800 \times 921600 + 460800 \\
+            &\quad + 460800 \times 460800 + 460800
+               + 230400 \times 460800 + 230400 \\
+            &= \boxed{3\,033\,907\,430\,400}.
+        \end{align*}
 
-    Thus, using $32$ bits per parameter, the memory required to store the
-    parameters is
-    \begin{align*}
-    M
-    &=\frac{12\,135\,629\,721\,600}{2^{40}}\ \mathrm{TB}\\
-    &\approx \boxed{11.04\ \mathrm{TB}}.
-    \end{align*}
-    Clearly, the Sandrine's encoder in infeasible.
-     \end{solution}
+        Thus, using $32$ bits per parameter, the memory required to store the parameters is
+        \begin{align*}
+            M
+            &=\frac{12\,135\,629\,721\,600}{2^{40}}\ \mathrm{TB} \\
+            &\approx \boxed{11.04\ \mathrm{TB}}.
+        \end{align*}
+        Clearly, the Sandrine's encoder in infeasible.
+    \end{solution}
 
-    \item What is the compression ratio achieved by Sandrine's encoder?
-    
+    \part What is the compression ratio achieved by Sandrine's encoder?
+
     \begin{solution}
         \begin{equation*}
             \eta = 1 - \frac{230400}{3\times 1280 \times 720} = 92 \%
         \end{equation*}
     \end{solution}
-\end{enumerate}
 
-Karl decides to use a convolutional neural network, also with ReLU
-nonlinear activations for his encoder.
+    \uplevel{Karl decides to use a convolutional neural network, also with ReLU nonlinear activations for his encoder.
 
-Each block of the network consists of a convolutional layer with $3\times3$
-kernels, followed by a ReLU activation and a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
+    Each block of the network consists of a convolutional layer with $3\times3$ kernels, followed by a ReLU activation and a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
 
-The HD color image is still represented using three channels corresponding to the red, green, and blue components. The dimensions of the different units throughout Karl's encoder are given below:
+    The HD color image is still represented using three channels corresponding to the red, green, and blue components. The dimensions of the different units throughout Karl's encoder are given below:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/Karl_graph.png}
-\end{figure}
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{figures/Karl_graph.png}
+    \end{center}}
 
-\begin{enumerate}
-    \item[(c)] How many parameters does Karl's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+    \part How many parameters does Karl's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
 
     \begin{solution}
         Let the input of a block be
         \[
             h \in \mathbb{R}^{a\times b\times c},
         \]
-        where $a$ denotes the number of input channels, and $b$ and $c$ denote the
-        height and width of the feature maps, respectively.
-        
-        Before the convolution, the input is padded with a border of zeros of width
-        $1$. The padded input therefore has shape
+        where $a$ denotes the number of input channels, and $b$ and $c$ denote the height and width of the feature maps, respectively.
+
+        Before the convolution, the input is padded with a border of zeros of width $1$. The padded input therefore has shape
         \[
             h_p \in \mathbb{R}^{a\times(b+2)\times(c+2)}.
         \]
-        
-        A convolutional kernel of spatial size $3\times3$ must span all $a$ input
-        channels. Consequently, each kernel has shape
+
+        A convolutional kernel of spatial size $3\times3$ must span all $a$ input channels. Consequently, each kernel has shape
         \[
             a\times3\times3
         \]
@@ -1818,8 +1751,7 @@ The HD color image is still represented using three channels corresponding to th
         \[
             9a
         \]
-        trainable weights. If the convolutional layer contains $k$ kernels, the total
-        number of weights is
+        trainable weights. If the convolutional layer contains $k$ kernels, the total number of weights is
         \[
             \boxed{9ak}.
         \]
@@ -1827,9 +1759,8 @@ The HD color image is still represented using three channels corresponding to th
         \[
             \boxed{9ak+k=k(9a+1)}.
         \]
-        
-        Because the input is padded by one pixel on each side and the convolution uses
-        a $3\times3$ kernel, the spatial dimensions are preserved:
+
+        Because the input is padded by one pixel on each side and the convolution uses a $3\times3$ kernel, the spatial dimensions are preserved:
         \[
             (b+2)-3+1=b,
             \qquad
@@ -1839,129 +1770,120 @@ The HD color image is still represented using three channels corresponding to th
         \[
             k\times b\times c.
         \]
-        
-        The ReLU does not modify the dimensions. Finally, the $2\times2$ max-pooling layer reduces each spatial dimension by a factor of $2$.
-        Assuming $b$ and $c$ are even, the output of the block has shape
+
+        The ReLU does not modify the dimensions. Finally, the $2\times2$ max-pooling layer reduces each spatial dimension by a factor of $2$. Assuming $b$ and $c$ are even, the output of the block has shape
         \[
             \boxed{k\times\frac{b}{2}\times\frac{c}{2}}.
         \]
         The number of kernels and their shapes throughout the network are:
         \begin{enumerate}
             \item $4$ kernels of shape $3\times3\times3$,
-        
             \item $8$ kernels of shape $4\times3\times3$,
-        
             \item $32$ kernels of shape $8\times3\times3$,
-        
             \item $16$ kernels of shape $32\times3\times3$.
         \end{enumerate}
-        
+
         The total number of parameters is therefore
         \begin{align*}
             N_{\mathrm{param}}
             &=4(3\times3\times3+1)
-              +8(4\times3\times3+1)\\
+              +8(4\times3\times3+1) \\
             &\quad
               +32(8\times3\times3+1)
-              +16(32\times3\times3+1)\\
-            &=4(28)+8(37)+32(73)+16(289)\\
-            &=112+296+2336+4624\\
+              +16(32\times3\times3+1) \\
+            &=4(28)+8(37)+32(73)+16(289) \\
+            &=112+296+2336+4624 \\
             &=\boxed{7368}.
         \end{align*}
         Thus, using $32$ bits per parameter, the memory required to store the parameters is
         \begin{align*}
-        M
-        &= 7368\times32\ \text{bits}\\
-        &= \frac{29\,472}{2^{20}}\ \text{MB}\\
-        &\approx \boxed{0.0281\ \text{MB}}.
-    \end{align*}
-    Karl's encoder clearly fits in a laptop.
+            M
+            &= 7368\times32\ \text{bits} \\
+            &= \frac{29\,472}{2^{20}}\ \text{MB} \\
+            &\approx \boxed{0.0281\ \text{MB}}.
+        \end{align*}
+        Karl's encoder clearly fits in a laptop.
     \end{solution}
-    
-    
 
-    \item[(d)] What is the compression ratio achieved by Karl's encoder?
+    \part What is the compression ratio achieved by Karl's encoder?
+
     \begin{solution}
         \begin{equation*}
             \eta = 1 - \frac{16 \times 160 \times 90}{3\times 1280 \times 720} = 92 \%
         \end{equation*}
     \end{solution}
-\end{enumerate}
+\end{parts}
 
-
-
-
-
-\newpage
-
-\section{Learning to play Pacman (August 2020)}
+\titledquestion{Learning to play Pacman \source{Exam, August 2020}}
 
 You observe a Grandmaster agent playing Pacman. How can you use the moves you observe to train your own agent?
 
-\begin{enumerate}
-    \item Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
+\begin{parts}
+    \part Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
 
-    \item How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
+    \part How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
 
-    \item Discuss the expected performance of the resulting agent when \begin{enumerate*}
+    \part Discuss the expected performance of the resulting agent when \begin{enumerate*}
         \item the Grandmaster agent is optimal, and
         \item the Grandmaster agent is suboptimal.
     \end{enumerate*}
-\end{enumerate}
+\end{parts}
 
-\newpage
+\end{exercises}
 
-\newpage
+\begin{quiz}
+    \item We build a MLP with 2 hidden layers of 32 units, ReLU activations and squared error loss. We discard the biases from our linear layers. We know that our input is a vector of 2 elements and the output is a scalar. How much parameters do we have in the network?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item 1024.
+        \item \correct{1120.}
+        \item 1185.
+        \item Another value than the ones proposed above.
+    \end{enumerate}
 
-\startquiz
+    \item We add biases in the network proposed above. What is the number of parameters of the network?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item Another value than the ones proposed below.
+        \item 1089.
+        \item \correct{1185.}
+        \item 2048.
+        \item 2240.
+    \end{enumerate}
 
-We build a MLP with 2 hidden layers of 32 units, ReLU activations and squared error loss. We discard the biases from our linear layers. We know that our input is a vector of 2 elements and the output is a scalar. How much parameters do we have in the network?
-\begin{itemize}
-    \item 1024.
-    \solitem 1120.
-    \item 1185.
-    \item Another value than the ones proposed above.
-\end{itemize}
+    \item We have an image of shape $(H, W)$, we want to pass it through a layer which reduces each dimension by a constant $K$, \ie{} produces an output image of shape $(H-K, W-K)$.
+    \begin{enumerate}[label=$\bigcirc$]
+        \item It can be done with a convolution layer with a kernel $(K, K)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.
+        \item \correct{It can be done with a convolution layer with a kernel $(K + 1, K + 1)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.}
+        \item It can be done with a convolution layer with a kernel $(K - 1, K - 1)$ or a linear layer with weight matrix $(HW, KK)$.
+        \item It can be done with a convolution layer with a kernel $(K+ 1, K+1)$ or a linear layer with weight matrix $(HW, KK)$.
+    \end{enumerate}
 
-We add biases in the network proposed above. What is the number of parameters of the network?
-\begin{itemize}
-    \item Another value than the ones proposed below.
-    \item 1089.
-    \solitem 1185.
-    \item 2048.
-    \item 2240.
-\end{itemize}
+    \item From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If only look at weight parameters (no biases)\ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item The number of parameters of both the linear and convolution layer are doubled.
+        \item The linear layer will have twice more parameters and the convolution twice less.
+        \item \correct{The linear layer will have twice more parameters and the convolution will not change.}
+        \item Nothing changes neither for the linear layer nor the convolution one.
+    \end{enumerate}
 
-We have an image of shape $(H, W)$, we want to pass it through a layer which reduces each dimension by a constant $K$, i.e. produces an output image of shape $(H-K, W-K)$.
-\begin{itemize}
-    \item It can be done with a convolution layer with a kernel $(K, K)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.
-    \solitem It can be done with a convolution layer with a kernel $(K + 1, K + 1)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.
-    \item It can be done with a convolution layer with a kernel $(K - 1, K - 1)$ or a linear layer with weight matrix $(HW, KK)$.
-    \item It can be done with a convolution layer with a kernel $(K+ 1, K+1)$ or a linear layer with weight matrix $(HW, KK)$.
-\end{itemize}
+    \item In deep learning, a layer in a multi-layer perceptron is defined as \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item $\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
+        \item \correct{$\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.}
+        \item $\mathbf{h} = \sigma(\mathbf{W}^T + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{d \times q}$ is matrix of weights.
+        \item $\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
+    \end{enumerate}
 
-From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If only look at weight parameters (no biases)...
-\begin{itemize}
-    \item The number of parameters of both the linear and convolution layer are doubled. 
-    \item The linear layer will have twice more parameters and the convolution twice less.
-    \solitem The linear layer will have twice more parameters and the convolution will not change.
-    \item Nothing changes neither for the linear layer nor the convolution one.
-\end{itemize}
-
-In deep learning, a layer in a multi-layer perceptron is defined as ... 
-\begin{itemize}
-    \item ${\bf h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
-    \solitem ${\bf h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.
-    \item ${\bf h} = \sigma(\mathbf{W}^T + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{d \times q}$ is matrix of weights.
-    \item ${\bf h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.  
-\end{itemize}
-
-Arnaud is trying to perform gradient descent on a function $f(x)$ using the update $$x_{t+1} := x_t - \frac{\partial f}{\partial x}(x_t).$$ Is gradient descent guaranteed to converge to the global minimum of $f$?
-\begin{itemize}
-    \item Yes, since he's updating using the gradient of $x$.
-    \item Yes, but not for the reason above.
-    \item No, since he is updating updating $x$ in the wrong direction.
-    \solitem No, but not for the reason above. %%% 
-\end{itemize}
+    \item Arnaud is trying to perform gradient descent on a function $f(x)$ using the update
+    \[
+        x_{t+1} := x_t - \frac{\partial f}{\partial x}(x_t).
+    \]
+    Is gradient descent guaranteed to converge to the global minimum of $f$?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item Yes, since he's updating using the gradient of $x$.
+        \item Yes, but not for the reason above.
+        \item No, since he is updating updating $x$ in the wrong direction.
+        \item \correct{No, but not for the reason above.}
+    \end{enumerate}
+\end{quiz}
 
 \end{document}
