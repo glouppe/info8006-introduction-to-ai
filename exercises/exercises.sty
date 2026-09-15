@@ -214,10 +214,11 @@
 % The title of an exercise goes on its own line: leave a blank line after \titledquestion{...}
 \qformat{\large\bfseries Exercise \thequestion\quad\thequestiontitle\hfill}
 
-% The source of an exercise, in its title: \aima{5.9} for Russell and Norvig,
-% \source{CS188, Fall 2019} or \source{Exam, January 2019} otherwise
+% The source of an exercise, in its title: \aima{12} for Russell and Norvig (the chapter of
+% the 4th edition, whose exercises are online only and not numbered), \source{CS188, Fall 2019}
+% or \source{Exam, January 2019} otherwise
 \newcommand*{\source}[1]{{\mdseries(#1)}}
-\newcommand*{\aima}[1]{\source{AIMA~#1}}
+\newcommand*{\aima}[1]{\source{AIMA ch.~#1}}
 
 % A group of exercises inside the exercises section, before its first exercise:
 % \exercisegroup{Supplementary exercises}. Centered small caps, kept with that exercise.
@@ -304,10 +305,25 @@
 }
 \AddToHook{env/solution/begin}{\@beginparpenalty=\@M}
 
-% The correct choice of a multiple choice question, highlighted in the solutions. Start the
-% paragraph before switching color: a color switch in vertical mode leaves a whatsit after
-% which the page can break, separating the choice from the previous ones.
-\newcommand{\correct}[1]{\ifprintanswers\leavevmode{\color{SolutionColor}#1}\else#1\fi}
+% The correct choice of a multiple choice question: in the solutions, its circle is filled
+% (drawn over the $\bigcirc$ label, measured from it) and its text is in the solution color.
+% Start the paragraph before switching color: a color switch in vertical mode leaves a whatsit
+% after which the page can break, separating the choice from the previous ones.
+\newlength{\exercises@tickwd}
+\newlength{\exercises@tickht}
+\newcommand*{\exercises@tick}{%
+    \sbox\z@{$\bigcirc$}%
+    \setlength{\exercises@tickwd}{\wd\z@}%
+    \setlength{\exercises@tickht}{\dimexpr\ht\z@+\dp\z@\relax}%
+    \llap{%
+        \tikz[baseline=\dp\z@]{%
+            \path[use as bounding box] (0, 0) rectangle (\exercises@tickwd, \exercises@tickht);
+            \fill[SolutionColor] (0.5\exercises@tickwd, 0.5\exercises@tickht) circle[radius=0.36\exercises@tickwd];
+        }%
+        \hskip\labelsep
+    }%
+}
+\newcommand{\correct}[1]{\ifprintanswers\leavevmode\exercises@tick{\color{SolutionColor}#1}\else#1\fi}
 
 %%%%%%%%%
 % Links %

@@ -758,7 +758,7 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
 
 \exercisegroup{Supplementary exercises}
 
-\titledquestion{Buying the textbook \aima{16.15}}
+\titledquestion{Buying the textbook \aima{16}}
 
 Consider a student, Sam, who has the choice to buy or not buy a textbook for a course. We'll model this as a decision problem with one Boolean decision node, $B$, indicating whether the agent chooses to buy the book, and two Boolean chance nodes, $M$, indicating whether the student has mastered the material of the course, and $F$, indicating whether the student fails the course. There is also a utility node, $U$. Sam has an additive utility function: 0 for not buying the book and \qty{-100}{\$} for buying it; and 0 for failing the course and \qty{2000}{\$} for passing it. Sam's conditional probability estimates are as follows:
 
@@ -783,7 +783,7 @@ Consider a student, Sam, who has the choice to buy or not buy a textbook for a c
     \part What should Sam do?
 \end{parts}
 
-\titledquestion{Contraction of the Bellman operator \aima{17.6}}
+\titledquestion{Contraction of the Bellman operator \aima{17}}
 
 The slides of the course states that the Bellman operator
 \begin{equation*}
@@ -807,7 +807,7 @@ is a contraction.
     \end{equation*}}
 \end{parts}
 
-\titledquestion{Value iteration \aima{17.8}}\label{sec:17.8}
+\titledquestion{Value iteration \aima{17}}\label{sec:17.8}
 
 Consider the $3 \times 3$ world shown in Figure \ref{fig:grid-mdp}. The transition model is the same as in the $4 \times 3$ \ref{fig:sequential}: \qty{80}{\percent} of the time the agent goes in the direction it selects; the rest of the time it moves at right angles to the intended direction.
 
@@ -837,13 +837,13 @@ Implement value iteration for this world for each value of $r$ below. Use discou
     \part $r = +3$
 \end{parts}
 
-\titledquestion{Discount factor \aima{17.9}}\label{sec:17.9}
+\titledquestion{Discount factor \aima{17}}\label{sec:17.9}
 
 Consider the $101 \times 3$ world shown in Figure \ref{fig:grid-mdp}. In the start state the agent has a choice of two deterministic actions, \texttt{up} or \texttt{down}, but in the other states the agent has one deterministic action, \texttt{right}. Assuming a discounted reward function, compute the utility of each action as a function of $\gamma$. For what values of the discount factor $\gamma$ should the agent choose \texttt{up} and for which \texttt{down}?
 
 \blindfootnote{This simple example actually reflects many real-world situations in which one must weigh the value of an immediate action versus the potential long-term consequences, such as choosing to dump pollutants into a lake.}
 
-\titledquestion{Policy iteration \aima{17.10}}
+\titledquestion{Policy iteration \aima{17}}
 
 Consider an undiscounted MDP having three states, $(1, 2, 3)$, with rewards $-1$, $-2$, $0$, respectively. State 3 is a terminal state. In states 1 and 2 there are two possible actions: $a$ and $b$. The transition model is as follows:
 
@@ -910,13 +910,13 @@ Answer the following questions:
 \end{comment}
 \end{parts}
 
-\titledquestion{Dutch auction \aima{17.19}}
+\titledquestion{Dutch auction \aima{18}}
 
 A Dutch auction is similar to an English auction, but rather than starting the bidding at a low price and increasing, the seller starts at a high price and gradually lowers the price until some buyer is willing to accept that price. If multiple bidders accept the price, one is arbitrarily chosen as the winner. More formally, the seller begins with a price $p$ and gradually lowers $p$ by increments of $d$ until at least one buyer accepts the price.
 
 Assuming all bidders act rationally, is it true that for arbitrarily small $d$, a Dutch auction will always result in the bidder with the highest value for the item obtaining the item? If so, show mathematically why. If not, explain how it may be possible for the bidder with highest value for the item not to obtain it.
 
-\titledquestion{Hockey overtime \aima{17.21}}
+\titledquestion{Hockey overtime \aima{18}}
 
 Teams in the National Hockey League historically received 2 points for winning a game and 0 for losing. If the game is tied, an overtime period is played; if nobody wins in overtime, the game is a tie and each team gets 1 point. But league officials felt that teams were playing too conservatively in overtime (to avoid a loss), and it would be more exciting if overtime produced a winner. So in 1999 the officials experimented in mechanism design: the rules were changed, giving a team that loses in overtime 1 point, not 0. It is still 2 points for a win and 1 for a tie.
 
