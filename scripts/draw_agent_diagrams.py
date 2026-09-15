@@ -5,8 +5,8 @@
 Redraws Figures 2.9, 2.11, 2.13, 2.14 and 2.15 of Russell and Norvig (AIMA) as SVG files in
 `figures/lec1/`, together with the agent-environment loop of the first slides. Pills are the knowledge of the agent, white boxes what it computes, and the blue
 box its decision. Elements sit on a fixed grid, so that a box keeps its place from one diagram to the
-next, and arrows are horizontal or vertical. Roboto and Lato are embedded from `assets/fonts/`, since
-an SVG shown as an image cannot load fonts from the page.
+next, and arrows are horizontal or vertical. Roboto, Lato and KaTeX's math italic (for $e_t$ and $a_t$)
+are embedded from `assets/fonts/`, since an SVG shown as an image cannot load fonts from the page.
 """
 
 import base64
@@ -26,7 +26,7 @@ PILL_FILL = "#dde8f5"
 PILL_INK = "#1e3f6b"
 BOX_STROKE = "#9fb6d6"
 
-WIDTH, AGENT_RIGHT, ENV_LEFT, ENV_WIDTH = 900, 650, 730, 120
+WIDTH, AGENT_RIGHT, ENV_LEFT, ENV_WIDTH = 930, 650, 760, 120
 PX, PILL_W, PILL_H = 175, 250, 40    # knowledge column
 BX, BOX_W, BOX_H = 500, 250, 64      # computation column
 BUS = (PX + PILL_W / 2 + BX - BOX_W / 2) / 2
@@ -36,9 +36,10 @@ SENSORS, A, B, C, D, ACTUATORS = 60, 136, 232, 328, 424, 500
 STATE, HOW, ACTIONS = 120, 176, 232
 
 
-def fonts():
+def fonts(math):
     faces = []
-    for family, weight, name in [("Roboto", 400, "Roboto-400-latin"), ("Lato", 900, "Lato-900-latin")]:
+    math_face = [("KaTeX_Math", 400, "KaTeX_Math-Italic")] if math else []
+    for family, weight, name in [("Roboto", 400, "Roboto-400-latin"), ("Lato", 900, "Lato-900-latin")] + math_face:
         data = base64.b64encode((ROOT / "assets" / "fonts" / f"{name}.woff2").read_bytes()).decode()
         faces.append(f"@font-face {{ font-family: '{family}'; font-weight: {weight}; "
                      f"src: url(data:font/woff2;base64,{data}) format('woff2'); }}")
@@ -56,6 +57,14 @@ def text(x, y, lines, size=19, weight=400, family="Roboto", fill=INK, anchor="mi
 
 def label(x, y, words, anchor="start"):
     return text(x, y, words, size=17, fill=SOFT_BLUE, anchor=anchor)
+
+
+def math_label(x, y, word, symbol):
+    """`word`, then `symbol` with subscript t, set as KaTeX sets $e_t$ on the slides."""
+    return (f'<text font-family="Roboto, sans-serif" font-size="16" fill="{SOFT_BLUE}" text-anchor="middle">'
+            f'<tspan x="{x:g}" y="{y + 0.35 * 16:.1f}">{word} </tspan>'
+            f'<tspan font-family="KaTeX_Math, serif" font-size="18" fill="{BLUE}">{symbol}</tspan>'
+            f'<tspan font-family="KaTeX_Math, serif" font-size="12.6" fill="{BLUE}" dy="4">t</tspan></text>')
 
 
 def pill(cy, words):
@@ -106,16 +115,16 @@ def frame(height, top, sensors_y, actuators_y):
              extra=f' transform="rotate(90 {env_x:g} {env_y:g})"'),
         text(BX, sensors_y, "Sensors", size=18, fill=GREY),
         arrow(ENV_LEFT, sensors_y, BX + 48, sensors_y),
-        text(gap, sensors_y - 18, "Percepts", size=16, fill=SOFT_BLUE),
+        math_label(gap, sensors_y - 18, "Percepts", "e"),
         text(BX, actuators_y, "Actuators", size=18, fill=GREY),
         arrow(BX + 52, actuators_y, ENV_LEFT, actuators_y),
-        text(gap, actuators_y - 18, "Actions", size=16, fill=SOFT_BLUE),
+        math_label(gap, actuators_y - 18, "Actions", "a"),
     ])
 
 
 def svg_sized(width, height, parts):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" '
-            f'height="{height}"><defs>{fonts()}<marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" '
+            f'height="{height}"><defs>{fonts("KaTeX_Math" in "".join(parts))}<marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" '
             f'markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto">'
             f'<path d="M 0 0 L 10 5 L 0 10 z" fill="{BLUE}"/></marker><marker id="bigtip" viewBox="0 0 10 10" '
             f'refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="20" markerHeight="20" orient="auto">'
