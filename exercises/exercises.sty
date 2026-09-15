@@ -138,6 +138,133 @@
     arrow/.style={arrows={-{>[scale=1.5]}}},
 }
 
+%%%%%%%%%%%%
+% Diagrams %
+%%%%%%%%%%%%
+
+% One style for the diagrams of all sheets: dark lines, the course blue as accent with
+% pale blue fills, small grey labels. Every element is placed at explicit coordinates on
+% a grid (no relative positioning), so that diagrams align horizontally and vertically.
+%
+%   Graphs (search graphs, networks), 2.2 cm by 2 cm between grid points:
+%       \begin{tikzpicture}[graph diagram]
+%           \node[start vertex] (S) at (0, 0) {\hstate{S}{11}};
+%           \node[goal vertex] (G) at (3, 0) {G};
+%           \draw[link] (S) -- node[cost] {4} (G);
+%       \end{tikzpicture}
+%
+%   Grid worlds (mazes, boards), one unit per cell:
+%       \begin{tikzpicture}[world diagram]
+%           \draw[grid lines] (0, 0) grid (5, 5);
+%           \fill[wall cell] (2, 3) rectangle ++(1, 1);
+%           \draw[wall] (1, 4) -- (2, 4);
+%           \draw[world border] (0, 0) rectangle (5, 5);
+%           \pic at (0.5, 0.5) {pacman};
+%       \end{tikzpicture}
+
+\usetikzlibrary{arrows.meta}
+
+\definecolor{diagram-ink}{HTML}{262626}
+\definecolor{diagram-accent}{HTML}{356AAF}
+\colorlet{diagram-fill}{diagram-accent!10}
+\colorlet{diagram-muted}{black!55}
+\colorlet{diagram-grid}{black!20}
+\colorlet{diagram-flooded}{black!28}
+\definecolor{diagram-pacman}{HTML}{F2C230}
+\definecolor{diagram-insect}{HTML}{C8463D}
+
+\tikzset{
+    diagram/.style={
+        font=\small,
+        line width=0.6pt,
+        line cap=round,
+        line join=round,
+        >={Stealth[length=2.2mm, width=1.8mm]},
+    },
+    tag/.style={font=\footnotesize\itshape, text=diagram-muted, inner sep=2pt},
+    diagram caption/.style={font=\footnotesize, text=diagram-muted},
+    % Graphs
+    graph diagram/.style={diagram, x=2.2cm, y=2cm},
+    vertex/.style={
+        circle,
+        draw=diagram-ink,
+        fill=diagram-fill,
+        line width=0.7pt,
+        minimum size=11mm,
+        inner sep=0pt,
+        align=center,
+    },
+    start vertex/.style={
+        vertex,
+        pin={[tag, pin distance=6mm, pin edge={<-, draw=diagram-ink, line width=0.7pt}]left:start},
+    },
+    goal vertex/.style={
+        vertex,
+        double=diagram-fill,
+        double distance=1.3pt,
+        label={[tag]right:goal},
+    },
+    link/.style={draw=diagram-ink, line width=0.7pt},
+    cost/.style={font=\footnotesize, fill=white, inner sep=1.5pt},
+    % Grid worlds
+    world diagram/.style={diagram, x=0.62cm, y=0.62cm},
+    grid lines/.style={draw=diagram-grid, line width=0.4pt, step=1},
+    world border/.style={draw=diagram-ink, line width=1.2pt},
+    wall/.style={draw=diagram-ink, line width=2pt, line cap=round},
+    wall cell/.style={fill=diagram-ink},
+    flooded cell/.style={fill=diagram-flooded},
+    pics/pacman/.style={code={
+        \fill[diagram-pacman, draw=diagram-ink, line width=0.4pt] (0, 0) -- (35:0.34) arc (35:325:0.34) -- cycle;
+        \fill[diagram-ink] (0.03, 0.18) circle (0.045);
+    }},
+    pics/ghost/.style={code={
+        \fill[diagram-accent] (-0.29, -0.3) -- (-0.29, 0.03) arc (180:0:0.29) -- (0.29, -0.3)
+            -- (0.195, -0.2) -- (0.1, -0.3) -- (0, -0.2) -- (-0.1, -0.3) -- (-0.195, -0.2) -- cycle;
+        \fill[white] (-0.105, 0.05) circle (0.08) (0.105, 0.05) circle (0.08);
+        \fill[diagram-ink] (-0.085, 0.04) circle (0.038) (0.125, 0.04) circle (0.038);
+    }},
+    pics/exit/.style={code={
+        \draw[diagram-accent, line width=1.4pt, line cap=round] (-0.19, -0.19) -- (0.19, 0.19) (-0.19, 0.19) -- (0.19, -0.19);
+    }},
+    pics/car/.style={code={
+        \fill[diagram-accent, draw=diagram-ink, line width=0.4pt] (0, 0.3) -- (0.21, -0.27) -- (0, -0.15) -- (-0.21, -0.27) -- cycle;
+    }},
+    pics/insect/.style={code={
+        \draw[diagram-ink, line width=0.5pt] (-0.29, 0.1) -- (0.29, 0.1) (-0.31, -0.05) -- (0.31, -0.05) (-0.28, -0.2) -- (0.28, -0.2);
+        \draw[diagram-ink, line width=0.5pt] (-0.05, 0.28) -- (-0.14, 0.38) (0.05, 0.28) -- (0.14, 0.38);
+        \fill[diagram-ink] (0, 0.22) circle (0.08);
+        \fill[diagram-insect, draw=diagram-ink, line width=0.4pt] (0, -0.05) ellipse (0.18 and 0.23);
+        \draw[diagram-ink, line width=0.4pt] (0, 0.18) -- (0, -0.28);
+        \fill[diagram-ink] (-0.08, 0.02) circle (0.035) (0.08, 0.02) circle (0.035) (-0.08, -0.14) circle (0.035) (0.08, -0.14) circle (0.035);
+    }},
+}
+
+% A vertex label with a heuristic value below the name: \hstate{A}{20}
+\newcommand*{\hstate}[2]{#1\\[-2pt]{\scriptsize\color{diagram-muted}$h = #2$}}
+
+% Pseudo-code in the style of the lectures: keywords in bold, procedures in small
+% capitals, variables in italics; lines end with \\, and \> indents by one level
+\newenvironment{pseudocode}{%
+    \par
+    \begin{center}
+    \begin{minipage}{\linewidth}
+    \small
+    \begin{tabbing}
+    \hspace*{1.8em}\=\hspace*{1.8em}\=\hspace*{1.8em}\=\kill
+}{%
+    \end{tabbing}
+    \end{minipage}
+    \end{center}
+}
+\newcommand*{\kw}[1]{\textbf{#1}}
+\newcommand*{\proc}[1]{\textsc{#1}}
+\newcommand*{\pvar}[1]{\textit{#1}}
+
+% Figures, tables and pseudo-code are centered blocks: give them room above and below,
+% whatever list they sit in (the questions list sets \topsep to 0, which center inherits),
+% instead of spacing them by hand
+\AddToHook{env/center/begin}{\setlength{\topsep}{\bigskipamount}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Sections: recap, exercises, quiz %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

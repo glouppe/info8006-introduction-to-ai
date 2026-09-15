@@ -468,6 +468,8 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
 
 \titledquestion{Passive reinforcement learning}
 
+Consider the grid-world below and an agent who is trying to learn the optimal policy. The agent starts from the bottom-left corner and can take the actions \texttt{north} ($N$), \texttt{south} ($S$), \texttt{west} ($W$) and \texttt{east} ($E$). Rewards are only awarded for reaching the terminal (shaded) states.
+
 \begin{center}
     \begin{tikzpicture}
         \draw[step=1cm, black, thin] (0,0) grid (3,3);
@@ -492,7 +494,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
     \end{tikzpicture}
 \end{center}
 
-Consider the grid-world given above and an agent who is trying to learn the optimal policy. The agent starts from the bottom-left corner and can take the actions \texttt{north} ($N$), \texttt{south} ($S$), \texttt{west} ($W$) and \texttt{east} ($E$). Rewards are only awarded for reaching the terminal (shaded) states. You observe the following trials, whose trajectories are sequences of tuples $(s^i_t, r^i_t, a^i_t, s^i_{t+1})$.
+You observe the following trials, whose trajectories are sequences of tuples $(s^i_t, r^i_t, a^i_t, s^i_{t+1})$.
 
 \begin{center}
     \resizebox{0.95\linewidth}{!}{%

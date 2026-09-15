@@ -499,6 +499,8 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
 
 \titledquestion{Independence and variable elimination}
 
+Considering the Bayesian network below, which of the following statements are enforced by the network structure?
+
 \begin{center}
     \begin{tikzpicture}[node distance = 2.5cm]
         \node[state] (A) {$A$};
@@ -517,8 +519,6 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
         \draw[arrow] (B) to (F);
     \end{tikzpicture}
 \end{center}
-
-Considering the hereabove Bayesian network, which of the following statements are enforced by the network structure?
 
 \begin{solution}
     We apply the d-separation algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triplets are active.
@@ -688,6 +688,8 @@ Because the pictures are black and white, and were taken from various angles, Pa
 
 \titledquestion{Predict your grade}
 
+The Bayesian network below represents how the final grade of a class is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the grades obtained by a student at the homework, project and exam. The teaching assistant that grades the homework also grades the project and the exam, which introduces a slight bias in the corrections. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the final grade, which is a linear combination of the grades obtained by the student during the semester plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
+
 \begin{center}
     \begin{tikzpicture}[node distance = 2cm]
         \node[state] (X1) {$x_1$};
@@ -702,8 +704,6 @@ Because the pictures are black and white, and were taken from various angles, Pa
         \draw[arrow] (X3) to (Y);
     \end{tikzpicture}
 \end{center}
-
-The hereabove Bayesian network represents how the final grade of a class is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the grades obtained by a student at the homework, project and exam. The teaching assistant that grades the homework also grades the project and the exam, which introduces a slight bias in the corrections. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the final grade, which is a linear combination of the grades obtained by the student during the semester plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
 
 \begin{parts}
     \part Assuming the parameters of the model are known, what is the expected value of $y$ given $x_1$ and $x_2$.

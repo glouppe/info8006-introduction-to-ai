@@ -129,12 +129,14 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
 
 \titledquestion{Minimax \source{CS188, Fall 2019}}
 
+Consider the zero-sum game tree below. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player.
+
 \begin{center}
     \includegraphics[width=0.6\linewidth]{figures/e2_minimax_0.pdf}
 \end{center}
 
 \begin{parts}
-    \part Consider the zero-sum game tree shown above. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player. Assuming both players act optimally, fill in the Minimax value of each node.
+    \part Assuming both players act optimally, fill in the Minimax value of each node.
 
     \begin{solution}
         \begin{center}
@@ -196,6 +198,8 @@ The game \enquote{21} is played with any number of players who take turns increa
 
 \titledquestion{Leapfrog \aima{5}}
 
+Consider the following two-player turn-taking game which initial configuration is shown in the figure below. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
+
 \begin{center}
     \begin{tikzpicture}
         \draw[step=1cm, black, thin] (0, 0) grid (4, 1);
@@ -207,8 +211,6 @@ The game \enquote{21} is played with any number of players who take turns increa
         \node[draw, circle] at (3.5, 0.5) {$B$};
     \end{tikzpicture}
 \end{center}
-
-Consider the following two-player turn-taking game which initial configuration is shown in the figure above. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
 
 \begin{parts}
     \part Define the search problem associated with this game.
