@@ -133,6 +133,38 @@ class: middle
 
 ---
 
+class: middle
+
+## What you ask for is what you get
+
+.quote[As a general rule, it is better to design performance measures according to what one actually wants in the environment, rather than according to how one thinks the agent should behave. .author[Russell and Norvig]]
+
+A rational agent maximizes the performance measure it is given, not the one we had in mind.
+
+???
+
+The example of AIMA: a vacuum cleaner rewarded for the amount of dirt it cleans up can clean the dirt, dump it back on the floor, and clean it again. Reward a clean floor instead.
+
+Modern agents do the same. In 2025, METR reported frontier models that modified the tests or the scoring code of their tasks, or read the answer that the scorer had already computed, instead of solving the task.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="600" height="450" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allowfullscreen></iframe>
+
+Faulty reward functions in the wild (OpenAI, 2016).
+]
+
+.footnote[Credits: [OpenAI](https://openai.com/index/faulty-reward-functions/), 2016.]
+
+???
+
+CoastRunners rewards hitting targets along the course, not finishing the race. The agent found a lagoon where it circles and hits the same three targets as they reappear. It catches fire, crashes into other boats, goes the wrong way, and still scores about 20% more than human players.
+
+---
+
 # Performance, environment, actuators, sensors
 
 The characteristics of the performance measure, environment, action space and
@@ -163,6 +195,20 @@ class: middle
 
 ---
 
+class: middle
+
+## Example 4: a coding agent
+- performance measure: tests pass, correct and readable code, user satisfaction, cost, ...
+- environment: code repository, terminal, web, user, ...
+- actions: edit files, run commands, search the web, ask the user, ...
+- sensors: file contents, command outputs, user messages, ...
+
+???
+
+The agents of Lecture 0 fit this vocabulary. Tool calls are the actuators, tool results the sensors. The model decides; the harness implements the sensors and the actuators.
+
+---
+
 # Environment types
 
 *Fully observable* vs. **partially observable**
@@ -175,7 +221,7 @@ class: middle
 > Whether the agent's experience is divided into atomic independent episodes.
 
 *Static* vs. **dynamic**
-> Whether the environment can change, or the performance measure can change with time.
+> Whether the environment can change while the agent is deliberating (semidynamic if only the performance measure changes).
 
 ---
 
@@ -204,8 +250,21 @@ static? discrete? single agents? Known?
 - Taxi driving
 - Medical diagnosis
 - Part-picking robot
-- ChatGPT
+- A coding agent
 - The real world
+
+???
+
+Suggested answers (observable, deterministic, episodic, static, discrete, agents, known). Several are debatable, which is the point of the exercise.
+- Crossword puzzle: fully, deterministic, sequential, static, discrete, single, known.
+- Chess, with a clock: fully, deterministic, sequential, semidynamic, discrete, multi, known.
+- Poker: partially, stochastic, sequential, static, discrete, multi, known.
+- Backgammon: fully, stochastic, sequential, static, discrete, multi, known.
+- Taxi driving: partially, stochastic, sequential, dynamic, continuous, multi, mostly known.
+- Medical diagnosis: partially, stochastic, sequential, dynamic, continuous, single, partially known.
+- Part-picking robot: partially, stochastic, episodic, dynamic, continuous, single, known.
+- A coding agent: partially (it cannot read everything at once, nor the intent of the user), stochastic (flaky tests, network, replies of the user), sequential, mostly static while it works, discrete, single or multi (the user, other agents), partially known.
+- The real world: partially, stochastic, sequential, dynamic, continuous, multi, unknown.
 
 ---
 
@@ -270,9 +329,9 @@ They are implemented by condition-action rules that match the
 current percept to an action. Rules provide a way to *compress* the function table.
 
 They can only work if the correct
-decision can be made on the basis of the current percept only, which is rarely the case in practice unless the environment is Markovian and fully observable.
+decision can be made on the basis of the current percept only, which is rarely the case in practice unless the environment is fully observable.
 
-.question[Examples: Smoke detectors, automatic doors, traffic lights, etc.]
+.question[Examples: Smoke detectors, automatic doors, motion-activated lights, etc.]
 
 ---
 
@@ -387,7 +446,11 @@ They can make changes to any of the knowledge components by:
 - learning what are the *consequences* of actions;
 - learning the utility of actions through *rewards*.
 
-.question[Examples: robots.]
+.question[Examples: robots, reasoning models trained by reinforcement learning.]
+
+???
+
+A reasoning model maps onto this diagram. The performance element is the language model. The critic is a program that checks the final answer against the correct one, the performance standard. The learning element is the reinforcement learning algorithm that updates the weights. Exploration comes from sampling several attempts per problem.
 
 ---
 
