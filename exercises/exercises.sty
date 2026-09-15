@@ -304,8 +304,10 @@
 }
 \AddToHook{env/solution/begin}{\@beginparpenalty=\@M}
 
-% The correct choice of a multiple choice question, highlighted in the solutions
-\newcommand{\correct}[1]{\ifprintanswers{\color{SolutionColor}#1}\else#1\fi}
+% The correct choice of a multiple choice question, highlighted in the solutions. Start the
+% paragraph before switching color: a color switch in vertical mode leaves a whatsit after
+% which the page can break, separating the choice from the previous ones.
+\newcommand{\correct}[1]{\ifprintanswers\leavevmode{\color{SolutionColor}#1}\else#1\fi}
 
 %%%%%%%%%
 % Links %
