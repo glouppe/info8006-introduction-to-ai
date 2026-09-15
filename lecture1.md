@@ -40,7 +40,7 @@ class: middle
 
 ## Agents
 
-- An agent is an entity that *perceives* its environment through sensors and takes **actions** through actuators.
+- An agent is an entity that .bold[perceives] its environment through sensors and takes .bold[actions] through actuators.
 
 - The agent behavior is described by its policy, a function $$\pi : \mathcal{P}^* \to \mathcal{A}$$ that maps
   percept sequences $e\_1, ..., e\_t$ to actions $a$.
@@ -111,14 +111,14 @@ class: middle
 
 .center[![](figures/lec1/max-utility.png)
 
-In this course, Artificial intelligence = **Maximizing expected performance**
+In this course, Artificial intelligence = .bold[Maximizing expected performance]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
 
-Underline the importance of *expected*.
+Underline the importance of .bold[expected].
 
 ---
 
@@ -129,7 +129,7 @@ class: middle
 - Rationality $\neq$ clairvoyance
     - action outcomes may not be as expected.
 - Hence, rational $\neq$ successful.
-- However, rationality leads to *exploration*, *learning* and *autonomy*.
+- However, rationality leads to .bold[exploration], .bold[learning] and .bold[autonomy].
 
 ---
 
@@ -169,7 +169,7 @@ CoastRunners rewards hitting targets along the course, not finishing the race. T
 
 The characteristics of the performance measure, environment, action space and
 percepts dictate approaches for selecting rational actions.
-They are summarized as the **task environment**.
+They are summarized as the .bold[task environment].
 
 ## Example 1: a chess-playing agent
 - performance measure: win, draw, lose, ...
@@ -211,29 +211,29 @@ The agents of Lecture 0 fit this vocabulary. Tool calls are the actuators, tool 
 
 # Environment types
 
-*Fully observable* vs. **partially observable**
+.bold[Fully observable] vs. .bold[partially observable]
 > Whether the agent sensors give access to the complete state of the environment, at each point in time.
 
-*Deterministic* vs. **stochastic**
+.bold[Deterministic] vs. .bold[stochastic]
 > Whether the next state of the environment is completely determined by the current state and the action executed by the agent.
 
-*Episodic* vs. **sequential**
+.bold[Episodic] vs. .bold[sequential]
 > Whether the agent's experience is divided into atomic independent episodes.
 
-*Static* vs. **dynamic**
+.bold[Static] vs. .bold[dynamic]
 > Whether the environment can change while the agent is deliberating (semidynamic if only the performance measure changes).
 
 ---
 
 class: middle
 
-*Discrete* vs. **continuous**
+.bold[Discrete] vs. .bold[continuous]
 > Whether the state of the environment, the time, the percepts or the actions are continuous.
 
-*Single agent* vs. **multi-agent**
+.bold[Single agent] vs. .bold[multi-agent]
 > Whether the environment includes several agents that may interact with each other.
 
-*Known* vs. **unknown**
+.bold[Known] vs. .bold[unknown]
 > Reflects the agent's state of knowledge of the "laws of physics" of the environment.
 
 ---
@@ -278,7 +278,7 @@ What about Pacman?
 
 # Agent programs
 
-Our goal is to design an **agent program** that implements the agent
+Our goal is to design an .bold[agent program] that implements the agent
 policy. 
 
 Agent programs can be designed and implemented in many ways:
@@ -326,7 +326,7 @@ class: middle
 ignoring the rest of the percept history.
 
 They are implemented by condition-action rules that match the
-current percept to an action. Rules provide a way to *compress* the function table.
+current percept to an action. Rules provide a way to .bold[compress] the function table.
 
 They can only work if the correct
 decision can be made on the basis of the current percept only, which is rarely the case in practice unless the environment is fully observable.
@@ -353,7 +353,7 @@ class: middle
 
 .bold[Model-based reflex agents] handle partial observability of the environment by keeping track of the part of the world they cannot see now.
 
-They maintain an internal state that is updated on the basis of a **model** which determines:
+They maintain an internal state that is updated on the basis of a .bold[model] which determines:
 - how the environment evolves independently of the agent;
 - how the agent actions affect the world.
 
@@ -393,10 +393,10 @@ class: middle
 The decision process of a .bold[goal-based agent] can be summarized as follows:
 1. generate possible sequences of actions;
 2. predict the resulting states;
-3. assess **goals** in each;
+3. assess .bold[goals] in each;
 4. select the first action of a sequence where the goal is achieved.
 
-Finding action sequences that achieve goals is difficult. *Search* and *planning* are two strategies.
+Finding action sequences that achieve goals is difficult. .bold[Search] and .bold[planning] are two strategies.
 
 .question[Examples: GPS navigation system, game-playing agents.]
 
@@ -442,9 +442,9 @@ class: middle
 .bold[Learning agents] improve their performance and adapt to new circumstances by learning from their experiences. They are capable of self-improvement.
 
 They can make changes to any of the knowledge components by:
-- learning how the *world* evolves;
-- learning what are the *consequences* of actions;
-- learning the utility of actions through *rewards*.
+- learning how the .bold[world] evolves;
+- learning what are the .bold[consequences] of actions;
+- learning the utility of actions through .bold[rewards].
 
 .question[Examples: robots, reasoning models trained by reinforcement learning.]
 
@@ -468,12 +468,12 @@ Learning to walk in the real world in one hour (Wu et al., 2022).
 
 # Summary
 
-- An **agent** is an entity that perceives and acts in an environment.
-- The *performance measure* evaluates the agent's behavior. **Rational agents** act so as to maximize the expected value of the performance measure.
-- *Task environments* include performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
-- The **agent program** effectively implements the agent policy. Its design is dictated by the task environment.
-- *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
-- All agents can improve their performance through **learning**.
+- An .bold[agent] is an entity that perceives and acts in an environment.
+- The .bold[performance measure] evaluates the agent's behavior. .bold[Rational agents] act so as to maximize the expected value of the performance measure.
+- .bold[Task environments] include performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
+- The .bold[agent program] effectively implements the agent policy. Its design is dictated by the task environment.
+- .bold[Simple reflex agents] respond directly to percepts, whereas .bold[model-based reflex agents] maintain internal state to track the world. .bold[Goal-based agents] act to achieve goals while .bold[utility-based agents] try to maximize their expected performance.
+- All agents can improve their performance through .bold[learning].
 
 ???
 
