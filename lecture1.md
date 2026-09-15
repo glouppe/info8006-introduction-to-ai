@@ -138,7 +138,15 @@ class: middle
 
 The characteristics of the performance measure, environment, action space and
 percepts dictate approaches for selecting rational actions.
-They are summarized as the .bold[task environment].
+They are summarized as the .bold[task environment]:
+- the .bold[performance measure] evaluates the sequence of environment states;
+- the .bold[environment] is the world in which the agent operates;
+- the .bold[actuators] are the means by which the agent acts on the environment;
+- the .bold[sensors] are the means by which the agent perceives the environment.
+
+---
+
+class: middle
 
 ## Example 1: a chess-playing agent
 - performance measure: win, draw, lose, ...
@@ -146,25 +154,21 @@ They are summarized as the .bold[task environment].
 - actions: move pieces, ...
 - sensors: board state, opponent moves, ...
 
----
-
-class: middle
-
 ## Example 2: a self-driving car
 - performance measure: safety, destination, legality, comfort, ...
 - environment: streets, highways, traffic, pedestrians, weather, ...
 - actions: steering, accelerator, brake, horn, speaker, display, ...
 - sensors: video, accelerometers, gauges, engine sensors, GPS, ...
 
+---
+
+class: middle
+
 ## Example 3: a medical diagnosis system
 - performance measure: patient health, cost, time, ...
 - environment: patient, hospital, medical records, ...
 - actions: diagnosis, treatment, referral, ...
 - sensors: medical records, lab results, ...
-
----
-
-class: middle
 
 ## Example 4: a coding agent
 - performance measure: tests pass, correct and readable code, user satisfaction, cost, ...
