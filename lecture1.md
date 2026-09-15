@@ -26,7 +26,7 @@ class: middle
 Percepts $e$
 ]
 .kol-3-5.center[
-.width-95[![](figures/lec8/loop.png)]
+.width-95[![](figures/lec1/loop.svg)]
 ]
 .kol-1-5[
 <br><br><br>
