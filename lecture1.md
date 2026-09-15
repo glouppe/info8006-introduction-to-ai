@@ -72,7 +72,7 @@ The .bold[policy] of a Pacman agent is a function that maps percept sequences to
 | $(\text{left cell}, \text{no food})$     | $\text{go right}$ |
 | $(\text{left cell}, \text{food})$     | $\text{eat}$ |
 | $(\text{right cell}, \text{no food})$     | $\text{go left}$ |
-| $(\text{left cell}, \text{food})$     | $\text{eat}$ |
+| $(\text{right cell}, \text{food})$     | $\text{eat}$ |
 | $(\text{left cell}, \text{no food}), (\text{left cell}, \text{no food})$     | $\text{go right}$ |
 | $(\text{left cell}, \text{no food}), (\text{left cell}, \text{food})$     | $\text{eat}$ |
 | $\ldots$ | $\ldots$ |
@@ -185,10 +185,10 @@ class: middle
 > Whether the state of the environment, the time, the percepts or the actions are continuous.
 
 *Single agent* vs. **multi-agent**
-> Whether the environment include several agents that may interact which each other.
+> Whether the environment includes several agents that may interact with each other.
 
-*Known* vs **unknown**
-> Reflects the agent's state of knowledge of the "law of physics" of the environment.
+*Known* vs. **unknown**
+> Reflects the agent's state of knowledge of the "laws of physics" of the environment.
 
 ---
 
@@ -238,7 +238,7 @@ The best design depends on the task environment.
 Reflex agents ...
 - choose an action based on current percept (and maybe memory);
 - may have memory or model of the world's current state;
-- do not consider the futur consequences of their actions.
+- do not consider the future consequences of their actions.
 
 <br>
 .center.width-50[![](figures/lec1/reflex-agent-cartoon.png)]
@@ -270,7 +270,7 @@ They are implemented by condition-action rules that match the
 current percept to an action. Rules provide a way to *compress* the function table.
 
 They can only work if the correct
-decision can be made on the basis of only the current percept only, which is rarely the case in practice unless the environment is Markovian and fully observable.
+decision can be made on the basis of the current percept only, which is rarely the case in practice unless the environment is Markovian and fully observable.
 
 .question[Examples: Smoke detectors, automatic doors, traffic lights, etc.]
 
@@ -407,8 +407,8 @@ Learning to walk in the real world in one hour (Wu et al., 2022).
 
 - An **agent** is an entity that perceives and acts in an environment.
 - The *performance measure* evaluates the agent's behavior. **Rational agents** act so as to maximize the expected value of the performance measure.
-- *Task environments* includes performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
-- The **agent program** effectively implements the agent function. Their designs are dictated by the task environment.
+- *Task environments* include performance measure, environment, actuators and sensors. They can vary along several significant dimensions.
+- The **agent program** effectively implements the agent policy. Its design is dictated by the task environment.
 - *Simple reflex agents* respond directly to percepts, whereas *model-based reflex agents* maintain internal state to track the world. *Goal-based agents* act to achieve goals while **utility-based agents** try to maximize their expected performance.
 - All agents can improve their performance through **learning**.
 
