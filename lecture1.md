@@ -55,8 +55,8 @@ class: middle
 .width-20.center[![](figures/lec1/pacman.png)]
 
 Let us consider a 2-cell world with a Pacman agent.
-- Percepts $e$: location and content, e.g. $(\text{left cell}, \text{no food})$
-- Actions $a$: $\text{go left}$, $\text{go right}$, $\text{eat}$, $\text{do nothing}$
+- Percepts: ${\mathcal{P} = \\{\text{left cell}, \text{right cell}\\} \times \\{\text{food}, \text{no food}\\}}$, the location of Pacman and the content of its cell, e.g. ${e\_1 = (\text{left cell}, \text{no food})}$.
+- Actions: ${\mathcal{A} = \\{\text{go left}, \text{go right}, \text{eat}, \text{do nothing}\\}}$.
 
 ???
 
@@ -66,9 +66,9 @@ Take the time to explain that the game is here different from the actual Pacman.
 
 class: middle
 
-The .bold[policy] of a Pacman agent is a function that maps percept sequences to actions. It can be implemented as a table.
+The .bold[policy] $\pi$ of a Pacman agent maps percept sequences ${e\_{1:t} \in \mathcal{P}^\*}$ to actions ${a\_t \in \mathcal{A}}$. It can be implemented as a table.
 
-| Percept sequence | Action |
+| Percept sequence $e\_{1:t}$ | Action $a\_t = \pi(e\_{1:t})$ |
 | ---------------- | ------ |
 | $(\text{left cell}, \text{no food})$     | $\text{go right}$ |
 | $(\text{left cell}, \text{food})$     | $\text{eat}$ |
@@ -80,7 +80,7 @@ The .bold[policy] of a Pacman agent is a function that maps percept sequences to
 
 ???
 
-The size of the table grows exponentially with the (maximum) length of the percept sequence!
+The size of the table grows exponentially with the (maximum) length of the percept sequence! With $|\mathcal{P}| = 4$ percepts, there are $4^t$ percept sequences of length $t$.
 
 ---
 
