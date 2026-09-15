@@ -1,23 +1,41 @@
-#! /bin/bash
+#!/bin/bash
+# Build the exercise sheets into ../pdf, with and without solutions.
+#
+#   ./compile.sh            # every sheet
+#   ./compile.sh e3.tex     # one sheet
+#
+# eN.tex gives ../pdf/exercises-N-solutions.pdf and, with \NOSOL defined, the
+# student version ../pdf/exercises-N.pdf. Auxiliary files go to build/.
 
-set -e
+set -euo pipefail
+cd "$(dirname "$0")"
 
 if (($# > 0)); then
-    FILES=$@
+    files=("$@")
 else
-    FILES=*.tex
+    files=(e[0-9]*.tex)
 fi
 
-for file in $FILES; do
-    pdflatex -halt-on-error -interaction=nonstopmode $file
+mkdir -p build
+for file in "${files[@]}"; do
+    sheet=$(basename "$file" .tex)
+    n=${sheet#e}
+    for variant in solutions student; do
+        if [[ $variant == solutions ]]; then
+            job="exercises-$n-solutions"
+            input="\\input{$sheet.tex}"
+        else
+            job="exercises-$n"
+            input="\\def\\NOSOL{}\\input{$sheet.tex}"
+        fi
+        for pass in 1 2; do
+            if ! pdflatex -halt-on-error -interaction=nonstopmode -output-directory=build \
+                    -jobname="$job" "$input" > /dev/null; then
+                echo "error: $job did not compile, see build/$job.log" >&2
+                exit 1
+            fi
+        done
+        mv "build/$job.pdf" "../pdf/$job.pdf"
+        echo "../pdf/$job.pdf"
+    done
 done
-
-rename 's/e(\d)/exercises-$1-solutions/' *.pdf
-mv *.pdf ../pdf
-
-for file in $FILES; do
-    pdflatex -halt-on-error -interaction=nonstopmode "\def\NOSOL{}\input{$file}"
-done
-
-rename 's/e/exercises-/' *.pdf
-mv *.pdf ../pdf
