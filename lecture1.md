@@ -94,7 +94,7 @@ Run the program!
 
 # Environments
 
-The environment is in a .bold[state] ${s\_t \in \mathcal{S}}$. At each time step $t$:
+The environment is in a .bold[state] ${s\_t \in \mathcal{S}}$. It starts in ${s\_1 \sim P(s\_1)}$, and at each time step $t$:
 1. the agent perceives ${e\_t \sim P(e\_t \mid s\_t)}$, following the .bold[sensor model];
 2. the agent acts ${a\_t = \pi(e\_{1:t})}$, following its policy;
 3. the environment moves to ${s\_{t+1} \sim P(s\_{t+1} \mid s\_t, a\_t)}$, following the .bold[transition model].
@@ -114,6 +114,7 @@ class: middle
 ## Simplified Pacman world, formally
 
 - States: ${\mathcal{S} = \\{\text{left cell}, \text{right cell}\\} \times \\{\text{food}, \text{no food}\\}^2}$, the location of Pacman and the content of both cells.
+- Initial state ${s\_1 \sim P(s\_1)}$: Pacman starts in the left cell, and each cell contains food with probability $1/2$.
 - Transition model: deterministic. $\text{go left}$ and $\text{go right}$ move Pacman, and $\text{eat}$ removes the food from its cell.
 - Sensor model: Pacman perceives its location and the content of its own cell, but not the content of the other cell.
 
@@ -125,11 +126,13 @@ A .bold[performance measure] ${V : \mathcal{S}^\* \to \mathbb{R}}$ scores the se
 
 An agent is .bold[rational] if its policy maximizes the expected performance,
 $$\pi^\* = \arg\max\_\pi \mathbb{E}\left[V(s\_{1:T}) \mid \pi\right],$$
-where the expectation is over the transitions and the percepts. Since $\pi$ only sees $e\_{1:t}$, a rational agent does the best it can given the percepts to date.
+where the expectation is over the initial state, the percepts and the transitions. A rational agent does not need to observe the states: for each percept sequence, it picks the action with the highest expected performance, over the states consistent with its percepts.
 
 ???
 
 The expectation matters: the agent cannot know the outcomes of its actions in advance. Lectures 8 and 9 compute $\pi^\*$ when $V$ is a sum of rewards.
+
+The expectation uses the models $P$. When they are unknown, rationality is relative to the agent's prior knowledge: the expectation also averages over the environments it considers possible, which is what makes exploration rational.
 
 ---
 
