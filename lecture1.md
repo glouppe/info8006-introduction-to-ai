@@ -42,8 +42,9 @@ class: middle
 
 - An agent is an entity that .bold[perceives] its environment through sensors and takes .bold[actions] through actuators.
 
-- The agent behavior is described by its policy, a function $$\pi : \mathcal{P}^* \to \mathcal{A}$$ that maps
-  percept sequences $e\_1, ..., e\_t$ to actions $a$.
+- At each time step $t$, the agent receives a percept ${e\_t \in \mathcal{P}}$ and takes an action ${a\_t \in \mathcal{A}}$, where $\mathcal{P}$ and $\mathcal{A}$ are the sets of possible percepts and actions.
+
+- The agent's behavior is described by its .bold[policy] ${\pi : \mathcal{P}^\* \to \mathcal{A}}$, which maps the percept sequence to the next action, $$a\_t = \pi(e\_{1:t}),$$ where ${e\_{1:t} = (e\_1, \ldots, e\_t)}$ and $\mathcal{P}^\*$ is the set of all finite percept sequences.
 
 ---
 
