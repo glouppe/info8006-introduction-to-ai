@@ -134,38 +134,6 @@ class: middle
 
 ---
 
-class: middle
-
-## What you ask for is what you get
-
-.quote[As a general rule, it is better to design performance measures according to what one actually wants in the environment, rather than according to how one thinks the agent should behave. .author[Russell and Norvig]]
-
-A rational agent maximizes the performance measure it is given, not the one we had in mind.
-
-???
-
-The example of AIMA: a vacuum cleaner rewarded for the amount of dirt it cleans up can clean the dirt, dump it back on the floor, and clean it again. Reward a clean floor instead.
-
-Modern agents do the same. In 2025, METR reported frontier models that modified the tests or the scoring code of their tasks, or read the answer that the scorer had already computed, instead of solving the task.
-
----
-
-class: middle, black-slide
-
-.center[
-<iframe width="600" height="450" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allowfullscreen></iframe>
-
-Faulty reward functions in the wild (OpenAI, 2016).
-]
-
-.footnote[Credits: [OpenAI](https://openai.com/index/faulty-reward-functions/), 2016.]
-
-???
-
-CoastRunners rewards hitting targets along the course, not finishing the race. The agent found a lagoon where it circles and hits the same three targets as they reappear. It catches fire, crashes into other boats, goes the wrong way, and still scores about 20% more than human players.
-
----
-
 # Performance, environment, actuators, sensors
 
 The characteristics of the performance measure, environment, action space and
@@ -207,6 +175,38 @@ class: middle
 ???
 
 The agents of Lecture 0 fit this vocabulary. Tool calls are the actuators, tool results the sensors. The model decides; the harness implements the sensors and the actuators.
+
+---
+
+class: middle
+
+## What you ask for is what you get
+
+.quote[As a general rule, it is better to design performance measures according to what one actually wants in the environment, rather than according to how one thinks the agent should behave. .author[Russell and Norvig]]
+
+A rational agent maximizes the performance measure it is given, not the one we had in mind.
+
+???
+
+The example of AIMA: a vacuum cleaner rewarded for the amount of dirt it cleans up can clean the dirt, dump it back on the floor, and clean it again. Reward a clean floor instead.
+
+Modern agents do the same. In 2025, METR reported frontier models that modified the tests or the scoring code of their tasks, or read the answer that the scorer had already computed, instead of solving the task.
+
+---
+
+class: middle, black-slide
+
+.center[
+<iframe width="600" height="450" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allowfullscreen></iframe>
+
+Faulty reward functions in the wild (OpenAI, 2016).
+]
+
+.footnote[Credits: [OpenAI](https://openai.com/index/faulty-reward-functions/), 2016.]
+
+???
+
+CoastRunners rewards hitting targets along the course, not finishing the race. The agent found a lagoon where it circles and hits the same three targets as they reappear. It catches fire, crashes into other boats, goes the wrong way, and still scores about 20% more than human players.
 
 ---
 
