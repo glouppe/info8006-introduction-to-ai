@@ -15,13 +15,13 @@
 
 \begin{recap}
     \topic{Search problem}
-    A \term{search problem} is defined by a representation of the \term{states}, an \term{initial state} $s_0$, the \term{actions} $\text{actions}(s)$ available in a state $s$, a \term{transition model} $s' = \text{result}(s, a)$ and a \term{goal test}. Together, these define the \term{state space}, the set of states reachable from $s_0$. A \term{solution} is an action sequence $a_1, \ldots, a_T$ leading from $s_0$ to a goal state $s_T$; an \term{optimal solution} has the lowest \term{path cost} $\sum_{t=1}^T c(s_{t-1}, a_t, s_t)$, a sum of positive \term{step costs} $c$.
+    A \term{search problem} is defined by the \term{states} $s \in \mathcal{S}$, an \term{initial state} $s_1 \in \mathcal{S}$, the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ available in a state $s$, a \term{transition model} $s' = \text{result}(s, a)$, the \term{goal states} $G \subseteq \mathcal{S}$ and positive \term{step costs} $c(s, a, s')$. The \term{state space} is the set of states reachable from $s_1$. A \term{solution} is an action sequence $a_{1:T}$ such that $s_{t+1} = \text{result}(s_t, a_t)$ and $s_{T+1} \in G$; an \term{optimal solution} minimizes the \term{path cost} $\sum_{t=1}^T c(s_t, a_t, s_{t+1})$.
 
     \topic{Search algorithm}
     \term{Tree search} expands the nodes of the \term{fringe} until a goal state is reached. \term{Graph search} also keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles.
 
     \topic{Search strategies}
-    A \term{strategy} is the order in which the fringe is expanded, where $g(n)$ is the path cost from $s_0$ to $n$, $h(n)$ a heuristic and $f(n) = g(n) + h(n)$. Below, $b$ is the maximum branching factor, $d$ the depth of the least-cost solution, $m$ the maximum path length (possibly infinite), $C^*$ the optimal path cost and $\epsilon > 0$ a lower bound on the step costs.
+    A \term{strategy} is the order in which the fringe is expanded, where $g(n)$ is the path cost from $s_1$ to $n$, $h(n)$ a heuristic and $f(n) = g(n) + h(n)$. Below, $b$ is the maximum branching factor, $d$ the depth of the least-cost solution, $m$ the maximum path length (possibly infinite), $C^*$ the optimal path cost and $\epsilon > 0$ a lower bound on the step costs.
 
     \begin{center}
         \small
@@ -34,7 +34,7 @@
             Iterative deepening & DFS, depth $1, 2, \ldots$ & yes & if $c$ uniform & $O(b^d)$ & $O(bd)$ \\
             Uniform-cost (UCS) & priority $g(n)$ & if $c \geq \epsilon$ & yes & $O(b^{C^*/\epsilon})$ & $O(b^{C^*/\epsilon})$ \\
             Greedy & priority $h(n)$ & if no cycles & no & $O(b^m)$ & $O(b^m)$ \\
-            \Astar{} & priority $f(n)$ & yes & if $h$ admissible & $O(b^m)$ & $O(b^m)$ \\
+            \Astar{} & priority $f(n)$ & yes & $h$ admissible (tree) & $O(b^m)$ & $O(b^m)$ \\
             \bottomrule
         \end{tabular}
     \end{center}
@@ -69,7 +69,7 @@ For a given grid
     \begin{solution}
         \textbf{State representation}: Assuming a $H \times W$ grid, the state is represented by the position $(i, j) \in \{1, \ldots, W\} \times \{1, \ldots, H\}$ of the robot, the remaining weight of grass $w_G$ and a flag $L$ indicating whether the robot is loaded or not. Following other assumptions, we also define the location of the pile and the container respectively by $P = (i_p, j_p)$ and $C = (i_c, j_c)$ as well as the weight limit of the robot $w_{\text{max}}$.
 
-        \textbf{Initial state}: No specific information is given, we can assume it starts anywhere on the grid, unloaded. $s_0 = (i_0, j_0, w_{G0}, \mathit{False})$
+        \textbf{Initial state}: No specific information is given, we can assume it starts anywhere on the grid, unloaded. $s_1 = (i_0, j_0, w_{G0}, \mathit{False})$
 
         \textbf{Actions}: $a \in \{\mathit{LEFT}, \mathit{UP}, \mathit{RIGHT}, \mathit{DOWN}\}$
 
@@ -97,7 +97,7 @@ For a given grid
             \end{cases*}
         \]
 
-        \textbf{Goal test}: $\mathit{goal}(s)$ is true if $\lnot L$ and $w_G = 0$.
+        \textbf{Goal states}: $G = \cbk{s \in \mathcal{S} : \lnot L \text{ and } w_G = 0}$.
 
         \textbf{Step cost}: Under the given assumptions, every step from one node to another is equivalent. Then $c(s, a, s') = 1$ is relevant. Note that it could be any constant step cost.
     \end{solution}
@@ -202,9 +202,9 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
     \part Depth-first search (DFS)
 
     \begin{solution}
-        We use a Last-In First-Out (LIFO) fringe, \ie{} a \emph{stack}, to perform the search. In this stack, we keep track of the states that are reachable from the visited (closed) states. These states are annotated with the state they were expanded from, which allows to reconstruct the path at the end. At each step, the state at the \emph{top} of the stack is \emph{popped}. If it was not visited previously, it is expanded, which consists in \emph{pushing} its neighbors to the \emph{top} of the stack.
+        We use a Last-In First-Out (LIFO) fringe, \ie{} a \emph{stack}, to perform the search. In this stack, we keep track of the states that are reachable from the closed states. These states are annotated with the state they were expanded from, which allows to reconstruct the path at the end. At each step, the state at the \emph{top} of the stack is \emph{popped}. If its state is not closed yet, it is expanded, which consists in \emph{pushing} its successors to the \emph{top} of the stack.
 
-        In the tables below, each row corresponds to one node leaving the fringe, the next one to leave being the rightmost. A node whose state is already closed is not inserted, and a node whose state gets closed while it waits in the fringe is discarded when it leaves it.
+        In the tables below, each row corresponds to one node leaving the fringe, the next one to leave being the rightmost. For readability, a node whose state is already closed is not written down, since it would be discarded when it leaves the fringe; a node whose state gets closed while it waits is discarded in the same way.
 
         \begin{center}
             \small
@@ -229,7 +229,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
     \part Breadth-first search (BFS)
 
     \begin{solution}
-        We use a First-In First-Out (FIFO) fringe, \ie{} a \emph{queue}, to keep track of the reachable states. At each step, the state at the \emph{front} of the queue is popped. If it was not visited previously, it is expanded, which consists in pushing its neighbors to the \emph{back} of the queue.
+        We use a First-In First-Out (FIFO) fringe, \ie{} a \emph{queue}, to keep track of the reachable states. At each step, the state at the \emph{front} of the queue is popped. If its state is not closed yet, it is expanded, which consists in pushing its successors to the \emph{back} of the queue.
 
         \begin{center}
             \small
@@ -360,7 +360,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
 
 \titledquestion{Search algorithms}
 
-Apply the \textsc{Graph-Search} algorithm to the graph below, with the conventions of exercise 3.
+Apply the \textsc{Graph-Search} algorithm to the graph below, with the conventions of exercise 3 (plain \textsc{Graph-Search}, goal test on removal, same tie-breaking).
 
 \begin{center}
     \begin{tikzpicture}[graph diagram]
@@ -659,7 +659,7 @@ Suppose that Pacman has no friends ($P=1$).
     \begin{enumerate}[label=$\bigcirc$]
         \item $h(n) = 0 \ \forall n$ can speed up \Astar{} compared to UCS.
         \item If a heuristic is admissible, it is guaranteed to be consistent.
-        \item The average step cost $h(n) = \frac{1}{|\text{actions}(n)|} \sum_a c(n, a, \text{result}(n, a))$ is admissible.
+        \item The average step cost $h(s) = \frac{1}{|\text{actions}(s)|} \sum_a c(s, a, \text{result}(s, a))$ is admissible.
         \item \correct{The true remaining cost dominates all admissible heuristics.}
     \end{enumerate}
 
