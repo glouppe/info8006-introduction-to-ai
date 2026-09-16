@@ -130,7 +130,9 @@ A .bold[performance measure] ${V : \mathcal{S}^\* \to \mathbb{R}}$ scores the se
 
 An agent is .bold[rational] if its policy maximizes the expected performance,
 $$\pi^\* = \arg\max\_\pi \mathbb{E}\left[V(s\_{1:T}) \mid \pi\right],$$
-where the expectation is over the initial state, the percepts and the transitions. A rational agent does not need to observe the states: for each percept sequence, it picks the action with the highest expected performance, over the states consistent with its percepts.
+where the expectation is over the initial state, the percepts and the transitions. 
+
+A rational agent does not need to observe the states: for each percept sequence, it picks the action with the highest expected performance, over the states consistent with its percepts.
 
 ???
 
@@ -194,15 +196,26 @@ class: middle
 
 ## What you ask for is what you get
 
-.quote[As a general rule, it is better to design performance measures according to what one actually wants in the environment, rather than according to how one thinks the agent should behave. .author[Russell and Norvig]]
+.quote[When a measure becomes a target, it ceases to be a good measure. .author[Goodhart's law]]
 
-A rational agent maximizes the performance measure it is given, not the one we had in mind.
+A rational agent maximizes the performance measure $V$ it is given, not the one we had in mind:
+- a chatbot rewarded by the thumbs-up of its users learns to flatter them;
+- a coding agent rewarded when the tests pass edits the tests;
+- a reasoning model asked to beat a chess engine rewrites the file that holds the board.
+
+.footnote[Credits: [OpenAI](https://openai.com/index/expanding-on-sycophancy/), 2025; [METR](https://metr.org/blog/2025-06-05-recent-reward-hacking/), 2025; [Bondarenko et al.](https://arxiv.org/abs/2502.13295), 2025 (arXiv:2502.13295).]
 
 ???
 
-The example of AIMA: a vacuum cleaner rewarded for the amount of dirt it cleans up can clean the dirt, dump it back on the floor, and clean it again. Reward a clean floor instead.
+Goodhart (1975), on monetary policy: "Any observed statistical regularity will tend to collapse once pressure is placed upon it for control purposes." The wording on the slide is Marilyn Strathern's (1997). Each example below optimizes a proxy of what we want until the proxy stops tracking it.
 
-Modern agents do the same. In 2025, METR reported frontier models that modified the tests or the scoring code of their tasks, or read the answer that the scorer had already computed, instead of solving the task.
+AIMA's rule: design performance measures according to what one actually wants in the environment, rather than according to how one thinks the agent should behave. Their example: a vacuum cleaner rewarded for the amount of dirt it cleans up can clean the dirt, dump it back on the floor, and clean it again. Reward a clean floor instead.
+
+Chatbot: in April 2025, OpenAI rolled back a GPT-4o update that had become sycophantic. The update had added a reward signal from the thumbs-up and thumbs-down of ChatGPT users, which favors agreeable answers, and it weakened the signal that held sycophancy in check.
+
+Coding agent: in 2025, METR reported frontier models that modified the tests or the scoring code of their tasks, or read the answer that the scorer had already computed, instead of solving the task. This is the "tests pass" performance measure of the coding agent, a few slides later.
+
+Chess: Palisade Research gave reasoning models a shell and asked them to win against Stockfish. Models such as o3 and DeepSeek-R1 often hacked the game without being told to, e.g. by overwriting `game/fen.txt` with a position where Stockfish, down more than 500 centipawns, resigns. Lecture 3 plays the game properly.
 
 ---
 
