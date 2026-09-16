@@ -14,7 +14,7 @@ Prof. Gilles Louppe<br>
 
 This course is given by
 - Theoretical lectures: Gilles Louppe
-- Exercise sessions: Gilles Louppe, Fanny Bodart, Thomas Savary
+- Exercise sessions: Fanny Bodart, Thomas Savary, and student instructors.
 - Programming projects: Fanny Bodart, Thomas Savary
 
 Feel free to contact us at [info8006@montefiore.ulg.ac.be](mailto:info8006@montefiore.ulg.ac.be) or on [Discord](https://discord.gg/Y8UP2SBu2h) for help.
@@ -58,7 +58,7 @@ class: middle
 
 .center.width-30[![](./figures/course-syllabus/textbook.png)]
 
-The core content of this course is based on the following textbook:
+Some of the course content is based on the following textbook:
 
 > .italic[Stuart Russell, Peter Norvig. "Artificial Intelligence: A Modern Approach", Fourth Edition, Global Edition.]
 
@@ -113,8 +113,20 @@ class: middle
 
 ## Evaluation of the projects
 
-- Projects are evaluated .bold[automatically] on Gradescope.
+- The correctness of your implementation is .bold[automatically] checked on Gradescope. 
 - Projects also include an .bold[oral defense]: you answer questions on your own code, justify your design decisions, and may be asked to modify or extend your implementation.
+
+---
+
+class: middle
+
+## Use of AI tools
+
+.success[AI assistants are .bold[allowed] in the projects, without restriction.]
+
+The rule is simple: everything you submit, you must be able to explain. At the defense you answer for any line, justify your design decisions, and modify your code on request. You may submit code written with the help of an AI assistant, but you may not submit code you cannot answer for. A solution you cannot explain will be strongly penalized.
+
+An AI assistant is .bold[not someone else]: what it writes is yours to own and to answer for. .bold[Other people's work] (a classmate's code, a public repository, a past submission) is a different matter, and the honor code governs it.
 
 ---
 
@@ -129,16 +141,6 @@ Plagiarism is checked and sanctioned by a grade of 0. Cases of plagiarism will a
 ???
 
 One of the main learning outcomes of the programming projects is for you to better understand the course materials. By using someone else's implementation, you are depriving yourself of this learning opportunity. Moreover, you are also depriving yourself of the opportunity to learn how to write good code, which is an important skill for any computer scientist.
-
----
-
-class: middle
-
-## Use of AI tools
-
-.success[AI assistants are .bold[allowed], without restriction.]
-
-The rule is simple: everything you submit, you must be able to explain. Submitting a solution you do not understand, because an AI assistant produced it, will be strongly penalized.
 
 ---
 
