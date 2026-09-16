@@ -52,7 +52,7 @@ class: middle
 
 Let us consider a 2-cell world with a Pacman agent.
 - Percepts: ${\mathcal{P} = \\{\text{left cell}, \text{right cell}\\} \times \\{\text{food}, \text{no food}\\}}$, the location of Pacman and the content of its cell, e.g. ${e\_1 = (\text{left cell}, \text{no food})}$.
-- Actions: ${\mathcal{A} = \\{\text{go left}, \text{go right}, \text{eat}, \text{do nothing}\\}}$.
+- Actions: ${\mathcal{A} = \\{\text{go left}, \text{go right}, \text{do nothing}\\}}$. As in the game, there is no eat action: Pacman eats the food of its cell at each time step.
 
 ???
 
@@ -67,16 +67,18 @@ The .bold[policy] $\pi$ of a Pacman agent maps percept sequences ${e\_{1:t} \in 
 | Percept sequence $e\_{1:t}$ | Action $a\_t = \pi(e\_{1:t})$ |
 | ---------------- | ------ |
 | $(\text{left cell}, \text{no food})$     | $\text{go right}$ |
-| $(\text{left cell}, \text{food})$     | $\text{eat}$ |
+| $(\text{left cell}, \text{food})$     | $\text{go right}$ |
 | $(\text{right cell}, \text{no food})$     | $\text{go left}$ |
-| $(\text{right cell}, \text{food})$     | $\text{eat}$ |
-| $(\text{left cell}, \text{no food}), (\text{left cell}, \text{no food})$     | $\text{go right}$ |
-| $(\text{left cell}, \text{no food}), (\text{left cell}, \text{food})$     | $\text{eat}$ |
+| $(\text{right cell}, \text{food})$     | $\text{go left}$ |
+| $(\text{left cell}, \text{no food}), (\text{right cell}, \text{food})$     | $\text{do nothing}$ |
+| $(\text{left cell}, \text{food}), (\text{right cell}, \text{no food})$     | $\text{do nothing}$ |
 | $\ldots$ | $\ldots$ |
 
 ???
 
 The size of the table grows exponentially with the (maximum) length of the percept sequence! With $|\mathcal{P}| = 4$ percepts, there are $4^t$ percept sequences of length $t$.
+
+Pacman eats the food of its cell whatever it does, so the food percept never changes the action. What matters is whether Pacman has already visited the other cell, which only the percept sequence tells.
 
 ---
 
@@ -107,15 +109,17 @@ When the environment is deterministic, we write ${s\_{t+1} = \text{result}(s\_t,
 
 This is the loop of the first slide, written down. The next lectures refine each piece: search assumes known and deterministic transitions (Lectures 2 and 3), reasoning over time estimates $s\_t$ from $e\_{1:t}$ (Lecture 6), and Markov decision processes make the transitions stochastic (Lectures 8 and 9).
 
+Observability and determinism are properties of the choice of state, not of the world: whether $e\_t = s\_t$, or whether $s\_{t+1}$ is a function of $s\_t$ and $a\_t$, depends on what $s\_t$ holds. The state must also hold what the performance measure depends on (next slide). Lecture 2 develops the choice: world states versus search states.
+
 ---
 
 class: middle
 
 ## Simplified Pacman world, formally
 
-- States: ${\mathcal{S} = \\{\text{left cell}, \text{right cell}\\} \times \\{\text{food}, \text{no food}\\}^2}$, the location of Pacman and the content of both cells.
+- States: ${\mathcal{S} = \\{\text{left cell}, \text{right cell}\\} \times \\{\text{food}, \text{no food}\\} \times \\{\text{food}, \text{no food}\\}}$, the location of Pacman, the content of the left cell and the content of the right cell, e.g. ${s\_1 = (\text{left cell}, \text{no food}, \text{food})}$.
 - Initial state ${s\_1 \sim P(s\_1)}$: Pacman starts in the left cell, and each cell contains food with probability $1/2$.
-- Transition model: deterministic. $\text{go left}$ and $\text{go right}$ move Pacman, and $\text{eat}$ removes the food from its cell.
+- Transition model: deterministic. Pacman eats the food of its cell, then $\text{go left}$ and $\text{go right}$ move it.
 - Sensor model: Pacman perceives its location and the content of its own cell, but not the content of the other cell.
 
 ---
@@ -344,7 +348,7 @@ class: middle
 
 .bold[Simple reflex agents] select actions on the basis of the current percept $e\_t$ only, ignoring the percept history $e\_{1:t-1}$.
 
-Their policy $\pi$ is implemented by .bold[condition-action rules] that match the current percept to an action, e.g. "if there is food in my cell, then eat". Rules .bold[compress] the policy table.
+Their policy $\pi$ is implemented by .bold[condition-action rules] that match the current percept to an action, e.g. "if I am in the left cell, then go right". Rules .bold[compress] the policy table.
 
 They only work if the correct decision can be made from the current percept, which is rarely the case in practice unless the environment is fully observable, ${e\_t = s\_t}$.
 
