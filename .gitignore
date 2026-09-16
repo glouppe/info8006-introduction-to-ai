@@ -18,6 +18,9 @@ __pycache__/
 .venv/
 .ipynb_checkpoints/
 
+# Lecture demos: run.py rewrites this scratch file (score;time;nodes) after every game
+demo/*/temp
+
 # Planning notes and assistant guidance
 TODO.md
 CLAUDE.md
