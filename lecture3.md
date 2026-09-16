@@ -625,20 +625,16 @@ class: middle, black-slide
 
 ???
 
-The first two videos can be replayed live, from `demo/lec3`:
+All four videos can be replayed live, from `demo/lec3`: P1 is
+`--agentfile hminimax_ADV.py`, P3 is `--agentfile expectimax.py`, P2 is
+`--ghostagent cheeky --gdepth 2` (a ghost that searches the tree itself) and
+P4 is `--ghostagent rightrandy --p 0` (a ghost that moves uniformly at
+random). The command of each is in the notes of its slide.
 
-```
-uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
-    --ghostagent cheeky --gdepth 2 --layout medium_adv
-uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
-    --ghostagent rightrandy --p 0 --layout medium_adv
-```
-
-The cheeky ghost searches the tree itself, to the depth given by `--gdepth`,
-which is P2; rightrandy with `--p 0` moves uniformly at random, which is P4.
-
-There is no expectimax agent in `SearchMethods/`, so P3 is shown by the
-recorded videos only.
+Beware: at `--pdepth 4` Pacman wins all four games, so the live runs show the
+behaviour, not the outcome. To show mismodelling actually costing the game,
+use `--pdepth 6 --layout small_adv`: P1 wins (505) and P3, facing the same
+adversarial ghost, is eaten (-501).
 
 ---
 
@@ -660,6 +656,11 @@ Assumptions are correct.
 
 Pacman wins partly because of the larger depth it uses.
 
+```
+uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
+    --ghostagent cheeky --gdepth 2 --layout medium_adv
+```
+
 ---
 
 class: middle, black-slide
@@ -677,6 +678,11 @@ Minimax Pacman ($P_1$) vs. Random ghost ($P_4$)
 ???
 
 Assumptions are incorrect. Has the ghost some masterplan?
+
+```
+uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
+    --ghostagent rightrandy --p 0 --layout medium_adv
+```
 
 ---
 
@@ -696,6 +702,11 @@ Expectiminimax Pacman ($P_3$) vs. Random ghost ($P_4$)
 
 Assumptions are correct.
 
+```
+uv run python run.py --agentfile expectimax.py --pdepth 4 \
+    --ghostagent rightrandy --p 0 --layout medium_adv
+```
+
 ---
 
 class: middle, black-slide
@@ -713,6 +724,11 @@ Expectiminimax Pacman ($P_3$) vs. Adversarial ghost ($P_2$)
 ???
 
 Pacman is lucky!
+
+```
+uv run python run.py --agentfile expectimax.py --pdepth 4 \
+    --ghostagent cheeky --gdepth 2 --layout medium_adv
+```
 
 ---
 

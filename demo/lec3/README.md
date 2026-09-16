@@ -68,11 +68,14 @@ uv run python run.py --agentfile expectimax.py --pdepth 6 \
     --ghostagent cheeky --gdepth 2 --layout small_adv
 ```
 
-The other two cases of the section, where the assumption holds, are run
-against `--ghostagent rightrandy --p 0`; both agents win there, so the pair
-above is the one that makes the point. On `medium_adv` and `large_adv` the
-better evaluation keeps Pacman out of trouble whatever it assumes, which is
-why the contrast is shown on `small_adv`.
+The section has four cases, Pacman assuming an adversarial ghost
+(`hminimax_ADV.py`) or a random one (`expectimax.py`), against a ghost that is
+adversarial (`--ghostagent cheeky --gdepth 2`) or random (`--ghostagent
+rightrandy --p 0`). All four run, but at `--pdepth 4` Pacman wins every one of
+them, on `small_adv` as on `medium_adv`: what the live runs then show is how
+Pacman moves, not whether it survives. The depth 6 pair above is the one where
+the wrong assumption actually costs the game, the better evaluation being
+enough to keep Pacman out of trouble at depth 4.
 
 ## Known quirks
 
