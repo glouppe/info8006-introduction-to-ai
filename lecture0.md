@@ -191,7 +191,7 @@ class: middle
 
 ## The Turing test
 
-A computer passes the **Turing test** (aka the Imitation Game) if a human operator, after posing some written
+A computer passes the .bold[Turing test] (aka the Imitation Game) if a human operator, after posing some written
 questions, cannot tell whether the written responses come from a person or from
 a computer.
 
@@ -207,7 +207,7 @@ a computer.
 
 ???
 
-The Turing test is an *operational* definition of intelligence.
+The Turing test is an .bold[operational] definition of intelligence.
 
 ---
 
@@ -269,7 +269,7 @@ class: middle
 
 ## The Dartmouth workshop (1956)
 
-.italic[The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be *so precisely described* that a machine can be made to simulate it.]
+.italic[The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature of intelligence can in principle be .bold[so precisely described] that a machine can be made to simulate it.]
 
 ---
 
@@ -723,7 +723,7 @@ Over training, the model learns by itself to think longer, to check its work and
 
 ???
 
-DeepSeek-R1 (January 2025). The model is rewarded mainly for correct final answers on math and code problems. The plot shows the average length of its responses growing during training: nobody asked for longer thinking; it emerged because it pays off.
+DeepSeek-R1-Zero (January 2025), the variant trained by reinforcement learning alone, with no example of reasoning; DeepSeek-R1 itself was first fine-tuned on a few thousand curated chains of thought. The model is rewarded mainly for correct final answers on math and code problems. The plot shows the average length of its responses growing during training: nobody asked for longer thinking; it emerged because it pays off.
 
 This is reinforcement learning, the topic of Lecture 9. Barto and Sutton received the Turing Award in 2025 for its foundations.
 
@@ -932,9 +932,9 @@ class: middle
 
 ## What is missing?
 
-Intelligence is not just about **pattern recognition**, which is something most of these works are based on.
+Intelligence is not just about .bold[pattern recognition], which is something most of these works are based on.
 
-It is about *modeling the world*:
+It is about .bold[modeling the world]:
 - explaining and understanding what we see;
 - imagining things we could see but haven't yet;
 - problem solving and planning actions to make these things real;
@@ -1000,7 +1000,7 @@ class: middle
 
 This course is designed as an introduction to the many other courses available at ULiège and (broadly) related to AI, including:
 
-- INFO8006: Introduction to Artificial Intelligence $\leftarrow$ **you are there**
+- INFO8006: Introduction to Artificial Intelligence $\leftarrow$ .bold[you are there]
 - DATS0001: Foundations of Data Science
 - ELEN0062: Introduction to Machine Learning
 - INFO8010: Deep Learning
