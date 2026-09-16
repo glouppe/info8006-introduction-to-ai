@@ -18,8 +18,8 @@ class: center, black-slide, middle
 
 # Today
 
-- How to act rationally in a *multi-agent* environment?
-- How to anticipate and respond to the **arbitrary behavior** of other agents?
+- How to act rationally in a .bold[multi-agent] environment?
+- How to anticipate and respond to the .bold[arbitrary behavior] of other agents?
 - Adversarial search
     - Minimax
     - $\alpha-\beta$ pruning
@@ -33,17 +33,17 @@ class: center, black-slide, middle
 
 class: middle
 
-# Minimax
+# Games
 
 ---
 
 # Games
 
-- A **game** is a multi-agent environment where agents may have either *conflicting* or *common* interests.
-- Opponents may act **arbitrarily**, even if we assume a deterministic fully observable environment.
-    - The solution to a game is a *strategy* specifying a move for every possible opponent reply.
-    - This is different from search where a solution is a *fixed sequence*.
-- Time is often **limited**.
+- A .bold[game] is a multi-agent environment where agents may have either .bold[conflicting] or .bold[common] interests.
+- Opponents may act .bold[arbitrarily], even if we assume a deterministic fully observable environment.
+    - The solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, the .bold[policy] of lecture 1: a move for every state the opponent can lead to.
+    - This is different from search, where a solution is a .bold[fixed sequence] ${a\_{1:T}}$.
+- Time is often .bold[limited].
 
 ???
 
@@ -53,26 +53,16 @@ A game is a mathematical model of strategic interaction between rational decisio
 
 class: middle
 
-## Types of games
-
-- **Deterministic** or *stochastic*?
-- **Perfect** or *imperfect* information?
-- **Two** or *more* players?
-
-
----
-
-class: middle
-
 ## Formal definition
 
-A **game** is formally defined as a kind of search problem with the following components:
-- A representation of the *states* of the agents and their environment.
-- The *initial state* $s_0$ of the game.
-- A function $\text{player}(s)$ that defines which *player* $p \in \\{1, ..., N \\}$ has the move in state $s$.
-- A description of the legal *actions* (or *moves*) available to a state $s$, denoted $\text{actions}(s)$.
-- A *transition model* that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
-- A *terminal test* which determines whether the game is over.
+A .bold[game] is the search problem of lecture 2, with two components added and one replaced:
+- the .bold[states] ${s \in \mathcal{S}}$ and the .bold[initial state] ${s\_1 \in \mathcal{S}}$, as before;
+- the .bold[actions] ${\text{actions}(s) \subseteq \mathcal{A}}$ and the .bold[transition model] ${s' = \text{result}(s, a)}$, as before;
+- .bold[new]: a function ${\text{player}(s) \in \\{1, \ldots, N\\}}$ that says whose turn it is in state $s$;
+- .bold[replaced]: the goal states ${G}$ become the .bold[terminal states] ${T \subseteq \mathcal{S}}$, tested by ${\text{terminal-test}(s)}$, i.e. ${s \in T}$;
+- .bold[new]: the path cost becomes a .bold[utility] ${\text{utility}(s, p)}$, the payoff of player $p$ when the game ends in ${s \in T}$, e.g. ${1}$, ${0}$ or ${\frac{1}{2}}$ for a win, a loss or a draw.
+
+Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions.
 
 ???
 
@@ -82,11 +72,26 @@ Outline on the blackboard.
 
 class: middle
 
-- A *utility function* $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s$ for a player $p$.
-    - E.g., $1$, $0$ or $\frac{1}{2}$ if the outcome is win, loss or draw.
-- Together, the initial state, the $\text{actions}(s)$ function and the $\text{result}(s, a)$ function define the **game tree**.
-    - Nodes are game states.
-    - Edges are actions.
+## The bar scene, formally
+
+.grid[
+.kol-3-5[
+.quote[If we all go for the blonde, we block each other. Not a single one of us is going to get her. So then we go for her friends, but they will all give us the cold shoulder, because nobody likes to be second choice. .author[John Nash, .italic[A Beautiful Mind]]]
+]
+.kol-2-5[
+- The .bold[players] are the ${N}$ friends.
+- ${\text{actions}(s)}$: approach the blonde, or approach a brunette.
+- A .bold[terminal state] ${s \in T}$ is how the evening ends.
+]
+]
+
+Every element of the definition is there. Nash evaluates .bold[outcomes], not moves: everyone for the blonde ends in a terminal state where ${\text{utility}(s, p) = 0}$ for every player ${p}$, nobody for the blonde in one where ${\text{utility}(s, p) = 1}$. What each player should do depends on what the others do, so the answer is a .bold[strategy] rather than a sequence of moves.
+
+???
+
+The scene is a game tree: the friends move, the outcome is scored at the leaves, and the reasoning backs those scores up to the decision at the root.
+
+Strictly, the conclusion is not a Nash equilibrium: if nobody goes for the blonde, any single friend does better by deviating. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
 
 ---
 
@@ -94,12 +99,12 @@ class: middle
 
 ## Zero-sum games
 
-- In a **zero-sum** game, the total payoff to all players is *constant* for all games.
+- In a .bold[zero-sum] game, the total payoff to all players is .bold[constant] for all games.
     - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
-- For two-player games, agents share the **same utility** function, but one wants to *maximize* it while the other wants to *minimize* it.
+- For two-player games, agents share the .bold[same utility] function, but one wants to .bold[maximize] it while the other wants to .bold[minimize] it.
     - MAX maximizes the game's $\text{utility}$ function.
     - MIN minimizes the game's $\text{utility}$ function.
-- *Strict competition*.
+- .bold[Strict competition].
     - If one wins, the other loses, and vice-versa.
 
 <br>
@@ -125,14 +130,23 @@ class: middle
 
 # Assumptions
 
-- We assume a *deterministic*, *turn-taking*, *two-player* **zero-sum game** with *perfect information*.
-    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
-- We will call our two players **MAX** and *MIN*. **MAX** moves first.
+Games vary along three axes: .bold[chance], .bold[information] and the .bold[number of players]. We start with the simplest case of each.
 
-<br><br><br>
-.center.width-50[![](figures/lec3/tictactoe-cartoon.png)]
+- We assume a .bold[deterministic], .bold[turn-taking], .bold[two-player] .bold[zero-sum game] with .bold[perfect information].
+    - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
+- We will call our two players .bold[MAX] and .bold[MIN]. .bold[MAX] moves first.
+
+Each assumption is relaxed later: .bold[stochastic games] bring in chance, .bold[multi-agent games] more players, and the last section games of .bold[imperfect information].
+
+.center.width-35[![](figures/lec3/tictactoe-cartoon.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
+# Minimax
 
 ---
 
@@ -141,8 +155,8 @@ class: middle
 .grid[.kol-2-3[
 - In a search problem, the optimal solution is a sequence of actions leading to a goal state.
     - i.e., a terminal state where MAX wins.
-- In a game, the opponent (MIN) may react *arbitrarily* to a move.
-- Therefore, a player (MAX) must define a contingent **strategy** which specifies
+- In a game, the opponent (MIN) may react .bold[arbitrarily] to a move.
+- Therefore, a player (MAX) must define a contingent .bold[strategy] ${\pi\_\text{MAX}}$ which specifies
     - its moves in the initial state,
     - its moves in the states resulting from every possible response by MIN,
     - its moves in the states resulting from every possible response by MIN in those states, ...
@@ -162,12 +176,16 @@ Analogy with chess, checkers or belotte.
 
 # Minimax
 
-The **minimax value** $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an *optimal adversary* (MIN).
+The .bold[minimax value] $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an .bold[optimal adversary] (MIN),
+$$\text{minimax}(s) = \begin{cases}
+\text{utility}(s) & \text{if } s \in T \\\\
+\max\limits\_{a} \text{minimax}(\text{result}(s, a)) & \text{if MAX plays} \\\\
+\min\limits\_{a} \text{minimax}(\text{result}(s, a)) & \text{if MIN plays,}
+\end{cases}$$
+where the $\max$ and $\min$ are over ${a \in \text{actions}(s)}$.
 
-.center.width-100[![](figures/lec3/minimax.png)]
-
-The **optimal** next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
-- Assuming that MIN is an optimal adversary that maximizes the *worst-case outcome* for MAX.
+The .bold[optimal] next move (for MAX) maximizes the minimax value of the resulting state, ${\pi^\*(s) = \arg\max\limits\_{a} \text{minimax}(\text{result}(s, a))}$.
+- Assuming that MIN is an optimal adversary that maximizes the .bold[worst-case outcome] for MAX.
 - This is equivalent to not making an assumption about the strength of the opponent.
 
 ???
@@ -186,9 +204,9 @@ class: middle
 
 ## Properties of Minimax
 
-- *Completeness*:
+- .bold[Completeness]:
     - Yes, if tree is finite.
-- *Optimality*:
+- .bold[Optimality]:
     - Yes, if MIN is an optimal opponent.
     - What if MIN is suboptimal?
         - Show that MAX will do even better.
@@ -218,7 +236,7 @@ class: middle
 
 .width-100[![](figures/lec3/minimax-incomplete-formula.png)]
 
-Therefore, it is possible to compute the **correct** minimax decision *without looking at every node* in the tree.
+Therefore, it is possible to compute the .bold[correct] minimax decision .bold[without looking at every node] in the tree.
 
 ---
 
@@ -236,8 +254,8 @@ We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 - We loop over $n$'s children.
 - The minimax values are being computed one at a time and $v$ is updated iteratively.
 - Let $\alpha$ be the best value (i.e., the highest) at any choice point along the path for MAX.
-- If $v$ becomes lower than $\alpha$, then **$n$ will never be reached** in actual play.
-- Therefore, we can *stop iterating* over the remaining $n$'s other children.
+- If $v$ becomes lower than $\alpha$, then .bold[$n$ will never be reached] in actual play.
+- Therefore, we can .bold[stop iterating] over the remaining $n$'s other children.
 ]
 .kol-1-3[<br><br>.center.width-100[![](figures/lec3/alpha-beta.png)]]
 ]
@@ -264,9 +282,9 @@ If the minimax value $v$ for MAX becomes larger the best value $\beta$ for MIN, 
 
 ---
 
-# $\alpha$-$\beta$  search
+# $\alpha$-$\beta$ search
 
-.width-90[![](figures/lec3/alpha-beta-impl.png)]
+.center.width-90[![](figures/lec3/alpha-beta-search.svg)]
 
 ???
 
@@ -278,10 +296,10 @@ class: middle
 
 ## Properties of $\alpha$-$\beta$ search
 
-- Pruning has **no effect** on the minimax values. Therefore, *completeness* and *optimality* are preserved from Minimax.
+- Pruning has .bold[no effect] on the minimax values. Therefore, .bold[completeness] and .bold[optimality] are preserved from Minimax.
 - Time complexity:
     - The effectiveness depends on the order in which the states are examined.
-    - If states could be examined in *perfect order*, then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
+    - If states could be examined in .bold[perfect order], then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
         - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
         - Equivalent to an effective branching factor $\sqrt{b}$.
 - Space complexity: $O(m)$, as for Minimax.
@@ -298,13 +316,13 @@ Chess:
 - $b^d \approx 35^{100} \approx 10^{154}$.
 - For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
 
-Finding the exact solution with Minimax remains **intractable**.
+Finding the exact solution with Minimax remains .bold[intractable].
 
 ---
 
 # Transposition table
 
-- Repeated states occur frequently because of **transpositions**: distinct permutations of the move sequence end in a same position.
+- Repeated states occur frequently because of .bold[transpositions]: distinct permutations of the move sequence end in a same position.
 - Similarly to the `closed` set in graph search (Lecture 2), it is worth storing the evaluation of a state such that further occurrences of the state do not have to be recomputed.
 
 .question[What data structure should be used to efficiently store and look-up values of positions?]
@@ -313,12 +331,16 @@ Finding the exact solution with Minimax remains **intractable**.
 
 # Imperfect real-time decisions
 
-- Under *time constraints*, searching for the exact solution is not feasible in most realistic games.
+- Under .bold[time constraints], searching for the exact solution is not feasible in most realistic games.
 - Solution: cut the search earlier.
-    - Replace the $\text{utility}(s)$ function with a heuristic **evaluation function** $\text{eval}(s)$ that estimates the state utility.
-    - Replace the terminal test by a **cutoff test** that decides when to stop expanding a state.
+    - Replace the $\text{utility}(s)$ function with a heuristic .bold[evaluation function] $\text{eval}(s)$ that estimates the state utility.
+    - Replace the terminal test by a .bold[cutoff test] ${\text{cutoff-test}(s, d)}$ that decides when to stop expanding a state $s$ at depth $d$.
 
-.center.width-100[![](figures/lec3/hminimax.png)]
+$$\text{h-minimax}(s, d) = \begin{cases}
+\text{eval}(s) & \text{if cutoff} \\\\
+\max\limits\_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MAX plays} \\\\
+\min\limits\_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
+\end{cases}$$
 
 .question[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
 
@@ -334,11 +356,11 @@ class: middle
 
 ## Evaluation functions
 
-- An evaluation function $\text{eval}(s)$ returns an **estimate** of the expected utility of the game from a given position $s$.
-- The computation *must be short* (that is the whole point to search faster).
-- Ideally, the evaluation should *order* states in the same way as in Minimax.
+- An evaluation function $\text{eval}(s)$ returns an .bold[estimate] of the expected utility of the game from a given position $s$.
+- The computation .bold[must be short] (that is the whole point to search faster).
+- Ideally, the evaluation should .bold[order] states in the same way as in Minimax.
     - The evaluation values may be different from the true minimax values, as long as order is preserved.
-- In non-terminal states, the evaluation function should be strongly *correlated* with the actual chances of winning.
+- In non-terminal states, the evaluation function should be strongly .bold[correlated] with the actual chances of winning.
 
 ???
 
@@ -355,15 +377,15 @@ class: middle
 - These states only differ in the position of the rook at lower right.
 - However, Black has advantage in (a), but not in (b).
 - If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- Cutoff should only be applied to positions that are **quiescent**.
+- Cutoff should only be applied to positions that are .bold[quiescent].
     - i.e., states that are unlikely to exhibit wild swings in value in the near future.
 
 ---
 
 # The horizon effect
 
-Evaluations functions are **always imperfect**.
-- If not looked deep enough, *bad moves* may appear as *good moves* (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
+Evaluations functions are .bold[always imperfect].
+- If not looked deep enough, .bold[bad moves] may appear as .bold[good moves] (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
     - and vice-versa!
 - Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
 
@@ -372,7 +394,7 @@ Evaluations functions are **always imperfect**.
 class: middle, black-slide
 
 .center[<video controls preload="auto" height="480" width="640">
-  <source src="./figures/lec3/depth2.mp4" type="video/mp4">
+  <source src="figures/lec3/depth2.mp4" type="video/mp4">
 </video>]
 
 .caption[Cutoff at depth 2, evaluation = the closer to the dot, the better.]
@@ -382,8 +404,9 @@ class: middle, black-slide
 ???
 
 ```
-python run.py --agentfile hminimax.py  --pdepth 2 --nghosts 2
-python run.py --agentfile hminimax.py  --pdepth 10 --nghosts 2
+cd demo/lec3
+uv run python run.py --agentfile hminimax.py --pdepth 2 --nghosts 2 --slowmo on
+uv run python run.py --agentfile hminimax.py --pdepth 10 --nghosts 2 --slowmo on
 ```
 
 ---
@@ -402,9 +425,9 @@ class: middle, black-slide
 
 # Multi-agent games
 
-- What if the game is not zero-sum, or has *multiple players*?
+- What if the game is not zero-sum, or has .bold[multiple players]?
 - Generalization of Minimax:
-    - Terminal states are labeled with utility **tuples** (1 value per player).
+    - Terminal states are labeled with utility .bold[tuples] (1 value per player).
     - Intermediate states are also labeled with utility tuples.
     - Each player maximizes its own component.
     - May give rise to cooperation and competition dynamically.
@@ -424,7 +447,7 @@ class: middle
 # Stochastic games
 
 - In real life, many unpredictable external events can put us into unforeseen situations.
-- Games that mirror this unpredictability are called **stochastic games**. They include a random element, such as:
+- Games that mirror this unpredictability are called .bold[stochastic games]. They include a random element, such as:
     - explicit randomness: rolling a dice;
     - actions may fail: when moving a robot, wheels might slip.
 
@@ -437,8 +460,8 @@ class: middle
 
 class: middle
 
-- In a game tree, this random element can be **modeled** with *chance nodes* that map a state-action pair to the set of possible outcomes, along with their respective *probability*.
-- This is equivalent to considering the environment as an extra  *random agent* player that moves after each of the other players.
+- In a game tree, this random element can be .bold[modeled] with .bold[chance nodes] that map a state-action pair to the set of possible outcomes, along with their respective .bold[probability].
+- This is equivalent to considering the environment as an extra  .bold[random agent] player that moves after each of the other players.
 
 .center.width-30[![](figures/lec3/random-player.png)]
 
@@ -463,12 +486,18 @@ class: middle
 
 # Expectiminimax
 
-- Because of the uncertainty in the action outcomes, states no longer have a *definite* $\text{minimax}$ value.
-- However, we can calculate the **expected** value of a state under optimal play by the opponent.
+- Because of the uncertainty in the action outcomes, states no longer have a .bold[definite] $\text{minimax}$ value.
+- However, we can calculate the .bold[expected] value of a state under optimal play by the opponent.
     - i.e., the average over all possible outcomes of the chance nodes.
     - $\text{minimax}$ values correspond instead to the worst-case outcome.
 
-.center.width-100[![](figures/lec3/expectiminimax.png)]
+Writing ${v(s) = \text{expectiminimax}(s)}$ for short,
+$$v(s) = \begin{cases}
+\text{utility}(s) & \text{if } s \in T \\\\
+\max\limits\_a v(\text{result}(s, a)) & \text{if MAX plays} \\\\
+\min\limits\_a v(\text{result}(s, a)) & \text{if MIN plays} \\\\
+\sum\limits\_r P(r) \, v(\text{result}(s, r)) & \text{if CHANCE plays.}
+\end{cases}$$
 
 .question[Does taking the rational move mean the agent will be successful?]
 
@@ -480,7 +509,7 @@ class: middle
 
 - As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
 be approximated by stopping the recursion early and using an evaluation function.
-- However, to obtain correct move, the evaluation function should be a **positive linear transformation** of the expected utility of the state.
+- However, to obtain correct move, the evaluation function should be a .bold[positive linear transformation] of the expected utility of the state.
     - It is not enough for the evaluation function to just be order-preserving.
 - If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
 
@@ -490,14 +519,20 @@ be approximated by stopping the recursion early and using an evaluation function
 
 ---
 
+class: middle
+
+# Monte Carlo tree search
+
+---
+
 # Monte Carlo Tree Search
 
 ## Random playout evaluation
 
-- To evaluate a state, have the algorithm play **against itself** using *random moves*, thousands of times.
-- The sequence of random moves is called a *random playout*.
+- To evaluate a state, have the algorithm play .bold[against itself] using .bold[random moves], thousands of times.
+- The sequence of random moves is called a .bold[random playout].
 - Use the proportion of wins as the state evaluation.
-- This strategy does **not require domain knowledge**!
+- This strategy does .bold[not require domain knowledge]!
     - The game engine is all that is needed.
 
 ???
@@ -520,13 +555,11 @@ Each node $n$ in the current search tree maintains  two values:
 
 class: middle
 
-The algorithm searches the game tree as follows:
-1. *Selection*: start from root, select successive child nodes down to a node $n$ that is not fully expanded.
-2. *Expansion*: unless $n$ is a terminal state, create a new child node $n'$.
-3. *Simulation*: play a random playout from $n'$.
-4. *Backpropagation*: use the result of the playout to update information in the nodes on the path from $n'$ to the root.
+Each round of the search does four things: .bold[selection] down to a node that is not fully expanded, .bold[expansion] of one child, .bold[simulation] of a random playout from it, and .bold[backpropagation] of the result along the path back to the root.
 
-Repeat 1-4 for as long the time budget allows. Pick the best next direct move as the child of the root with the highest $N(n)$.
+.width-100[![](figures/lec3/mcts.svg)]
+
+Rounds are repeated for as long as the time budget allows. The move played is the one leading to the most visited child of the root.
 
 ---
 
@@ -548,12 +581,12 @@ class: middle
 
 ## Exploration and exploitation
 
-Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes that are selected at step 1.
+Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes made during the .bold[selection] step.
 
 During the traversal of the branch in the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
 $$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.$$
-- The first term  encourages the *exploitation* of higher-reward nodes.
-- The second term encourages the **exploration** of less-visited nodes.
+- The first term  encourages the .bold[exploitation] of higher-reward nodes.
+- The second term encourages the .bold[exploration] of less-visited nodes.
 - The constant $c>0$ controls the trade-off between exploitation and exploration.
 
 ---
@@ -584,11 +617,28 @@ class: middle, black-slide
 
 - $P_1$: Pacman uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_2$.
 - $P_2$: Ghost uses depth 2 search with an evaluation function that seeks Pacman, while assuming that Pacman follows $P_1$.
-- $P_3$: Pacman  uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_4$
+- $P_3$: Pacman uses depth 4 search with an evaluation function that avoids trouble, while assuming that the ghost follows $P_4$.
 - $P_4$: Ghost makes random moves.
 ]
 .kol-1-3[.width-100[![](figures/lec3/wa-setup.png)]]
 ]
+
+???
+
+The first two videos can be replayed live, from `demo/lec3`:
+
+```
+uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
+    --ghostagent cheeky --gdepth 2 --layout medium_adv
+uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
+    --ghostagent rightrandy --p 0 --layout medium_adv
+```
+
+The cheeky ghost searches the tree itself, to the depth given by `--gdepth`,
+which is P2; rightrandy with `--p 0` moves uniformly at random, which is P4.
+
+There is no expectimax agent in `SearchMethods/`, so P3 is shown by the
+recorded videos only.
 
 ---
 
@@ -672,79 +722,26 @@ class: middle
 
 ---
 
-# Checkers
-
-## 1951
-
-First computer player by Christopher Strachey.
-
-## 1994
-
-The computer program .bold[Chinook] ends the 40-year-reign of human champion Marion Tinsley.
-- Library of opening moves from grandmasters;
-- A deep search algorithm;
-- A good move evaluation function (based on a linear model);
-- A database for all positions with eight pieces or fewer.
-
----
-
 class: middle
 
-## 2007
-Checkers is **solved**. A weak solution is computationally proven.
-- The number of involved calculations was $10^{14}$, over a period of 18 years.
-- A draw is always guaranteed provided neither player makes a mistake.
+## Perfect information
 
-.center.width-50[![](figures/lec3/checkers-proof.png)]
+.grid[
+.kol-2-3[
+- .bold[1997], .bold[Deep Blue] defeats Garry Kasparov at chess: $2 \times 10^8$ positions per second, a sophisticated evaluation function, and search extended up to 40 plies on some lines.
+- .bold[2007], .bold[checkers is solved]: $10^{14}$ calculations over 18 years prove that perfect play by both sides is a draw.
+- .bold[2016], .bold[AlphaGo] beats Lee Sedol 4-1, then Ke Jie in 2017, by combining Monte Carlo tree search with deep learning trained on human and self-play games.
 
-.footnote[Schaeffer, Jonathan, et al. "Checkers is solved." science 317.5844 (2007): 1518-1522.]
+Chess and Go remain .bold[unsolved]: only their best play is now superhuman.
+]
+.kol-1-3[.center.width-100[![](figures/lec3/deep-blue.jpg)]]
+]
+
+.footnote[Schaeffer et al., "Checkers is solved", Science, 2007; Silver et al., "Mastering the game of Go", Nature, 2016.]
 
 ???
 
-A solved game is a game whose outcome (win, lose or draw) can be correctly predicted from any position, assuming that both players play perfectly. 
-
----
-
-# Chess
-
-## 1997
-
-- *Deep Blue* defeats human champion Gary Kasparov.
-    - $200000000$ position evaluations per second.
-    - Very sophisticated evaluation function.
-    - Undisclosed methods for extending some lines of search up to 40 plies.
-- Modern programs (e.g., Stockfish or AlphaZero) are better, if less historic.
-- Chess remains *unsolved* due to the complexity of the game.
-
-<br>
-.center.width-50[![](figures/lec3/deep-blue.jpg)]
-
----
-
-# Go
-
-For long, Go was considered as the Holy Grail of AI due to the size of its game tree.
-- On a 19x19, the number of legal positions is $\pm 2 \times 10^{170}$.
-- This results in **$\pm 10^{800}$ games**, considering a length of $400$ or less.
-
-<br>
-.center.width-50[![](figures/lec3/go.jpg)]
-
----
-
-class: middle
-
-## 2010-2014
-Using *Monte Carlo tree search* and **machine learning**, computer players reach low dan levels.
-
-## 2015-2017
-Google Deepmind invents AlphaGo.
-
-- 2015: AlphaGo beat Fan Hui, the European Go Champion.
-- 2016: AlphaGo beat Lee Sedol (4-1), a 9-dan grandmaster.
-- 2017: AlphaGo beat Ke Jie, 1st world human player.
-
-AlphaGo combines Monte Carlo tree search and **deep learning** with extensive training, both from human and computer play.
+A solved game is one whose outcome can be predicted from any position, assuming perfect play on both sides.
 
 ---
 
@@ -758,27 +755,47 @@ class: middle, black-slide, center
 
 class: middle
 
-## 2017
+## Learning to play, from less and less
 
-AlphaGo Zero combines *Monte Carlo tree search* and **deep learning** with extensive training, with self-play only
+- .bold[2017], .bold[AlphaGo Zero] reaches the same level from .bold[self-play only], with no human games.
+- .bold[2018], .bold[AlphaZero] applies the same recipe to chess, shogi and Go, given only the rules.
+- .bold[2020], .bold[MuZero] drops the rules too: it .bold[learns a model] of the game and plans with it, mastering Go, chess, shogi and Atari.
 
-.center.width-70[![](figures/lec3/alphagozero-training.gif)]
+.center.width-55[![](figures/lec3/alphagozero-training.gif)]
 
-.footnote[Credits: [AlphaGo Zero: Learning from scratch](https://deepmind.com/blog/alphago-zero-learning-scratch/)]
+.footnote[Credits: [AlphaGo Zero: Learning from scratch](https://deepmind.com/blog/alphago-zero-learning-scratch/); Schrittwieser et al., "Mastering Atari, Go, chess and shogi by planning with a learned model", Nature, 2020.]
+
+---
+
+class: middle
+
+## Imperfect information
+
+The assumption of .bold[perfect information] we made at the start is what these games drop:
+
+- .bold[2017-2019], .bold[Libratus] then .bold[Pluribus] beat professionals at no-limit poker, the latter with .bold[six players] at the table, where no notion of optimal play against all opponents exists.
+- .bold[2022], .bold[DeepNash] reaches expert level at .bold[Stratego], where each side hides its pieces.
+- .bold[2022], .bold[Cicero] plays .bold[Diplomacy] at human level, combining planning with .bold[negotiation in natural language].
+
+.question[What does an optimal strategy even mean when the opponents may cooperate, and lie?]
+
+.footnote[Brown and Sandholm, Science, 2017 and 2019; Perolat et al., Science, 2022; Meta FAIR, Science, 2022.]
 
 ---
 
 # Summary
 
-- Multi-player games are variants of search problems.
-- The difficulty is to account for the fact that the opponent may act arbitrarily.
-    - The optimal solution is a **strategy**, and not a fixed sequence of actions.
-- *Minimax* is an optimal algorithm for deterministic, turn-taking, two-player zero-sum game with perfect information.
-    - Due to practical time constraints, exploring the whole game tree is often **infeasible**.
-    - Approximations can be achieved with heuristics, reducing computing times.
-    - Minimax can be adapted to stochastic games.
-    - Minimax can be adapted to games with more than 2 players.
-- Optimal behavior is **relative** and depends on the assumptions we make about the world.
+- A .bold[game] adds ${\text{player}(s)}$, .bold[terminal states] ${T \subseteq \mathcal{S}}$ and a .bold[utility] ${\text{utility}(s, p)}$ to the search problem of lecture 2. Its solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, not a sequence ${a\_{1:T}}$.
+
+- .bold[Minimax] backs the utilities up the tree, ${\max\limits\_a}$ for MAX and ${\min\limits\_a}$ for MIN, in ${O(b^m)}$ time and ${O(bm)}$ space.
+
+- ${\alpha}$-${\beta}$ .bold[pruning] returns the .bold[same move] while examining ${O(b^{m/2})}$ nodes at best: twice the depth in the same time.
+
+- .bold[H-minimax] cuts the search at depth ${d}$ and replaces the utility by an .bold[evaluation function], at the price of the .bold[horizon effect].
+
+- .bold[Expectiminimax] adds .bold[chance nodes], worth ${\sum\limits\_r P(r) \, v(\text{result}(s, r))}$, and .bold[Monte Carlo tree search] samples .bold[random playouts] instead of evaluating.
+
+- Each is optimal only .bold[relative to a model] of the opponent. Assuming the .bold[wrong] one is not playing well.
 
 ---
 

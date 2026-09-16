@@ -2,8 +2,8 @@
 
     uv run python scripts/draw_search_algorithms.py
 
-Writes `figures/lec2/tree-search.svg` and `figures/lec2/graph-search.svg`, replacing the
-screenshots taken from Russell and Norvig. The listings are the ones of the exercise sheets
+Writes the algorithm listings of lectures 2 and 3 as SVG, replacing the screenshots taken
+from Russell and Norvig. The listings are the ones of the exercise sheets
 (`exercises/exercises.sty`, `pseudocode` environment): keywords in bold, procedure names in
 small capitals, variables in italics, each in its own colour. Roboto and the KaTeX faces are embedded from
 `assets/fonts/`, since an SVG shown as an image cannot load fonts from the page.
@@ -31,12 +31,16 @@ MARGIN = 10
 FACES = [("Roboto", 400, "normal", "Roboto-400-latin"),
          ("Roboto", 900, "normal", "Roboto-900-latin"),
          ("KaTeXItalic", 400, "normal", "KaTeX_Main-Italic"),
-         ("KaTeXMain", 400, "normal", "KaTeX_Main-Regular")]
+         ("KaTeXMain", 400, "normal", "KaTeX_Main-Regular"),
+         ("KaTeXMathItalic", 400, "normal", "KaTeX_Math-Italic")]
 
 
-def fonts():
+def fonts(used):
+    """Embed the faces a listing actually uses, and no others."""
     faces = []
     for family, weight, style, name in FACES:
+        if family not in used:
+            continue
         path = ROOT / "assets" / "fonts" / f"{name}.woff2"
         data = base64.b64encode(path.read_bytes()).decode()
         faces.append(f"@font-face {{ font-family: '{family}'; font-weight: {weight}; font-style: {style}; "
@@ -77,17 +81,28 @@ def gets():
     return span(" ← ", family="KaTeXMain", fill=INK)
 
 
+def sym(text):
+    """A mathematical symbol, from the KaTeX faces (∞, ≥, ≤)."""
+    return span(text, family="KaTeXMain", fill=INK)
+
+
+def greek(letter):
+    """A Greek variable, italic as on the slides (KaTeX_Main-Italic has none)."""
+    return span(letter, family="KaTeXMathItalic", fill=INK)
+
+
 def line(level, tokens, y):
     x = MARGIN + level * INDENT
     return (f'<text x="{x:g}" y="{y:g}" xml:space="preserve">' + "".join(tokens) + "</text>")
 
 
-def listing(name, lines, width):
+def listing(name, lines, width, lecture="lec2"):
     height = MARGIN + len(lines) * LINE
     body = "".join(line(level, tokens, MARGIN + (i + 0.8) * LINE) for i, (level, tokens) in enumerate(lines))
+    used = {family for family, *_ in FACES if f'font-family="{family},' in body}
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height:g}" width="{width}" '
-           f'height="{height:g}"><defs>{fonts()}</defs>{body}</svg>\n')
-    out = ROOT / "figures" / "lec2" / f"{name}.svg"
+           f'height="{height:g}"><defs>{fonts(used)}</defs>{body}</svg>\n')
+    out = ROOT / "figures" / lecture / f"{name}.svg"
     out.write_text(svg, encoding="utf-8")
     print(f"{out.relative_to(ROOT)}  {width}x{height:g}")
 
@@ -149,7 +164,69 @@ simple = [
     (1, [kw("return "), var("action")]),
 ]
 
+# Monte Carlo tree search, as lecture 3 describes it: selection by UCB1, one expansion,
+# a random playout, then backpropagation along the path
+mcts = [
+    (0, [kw("function "), proc("MCTS"), txt("("), var("state"), txt(", "), var("budget"), txt(") "),
+         kw("returns "), txt("an action")]),
+    (1, [var("root"), gets(), proc("Make-Node"), txt("("), var("state"), txt(")")]),
+    (1, [kw("while "), txt("time remains in "), var("budget"), kw(" do")]),
+    (2, [var("n"), gets(), proc("Select"), txt("("), var("root"), txt(")")]),
+    (2, [var("n'"), gets(), proc("Expand"), txt("("), var("n"), txt(")")]),
+    (2, [var("reward"), gets(), proc("Simulate"), txt("("), var("n'"), txt(")")]),
+    (2, [proc("Backpropagate"), txt("("), var("n'"), txt(", "), var("reward"), txt(")")]),
+    (1, [kw("end")]),
+    (1, [kw("return "), txt("the action leading to the child of "), var("root"), txt(" with the largest "),
+         var("N")]),
+    (0, []),
+    (0, [kw("function "), proc("Select"), txt("("), var("n"), txt(") "), kw("returns "), txt("a node to expand")]),
+    (1, [kw("while "), var("n"), txt(" is fully expanded and not terminal "), kw("do")]),
+    (2, [var("n"), gets(), txt("the child of "), var("n"), txt(" maximising "), proc("UCB1")]),
+    (1, [kw("end")]),
+    (1, [kw("return "), var("n")]),
+]
+
+# Figure 5.7 of Russell and Norvig, without the caption of the book. The book
+# writes Result(s, a) here, where s is the state of the enclosing call; it is
+# spelled out as Result(state, a) so that the listing reads on its own.
+alpha_beta = [
+    (0, [kw("function "), proc("Alpha-Beta-Search"), txt("("), var("state"), txt(") "),
+         kw("returns "), txt("an action")]),
+    (1, [var("v"), gets(), proc("Max-Value"), txt("("), var("state"), txt(", "), sym("−∞"), txt(", "),
+         sym("+∞"), txt(")")]),
+    (1, [kw("return "), txt("the "), var("action"), txt(" in "), proc("Actions"), txt("("), var("state"),
+         txt(") with value "), var("v")]),
+    (0, []),
+    (0, [kw("function "), proc("Max-Value"), txt("("), var("state"), txt(", "), greek("α"), txt(", "),
+         greek("β"), txt(") "), kw("returns "), txt("a utility value")]),
+    (1, [kw("if "), proc("Terminal-Test"), txt("("), var("state"), txt(") "), kw("then return "),
+         proc("Utility"), txt("("), var("state"), txt(")")]),
+    (1, [var("v"), gets(), sym("−∞")]),
+    (1, [kw("for each "), var("a"), txt(" in "), proc("Actions"), txt("("), var("state"), txt(") "), kw("do")]),
+    (2, [var("v"), gets(), proc("Max"), txt("("), var("v"), txt(", "), proc("Min-Value"), txt("("),
+         proc("Result"), txt("("), var("state"), txt(", "), var("a"), txt("), "), greek("α"), txt(", "),
+         greek("β"), txt("))")]),
+    (2, [kw("if "), var("v"), txt(" "), sym("≥"), txt(" "), greek("β"), txt(" "), kw("then return "), var("v")]),
+    (2, [greek("α"), gets(), proc("Max"), txt("("), greek("α"), txt(", "), var("v"), txt(")")]),
+    (1, [kw("return "), var("v")]),
+    (0, []),
+    (0, [kw("function "), proc("Min-Value"), txt("("), var("state"), txt(", "), greek("α"), txt(", "),
+         greek("β"), txt(") "), kw("returns "), txt("a utility value")]),
+    (1, [kw("if "), proc("Terminal-Test"), txt("("), var("state"), txt(") "), kw("then return "),
+         proc("Utility"), txt("("), var("state"), txt(")")]),
+    (1, [var("v"), gets(), sym("+∞")]),
+    (1, [kw("for each "), var("a"), txt(" in "), proc("Actions"), txt("("), var("state"), txt(") "), kw("do")]),
+    (2, [var("v"), gets(), proc("Min"), txt("("), var("v"), txt(", "), proc("Max-Value"), txt("("),
+         proc("Result"), txt("("), var("state"), txt(", "), var("a"), txt("), "), greek("α"), txt(", "),
+         greek("β"), txt("))")]),
+    (2, [kw("if "), var("v"), txt(" "), sym("≤"), txt(" "), greek("α"), txt(" "), kw("then return "), var("v")]),
+    (2, [greek("β"), gets(), proc("Min"), txt("("), greek("β"), txt(", "), var("v"), txt(")")]),
+    (1, [kw("return "), var("v")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
     listing("problem-solving-agent", simple, 960)
+    listing("mcts", mcts, 1000, lecture="lec3")
+    listing("alpha-beta-search", alpha_beta, 1000, lecture="lec3")
