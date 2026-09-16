@@ -103,7 +103,7 @@ Implement an intelligent agent for playing .bold[Pacman].
     - Project 0: 0% (tutorial of September 24)
     - Project 1: 15%
     - Project 2: 15%
-- Programming projects are .bold[mandatory] for presenting the exam.
+- Programming projects are .bold[mandatory] for sitting the exam.
 
 .alert[You must obtain at least 8/20 on the written exam. If you do, the final grade is the weighted average of the exam (70%) and the projects (30%). Otherwise, the final grade is the exam grade.]
 
