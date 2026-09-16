@@ -1,99 +1,13 @@
 """Uniform-cost search agent.
 
-Demo of lecture 2, originally written by Victor Mangeleer. Tidied without
-changing what the algorithm does, so that the expanded-node counts shown in
-class are unchanged: the fringe is scanned linearly for the cheapest node,
-and `cost_list` is kept in step with it by index, as in the original.
+The fringe is ordered by ${g(n)}$ alone: no heuristic, the step cost of
+`search.py`.
+
+Demo of lecture 2. The search itself is in `search.py`.
 """
 
-from pacman_module.game import Agent
-from pacman_module.pacman import Directions
+from search import SearchAgent
 
 
-def key(state):
-    """Return a hashable key identifying a game state."""
-    return (state.getFood(), state.getPacmanPosition())
-
-
-def heuristic(state):
-    """No heuristic: uniform-cost search orders the fringe by g(n) alone."""
-    return 0
-
-
-def costfunction(state, initial_state, previous_cost):
-    """Return the cost of reaching `state`, given its parent's cost.
-
-    A dot is cheap (0.1), a capsule expensive (5), an empty cell costs 1.
-    """
-    x, y = state.getPacmanPosition()
-    food_position = initial_state.getFood()
-    capsule_position = initial_state.getCapsules()
-
-    cost = previous_cost - heuristic(initial_state)
-
-    if food_position[x][y] is True:
-        return cost + 0.1
-    elif (x, y) in capsule_position:
-        return cost + 5
-    else:
-        return cost + 1
-
-
-class PacmanAgent(Agent):
+class PacmanAgent(SearchAgent):
     """A Pacman agent based on uniform-cost search."""
-
-    def __init__(self, args):
-        self.moves = []
-
-    def get_action(self, state):
-        """Return a legal move for `state`, as defined in `game.Directions`."""
-        if not self.moves:
-            self.moves = self.ucs(state)
-
-        return self.moves.pop(0) if self.moves else Directions.STOP
-
-    def ucs(self, state):
-        """Return the moves solving the layout, or an empty list on failure."""
-        path = []
-        fringe = [(state, path)]
-        closed = set()
-
-        # Cost of each node of the fringe, at the same index
-        cost_list = []
-        index_min_cost = -1
-
-        while fringe:
-            if not cost_list:
-                current, path = fringe.pop()
-            else:
-                # The cost of the node expanded last is no longer needed
-                if index_min_cost != -1:
-                    cost_list.pop(index_min_cost)
-
-                index_min_cost = cost_list.index(min(cost_list))
-                current, path = fringe.pop(index_min_cost)
-
-            if current.isWin():
-                return path
-
-            current_key = key(current)
-
-            if current_key not in closed:
-                closed.add(current_key)
-
-                for next_state, action in current.generatePacmanSuccessors():
-                    if next_state.isWin():
-                        return path + [action]
-
-                    if index_min_cost != -1:
-                        previous = cost_list[index_min_cost]
-                    else:
-                        previous = -heuristic(current)
-
-                    cost = costfunction(next_state, current, previous)
-                    cost += heuristic(next_state)
-
-                    cost_list.append(cost)
-                    fringe.append((next_state, path + [action]))
-
-        return []

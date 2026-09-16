@@ -1,0 +1,287 @@
+"""Run a Pacman game with one of the h-minimax agents of lecture 3.
+
+    uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 --slowmo on
+
+Demo of lecture 3, originally written by Victor Mangeleer. Tidied without
+changing what it does; see README.md for the options.
+"""
+
+import importlib.util
+import os
+import sys
+from argparse import ArgumentParser, ArgumentTypeError
+
+from Display import display_b, display_PACMANLOGO
+from pacman_module.ghostAgents import (
+    CheekyGhost1,
+    CheekyGhost2,
+    CheekyGhost3,
+    CheekyGhost4,
+    CheekyGhost5,
+    CheekyGhost6,
+    CheekyGhost7,
+    CheekyGhost8,
+    CheekyGhost9,
+    CheekyGhost10,
+    DumbyGhost,
+    EastRandyGhost,
+    GreedyGhost,
+    SmartyGhost,
+)
+from pacman_module.pacman import runGame
+
+# A cheeky ghost searches the tree itself, one class per depth
+CHEEKY = [
+    CheekyGhost1, CheekyGhost2, CheekyGhost3, CheekyGhost4, CheekyGhost5,
+    CheekyGhost6, CheekyGhost7, CheekyGhost8, CheekyGhost9, CheekyGhost10,
+]
+
+GHOSTS = {
+    "greedy": GreedyGhost,
+    "smarty": SmartyGhost,
+    "dumby": DumbyGhost,
+    "rightrandy": EastRandyGhost,
+    **{f"cheekyghost_{d}": CHEEKY[d - 1] for d in range(1, 11)},
+}
+
+GHOST_NAMES = {
+    "smarty": "Smarty",
+    "greedy": "Greedy",
+    "cheeky": "Cheeky",
+    "dumby": "Dumby",
+    "rightrandy": "RightRandy",
+}
+
+
+def restricted_float(x):
+    """Argument type: a float in [0.1, 1.0]."""
+    x = float(x)
+
+    if x < 0.1 or x > 1.0:
+        raise ArgumentTypeError(f"{x!r} not in range [0.1, 1.0]")
+
+    return x
+
+
+def positive_integer(x):
+    """Argument type: a non-negative integer."""
+    x = int(x)
+
+    if x < 0:
+        raise ArgumentTypeError(f"{x!r} is not >= 0")
+
+    return x
+
+
+def layout_thin_borders(layout, thickness):
+    """Write a copy of `layout` with borders `thickness` cells thick.
+
+    Returns the name of the layout to play, unchanged when `thickness` is 1.
+    """
+    if thickness <= 1:
+        return layout
+
+    w = thickness - 1
+    lay = layout.replace(".lay", "")
+
+    with open(f"pacman_module/layouts/{lay}.lay") as f:
+        lines = f.readlines()
+
+    for _ in range(w * 2):
+        lines[0] = '%' + lines[0]
+        lines[-1] = '%' + lines[-1]
+
+    for _ in range(w):
+        lines.insert(0, lines[0])
+        lines.append(lines[0])
+
+    for i in range(w + 1, len(lines) - w - 1):
+        lines[i] = lines[i].replace("\n", "")
+        for _ in range(w):
+            lines[i] = '%' + lines[i] + '%'
+        lines[i] += "\n"
+
+    with open(f"pacman_module/layouts/{lay}_thicker.lay", "w+") as f:
+        f.writelines(lines)
+
+    return f"{lay}_thicker.lay"
+
+
+def load_agent_from_file(filepath, class_module):
+    """Load and return the `class_module` class defined in `filepath`."""
+    mod_name = os.path.splitext(os.path.split(filepath)[-1])[0]
+
+    # The agents of SearchMethods/ import search.py from their own folder
+    folder = os.path.dirname(os.path.abspath(filepath))
+    if folder not in sys.path:
+        sys.path.insert(0, folder)
+
+    # importlib replaces imp, which was removed in Python 3.12
+    spec = importlib.util.spec_from_file_location(mod_name, filepath)
+    py_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(py_mod)
+
+    return getattr(py_mod, class_module, None)
+
+
+def agent_path(agentfile):
+    """Return the path of `agentfile`, looked up in `SearchMethods/` first."""
+    inside = os.path.join("SearchMethods", agentfile)
+
+    return inside if os.path.exists(inside) else agentfile
+
+
+def search_name(agentfile):
+    """Return the name of the search implemented by `agentfile`."""
+    if "expectimax" in agentfile:
+        return "Expectimax - Advanced - Euclidean Distance"
+
+    if "ADV" in agentfile:
+        return "H-Minimax - Advanced - Euclidean Distance"
+
+    return "H-Minimax - Euclidean Distance"
+
+
+def ghost_name(ghostagent):
+    """Return the display name of `ghostagent`."""
+    for key, name in GHOST_NAMES.items():
+        if key in ghostagent:
+            return name
+
+    return ghostagent
+
+
+def print_results(score, computation_time, expanded_nodes):
+    """Print the score, the expanded nodes and the computation time."""
+    rows = [
+        ("Score", score),
+        ("Expanded nodes", expanded_nodes),
+        ("Computation Time [s]", computation_time),
+    ]
+    width = len(f"Total computation time (seconds) : {computation_time}") - 8
+    rule = "-" * width
+
+    print(rule)
+    for name, value in rows:
+        print(f"{name:<20} | {value}".ljust(width - 1) + "|")
+        print(rule)
+    print("\n")
+
+
+def parse_args():
+    """Return the command-line arguments of the demo."""
+    usage = """
+    USAGE:      python run.py <game_options> <agent_options>
+    EXAMPLES:   (1) python run.py
+                    - plays a game with the human agent
+                      in small maze
+    """
+    parser = ArgumentParser(usage)
+
+    parser.add_argument(
+        '--pdepth',
+        help='Depth at which Pacman cuts off the search.',
+        type=int,
+        default=4)
+    parser.add_argument(
+        '--slowmo',
+        help='Slow the game down, so that it can be commented.',
+        choices=["on", "off"],
+        default="off")
+    parser.add_argument(
+        '--gdepth',
+        help='Depth at which a cheeky ghost cuts off the search.',
+        type=int,
+        default=2)
+    parser.add_argument(
+        '--seed',
+        help='Seed for random number generator',
+        type=int,
+        default=-1)
+    parser.add_argument(
+        '--agentfile',
+        help='Agent of `SearchMethods/`: hminimax.py, hminimax_ADV.py or '
+             'expectimax.py. The cutoff depth is --pdepth.',
+        default="hminimax.py")
+    parser.add_argument(
+        '--ghostagent',
+        help='Ghost agent available in the `ghostAgents` module.',
+        choices=["dumby", "greedy", "smarty", "rightrandy", "cheeky"],
+        default="smarty")
+    parser.add_argument(
+        '--layout',
+        help='Maze layout (from layout folder).',
+        default="EH1")
+    parser.add_argument(
+        '--nghosts',
+        help='Maximum number of ghosts in a maze.',
+        type=int, default=1)
+    parser.add_argument(
+        '--hiddenghosts',
+        help='Whether the ghost is graphically hidden or not.',
+        default=False, action="store_true")
+    parser.add_argument(
+        '--silentdisplay',
+        help="Disable the graphical display of the game.",
+        action="store_true")
+    parser.add_argument(
+        '--bsagentfile',
+        help='Python file containing a `BeliefStateAgent` class.',
+        default=None)
+    parser.add_argument(
+        '--w',
+        help='Thickness of the borders of the layout.',
+        type=int, default=1)
+    parser.add_argument(
+        '--p',
+        help='Parameter p of the rightrandy ghost.',
+        type=float, default=0.5)
+
+    return parser.parse_args()
+
+
+def main():
+    """Play one game and print what it cost to solve it."""
+    args = parse_args()
+
+    if args.ghostagent == "cheeky":
+        args.ghostagent = f"cheekyghost_{args.gdepth}"
+
+    display_PACMANLOGO()
+    display_b("Game's Information")
+    print(f"\nSearch Method        : {search_name(args.agentfile)}")
+    print(f"\nPacman's tree depth  : {args.pdepth}")
+    print(f"\nGhost's mindset      : {ghost_name(args.ghostagent)}")
+
+    if "cheeky" in args.ghostagent:
+        print(f"\nGhost's tree depth   : {args.gdepth}")
+
+    if args.agentfile == "humanagent.py" and args.silentdisplay:
+        print("Human agent cannot play without graphical display")
+        sys.exit()
+
+    agent = load_agent_from_file(agent_path(args.agentfile), "PacmanAgent")(args)
+
+    ghost = GHOSTS[args.ghostagent]
+    ghosts = [ghost(i + 1, args) for i in range(max(args.nghosts, 0))]
+
+    bsagent = None
+    if args.bsagentfile is not None:
+        bsagent = load_agent_from_file(
+            args.bsagentfile, "BeliefStateAgent")(args)
+
+    layout = layout_thin_borders(args.layout, args.w)
+
+    score, computation_time, expanded_nodes = runGame(
+        layout, agent, ghosts, bsagent, not args.silentdisplay,
+        expout=0, hiddenGhosts=args.hiddenghosts)
+
+    print_results(score, computation_time, expanded_nodes)
+
+    # Scratch file read back by the scripts that compare the agents
+    with open("temp", "w+") as f:
+        f.write(f"{score};{computation_time};{expanded_nodes}")
+
+
+if __name__ == '__main__':
+    main()

@@ -15,6 +15,10 @@ uv run python run.py --agentfile dfs.py --layout ex --show 1
 
 - `--agentfile`: `dfs.py`, `bfs.py`, `ucs.py`, `gs.py` (greedy), `astar0.py`
   (Euclidean), `astar1.py` (Manhattan), `astar2.py` (exact maze distance).
+
+  All of them are the same graph search, which lives in `search.py`; each file
+  sets only the heuristic *h(n)* and the cost *g(n)* that order the fringe.
+  Depth-first is the exception, its fringe being a LIFO stack.
 - `--layout`: `ex` (default, made for the demos), `small`, `medium`, `large`.
 - `--show`: `1` draws Pacman's path, `0` does not.
 - `--silentdisplay`: no window, prints the result table only.
