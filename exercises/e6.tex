@@ -332,7 +332,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \part Are there functions that can't be represented by all proposed networks? If yes, explain why and what you would need to model them.
 
     \begin{solution}
-        Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, \ldots{} (see slide 48 of the ``Machine learning and neural networks'' lecture).
+        Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, \ldots{} (see the activation functions of the \enquote{Machine learning and neural networks} lecture).
 
         However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of part 8 should be sufficient.
 
