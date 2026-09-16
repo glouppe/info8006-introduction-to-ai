@@ -248,7 +248,7 @@
     \par
     \begin{center}
     \begin{minipage}{\linewidth}
-    \small
+    \footnotesize
     \begin{tabbing}
     \hspace*{1.8em}\=\hspace*{1.8em}\=\hspace*{1.8em}\=\kill
 }{%
@@ -285,6 +285,8 @@
     \exercises@heading{Recap}%
     \setlength{\parindent}{0pt}%
     \setlength{\parskip}{0.5\baselineskip}%
+    % a recap is a summary: its lists are tight, not spaced out like the exercises'
+    \setlist{topsep=0pt, itemsep=2pt, parsep=0pt}%
 }{%
     \par
 }
