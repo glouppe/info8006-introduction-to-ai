@@ -1,11 +1,8 @@
-"""
------------------------------------------------------------
-Introduction to artificial intelligence - Course's Examples
------------------------------------------------------------
-@ Victor Mangeleer - S181670
+"""A* agent, with the Manhattan distance as heuristic.
 
-H(n) = Manhattan Distance
-
+Demo of lecture 2, originally written by Victor Mangeleer. Tidied without
+changing what the algorithm does, so that the expanded-node counts shown in
+class are unchanged: the fringe is ordered by f(n) = g(n) + h(n).
 """
 
 from pacman_module.game import Agent
@@ -14,256 +11,99 @@ from pacman_module.util import manhattanDistance
 
 
 def key(state):
-    """
-    Returns a key that uniquely identifies a Pacman game state.
-
-    Arguments:
-    ----------
-    - `state`: the current game state. See FAQ and class
-               `pacman.GameState`.
-
-    Return:
-    -------
-    - A hashable key object that uniquely identifies a Pacman game state.
-    """
-
+    """Return a hashable key identifying a game state."""
     return (state.getFood(), state.getPacmanPosition())
 
 
 def heuristic(state):
-    """
-    Fonction used to get the heuristic value of a given state
-    by using the Manhattan distance.
-
-    Arguments:
-    ----------
-    - 'state' : the current game state. See FAQ and class
-                `pacman.GameState`.
-
-    Return:
-    -------
-    - Returns the distance from Pacman to the furthest dot using
-      the Manhattan distance.
-    """
-
-    # 1 - Retrieves the position of the dots and Pacman.
+    """Return the Manhattan distance from Pacman to the furthest dot."""
     food_position = state.getFood()
     pacman_position = state.getPacmanPosition()
 
-    # 2 - We determine the size of the grid in order to later go through it.
-    length = 0
-    for boolean in food_position:
-        length = length + 1
+    distances = [
+        manhattanDistance(pacman_position, (i, j))
+        for i, column in enumerate(food_position)
+        for j in range(len(food_position[0]))
+        if column[j] is True
+    ]
 
-    width = len(food_position[0])
-
-    # 3 - Stores the different Manhattan distances calculated.
-    distances = []
-
-    # 4 - Computation of the Manhattan distance.
-    i = j = 0
-
-    while i < length:
-        while j < width:
-
-            # Calculates the ManhattanDistance only for
-            # the cells where we can find a dot on it.
-            if food_position[i][j] is True:
-                distances.append(manhattanDistance(pacman_position, (i, j)))
-
-            j = j + 1
-
-        i = i + 1
-        j = 0
-
-    # 5 - The returned value is the longest distance,
-    # i.e the distance to the furthest dot.
-    return(max(distances))
+    return max(distances)
 
 
 def costfunction(state, initial_state, previous_cost):
+    """Return the cost of reaching `state`, given its parent's cost.
+
+    A dot is cheap (0.1), a capsule expensive (5), an empty cell costs 1.
     """
-    Fonction used to compute the cost associated to a state.
-
-    Arguments:
-    ----------
-    - 'state' : the current game state. See FAQ and class
-                `pacman.GameState`.
-
-    - 'initial_state' : corresponds to a save of the initial
-                        state of the game in order to retrieve
-                        all the initial positions of the dots and
-                        the capsules
-
-    - 'previous_cost' : contains the value of the heuristic from
-                        the parent state
-
-    Return:
-    -------
-    - Returns the cost of a potential state, i.e Pacman's cost to
-      transition from one state to the one given in argument.
-    """
-
-    # 1 - Retrieves the position of Pacman, the food dots and the capsules.
-    (x, y) = state.getPacmanPosition()
+    x, y = state.getPacmanPosition()
     food_position = initial_state.getFood()
     capsule_position = initial_state.getCapsules()
 
-    # 2 - Contains the total cost of the parent state in
-    # order to determine the final cost of the next state.
     cost = previous_cost - heuristic(initial_state)
 
-    """
-    Note : Depending of what lays on this position, we return an arbitrary
-    value that represents the cost Pacman will have to pay if it wants to
-    reach this state.
-    """
-
-    # CASE 1 - Dot (Best case).
     if food_position[x][y] is True:
         return cost + 0.1
-
-    # CASE 2 - Capsule (Worst case).
     elif (x, y) in capsule_position:
         return cost + 5
-
-    # CASE 3 - Nothing (Middle case).
     else:
         return cost + 1
 
 
 class PacmanAgent(Agent):
+    """A Pacman agent based on A* with the Manhattan distance."""
 
     def __init__(self, args):
-        """
-        Arguments:
-        ----------
-        - `args`: Namespace of arguments from command-line prompt.
-        """
-
-        # This list will contains all the moves Pacman will execute
         self.moves = []
 
     def get_action(self, state):
-        """
-        Given a pacman game state, returns a legal move.
-
-        Arguments:
-        ----------
-        - `state`: the current game state. See FAQ and class
-                   `pacman.GameState`.
-
-        Return:
-        -------
-        - Given a pacman game state, returns a legal move
-          which is defined in `game.Directions`.
-        """
-
-        # 1 - If Pacman has no move available, we try to find some
-        # by using the A star algorithm on the current game state.
+        """Return a legal move for `state`, as defined in `game.Directions`."""
         if not self.moves:
             self.moves = self.astar(state)
 
-        # 2 - We try to return an action.
-        try:
-            return self.moves.pop(0)
-
-        # 3 - No actions are available so we trigger an exception.
-        except IndexError:
-            return Directions.STOP
+        return self.moves.pop(0) if self.moves else Directions.STOP
 
     def astar(self, state):
-        """
-        Given a pacman game state, returns a list of legal moves
-        to solve the search layout based on the A* algorithm.
-
-        Arguments:
-        ----------
-        - `state`: the current game state. See FAQ and class
-                  `pacman.GameState`.
-
-        Return:
-        -------
-        - A list of legal moves as defined in `game.Directions`.
-        """
-
-        # 1 - Declaration of variables :
-        # Remembers the path Pacman took (West, East, North,...).
+        """Return the moves solving the layout, or an empty list on failure."""
         path = []
-
-        # Contains the state and the path associated to it.
         fringe = [(state, path)]
-
-        # Contains all the different states that have already been visited.
         closed = set()
 
-        # Contains the cost c = g(n) + h(n) of each next state available.
-        # found in the fringe
+        # f(n) of each node of the fringe, at the same index
         cost_list = []
-
-        # Contains the index of the lowest path cost (Initially set to -1).
         index_min_cost = -1
 
-        # 2 - Search of a solution.
-        while True:
-
-            # 2.1 - If there are no nodes left, exits.
-            if len(fringe) == 0:
-                return []  # failure
-
-            # 2.2 - Checks if the current state is the initial one.
-            if len(cost_list) == 0:
+        while fringe:
+            if not cost_list:
                 current, path = fringe.pop()
-
-            # 2.3 - Search of the cheapest state.
-            elif len(cost_list) != 0:
+            else:
+                # The cost of the node expanded last is no longer needed
                 if index_min_cost != -1:
                     cost_list.pop(index_min_cost)
 
-                # Retrieves the index of the smallest value in cost_list.
                 index_min_cost = cost_list.index(min(cost_list))
-
-                # Update of the state
                 current, path = fringe.pop(index_min_cost)
 
-            # Checks if the current state is a winning state.
             if current.isWin():
                 return path
 
-            # 2.4 - A "hashkey" representing
-            # the current state is created.
             current_key = key(current)
 
-            # 2.5 - Checks if the state has already been visited,
-            # if that's not the case, we explore it.
             if current_key not in closed:
-
-                # 2.5.1 - The state is added in the list of
-                # already visited states.
                 closed.add(current_key)
 
-                # 2.5.2 - Looks through the successors of the current state.
                 for next_state, action in current.generatePacmanSuccessors():
-
-                    # Checks if the successor is a winning state.
                     if next_state.isWin():
                         return path + [action]
 
-                    # Computation of the state's path cost.
                     if index_min_cost != -1:
-                        cl = cost_list[index_min_cost]
-                        cost = costfunction(next_state, current, cl)
-                        cost += heuristic(next_state)
-
+                        previous = cost_list[index_min_cost]
                     else:
-                        h = -heuristic(current)
-                        cost = costfunction(next_state, current, h)
-                        cost += heuristic(next_state)
+                        previous = -heuristic(current)
 
-                    # We add it to the list.
+                    cost = costfunction(next_state, current, previous)
+                    cost += heuristic(next_state)
+
                     cost_list.append(cost)
-
-                    # The next state is added to the fringe.
                     fringe.append((next_state, path + [action]))
 
-        return path
+        return []

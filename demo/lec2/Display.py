@@ -1,69 +1,30 @@
-"""
------------------------------------------------------------
-Introduction to artificial intelligence - Course's Examples
------------------------------------------------------------
-@ Victor Mangeleer - S181670
+"""Terminal output of the demo: banner, messages and framed titles."""
 
----------------
-Documentation :
----------------
-Ensemble de fonctions utilisées pour afficher des informations sur le terminal
-
+LOGO = r"""
+ _ __   __ _  ___ _ __ ___   __ _ _ __
+| '_ \ / _` |/ __| '_ ` _ \ / _` | '_ \
+| |_) | (_| | (__| | | | | | (_| | | | |
+| .__/ \__,_|\___|_| |_| |_|\__,_|_| |_|
+| |
+|_|
 """
+
 
 def display(message):
-    """
-    Documentation
-    _____________
-    
-    Affiche sur le terminal un message
-
-    Keywords
-    ________
-
-    - 'message' : le message à afficher
-
-    """
-
+    """Print `message`, followed by a blank line."""
     print(message + "\n")
 
+
 def display_PACMANLOGO():
-    print(" ")
-    print(" _ __   __ _  ___ _ __ ___   __ _ _ __  ")
-    print("| '_ \ / _` |/ __| '_ ` _ \ / _` | '_ \ ")
-    print("| |_) | (_| | (__| | | | | | (_| | | | |")
-    print("| .__/ \__,_|\___|_| |_| |_|\__,_|_| |_|")
-    print("| |                                     ")
-    print("|_|                                     ")
-    print(" ")
+    """Print the Pacman banner."""
+    print(LOGO)
+
 
 def display_b(message):
+    """Print `message` between two rules of its own width."""
+    rule = "-" * len(message)
 
-    """
-    Documentation
-    _____________
-    
-    Affiche sur le terminal un message avec des bordures
-
-    Keywords
-    ________
-
-    - 'message' : le message à afficher
-
-    """
-    
-    # Longueur du message pour la bordure
-    t_length = len(message)
-
-    # Bordure du message
-    bordure = ""
-
-    for i in range(t_length):
-
-        bordure = bordure + "-"
-
-    # Affichage terminal
-    print("")
-    print(bordure)
+    print()
+    print(rule)
     print(message)
-    print(bordure)
+    print(rule)

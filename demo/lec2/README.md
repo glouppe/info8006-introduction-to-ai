@@ -42,11 +42,3 @@ Expanded nodes on `ex`, which is the point of the demo:
 Depth-first and greedy search expand few nodes but return a suboptimal path;
 uniform-cost search is optimal but expands everything; A* is optimal and
 expands fewer and fewer nodes as the heuristic gets closer to the true cost.
-
-## Changes to the original bundle
-
-The code is kept as it was, except for what Python 3.13 required:
-
-- `run.py` loads agents with `importlib` instead of `imp`, removed in 3.12.
-- `pacman_module/textDisplay.py`: `update()` accepts the `show` flag that
-  `game.run()` passes, so `--silentdisplay` no longer raises a `TypeError`.
