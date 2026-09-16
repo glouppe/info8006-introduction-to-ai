@@ -72,19 +72,15 @@ Yes, provided the correct decision can be made from the current percept, i.e. if
 
 # Problem-solving agents
 
-Assumptions:
-- .bold[Single-agent], .bold[observable], .bold[deterministic] and .bold[known] environment.
+A .bold[problem-solving agent] is the .bold[goal-based agent] of lecture 1: given goal states ${G \subseteq \mathcal{S}}$, it .bold[searches] its transition model for an action sequence that reaches one of them, instead of reacting to the current percept.
 
-Problem-solving agents
-- take decisions based on (hypothesized) consequences of actions, by considering .bold[how the world could be];
-- must have a model of how the world evolves in response to actions;
-- formulate a goal, explicitly.
+Assumptions: the environment is .bold[single-agent], .bold[fully observable], .bold[deterministic] and .bold[known], so that the agent knows ${s\_{t+1} = \text{result}(s\_t, a\_t)}$ and can plan before acting.
 
 ---
 
 class: middle
 
-.width-100[![](figures/lec2/problem-solving-agent.png)]
+.width-100[![](figures/lec2/problem-solving-agent.svg)]
 
 ???
 
@@ -96,8 +92,8 @@ class: middle
 
 ## Offline vs. Online solving
 
-- Problem-solving agents are .bold[offline]. The solution is executed "eyes closed", ignoring the percepts.
-- .bold[Online] problem solving involves acting without complete knowledge. In this case, the sequence of actions might be recomputed at each step.
+- .bold[Offline]: the agent computes the whole sequence ${a\_{1:T}}$ from $s\_1$, then executes it "eyes closed", ignoring its percepts ${e\_{1:t}}$.
+- .bold[Online]: the agent recomputes what to do at each step from what it has perceived, ${a\_t = \pi(e\_{1:t})}$. That is a policy, not a plan.
 
 ---
 
@@ -109,12 +105,11 @@ class: middle
 
 # Search problems
 
-A .bold[search problem] consists of the following components:
-- A representation of the .bold[states] of the agent and its environment.
-- The .bold[initial state] of the agent.
-- A description of the .bold[actions] available to the agent given a state $s$, denoted $\text{actions}(s)$.
-- A .bold[transition model] that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$.
-    - We say that $s'$ is a .bold[successor] of $s$ if there is an applicable action from $s$ to $s'$.
+A .bold[search problem] is defined by
+- the .bold[states] ${s \in \mathcal{S}}$ of the agent and its environment, and the .bold[initial state] ${s\_1 \in \mathcal{S}}$;
+- the .bold[actions] ${\text{actions}(s) \subseteq \mathcal{A}}$ available in a state $s$;
+- a .bold[transition model] ${s' = \text{result}(s, a)}$, the state that results from taking $a$ in $s$.
+    - We say that $s'$ is a .bold[successor] of $s$ if some applicable action leads from $s$ to $s'$.
 
 .center[![](figures/lec2/pacman-successor.png)]
 
@@ -128,22 +123,20 @@ class: middle
 
 .center[![](figures/lec2/pacman-space.png)]
 
-- Together, the initial state, the actions and the transition model define the .bold[state space] of the problem, i.e. the set of all states reachable from the initial state by any sequence of action.
-    - The state space forms a directed graph:
-        - nodes = states
-        - links = actions
+- Together, $s\_1$, $\text{actions}$ and $\text{result}$ define the .bold[state space], the set of states reachable from $s\_1$ by any sequence of actions.
+    - It forms a directed graph: nodes are states, edges are actions.
     - A path is a sequence of states connected by actions.
-- A .bold[goal test] which determines whether the solution of the problem is achieved in state $s$.
-- A .bold[path cost] that assigns a numeric value to each path.
-  - In this course, we will also assume that the path cost corresponds to a sum of positive .bold[step costs] $c(s,a,s')$  associated to the action $a$ in $s$ leading to $s'$.
+- The .bold[goal states] ${G \subseteq \mathcal{S}}$ are those in which the problem is solved. The .bold[goal test] checks whether ${s \in G}$.
+- The .bold[step costs] ${c(s, a, s') > 0}$ give the cost of taking $a$ in $s$ to reach $s'$. The .bold[path cost] is their sum along a path.
 
 ---
 
 class: middle
 
-A .bold[solution] to a problem is an action sequence that leads from the initial state to a goal state.
-- A solution quality is measured by the path cost function.
-- An .bold[optimal solution] has the lowest path cost among all solutions.
+A .bold[solution] is an action sequence ${a\_{1:T}}$ such that ${s\_{t+1} = \text{result}(s\_t, a\_t)}$ for ${t = 1, \ldots, T}$ and ${s\_{T+1} \in G}$. Its path cost is
+$$\sum\_{t=1}^{T} c(s\_t, a\_t, s\_{t+1}).$$
+
+An .bold[optimal solution] is a solution of minimal path cost.
 
 .exercise[What if the environment is partially observable? non-deterministic?]
 
@@ -174,13 +167,13 @@ class: middle
 - Representation of states: the city we are in.
     - $s \in \\{ \text{in}(\text{Arad}), \text{in}(\text{Bucharest}), \ldots \\}$
 - Initial state = the city we start in.
-    - $s_0 = \text{in}(\text{Arad})$
+    - $s\_1 = \text{in}(\text{Arad})$
 - Actions = Going from the current city to the cities that are directly connected to it.
-    - $\text{actions}(s_0) = \\{ \text{go}(\text{Sibiu}), \text{go}(\text{Timisoara}), \text{go}(\text{Zerind}) \\}$
+    - $\text{actions}(s\_1) = \\{ \text{go}(\text{Sibiu}), \text{go}(\text{Timisoara}), \text{go}(\text{Zerind}) \\}$
 - Transition model = The city we arrive in after driving to it.
     - $\text{result}(\text{in}(\text{Arad}), \text{go}(\text{Zerind})) = \text{in}(\text{Zerind})$
-- Goal test: whether we are in Bucharest.
-    - $s \in \\{ \text{in}(\text{Bucharest}) \\}$
+- Goal states: being in Bucharest.
+    - $G = \\{ \text{in}(\text{Bucharest}) \\}$
 - Step cost: distances between cities.
 
 ---
@@ -210,7 +203,7 @@ class: middle
 - States: $\\{ (x, y), \text{dot booleans}\\}$
 - Actions: NSEW
 - Transition: update location and possibly a dot boolean
-- Goal test: dots all false
+- Goal states: no dot left
 
 .width-100.center[![](figures/lec2/pacman-world.png)]
 
@@ -242,11 +235,11 @@ class: middle
 
 # Search trees
 
-The set of applicable action sequences starting at the initial state forms a .bold[search tree].
-- Nodes correspond to states in the state space, where the initial state is the root node.
-- Branches correspond to applicable actions, with child nodes corresponding to successors.
+The applicable action sequences from $s\_1$ form a .bold[search tree]: the root holds $s\_1$, branches are actions, children hold successors.
 
-For most problems, we can never actually build the whole tree. Yet we want to find some optimal branch!
+A .bold[node] $n$ holds a state $s(n)$ and the cost $g(n)$ of the path from $s\_1$; distinct nodes may hold the same state. Step costs and heuristics are written $c(s, a, s')$ and $h(s)$, or $c(n, a, n')$ and $h(n)$, indifferently.
+
+We can rarely build the whole tree, yet we want an optimal branch.
 
 .center[![](figures/lec2/pacman-tree.png)]
 
@@ -254,7 +247,7 @@ For most problems, we can never actually build the whole tree. Yet we want to fi
 
 # Tree search algorithms
 
-.width-100[![](figures/lec2/tree-search.png)]
+.width-100[![](figures/lec2/tree-search.svg)]
 
 ## Important ideas
 - Fringe (or frontier) of partial plans under consideration
@@ -272,6 +265,12 @@ class: middle
 class: middle
 
 .center.width-90[![](figures/lec2/search-map.svg)]
+
+---
+
+class: middle
+
+# Uninformed search strategies
 
 ---
 
@@ -417,23 +416,22 @@ uv run python run.py --agentfile bfs.py --show 1 --layout large
 
 # Iterative deepening
 
-Idea: get DFS's space advantages with BFS's time/shallow solution advantages.
-- Run DFS with depth limit 1.
-- If no solution, run DFS with depth limit 2.
-- If no solution, run DFS with depth limit 3.
-    - ...
+Idea: get DFS's memory with BFS's guarantees, by running DFS with depth limit 1, then 2, then 3, and so on.
+
+It is .bold[complete], .bold[optimal] when the path cost is non-decreasing with the depth, in ${O(b^d)}$ time and ${O(bd)}$ memory.
 
 .grid[
 .kol-1-2[
-.exercise[
-- What are the properties of iterative deepening?
-- Isn't this process wastefully redundant?
-]
+.exercise[Isn't this process wastefully redundant?]
 ]
 .kol-1-2[
 .center.width-80[![](figures/lec2/id-properties.png)]
 ]
 ]
+
+???
+
+No: the last level dominates, $b^d$ nodes against the ${b + 2b^2 + \ldots + db^{d-1}}$ regenerated ones, so the overhead is a constant factor.
 
 ---
 
@@ -487,6 +485,12 @@ cd demo/lec2
 uv run python run.py --agentfile bfs.py --show 1 --layout medium
 uv run python run.py --agentfile ucs.py --show 1 --layout medium
 ```
+
+---
+
+class: middle
+
+# Informed search strategies
 
 ---
 
@@ -664,28 +668,25 @@ $A$ will exit the fringe before $B$.
 
 class: middle
 
-.grid[
-.kol-2-3[
 ## Proof
 
-Assume $B$ is on the fringe.
-Some ancestor $n$ of $A$ is on the fringe too.
+Assume $B$ is on the fringe, and let $n$ be an ancestor of $A$ on the fringe. Then
 
-- $f(n) \leq f(A)$
-    - $f(n) = g(n) + h(n)$ (by definition)
-    - $f(n) \leq g(A)$ (admissibility of $h$)
-    - $f(A) = g(A) + h(A) = g(A)$ ($h=0$ at a goal)
-- $f(A) < f(B)$
-    - $g(A) < g(B)$ ($B$ is suboptimal)
-    - $f(A) < f(B)$ ($h=0$ at a goal)
-- Therefore, $n$ expands before $B$.
-    - since $f(n) \leq f(A) < f(B)$
+$$f(n) = g(n) + h(n) \leq g(n) + h^\*(n) = g(A) = f(A) < f(B)$$
+
+.grid[
+.kol-2-3[
+- ${h(n) \leq h^\*(n)}$, since $h$ is admissible;
+- ${g(n) + h^\*(n) = g(A)}$, since $n$ is on an optimal path to $A$;
+- ${f(A) = g(A)}$ and ${f(B) = g(B)}$, since ${h = 0}$ at a goal;
+- ${g(A) < g(B)}$, since $B$ is suboptimal.
+
+Therefore $n$ expands before $B$. The same holds for every ancestor of $A$, hence $A$ expands before $B$ and .bold[A* is optimal].
 ]
 .kol-1-3[
 .width-100[![](figures/lec2/astar-proof2.png)]
 ]
 ]
-Similarly, all ancestors of $A$ expand before $B$, including $A$. Therefore .bold[A* is optimal].
 
 ---
 
@@ -695,13 +696,17 @@ class: middle
 
 - Assume $f$-costs are non-decreasing along any path.
 - We can define .bold[contour levels] $t$ in the state space, that include all nodes $n$ for which $f(n) \leq t$.
+- A\* expands every node with ${f(n) < C^\*}$ and none with ${f(n) > C^\*}$: it sweeps the contours outwards until it reaches the goal.
 
-.center[
-![](figures/lec2/contours-ucs.png)
-![](figures/lec2/contours-as.png)]
 .grid[
-.kol-1-2[For UCS ($h(n)=0$ for all $n$), bands are circular around the start.]
-.kol-1-2[For A* with accurate heuristics, bands stretch towards the goal.]
+.kol-1-2[
+.center.width-85[![](figures/lec2/contours-ucs.png)]
+.center[For UCS (${h(n) = 0}$ for all $n$), bands are circular around the start.]
+]
+.kol-1-2[
+.center.width-80[![](figures/lec2/contours-as.png)]
+.center[For A\* with accurate heuristics, bands stretch towards the goal.]
+]
 ]
 
 ---
@@ -754,6 +759,23 @@ uv run python run.py --agentfile astar2.py --layout large --show 1
 
 ---
 
+class: middle
+
+## Comparison of the strategies
+
+With $b$ the branching factor, $d$ the depth of the least-cost solution, $m$ the maximum path length, $C^\*$ the optimal cost and $\epsilon$ a lower bound on the step costs:
+
+| Strategy | Fringe | Complete | Optimal | Time | Space |
+| --- | --- | --- | --- | --- | --- |
+| Depth-first | LIFO stack | if no cycles | no | $O(b^m)$ | $O(bm)$ |
+| Breadth-first | FIFO queue | yes | if $c$ uniform | $O(b^d)$ | $O(b^d)$ |
+| Iterative deepening | DFS, depth $1, 2, \ldots$ | yes | if $c$ uniform | $O(b^d)$ | $O(bd)$ |
+| Uniform-cost | priority $g(n)$ | if $c \geq \epsilon$ | yes | $O(b^{C^\*/\epsilon})$ | $O(b^{C^\*/\epsilon})$ |
+| Greedy | priority $h(n)$ | if no cycles | no | $O(b^m)$ | $O(b^m)$ |
+| A* | priority $f(n)$ | yes | if $h$ admissible (tree) | $O(b^m)$ | $O(b^m)$ |
+
+---
+
 # Creating admissible heuristics
 
 Most of the work in solving hard search problems optimally is in finding admissible heuristics.
@@ -776,20 +798,38 @@ class: middle
 
 class: middle
 
+## Example: the 8-puzzle
+
+.center.width-55[![](figures/lec2/8-puzzle.png)]
+
+- ${h\_1(n)}$, the number of misplaced tiles: ${h\_1 = 8}$ above.
+- ${h\_2(n)}$, the sum of the Manhattan distances of the tiles to their goal positions: ${h\_2 = 3 + 1 + 2 + 2 + 2 + 3 + 3 + 2 = 18}$.
+
+Both are admissible, and ${h\_2}$ .bold[dominates] ${h\_1}$: a misplaced tile is at least one move away from its goal position, so ${h\_1(n) \leq h\_2(n)}$ everywhere. A* expands fewer nodes with ${h\_2}$.
+
+---
+
+class: middle
+
 ## Learning heuristics from experience
 
-- Assuming an .bold[episodic] environment, an agent can .bold[learn] good heuristics by playing the game many times.
-- Each optimal solution $s^\*$ provides .bold[training examples] from which $h(n)$ can be learned.
-- Each example consists of a state $n$ from the solution path and the actual cost $g(s^\*)$ of the solution from that point.
-- The mapping $n \to g(s^\*)$ can be learned with .bold[supervised learning] algorithms.
-    - Linear models, Neural networks, etc.
+- In an .bold[episodic] environment, an agent can .bold[learn] a heuristic by solving the problem many times.
+- Each optimal solution provides training pairs ${(n, h^\*(n))}$: a node on the optimal path, and the cost of the path remaining from it.
+- Learning $h$ from these pairs is a .bold[supervised regression] problem (lecture 7), solved with linear models, neural networks, etc.
+- The learned $h$ is cheap to evaluate, but it is not admissible in general, so A* loses its optimality.
+
+---
+
+class: middle
+
+# Graph search
 
 ---
 
 # Graph search
 
 <br>
-.center.width-90[![](figures/lec2/redundant.png)]
+.center.width-90[![](figures/lec2/redundant.svg)]
 <br>
 
 The failure to detect .bold[repeated states] can turn a linear problem into an exponential one. It can also lead to non-terminating searches.
@@ -805,7 +845,7 @@ Insist on the importance of defining a state representation which does not colla
 
 class: middle
 
-.width-100[![](figures/lec2/graph-search.png)]
+.width-100[![](figures/lec2/graph-search.svg)]
 
 ???
 
@@ -824,7 +864,7 @@ class: middle
 - We start at $S$ and $G$ is a goal state.
 - Which path does graph search find?
 ]
-.kol-1-2[.width-95[![](figures/lec2/astar-gone-wrong.png)]]
+.kol-1-2[.width-100[![](figures/lec2/astar-gone-wrong.svg)]]
 ]
 
 ???
@@ -839,12 +879,24 @@ Node $C$ is expanded too early!
 
 class: middle
 
+## Answer
+
+$h$ is admissible, but it is .bold[not consistent]: ${h(A) = 4 > c(A, a, C) + h(C) = 2}$.
+
+Graph search expands $S$, then $B$ (${f = 1 + 1}$), then $C$ through $B$ (${f = 3 + 1}$), which .bold[closes] $C$ with ${g(C) = 3}$. When $A$ is expanded (${f = 1 + 4}$), the cheaper path to $C$ (${g(C) = 2}$) is discarded, since $C$ is already closed.
+
+A* returns ${S, B, C, G}$, of cost 6, instead of ${S, A, C, G}$, of cost 5.
+
+---
+
+class: middle
+
 .grid[
 .kol-2-3[## Consistent heuristics
 A heuristic $h$ is consistent if for every $n$ and every successor $n'$ generated by any action $a$,
 $$h(n) \leq c(n,a,n') + h(n').$$
 ]
-.kol-1-3[.width-95[![](figures/lec2/consistent-heuristic.png)]]
+.kol-1-3[.width-100[![](figures/lec2/consistent-heuristic.svg)]]
 ]
 
 Consequences of consistent heuristics:
@@ -860,16 +912,31 @@ Alternative graph-search algorithm: See slide 22 of https://www.ics.uci.edu/~kka
 
 ---
 
+class: middle
+
+## When $h$ is not consistent
+
+Graph search closes a state the first time it is expanded, possibly through a suboptimal path. Two ways out:
+- use a .bold[consistent] heuristic, so that a state is first expanded along its cheapest path;
+- .bold[re-expand] a closed state when it is reached with a lower $f$, which restores optimality for any admissible $h$, at the price of re-expansions.
+
+???
+
+The second option is the variant applied in the exercise session.
+
+---
+
 # Recap example: Super Mario
 
-.center.width-50[![](figures/lec2/mario.jpg)]
+.center.width-40[![](figures/lec2/mario.jpg)]
 
 - .bold[Task environment]?
-    - performance measure, environment, actuators, sensors?
+    - the performance measure $V$, the environment, the actuators $\mathcal{A}$, the sensors $\mathcal{P}$?
 - .bold[Type] of environment?
+    - observable, deterministic, episodic, static, discrete, single-agent, known?
 - .bold[Search problem]?
-    - initial state, actions, transition model, goal test, path cost?
-- .bold[Good heuristic]?
+    - ${s\_1}$, ${\text{actions}(s)}$, ${\text{result}(s, a)}$, ${G}$, ${c(s, a, s')}$?
+- .bold[Good heuristic] ${h(n)}$?
 
 ???
 
@@ -884,7 +951,7 @@ Alternative graph-search algorithm: See slide 22 of https://www.ics.uci.edu/~kka
     * state = Mario's position (x, y), map, score, time
     * initial state = start of the game
     * transition model = given by the game engine (assume we know that!)
-    * goal test = have we reached the flag?
+    * goal states = Mario on the flag
     * path cost = shortest path, the better; malus if killed, bonus if coin and killed enemies
 
 ---
@@ -903,12 +970,11 @@ Comment on the actions taken at any frame (right, jump, speed) shown in red.
 
 # Summary
 
-- Problem formulation usually requires abstracting away real-world details to define a state space that can feasibly be explored.
-- Variety of uninformed search strategies (.bold[DFS], .bold[BFS], .bold[UCS], .bold[Iterative deepening]).
-- Heuristic functions estimate costs of shortest paths. Good heuristic can dramatically reduce search cost.
-- Greedy best-first search expands lowest $h$, which shows to be incomplete and not always optimal.
-- .bold[A*] search expands lowest $f=g+h$. This strategy is complete and optimal.
-- Graph search can be exponentially more efficient than tree search.
+- A .bold[search problem] is a state space ${\mathcal{S}}$, an initial state ${s\_1}$, actions ${\text{actions}(s)}$, a transition model ${\text{result}(s, a)}$, goal states ${G}$ and step costs ${c}$. A solution is a sequence ${a\_{1:T}}$ reaching ${G}$, optimal when its path cost is minimal. Choosing what to keep in a state is what makes the search feasible.
+- A .bold[strategy] is the order in which the fringe is expanded: LIFO for depth-first, FIFO for breadth-first, ${g(n)}$ for uniform-cost, ${h(n)}$ for greedy, ${f(n) = g(n) + h(n)}$ for A*.
+- Only .bold[uniform-cost] and .bold[A*] order by cost, and only they are optimal in general. Breadth-first and iterative deepening return the .bold[shallowest] goal, which is the cheapest one only under uniform step costs.
+- ${h}$ is .bold[admissible] if ${h(n) \leq h^\*(n)}$, which makes tree-search A\* optimal, and .bold[consistent] if ${h(n) \leq c(n, a, n') + h(n')}$, which makes graph-search A\* optimal. A .bold[dominating] heuristic expands fewer nodes.
+- .bold[Graph search] keeps a closed set, so a state is expanded once, along the first path that reaches it. The price is that optimality then needs consistency, or re-expanding closed states reached with a lower ${f}$.
 
 ---
 
