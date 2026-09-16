@@ -17,15 +17,13 @@ background-color: #343541
 
 ???
 
-The elephant in the room. ChatGPT.
+You have all used this, most of you this week. There is nothing left to introduce.
 
-In November 2022, OpenAI released ChatGPT, a chatbot interface to GPT-3.5, a neural network trained on a very large corpus of text.
+In the video I ask for a one-day itinerary in Liège, then tell the model to pretend it knows the hidden secrets of the city and to revise it. When this course first showed that clip, it was startling. Today it is a utility, and that is the more interesting fact: in four years the technology did not become more impressive, it became ordinary.
 
-For the first time, the public got access through a simple web interface to a model that can generate text that is indistinguishable from human-written text. You can ask any question to the model, and it will answer, however complex or bizarre the question is.
+So rather than show you what it can do, this lecture takes it apart. What is actually computed when you type a question? Why does the same question give different answers? Why does the thing that autocompletes your phone now write code, drive a computer, and claim proofs of open problems?
 
-For instance, in the video, I am asking ChatGPT to prepare a 1-day itinerary for a trip to Liège, Belgium, and it is answering me with a detailed itinerary, including the names of the places to visit, general information about the city, etc. I can also instruct ChatGPT to pretend that it knows all the hidden secrets of the city and revise its itinerary accordingly.
-
-I am quite sure many of you have already used ChatGPT more or less seriously, so there is no need to introduce it further. However, I believe we can all agree that this is a very impressive technology and that it marks a milestone in the history of AI.
+One simple idea, scaled very far, then repaired in a few specific places. The simple idea is on the next slide.
 
 ---
 
@@ -46,13 +44,11 @@ One simple idea:
 
 ???
 
-Despite its impressive performance and its apparent complexity, the underlying principle of ChatGPT is actually very simple.
+Here is the whole foundation: the model is trained to guess the next word. The same principle as the autocomplete on your phone, with a much larger model and a much larger corpus.
 
-The model is trained to guess the next word in a sentence. That's it.
+Keep it in mind for the rest of the lecture. Everything that came after, the assistant, the reasoning, the agents, is built on this one operation.
 
-It is the same principle that is used in your phone to autocomplete your messages, except that the model is much larger and has been trained on a much larger corpus of text.
-
-What is interesting with the guess-the-next-word problem is that it is a very simple problem, but that it is also a very hard problem. It is simple because it is easy to understand, but it is hard because there are many possible next words. It is also hard because the context of a word is not always enough to predict the next word. Sometimes, we need to know more about the world to make a prediction.
+The problem is easy to state and hard to solve. There are many possible next words, and the context is often not enough: to guess well, you need to know something about the world the text describes. That is the whole bet.
 
 ---
 
@@ -157,13 +153,17 @@ class: middle
 
 class: middle
 
-This explains why a model that only guesses the next word ...
-- gives different answers to the same question;
-- cannot count, compute, or reason;
-- invents things and cannot cite sources;
-- can hardly correct its own mistakes once they have been made.
+This explains why a model that does .bold[nothing but] guess the next word ...
+- gives different answers to the same question, since it samples the next word;
+- counts, computes and plans poorly, having no scratch space to work in;
+- invents plausible details, having no way to check them;
+- cannot go back on a mistake once it is written.
 
 .question[How do we go from here to agents that use computers and prove theorems?]
+
+???
+
+These are the limits of the plain predictor, not of the systems you use: each is repaired later in this lecture, by letting the model write its reasoning down before answering, and by letting it act, observe and retry.
 
 ---
 
@@ -329,13 +329,11 @@ class: middle
 
 ???
 
-When you start a project in artificial intelligence or machine learning, one of the very first steps, and this is something I keep repeating to my students, is to look at the data. Take the raw data and visualize it.
+The task here is only a pretext. Nobody needs a machine to guess blood pressure from age, and we will spend no time on medicine. What the next few slides are really about is the recipe, and the recipe does not change whether the output is a blood pressure, the next word of a sentence, or a move in a game.
 
-The data I want to start with today is related to blood pressure. We have a dataset of 30 patients, with their age and their blood pressure shown as points on the plot. This is a very simple dataset, and the problem is not very interesting in itself, but it is a good example to illustrate how we can use machine learning to make predictions.
+So: thirty patients, age on one axis, blood pressure on the other. Can we write a program that, given the age, guesses the pressure?
 
-Let's start with a simple question: can we predict the blood pressure of a patient based on his or her age?
-
-In other words, can we write a computer program that, given the age of a patient, will make a guess about his or her blood pressure?
+One habit worth keeping from this slide: before anything else, look at the data. Plot it. That is always the first step, and it is the one most often skipped.
 
 ---
 
@@ -529,7 +527,7 @@ Deep learning can also .bold[solve problems that no one could solve before].
 
 Beyond the basic work that can be automated, the most exciting applications of AI, at least for the scientist in me, is the fact that deep learning can also be used to solve problems that no one could solve before. To make discoveries. 
 
-I have many examples in mind, but I will only mention a few today, to give you a sense of what is possible. I will focus on health and medicine, but the same is true in many other domains.
+I have many examples in mind, but I will only mention a few today, to give you a sense of what is possible.
 
 ---
 
@@ -586,9 +584,17 @@ In a sense, they can serve as a virtual laboratory that can be used to pre-scree
 
 class: middle
 
-## GraphCast: fast and accurate weather forecasts
+## Weather forecasting with neural networks
 
 .center.width-75[![](./figures/lec0/graphcast.jpg)]
+
+???
+
+GraphCast, 2023: a graph neural network on a multi-resolution mesh over the globe. Ten-day forecasts in under a minute on a single machine, more accurate than the operational physical model on most of the variables tested.
+
+Panels d to g are the interesting part, and the reason this slide follows the previous one: the same message passing as for molecules, with the mesh wrapped around the planet instead.
+
+This started a line that runs through GenCast and Google's WeatherNext models. The current one forecasts every hour, at 5 km resolution for temperature and humidity, drawn directly from raw satellite imagery. The architecture on this slide is what that line is built on.
 
 ---
 
