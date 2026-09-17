@@ -167,11 +167,14 @@ These are the limits of the plain predictor, not of the systems you use: each is
 
 ---
 
+exclude: true
 class: middle
 
 # Artificial Intelligence
 
 ---
+
+exclude: true
 
 # A definition of AI?
 
@@ -187,6 +190,7 @@ But what is intelligence anyway?
 
 ---
 
+exclude: true
 class: middle
 
 ## The Turing test
@@ -211,6 +215,7 @@ The Turing test is an .bold[operational] definition of intelligence.
 
 ---
 
+exclude: true
 class: middle
 
 In 2025, a language model was judged to be the human .bold[73%] of the time, more often than the humans themselves.
@@ -229,6 +234,7 @@ Machines now pass the Turing test, which says more about the test than about int
 
 ---
 
+exclude: true
 class: middle
 
 ## A modern definition of AI
@@ -247,6 +253,8 @@ Is a thermostat an AI system?
 
 ---
 
+exclude: true
+
 # A short history of AI
 
 ## 1940-1950: Early days
@@ -263,6 +271,7 @@ Newell and Simon's Logic Theorist and Gelernter's Geometry Engine.
 
 ---
 
+exclude: true
 class: middle
 
 .width-60.center[![](figures/lec0/dartmouth.jpg)]
@@ -273,12 +282,14 @@ class: middle
 
 ---
 
+exclude: true
 class: middle, center, black-slide
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/aygSMgK3BEM" frameborder="0" allowfullscreen></iframe>
 
 ---
 
+exclude: true
 class: middle
 
 ## 1970-1990: Knowledge-based approaches
@@ -289,6 +300,7 @@ class: middle
 
 ---
 
+exclude: true
 class: middle
 
 ## 1990-2022: Statistical approaches
@@ -302,6 +314,7 @@ class: middle
 
 ---
 
+exclude: true
 class: middle
 
 ## 2022-Present: From assistants to agents
