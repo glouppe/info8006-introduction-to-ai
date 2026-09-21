@@ -243,4 +243,4 @@ if __name__ == "__main__":
     listing("problem-solving-agent", simple, 960)
     listing("mcts", mcts, 1000, lecture="lec3")
     listing("alpha-beta-search", alpha_beta, 1000, lecture="lec3")
-    listing("enumeration", enumeration, 840, lecture="lec4")
+    listing("enumeration", enumeration, 840, lecture="lec5")

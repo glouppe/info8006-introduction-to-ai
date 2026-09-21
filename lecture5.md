@@ -521,6 +521,24 @@ class: middle
 
 class: middle
 
+What an agent asks, given what it has observed:
+$$\begin{aligned}
+P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
+P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
+\end{aligned}$$
+
+???
+
+The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
+
+The next slide states the problem in general.
+
+---
+
+class: middle
+
 Inference is concerned with the problem of .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
 
 .grid[
@@ -552,19 +570,113 @@ Insist on the importance of inference. Inference <=> reasoning.
 
 ---
 
-# Inference by enumeration
+class: middle
 
-Start from the joint distribution $\mathbf{P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+## Probabilistic inference
 
-1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
-2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
-$$\mathbf{P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} \mathbf{P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
-3. Normalize:
-<br>
-$$\begin{aligned}
-Z &= \sum_q P(q,e_1,...,e_k) \\\\
-\mathbf{P}(Q \mid e_1, ..., e_k) &= \frac{1}{Z} \mathbf{P}(Q,e_1,...,e_k)
-\end{aligned}$$
+- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
+- .bold[Query] variable $Q$.
+- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
+- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
+
+Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
+
+---
+
+exclude: true
+class: middle
+
+## Normalization trick
+
+.center.grid[
+.kol-1-3[
+$\mathbf{P}(T,W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{hot}$ | $\text{sun}$ | $0.4$ |
+| $\text{hot}$ | $\text{rain}$ | $0.1$ |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+]
+.kol-1-3[
+$\rightarrow \mathbf{P}(T=\text{cold},W)$
+
+| $T$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{cold}$ | $\text{sun}$ | $0.2$ |
+| $\text{cold}$ | $\text{rain}$ | $0.3$ |
+
+.bold[Select] the joint probabilities matching the evidence $T=\text{cold}$.
+
+]
+.kol-1-3[
+$\rightarrow \mathbf{P}(W \mid T=\text{cold})$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.4$ |
+| $\text{rain}$ | $0.6$ |
+
+.bold[Normalize] the selection (make it sum to $1$).
+
+]
+]
+
+---
+
+class: middle
+
+## Inference by enumeration
+
+Starting from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$, select the entries consistent with the evidence, sum the hidden variables out, and normalize:
+$$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum\_q \sum\_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).$$
+
+The normalization constant $1/Z$ is also written $\alpha$.
+
+.center.width-100[![](figures/lec5/enumeration.svg)]
+
+---
+
+class: middle
+
+.italic[Example:]
+
+.grid[
+.kol-1-2[
+
+- $\mathbf{P}(W)$?
+- $\mathbf{P}(W \mid \text{winter})$?
+- $\mathbf{P}(W \mid \text{winter},\text{hot})$?
+
+]
+.center.kol-1-2[
+
+| $S$ | $T$ | $W$ | $P$ |
+| --- | --- | --- | --- |
+| $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
+| $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{sun}$ | $0.1$ |
+| $\text{summer}$ | $\text{cold}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{sun}$ | $0.1$ |
+| $\text{winter}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{sun}$ | $0.15$ |
+| $\text{winter}$ | $\text{cold}$ | $\text{rain}$ | $0.2$ |
+
+]
+]
+
+---
+
+class: middle
+
+- Inference by enumeration can be used to answer probabilistic queries for .bold[discrete variables] (i.e., with a finite number of values).
+- However, enumeration .bold[does not scale]!
+    - Assume a domain described by $n$ variables taking at most $d$ values.
+    - Space complexity: $O(d^n)$
+    - Time complexity: $O(d^n)$
+
+.question[Can we do better by exploiting the structure of the network?]
 
 ---
 

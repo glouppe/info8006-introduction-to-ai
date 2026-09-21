@@ -27,10 +27,8 @@ Motivate why this is important in AI (and this is not just one more probability 
 
 - Random variables
 - Probability distributions
-- Inference
-    - by enumeration
-    - with independence
-    - with the Bayes' rule
+- Independence
+- The Bayes' rule
 
     
 ]
@@ -468,139 +466,9 @@ $$
 In the same way, $\mathbf{P}(X\_1, ..., X\_n) = \prod\_{i=1}^n \mathbf{P}(X\_i \mid X\_1, ..., X\_{i-1})$.
 
 ---
-
 class: middle
 
-# Inference
-
----
-
-class: middle
-
-What an agent asks, given what it has observed:
-$$\begin{aligned}
-P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
-P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
-\end{aligned}$$
-
-???
-
-The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
-
-The next slide states the problem in general.
-
----
-
-class: middle
-
-## Probabilistic inference
-
-- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
-- .bold[Query] variable $Q$.
-- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
-- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
-
-Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
-
----
-
-exclude: true
-class: middle
-
-## Normalization trick
-
-.center.grid[
-.kol-1-3[
-$\mathbf{P}(T,W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{hot}$ | $\text{sun}$ | $0.4$ |
-| $\text{hot}$ | $\text{rain}$ | $0.1$ |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
-]
-.kol-1-3[
-$\rightarrow \mathbf{P}(T=\text{cold},W)$
-
-| $T$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{cold}$ | $\text{sun}$ | $0.2$ |
-| $\text{cold}$ | $\text{rain}$ | $0.3$ |
-
-.bold[Select] the joint probabilities matching the evidence $T=\text{cold}$.
-
-]
-.kol-1-3[
-$\rightarrow \mathbf{P}(W \mid T=\text{cold})$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.4$ |
-| $\text{rain}$ | $0.6$ |
-
-.bold[Normalize] the selection (make it sum to $1$).
-
-]
-]
-
----
-
-class: middle
-
-## Inference by enumeration
-
-Starting from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$, select the entries consistent with the evidence, sum the hidden variables out, and normalize:
-$$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum\_q \sum\_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).$$
-
-The normalization constant $1/Z$ is also written $\alpha$.
-
-.center.width-100[![](figures/lec4/enumeration.svg)]
-
----
-
-class: middle
-
-.italic[Example:]
-
-.grid[
-.kol-1-2[
-
-- $\mathbf{P}(W)$?
-- $\mathbf{P}(W \mid \text{winter})$?
-- $\mathbf{P}(W \mid \text{winter},\text{hot})$?
-
-]
-.center.kol-1-2[
-
-| $S$ | $T$ | $W$ | $P$ |
-| --- | --- | --- | --- |
-| $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
-| $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
-| $\text{summer}$ | $\text{cold}$ | $\text{sun}$ | $0.1$ |
-| $\text{summer}$ | $\text{cold}$ | $\text{rain}$ | $0.05$ |
-| $\text{winter}$ | $\text{hot}$ | $\text{sun}$ | $0.1$ |
-| $\text{winter}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
-| $\text{winter}$ | $\text{cold}$ | $\text{sun}$ | $0.15$ |
-| $\text{winter}$ | $\text{cold}$ | $\text{rain}$ | $0.2$ |
-
-]
-]
-
----
-
-class: middle
-
-- Inference by enumeration can be used to answer probabilistic queries for .bold[discrete variables] (i.e., with a finite number of values).
-- However, enumeration .bold[does not scale]!
-    - Assume a domain described by $n$ variables taking at most $d$ values.
-    - Space complexity: $O(d^n)$
-    - Time complexity: $O(d^n)$
-
-.question[Can we reduce the size of the representation of the joint distribution?]
-
+# Independence
 ---
 
 class: middle
@@ -711,6 +579,10 @@ This probabilistic model is called a .bold[naive Bayes] model.
 
 This is an important model you should know about!
 
+---
+class: middle
+
+# The Bayes' rule
 ---
 
 class: middle
@@ -900,7 +772,7 @@ class: middle
 # Summary
 
 - Uncertainty is .bold[inescapable], and .bold[probability theory] is the framework we use to represent it: numbers attached to propositions, measuring the agent's beliefs rather than the world.
-- The joint distribution answers every query: select, marginalize, normalize. It costs $O(d^n)$.
+- The joint distribution answers every query, by selecting, marginalizing and normalizing, but it holds $d^n$ entries.
 - .bold[Independence] and .bold[conditional independence] factor it into smaller tables. Naive Bayes goes from $O(2^n)$ down to $O(n)$.
 - .bold[Bayes' rule] turns a causal model into a diagnostic belief, and each posterior is the prior of the next observation.
 
@@ -923,7 +795,6 @@ class: middle
 <tr><td>Total probability</td><td>$P(x) = \sum_y P(x \mid y) P(y)$</td></tr>
 <tr><td>Chain rule</td><td>$P(x_{1:n}) = \prod_i P(x_i \mid x_{1:i-1})$</td></tr>
 <tr><td>Bayes' rule</td><td>$P(a \mid b) = P(b \mid a) P(a) / P(b)$</td></tr>
-<tr><td>Enumeration</td><td>$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e})$</td></tr>
 <tr><td>Independence, $X \perp Y$</td><td>$P(x, y) = P(x) P(y)$</td></tr>
 <tr><td>Conditional independence, $X \perp Y \mid Z$</td><td>$P(x, y \mid z) = P(x \mid z) P(y \mid z)$</td></tr>
 <tr><td>Naive Bayes</td><td>$P(c, e_{1:n}) = P(c) \prod_i P(e_i \mid c)$</td></tr>
