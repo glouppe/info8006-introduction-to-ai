@@ -506,6 +506,7 @@ Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \
 
 ---
 
+exclude: true
 class: middle
 
 ## Normalization trick
