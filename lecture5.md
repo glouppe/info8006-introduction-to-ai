@@ -861,18 +861,11 @@ The computational and space complexity of variable elimination is determined by 
 - The elimination .bold[ordering] can greatly affect the size of the largest factor.
 - The optimal ordering is .bold[NP-hard] to find. There is no known polynomial-time algorithm to find it.
 
----
+.alert[Exact inference stays intractable for most models of practical interest. In practice, one samples from the network, optimizes an approximation of the posterior (variational methods), passes messages between nodes, or learns the posterior from simulated data.]
 
-# Approximate inference
+???
 
-Exact inference is .bold[intractable] for most probabilistic models of practical interest.
-(e.g., involving many variables, continuous and discrete, undirected cycles, etc).
-
-We must resort to .bold[approximate] inference algorithms:
-- Sampling methods: produce answers by repeatedly generating random numbers from a distribution of interest.
-- Variational methods: formulate inference as an optimization problem.
-- Belief propagation methods: formulate inference as a message-passing algorithm.
-- Machine learning methods: learn an approximation of the target distribution from training examples.
+Lecture 6 samples, with particle filtering, and lecture 7 learns.
 
 ---
 
