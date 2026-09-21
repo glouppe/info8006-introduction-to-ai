@@ -537,7 +537,7 @@ Inference is concerned with the problem of .bold[computing a marginal and/or a c
 ]
 .grid[
 .kol-1-3.center[Optimal decisions:]
-.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
+.kol-2-3[$\arg \max\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
 ]
 
 .center.width-30[![](figures/lec5/query-cartoon.png)]
@@ -752,7 +752,7 @@ $${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(
 - $\sum_m P(m|a) = 1$, therefore $M$ is .bold[irrelevant] for the query.
 - In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
 
-.italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
+.italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\{Q\\} \cup E)$.
 
 ---
 
@@ -829,7 +829,7 @@ We draw $N$ chalks i.i.d. and observe $c$ white chalks and $l=N-c$ red chalks. H
 
 # Maximum likelihood estimation
 
-Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\\{x\_1, ..., x\_N\\\}$.
+Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\{x\_1, ..., x\_N\\}$.
 
 The .bold[likelihood] of the parameters $\theta$ is the probability of the data given the parameters
 $$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
