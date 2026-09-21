@@ -555,6 +555,8 @@ class: middle
 Starting from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$, select the entries consistent with the evidence, sum the hidden variables out, and normalize:
 $$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum\_q \sum\_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).$$
 
+The normalization constant $1/Z$ is also written $\alpha$.
+
 .center.width-100[![](figures/lec4/enumeration.svg)]
 
 ---
