@@ -251,7 +251,7 @@ class: middle
 
 # Probability distributions
 
-For discrete variables, the .bold[probability distribution] can be encoded by a discrete list of the probabilities of the outcomes, known as the .bold[probability mass function].
+For a discrete variable $X$, the probability distribution $\mathbf{P}(X)$ is the list of the values $P(X=x)$ for all ${x \in D\_X}$, known as the .bold[probability mass function].
 
 <br>
 
