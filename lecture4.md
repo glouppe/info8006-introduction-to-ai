@@ -28,8 +28,9 @@ Motivate why this is important in AI (and this is not just one more probability 
 - Random variables
 - Probability distributions
 - Inference
-- Independence
-- The Bayes' rule
+    - by enumeration
+    - with independence
+    - with the Bayes' rule
 
     
 ]
@@ -601,12 +602,6 @@ class: middle
 
 class: middle
 
-# Independence
-
----
-
-class: middle
-
 The joint distribution has $d^n$ entries, but the chain rule already writes it as a product of conditional distributions,
 $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1}).$$
 
@@ -712,12 +707,6 @@ This probabilistic model is called a .bold[naive Bayes] model.
 ???
 
 This is an important model you should know about!
-
----
-
-class: middle
-
-# The Bayes' rule
 
 ---
 
