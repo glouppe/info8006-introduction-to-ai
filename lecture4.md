@@ -896,7 +896,7 @@ class: middle
 
 # Summary
 
-- Uncertainty is .bold[inescapable]. Probabilities measure the agent's .bold[beliefs], not the world.
+- Uncertainty is .bold[inescapable], and .bold[probability theory] is the framework we use to represent it: numbers attached to propositions, measuring the agent's beliefs rather than the world.
 - The joint distribution answers every query: select, marginalize, normalize. It costs $O(d^n)$.
 - .bold[Independence] and .bold[conditional independence] factor it into smaller tables. Naive Bayes goes from $O(2^n)$ down to $O(n)$.
 - .bold[Bayes' rule] turns a causal model into a diagnostic belief, and each posterior is the prior of the next observation.
