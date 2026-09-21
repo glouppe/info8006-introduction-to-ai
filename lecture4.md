@@ -79,6 +79,19 @@ class: middle, black-slide
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+To play it live instead of showing the video:
+
+```
+cd demo/lec4
+uv run python ghostbusters.py --cell 90
+```
+
+Click cells to read their sensors, ask the room where the ghost is, then press
+`b` and click that cell. Keep the beliefs hidden here; `p` shows them, for the
+second video.
+
 ---
 
 class: middle
@@ -812,6 +825,9 @@ class: middle, black-slide
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ???
+
+Same game, live: press `p` in `demo/lec4/ghostbusters.py` to show the beliefs,
+or start it with `--beliefs`. Two or three readings are now enough.
 
 What if we had chosen a different prior?
 
