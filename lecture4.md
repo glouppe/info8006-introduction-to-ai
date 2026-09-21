@@ -171,7 +171,12 @@ class: middle
 An .bold[event] is a set of sample points ${A \subseteq \Omega}$, and its probability is the mass it collects,
 $$P(A) = \sum\_{\omega \in A} P(\omega).$$
 
-Equivalently, in Kolmogorov's terms, ${P(A) \geq 0}$, ${P(\Omega) = 1}$, and ${P(A \cup B) = P(A) + P(B)}$ for disjoint events. It follows that
+Equivalently, in Kolmogorov's terms,
+- ${P(A) \geq 0}$ for all events;
+- ${P(\Omega) = 1}$;
+- ${P(A \cup B) = P(A) + P(B)}$ for disjoint events.
+
+It follows that
 $$P(\neg a) = 1 - P(a), \qquad P(a \lor b) = P(a) + P(b) - P(a \land b).$$
 
 ???
