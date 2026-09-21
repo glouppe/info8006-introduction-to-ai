@@ -473,7 +473,7 @@ class: middle
 - .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
 - Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
 
-.bold[Inference] is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
+Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
 
 ---
 
