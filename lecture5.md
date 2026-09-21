@@ -702,20 +702,14 @@ $$\begin{aligned}
 &= \mathbf{P}(B) \sum\_e P(e) \sum\_a \mathbf{P}(a \mid B,e)P(j \mid a)P(m \mid a).
 \end{aligned}$$
 
----
-
-class: middle
-
-.center.width-100[![](figures/lec5/inference-enumeration.png)]
-
-Same complexity as DFS: $O(n)$ in space, $O(d^n)$ in time.
+Evaluated depth-first over the network, this costs $O(n)$ in space and $O(d^n)$ in time.
 
 ???
 
 - $n$ is the number of variables.
 - $d$ is the size of their domain.
 
-Note that this assumes that variables are enumerated in topological order.
+The depth-first evaluation assumes the variables are enumerated in topological order.
 
 ---
 
