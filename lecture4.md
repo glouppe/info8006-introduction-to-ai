@@ -614,7 +614,9 @@ $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1}).$$
 
 ---
 
-# Independence
+class: middle
+
+## Independence
 
 $A$ and $B$ are .bold[independent], denoted ${A \perp B}$, iff
 $$P(a,b) = P(a)P(b) \quad \text{for all } a \in D\_A, b \in D\_B.$$
@@ -657,7 +659,9 @@ For $n$ independent coin flips, the joint distribution can be fully .bold[factor
 
 ---
 
-# Conditional independence
+class: middle
+
+## Conditional independence
 
 $A$ and $B$ are .bold[conditionally independent] given $C$, denoted ${A \perp B \mid C}$, iff
 $$P(a,b \mid c) = P(a \mid c)P(b \mid c) \quad \text{for all } a \in D\_A, b \in D\_B, c \in D\_C \text{ with } P(c) > 0.$$
