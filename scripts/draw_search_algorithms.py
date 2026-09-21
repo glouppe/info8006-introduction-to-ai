@@ -237,6 +237,20 @@ enumeration = [
     (1, [kw("return "), var("b"), txt(" / "), var("Z")]),
 ]
 
+# Variable elimination, as lecture 5 states it: join the factors mentioning a hidden
+# variable, eliminate it, and normalize what is left
+elimination = [
+    (0, [kw("function "), proc("Elimination-Ask"), txt("("), var("Q"), txt(", "), var("e"), txt(", "),
+         var("bn"), txt(") "), kw("returns "), txt("a distribution over "), var("Q")]),
+    (1, [var("factors"), gets(), txt("the CPTs of "), var("bn"), txt(", instantiated by the evidence "), var("e")]),
+    (1, [kw("while "), txt("a hidden variable is left "), kw("do")]),
+    (2, [var("H"), gets(), txt("a hidden variable")]),
+    (2, [var("f"), gets(), proc("Join"), txt("(the factors mentioning "), var("H"), txt(")")]),
+    (2, [var("factors"), gets(), txt("the factors without "), var("H"), txt(", and "), proc("Eliminate"),
+         txt("("), var("H"), txt(", "), var("f"), txt(")")]),
+    (1, [kw("return "), proc("Normalize"), txt("("), proc("Join"), txt("("), var("factors"), txt("))")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -244,3 +258,4 @@ if __name__ == "__main__":
     listing("mcts", mcts, 1000, lecture="lec3")
     listing("alpha-beta-search", alpha_beta, 1000, lecture="lec3")
     listing("enumeration", enumeration, 840, lecture="lec5")
+    listing("elimination-ask", elimination, 840, lecture="lec5")

@@ -743,17 +743,13 @@ The algorithm interleaves:
 
 class: middle
 
-## Variable Elimination
+## Variable elimination
 
-Query: $\mathbf{P}(Q \mid e\_1, ..., e\_k)$.
+For the query $\mathbf{P}(Q \mid \mathbf{e})$:
 
-1. Start with the initial factors (the local CPTs, instantiated by the evidence).
-2. While there are still hidden variables:
-    1. Pick a hidden variable $H$
-    2. Join all factors mentioning $H$
-    3. Eliminate H
-3. Join all remaining factors
-4. Normalize
+.center.width-100[![](figures/lec5/elimination-ask.svg)]
+
+The two operations, .bold[join] and .bold[eliminate], are defined on the next slides.
 
 ---
 
