@@ -446,7 +446,7 @@ class: middle
 
 ---
 
-# Probabilistic inference
+class: middle
 
 What an agent asks, given what it has observed:
 $$\begin{aligned}
@@ -466,7 +466,7 @@ The next slide states the problem in general.
 
 class: middle
 
-## General case
+## Probabilistic inference
 
 - .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
 - .bold[Query] variable $Q$.
