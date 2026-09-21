@@ -233,7 +233,6 @@ class: middle
 - $D\_X$ is the domain of $X$, so that $x \in D\_X$ is one of its values.
 - $P(X=x)$ is a .bold[number], abbreviated $P(x)$ when clear from context.
 - $\mathbf{P}(X)$ is the .bold[distribution] of $X$, i.e. the table of the numbers $P(X=x)$ for all ${x \in D\_X}$, and not a single value.
-- Bold letters also denote sets of variables, ${\mathbf{E} = \\{E\_1, \ldots, E\_k\\}}$, and $\mathbf{e}$ their observed values.
 
 ---
 
