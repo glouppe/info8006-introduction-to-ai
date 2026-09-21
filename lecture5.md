@@ -664,7 +664,7 @@ class: middle
 
 .width-25.center[![](figures/lec5/bn-alarm.svg)]
 
-Consider the alarm network and the query $\mathbf{P}(B \mid j,m)$. We have
+Yes, in part. Consider the alarm network and the query $\mathbf{P}(B \mid j,m)$. We have
 $$\begin{aligned}
 \mathbf{P}(B \mid j,m) &= \frac{1}{Z} \sum\_e \sum\_a \mathbf{P}(B,j,m,e,a) \\\\
 &\propto \sum\_e \sum\_a \mathbf{P}(B,j,m,e,a).
@@ -700,7 +700,7 @@ $$\begin{aligned}
 &= \mathbf{P}(B) \sum\_e P(e) \sum\_a \mathbf{P}(a \mid B,e)P(j \mid a)P(m \mid a).
 \end{aligned}$$
 
-Evaluated depth-first over the network, this costs $O(n)$ in space and $O(d^n)$ in time.
+Evaluated depth-first over the network, this costs $O(n)$ in space and $O(d^n)$ in time. The structure of the network therefore buys space, and some of the products, but not the exponential time.
 
 ???
 
