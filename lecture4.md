@@ -208,9 +208,7 @@ class: middle
 # Random variables
 
 - A .bold[random variable] is a function ${X: \Omega \to D\_X}$ from the sample space to a domain $D\_X$ of outcomes.
-    - e.g., $\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}$ such that $\text{Odd}(\omega) = (\omega \bmod 2 = 1)$.
 - "$X=x$" is the event $\\{\omega \in \Omega : X(\omega) = x\\}$, so $P$ induces a .bold[probability distribution] over $X$, $$P(X=x) = \sum\_{\\{\omega: X(\omega)=x\\}} P(\omega).$$
-    - e.g., $P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}$.
 - The events we care about are the .bold[assignments] of random variables, such as ${X\_1 = x\_1, \ldots, X\_n = x\_n}$.
 
 ???
@@ -219,6 +217,17 @@ In practice, we will use random variables to represent aspects of the world abou
 - $R$: Is it raining?
 - $T$: Is it hot or cold?
 - $L$: Where is the ghost?
+
+---
+
+class: middle
+
+## Example
+
+On the die, "odd" is the random variable
+$$\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}, \qquad \text{Odd}(\omega) = (\omega \bmod 2 = 1),$$
+whose distribution is
+$$P(\text{Odd}=\text{true}) = P(1)+P(3)+P(5) = \frac{1}{2}, \qquad P(\text{Odd}=\text{false}) = \frac{1}{2}.$$
 
 ---
 
