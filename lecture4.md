@@ -193,10 +193,9 @@ class: middle
 - $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding to an outcome of the die.
 - Assignment $P$ for a fair die:
 $$P(1) = P(2) = P(3) = P(4) = P(5) = P(6) = \frac{1}{6}$$
-- "4 or more" is the event ${A = \\{4, 5, 6\\}}$, of probability
-$$P(A) = P(4) + P(5) + P(6) = \frac{1}{2},$$
-hence $P(\neg A) = \frac{1}{2}$ for "3 or less". With "even", ${B = \\{2, 4, 6\\}}$,
-$$P(A \lor B) = P(A) + P(B) - P(A \land B) = \frac{1}{2} + \frac{1}{2} - \frac{1}{3} = \frac{2}{3}.$$
+- "3 or more" is the event ${A = \\{3, 4, 5, 6\\}}$, of probability
+$$P(A) = P(3) + P(4) + P(5) + P(6) = \frac{2}{3},$$
+hence $P(\neg A) = \frac{1}{3}$ for "2 or less".
 
 ---
 
