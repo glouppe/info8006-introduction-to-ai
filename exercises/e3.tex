@@ -13,30 +13,27 @@
 
 \begin{recap}
     \topic{Kolmogorov's axioms}
-    A \term{probability space} is a \term{sample space} $\Omega$ equipped with a probability function, \ie{} an assignment $P : \mathcal{P}(\Omega) \to \mathbb{R}$ such that
-    \begin{enumerate}
-        \item $P(\omega) \in \mathbb{R}$, $0 \leq P(\omega)$ for all $\omega \in \Omega$;
-        \item $P(\Omega) = 1$;
-        \item $P(\{\omega_1, \ldots, \omega_n\}) = \sum_{i=1}^n P(\omega_i)$ for any set of samples,
-    \end{enumerate}
-    where $\omega \in \Omega$ is a \term{sample point} and $\mathcal{P}(\Omega)$ is the power set of $\Omega$.
+    A \term{probability space} is a \term{sample space} $\Omega$, whose elements $\omega$ are the \term{sample points}, equipped with a probability function $P$ such that $0 \leq P(\omega) \leq 1$ and $\sum_{\omega \in \Omega} P(\omega) = 1$. An \term{event} is a set of sample points $A \subseteq \Omega$, of probability $P(A) = \sum_{\omega \in A} P(\omega)$. Hence $P(\Omega) = 1$, $P(A \cup B) = P(A) + P(B)$ for disjoint events, $P(\neg a) = 1 - P(a)$ and $P(a \lor b) = P(a) + P(b) - P(a \land b)$.
 
-    \topic{Product rule and Bayes' rule}
-    The \term{product rule} defines two ways to factor the joint distribution of two random variables,
-    \[
-        P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a).
-    \]
-    Therefore, \term{Bayes' rule} states that
+    \topic{Random variables}
+    A \term{random variable} is a function $X : \Omega \to D_X$, with $P(X = x) = \sum_{\{\omega \,:\, X(\omega) = x\}} P(\omega)$. A number is written $P(x)$, short for $P(X = x)$; a whole \term{distribution} is written $\mathbf{P}(X)$, \ie{} the table of the values $P(X = x)$ for all $x \in D_X$.
+
+    \topic{Conditional probability, sum and product rules}
+    For $P(b) > 0$, the \term{conditional probability} of $a$ given $b$ is $P(a \mid b) = P(a, b) / P(b)$, hence the \term{product rule} $P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$. Summing a joint distribution over the values of a variable marginalizes it out (\term{sum rule}), $P(x) = \sum_y P(x, y)$, and with the product rule it gives the \term{law of total probability}, $P(x) = \sum_y P(x \mid y) P(y)$. Selecting the entries consistent with the evidence $\mathbf{e}$, marginalizing the hidden variables out and normalizing gives the posterior over a query variable $Q$, $\mathbf{P}(Q \mid \mathbf{e}) = \alpha \mathbf{P}(Q, \mathbf{e})$ with $\alpha = 1/\sum_q P(q, \mathbf{e})$.
+
+    \topic{Bayes' rule}
+    From the two factorizations above,
     \[
         P(a \mid b) = \frac{P(b \mid a) P(a)}{P(b)},
     \]
-    where $P(a)$ is the prior belief on $a$, $P(b)$ is the probability of the evidence $b$, $P(a \mid b)$ is the posterior belief on $a$ given the evidence $b$, and $P(b \mid a)$ is the likelihood.
+    where $P(a)$ is the prior belief on $a$, $P(b)$ the probability of the evidence $b$, $P(a \mid b)$ the posterior belief on $a$ given $b$, and $P(b \mid a)$ the likelihood.
 
     \topic{Chain rule}
-    Any joint distribution can be written as an incremental product of conditional distributions,
-    \[
-        P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i \mid x_1, \ldots, x_{i-1}).
-    \]
+    Any joint distribution is an incremental product of conditional distributions, $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i \mid x_1, \ldots, x_{i-1})$.
+
+    \topic{Independence}
+    $A \perp B$ iff $P(a, b) = P(a) P(b)$, and $A \perp B \mid C$ iff $P(a, b \mid c) = P(a \mid c) P(b \mid c)$, for all values of the variables. Conditional independence factors a joint distribution into smaller tables, which is what makes probabilistic models scale.
+
 \end{recap}
 
 \begin{exercises}[1, 2, 3, 5]
@@ -307,10 +304,10 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
 
     \item Naive Bayes model assumes \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item \correct{pairwise conditional independence between effects given the cause.}
-        \item pairwise independence between effects.
-        \item independence between effects and cause.
-        \item conditional independence between each effect and the cause, given another effect.
+        \item \correct{conditional independence between the effects, given the cause.}
+        \item independence between the effects.
+        \item independence between the effects and the cause.
+        \item conditional independence between each effect and the cause, given the other effects.
     \end{enumerate}
 
     \item The Bayes' rule can be read as ``The posterior is equal to \ldots
