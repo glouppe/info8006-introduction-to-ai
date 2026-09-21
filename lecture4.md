@@ -151,11 +151,6 @@ A .bold[probability space] is a sample space equipped with a probability functio
 - $0 \leq P(\omega) \leq 1$ for all $\omega \in \Omega$;
 - $\sum\_{\omega \in \Omega} P(\omega) = 1$.
 
-An .bold[event] is a set of sample points ${A \subseteq \Omega}$, and its probability is $$P(A) = \sum\_{\omega \in A} P(\omega).$$
-
-Equivalently, in Kolmogorov's terms, ${P(A) \geq 0}$, ${P(\Omega) = 1}$, and ${P(A \cup B) = P(A) + P(B)}$ for disjoint events. It follows that
-$$P(\neg a) = 1 - P(a), \qquad P(a \lor b) = P(a) + P(b) - P(a \land b).$$
-
 ???
 
 We take $\Omega$ finite or countable, which is all we need here. Continuous sample spaces need $P$ to be defined on a family of events rather than on every subset, and densities instead of probabilities of points.
@@ -166,6 +161,22 @@ The axioms really do constrain the degrees of belief an agent can have concernin
 De Finetti's theorem implies that no rational agent can have beliefs that violate the axioms of probability. Put otherwise, rational beliefs must obey the axioms of probability.
 
 $P$ can be universal (Frequentist), subjective (Bayesian). It is a choice we make. It can even be parameterized and then learned from data (Lecture 5 and 7).
+
+---
+
+class: middle
+
+## Events
+
+An .bold[event] is a set of sample points ${A \subseteq \Omega}$, and its probability is the mass it collects,
+$$P(A) = \sum\_{\omega \in A} P(\omega).$$
+
+Equivalently, in Kolmogorov's terms, ${P(A) \geq 0}$, ${P(\Omega) = 1}$, and ${P(A \cup B) = P(A) + P(B)}$ for disjoint events. It follows that
+$$P(\neg a) = 1 - P(a), \qquad P(a \lor b) = P(a) + P(b) - P(a \land b).$$
+
+???
+
+Propositions are events: "the ghost is in cell [3,2]" is the set of the possible worlds in which it is there.
 
 ---
 
