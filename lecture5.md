@@ -925,7 +925,7 @@ We can treat parameter learning as a .bold[Bayesian inference] problem:
 - Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
 - Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
 
-.question[How should Figure 20.2 (a) be updated?]
+.question[How should the network of case (a) be updated?]
 
 ---
 
