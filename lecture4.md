@@ -721,6 +721,16 @@ class: middle
 
 ---
 
+class: middle
+
+A model is usually given in the .bold[causal] direction: a prior on the cause, and the distribution of its effects given the cause, as in the naive Bayes model. For the ghost and its sensors, ${\mathbf{P}(G)}$ and ${\mathbf{P}(R\_{i,j} \mid G)}$.
+
+Inference asks the .bold[diagnostic] question, ${\mathbf{P}(G \mid r\_{i,j})}$: the cause, given the effects that were observed.
+
+Bayes' rule turns one into the other, and follows from the two factorizations of the product rule.
+
+---
+
 class: middle, center, red-slide
 count: false
 
