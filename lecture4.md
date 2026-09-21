@@ -590,8 +590,6 @@ class: middle
 
 class: middle
 
-## Complexity
-
 - Inference by enumeration can be used to answer probabilistic queries for .bold[discrete variables] (i.e., with a finite number of values).
 - However, enumeration .bold[does not scale]!
     - Assume a domain described by $n$ variables taking at most $d$ values.
@@ -713,6 +711,8 @@ This is an important model you should know about!
 ---
 
 class: middle
+
+## Causal and diagnostic directions
 
 A model is usually given in the .bold[causal] direction: a prior on the cause, and the distribution of its effects given the cause, as in the naive Bayes model. For the ghost and its sensors, ${\mathbf{P}(G)}$ and ${\mathbf{P}(R\_{i,j} \mid G)}$.
 
