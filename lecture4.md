@@ -910,21 +910,21 @@ class: middle
 
 ## All the rules
 
-| | |
-| --- | --- |
-| Event | $P(A) = \sum\_{\omega \in A} P(\omega)$ |
-| Complement | $P(\neg a) = 1 - P(a)$ |
-| Union | $P(a \lor b) = P(a) + P(b) - P(a \land b)$ |
-| Sum rule | $P(x) = \sum\_y P(x, y)$ |
-| Conditioning | $P(a \mid b) = P(a, b) / P(b)$ |
-| Product rule | $P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$ |
-| Total probability | $P(x) = \sum\_y P(x \mid y) P(y)$ |
-| Chain rule | $P(x\_{1:n}) = \prod\_i P(x\_i \mid x\_{1:i-1})$ |
-| Bayes' rule | $P(a \mid b) = P(b \mid a) P(a) / P(b)$ |
-| Enumeration | $\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e})$ |
-| Independence, $X \perp Y$ | $P(x, y) = P(x) P(y)$ |
-| Conditional independence, $X \perp Y \mid Z$ | $P(x, y \mid z) = P(x \mid z) P(y \mid z)$ |
-| Naive Bayes | $P(c, e\_{1:n}) = P(c) \prod\_i P(e\_i \mid c)$ |
+<table>
+<tr><td>Event</td><td>$P(A) = \sum_{\omega \in A} P(\omega)$</td></tr>
+<tr><td>Complement</td><td>$P(\neg a) = 1 - P(a)$</td></tr>
+<tr><td>Union</td><td>$P(a \lor b) = P(a) + P(b) - P(a \land b)$</td></tr>
+<tr><td>Sum rule</td><td>$P(x) = \sum_y P(x, y)$</td></tr>
+<tr><td>Conditioning</td><td>$P(a \mid b) = P(a, b) / P(b)$</td></tr>
+<tr><td>Product rule</td><td>$P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$</td></tr>
+<tr><td>Total probability</td><td>$P(x) = \sum_y P(x \mid y) P(y)$</td></tr>
+<tr><td>Chain rule</td><td>$P(x_{1:n}) = \prod_i P(x_i \mid x_{1:i-1})$</td></tr>
+<tr><td>Bayes' rule</td><td>$P(a \mid b) = P(b \mid a) P(a) / P(b)$</td></tr>
+<tr><td>Enumeration</td><td>$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e})$</td></tr>
+<tr><td>Independence, $X \perp Y$</td><td>$P(x, y) = P(x) P(y)$</td></tr>
+<tr><td>Conditional independence, $X \perp Y \mid Z$</td><td>$P(x, y \mid z) = P(x \mid z) P(y \mid z)$</td></tr>
+<tr><td>Naive Bayes</td><td>$P(c, e_{1:n}) = P(c) \prod_i P(e_i \mid c)$</td></tr>
+</table>
 
 ???
 
