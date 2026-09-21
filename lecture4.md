@@ -399,7 +399,9 @@ $\mathbf{P}(W \mid T=\text{cold})$
 
 ---
 
-# Product rule
+class: middle
+
+## Product rule
 
 Rearranging the definition of the conditional probability,
 $$P(a, b) = P(a \mid b)P(b), \qquad \mathbf{P}(A, B) = \mathbf{P}(A \mid B)\mathbf{P}(B),$$
@@ -453,7 +455,9 @@ $\mathbf{P}(D,W)$
 
 ---
 
-# Chain rule
+class: middle
+
+## Chain rule
 
 More generally, any joint distribution can always be written as an incremental product of conditional distributions:
 
