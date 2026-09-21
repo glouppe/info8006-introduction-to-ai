@@ -49,7 +49,7 @@ A Bayesian network is a .bold[directed acyclic graph] where
     - observed or unobserved
     - discrete or continuous
 - each .bold[edge] is directed and indicates a direct probabilistic dependency between two variables;
-- each node $X_i$ is annotated with a .bold[conditional probability distribution] $${\bf P}(X_i | \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
+- each node $X_i$ is annotated with a .bold[conditional probability distribution] $$\mathbf{P}(X_i \mid \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
 
 ]
 .kol-1-4.width-100[![](figures/lec5/example-d.png)]
@@ -98,13 +98,13 @@ Blackboard: example of calculation, as in the next slide.
 
 A Bayesian network implicitly encodes the full joint distribution as a product of local distributions, that is
 
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i)).$$
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i \mid \text{parents}(X_i)).$$
 
 Proof:
-- By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i | x\_1, ..., x\_{i-1})$.
+- By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1})$.
 - Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$, we have
-$$P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i)).$$
-- Therefore, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i | \text{parents}(X_i))$.
+$$P(x\_i \mid x\_1, ..., x\_{i-1}) = P(x\_i \mid \text{parents}(X_i)).$$
+- Therefore, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i \mid \text{parents}(X_i))$.
 
 ---
 
@@ -114,7 +114,7 @@ class: middle
 
 $$
 \begin{aligned}
-P(j, m, a, \lnot b, \lnot e) &= P(j|a) P(m|a)P(a|\lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
+P(j, m, a, \lnot b, \lnot e) &= P(j \mid a) P(m \mid a)P(a \mid \lnot b,\lnot e)P(\lnot b)P(\lnot e)\\\\
 &= 0.9 \times 0.7 \times 0.001 \times 0.999 \times 0.998 \\\\
 &\approx 0.00063
 \end{aligned}
@@ -167,7 +167,7 @@ Edges may correspond to causal relations.
 .grid.center[
 .kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
 .kol-2-5[
-${\bf P}(R)$
+$\mathbf{P}(R)$
 
 | $R$ | $P$ |
 | --- | --- |
@@ -175,7 +175,7 @@ ${\bf P}(R)$
 | $\lnot\text{r}$ | $0.75$ |
 ]
 .kol-2-5[
-${\bf P}(T|R)$
+$\mathbf{P}(T \mid R)$
 
 | $R$ | $T$ | $P$ |
 | --- | --- | --- |
@@ -205,7 +205,7 @@ class: middle
 .grid.center[
 .kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
 .kol-2-5[
-${\bf P}(T)$
+$\mathbf{P}(T)$
 
 | $T$ | $P$ |
 | --- | --- |
@@ -213,7 +213,7 @@ ${\bf P}(T)$
 | $\lnot\text{t}$ | $7/16$ |
 ]
 .kol-2-5[
-${\bf P}(R|T)$
+$\mathbf{P}(R \mid T)$
 
 | $T$ | $R$ | $P$ |
 | --- | --- | --- |
@@ -241,7 +241,7 @@ Bayesian networks can be constructed in any order, provided that the conditional
 1. Choose some .bold[ordering] of the variables $X\_1, ..., X\_n$.
 2. For $i=1$ to $n$:
     1. Add $X\_i$ to the network.
-    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
+    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i \mid x\_1, ..., x\_{i-1}) = P(x\_i \mid \text{parents}(X_i))$.
     3. For each parent, insert a link from the parent to $X\_i$.
     4. Write down the CPT.
 
@@ -291,10 +291,10 @@ Is $X$ independent of $Z$? No.
 Counter-example:
 - Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
 - In numbers:
-    - $P(y|x)=1$,
-    - $P(z|y)=1$,
-    - $P(\lnot y|\lnot x)=1$,
-    - $P(\lnot z|\lnot y)=1$
+    - $P(y \mid x)=1$,
+    - $P(z \mid y)=1$,
+    - $P(\lnot y \mid \lnot x)=1$,
+    - $P(\lnot z \mid \lnot y)=1$
 ]
 .kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
 
@@ -302,7 +302,7 @@ $X$: low pressure,
 $Y$: rain,
 $Z$: traffic.
 
-$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+$P(x,y,z)=P(x)P(y \mid x)P(z \mid y)$]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -316,9 +316,9 @@ class: middle
 Is $X$ independent of $Z$, given $Y$? Yes.
 
 $$\begin{aligned}
-P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
-&= \frac{P(x)P(y|x)P(z|y)}{P(x)P(y|x)} \\\\
-&= P(z|y)
+P(z \mid x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(x)P(y \mid x)P(z \mid y)}{P(x)P(y \mid x)} \\\\
+&= P(z \mid y)
 \end{aligned}$$
 
 We say that the evidence along the cascade .bold[blocks] the influence.
@@ -330,7 +330,7 @@ $X$: low pressure,
 $Y$: rain,
 $Z$: traffic.
 
-$P(x,y,z)=P(x)P(y|x)P(z|y)$]
+$P(x,y,z)=P(x)P(y \mid x)P(z \mid y)$]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -348,10 +348,10 @@ Is $X$ independent of $Z$? No.
 Counter-example:
 - Project due causes both forums busy and lab full.
 - In numbers:
-    - $P(x|y)=1$,
-    - $P(\lnot x|\lnot y)=1$,
-    - $P(z|y)=1$,
-    - $P(\lnot z|\lnot y)=1$
+    - $P(x \mid y)=1$,
+    - $P(\lnot x \mid \lnot y)=1$,
+    - $P(z \mid y)=1$,
+    - $P(\lnot z \mid \lnot y)=1$
 ]
 .kol-1-2.center[.width-80[![](figures/lec5/common-parent.png)]
 
@@ -359,7 +359,7 @@ $X$: forum busy,
 $Y$: project due,
 $Z$: lab full.
 
-$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+$P(x,y,z)=P(y)P(x \mid y)P(z \mid y)$]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -373,9 +373,9 @@ class: middle
 Is $X$ independent of $Z$, given $Y$? Yes
 
 $$\begin{aligned}
-P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
-&= \frac{P(y)P(x|y)P(z|y)}{P(y)P(x|y)} \\\\
-&= P(z|y)
+P(z \mid x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
+&= \frac{P(y)P(x \mid y)P(z \mid y)}{P(y)P(x \mid y)} \\\\
+&= P(z \mid y)
 \end{aligned}$$
 
 Observing the parent blocks the influence between the children.
@@ -386,7 +386,7 @@ $X$: forum busy,
 $Y$: project due,
 $Z$: lab full.
 
-$P(x,y,z)=P(y)P(x|y)P(z|y)$]
+$P(x,y,z)=P(y)P(x \mid y)P(z \mid y)$]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -413,7 +413,7 @@ $X$: rain,
 $Y$: ballgame,
 $Z$: traffic.
 
-$P(x,y,z)=P(x)P(y)P(z|x,y)$]
+$P(x,y,z)=P(x)P(y)P(z \mid x,y)$]
 ]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -422,11 +422,11 @@ $P(x,y,z)=P(x)P(y)P(z|x,y)$]
 
 Proof:
 
-$$P(x,y,z) = P(x)P(y)P(z|x,y)$$
+$$P(x,y,z) = P(x)P(y)P(z \mid x,y)$$
 
 and
 
-$$P(x,y,z) = P(x,y)P(z|x,y)$$
+$$P(x,y,z) = P(x,y)P(z \mid x,y)$$
 
 therefore
 
@@ -471,11 +471,11 @@ class: middle
 .kol-1-2[
 ## Example
 
-- $L \perp T' | T$?
+- $L \perp T' \mid T$?
 - $L \perp B$?
-- $L \perp B|T$?
-- $L \perp B|T'$?
-- $L \perp B|T, R$?
+- $L \perp B \mid T$?
+- $L \perp B \mid T'$?
+- $L \perp B \mid T, R$?
 
 ]
 .kol-1-2.width-80.center[![](figures/lec5/example-d.png)]
@@ -525,19 +525,19 @@ Inference is concerned with the problem of .bold[computing a marginal and/or a c
 
 .grid[
 .kol-1-3.center[Simple queries:]
-.kol-2-3[${\bf P}(X\_i|e)$]
+.kol-2-3[$\mathbf{P}(X\_i \mid e)$]
 ]
 .grid[
 .kol-1-3.center[Conjunctive queries:]
-.kol-2-3[${\bf P}(X\_i,X\_j|e)={\bf P}(X\_i|e){\bf P}(X\_j|X\_i,e)$]
+.kol-2-3[$\mathbf{P}(X\_i,X\_j \mid e)=\mathbf{P}(X\_i \mid e)\mathbf{P}(X\_j \mid X\_i,e)$]
 ]
 .grid[
 .kol-1-3.center[Most likely explanation:]
-.kol-2-3[$\arg \max_q P(q|e)$]
+.kol-2-3[$\arg \max_q P(q \mid e)$]
 ]
 .grid[
 .kol-1-3.center[Optimal decisions:]
-.kol-2-3[$\arg \max\_a \mathbb{E}\_{p(s'|s,a)} \left[ V(s') \right]$]
+.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s' \mid s,a)} \left[ V(s') \right]$]
 ]
 
 .center.width-30[![](figures/lec5/query-cartoon.png)]
@@ -554,16 +554,16 @@ Insist on the importance of inference. Inference <=> reasoning.
 
 # Inference by enumeration
 
-Start from the joint distribution ${\bf P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
+Start from the joint distribution $\mathbf{P}(Q, E\_1, ..., E\_k, H\_1, ..., H\_r)$.
 
 1. Select the entries consistent with the evidence  $E_1, ..., E_k = e_1, ..., e_k$.
 2. Marginalize out the hidden variables to obtain the joint of the query and the evidence variables:
-$${\bf P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} {\bf P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
+$$\mathbf{P}(Q,e\_1,...,e\_k) = \sum\_{h\_1, ..., h\_r} \mathbf{P}(Q, h\_1, ..., h\_r, e\_1, ..., e\_k).$$
 3. Normalize:
 <br>
 $$\begin{aligned}
 Z &= \sum_q P(q,e_1,...,e_k) \\\\
-{\bf P}(Q|e_1, ..., e_k) &= \frac{1}{Z} {\bf P}(Q,e_1,...,e_k)
+\mathbf{P}(Q \mid e_1, ..., e_k) &= \frac{1}{Z} \mathbf{P}(Q,e_1,...,e_k)
 \end{aligned}$$
 
 ---
@@ -572,14 +572,14 @@ class: middle
 
 .width-25.center[![](figures/lec5/bn-alarm.svg)]
 
-Consider the alarm network and the query ${\bf P}(B|j,m)$. We have
+Consider the alarm network and the query $\mathbf{P}(B \mid j,m)$. We have
 $$\begin{aligned}
-{\bf P}(B|j,m) &= \frac{1}{Z} \sum\_e \sum\_a {\bf P}(B,j,m,e,a) \\\\
-&\propto \sum\_e \sum\_a {\bf P}(B,j,m,e,a).
+\mathbf{P}(B \mid j,m) &= \frac{1}{Z} \sum\_e \sum\_a \mathbf{P}(B,j,m,e,a) \\\\
+&\propto \sum\_e \sum\_a \mathbf{P}(B,j,m,e,a).
 \end{aligned}$$
 Using the Bayesian network, the full joint entries can be rewritten as the product of CPT entries 
 $$\begin{aligned}
-{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a).
+\mathbf{P}(B \mid j,m) &\propto \sum\_e \sum\_a \mathbf{P}(B)P(e)\mathbf{P}(a \mid B,e)P(j \mid a)P(m \mid a).
 \end{aligned}$$
 
 ???
@@ -604,8 +604,8 @@ Factors that do not depend on the variables in the summations can be factored ou
 
 For the alarm network, we have
 $$\begin{aligned}
-{\bf P}(B|j,m) &\propto \sum\_e \sum\_a {\bf P}(B)P(e){\bf P}(a|B,e)P(j|a)P(m|a) \\\\
-&= {\bf P}(B) \sum\_e P(e) \sum\_a {\bf P}(a|B,e)P(j|a)P(m|a).
+\mathbf{P}(B \mid j,m) &\propto \sum\_e \sum\_a \mathbf{P}(B)P(e)\mathbf{P}(a \mid B,e)P(j \mid a)P(m \mid a) \\\\
+&= \mathbf{P}(B) \sum\_e P(e) \sum\_a \mathbf{P}(a \mid B,e)P(j \mid a)P(m \mid a).
 \end{aligned}$$
 
 ---
@@ -627,12 +627,12 @@ Note that this assumes that variables are enumerated in topological order.
 
 class: middle
 
-## Evaluation tree for $P(b|j,m)$
+## Evaluation tree for $P(b \mid j,m)$
 
 .center.width-80[![](figures/lec5/enumeration-tree.png)]
 
 Despite the factorization, inference by enumeration is still .bold[inefficient]. There are repeated computations!
-- e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
+- e.g., $P(j \mid a)P(m \mid a)$ is computed twice, once for $e$ and once for $\lnot e$.
 - These can be avoided by storing .bold[intermediate results].
 
 ???
@@ -659,7 +659,7 @@ class: middle
 
 ## Variable Elimination
 
-Query: ${\bf P}(Q|e\_1, ..., e\_k)$.
+Query: $\mathbf{P}(Q \mid e\_1, ..., e\_k)$.
 
 1. Start with the initial factors (the local CPTs, instantiated by the evidence).
 2. While there are still hidden variables:
@@ -681,8 +681,8 @@ class: middle
 $$
 \begin{aligned}
 \mathbf{f}\_4 &= \mathbf{f}\_4(A) = \left(\begin{matrix}
-P(j|a) \\\\
-P(j|\lnot a) \end{matrix}\right)
+P(j \mid a) \\\\
+P(j \mid \lnot a) \end{matrix}\right)
 = \left(\begin{matrix}
 0.90 \\\\
 0.05 \end{matrix}\right) \\\\
@@ -738,7 +738,7 @@ class: middle
 
 <br>
 
-.question[Run the variable elimination algorithm for the query ${\bf P}(B|j,m)$.]
+.question[Run the variable elimination algorithm for the query $\mathbf{P}(B \mid j,m)$.]
 
 ---
 
@@ -747,12 +747,12 @@ class: middle
 
 ## Relevance
 
-Consider the query ${\bf P}(J|b)$:
-$${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
-- $\sum_m P(m|a) = 1$, therefore $M$ is .bold[irrelevant] for the query.
-- In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
+Consider the query $\mathbf{P}(J \mid b)$:
+$$\mathbf{P}(J \mid b) \propto P(b) \sum_e P(e) \sum\_a P(a \mid b,e) \mathbf{P}(J \mid a) \sum\_m P(m \mid a)$$
+- $\sum_m P(m \mid a) = 1$, therefore $M$ is .bold[irrelevant] for the query.
+- In other words, $\mathbf{P}(J \mid b)$ remains unchanged if we remove $M$ from the network.
 
-.italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\{Q\\} \cup E)$.
+.italic[Theorem.] $H$ is irrelevant for $\mathbf{P}(Q \mid e)$ unless $H \in \text{ancestors}(\\{Q\\} \cup E)$.
 
 ---
 
@@ -762,7 +762,7 @@ class: middle
 
 .center.width-50[![](figures/lec5/ve-ordering.png)]
 
-Consider the query ${\bf P}(X\_n|y\_1,...,y\_n)$.
+Consider the query $\mathbf{P}(X\_n \mid y\_1,...,y\_n)$.
 
 Work through the two elimination orderings:
 - $Z, X\_1, ..., X\_{n-1}$
@@ -804,7 +804,7 @@ class: middle
 
 When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probability values is often difficult. 
 
-A workaround is to use a .bold[parameterized] family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and .bold[estimate] the parameters $\theta$ from data.
+A workaround is to use a .bold[parameterized] family $\mathbf{P}(X \mid \theta)$ (sometimes also noted $\mathbf{P}\_\theta(X)$) of models, and .bold[estimate] the parameters $\theta$ from data.
 
 ???
 
@@ -832,17 +832,17 @@ We draw $N$ chalks i.i.d. and observe $c$ white chalks and $l=N-c$ red chalks. H
 Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\{x\_1, ..., x\_N\\}$.
 
 The .bold[likelihood] of the parameters $\theta$ is the probability of the data given the parameters
-$$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
+$$P(\mathbf{d} \mid \theta) = \prod\_{j=1}^N P(x\_j \mid \theta).$$
 
 The .bold[maximum likelihood estimate] (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
-$$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
+$$\theta^\* = \arg \max\_\theta P(\mathbf{d} \mid \theta).$$
 
 ---
 
 class: middle
 
 When possible analytically,
-1. Write down the log-likelihood $L(\theta) = \log P({\bf d}|\theta)$ of the parameters $\theta$.
+1. Write down the log-likelihood $L(\theta) = \log P(\mathbf{d} \mid \theta)$ of the parameters $\theta$.
 2. Write down the derivative $\frac{\partial L}{\partial \theta}$ of the log-likelihood of the parameters $\theta$.
 3. Find the parameter values $\theta^\*$ such that the derivatives are zero (and check whether the Hessian is negative definite).
 
@@ -862,11 +862,11 @@ What is the fraction $\theta$ of cherry candies?
 
 Suppose we unwrap $N$ candies, and get $c$ cherries and $l=N-c$ limes.
 These are i.i.d. observations, therefore
-$$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta) = \theta^c (1-\theta)^l.$$
+$$P(\mathbf{d} \mid \theta) = \prod\_{j=1}^N P(x\_j \mid \theta) = \theta^c (1-\theta)^l.$$
 Maximize this w.r.t. $\theta$, which is easier for the log-likelihood and leads to
 $$\begin{aligned}
-L(\mathbf{d}|\theta) &= \log P(\mathbf{d}|\theta) = c \log \theta + l \log(1-\theta) \\\\
-\frac{\partial L(\mathbf{d}|\theta)}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
+L(\mathbf{d} \mid \theta) &= \log P(\mathbf{d} \mid \theta) = c \log \theta + l \log(1-\theta) \\\\
+\frac{\partial L(\mathbf{d} \mid \theta)}{\partial \theta} &= \frac{c}{\theta} - \frac{l}{1-\theta}=0.
 \end{aligned}$$
 Hence $\theta=\frac{c}{N}$.
 
@@ -879,14 +879,14 @@ class: middle
 Red and green wrappers depend probabilistically on flavor.
 E.g., the likelihood for a cherry candy in green wrapper is
 $$\begin{aligned}
-&P(\text{cherry}, \text{green}|\theta,\theta\_1, \theta\_2) \\\\
-&= P(\text{cherry}|\theta,\theta\_1, \theta\_2) P(\text{green}|\text{cherry}, \theta,\theta\_1, \theta\_2) \\\\
+&P(\text{cherry}, \text{green} \mid \theta,\theta\_1, \theta\_2) \\\\
+&= P(\text{cherry} \mid \theta,\theta\_1, \theta\_2) P(\text{green} \mid \text{cherry}, \theta,\theta\_1, \theta\_2) \\\\
 &= \theta (1-\theta\_1).
 \end{aligned}$$
 
 The likelihood for the parameters, given $N$ candies, $r\_c$ red-wrapped cherries, $g\_c$ green-wrapped cherries, etc., is
 $$\begin{aligned}
-P(\mathbf{d}|\theta,\theta\_1, \theta\_2) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
+P(\mathbf{d} \mid \theta,\theta\_1, \theta\_2) =&\,\, \theta^c (1-\theta)^l \theta\_1^{r\_c}(1-\theta\_1)^{g\_c} \theta\_2^{r\_l} (1-\theta\_2)^{g\_l} \\\\
 L =&\,\, c \log \theta + l \log(1-\theta)  +  \\\\
    &\,\, r\_c \log \theta\_1 + g\_c \log(1-\theta\_1) + \\\\
    &\,\, r\_l \log \theta\_2 + g\_l \log(1-\theta\_2).
@@ -922,8 +922,8 @@ class: middle
 
 We can treat parameter learning as a .bold[Bayesian inference] problem:
 - Make the parameters $\theta$ random variables and treat them as hidden variables.
-- Specify a .bold[prior] distribution ${\bf P}(\theta)$ over the parameters.
-- Then, as data arrives, update our beliefs about the parameters to obtain the .bold[posterior] distribution ${\bf P}(\theta|\mathbf{d})$.
+- Specify a .bold[prior] distribution $\mathbf{P}(\theta)$ over the parameters.
+- Then, as data arrives, update our beliefs about the parameters to obtain the .bold[posterior] distribution $\mathbf{P}(\theta \mid \mathbf{d})$.
 
 .question[How should the network of case (a) be updated?]
 
@@ -935,16 +935,16 @@ class: middle
 
 What is the fraction $\theta$ of cherry candies?
 
-We assume a Beta prior $$P(\theta) = \text{Beta}(\theta|a,b) = \frac{1}{Z} \theta^{a-1} (1-\theta)^{b-1}$$
+We assume a Beta prior $$P(\theta) = \text{Beta}(\theta \mid a,b) = \frac{1}{Z} \theta^{a-1} (1-\theta)^{b-1}$$
 where $Z$ is a normalization constant. 
 
 Then, observing a cherry candy yields the posterior
 $$\begin{aligned}
-P(\theta|\text{cherry}) &\propto P(\text{cherry}|\theta) P(\theta) \\\\
-&= \theta \text{Beta}(\theta|a,b) \\\\
+P(\theta \mid \text{cherry}) &\propto P(\text{cherry} \mid \theta) P(\theta) \\\\
+&= \theta \text{Beta}(\theta \mid a,b) \\\\
 &= \theta \theta^{a-1} (1-\theta)^{b-1} \\\\
 &= \theta^a (1-\theta)^{b-1} \\\\
-&= \text{Beta}(\theta|a+1,b).
+&= \text{Beta}(\theta \mid a+1,b).
 \end{aligned}$$
 
 ???
@@ -966,7 +966,7 @@ class: middle
 ## Maximum a posteriori estimation
 
 When the posterior cannot be computed analytically, we can use .bold[maximum a posteriori] (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
-$$\theta^\* = \arg \max\_\theta P(\theta|\mathbf{d}) = \arg \max\_\theta P(\mathbf{d}|\theta) P(\theta).$$
+$$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(\mathbf{d} \mid \theta) P(\theta).$$
 
 ---
 
