@@ -253,8 +253,6 @@ class: middle
 
 For discrete variables, the .bold[probability distribution] can be encoded by a discrete list of the probabilities of the outcomes, known as the .bold[probability mass function].
 
-One can think of the probability distribution as a .bold[table] that associates a probability value to each .bold[outcome] of the variable.
-
 <br>
 
 .grid[
