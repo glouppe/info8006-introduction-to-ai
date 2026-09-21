@@ -70,7 +70,7 @@ class: middle
 - Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
 - The network topology can be defined from domain knowledge:
     - A burglar can set the alarm off
-    - An earthquake can set the alaram off
+    - An earthquake can set the alarm off
     - The alarm can cause Mary to call
     - The alarm can cause John to call
 
@@ -455,7 +455,7 @@ class: middle
 A path is **active** if each triple along the path is active:
 - Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
 - Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
-- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendents is observed.
+- v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendants is observed.
 
 ]
 .kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
@@ -521,7 +521,7 @@ class: middle
 
 class: middle
 
-Inference is concerned with the problem .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
+Inference is concerned with the problem of .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
 
 .grid[
 .kol-1-3.center[Simple queries:]
@@ -978,7 +978,7 @@ class: middle, center
 
 # Summary
 
-- A Bayesian Network specifies a full joint distribution. BNs are often exponentially smaller than an explicitly enumerated joint distribution.
+- A Bayesian network specifies a full joint distribution. Bayesian networks are often exponentially smaller than an explicitly enumerated joint distribution.
 - The topology of a Bayesian network encodes conditional independence assumptions between random variables.
 - Inference is the problem of computing a marginal and/or a conditional probability distribution from a joint probability distribution.
     - Exact inference is possible for simple Bayesian networks, but is intractable for most probabilistic models of practical interest.
