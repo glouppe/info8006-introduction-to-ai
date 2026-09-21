@@ -687,7 +687,7 @@ P(j|\lnot a) \end{matrix}\right)
 0.90 \\\\
 0.05 \end{matrix}\right) \\\\
 \mathbf{f}\_4(a) &= 0.90 \\\\
-\mathbf{f}\_4(\lnot a) &= 0.5
+\mathbf{f}\_4(\lnot a) &= 0.05
 \end{aligned}$$
 ]
 ]
