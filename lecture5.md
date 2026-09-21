@@ -170,7 +170,7 @@ Edges may correspond to causal relations.
 ${\bf P}(R)$
 
 | $R$ | $P$ |
-| --- | --- | --- |
+| --- | --- |
 | $\text{r}$ | $0.25$ |
 | $\lnot\text{r}$ | $0.75$ |
 ]
@@ -208,7 +208,7 @@ class: middle
 ${\bf P}(T)$
 
 | $T$ | $P$ |
-| --- | --- | --- |
+| --- | --- |
 | $\text{t}$ | $9/16$ |
 | $\lnot\text{t}$ | $7/16$ |
 ]
