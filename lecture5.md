@@ -861,7 +861,7 @@ The computational and space complexity of variable elimination is determined by 
 - The elimination .bold[ordering] can greatly affect the size of the largest factor.
 - The optimal ordering is .bold[NP-hard] to find. There is no known polynomial-time algorithm to find it.
 
-.alert[Exact inference stays intractable for most models of practical interest. In practice, one samples from the network, optimizes an approximation of the posterior (variational methods), passes messages between nodes, or learns the posterior from simulated data.]
+.alert[Exact inference is intractable for most models of interest. The posterior is then approximated: by sampling from the model, by optimization, or by learning it from simulations.]
 
 ???
 
