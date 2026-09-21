@@ -199,12 +199,6 @@ hence $P(\neg A) = 1 - P(A) = \frac{1}{3}$ for "2 or less".
 
 ---
 
-class: middle
-
-# Random variables
-
----
-
 # Random variables
 
 - A .bold[random variable] is a function ${X: \Omega \to D\_X}$ from the sample space to a domain $D\_X$ of outcomes.
