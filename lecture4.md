@@ -139,9 +139,7 @@ What does a probability value represent? Take $P(\text{ghost in cell } [3,2]) = 
 - The objectivist, .bold[frequentist] view: a property of the world, the fraction of games in which the ghost sits in that cell.
 - The subjectivist, .bold[Bayesian] view: the degree of belief of the agent that the ghost is in that cell, given the readings it has taken.
 
-The agent plays one game, not a long run, and it has to act in this one. Its readings change the number without moving the ghost.
-
-We take the Bayesian view in this course.
+The agent plays a single game, with no long run to count, so we read probabilities as beliefs in this course: a new reading changes the number, not the ghost.
 
 ---
 
