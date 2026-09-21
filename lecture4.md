@@ -399,6 +399,75 @@ $\mathbf{P}(W \mid T=\text{cold})$
 
 ---
 
+# Product rule
+
+Rearranging the definition of the conditional probability,
+$$P(a, b) = P(a \mid b)P(b), \qquad \mathbf{P}(A, B) = \mathbf{P}(A \mid B)\mathbf{P}(B),$$
+the second form standing for one equation per value of $A$ and $B$.
+
+Summing it over the values of $B$ gives the .bold[law of total probability],
+$$P(a) = \sum\_b P(a \mid b) P(b).$$
+
+???
+
+The law of total probability is how the normalization constant $Z$ of the previous slides is computed: the probability of the evidence is the sum of the ways it can happen.
+
+---
+
+class: middle
+
+## Example
+
+.center.grid[
+.kol-1-3[
+$\mathbf{P}(W)$
+
+| $W$ | $P$ |
+| --- | --- |
+| $\text{sun}$ | $0.8$ |
+| $\text{rain}$ | $0.2$ |
+]
+.kol-1-3[
+$\mathbf{P}(D \mid W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{wet}$ | $\text{sun}$ | $0.1$ |
+| $\text{dry}$ | $\text{sun}$ | $0.9$ |
+| $\text{wet}$ | $\text{rain}$ | $0.7$ |
+| $\text{dry}$ | $\text{rain}$ | $0.3$ |
+
+]
+.kol-1-3[
+$\mathbf{P}(D,W)$
+
+| $D$ | $W$ | $P$ |
+| --- | --- | --- |
+| $\text{wet}$ | $\text{sun}$ | ? |
+| $\text{dry}$ | $\text{sun}$ | ? |
+| $\text{wet}$ | $\text{rain}$ | ? |
+| $\text{dry}$ | $\text{rain}$ | ? |
+
+]
+]
+
+---
+
+# Chain rule
+
+More generally, any joint distribution can always be written as an incremental product of conditional distributions:
+
+$$
+\begin{aligned}
+P(x\_1,x\_2,x\_3) &= P(x\_1)P(x\_2 \mid x\_1)P(x\_3 \mid x\_1,x\_2) \\\\
+P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1})
+\end{aligned}
+$$
+
+In the same way, $\mathbf{P}(X\_1, ..., X\_n) = \prod\_{i=1}^n \mathbf{P}(X\_i \mid X\_1, ..., X\_{i-1})$.
+
+---
+
 class: middle
 
 ## Normalization trick
@@ -527,75 +596,6 @@ class: middle
     - Time complexity: $O(d^n)$
 
 .question[Can we reduce the size of the representation of the joint distribution?]
-
----
-
-# Product rule
-
-Rearranging the definition of the conditional probability,
-$$P(a, b) = P(a \mid b)P(b), \qquad \mathbf{P}(A, B) = \mathbf{P}(A \mid B)\mathbf{P}(B),$$
-the second form standing for one equation per value of $A$ and $B$.
-
-Summing it over the values of $B$ gives the .bold[law of total probability],
-$$P(a) = \sum\_b P(a \mid b) P(b).$$
-
-???
-
-The law of total probability is how the normalization constant $Z$ of the previous slides is computed: the probability of the evidence is the sum of the ways it can happen.
-
----
-
-class: middle
-
-## Example
-
-.center.grid[
-.kol-1-3[
-$\mathbf{P}(W)$
-
-| $W$ | $P$ |
-| --- | --- |
-| $\text{sun}$ | $0.8$ |
-| $\text{rain}$ | $0.2$ |
-]
-.kol-1-3[
-$\mathbf{P}(D \mid W)$
-
-| $D$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{wet}$ | $\text{sun}$ | $0.1$ |
-| $\text{dry}$ | $\text{sun}$ | $0.9$ |
-| $\text{wet}$ | $\text{rain}$ | $0.7$ |
-| $\text{dry}$ | $\text{rain}$ | $0.3$ |
-
-]
-.kol-1-3[
-$\mathbf{P}(D,W)$
-
-| $D$ | $W$ | $P$ |
-| --- | --- | --- |
-| $\text{wet}$ | $\text{sun}$ | ? |
-| $\text{dry}$ | $\text{sun}$ | ? |
-| $\text{wet}$ | $\text{rain}$ | ? |
-| $\text{dry}$ | $\text{rain}$ | ? |
-
-]
-]
-
----
-
-# Chain rule
-
-More generally, any joint distribution can always be written as an incremental product of conditional distributions:
-
-$$
-\begin{aligned}
-P(x\_1,x\_2,x\_3) &= P(x\_1)P(x\_2 \mid x\_1)P(x\_3 \mid x\_1,x\_2) \\\\
-P(x\_1,...,x\_n) &= \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1})
-\end{aligned}
-$$
-
-In the same way, $\mathbf{P}(X\_1, ..., X\_n) = \prod\_{i=1}^n \mathbf{P}(X\_i \mid X\_1, ..., X\_{i-1})$.
 
 ---
 
