@@ -2,7 +2,7 @@
 
     uv run python scripts/draw_search_algorithms.py
 
-Writes the algorithm listings of lectures 2 and 3 as SVG, replacing the screenshots taken
+Writes the algorithm listings of lectures 2, 3 and 4 as SVG, replacing the screenshots taken
 from Russell and Norvig. The listings are the ones of the exercise sheets
 (`exercises/exercises.sty`, `pseudocode` environment): keywords in bold, procedure names in
 small capitals, variables in italics, each in its own colour. Roboto and the KaTeX faces are embedded from
@@ -224,9 +224,23 @@ alpha_beta = [
     (1, [kw("return "), var("v")]),
 ]
 
+# Inference by enumeration over the full joint distribution, as lecture 4 states it:
+# fix the evidence, sum the hidden variables out, normalize
+enumeration = [
+    (0, [kw("function "), proc("Enumeration-Ask"), txt("("), var("Q"), txt(", "), var("e"), txt(", "),
+         var("P"), txt(") "), kw("returns "), txt("a distribution over "), var("Q")]),
+    (1, [var("b"), gets(), txt("an empty table over the values of "), var("Q")]),
+    (1, [kw("for each "), txt("value "), var("q"), txt(" of "), var("Q"), txt(" "), kw("do")]),
+    (2, [var("b"), txt("["), var("q"), txt("] "), gets(), txt("the sum of "), var("P"), txt("("), var("q"),
+         txt(", "), var("h"), txt(", "), var("e"), txt(") over the assignments "), var("h")]),
+    (1, [var("Z"), gets(), txt("the sum of "), var("b"), txt("["), var("q"), txt("] over the values "), var("q")]),
+    (1, [kw("return "), var("b"), txt(" / "), var("Z")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
     listing("problem-solving-agent", simple, 960)
     listing("mcts", mcts, 1000, lecture="lec3")
     listing("alpha-beta-search", alpha_beta, 1000, lecture="lec3")
+    listing("enumeration", enumeration, 840, lecture="lec4")

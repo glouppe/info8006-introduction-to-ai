@@ -479,17 +479,10 @@ Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \
 
 # Inference by enumeration
 
-Start from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$.
+Starting from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$, select the entries consistent with the evidence, sum the hidden variables out, and normalize:
+$$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum\_q \sum\_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).$$
 
-1. Select the entries consistent with the evidence ${\mathbf{E} = \mathbf{e}}$.
-2. Marginalize out the hidden variables, which leaves the joint of the query and the evidence,
-$$\mathbf{P}(Q,\mathbf{e}) = \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}),$$
-where the sum is over all the assignments $\mathbf{h}$ of the hidden variables.
-3. Normalize:
-$$\begin{aligned}
-Z &= \sum\_q P(q,\mathbf{e}) \\\\
-\mathbf{P}(Q \mid \mathbf{e}) &= \frac{1}{Z} \mathbf{P}(Q,\mathbf{e})
-\end{aligned}$$
+.center.width-100[![](figures/lec4/enumeration.svg)]
 
 ---
 
