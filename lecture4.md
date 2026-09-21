@@ -135,15 +135,13 @@ class: middle
 
 ## Frequentism vs. Bayesianism
 
-What do probability values represent?
-- The objectivist .bold[frequentist] view is that probabilities are real aspects of the universe.
-    - i.e., propensities of objects to behave in certain ways.
-    - e.g., the fact that a fair coin comes up heads with probability $0.5$ is a propensity of the coin itself.
-- The subjectivist .bold[Bayesian] view is that probabilities are a way of characterizing an agent's beliefs or uncertainty.
-    - i.e., probabilities do not have external physical significance.
-    - This is the interpretation of probabilities that we will use!
+What does a probability value represent? Take a coin and $P(\text{heads}) = 0.5$.
+- The objectivist, .bold[frequentist] view: a property of the coin itself, the fraction of heads over a long run of flips.
+- The subjectivist, .bold[Bayesian] view: the degree of belief of an agent that the next flip comes up heads, given what it knows.
 
-.question[How shall we assign numerical values to beliefs?]
+Both readings give $0.5$ here. They part on $P(\text{ghost in cell } [3,2]) = 0.02$: the ghost is already placed and nothing is repeated, so the number can only be a belief.
+
+We take the Bayesian view in this course.
 
 ---
 
