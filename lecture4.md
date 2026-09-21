@@ -547,7 +547,9 @@ Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \
 
 ---
 
-# Inference by enumeration
+class: middle
+
+## Inference by enumeration
 
 Starting from the joint distribution $\mathbf{P}(Q, \mathbf{E}, \mathbf{H})$, select the entries consistent with the evidence, sum the hidden variables out, and normalize:
 $$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum\_q \sum\_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).$$
@@ -727,7 +729,9 @@ Study the next slide. .bold[Twice].
 
 ---
 
-# The Bayes' rule
+class: middle
+
+## The Bayes' rule
 
 .grid[
 .kol-2-3[
