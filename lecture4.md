@@ -896,15 +896,14 @@ class: middle
 
 # Summary
 
-- Uncertainty is .bold[inescapable] in complex, non-deterministic or partially observable environments. Probabilities summarize what ignorance and laziness leave undecided, and measure the agent's .bold[beliefs] rather than the world.
-- A joint distribution $\mathbf{P}(X\_1, ..., X\_n)$ answers .bold[every] query: select the entries consistent with the evidence $\mathbf{e}$, marginalize the hidden variables out, normalize. This is .bold[inference by enumeration], and it costs $O(d^n)$.
-- .bold[Independence] and .bold[conditional independence] factor the joint into smaller tables, which is what makes probabilistic models scale. Naive Bayes is the extreme case, $O(2^n)$ down to $O(n)$.
-- .bold[Bayes' rule] ${P(a \mid b) = P(b \mid a)P(a) / P(b)}$ turns a model of the effects given the cause into a belief about the cause given the effects, and the posterior of one observation is the prior of the next.
-- These beliefs are what a rational agent acts on: lecture 5 makes the computation scale, lecture 6 lets the world change with time, and lectures 8 and 9 turn posteriors into decisions.
+- Uncertainty is .bold[inescapable]. Probabilities measure the agent's .bold[beliefs], not the world.
+- The joint distribution answers every query: select, marginalize, normalize. It costs $O(d^n)$.
+- .bold[Independence] and .bold[conditional independence] factor it into smaller tables. Naive Bayes goes from $O(2^n)$ down to $O(n)$.
+- .bold[Bayes' rule] turns a causal model into a diagnostic belief, and each posterior is the prior of the next observation.
 
 ???
 
-Lecture 5 builds the factorization into a data structure, the Bayesian network. The expectation of the maximum expected utility principle waits for lecture 8, where it is actually computed.
+Lecture 5 makes the computation scale with Bayesian networks, lecture 6 lets the world change with time, and lectures 8 and 9 act on the beliefs.
 
 ---
 class: middle
