@@ -46,6 +46,20 @@ Motivate why this is important in AI (and this is not just one more probability 
 
 class: middle
 
+.center.width-30[![](figures/lec1/max-utility.png)]
+
+## Principle of maximum expected utility
+
+From Lecture 1, a rational agent chooses the action of .bold[highest expected utility], given what it has perceived,
+$$a\_t = \arg\max\_{a \in \mathcal{A}} \mathbb{E}\left[V(s\_{1:T}) \mid e\_{1:t}, a\_t = a\right],$$
+where ${V : \mathcal{S}^\* \to \mathbb{R}}$ scores the states $s\_{1:T}$, and the average is over the states the agent may reach, following ${P(s\_{t+1} \mid s\_t, a\_t)}$ and ${P(e\_t \mid s\_t)}$.
+
+.question[What are these probabilities, and how do we reason with them?]
+
+---
+
+class: middle
+
 # Quantifying uncertainty
 
 ---
@@ -91,20 +105,6 @@ uv run python ghostbusters.py --cell 90
 Click cells to read their sensors, ask the room where the ghost is, then press
 `b` and click that cell. Keep the beliefs hidden here; `p` shows them, for the
 second video.
-
----
-
-class: middle
-
-.center.width-30[![](figures/lec1/max-utility.png)]
-
-## Principle of maximum expected utility
-
-From Lecture 1, a rational agent chooses the action of .bold[highest expected utility], given what it has perceived,
-$$a\_t = \arg\max\_{a \in \mathcal{A}} \mathbb{E}\left[V(s\_{1:T}) \mid e\_{1:t}, a\_t = a\right],$$
-where ${V : \mathcal{S}^\* \to \mathbb{R}}$ scores the states $s\_{1:T}$, and the average is over the states the agent may reach, following ${P(s\_{t+1} \mid s\_t, a\_t)}$ and ${P(e\_t \mid s\_t)}$.
-
-.question[What are these probabilities, and how do we reason with them?]
 
 ---
 
