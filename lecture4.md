@@ -115,7 +115,7 @@ General setup:
 - .bold[Unobserved] variables: agent needs to reason about other aspects that are uncertain (e.g., where the ghost is).
 - (Probabilistic) .bold[model]: agent knows or believes something about how the observed variables relate to the unobserved variables.
 
-.bold[Probabilistic reasoning] provides a framework for managing our knowledge and beliefs.
+.success[.bold[Probabilistic reasoning] provides a framework for managing our knowledge and beliefs.]
 
 ---
 
