@@ -521,24 +521,6 @@ class: middle
 
 class: middle
 
-What an agent asks, given what it has observed:
-$$\begin{aligned}
-P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
-P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
-\end{aligned}$$
-
-???
-
-The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
-
-The next slide states the problem in general.
-
----
-
-class: middle
-
 Inference is concerned with the problem of .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
 
 .grid[
