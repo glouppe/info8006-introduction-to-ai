@@ -57,8 +57,8 @@ def sensor_model(color, distance):
 class Game:
     """The world, the readings and the belief state over the ghost location."""
 
-    def __init__(self, rows, cols, rng, moving=False):
-        self.rows, self.cols, self.rng, self.moving = rows, cols, rng, moving
+    def __init__(self, rows, cols, rng, policy="still"):
+        self.rows, self.cols, self.rng, self.policy = rows, cols, rng, policy
         self.reset()
 
     def reset(self):
@@ -100,20 +100,66 @@ class Game:
         moves = [(r, c), (r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
         return [m for m in moves if 0 <= m[0] < self.rows and 0 <= m[1] < self.cols]
 
+    def step_towards(self, cell, direction):
+        """The neighbor of cell in that direction, or None if off the grid."""
+        destination = (cell[0] + direction[0], cell[1] + direction[1])
+        return destination if destination in self.belief else None
+
+    def turning(self, cell):
+        """Clockwise and inward steps around the center of the grid."""
+        dr = cell[0] - (self.rows - 1) / 2
+        dc = cell[1] - (self.cols - 1) / 2
+        # Rotating (dr, dc) by a quarter turn gives the clockwise tangent,
+        # from which we keep the dominant axis, so that the ghost circles.
+        tr, tc = dc, -dr
+        clockwise = (1 if tr > 0 else -1, 0) if abs(tr) >= abs(tc) else (0, 1 if tc > 0 else -1)
+        inward = (-1 if dr > 0 else 1, 0) if abs(dr) >= abs(dc) else (0, -1 if dc > 0 else 1)
+        if dr == 0 and dc == 0:
+            return None, None
+        return self.step_towards(cell, clockwise), self.step_towards(cell, inward)
+
+    def transition(self, cell):
+        """The transition model P(next | cell) of the ghost's policy.
+
+        It depends on the current cell only, so the filter below is exact.
+        """
+        if self.policy == "still":
+            return {cell: 1.0}
+        moves = self.neighbors(cell)
+        uniform = {move: 1.0 / len(moves) for move in moves}
+        if self.policy == "random":
+            return uniform
+        clockwise, inward = self.turning(cell)
+        if self.policy == "circles":
+            intents = [(clockwise, 0.8)]
+        else:  # swirl: circle around the center, and drift towards it
+            intents = [(clockwise, 0.6), (inward, 0.25)]
+        model = {move: 0.0 for move in moves}
+        spread = 1.0
+        for destination, mass in intents:
+            if destination is not None:
+                model[destination] += mass
+                spread -= mass
+        for move in moves:  # what is left is spread over the legal moves
+            model[move] += spread / len(moves)
+        return model
+
     def tick(self):
         """One time step: the ghost moves, and the belief is pushed forward.
 
-        This is the transition model of lecture 6, applied between two
+        This is the prediction step of lecture 6, applied between two
         readings. With a still ghost, it does nothing.
         """
-        if not self.moving:
+        if self.policy == "still":
             return
-        self.ghost = self.rng.choice(self.neighbors(self.ghost))
+        model = self.transition(self.ghost)
+        self.ghost = self.rng.choices(list(model), weights=list(model.values()))[0]
+        self.score -= 1
+        # P(G_t+1 | r_1:k) = sum_g P(G_t+1 | g) P(g | r_1:k)
         predicted = {cell: 0.0 for cell in self.cells}
         for cell, mass in self.belief.items():
-            destinations = self.neighbors(cell)
-            for destination in destinations:
-                predicted[destination] += mass / len(destinations)
+            for destination, probability in self.transition(cell).items():
+                predicted[destination] += probability * mass
         self.belief = predicted
         self.readings = {}
 
@@ -144,7 +190,9 @@ class Board:
                                bg=PANEL_BG, highlightthickness=0)
         self.panel.grid(row=0, column=1)
 
+        self.buttons = {}
         self.canvas.bind("<Button-1>", self.click)
+        self.panel.bind("<Button-1>", self.panel_click)
         for key in ("p", "P"):
             self.root.bind(key, lambda _: self.toggle_beliefs())
         for key in ("b", "B"):
@@ -180,7 +228,7 @@ class Board:
                                              x + self.cell - 3, y + self.cell - 3,
                                              outline=READING_INK[reading], width=4)
             if self.beliefs:
-                text = "<0.01" if probability < 0.005 else f"{probability:.2f}"
+                text = "<0.001" if probability < 0.0005 else f"{probability:.3f}"
                 self.canvas.create_text(x + self.cell / 2, y + self.cell / 2,
                                         text=text, fill="white",
                                         font=("Courier", max(9, self.cell // 6)))
@@ -201,12 +249,11 @@ class Board:
             f"BUSTS REMAINING:  {self.game.busts}",
             f"SCORE:            {self.game.score}",
             f"BELIEFS:          {'shown' if self.beliefs else 'hidden'}",
+            f"GHOST:            {self.game.policy}",
             "",
-            "SENSOR:  red     on the ghost",
-            "         orange  1 or 2 away",
-            "         yellow  3 away",
-            "         green   4 or more",
-            f"         wrong color {int(NOISE * 100)}% of the time",
+            "SENSOR:  red 0   orange 1-2",
+            "         yellow 3   green 4+",
+            f"         wrong color {int(NOISE * 100)}% of time",
             "",
             "MESSAGES:",
         ]
@@ -214,10 +261,8 @@ class Board:
             "click  read a sensor",
             "b      bust, then click a cell",
             "p      show or hide beliefs",
+            "n      new game, q quit",
         ]
-        if self.game.moving:
-            keys.append("t      let one time step pass")
-        keys += ["n      new game", "q      quit"]
 
         height = self.game.rows * self.cell
         for i, line in enumerate(header):
@@ -225,13 +270,32 @@ class Board:
                                    fill=PANEL_FG, font=font)
         for i, line in enumerate(keys):
             y = height - 12 - step * (len(keys) - 1 - i)
-            color = "#ff4040" if self.arming and line.startswith("b ") else PANEL_FG
             self.panel.create_text(12, y, text=line, anchor="w",
-                                   fill=color, font=font)
-        room = int((height - 12 - step * len(keys) - (14 + step * len(header))) / step)
+                                   fill=PANEL_FG, font=font)
+
+        # The two buttons of the original game, above the keys.
+        self.buttons = {}
+        bottom = height - 12 - step * len(keys) - 16
+        for i, (name, label) in enumerate([("time", "TIME+1"), ("bust", "BUST")]):
+            y1 = bottom - i * 40
+            box = (12, y1 - 26, 288, y1)
+            active = self.arming if name == "bust" else False
+            fill = "#ff0000" if active else ("#1e90ff" if name == "bust" else "#606060")
+            self.panel.create_rectangle(*box, fill=fill, outline=fill)
+            self.panel.create_text((box[0] + box[2]) / 2, (box[1] + box[3]) / 2,
+                                   text=label, fill="white", font=("Courier", 12, "bold"))
+            self.buttons[name] = box
+
+        room = int((bottom - 52 - (14 + step * len(header))) / step)
         for i, line in enumerate(self.messages[-max(room, 0):]):
             self.panel.create_text(12, 14 + step * (len(header) + i), text=line,
                                    anchor="w", fill=PANEL_FG, font=font)
+
+    def panel_click(self, event):
+        for name, (x1, y1, x2, y2) in self.buttons.items():
+            if x1 <= event.x <= x2 and y1 <= event.y <= y2:
+                self.arm() if name == "bust" else self.step()
+                return
 
     # Actions
 
@@ -256,10 +320,14 @@ class Board:
             self.draw()
 
     def step(self):
-        if not self.game.over:
+        if self.game.over:
+            return
+        if self.game.policy == "still":
+            self.messages.append("the ghost does not move")
+        else:
             self.game.tick()
-            self.messages.append("one time step passed")
-            self.draw()
+            self.messages.append(f"one time step, ghost {self.game.policy}")
+        self.draw()
 
     def toggle_beliefs(self):
         self.beliefs = not self.beliefs
@@ -282,13 +350,14 @@ def main():
     parser.add_argument("--cell", type=int, default=70, help="cell size, in pixels")
     parser.add_argument("--beliefs", action="store_true",
                         help="start with the beliefs shown")
-    parser.add_argument("--moving", action="store_true",
-                        help="the ghost moves at each time step (lecture 6)")
+    parser.add_argument("--ghost", default="still",
+                        choices=["still", "random", "circles", "swirl"],
+                        help="how the ghost moves at each time step (lecture 6)")
     parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()
 
     rng = random.Random(args.seed)
-    game = Game(args.rows, args.cols, rng, moving=args.moving)
+    game = Game(args.rows, args.cols, rng, policy=args.ghost)
     Board(game, cell=args.cell, beliefs=args.beliefs).run()
 
 
