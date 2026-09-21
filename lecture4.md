@@ -471,6 +471,43 @@ In the same way, $\mathbf{P}(X\_1, ..., X\_n) = \prod\_{i=1}^n \mathbf{P}(X\_i \
 
 class: middle
 
+# Inference
+
+---
+
+class: middle
+
+What an agent asks, given what it has observed:
+$$\begin{aligned}
+P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
+P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
+\end{aligned}$$
+
+???
+
+The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
+
+The next slide states the problem in general.
+
+---
+
+class: middle
+
+## Probabilistic inference
+
+- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
+- .bold[Query] variable $Q$.
+- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
+- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
+
+Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
+
+---
+
+class: middle
+
 ## Normalization trick
 
 .center.grid[
@@ -507,43 +544,6 @@ $\rightarrow \mathbf{P}(W \mid T=\text{cold})$
 
 ]
 ]
-
----
-
-class: middle
-
-# Inference
-
----
-
-class: middle
-
-What an agent asks, given what it has observed:
-$$\begin{aligned}
-P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
-P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
-P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
-\end{aligned}$$
-
-???
-
-The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
-
-The next slide states the problem in general.
-
----
-
-class: middle
-
-## Probabilistic inference
-
-- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
-- .bold[Query] variable $Q$.
-- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
-- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
-
-Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
 
 ---
 
