@@ -894,44 +894,6 @@ class: middle
 
 ---
 
-class: middle
-
-## All the rules
-
-.grid[
-.kol-1-2[
-.bold[Sum rule]
-$$P(x) = \sum\_y P(x, y)$$
-
-.bold[Product rule]
-$$P(x, y) = P(x \mid y) P(y)$$
-
-.bold[Chain rule]
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_{1:i-1})$$
-
-.bold[Total probability]
-$$P(x) = \sum\_y P(x \mid y) P(y)$$
-]
-.kol-1-2[
-.bold[Bayes' rule]
-$$P(x \mid y) = \frac{P(y \mid x)P(x)}{P(y)}$$
-
-.bold[Normalization]
-$$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \mathbf{P}(Q, \mathbf{e})$$
-
-.bold[Independence]
-$$X \perp Y \Leftrightarrow P(x, y) = P(x)P(y)$$
-]
-]
-
-???
-
-Each holds for all the values of the variables involved, and each has a bold counterpart over whole distributions.
-
-Conditional independence, ${X \perp Y \mid Z}$, is the same as independence with everything conditioned on $z$.
-
----
-
 # Summary
 
 - Uncertainty is .bold[inescapable] in complex, non-deterministic or partially observable environments. Probabilities summarize what ignorance and laziness leave undecided, and measure the agent's .bold[beliefs] rather than the world.
@@ -943,6 +905,31 @@ Conditional independence, ${X \perp Y \mid Z}$, is the same as independence with
 ???
 
 Lecture 5 builds the factorization into a data structure, the Bayesian network. The expectation of the maximum expected utility principle waits for lecture 8, where it is actually computed.
+
+---
+class: middle
+
+## All the rules
+
+| | |
+| --- | --- |
+| Event | $P(A) = \sum\_{\omega \in A} P(\omega)$ |
+| Complement | $P(\neg a) = 1 - P(a)$ |
+| Union | $P(a \lor b) = P(a) + P(b) - P(a \land b)$ |
+| Sum rule | $P(x) = \sum\_y P(x, y)$ |
+| Conditioning | $P(a \mid b) = P(a, b) / P(b)$ |
+| Product rule | $P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$ |
+| Total probability | $P(x) = \sum\_y P(x \mid y) P(y)$ |
+| Chain rule | $P(x\_{1:n}) = \prod\_i P(x\_i \mid x\_{1:i-1})$ |
+| Bayes' rule | $P(a \mid b) = P(b \mid a) P(a) / P(b)$ |
+| Enumeration | $\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e})$ |
+| Independence, $X \perp Y$ | $P(x, y) = P(x) P(y)$ |
+| Conditional independence, $X \perp Y \mid Z$ | $P(x, y \mid z) = P(x \mid z) P(y \mid z)$ |
+| Naive Bayes | $P(c, e\_{1:n}) = P(c) \prod\_i P(e\_i \mid c)$ |
+
+???
+
+Each line holds for all the values of the variables it names, and each has a counterpart over whole distributions, written $\mathbf{P}$.
 
 ---
 
