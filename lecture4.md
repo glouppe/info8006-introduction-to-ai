@@ -187,7 +187,7 @@ Propositions are events: "the ghost is in cell [3,2]" is the set of the possible
 
 class: middle
 
-## Example
+.italic[Example]
 
 - $\Omega$ = the 6 possible rolls of a die.
 - $\omega\_i$ (for $i=1, ..., 6$) are the sample points, each corresponding to an outcome of the die.
@@ -216,7 +216,7 @@ In practice, we will use random variables to represent aspects of the world abou
 
 class: middle
 
-## Example
+.italic[Example]
 
 On the die, "odd" is the random variable
 $$\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}, \qquad \text{Odd}(\omega) = (\omega \bmod 2 = 1),$$
@@ -418,7 +418,7 @@ The law of total probability is how the normalization constant $Z$ of the previo
 
 class: middle
 
-## Example
+.italic[Example]
 
 .center.grid[
 .kol-1-3[
@@ -561,7 +561,7 @@ $$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \
 
 class: middle
 
-## Example
+.italic[Example]
 
 .grid[
 .kol-1-2[
@@ -624,7 +624,7 @@ Equivalently, knowing one says nothing about the other: $P(a \mid b) = P(a)$ whe
 
 class: middle
 
-## Example 1
+.italic[Example 1]
 
 .center[
 .width-40[![](figures/lec4/weather-independence.svg)]
@@ -645,7 +645,7 @@ The original 32-entry table reduces to one 8-entry and one 4-entry table (assumi
 
 class: middle
 
-## Example 2
+.italic[Example 2]
 
 For $n$ independent coin flips, the joint distribution can be fully .bold[factored] and represented as the product of $n$ 1-entry tables.
 - .bold[$2^n \to n$]
@@ -673,7 +673,7 @@ class: middle
 
 .center.width-35[![](figures/lec4/tooth.png)]
 
-## Example 1
+.italic[Example 1]
 
 Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
 
@@ -696,7 +696,7 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 class: middle
 
-## Example 2 (Naive Bayes)
+.italic[Example 2 (Naive Bayes)]
 
 More generally, from the product rule, we have
 $$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n \mid \text{cause}) P(\text{cause})$$
@@ -782,7 +782,7 @@ The Bayes' rule gives us a way to operationalize the update of our beliefs.
 
 class: middle
 
-## Example 1: diagnostic probability from causal probability.
+.italic[Example 1: diagnostic probability from causal probability.]
 
 $$P(\text{cause} \mid \text{effect}) = \frac{P(\text{effect} \mid \text{cause})P(\text{cause})}{P(\text{effect})}$$
 where
@@ -802,7 +802,7 @@ $$P(m \mid s) = \frac{P(s \mid m)P(m)}{P(s)} = \frac{0.7 \times 1/50000}{0.01} =
 
 class: middle
 
-## Example 2: Ghostbusters, revisited
+.italic[Example 2: Ghostbusters, revisited]
 
 - A random variable $G$ gives the ghost location, and a random variable $R\_{i,j}$ the color read at the cell $[i,j]$.
 - We start from a uniform .bold[prior] $\mathbf{P}(G)$ over the locations.
@@ -854,7 +854,7 @@ What if we had chosen a different prior?
 exclude: true
 class: middle
 
-## Example 3: AI for Science
+.italic[Example 3: AI for Science]
 
 .center.width-100[![](figures/lec4/lfi-chain.png)]
 
