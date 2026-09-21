@@ -139,7 +139,7 @@ What does a probability value represent? Take a coin and $P(\text{heads}) = 0.5$
 - The objectivist, .bold[frequentist] view: a property of the coin itself, the fraction of heads over a long run of flips.
 - The subjectivist, .bold[Bayesian] view: the degree of belief of an agent that the next flip comes up heads, given what it knows.
 
-Both readings give $0.5$ here. They part on $P(\text{ghost in cell } [3,2]) = 0.02$: the ghost is already placed and nothing is repeated, so the number can only be a belief.
+The two readings agree on the coin. The ghost is another matter. It sits in one cell and the game is played once, so there is no long run to count. $P(\text{ghost in cell } [3,2]) = 0.02$ then measures what the agent knows, not a property of the grid.
 
 We take the Bayesian view in this course.
 
