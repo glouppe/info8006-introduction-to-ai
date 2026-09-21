@@ -35,7 +35,7 @@ class: middle
 
 The explicit representation of the joint probability distribution grows exponentially with the number of variables.
 
-*Independence* and *conditional independence* assumptions reduce the number of probabilities that need to be specified. They can be represented explicitly in the form of a **Bayesian network**.
+.bold[Independence] and .bold[conditional independence] assumptions reduce the number of probabilities that need to be specified. They can be represented explicitly in the form of a .bold[Bayesian network].
 
 ---
 
@@ -45,11 +45,11 @@ The explicit representation of the joint probability distribution grows exponent
 .kol-3-4[
 
 A Bayesian network is a .bold[directed acyclic graph] where
-- each **node** corresponds to a random variable;
+- each .bold[node] corresponds to a random variable;
     - observed or unobserved
     - discrete or continuous
-- each **edge** is directed and indicates a direct probabilistic dependency between two variables;
-- each node $X_i$ is annotated with a *conditional probability distribution* $${\bf P}(X_i | \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
+- each .bold[edge] is directed and indicates a direct probabilistic dependency between two variables;
+- each node $X_i$ is annotated with a .bold[conditional probability distribution] $${\bf P}(X_i | \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
 
 ]
 .kol-1-4.width-100[![](figures/lec5/example-d.png)]
@@ -238,7 +238,7 @@ Bayesian networks can be constructed in any order, provided that the conditional
 
 ## Algorithm
 
-1. Choose some **ordering** of the variables $X\_1, ..., X\_n$.
+1. Choose some .bold[ordering] of the variables $X\_1, ..., X\_n$.
 2. For $i=1$ to $n$:
     1. Add $X\_i$ to the network.
     2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i | x\_1, ..., x\_{i-1}) = P(x\_i | \text{parents}(X_i))$.
@@ -321,7 +321,7 @@ P(z|x,y) &= \frac{P(x,y,z)}{P(x,y)} \\\\
 &= P(z|y)
 \end{aligned}$$
 
-We say that the evidence along the cascade **blocks** the influence.
+We say that the evidence along the cascade .bold[blocks] the influence.
 
 ]
 .kol-1-2.center[.width-100[![](figures/lec5/cascade.png)]
@@ -405,7 +405,7 @@ Are $X$ and $Y$ independent? Yes.
 
 Are $X$ and $Y$ independent given $Z$? No!
 - Seeing traffic puts the rain and the ballgame in competition as explanation.
-- This is **backwards** from the previous cases. Observing a child node *activates* influence between parents.
+- This is .bold[backwards] from the previous cases. Observing a child node .bold[activates] influence between parents.
 ]
 .kol-1-2.center[.width-80[![](figures/lec5/v-structure.png)]
 
@@ -452,7 +452,7 @@ class: middle
 .grid[
 .kol-2-3[
 
-A path is **active** if each triple along the path is active:
+A path is .bold[active] if each triple along the path is active:
 - Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
 - Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
 - v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendants is observed.
@@ -631,9 +631,9 @@ class: middle
 
 .center.width-80[![](figures/lec5/enumeration-tree.png)]
 
-Despite the factorization, inference by enumeration is still **inefficient**. There are repeated computations!
+Despite the factorization, inference by enumeration is still .bold[inefficient]. There are repeated computations!
 - e.g., $P(j|a)P(m|a)$ is computed twice, once for $e$ and once for $\lnot e$.
-- These can be avoided by storing *intermediate results*.
+- These can be avoided by storing .bold[intermediate results].
 
 ???
 
@@ -675,7 +675,7 @@ class: middle
 
 ## Factors
 
-- Each **factor $\mathbf{f}_i$** is a multi-dimensional array indexed by the values of its argument variables. E.g.:
+- Each .bold[factor] $\mathbf{f}_i$ is a multi-dimensional array indexed by the values of its argument variables. E.g.:
 .grid[
 .kol-1-2[
 $$
@@ -699,9 +699,9 @@ class: middle
 
 ## Join
 
-The *pointwise product* $\times$, or **join**, of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}\_3$.
-- Exactly like a **database join**!
-- The variables of $\mathbf{f}\_3$ are the *union* of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
+The .bold[pointwise product] $\times$, or .bold[join], of two factors $\mathbf{f}_1$ and $\mathbf{f}_2$ yields a new factor $\mathbf{f}\_3$.
+- Exactly like a .bold[database join]!
+- The variables of $\mathbf{f}\_3$ are the .bold[union] of the variables in $\mathbf{f}_1$ and $\mathbf{f}_2$.
 - The elements of $\mathbf{f}\_3$ are given by the product of the corresponding elements in $\mathbf{f}_1$ and $\mathbf{f}_2$.
 
 .center.width-100[![](figures/lec5/ve-product.png)]
@@ -712,7 +712,7 @@ class: middle
 
 ## Elimination
 
-*Summing out*, or **eliminating**, a variable from a factor is done by adding up the sub-arrays formed by fixing the variable to each of its values in turn.
+.bold[Summing out], or .bold[eliminating], a variable from a factor is done by adding up the sub-arrays formed by fixing the variable to each of its values in turn.
 
 For example, to sum out $A$ from $\mathbf{f}\_3(A, B, C)$, we write:
 
@@ -749,7 +749,7 @@ class: middle
 
 Consider the query ${\bf P}(J|b)$:
 $${\bf P}(J|b) \propto P(b) \sum_e P(e) \sum\_a P(a|b,e) {\bf P}(J|a) \sum\_m P(m|a)$$
-- $\sum_m P(m|a) = 1$, therefore $M$ is **irrelevant** for the query.
+- $\sum_m P(m|a) = 1$, therefore $M$ is .bold[irrelevant] for the query.
 - In other words, ${\bf P}(J|b)$ remains unchanged if we remove $M$ from the network.
 
 .italic[Theorem.] $H$ is irrelevant for ${\bf P}(Q|e)$ unless $H \in \text{ancestors}(\\\{Q\\\} \cup E)$.
@@ -776,17 +776,17 @@ What is the size of the maximum factor generated for each of the orderings?
 class: middle
 
 The computational and space complexity of variable elimination is determined by the largest factor.
-- The elimination *ordering* can greatly affect the size of the largest factor.
-- The optimal ordering is **NP-hard** to find. There is no known polynomial-time algorithm to find it.
+- The elimination .bold[ordering] can greatly affect the size of the largest factor.
+- The optimal ordering is .bold[NP-hard] to find. There is no known polynomial-time algorithm to find it.
 
 ---
 
 # Approximate inference
 
-Exact inference is *intractable* for most probabilistic models of practical interest.
+Exact inference is .bold[intractable] for most probabilistic models of practical interest.
 (e.g., involving many variables, continuous and discrete, undirected cycles, etc).
 
-We must resort to **approximate** inference algorithms:
+We must resort to .bold[approximate] inference algorithms:
 - Sampling methods: produce answers by repeatedly generating random numbers from a distribution of interest.
 - Variational methods: formulate inference as an optimization problem.
 - Belief propagation methods: formulate inference as a message-passing algorithm.
@@ -804,7 +804,7 @@ class: middle
 
 When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probability values is often difficult. 
 
-A workaround is to use a **parameterized** family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and *estimate* the parameters $\theta$ from data.
+A workaround is to use a .bold[parameterized] family ${\bf P}(X | \theta)$ (sometimes also noted ${\bf P}\_\theta(X)$) of models, and .bold[estimate] the parameters $\theta$ from data.
 
 ???
 
@@ -831,10 +831,10 @@ We draw $N$ chalks i.i.d. and observe $c$ white chalks and $l=N-c$ red chalks. H
 
 Suppose we have a set of $N$ i.i.d. observations $\mathbf{d} = \\\{x\_1, ..., x\_N\\\}$.
 
-The *likelihood* of the parameters $\theta$ is the probability of the data given the parameters
+The .bold[likelihood] of the parameters $\theta$ is the probability of the data given the parameters
 $$P(\mathbf{d}|\theta) = \prod\_{j=1}^N P(x\_j | \theta).$$
 
-The **maximum likelihood estimate** (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
+The .bold[maximum likelihood estimate] (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
 $$\theta^\* = \arg \max\_\theta P(\mathbf{d}|\theta).$$
 
 ---
@@ -922,8 +922,8 @@ class: middle
 
 We can treat parameter learning as a .bold[Bayesian inference] problem:
 - Make the parameters $\theta$ random variables and treat them as hidden variables.
-- Specify a **prior** distribution ${\bf P}(\theta)$ over the parameters.
-- Then, as data arrives, update our beliefs about the parameters to obtain the **posterior** distribution ${\bf P}(\theta|\mathbf{d})$.
+- Specify a .bold[prior] distribution ${\bf P}(\theta)$ over the parameters.
+- Then, as data arrives, update our beliefs about the parameters to obtain the .bold[posterior] distribution ${\bf P}(\theta|\mathbf{d})$.
 
 .question[How should the network of case (a) be updated?]
 
@@ -965,7 +965,7 @@ class: middle
 
 ## Maximum a posteriori estimation
 
-When the posterior cannot be computed analytically, we can use **maximum a posteriori** (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
+When the posterior cannot be computed analytically, we can use .bold[maximum a posteriori] (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
 $$\theta^\* = \arg \max\_\theta P(\theta|\mathbf{d}) = \arg \max\_\theta P(\mathbf{d}|\theta) P(\theta).$$
 
 ---
