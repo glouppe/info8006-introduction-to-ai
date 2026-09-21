@@ -448,16 +448,19 @@ class: middle
 
 # Probabilistic inference
 
-Probabilistic .bold[inference] is the problem of computing a desired probability from other known probabilities (e.g., conditional from joint).
+What an agent asks, given what it has observed:
+$$\begin{aligned}
+P(\text{on time} \mid \text{no reported accidents}) &= 0.9 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) &= 0.95 \\\\
+P(\text{on time} \mid \text{no reported accidents}, \text{rain}) &= 0.8 \\\\
+P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) &= 0.99
+\end{aligned}$$
 
-- We generally compute conditional probabilities.
-    - e.g., $P(\text{on time} \mid \text{no reported accidents}) = 0.9$
-    - These represent the agent's .bold[beliefs] given the evidence.
-- Probabilities change with new evidence:
-    - e.g., $P(\text{on time} \mid \text{no reported accidents}, \text{5AM}) = 0.95$
-    - e.g., $P(\text{on time} \mid \text{no reported accidents}, \text{rain}) = 0.8$
-    - e.g., $P(\text{ghost in } [3,2] \mid \text{red in } [3,2]) = 0.99$
-    - Observing new evidence causes .bold[beliefs to be updated].
+???
+
+The same query with different evidence gives different answers: the evidence moves the belief, and the last line is the Ghostbusters demo.
+
+The next slide states the problem in general.
 
 ---
 
