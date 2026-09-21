@@ -216,7 +216,7 @@ In practice, we will use random variables to represent aspects of the world abou
 
 class: middle
 
-.italic[Example]
+.italic[Example:]
 
 On the die, "odd" is the random variable
 $$\text{Odd}: \Omega \to \\{ \text{true}, \text{false} \\}, \qquad \text{Odd}(\omega) = (\omega \bmod 2 = 1),$$
@@ -282,8 +282,6 @@ class: middle
 the probability of each (combined) outcome:
 
 $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(\omega)=x\_n\\}} P(\omega)$$
-
-<br>
 
 .center[$\mathbf{P}(T,W)$]
 
@@ -417,8 +415,6 @@ The law of total probability is how the normalization constant $Z$ of the previo
 ---
 
 class: middle
-
-.italic[Example]
 
 .center.grid[
 .kol-1-3[
@@ -561,7 +557,7 @@ $$\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum\_{\mathbf{h}} \mathbf{P}(Q, \
 
 class: middle
 
-.italic[Example]
+.italic[Example:]
 
 .grid[
 .kol-1-2[
@@ -609,6 +605,15 @@ class: middle
 
 ---
 
+class: middle
+
+The joint distribution has $d^n$ entries, but the chain rule already writes it as a product of conditional distributions,
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1}).$$
+
+.bold[Independence] and .bold[conditional independence] state that some of these factors do not depend on all their conditions. Each dropped variable divides the size of a factor by $d$, which is what makes probabilistic models .bold[scale up].
+
+---
+
 # Independence
 
 $A$ and $B$ are .bold[independent], denoted ${A \perp B}$, iff
@@ -624,7 +629,7 @@ Equivalently, knowing one says nothing about the other: $P(a \mid b) = P(a)$ whe
 
 class: middle
 
-.italic[Example 1]
+.italic[Example 1:]
 
 .center[
 .width-40[![](figures/lec4/weather-independence.svg)]
@@ -645,7 +650,7 @@ The original 32-entry table reduces to one 8-entry and one 4-entry table (assumi
 
 class: middle
 
-.italic[Example 2]
+.italic[Example 2:]
 
 For $n$ independent coin flips, the joint distribution can be fully .bold[factored] and represented as the product of $n$ 1-entry tables.
 - .bold[$2^n \to n$]
@@ -663,17 +668,9 @@ Equivalently, once $c$ is known, one says nothing more about the other: ${P(a \m
 
 class: middle
 
-- Using the chain rule, the join distribution can be factored as a product of conditional distributions.
-- Each conditional distribution may potentially be .bold[simplified by conditional independence].
-- Conditional independence assertions allow probabilistic models to .bold[scale up].
-
----
-
-class: middle
-
 .center.width-35[![](figures/lec4/tooth.png)]
 
-.italic[Example 1]
+.italic[Example 1:]
 
 Assume three random variables $\text{Toothache}$, $\text{Catch}$ and $\text{Cavity}$.
 
@@ -696,7 +693,7 @@ In this case, the representation of the joint distribution reduces to $2+2+1$ in
 
 class: middle
 
-.italic[Example 2 (Naive Bayes)]
+.italic[Example 2 (Naive Bayes):]
 
 More generally, from the product rule, we have
 $$P(\text{cause},\text{effect}_1, ..., \text{effect}_n) = P(\text{effect}_1, ..., \text{effect}_n \mid \text{cause}) P(\text{cause})$$
