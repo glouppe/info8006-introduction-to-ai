@@ -121,12 +121,13 @@ General setup:
 
 # Probabilistic assertions
 
-Probabilistic assertions express the agent's inability to reach a definite decision regarding the truth of a proposition.
-- Probability values .bold[summarize] effects of
-    - .bold[ignorance] (theoretical, practical)
-    - .bold[laziness] (lack of time, resources)
-- Probabilities relate propositions to one's own state of knowledge (or lack thereof).
-    - e.g., $P(\text{ghost in cell } [3,2]) = 0.02$
+A .bold[probabilistic assertion] attaches a number to a proposition,
+$$P(\text{ghost in cell } [3,2]) = 0.02,$$
+as a degree of belief, not as a claim about the truth of the proposition.
+
+The agent holds beliefs rather than certainties for two reasons:
+- .bold[ignorance]: it does not observe the state, and its models of the world are approximate;
+- .bold[laziness]: listing every case and every exception would cost more than it is worth.
 
 ---
 
