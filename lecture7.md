@@ -125,6 +125,16 @@ class: middle
 
 ---
 
+class: middle
+
+.center.width-90[![](figures/lec7/transformer-next.png)]
+
+.center[Language models predict the next token, a classification over the vocabulary.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
 # Linear regression
 
 Let us first assume that $y \in \mathbb{R}$.
@@ -1039,16 +1049,6 @@ class: black-slide, middle
 
 WeatherNext 2 (Google DeepMind, 2025): a network trained on decades<br>of past weather to predict the next state of the atmosphere.
 ]
-
----
-
-class: middle
-
-.center.width-90[![](figures/lec7/transformer-next.png)]
-
-.center[Language models predict the next token, a classification over the vocabulary.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
