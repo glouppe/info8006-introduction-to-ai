@@ -76,9 +76,9 @@ We will consider the world as a .bold[discrete] series of time slices, each of w
 class: middle
 
 We specify
-- a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables,
-- a .bold[transition model] ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
-- a .bold[sensor model] ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
+- a prior $\mathbf{P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables,
+- a .bold[transition model] $\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
+- a .bold[sensor model] $\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
 ---
 
@@ -92,7 +92,7 @@ Random processes that satisfy this assumption are called .bold[Markov processes]
 
 ## First-order Markov processes
 
-Markov processes such that $${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1}) = {\bf P}(\mathbf{X}\_t | \mathbf{X}\_{t-1})$$
+Markov processes such that $$\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1}) = \mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{t-1})$$
 i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 
 <br>
@@ -104,7 +104,7 @@ class: middle
 
 ## Sensor Markov assumption
 
-We make a (first-order) .bold[sensor Markov assumption] $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t}).$$
+We make a (first-order) .bold[sensor Markov assumption] $$\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = \mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_{t}).$$
 
 ## Stationarity assumption
 
@@ -121,7 +121,7 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 A Markov chain coupled with a sensor model can be represented as a .bold[growable] Bayesian network, unrolled infinitely through time.
 
 The joint distribution of all its variables up to $t$ is
-$${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
+$$\mathbf{P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = \mathbf{P}(\mathbf{X}\_{0}) \prod\_{i=1}^t \mathbf{P}(\mathbf{X}\_{i} \mid \mathbf{X}\_{i-1}) \mathbf{P}(\mathbf{E}\_{i} \mid \mathbf{X}\_{i}).$$
 
 ---
 
@@ -137,9 +137,9 @@ class: middle
 .center.width-100[![](figures/lec6/weather-forecast.png)]
 ]
 .kol-1-2[
-- ${\bf P}(\text{Umbrella}\_t | \text{Rain}\_t)$?
-- ${\bf P}(\text{Rain}\_t | \text{Umbrella}\_{0:t-1})$?
-- ${\bf P}(\text{Rain}\_{t+2} | \text{Rain}\_{t})$?
+- $\mathbf{P}(\text{Umbrella}\_t \mid \text{Rain}\_t)$?
+- $\mathbf{P}(\text{Rain}\_t \mid \text{Umbrella}\_{0:t-1})$?
+- $\mathbf{P}(\text{Rain}\_{t+2} \mid \text{Rain}\_{t})$?
 ]]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
@@ -148,16 +148,16 @@ class: middle
 
 # Inference tasks
 
-- .bold[Prediction]: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
+- .bold[Prediction]: $\mathbf{P}(\mathbf{X}\_{t+k} \mid \mathbf{e}\_{1:t})$ for $k>0$
     - Computing the posterior distribution over future states.
     - Used for evaluation of possible action sequences.
-- .bold[Filtering]: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+- .bold[Filtering]: $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$
     - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its .bold[belief state], so that rational decisions can be made.
-- .bold[Smoothing]: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
+- .bold[Smoothing]: $\mathbf{P}(\mathbf{X}\_{k} \mid \mathbf{e}\_{1:t})$ for $0 \leq k < t$
     - Computing the posterior distribution over past states.
     - Used for building better estimates, since it incorporates more evidence.
     - Essential for learning.    
-- .bold[Most likely explanation]: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
+- .bold[Most likely explanation]: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t} \mid \mathbf{e}\_{1:t})$
     - Decoding with a noisy channel, speech recognition, etc.
 
 ---
@@ -169,21 +169,21 @@ class: middle
 .width-80[![](figures/lec6/base-case2.png)]
 
 $\begin{aligned}
-{\bf P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} {\bf P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
-&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) {\bf P}(\mathbf{X}\_2 | \mathbf{x}\_1)
+\mathbf{P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} \mathbf{P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
+&= \sum\_{\mathbf{x}\_1} P(\mathbf{x}\_1) \mathbf{P}(\mathbf{X}\_2 \mid \mathbf{x}\_1)
 \end{aligned}$
 
-(Predict) Push ${\bf P}(\mathbf{X}\_1)$ forward through the transition model.
+(Predict) Push $\mathbf{P}(\mathbf{X}\_1)$ forward through the transition model.
 ]
 .kol-1-2.center[
 .width-80[![](figures/lec6/base-case1.png)]
 
 $\begin{aligned}
-{\bf P}(\mathbf{X}\_1 | \mathbf{e}\_1) &=\frac{ {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
-&\propto {\bf P}(\mathbf{e}\_1 | \mathbf{X}\_1) {\bf P}(\mathbf{X}\_1)
+\mathbf{P}(\mathbf{X}\_1 \mid \mathbf{e}\_1) &=\frac{ \mathbf{P}(\mathbf{e}\_1 \mid \mathbf{X}\_1) \mathbf{P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
+&\propto \mathbf{P}(\mathbf{e}\_1 \mid \mathbf{X}\_1) \mathbf{P}(\mathbf{X}\_1)
 \end{aligned}$
 
-(Update) Update ${\bf P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
+(Update) Update $\mathbf{P}(\mathbf{X}\_1)$ with the evidence $\mathbf{e}\_1$, given the sensor model.
 ]
 ]
 
@@ -195,11 +195,11 @@ $\begin{aligned}
 
 .center.width-50[![](figures/lec6/stationary-cartoon.png)]
 
-To predict the future  ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
-- .bold[Push] the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
-$${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
+To predict the future  $\mathbf{P}(\mathbf{X}\_{t+k} \mid \mathbf{e}\_{1:t})$:
+- .bold[Push] the prior belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ through the transition model:
+$$\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_{t}) P(\mathbf{x}\_{t} \mid \mathbf{e}\_{1:t})$$
 
-- Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
+- Repeat up to $t+k$, using $\mathbf{P}(\mathbf{X}\_{t+k-1} \mid \mathbf{e}\_{1:t})$ to compute $\mathbf{P}(\mathbf{X}\_{t+k} \mid \mathbf{e}\_{1:t})$.
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -264,7 +264,7 @@ What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
 - Eventually, the distribution may converge to a fixed distribution, called a .bold[stationary distribution].
 - This distribution is such that
-$${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
+$$\mathbf{P}(\mathbf{X}\_\infty) = \mathbf{P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} \mathbf{P}(\mathbf{X}\_{\infty+1} \mid \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
 
 ---
 
@@ -282,8 +282,8 @@ class: middle
 $
 \begin{aligned}
 P(\mathbf{X}\_\infty = \text{sun}) =&\, P(\mathbf{X}\_{\infty+1} = \text{sun}) \\\\
-=&\, P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{sun}) P(\mathbf{X}\_{\infty}=\text{sun})\\\\
- & + P(\mathbf{X}\_{\infty+1}=\text{sun} | \mathbf{X}\_{\infty}=\text{rain}) P(\mathbf{X}\_{\infty}=\text{rain})\\\\
+=&\, P(\mathbf{X}\_{\infty+1}=\text{sun} \mid \mathbf{X}\_{\infty}=\text{sun}) P(\mathbf{X}\_{\infty}=\text{sun})\\\\
+ & + P(\mathbf{X}\_{\infty+1}=\text{sun} \mid \mathbf{X}\_{\infty}=\text{rain}) P(\mathbf{X}\_{\infty}=\text{rain})\\\\
 =&\, 0.9 P(\mathbf{X}\_{\infty}=\text{sun}) + 0.3 P(\mathbf{X}\_{\infty}=\text{rain})
 \end{aligned}
 $
@@ -298,7 +298,7 @@ $P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
 
 # Filtering
 
-We want to compute a belief state ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$ and maintain it as time passes and new evidence $\mathbf{e}\_{t+1}$ is collected.
+We want to compute a belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ and maintain it as time passes and new evidence $\mathbf{e}\_{t+1}$ is collected.
 
 This process can be implemented using the .bold[Bayes filter] algorithm, which alternates between prediction and update steps:
 - (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
@@ -315,28 +315,28 @@ class: middle
 Formally, the Bayes filter is defined as
 $$
 \begin{aligned}
-{\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) &= {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) {\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} {\bf P}(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t})
+\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t+1}) &= \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1}) \\\\
+&\propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}) \\\\
+&\propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}) \\\\
+&\propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) \\\\
+&\propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t})
 \end{aligned}
 $$
 where
-- the normalization constant $$Z = P(\mathbf{e}\_{t+1} | \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
+- the normalization constant $$Z = P(\mathbf{e}\_{t+1} \mid \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
 - in the last expression, the first and second terms are given by the model while the third is obtained recursively.
 
-<!-- $P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) \quad $<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t})$<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $<br>
-$\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1}|\mathbf{x}\_t) P(\mathbf{x}\_t | \mathbf{e}\_{1:t}) $ -->
+<!-- $P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}, \mathbf{e}\_{1:t}) P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}) \quad $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t})$<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t, \mathbf{e}\_{1:t}) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) $<br>
+$\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) $ -->
 
 ---
 
 class: middle
 
-We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a .bold[message] $\mathbf{f}\_{1:t}$ that is propagated .bold[forward] along the sequence, modified by each transition and updated by each new observation.
+We can think of $\mathbf{P}(\mathbf{X}\_t \mid \mathbf{e}\_{1:t})$ as a .bold[message] $\mathbf{f}\_{1:t}$ that is propagated .bold[forward] along the sequence, modified by each transition and updated by each new observation.
 
 Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$. Its complexity is constant (in time and space) with $t$.
 
@@ -401,14 +401,14 @@ python3 run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.py --bs
 
 # Smoothing
 
-We want to compute ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
+We want to compute $\mathbf{P}(\mathbf{X}\_{k} \mid \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
 
 Dividing the evidence $\mathbf{e}\_{1:t}$ into $\mathbf{e}\_{1:k}$ and $\mathbf{e}\_{k+1:t}$, we have
 $$
 \begin{aligned}
-{\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) &= {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
-&\propto {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
-&\propto {\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:k}) {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k).
+\mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:t}) &= \mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:k}, \mathbf{e}\_{k+1:t}) \\\\
+&\propto \mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:k}) \mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k, \mathbf{e}\_{1:k}) \\\\
+&\propto \mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:k}) \mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -416,8 +416,8 @@ $$
 
 class: middle
 
-Let the .bold[backward] message $\mathbf{b}\_{k+1:t}$ correspond to ${\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
-$${\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
+Let the .bold[backward] message $\mathbf{b}\_{k+1:t}$ correspond to $\mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k)$. Then,
+$$\mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
 where $\times$ is a pointwise multiplication of vectors.
 
 
@@ -425,9 +425,9 @@ This backward message can be computed using backwards recursion:
 
 $$
 \begin{aligned}
-{\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} {\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k, \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k) \\\\
-&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} | \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} | \mathbf{x}\_{k+1}) {\bf P}(\mathbf{x}\_{k+1} | \mathbf{X}\_k).
+\mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k) &= \sum\_{\mathbf{x}\_{k+1}} \mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k, \mathbf{x}\_{k+1}) \mathbf{P}(\mathbf{x}\_{k+1} \mid \mathbf{X}\_k) \\\\
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1:t} \mid \mathbf{x}\_{k+1}) \mathbf{P}(\mathbf{x}\_{k+1} \mid \mathbf{X}\_k) \\\\
+&= \sum\_{\mathbf{x}\_{k+1}} P(\mathbf{e}\_{k+1} \mid \mathbf{x}\_{k+1}) P(\mathbf{e}\_{k+2:t} \mid \mathbf{x}\_{k+1}) \mathbf{P}(\mathbf{x}\_{k+1} \mid \mathbf{X}\_k).
 \end{aligned}
 $$
 
@@ -489,8 +489,8 @@ The most likely sequence  .bold[is not] the sequence of the most likely states!
 The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to .bold[some] $\mathbf{x}\_t$ plus one more step. Therefore,
 $$
 \begin{aligned}
-&\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
-&\propto {\bf P}(\mathbf{e}\_{t+1}|\mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} | \mathbf{e}\_{1:t}) ).
+&\max\_{\mathbf{x}\_{1:t}} \mathbf{P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t+1}) \\\\
+&\propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_t}( \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) \max\_{\mathbf{x}\_{1:t-1}} \mathbf{P}(\mathbf{x}\_{1:t-1}, \mathbf{x}\_{t} \mid \mathbf{e}\_{1:t}) ).
 \end{aligned}
 $$
 
@@ -505,17 +505,17 @@ Because of the Markov property, it follows that the most likely path to the stat
 class: middle
 
 This is identical to filtering, except that 
-- the forward message $\mathbf{f}\_{1:t} = {\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ is replaced with
-$$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} | \mathbf{e}\_{1:t}),$$
+- the forward message $\mathbf{f}\_{1:t} = \mathbf{P}(\mathbf{X}\_t \mid \mathbf{e}\_{1:t})$ is replaced with
+$$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} \mathbf{P}(\mathbf{x}\_{1:t-1}, \mathbf{X}\_{t} \mid \mathbf{e}\_{1:t}),$$
 where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
 - The update has its sum replaced by max.
 
 The resulting algorithm is called the .bold[Viterbi algorithm], which computes the most likely explanation as
-$$\mathbf{m}\_{1:t+1} \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$ Its complexity is linear in $t$, the length of the sequence.
+$$\mathbf{m}\_{1:t+1} \propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$ Its complexity is linear in $t$, the length of the sequence.
 
 ???
 
-Naive procedure: use smoothing to compute $P(X\_k|e\_{1:t})$, then output the sequence of the most likely value for each $k$.
+Naive procedure: use smoothing to compute $P(X\_k \mid e\_{1:t})$, then output the sequence of the most likely value for each $k$.
 
 ---
 
@@ -557,10 +557,10 @@ class: middle
 
 ## Simplified matrix algorithms
 
-- The prior ${\bf P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
-- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ .bold[transition matrix] $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ .bold[sensor matrix] $\mathbf{B}$, such that
-$$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
+- The prior $\mathbf{P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
+- The transition model $\mathbf{P}(X\_t \mid X\_{t-1})$ becomes an $S \times S$ .bold[transition matrix] $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j \mid X\_{t-1}=i).$$
+- The sensor model $\mathbf{P}(E\_t \mid X\_t)$ is defined as an  $S \times R$ .bold[sensor matrix] $\mathbf{B}$, such that
+$$\mathbf{B}\_{ij} = P(E\_t=j \mid X\_t=i).$$
 
 ---
 
@@ -692,7 +692,7 @@ class: middle
 .center.width-60[![](figures/lec6/mvn.png)]
 
 The multivariate Gaussian distribution generalizes to $n$ random variables. Its (joint) density function is defined as
-$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n|\mathbf{\Sigma}|}} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n \mid \mathbf{\Sigma} \mid }} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
 where $\mathbf{m} \in \mathbb{R}^n$ is the mean vector and $\mathbf{\Sigma} \in \mathbb{R}^{n\times n}$ is the covariance matrix.
 
 ---
@@ -722,10 +722,10 @@ $$
 then the marginal and conditional distributions of $\mathbf{x}$ and $\mathbf{y}$ are given by
 $$
 \begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{a}, \mathbf{A}) \\\\
-p(\mathbf{y}) &= \mathcal{N}(\mathbf{y}|\mathbf{b}, \mathbf{B}) \\\\
-p(\mathbf{x}|\mathbf{y}) &= \mathcal{N}(\mathbf{x}|\mathbf{a}+\mathbf{C}\mathbf{B}^{-1}(\mathbf{y}-\mathbf{b}), \mathbf{A}-\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T) \\\\
-p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{b}+\mathbf{C}^T\mathbf{A}^{-1}(\mathbf{x} - \mathbf{a}) , \mathbf{B}-\mathbf{C}^T\mathbf{A}^{-1}\mathbf{C}).
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x} \mid \mathbf{a}, \mathbf{A}) \\\\
+p(\mathbf{y}) &= \mathcal{N}(\mathbf{y} \mid \mathbf{b}, \mathbf{B}) \\\\
+p(\mathbf{x} \mid \mathbf{y}) &= \mathcal{N}(\mathbf{x} \mid \mathbf{a}+\mathbf{C}\mathbf{B}^{-1}(\mathbf{y}-\mathbf{b}), \mathbf{A}-\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T) \\\\
+p(\mathbf{y} \mid \mathbf{x}) &= \mathcal{N}(\mathbf{y} \mid \mathbf{b}+\mathbf{C}^T\mathbf{A}^{-1}(\mathbf{x} - \mathbf{a}) , \mathbf{B}-\mathbf{C}^T\mathbf{A}^{-1}\mathbf{C}).
 \end{aligned}
 $$
 
@@ -736,8 +736,8 @@ class: middle
 If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
 $$
 \begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x}|\mathbf{m}, \mathbf{P}) \\\\
-p(\mathbf{y}|\mathbf{x}) &= \mathcal{N}(\mathbf{y}|\mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x} \mid \mathbf{m}, \mathbf{P}) \\\\
+p(\mathbf{y} \mid \mathbf{x}) &= \mathcal{N}(\mathbf{y} \mid \mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
 \end{aligned}
 $$
 then the joint distribution of $\mathbf{x}$ and $\mathbf{y}$ is Gaussian with
@@ -768,11 +768,11 @@ The Bayes filter extends to .bold[continuous] state and evidence variables $\mat
 The summations are replaced with integrals and the probability mass functions with probability densities, giving the recursive Bayesian relation
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1}| \mathbf{e}\_{1:t+1}) \propto  p(\mathbf{e}\_{t+1}| \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1}|\mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
+p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t+1}) \propto  p(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) p(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
 \end{aligned}
 $$
 where the normalization constant is
-$$Z = \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
+$$Z = \int p(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
 
 ---
 
@@ -788,7 +788,7 @@ The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
 <br><br><br>
 ![](figures/lec6/lg-model1.png)
 
-$p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})$
+$p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})$
 
 Transition model
 
@@ -796,7 +796,7 @@ Transition model
 .kol-1-2.center[
 ![](figures/lec6/lg-model2.png)
 
-$p(\mathbf{e}\_{t} | \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t | \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R})$
+$p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t \mid \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R})$
 
 Sensor model
 ]
@@ -808,11 +808,11 @@ class: middle
 
 ## 1d Gaussian random walk 
 
-- Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 | \mu\_0, \sigma\_0^2) $$
+- Gaussian prior: $$p(x\_0) = \mathcal{N}(x\_0 \mid \mu\_0, \sigma\_0^2) $$
 - The transition model adds random perturbations of constant variance:
-    $$p(x\_{t+1}|x\_t) =  \mathcal{N}(x\_{t+1}|x\_t, \sigma\_x^2)$$
+    $$p(x\_{t+1} \mid x\_t) =  \mathcal{N}(x\_{t+1} \mid x\_t, \sigma\_x^2)$$
 - The sensor model yields measurements with Gaussian noise of constant variance:
-    $$p(e\_{t}|x\_t) =  \mathcal{N}(e\_t | x\_t, \sigma\_e^2)$$
+    $$p(e\_{t} \mid x\_t) =  \mathcal{N}(e\_t \mid x\_t, \sigma\_e^2)$$
 
 ---
 
@@ -821,12 +821,12 @@ class: middle
 The one-step predicted distribution is given by
 $$
 \begin{aligned}
-p(x\_1) &= \int p(x\_1 | x\_0) p(x\_0) dx\_0 \\\\
+p(x\_1) &= \int p(x\_1 \mid x\_0) p(x\_0) dx\_0 \\\\
 &\propto \int \exp\left(-\frac{1}{2} \frac{(x\_{1} - x\_0)^2}{\sigma\_x^2}\right) \exp\left(-\frac{1}{2} \frac{(x\_0 - \mu\_0)^2}{\sigma\_0^2}\right) dx\_0 \\\\
 &\propto \int \exp\left( -\frac{1}{2} \frac{\sigma\_0^2 (x\_1 - x\_0)^2 + \sigma\_x^2(x\_0 - \mu\_0)^2}{\sigma\_0^2 \sigma\_x^2} \right) dx\_0 \\\\
 &... \,\, \text{(simplify by completing the square)} \\\\
 &\propto \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
-&= \mathcal{N}(x\_1 | \mu\_0, \sigma\_0^2 + \sigma\_x^2)
+&= \mathcal{N}(x\_1 \mid \mu\_0, \sigma\_0^2 + \sigma\_x^2)
 \end{aligned}
 $$
 
@@ -839,7 +839,7 @@ class: middle
 For the update step, we need to condition on the observation at the first time step:
 $$
 \begin{aligned}
-p(x\_1 | e\_1) &\propto p(e\_1 | x\_1) p(x\_1) \\\\
+p(x\_1 \mid e\_1) &\propto p(e\_1 \mid x\_1) p(x\_1) \\\\
 &\propto \exp\left(-\frac{1}{2} \frac{(e\_{1} - x\_1)^2}{\sigma\_e^2}\right)  \exp\left( -\frac{1}{2} \frac{(x\_1 - \mu\_0)^2}{\sigma\_0^2 + \sigma\_x^2} \right) \\\\
 &\propto \exp\left( -\frac{1}{2} \frac{\left(x\_1 - \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)^2}{\frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}} \right) \\\\
 &= \mathcal{N}\left(x\_1 \bigg\vert \frac{(\sigma\_0^2 + \sigma\_x^2) e\_1 + \sigma\_e^2 \mu\_0}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}, \frac{(\sigma\_0^2 + \sigma\_x^2)\sigma\_e^2}{\sigma\_0^2 + \sigma\_x^2 + \sigma\_e^2}\right)
@@ -881,15 +881,15 @@ The same derivations generalize to multivariate Gaussian distributions.
 Assuming the transition and sensor models
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{A} \mathbf{x}\_t, \mathbf{Q}) \\\\
-p(\mathbf{e}\_{t} | \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} | \mathbf{H} \mathbf{x}\_t, \mathbf{R}),
+p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t, \mathbf{Q}) \\\\
+p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} \mid \mathbf{H} \mathbf{x}\_t, \mathbf{R}),
 \end{aligned}
 $$
 the prediction step yields
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t}) &= \int p(\mathbf{x}\_{t+1} | \mathbf{x}\_t) p(\mathbf{x}\_t | \mathbf{e}\_{1:t}) d\mathbf{x}\_t \\\\
-&= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{\mu}\_{t+1}^-, \mathbf{\Sigma}\_{t+1}^-)
+p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) &= \int p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) p(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) d\mathbf{x}\_t \\\\
+&= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{\mu}\_{t+1}^-, \mathbf{\Sigma}\_{t+1}^-)
 \end{aligned}
 $$
 where
@@ -907,7 +907,7 @@ class: middle
 The update step yields the final Kalman filter equations,
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} | \mathbf{e}\_{1:t+1}) &= \mathcal{N}(\mathbf{x}\_{t+1} | \mathbf{\mu}\_{t+1}, \mathbf{\Sigma}\_{t+1}) 
+p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t+1}) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{\mu}\_{t+1}, \mathbf{\Sigma}\_{t+1}) 
 \end{aligned}
 $$
 where
@@ -939,7 +939,7 @@ class: middle
 
 ## Core idea
 
-- A particle filter approximates the filtering distribution $p(\mathbf{x}\_t | \mathbf{e}\_{1:t})$ using a set $\\{ \mathbf{x}\_t^i \\}$ of samples called .bold[particles].
+- A particle filter approximates the filtering distribution $p(\mathbf{x}\_t \mid \mathbf{e}\_{1:t})$ using a set $\\{ \mathbf{x}\_t^i \\}$ of samples called .bold[particles].
 - The particles are propagated over time using the transition model.
 - The particles are weighted according to the likelihood of the evidence given the particle's state. 
 - Low-weight particles are discarded, and high-weight particles are duplicated (resampling).
@@ -1019,8 +1019,8 @@ class: middle
 
 .center.width-80[![](figures/lec6/dynamical.svg)]
 
-Formally, the goal of .bold[data assimilation] is to estimate plausible atmospheric trajectories $x\_{1:T}$ given one or more noisy observations $y\_{1:T}$ as the posterior $$p(x\_{1:T} | y\_{1:T}) \propto \prod\_{t=1}^T p(y\_t | x\_t) p(x\_t | x\_{t-1}),$$
-where the transition model $p(x\_t | x\_{t-1})$ is given by a numerical weather prediction model and the sensor model $p(y\_t | x\_t)$ describes the observation process from satellites, radars, weather stations, etc.
+Formally, the goal of .bold[data assimilation] is to estimate plausible atmospheric trajectories $x\_{1:T}$ given one or more noisy observations $y\_{1:T}$ as the posterior $$p(x\_{1:T} \mid y\_{1:T}) \propto \prod\_{t=1}^T p(y\_t \mid x\_t) p(x\_t \mid x\_{t-1}),$$
+where the transition model $p(x\_t \mid x\_{t-1})$ is given by a numerical weather prediction model and the sensor model $p(y\_t \mid x\_t)$ describes the observation process from satellites, radars, weather stations, etc.
 
 ---
 
@@ -1041,7 +1041,7 @@ class: middle
 Appa (Andry et al, 2025) is a deep neural network for data assimilation. It is made of three components:
 - a 500M-parameter .bold[autoencoder] that compresses the data space $x$ into a latent space $z$ with a 450x compression factor;
 - a 1B-parameter .bold[latent diffusion model] that generates latent trajectories $z\_{1:T}$;
-- a .bold[posterior sampling algorithm] adapted from MMPS (Rozet et al, 2024) that samples from the posterior distribution $p(z\_{1:T} | y\_{1:T})$.
+- a .bold[posterior sampling algorithm] adapted from MMPS (Rozet et al, 2024) that samples from the posterior distribution $p(z\_{1:T} \mid y\_{1:T})$.
 
 .footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720).]
 
@@ -1054,7 +1054,7 @@ class: middle
         <source src="https://montefiore-sail.github.io/appa/static/videos/reanalysis/reanalysis_1week.mp4" type="video/mp4">
 </video>
 
-Reanalysis of past data $p(x\_{1:T} | y\_{1:T})$.
+Reanalysis of past data $p(x\_{1:T} \mid y\_{1:T})$.
 ]
 
 .footnote[Credits: [Andry et al](https://arxiv.org/abs/2504.18720), 2025 (arXiv:2504.18720). ]
@@ -1066,8 +1066,8 @@ Reanalysis of past data $p(x\_{1:T} | y\_{1:T})$.
 - Temporal models use state and sensor variables replicated over time.
     - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
 - The Markov and stationarity assumptions imply that we only need to specify
-    - a transition model ${\bf P}(\mathbf{X}\_{t+1} | \mathbf{X}\_t)$,
-    - a sensor model ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_t)$.
+    - a transition model $\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t)$,
+    - a sensor model $\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_t)$.
 - Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
 - Filter algorithms are all based on the core of idea of
     - projecting the current belief state through the transition model,
