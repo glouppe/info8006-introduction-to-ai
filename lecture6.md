@@ -49,10 +49,10 @@ class: middle, black-slide
 ???
 
 ```
-python3 run.py --nghosts 2 --layout maze_small
-python3 run.py --nghosts 3 --layout maze_medium
-python3 run.py --nghosts 4 --layout maze_huge
-
+cd demo/lec6/pacman
+uv run python run.py --nghosts 2 --layout maze_small
+uv run python run.py --nghosts 3 --layout maze_medium
+uv run python run.py --nghosts 4 --layout maze_huge
 ```
 
 ---
@@ -218,6 +218,15 @@ class: middle, black-slide
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+```
+cd demo/lec4
+uv run python ghostbusters.py --cell 90 --ghost random --beliefs
+```
+
+Press `t` a few times, without reading any sensor: prediction alone, and the belief flattens.
+
 ---
 
 class: middle, black-slide
@@ -231,6 +240,15 @@ class: middle, black-slide
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
+???
+
+```
+cd demo/lec4
+uv run python ghostbusters.py --cell 90 --ghost circles --beliefs
+```
+
+The same prediction step, on a ghost that turns around the center. The belief follows it and stays sharp.
+
 ---
 
 class: middle, black-slide
@@ -243,6 +261,15 @@ class: middle, black-slide
 .center[Whirlpool dynamics]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+```
+cd demo/lec4
+uv run python ghostbusters.py --cell 90 --ghost swirl --beliefs
+```
+
+The ghost turns and drifts towards the center, and so does the belief.
 
 ---
 
@@ -402,10 +429,10 @@ Ghostbusters with a Bayes filter
 ???
 
 ```
-python3 run.py --nghosts 2 --layout maze_small --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
-python3 run.py --nghosts 3 --layout maze_medium --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
-python3 run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show True
-
+cd demo/lec6/pacman
+uv run python run.py --nghosts 2 --layout maze_small --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show
+uv run python run.py --nghosts 3 --layout maze_medium --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show
+uv run python run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.py --bsagentfile bayesfilter.py --show
 ```
 
 ---
