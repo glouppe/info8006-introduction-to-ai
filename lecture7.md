@@ -738,6 +738,17 @@ The loss function is derived from the likelihood:
 
 class: middle
 
+## Chain rule
+
+The derivative of a composition of functions is the product of the derivatives along the chain. For a network with one hidden unit and a squared loss,
+$$h\_1 = \sigma(w\_1 x + b\_1), \quad \hat{y} = w\_2 h\_1 + b\_2, \quad \ell = (y - \hat{y})^2,$$
+the chain $w\_1 \to h\_1 \to \hat{y} \to \ell$ gives
+$$\frac{\partial \ell}{\partial w\_1} = \frac{\partial \ell}{\partial \hat{y}} \frac{\partial \hat{y}}{\partial h\_1} \frac{\partial h\_1}{\partial w\_1} = -2(y - \hat{y}) \, w\_2 \, \sigma'(w\_1 x + b\_1) \, x.$$
+
+---
+
+class: middle
+
 ## Automatic differentiation
 
 Gradient descent needs $\nabla\_\theta \mathcal{L}(\theta)$, for millions or billions of parameters. Deriving it by hand is error-prone. Finite differences are approximate, at one evaluation of the loss per parameter.
