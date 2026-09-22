@@ -1061,12 +1061,11 @@ Case (a) first, then the Bayesian version of the same numbers.
 
 # Summary
 
-- A Bayesian network specifies a full joint distribution. Bayesian networks are often exponentially smaller than an explicitly enumerated joint distribution.
-- The topology of a Bayesian network encodes conditional independence assumptions between random variables.
-- Inference is the problem of computing a marginal and/or a conditional probability distribution from a joint probability distribution.
-    - Exact inference is possible for simple Bayesian networks, but is intractable for most probabilistic models of practical interest.
-    - Approximate inference algorithms are used in practice.
-- Parameters of a Bayesian network can be learned from data using maximum likelihood estimation or Bayesian inference.
+- A .bold[Bayesian network] encodes the joint distribution as a product of local distributions, ${P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid \text{parents}(X\_i))}$, with far fewer numbers than the $d^n$ entries of the joint.
+- Its topology asserts conditional independences, which .bold[d-separation] reads off the graph: ${X\_i \perp X\_j \mid \mathbf{Z}}$ when every path between them is blocked.
+- .bold[Inference] computes ${\mathbf{P}(Q \mid \mathbf{e}) \propto \sum\_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e})}$, by enumeration, depth-first and in $O(d^n)$ time, or by .bold[variable elimination], which reuses factors and costs the size of the largest one.
+- Exact inference is intractable in general, and the posterior is then approximated.
+- The parameters are estimated from data, by .bold[maximum likelihood], ${\theta^\* = \arg\max\_\theta P(\mathbf{d} \mid \theta)}$, or by a .bold[posterior] ${P(\theta \mid \mathbf{d}) \propto P(\mathbf{d} \mid \theta) P(\theta)}$, summarized by its maximum.
 
 ---
 
