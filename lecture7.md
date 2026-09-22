@@ -111,7 +111,7 @@ class: middle
 
 .center.width-60[![](figures/lec7/IntroModels.svg)]
 
-.center[Regression ($y \in \mathbb{R}$) and classification ($y \in \\\\{0, 1, ..., C-1\\\\}$) problems.]
+.center[Regression ($y \in \mathbb{R}$) and classification ($y \in \\\\{0, 1, ..., C-1\\\\}$) problems,<br>with inputs and outputs written as numbers.]
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
@@ -124,16 +124,6 @@ class: middle
 .center[Supervised learning with structured outputs ($y \in \mathcal{Y}$).]
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
----
-
-class: middle
-
-## Data
-
-The pairs $(\mathbf{x}, y)$ are first written as numbers.
-- An input $\mathbf{x}$ is a vector of features, a tensor (e.g., an image as $C \times H \times W$ pixel values), or a sequence of tokens (e.g., a text).
-- An output $y$ is a real or a vector of reals for regression. For classification, it is a class in $\\{0, \ldots, C-1\\}$, often encoded as a .bold[one-hot] vector of $C$ zeros with a single 1 at position $y$.
 
 ---
 
