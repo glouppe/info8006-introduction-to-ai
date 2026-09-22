@@ -71,6 +71,8 @@ We will consider the world as a .bold[discrete] series of time slices, each of w
 - $\mathbf{X}\_t$ denotes the set of .bold[unobservable] state variables at time $t$.
 - $\mathbf{E}\_t$ denotes the set of .bold[observable] evidence variables at time $t$.
 
+These are the state $s\_t$ and the percept $e\_t$ of Lecture 1, written as sets of variables. The world starts at $\mathbf{X}\_0$, before any evidence, and the first observation is $\mathbf{E}\_1$.
+
 ---
 
 class: middle
@@ -300,9 +302,22 @@ This process can be implemented using the .bold[Bayes filter] algorithm, which a
 - (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
 - (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
 
-.center.width-40[![](figures/lec6/pacman-ghosts.png)]
+The update step is the sequential Bayes update of Lecture 4, which cornered the ghost from its readings. What is new is the predict step: between two readings, the ghost moves.
+
+.center.width-25[![](figures/lec6/pacman-ghosts.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+To play it live, with a ghost that moves:
+
+```
+cd demo/lec4
+uv run python ghostbusters.py --cell 90 --ghost circles --beliefs
+```
+
+`--ghost random` spreads the belief fastest, `--ghost swirl` is in between. Pressing `t`, or the TIME+1 button, is the predict step; clicking a cell is the update step.
 
 ---
 
@@ -761,7 +776,7 @@ $$
 
 The Bayes filter extends to .bold[continuous] state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$. 
 
-The summations are replaced with integrals and the probability mass functions with probability densities, giving the recursive Bayesian relation
+The rules of Lecture 4 are unchanged: only the summations are replaced with integrals and the probability mass functions with densities, which gives the recursive Bayesian relation
 $$
 \begin{aligned}
 p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t+1}) \propto  p(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) \int p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) p(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) d{\mathbf{x}\_t},
