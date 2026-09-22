@@ -749,11 +749,9 @@ $$\frac{\partial \ell}{\partial w\_1} = \frac{\partial \ell}{\partial \hat{y}} \
 
 class: middle
 
-## Automatic differentiation
+By hand, the chain rule becomes tedious and error-prone for networks with millions of parameters. .bold[Automatic differentiation] implements it generically: the program that computes $\mathcal{L}(\theta)$ is a composition of elementary operations with known derivatives, which are multiplied along the chain. The result is the exact gradient $\nabla\_\theta \mathcal{L}(\theta)$, at a small multiple of the cost of evaluating the loss once.
 
-Gradient descent needs $\nabla\_\theta \mathcal{L}(\theta)$, for millions or billions of parameters. Deriving it by hand is error-prone. Finite differences are approximate, at one evaluation of the loss per parameter.
-
-.bold[Automatic differentiation] computes it exactly from the program that computes $\mathcal{L}(\theta)$, made of elementary operations with known derivatives, at a small multiple of the cost of one evaluation. It applies to any such program, neural networks included. In PyTorch, it is `loss.backward()`.
+This applies to any such program, neural networks included. In PyTorch, it is `loss.backward()`.
 
 ---
 
