@@ -681,9 +681,9 @@ $$\begin{aligned}
 \mathbf{h}\_2 &= \sigma(\mathbf{W}^T\_2 \mathbf{h}\_1 + \mathbf{b}\_2) \\\\
 \vdots \\\\
 \mathbf{h}\_K &= \sigma(\mathbf{W}^T\_K \mathbf{h}\_{K-1} + \mathbf{b}\_K) \\\\
-\mathbf{y} &= \sigma(\mathbf{W}^T\_{y} \mathbf{h}\_K + \mathbf{b}\_{y})
+\mathbf{y} &= \sigma\_\text{out}(\mathbf{W}^T\_{y} \mathbf{h}\_K + \mathbf{b}\_{y})
 \end{aligned}$$
-where $\mathbf{W}\_k \in \mathbb{R}^{q\_{k-1} \times q\_k}$ is the weight matrix of the $k$-th hidden layer and $\mathbf{b}\_k \in \mathbb{R}^{q\_k}$ is the bias vector of the $k$-th layer.
+where $\mathbf{W}\_k \in \mathbb{R}^{q\_{k-1} \times q\_k}$ is the weight matrix of the $k$-th hidden layer and $\mathbf{b}\_k \in \mathbb{R}^{q\_k}$ is the bias vector of the $k$-th layer. The output activation $\sigma\_\text{out}$ depends on the task.
 
 The resulting function $f(\mathbf{x}; \theta)$ is a highly non-linear mapping from inputs $\mathbf{x}$ to outputs $\mathbf{y}$, where $\theta$ denotes the set of all model parameters. This architecture is known as the .bold[multilayer perceptron].
 
@@ -728,14 +728,14 @@ class: middle
 
 class: middle
 
-## Output layers $\mathbf{y}=\sigma(\mathbf{W}^T\_y \mathbf{h}\_K + \mathbf{b}\_y)$
+## Output layers
 
-- For regression, the width $q$ of the output layer is set to the dimensionality of the output $d\_\text{out}$ and the activation function is the identity $\sigma(\cdot) = \cdot$.
-- For binary classification, the width $q$ of the output layer is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output that models the probability $p(y=1 \mid \mathbf{x})$.
-- For multi-class classification, the sigmoid activation $\sigma$ in the output layer can be generalized to produce a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y=i \mid \mathbf{x})$.
-This activation is the $\text{Softmax}$ function, where its $i$-th output is defined as
-$$\text{Softmax}(\mathbf{z})\_i = \frac{\exp(z\_i)}{\sum\_{j=1}^C \exp(z\_j)},$$
-for $i=1, ..., C$.
+The output layer $\mathbf{y} = \sigma\_\text{out}(\mathbf{W}^T\_y \mathbf{h}\_K + \mathbf{b}\_y)$ depends on the task.
+- For regression, it has $d\_\text{out}$ units and $\sigma\_\text{out}$ is the identity.
+- For binary classification, it has one unit and $\sigma\_\text{out}$ is the sigmoid, whose output is $P(Y=1 \mid \mathbf{x})$.
+- For classification into $C$ classes, it has $C$ units and $\sigma\_\text{out}$ is the .bold[softmax],
+$$\text{Softmax}(\mathbf{z})\_i = \frac{\exp(z\_i)}{\sum\_{i'=0}^{C-1} \exp(z\_{i'})}, \quad i = 0, \ldots, C-1,$$
+so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y=i \mid \mathbf{x})$ summing to 1.
 
 ---
 
