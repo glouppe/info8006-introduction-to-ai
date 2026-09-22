@@ -466,6 +466,7 @@ $$
 In the same way, $\mathbf{P}(X\_1, ..., X\_n) = \prod\_{i=1}^n \mathbf{P}(X\_i \mid X\_1, ..., X\_{i-1})$.
 
 ---
+
 class: middle
 
 # Independence
@@ -580,6 +581,7 @@ This probabilistic model is called a .bold[naive Bayes] model.
 This is an important model you should know about!
 
 ---
+
 class: middle
 
 # The Bayes' rule
@@ -781,6 +783,7 @@ class: middle
 Lecture 5 makes the computation scale with Bayesian networks, lecture 6 lets the world change with time, and lectures 8 and 9 act on the beliefs.
 
 ---
+
 class: middle
 
 ## All the rules

@@ -699,6 +699,7 @@ Evaluated depth-first over the network, this costs $O(n)$ in space and $O(d^n)$ 
 The depth-first evaluation assumes the variables are enumerated in topological order.
 
 ---
+
 class: middle
 
 ## Enumeration over the network

@@ -9,6 +9,7 @@ Prof. Gilles Louppe<br>
 [g.louppe@uliege.be](mailto:g.louppe@uliege.be)
 
 ---
+
 # Today
 
 Maintain a .bold[belief state] about the world, and update it as time passes and evidence is collected.
@@ -32,6 +33,7 @@ Maintain a .bold[belief state] about the world, and update it as time passes and
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -54,11 +56,13 @@ uv run python run.py --nghosts 4 --layout maze_huge
 ```
 
 ---
+
 class: middle
 
 # Markov models
 
 ---
+
 class: middle
 
 ## Modelling the passage of time
@@ -70,6 +74,7 @@ We will consider the world as a .bold[discrete] series of time slices, each of w
 These are the state $s\_t$ and the percept $e\_t$ of Lecture 1, written as sets of variables. The world starts at $\mathbf{X}\_0$, before any evidence, and the first observation is $\mathbf{E}\_1$.
 
 ---
+
 class: middle
 
 We specify
@@ -78,6 +83,7 @@ We specify
 - a .bold[sensor model] $\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
 ---
+
 # Markov processes
 
 ## Markov assumption
@@ -95,6 +101,7 @@ i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent gi
 .center.width-100[![](figures/lec6/markov-process.png)]
 
 ---
+
 class: middle
 
 ## Sensor Markov assumption
@@ -106,6 +113,7 @@ We make a (first-order) .bold[sensor Markov assumption] $$\mathbf{P}(\mathbf{E}\
 The transition and the sensor models are the same for all $t$ (i.e., the laws of physics do not change with time).
 
 ---
+
 # Joint distribution
 
 <br>
@@ -118,6 +126,7 @@ The joint distribution of all its variables up to $t$ is
 $$\mathbf{P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = \mathbf{P}(\mathbf{X}\_{0}) \prod\_{i=1}^t \mathbf{P}(\mathbf{X}\_{i} \mid \mathbf{X}\_{i-1}) \mathbf{P}(\mathbf{E}\_{i} \mid \mathbf{X}\_{i}).$$
 
 ---
+
 class: middle
 
 ## Example: Will you take your umbrella today?
@@ -138,6 +147,7 @@ class: middle
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 # Inference tasks
 
 - .bold[Prediction]: $\mathbf{P}(\mathbf{X}\_{t+k} \mid \mathbf{e}\_{1:t})$ for $k>0$
@@ -153,6 +163,7 @@ class: middle
     - Decoding with a noisy channel, speech recognition, etc.
 
 ---
+
 # Base cases
 
 .grid[
@@ -181,6 +192,7 @@ $\begin{aligned}
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 # Prediction
 
 .center.width-50[![](figures/lec6/stationary-cartoon.png)]
@@ -194,6 +206,7 @@ $$\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}}
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -215,6 +228,7 @@ uv run python ghostbusters.py --cell 90 --ghost random --beliefs
 Press `t` a few times, without reading any sensor: prediction alone, and the belief flattens.
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -236,6 +250,7 @@ uv run python ghostbusters.py --cell 90 --ghost circles --beliefs
 The same prediction step, on a ghost that turns around the center. The belief follows it and stays sharp.
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -257,6 +272,7 @@ uv run python ghostbusters.py --cell 90 --ghost swirl --beliefs
 The ghost turns and drifts towards the center, and so does the belief.
 
 ---
+
 class: middle
 
 .center[
@@ -270,6 +286,7 @@ As time passes, uncertainty (usually) increases in the absence of new evidence.
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 # Stationary distributions
 
 What if $t \to \infty$?
@@ -279,6 +296,7 @@ What if $t \to \infty$?
 $$\mathbf{P}(\mathbf{X}\_{t+1}) = \mathbf{P}(\mathbf{X}\_t) = \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t).$$
 
 ---
+
 class: middle
 
 | $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
@@ -302,6 +320,7 @@ Therefore $P(\text{sun}) = 3 P(\text{rain})$, and since the two sum to 1,
 $P(\text{sun}) = \frac{3}{4}$ and $P(\text{rain}) = \frac{1}{4}$.
 
 ---
+
 # Filtering
 
 We want to compute the belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ and maintain it as new evidence $\mathbf{e}\_{t+1}$ arrives.
@@ -317,6 +336,7 @@ The update step is the sequential Bayes update of Lecture 4. What is new is the 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle
 
 Formally, the Bayes filter is defined as
@@ -340,6 +360,7 @@ $\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t
 $\quad = \alpha P(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) $ -->
 
 ---
+
 class: middle
 
 We can think of $\mathbf{P}(\mathbf{X}\_t \mid \mathbf{e}\_{1:t})$ as a .bold[message] $\mathbf{f}\_{1:t}$ that is propagated .bold[forward] along the sequence, modified by each transition and updated by each new observation.
@@ -347,6 +368,7 @@ We can think of $\mathbf{P}(\mathbf{X}\_t \mid \mathbf{e}\_{1:t})$ as a .bold[me
 Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$. Its complexity is constant (in time and space) with $t$.
 
 ---
+
 class: middle
 
 ## Example
@@ -380,6 +402,7 @@ class: middle
 Solve on blackboard.
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -402,6 +425,7 @@ uv run python run.py --nghosts 4 --layout maze_huge --agentfile sherlockpacman.p
 ```
 
 ---
+
 # Smoothing
 
 We want to compute $\mathbf{P}(\mathbf{X}\_{k} \mid \mathbf{e}\_{1:t})$ for $0 \leq k < t$.
@@ -416,6 +440,7 @@ $$
 $$
 
 ---
+
 class: middle
 
 Let the .bold[backward] message $\mathbf{b}\_{k+1:t}$ correspond to $\mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k)$. Then,
@@ -437,6 +462,7 @@ The first and last factors are given by the model. The second factor is obtained
 $$\mathbf{b}\_{k+1:t} = \text{backward}(\mathbf{b}\_{k+2:t}, \mathbf{e}\_{k+1} ).$$
 
 ---
+
 class: middle
 
 ## Forward-backward algorithm
@@ -448,6 +474,7 @@ Complexity:
 - Smoothing a whole sequence (because of caching):  $O(t)$
 
 ---
+
 class: middle
 
 ## Example
@@ -459,6 +486,7 @@ class: middle
 Solve on blackboard.
 
 ---
+
 # Most likely explanation
 
 <br>
@@ -467,6 +495,7 @@ Solve on blackboard.
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle 
 
 .center.width-80[![](figures/lec6/weather.png)]
@@ -479,6 +508,7 @@ Suppose that $[\text{true}, \text{true}, \text{false}, \text{true}, \text{true}]
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle
 
 The most likely sequence  .bold[is not] the sequence of the most likely states!
@@ -498,6 +528,7 @@ Let’s focus in particular on paths that reach the state `Rain 5 = true`.
 Because of the Markov property, it follows that the most likely path to the state `Rain 5 = true` consists of the most likely path to some state at time 4, followed by a transition to `Rain 5 = true`; and the state at time 4 that will become part of the path to `Rain 5 = true` is whichever maximizes the likelihood of that path.
 
 ---
+
 class: middle
 
 This is identical to filtering, except that 
@@ -514,6 +545,7 @@ $$\mathbf{m}\_{1:t+1} \propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1
 Naive procedure: use smoothing to compute $P(X\_k \mid e\_{1:t})$, then output the sequence of the most likely value for each $k$.
 
 ---
+
 class: middle
 
 ## Example
@@ -525,6 +557,7 @@ class: middle
 <span class="Q">[Q]</span> How do you retrieve the path, in addition to its likelihood?
 
 ---
+
 # Hidden Markov models
 
 So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
@@ -534,6 +567,7 @@ So far, we described Markov processes over arbitrary sets of state variables $\m
 - This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
 
 ---
+
 class: middle
 
 ## Note on terminology
@@ -545,6 +579,7 @@ Some authors instead divide Markov models into two classes, depending on the obs
 We follow here instead the terminology of the textbook, as defined in the previous slide.
 
 ---
+
 class: middle
 
 ## Simplified matrix algorithms
@@ -555,6 +590,7 @@ class: middle
 $$\mathbf{B}\_{ij} = P(E\_t=j \mid X\_t=i).$$
 
 ---
+
 class: middle
 
 - Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
@@ -564,6 +600,7 @@ $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
 where $\mathbf{b}\_{t+1:t}$ is an all-one vector of size $S$.
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
 ---
+
 class: middle
 
 ## Example
@@ -598,6 +635,7 @@ $$
 See `demo/lec6/forward-backward.ipynb` for the execution.
 
 ---
+
 class: middle
 
 ## Stationary distribution
@@ -607,11 +645,13 @@ $$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
 Therefore, the stationary distribution corresponds to a (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
 
 ---
+
 class: middle
 
 # Filters
 
 ---
+
 class: middle
 
 .center.width-50[![](figures/lec6/robot-helicopter.png)]
@@ -627,6 +667,7 @@ We assume .bold[discrete] time steps.
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 # Continuous variables
 
 Let $X: \Omega \to D\_X$ be a random variable.
@@ -636,6 +677,7 @@ $$P(a < X \leq b) = \int\_a^b p(x) dx,$$
 where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
 
 ---
+
 class: middle
 
 ## Uniform
@@ -651,6 +693,7 @@ p(x) = \begin{cases}
 where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are the bounds of its support.
 
 ---
+
 class: middle
 
 ## Gaussian
@@ -668,6 +711,7 @@ Comment that
 - $\sigma$ is the width of the normal
 
 ---
+
 class: middle
 
 ## Multivariate Gaussian
@@ -679,6 +723,7 @@ $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n \lvert \boldsymbol{\Si
 where $\boldsymbol{\mu} \in \mathbb{R}^n$ is the mean vector and $\boldsymbol{\Sigma} \in \mathbb{R}^{n\times n}$ is the covariance matrix.
 
 ---
+
 class: middle
 
 ## Cheat sheet for Gaussian distributions (Särkkä, 2013)
@@ -712,6 +757,7 @@ p(\mathbf{y} \mid \mathbf{x}) &= \mathcal{N}(\mathbf{y} \mid \mathbf{b}+\mathbf{
 $$
 
 ---
+
 class: middle
 
 If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
@@ -741,6 +787,7 @@ p\left(\begin{matrix}
 $$
 
 ---
+
 # Continuous Bayes filter
 
 The Bayes filter extends to .bold[continuous] state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$. 
@@ -755,6 +802,7 @@ where the normalization constant is
 $$Z = \int p(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) d\mathbf{x}\_{t+1}.$$
 
 ---
+
 # Kalman filter
 
 The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
@@ -782,6 +830,7 @@ Sensor model
 ]
 
 ---
+
 class: middle
 
 ## 1d Gaussian random walk 
@@ -793,6 +842,7 @@ class: middle
     $$p(e\_{t} \mid x\_t) =  \mathcal{N}(e\_t \mid x\_t, \sigma\_e^2)$$
 
 ---
+
 class: middle
 
 The one-step predicted distribution is given by
@@ -810,6 +860,7 @@ $$
 Note that the same result can be obtained by using instead the Gaussian models identities.
 
 ---
+
 class: middle
 
 For the update step, we need to condition on the observation at the first time step:
@@ -823,6 +874,7 @@ p(x\_1 \mid e\_1) &\propto p(e\_1 \mid x\_1) p(x\_1) \\\\
 $$
 
 ---
+
 class: middle
 
 .center.width-70[![](figures/lec6/walk.png)]
@@ -847,6 +899,7 @@ attention to the old mean;
 unpredictable ($\sigma\_x^2$ is large), then we pay more attention to the observation
 
 ---
+
 class: middle
 
 ## Kalman update equations
@@ -875,6 +928,7 @@ $$
 $$
 
 ---
+
 class: middle
 
 The update step yields the final Kalman filter equations,
@@ -894,6 +948,7 @@ $$
 in which $\mathbf{K}\_{t+1}$ is called the .bold[Kalman gain] and represents the relative weight given to the new observation versus the prediction.
 
 ---
+
 # Particle filter
 
 When the transition and sensor models are non-linear and/or non-Gaussian, the Kalman filter is not applicable. 
@@ -906,6 +961,7 @@ The .bold[particle filter] is a sampling-based approximate inference algorithm f
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
+
 class: middle
 
 ## Core idea
@@ -918,6 +974,7 @@ class: middle
 This scales to high dimensions!
 
 ---
+
 class: middle
 
 ## Update cycle
@@ -936,16 +993,19 @@ uv run python particle_filter.py
 ```
 
 ---
+
 class: middle
 
 .center.width-100[![](figures/lec6/particle-filtering.svg)]
 
 ---
+
 class: middle
 
 # Applications
 
 ---
+
 class: middle
 
 ## Apollo guidance computer
@@ -960,6 +1020,7 @@ The Apollo Guidance Computer used a Kalman filter to estimate the position of th
 .footnote[Credits: [Apollo-11 source code](https://github.com/chrislgarry/Apollo-11/blob/4f3a1d4374d4708737683bed78a501a321b6042c/Comanche055/MEASUREMENT_INCORPORATION.agc#L208)]
 
 ---
+
 class: middle
 
 .center.width-75[![](figures/lec6/moon.png)]
@@ -967,6 +1028,7 @@ class: middle
 .center[Demo: [tracking an object in space using the Kalman Filter](https://demonstrations.wolfram.com/TrackingAnObjectInSpaceUsingTheKalmanFilter/).]
 
 ---
+
 class: middle, black-slide
 
 ## Robot localization
@@ -978,6 +1040,7 @@ Filtering algorithms such as the Kalman filter and the particle filter are widel
 ]
 
 ---
+
 class: middle, black-slide
 
 .center.width-90[![](figures/lec6/satellite.gif)]
@@ -987,6 +1050,7 @@ class: middle, black-slide
 Filtering is used to combine observations of the atmosphere with numerical models to estimate its current state and initialize weather forecasts.
 
 ---
+
 class: middle
 
 .center.width-80[![](figures/lec6/dynamical.svg)]
@@ -995,6 +1059,7 @@ Formally, the goal of .bold[data assimilation] is to estimate plausible atmosphe
 where the transition model $p(x\_t \mid x\_{t-1})$ is given by a numerical weather prediction model and the sensor model $p(y\_t \mid x\_t)$ describes the observation process from satellites, radars, weather stations, etc.
 
 ---
+
 class: middle, black-slide
 
 .center[
@@ -1002,6 +1067,7 @@ class: middle, black-slide
 ]
 
 ---
+
 # Summary
 
 - A temporal model replicates the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ over time. Under the Markov and stationarity assumptions, it is specified by a prior $\mathbf{P}(\mathbf{X}\_0)$, a transition model ${\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t)}$ and a sensor model ${\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_t)}$.
@@ -1011,6 +1077,7 @@ at a cost per step that does not grow with $t$. Prediction, smoothing and the mo
 - The same recursion holds for continuous variables, with integrals in place of sums: exactly for linear Gaussian models, where it is the .bold[Kalman filter], and approximately by sampling, where it is the .bold[particle filter].
 
 ---
+
 class: end-slide, center
 count: false
 
