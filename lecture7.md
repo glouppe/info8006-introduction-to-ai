@@ -784,14 +784,22 @@ class: middle, center
 
 # Measuring performance
 
-ML models are trained to minimize the loss $\mathcal{L}(\theta)$ on a training dataset $\mathbf{d}\_\text{train}$. However, a low training loss does not guarantee good performance on unseen data, as the model may have memorized the training data.
-
-To assess its generalization performance, a model should be evaluated on a separate test dataset $\mathbf{d}\_\text{test}$ that was not used during training. This evaluation provides an estimate of how well the model will perform on new, unseen data.
+We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. The training loss underestimates it, since $\theta$ was fitted to those very pairs. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
 
 <br>
 .center.width-100[![](figures/lec7/PerfMNIST1DResults.svg)]
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+
+---
+
+class: middle
+
+## Capacity and model selection
+
+A model too small for the data .bold[underfits]: both losses stay high. A model large enough to memorize $\mathbf{d}$ .bold[overfits]: the training loss keeps decreasing while the test loss increases, as on the previous slide.
+
+Width, depth, learning rate, minibatch size and number of epochs are .bold[hyperparameters]. They are chosen on a .bold[validation set], also held out from training. The test set is used once, at the end.
 
 ---
 
