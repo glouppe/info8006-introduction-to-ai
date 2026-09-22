@@ -30,6 +30,8 @@ What if the environment is **unknown**?
 - Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 - It exposes the agent to reality rather than trying to hardcode reality into the agent's program.
 
+What is learned is a part of the agent program with parameters $\theta$: a policy $\pi\_\theta$ (Lecture 1), a heuristic (Lecture 2), an evaluation function (Lecture 3), or a probabilistic model (Lecture 5).
+
 .success[More generally, learning is useful for any task where it is difficult to write a program that performs the task but easy to obtain examples of desired behavior.]
 
 ---
@@ -363,7 +365,7 @@ class: middle
 Can we learn to play Pacman only from observations?
 - Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
 - State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
-- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
+- We want to learn the actions that the expert would take in a given situation, that is, a policy $\pi\_\theta(s) = f(g(s); \theta)$ with $f:\mathbb{R}^d \to \mathcal{A}$.
 - This is a multiclass classification problem.
 
 .center.width-70[![](figures/lec7/pacman.png)]
