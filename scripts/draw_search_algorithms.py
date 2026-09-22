@@ -290,6 +290,38 @@ enumerate_all = [
          txt(" = "), var("v"), txt(")")]),
 ]
 
+# Smoothing a whole sequence, as lecture 6 states it: forward messages first,
+# then a single backward sweep multiplying them
+forward_backward = [
+    (0, [kw("function "), proc("Forward-Backward"), txt("("), var("e"), txt(", "), var("prior"), txt(") "),
+         kw("returns "), txt("the smoothed distributions")]),
+    (1, [var("f"), txt("[0] "), gets(), var("prior"), txt(",  "), var("b"), gets(), txt("an all-one vector")]),
+    (1, [kw("for "), var("i"), txt(" = 1 "), kw("to "), var("t"), txt(" "), kw("do")]),
+    (2, [var("f"), txt("["), var("i"), txt("] "), gets(), proc("Forward"), txt("("), var("f"), txt("["),
+         var("i"), txt(" - 1], "), var("e"), txt("["), var("i"), txt("])")]),
+    (1, [kw("for "), var("i"), txt(" = "), var("t"), kw(" downto "), txt("1 "), kw("do")]),
+    (2, [var("s"), txt("["), var("i"), txt("] "), gets(), proc("Normalize"), txt("("), var("f"), txt("["),
+         var("i"), txt("] "), sym("×"), txt(" "), var("b"), txt(")")]),
+    (2, [var("b"), gets(), proc("Backward"), txt("("), var("b"), txt(", "), var("e"), txt("["), var("i"),
+         txt("])")]),
+    (1, [kw("return "), var("s")]),
+]
+
+# The particle filter of lecture 6: propagate, weight, resample
+particle_filter = [
+    (0, [kw("function "), proc("Particle-Filtering"), txt("("), var("e"), txt(", "), var("N"), txt(", "),
+         var("model"), txt(") "), kw("returns "), txt("a set of samples")]),
+    (1, [kw("persistent"), txt(": "), var("S"), txt(", "), var("N"), txt(" samples, drawn from the prior")]),
+    (1, [kw("for each "), var("i"), txt(" in 1, ..., "), var("N"), txt(" "), kw("do")]),
+    (2, [var("S"), txt("["), var("i"), txt("] "), gets(), txt("a sample from "), var("P"), txt("("),
+         var("x"), txt("' | "), var("x"), txt(" = "), var("S"), txt("["), var("i"), txt("])")]),
+    (2, [var("W"), txt("["), var("i"), txt("] "), gets(), var("P"), txt("("), var("e"), txt(" | "),
+         var("x"), txt(" = "), var("S"), txt("["), var("i"), txt("])")]),
+    (1, [var("S"), gets(), proc("Weighted-Sample-With-Replacement"), txt("("), var("N"), txt(", "),
+         var("S"), txt(", "), var("W"), txt(")")]),
+    (1, [kw("return "), var("S")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -300,3 +332,5 @@ if __name__ == "__main__":
     listing("elimination-ask", elimination, 840, lecture="lec5")
     listing("build-network", construction, 900, lecture="lec5")
     listing("enumerate-all", enumerate_all, 900, lecture="lec5")
+    listing("forward-backward", forward_backward, 900, lecture="lec6")
+    listing("particle-filtering", particle_filter, 980, lecture="lec6")

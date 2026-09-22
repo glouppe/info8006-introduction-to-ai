@@ -451,7 +451,7 @@ class: middle
 
 ## Forward-backward algorithm
 
-.center.width-100[![](figures/lec6/forward-backward.png)]
+.center.width-100[![](figures/lec6/forward-backward.svg)]
 
 Complexity:
 - Smoothing for a particular time step $k$ takes: $O(t)$
@@ -980,7 +980,7 @@ uv run python particle_filter.py
 
 class: middle
 
-.center.width-100[![](figures/lec6/pf-algorithm.png)]
+.center.width-100[![](figures/lec6/particle-filtering.svg)]
 
 ---
 
