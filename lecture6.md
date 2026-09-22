@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-Maintain a **belief state** about the world, and update it as time passes and evidence is collected.
+Maintain a .bold[belief state] about the world, and update it as time passes and evidence is collected.
 
 .grid[
 .kol-1-2[
@@ -67,9 +67,9 @@ class: middle
 
 ## Modelling the passage of time
 
-We will consider the world as a *discrete* series of time slices, each of which contains a set of random variables:
-- $\mathbf{X}\_t$ denotes the set of **unobservable** state variables at time $t$.
-- $\mathbf{E}\_t$ denotes the set of *observable* evidence variables at time $t$.
+We will consider the world as a .bold[discrete] series of time slices, each of which contains a set of random variables:
+- $\mathbf{X}\_t$ denotes the set of .bold[unobservable] state variables at time $t$.
+- $\mathbf{E}\_t$ denotes the set of .bold[observable] evidence variables at time $t$.
 
 ---
 
@@ -77,8 +77,8 @@ class: middle
 
 We specify
 - a prior ${\bf P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables,
-- a **transition model** ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
-- a **sensor model** ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
+- a .bold[transition model] ${\bf P}(\mathbf{X}\_t | \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
+- a .bold[sensor model] ${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
 ---
 
@@ -88,7 +88,7 @@ We specify
 
 The current state of the world depends only on its immediate previous state(s), i.e., $\mathbf{X}\_t$ depends on only a bounded subset of $\mathbf{X}\_{0:t-1}$.
 
-Random processes that satisfy this assumption are called **Markov processes** or **Markov chains**.
+Random processes that satisfy this assumption are called .bold[Markov processes] or .bold[Markov chains].
 
 ## First-order Markov processes
 
@@ -104,7 +104,7 @@ class: middle
 
 ## Sensor Markov assumption
 
-We make a (first-order) **sensor Markov assumption** $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t}).$$
+We make a (first-order) .bold[sensor Markov assumption] $${\bf P}(\mathbf{E}\_t | \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1}) = {\bf P}(\mathbf{E}\_t | \mathbf{X}\_{t}).$$
 
 ## Stationarity assumption
 
@@ -118,7 +118,7 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 .center.width-100[![](figures/lec6/smoothing-dbn.svg)]
 <br>
 
-A Markov chain coupled with a sensor model can be represented as a *growable* Bayesian network, unrolled infinitely through time.
+A Markov chain coupled with a sensor model can be represented as a .bold[growable] Bayesian network, unrolled infinitely through time.
 
 The joint distribution of all its variables up to $t$ is
 $${\bf P}(\mathbf{X}\_{0:t}, \mathbf{E}\_{1:t}) = {\bf P}(\mathbf{X}\_{0}) \prod\_{i=1}^t {\bf P}(\mathbf{X}\_{i} | \mathbf{X}\_{i-1}) {\bf P}(\mathbf{E}\_{i}|\mathbf{X}\_{i}).$$
@@ -148,16 +148,16 @@ class: middle
 
 # Inference tasks
 
-- *Prediction*: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
+- .bold[Prediction]: ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$ for $k>0$
     - Computing the posterior distribution over future states.
     - Used for evaluation of possible action sequences.
-- *Filtering*: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
-    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its **belief state**, so that rational decisions can be made.
-- *Smoothing*: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
+- .bold[Filtering]: ${\bf P}(\mathbf{X}\_{t}| \mathbf{e}\_{1:t})$
+    - Filtering is what a rational agent does to keep track of the current hidden state $\mathbf{X}\_t$, its .bold[belief state], so that rational decisions can be made.
+- .bold[Smoothing]: ${\bf P}(\mathbf{X}\_{k}| \mathbf{e}\_{1:t})$ for $0 \leq k < t$
     - Computing the posterior distribution over past states.
     - Used for building better estimates, since it incorporates more evidence.
     - Essential for learning.    
-- *Most likely explanation*: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
+- .bold[Most likely explanation]: $\arg \max\_{\mathbf{x}\_{1:t}} P(\mathbf{x}\_{1:t}| \mathbf{e}\_{1:t})$
     - Decoding with a noisy channel, speech recognition, etc.
 
 ---
@@ -196,7 +196,7 @@ $\begin{aligned}
 .center.width-50[![](figures/lec6/stationary-cartoon.png)]
 
 To predict the future  ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$:
-- **Push** the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
+- .bold[Push] the prior belief state ${\bf P}(\mathbf{X}\_{t} | \mathbf{e}\_{1:t})$ through the transition model:
 $${\bf P}(\mathbf{X}\_{t+1}| \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) P(\mathbf{x}\_{t} | \mathbf{e}\_{1:t})$$
 
 - Repeat up to $t+k$, using ${\bf P}(\mathbf{X}\_{t+k-1}| \mathbf{e}\_{1:t})$ to compute ${\bf P}(\mathbf{X}\_{t+k}| \mathbf{e}\_{1:t})$.
@@ -262,7 +262,7 @@ As time passes, uncertainty (usually) increases in the absence of new evidence.
 
 What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
-- Eventually, the distribution may converge to a fixed distribution, called a **stationary distribution**.
+- Eventually, the distribution may converge to a fixed distribution, called a .bold[stationary distribution].
 - This distribution is such that
 $${\bf P}(\mathbf{X}\_\infty) = {\bf P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} {\bf P}(\mathbf{X}\_{\infty+1} | \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
 
@@ -336,7 +336,7 @@ $\quad = \alpha P(\mathbf{e}\_{t+1}| \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} P(
 
 class: middle
 
-We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a *message* $\mathbf{f}\_{1:t}$ that is propagated **forward** along the sequence, modified by each transition and updated by each new observation.
+We can think of ${\bf P}(\mathbf{X}\_t | \mathbf{e}\_{1:t})$ as a .bold[message] $\mathbf{f}\_{1:t}$ that is propagated .bold[forward] along the sequence, modified by each transition and updated by each new observation.
 
 Thus, the process can be implemented as $\mathbf{f}\_{1:t+1} \propto \text{forward}(\mathbf{f}\_{1:t}, \mathbf{e}\_{t+1} )$. Its complexity is constant (in time and space) with $t$.
 
@@ -416,7 +416,7 @@ $$
 
 class: middle
 
-Let the **backward** message $\mathbf{b}\_{k+1:t}$ correspond to ${\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
+Let the .bold[backward] message $\mathbf{b}\_{k+1:t}$ correspond to ${\bf P}(\mathbf{e}\_{k+1:t} | \mathbf{X}\_k)$. Then,
 $${\bf P}(\mathbf{X}\_k | \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
 where $\times$ is a pointwise multiplication of vectors.
 
@@ -486,7 +486,7 @@ class: middle
 
 The most likely sequence  .bold[is not] the sequence of the most likely states!
 
-The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to *some* $\mathbf{x}\_t$ plus one more step. Therefore,
+The most likely path to each $\mathbf{x}\_{t+1}$, is the most likely path to .bold[some] $\mathbf{x}\_t$ plus one more step. Therefore,
 $$
 \begin{aligned}
 &\max\_{\mathbf{x}\_{1:t}} {\bf P}(\mathbf{x}\_{1:t}, \mathbf{X}\_{t+1} | \mathbf{e}\_{1:t+1}) \\\\
@@ -510,7 +510,7 @@ $$\mathbf{m}\_{1:t} = \max\_{\mathbf{x}\_{1:t-1}} {\bf P}(\mathbf{x}\_{1:t-1}, \
 where $\mathbf{m}\_{1:t}(i)$ gives the probability of the most likely path to state $i$.
 - The update has its sum replaced by max.
 
-The resulting algorithm is called the **Viterbi algorithm**, which computes the most likely explanation as
+The resulting algorithm is called the .bold[Viterbi algorithm], which computes the most likely explanation as
 $$\mathbf{m}\_{1:t+1} \propto {\bf P}(\mathbf{e}\_{t+1} | \mathbf{X}\_{t+1}) \max\_{\mathbf{x}\_{t}} {\bf P}(\mathbf{X}\_{t+1} | \mathbf{x}\_{t}) \mathbf{m}\_{1:t}.$$ Its complexity is linear in $t$, the length of the sequence.
 
 ???
@@ -534,7 +534,7 @@ class: middle
 # Hidden Markov models
 
 So far, we described Markov processes over arbitrary sets of state variables $\mathbf{X}\_t$ and evidence variables $\mathbf{E}\_t$.
-- A **hidden Markov model** (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both *single discrete* random variables.
+- A .bold[hidden Markov model] (HMM) is a Markov process in which the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ are both .bold[single discrete] random variables.
     - $\mathbf{X}\_t = X\_t$, with domain $D\_{X\_t} = \\\{1, ..., S\\\}$
     - $\mathbf{E}\_t = E\_t$, with domain $D\_{E\_t} = \\\{1, ..., R\\\}$
 - This restricted structure allows for a reformulation of the forward-backward algorithm in terms of matrix-vector operations.
@@ -558,8 +558,8 @@ class: middle
 ## Simplified matrix algorithms
 
 - The prior ${\bf P}(X\_0)$ becomes a (normalized) column vector $\mathbf{f}\_0 \in \mathbb{R}_+^S$.
-- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ **transition matrix** $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
-- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ **sensor matrix** $\mathbf{B}$, such that
+- The transition model ${\bf P}(X\_t | X\_{t-1})$ becomes an $S \times S$ .bold[transition matrix] $\mathbf{T}$, such that $$\mathbf{T}\_{ij} = P(X\_t=j | X\_{t-1}=i).$$
+- The sensor model ${\bf P}(E\_t | X\_t)$ is defined as an  $S \times R$ .bold[sensor matrix] $\mathbf{B}$, such that
 $$\mathbf{B}\_{ij} = P(E\_t=j | X\_t=i).$$
 
 ---
@@ -631,11 +631,11 @@ class: middle
 
 Suppose we want to track the position and velocity of a robot from noisy observations collected over time.
 
-Formally, we want to estimate **continuous** state variables such as
+Formally, we want to estimate .bold[continuous] state variables such as
 - the position $\mathbf{X}\_t$ of the robot at time $t$,
 - the velocity $\mathbf{\dot{X}}\_t$ of the robot at time $t$.
 
-We assume *discrete* time steps.
+We assume .bold[discrete] time steps.
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -644,8 +644,8 @@ We assume *discrete* time steps.
 # Continuous variables
 
 Let $X: \Omega \to D\_X$ be a random variable.
-- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a *continuous random variable*.
-- If $X$ is absolutely continuous, its probability distribution is described by a **density function** $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
+- When $D\_X$ is uncountably infinite (e.g., $D\_X = \mathbb{R}$), $X$ is called a .bold[continuous random variable].
+- If $X$ is absolutely continuous, its probability distribution is described by a .bold[density function] $p$ that assigns a probability to any interval $[a,b] \subseteq D\_X$ such that
 $$P(a < X \leq b) = \int\_a^b p(x) dx,$$
 where $p$ is non-negative piecewise continuous and such that $$\int\_{D\_X} p(x)dx=1.$$
 
@@ -763,7 +763,7 @@ $$
 
 # Continuous Bayes filter
 
-The Bayes filter extends to **continuous** state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$. 
+The Bayes filter extends to .bold[continuous] state and evidence variables $\mathbf{X}\_{t}$ and $\mathbf{E}\_{t}$. 
 
 The summations are replaced with integrals and the probability mass functions with probability densities, giving the recursive Bayesian relation
 $$
@@ -778,7 +778,7 @@ $$Z = \int p(\mathbf{e}\_{t+1} | \mathbf{x}\_{t+1}) p(\mathbf{x}\_{t+1} | \mathb
 
 # Kalman filter
 
-The **Kalman filter** is a special case of the Bayes filter, which assumes:
+The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
 - Gaussian prior
 - Linear Gaussian transition model
 - Linear Gaussian sensor model
