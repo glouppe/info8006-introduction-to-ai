@@ -1001,9 +1001,23 @@ class: middle
 class: black-slide, middle
 
 .center[
+<video controls preload="auto" height="400" width="640">
+  <source src="./figures/lec7/aloha-teleop.mp4" type="video/mp4">
+</video>
+
+Mobile ALOHA (Stanford, 2024): a human teleoperates the robot<br>to collect the demonstrations (10x speed).
+]
+
+.footnote[Credits: [Mobile ALOHA](https://mobile-aloha.github.io/), Fu et al., 2024.]
+
+---
+
+class: black-slide, middle
+
+.center[
 <iframe width="640" height="400" src="https://www.youtube.com/embed/zMNumQ45pJ8" frameborder="0" allowfullscreen></iframe>
 
-Mobile ALOHA (Stanford, 2024): each task is learned<br>from about 50 teleoperated demonstrations, as Pacman learns from an expert.
+The policies learned from those demonstrations, about 50 per task,<br>as Pacman learns from an expert.
 ]
 
 ---
