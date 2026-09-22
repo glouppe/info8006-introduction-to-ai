@@ -1020,11 +1020,10 @@ How machine learning is advancing medicine (Google, 2018)
 
 # Summary
 
-- Deep learning is a powerful tool for learning from data.
-- Neural networks are composed of layers of neurons that are connected to each other.
-- The weights of the connections are learned by minimizing a loss function.
-- Convolutional networks are used for image processing.
-- Transformers are used for language processing.
+- Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_j, y\_j)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
+- A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k^T \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
+- Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \gamma \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
+- Its performance is measured on pairs held out from training.
 
 ---
 
