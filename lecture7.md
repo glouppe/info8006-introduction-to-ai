@@ -767,7 +767,7 @@ Each line comes from the previous slides.
 
 class: middle
 
-## Measuring performance
+## Generalization
 
 We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. The training loss underestimates it, since $\theta$ was fitted to those very pairs. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
 
@@ -780,8 +780,6 @@ A classifier is also judged by its .bold[error rate] (left), the fraction of pai
 ---
 
 class: middle
-
-## Capacity and model selection
 
 A model too small for the data .bold[underfits]: both losses stay high. A model large enough to memorize $\mathbf{d}$ .bold[overfits]: the training loss keeps decreasing while the test loss increases, as on the previous slide.
 
