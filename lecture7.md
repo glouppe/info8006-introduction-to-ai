@@ -1032,6 +1032,16 @@ How AI is advancing science and medicine (Google):<br>images read by convolution
 
 ---
 
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/YQwqoEm_xis" frameborder="0" allowfullscreen></iframe>
+
+WeatherNext 2 (Google DeepMind, 2025): a network trained on decades<br>of past weather to predict the next state of the atmosphere.
+]
+
+---
+
 class: middle
 
 .center.width-90[![](figures/lec7/transformer-next.png)]
