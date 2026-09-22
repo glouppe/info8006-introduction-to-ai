@@ -179,7 +179,8 @@ count: false
 
 This amounts to minimizing the sum of squared errors,
 $$\mathcal{L}(\mathbf{w},b) = \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i + b))^2.$$
-Least squares is the maximum likelihood estimate of a linear model with Gaussian noise of fixed variance.
+
+.success[Least squares is the maximum likelihood estimate of a linear model with Gaussian noise of fixed variance.]
 
 ---
 
@@ -770,7 +771,9 @@ class: middle
 
 ## Generalization
 
-We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. The training loss underestimates it, since $\theta$ was fitted to those very pairs. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
+We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
+
+.alert[The training loss underestimates the loss on new pairs, since $\theta$ was fitted to those very pairs.]
 
 .center.width-90[![](figures/lec7/PerfMNIST1DResults.svg)]
 
