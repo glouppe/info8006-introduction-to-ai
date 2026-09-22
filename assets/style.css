@@ -533,13 +533,19 @@ img {
         page-break-inside: avoid;
     }
 
-    /* Restore vertical centering for middle-aligned slides */
+    /* Restore vertical centering for middle-aligned slides, and print the
+       backgrounds as on screen, even from a browser set not to */
     .remark-slide-content {
         display: table-cell;
         vertical-align: top;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 
-    .remark-slide-content.middle {
+    .remark-slide-content.middle,
+    .remark-slide-content.title-slide,
+    .remark-slide-content.section,
+    .remark-slide-content.end-slide {
         vertical-align: middle;
     }
 
@@ -550,21 +556,5 @@ img {
     /* Prevent breaking inside key elements */
     img, pre, table, .katex-display {
         page-break-inside: avoid;
-    }
-
-    /* Ensure black text prints on colored slides */
-    .black-slide, .end-slide, .red-slide {
-        background-color: white !important;
-        color: black !important;
-    }
-
-    .black-slide h1, .black-slide .katex,
-    .end-slide h1 {
-        color: #356aaf !important;
-    }
-
-    /* Lighten alert/question boxes for printing */
-    .question, .success, .alert, .quote {
-        background-color: #f8f8f8 !important;
     }
 }
