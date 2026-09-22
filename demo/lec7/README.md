@@ -19,8 +19,8 @@ uv run jupyter lab demo/lec7/spiral.ipynb
 | Model | Accuracy after 2000 steps |
 | --- | --- |
 | Logistic regression | 0.48 |
-| Linear model with a softmax output | 0.55 |
-| MLP, one hidden layer of 100 units | 0.98 |
+| Linear model with a softmax output | 0.48 |
+| MLP, one hidden layer of 100 units | 0.99 |
 
 No linear model does better than chance here. The last cell lists what to vary
 live: the non-linearity, the width, the depth and the activation function.
