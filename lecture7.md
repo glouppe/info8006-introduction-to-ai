@@ -998,37 +998,6 @@ class: middle
 
 ---
 
-class: black-slide, middle
-
-.center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/HS1wV9NMLr8?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
-
-How AI Helps Autonomous Vehicles See Outside the Box<br>
-(See also [other episodes](https://www.youtube.com/playlist?list=PLZHnYvH1qtOYkElUMqYiHDMrGTPnqRhSr) from NVIDIA DRIVE Labs)
-]
-
----
-
-class: black-slide, middle, center
-
-.width-100[![](figures/lec7/hydranet.png)]
-
-Hydranet (Tesla, 2021)
-
-???
-
-70 networks
-
----
-
-class: middle, black-slide, center
-
-<iframe width="600" height="450" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
-
-How machine learning is advancing medicine (Google, 2018)
-
----
-
 # Summary
 
 - Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_i, y\_i)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
