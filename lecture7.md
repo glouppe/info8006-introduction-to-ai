@@ -224,7 +224,7 @@ Logistic regression models the conditional as
 $$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
-looks like a soft heavyside:
+looks like a soft Heaviside step:
 .center.width-60[![](figures/lec7/activation-sigmoid.png)]
 
 ???
@@ -360,7 +360,7 @@ class: middle
 ## Example: imitation learning in Pacman
 
 Can we learn to play Pacman only from observations?
-- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
+- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ correspond to actions $a$.
 - State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
 - We want to learn the actions that the expert would take in a given situation, that is, a policy $\pi\_\theta(s) = f(g(s); \theta)$ with $f:\mathbb{R}^d \to \mathcal{A}$.
 - This is a multiclass classification problem.
@@ -639,7 +639,7 @@ while the second layer is defined from the outputs of the first layer as
 $$\begin{aligned}
 h\_0' &= \sigma\left( w'\_{00} h\_0 + w'\_{01} h\_1 + w'\_{02} h\_2 + b'\_0 \right) \\\\
 h\_1' &= \sigma\left( w'\_{10} h\_0 + w'\_{11} h\_1 + w'\_{12} h\_2 + b'\_1 \right) \\\\
-h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} j\_2 + b'\_2 \right),
+h\_2' &= \sigma\left( w'\_{20} h\_0 + w'\_{21} h\_1 + w'\_{22} h\_2 + b'\_2 \right),
 \end{aligned}$$
 and the output as
 $$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
