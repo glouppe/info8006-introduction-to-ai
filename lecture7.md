@@ -250,12 +250,6 @@ where $\gamma > 0$ controls the size of the neighborhood.
 
 class: middle
 
-.center[![](figures/lec7/gd-good-0.png)]
-
----
-
-class: middle
-
 The approximation $\hat{\mathcal{L}}(\epsilon; \theta)$ is minimized where its gradient vanishes,
 $$\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta) = \nabla\_\theta \mathcal{L}(\theta) + \frac{1}{\gamma} \epsilon = 0,$$
 that is, for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta)$.
