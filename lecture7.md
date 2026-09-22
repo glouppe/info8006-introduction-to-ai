@@ -852,7 +852,7 @@ class: middle
 .center.width-100[![](figures/lec7/Conv1.svg)]
 
 <br>
-.center[1d convolution with a kernel $\omega = (\omega\_1, \omega\_2, \omega\_3)$ applied to the input signal $\mathbf{x}$. <br>
+.center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
 The output is obtained by sliding the kernel over the input and computing the inner product at each position.]
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
