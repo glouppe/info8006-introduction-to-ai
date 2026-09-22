@@ -27,12 +27,10 @@ class: middle
 ## Learning agents
 
 What if the environment is .bold[unknown]?
-- Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
-- It exposes the agent to reality rather than trying to hardcode reality into the agent's program.
 
-What is learned is a part of the agent program with parameters $\theta$: a policy $\pi\_\theta$ (Lecture 1), a heuristic (Lecture 2), an evaluation function (Lecture 3), or a probabilistic model (Lecture 5).
+A learning agent does not hardcode its program: it learns a part of it from data, with parameters $\theta$. This part can be a policy $\pi\_\theta$ (Lecture 1), a heuristic (Lecture 2), an evaluation function (Lecture 3) or a probabilistic model (Lecture 5).
 
-.success[More generally, learning is useful for any task where it is difficult to write a program that performs the task but easy to obtain examples of desired behavior.]
+.success[Learning is useful whenever a task is hard to program but examples of the desired behavior are easy to obtain.]
 
 ---
 
