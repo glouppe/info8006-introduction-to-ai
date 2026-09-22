@@ -965,33 +965,6 @@ See also https://poloclub.github.io/cnn-explainer/
 
 ---
 
-# Language models
-
-A text is a sequence of tokens $w\_{1:T}$ from a vocabulary $\mathcal{V}$ of words and pieces of words. By the chain rule of Lecture 4,
-$$P(w\_{1:T}) = \prod\_{t=1}^T P(w\_t \mid w\_{1:t-1}).$$
-
-Each factor is a supervised learning problem, with the context $\mathbf{x} = w\_{1:t-1}$ as input and the next token $y = w\_t$ as output. It is a classification problem over $\lvert \mathcal{V} \rvert$ classes, solved by a network whose output layer is a softmax.
-
-Any text provides its own training pairs, without labeling. Language models are trained on trillions of tokens.
-
----
-
-class: middle
-
-.center.width-85[![](figures/lec7/transformer-next.png)]
-
-The classifier is trained as the networks of this lecture, by minimizing the cross-entropy (maximum likelihood) with gradient descent. Large language models use a .bold[transformer] as its architecture, beyond the scope of this course.
-
-Generating text amounts to drawing $w\_t$ from $P(w\_t \mid w\_{1:t-1})$, appending it to the context, and repeating.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
-???
-
-This is the next-token prediction of Sutskever's quote in Lecture 0.
-
----
-
 class: middle
 
 # AI beyond Pacman
