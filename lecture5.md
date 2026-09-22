@@ -439,7 +439,7 @@ class: middle
 ## d-separation
 
 Let us assume a complete Bayesian network.
-Are $X\_i$ and $X\_j$ conditionally independent given evidence $Z\_1=z\_1, ..., Z\_m=z\_m$?
+Are $X\_i$ and $X\_j$ conditionally independent given evidence ${Z\_1=z\_1, ..., Z\_m=z\_m}$, i.e. does ${X\_i \perp X\_j \mid Z\_1, ..., Z\_m}$ hold?
 
 Consider all (undirected) paths from $X\_i$ to $X\_j$:
 - If one or more active path, then independence is not guaranteed.
@@ -519,25 +519,38 @@ class: middle
 
 ---
 
+# Probabilistic inference
+
+- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
+- .bold[Query] variable $Q$.
+- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
+- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
+
+Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
+
+---
+
 class: middle
 
-Inference is concerned with the problem of .bold[computing a marginal and/or a conditional probability distribution] from a joint probability distribution:
+## Kinds of queries
+
+Beyond the posterior of a single variable, the same machinery answers:
 
 .grid[
 .kol-1-3.center[Simple queries:]
-.kol-2-3[$\mathbf{P}(X\_i \mid e)$]
+.kol-2-3[$\mathbf{P}(X\_i \mid \mathbf{e})$]
 ]
 .grid[
 .kol-1-3.center[Conjunctive queries:]
-.kol-2-3[$\mathbf{P}(X\_i,X\_j \mid e)=\mathbf{P}(X\_i \mid e)\mathbf{P}(X\_j \mid X\_i,e)$]
+.kol-2-3[$\mathbf{P}(X\_i,X\_j \mid \mathbf{e})=\mathbf{P}(X\_i \mid \mathbf{e})\mathbf{P}(X\_j \mid X\_i,\mathbf{e})$]
 ]
 .grid[
 .kol-1-3.center[Most likely explanation:]
-.kol-2-3[$\arg \max_q P(q \mid e)$]
+.kol-2-3[$\arg \max_q P(q \mid \mathbf{e})$]
 ]
 .grid[
 .kol-1-3.center[Optimal decisions:]
-.kol-2-3[$\arg \max\\\_a \mathbb{E}\_{p(s' \mid s,a)} \left[ V(s') \right]$]
+.kol-2-3[$\arg \max\\\_a \mathbb{E}\left[ V \mid \mathbf{e}, a \right]$ (Lectures 8 and 9)]
 ]
 
 .center.width-30[![](figures/lec5/query-cartoon.png)]
@@ -549,19 +562,6 @@ Inference is concerned with the problem of .bold[computing a marginal and/or a c
 Explain what $\arg \max$ means.
 
 Insist on the importance of inference. Inference <=> reasoning.
-
----
-
-class: middle
-
-## Probabilistic inference
-
-- .bold[Evidence] variables ${\mathbf{E} = \\{E\_1, ..., E\_k\\}}$, observed as ${\mathbf{e} = (e\_1, ..., e\_k)}$.
-- .bold[Query] variable $Q$.
-- .bold[Hidden] variables ${\mathbf{H} = \\{H\_1, ..., H\_r\\}}$.
-- Together, they are all the variables of the model, ${\\{Q\\} \cup \mathbf{E} \cup \mathbf{H} = \\{X\_1, ..., X\_n\\}}$.
-
-Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \mid \mathbf{e})$.
 
 ---
 
@@ -834,7 +834,7 @@ $$\mathbf{P}(J \mid b) \propto P(b) \sum_e P(e) \sum\_a P(a \mid b,e) \mathbf{P}
 - $\sum_m P(m \mid a) = 1$, therefore $M$ is .bold[irrelevant] for the query.
 - In other words, $\mathbf{P}(J \mid b)$ remains unchanged if we remove $M$ from the network.
 
-.italic[Theorem.] $H$ is irrelevant for $\mathbf{P}(Q \mid e)$ unless $H \in \text{ancestors}(\\{Q\\} \cup E)$.
+.italic[Theorem.] $H$ is irrelevant for $\mathbf{P}(Q \mid \mathbf{e})$ unless $H \in \text{ancestors}(\\{Q\\} \cup \mathbf{E})$.
 
 ---
 
@@ -861,7 +861,7 @@ The computational and space complexity of variable elimination is determined by 
 - The elimination .bold[ordering] can greatly affect the size of the largest factor.
 - The optimal ordering is .bold[NP-hard] to find. There is no known polynomial-time algorithm to find it.
 
-.alert[Exact inference is intractable for most models of interest. The posterior is then approximated: by sampling from the model, by optimization, or by learning it from simulations.]
+.alert[Exact inference is intractable for most models of interest. For this reason, approximate inference methods are used instead in practice (e.g., sampling, variational inference, or learning from simulations).]
 
 ???
 
