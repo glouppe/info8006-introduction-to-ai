@@ -328,15 +328,13 @@ class: middle
 
 ## Stochastic gradient descent
 
-The loss is a sum over the $N$ examples, and so is its gradient. Dividing it by $N$ does not move its minimizer, so that we can write it as an average,
-$$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta)).$$
-Each step of gradient descent then costs a pass over the whole dataset.
+Up to a constant factor, the loss is an average over the $N$ examples,
+$$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta)),$$
+and each step of gradient descent costs a pass over the dataset.
 
-.bold[Stochastic gradient descent] replaces the gradient by its average over a .bold[minibatch] $\mathcal{B}$ of $B \ll N$ examples drawn at random,
+.bold[Stochastic gradient descent] averages the gradient over a random .bold[minibatch] $\mathcal{B}$ of $B \ll N$ examples instead,
 $$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{j \in \mathcal{B}} \nabla\_\theta \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta\_t)).$$
-This estimate is noisy but right on average, and $N/B$ times cheaper. A pass over the dataset, in $N/B$ steps, is an .bold[epoch].
-
-Variants such as Adam, the default in practice, adapt the step size of each parameter along the way.
+The estimate is noisy but right on average, at a fraction $B/N$ of the cost. An .bold[epoch] is a pass over the dataset. Adam, the default in practice, is a variant.
 
 ---
 
@@ -679,11 +677,9 @@ class: middle
 
 ## Automatic differentiation
 
-Gradient descent needs the gradient $\nabla\_\theta \mathcal{L}(\theta)$, for networks with millions or billions of parameters. Deriving it by hand is tedious and error-prone. Estimating it by finite differences is approximate, and costs one evaluation of the loss per parameter.
+Gradient descent needs $\nabla\_\theta \mathcal{L}(\theta)$, for millions or billions of parameters. Deriving it by hand is error-prone. Finite differences are approximate, at one evaluation of the loss per parameter.
 
-.bold[Automatic differentiation] computes it exactly, from the program that computes $\mathcal{L}(\theta)$. The program is made of elementary operations (sums, products, exponentials, maxima) whose derivatives are known, and all the partial derivatives $\partial \mathcal{L} / \partial \theta\_i$ are obtained at a small multiple of the cost of evaluating the loss once.
-
-It applies to any program built from differentiable operations, and to neural networks in particular. It is what `loss.backward()` does in PyTorch.
+.bold[Automatic differentiation] computes it exactly from the program that computes $\mathcal{L}(\theta)$, made of elementary operations with known derivatives, at a small multiple of the cost of one evaluation. It applies to any such program, neural networks included. In PyTorch, it is `loss.backward()`.
 
 ---
 
