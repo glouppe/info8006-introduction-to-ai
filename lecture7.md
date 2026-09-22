@@ -796,8 +796,9 @@ class: middle, center
 
 We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. The training loss underestimates it, since $\theta$ was fitted to those very pairs. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
 
-<br>
-.center.width-100[![](figures/lec7/PerfMNIST1DResults.svg)]
+.center.width-90[![](figures/lec7/PerfMNIST1DResults.svg)]
+
+A classifier is also judged by its .bold[error rate] (left), the fraction of pairs whose predicted class $\hat{y} = \arg\max\_i f\_i(\mathbf{x}; \theta)$ differs from $y$. Gradient descent cannot minimize it: it is piecewise constant in $\theta$, with a zero gradient almost everywhere.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
