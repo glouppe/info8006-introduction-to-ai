@@ -483,9 +483,9 @@ class: middle
 
 ## Universal approximation theorem
 
-The .bold[universal approximation theorem] states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units. 
+The .bold[universal approximation theorem] states that any continuous function on a closed and bounded domain can be approximated arbitrarily well by a shallow network with sufficiently many hidden units, provided that the activation function is not a polynomial. 
 
-For example, for 1d input and 1d output, any continuous function $f: \mathbb{R} \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
+For example, for 1d input and 1d output, any continuous function $f: [a, b] \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
 
 ???
 
