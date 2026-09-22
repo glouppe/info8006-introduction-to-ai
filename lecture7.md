@@ -26,7 +26,7 @@ class: middle
 
 ## Learning agents
 
-What if the environment is **unknown**?
+What if the environment is .bold[unknown]?
 - Learning provides an automated way to modify the agent's internal decision mechanisms to improve its own performance.
 - It exposes the agent to reality rather than trying to hardcode reality into the agent's program.
 
@@ -99,7 +99,9 @@ Let $\mathbf{d}$ be a dataset of $N$ input-output pairs, drawn i.i.d. from $p(\m
     $$\mathbf{d} = \\\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\\},$$
 where $\mathbf{x}\_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values.
 
-From this data, we want to identify a probabilistic model $$p\_\theta(y|\mathbf{x})$$ that best explains the data.
+From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \mathbf{x})$$ that best explains the data.
+
+It is a density when $y$ is continuous, and a probability, written $P$, when $y$ is discrete.
 
 ]
 .kol-1-3[<br><br>.center.width-80[![](figures/lec7/latent.svg)]]
@@ -159,8 +161,8 @@ class: middle
 .kol-4-5[.center.width-50[![](figures/lec7/lr-gaussian.svg)]]
 ]
 
-Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y|\\mathbf{x})$, that is
-$$p(y|\mathbf{x}) = \mathcal{N}(y | \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
+Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y \mid \\mathbf{x})$, that is
+$$p(y \mid \mathbf{x}) = \mathcal{N}(y \mid \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
 where $\mathbf{w}$ and $b$ are parameters to determine.
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
@@ -219,7 +221,7 @@ Let us now assume $y \in \\{0,1\\}$.
 class: middle
 
 Logistic regression models the conditional as
-$$P(Y=1|\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
+$$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
 looks like a soft heavyside:
@@ -236,13 +238,13 @@ class: middle
 Following the principle of maximum likelihood estimation (Lecture 5), we have
 
 $$\begin{aligned}
-&\arg \max\_{\mathbf{w},b} P(\mathbf{d}|\mathbf{w},b) \\\\
-&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i|\mathbf{x}\_i, \mathbf{w},b) \\\\
+&\arg \max\_{\mathbf{w},b} P(\mathbf{d} \mid \mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i \mid \mathbf{x}\_i, \mathbf{w},b) \\\\
 &= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_i + b)^{y\_i}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))^{1-y\_i}  \\\\
 &= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
 \end{aligned}$$
 
-This loss is an estimator of the **cross-entropy** $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y|\mathbf{x}\_i$ and $q=\hat{Y}|\mathbf{x}\_i$. 
+This loss is an estimator of the .bold[cross-entropy] $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y \mid \mathbf{x}\_i$ and $q=\hat{Y} \mid \mathbf{x}\_i$. 
 
 Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and $b$.
 
@@ -252,7 +254,7 @@ Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and 
 
 Let $\mathcal{L}(\theta)$ denote a loss function (e.g., the negative log-likelihood) defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
 
-To minimize $\mathcal{L}(\theta)$, **gradient descent** relies on 1st-order Taylor approximations
+To minimize $\mathcal{L}(\theta)$, .bold[gradient descent] relies on 1st-order Taylor approximations
 $$\mathcal{L}(\theta + \epsilon) \approx \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta)$$
 and adds a quadratic regularization term to ensure that the approximation is valid only in a neighborhood of $\theta$, leading to the approximation
 $$\hat{\mathcal{L}}(\epsilon; \theta) = \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta) + \frac{1}{2\gamma} \|\epsilon\|^2,$$
@@ -486,7 +488,7 @@ class: middle
 
 ## Universal approximation theorem
 
-The **universal approximation theorem** states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units. 
+The .bold[universal approximation theorem] states that any continuous function can be approximated arbitrarily well by a shallow network with sufficiently many hidden units. 
 
 For example, for 1d input and 1d output, any continuous function $f: \mathbb{R} \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
 
@@ -729,8 +731,8 @@ class: middle
 ## Output layers $\mathbf{y}=\sigma(\mathbf{W}^T\_y \mathbf{h}\_K + \mathbf{b}\_y)$
 
 - For regression, the width $q$ of the output layer is set to the dimensionality of the output $d\_\text{out}$ and the activation function is the identity $\sigma(\cdot) = \cdot$.
-- For binary classification, the width $q$ of the output layer is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output that models the probability $p(y=1|\mathbf{x})$.
-- For multi-class classification, the sigmoid activation $\sigma$ in the output layer can be generalized to produce a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y=i|\mathbf{x})$.
+- For binary classification, the width $q$ of the output layer is set to $1$ and the activation function is the sigmoid $\sigma(\cdot) = \frac{1}{1 + \exp(-\cdot)}$, which results in a single output that models the probability $p(y=1 \mid \mathbf{x})$.
+- For multi-class classification, the sigmoid activation $\sigma$ in the output layer can be generalized to produce a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y=i \mid \mathbf{x})$.
 This activation is the $\text{Softmax}$ function, where its $i$-th output is defined as
 $$\text{Softmax}(\mathbf{z})\_i = \frac{\exp(z\_i)}{\sum\_{j=1}^C \exp(z\_j)},$$
 for $i=1, ..., C$.
@@ -856,7 +858,7 @@ class: middle
 
 ## 1d convolution
 
-For the one-dimensional input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete **convolution** $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
+For the one-dimensional input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete .bold[convolution] $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
 $$\begin{aligned}
 (\mathbf{x} \circledast \omega)[i] &= \sum\_{m=0}^{w-1} \mathbf{x}\_{m+i}  \omega\_m .
 \end{aligned}
@@ -886,7 +888,7 @@ class: middle
 
 ## 2d convolution
 
-For the 2d input tensor $\mathbf{x} \in \mathbb{R}^{H \times W}$ and the 2d convolutional kernel $\omega \in \mathbb{R}^{h \times w}$, the discrete **convolution** $\mathbf{x} \circledast \omega$ is a matrix of size $(H-h+1) \times (W-w+1)$ such that
+For the 2d input tensor $\mathbf{x} \in \mathbb{R}^{H \times W}$ and the 2d convolutional kernel $\omega \in \mathbb{R}^{h \times w}$, the discrete .bold[convolution] $\mathbf{x} \circledast \omega$ is a matrix of size $(H-h+1) \times (W-w+1)$ such that
 $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{n=0}^{h-1} \sum\_{m=0}^{w-1}    \mathbf{x}\_{n+j,m+i} \omega_{n,m}$$
 As for 1d convolution, padding can be applied to both spatial dimensions of the input to control the output size.
 
