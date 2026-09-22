@@ -317,13 +317,11 @@ class: center, middle
 
 class: middle
 
-## Stochastic gradient descent
-
-Up to a constant factor, the loss is an average over the $N$ examples,
+Up to a constant factor, the loss is an average over the $N$ pairs,
 $$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta)),$$
 and each step of gradient descent costs a pass over the dataset.
 
-.bold[Stochastic gradient descent] averages the gradient over a random .bold[minibatch] $\mathcal{B}$ of $B \ll N$ examples instead,
+.bold[Stochastic gradient descent] averages the gradient over a random .bold[minibatch] $\mathcal{B}$ of $B \ll N$ pairs instead,
 $$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{j \in \mathcal{B}} \nabla\_\theta \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta\_t)).$$
 The estimate is noisy but right on average, at a fraction $B/N$ of the cost. An .bold[epoch] is a pass over the dataset. Adam, the default in practice, is a variant.
 
