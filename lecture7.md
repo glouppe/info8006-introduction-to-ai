@@ -237,7 +237,9 @@ Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and 
 
 ---
 
-# Gradient descent
+class: middle
+
+## Gradient descent
 
 Let $\mathcal{L}(\theta)$ denote a loss function (e.g., the negative log-likelihood) defined over model parameters $\theta$ (e.g., $\mathbf{w}$ and $b$).
 
