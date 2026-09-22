@@ -265,6 +265,31 @@ construction = [
     (1, [kw("return "), var("net")]),
 ]
 
+# Inference by enumeration over a network, the depth-first version of lecture 5:
+# Enumerate-All walks the variables in topological order and recurses
+enumerate_all = [
+    (0, [kw("function "), proc("Enumeration-Ask"), txt("("), var("Q"), txt(", "), var("e"), txt(", "),
+         var("bn"), txt(") "), kw("returns "), txt("a distribution over "), var("Q")]),
+    (1, [var("b"), gets(), txt("an empty table over the values of "), var("Q")]),
+    (1, [kw("for each "), txt("value "), var("q"), txt(" of "), var("Q"), txt(" "), kw("do")]),
+    (2, [var("b"), txt("["), var("q"), txt("] "), gets(), proc("Enumerate-All"), txt("(the variables of "),
+         var("bn"), txt(", "), var("e"), txt(" with "), var("Q"), txt(" = "), var("q"), txt(")")]),
+    (1, [kw("return "), proc("Normalize"), txt("("), var("b"), txt(")")]),
+    (0, []),
+    (0, [kw("function "), proc("Enumerate-All"), txt("("), var("vars"), txt(", "), var("e"), txt(") "),
+         kw("returns "), txt("a number")]),
+    (1, [kw("if "), var("vars"), txt(" is empty "), kw("then return "), txt("1")]),
+    (1, [var("V"), gets(), txt("the first variable of "), var("vars"), txt(",  "), var("rest"), gets(),
+         txt("the others")]),
+    (1, [kw("if "), var("V"), txt(" has a value "), var("v"), txt(" in "), var("e"), txt(" "), kw("then")]),
+    (2, [kw("return "), var("P"), txt("("), var("v"), txt(" | parents("), var("V"), txt(")) "), sym("×"),
+         txt(" "), proc("Enumerate-All"), txt("("), var("rest"), txt(", "), var("e"), txt(")")]),
+    (1, [kw("else return "), txt("the sum over the values "), var("v"), txt(" of "), var("V"), txt(" of")]),
+    (2, [var("P"), txt("("), var("v"), txt(" | parents("), var("V"), txt(")) "), sym("×"), txt(" "),
+         proc("Enumerate-All"), txt("("), var("rest"), txt(", "), var("e"), txt(" with "), var("V"),
+         txt(" = "), var("v"), txt(")")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -274,3 +299,4 @@ if __name__ == "__main__":
     listing("enumeration", enumeration, 840, lecture="lec5")
     listing("elimination-ask", elimination, 840, lecture="lec5")
     listing("build-network", construction, 900, lecture="lec5")
+    listing("enumerate-all", enumerate_all, 900, lecture="lec5")

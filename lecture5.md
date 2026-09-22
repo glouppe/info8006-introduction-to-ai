@@ -701,6 +701,15 @@ Evaluated depth-first over the network, this costs $O(n)$ in space and $O(d^n)$ 
 The depth-first evaluation assumes the variables are enumerated in topological order.
 
 ---
+class: middle
+
+## Enumeration over the network
+
+The sums are evaluated depth-first, one variable at a time, multiplying the CPT entries along the way:
+
+.center.width-100[![](figures/lec5/enumerate-all.svg)]
+
+---
 
 class: middle
 
