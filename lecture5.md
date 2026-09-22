@@ -482,25 +482,23 @@ class: middle
 
 ---
 
-exclude: true
 class: middle
 
 ## Local semantics
 
 .center.width-60[![](figures/lec5/nondescendants.svg)]
 
-A node $X$ is conditionally independent to its non-descendants (the $Z_{ij}$) given its parents (the $U_i$).
+The local Markov property of the semantics slide, read on the graph: $X$ is conditionally independent of its non-descendants $Z\_{ij}$ given its parents $U\_i$.
 
 ---
 
-exclude: true
 class: middle
 
 ## Global semantics
 
 .center.width-60[![](figures/lec5/markov-blanket.svg)]
 
-A node $X$ is conditionally independent of all other nodes in the network given its Markov blanket.
+$X$ is conditionally independent of all the other nodes given its .bold[Markov blanket]: its parents, its children, and the other parents of its children.
 
 ---
 
