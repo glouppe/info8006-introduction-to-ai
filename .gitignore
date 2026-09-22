@@ -24,6 +24,9 @@ demo/*/temp
 # Lecture 6 Pacman demo: a worked Bayes filter, which is what project 1 asks for
 demo/lec6/pacman/
 
+# Lecture 7 convnet notebook: MNIST, downloaded by torchvision on first run
+demo/lec7/data/
+
 # Planning notes and assistant guidance
 TODO.md
 CLAUDE.md

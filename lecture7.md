@@ -341,6 +341,8 @@ class: middle, center
 
 (Step-by-step code example)
 
+`demo/lec7/spiral.ipynb`
+
 ---
 
 class: middle
@@ -782,6 +784,8 @@ class: middle, center
 
 (Step-by-step code example)
 
+`demo/lec7/spiral.ipynb`
+
 ---
 
 # Convolutional networks
@@ -968,6 +972,8 @@ class: middle
 class: middle, center
 
 (Step-by-step code example)
+
+`demo/lec7/convnet.ipynb`
 
 ???
 
