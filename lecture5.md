@@ -1043,9 +1043,19 @@ $$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(
 
 ---
 
-class: middle, center
+class: middle
 
-(Step-by-step code example)
+## Step by step, in code
+
+The candy example, run on `demo/lec5/cherries.ipynb`: draw candies, estimate $\theta$ by maximum likelihood, then update a Beta prior and watch the posterior concentrate.
+
+```
+uv run jupyter lab demo/lec5/cherries.ipynb
+```
+
+???
+
+Case (a) first, then the Bayesian version of the same numbers.
 
 ---
 
