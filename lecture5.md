@@ -96,15 +96,13 @@ Blackboard: example of calculation, as in the next slide.
 
 # Semantics
 
-A Bayesian network implicitly encodes the full joint distribution as a product of local distributions, that is
+The topology of a network asserts the .bold[local Markov property]: each variable is conditionally independent of its non-descendants, given its parents,
+$$X\_i \perp \text{non-descendants}(X\_i) \mid \text{parents}(X\_i).$$
 
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i \mid \text{parents}(X_i)).$$
+A Bayesian network therefore encodes the full joint distribution as a product of local distributions,
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid \text{parents}(X\_i)).$$
 
-Proof:
-- By the chain rule, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1})$.
-- Provided that we assume conditional independence of $X\_i$ with its predecessors in the ordering given the parents, and provided $\text{parents}(X\_i) \subseteq \\{ X\_1, ..., X\_{i-1}\\}$, we have
-$$P(x\_i \mid x\_1, ..., x\_{i-1}) = P(x\_i \mid \text{parents}(X_i)).$$
-- Therefore, $P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x_i \mid \text{parents}(X_i))$.
+.italic[Proof.] By the chain rule, ${P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1})}$. Numbering the variables in a topological order puts ${\text{parents}(X\_i) \subseteq \\{X\_1, ..., X\_{i-1}\\}}$ and makes the other predecessors non-descendants of $X\_i$, so the local Markov property gives ${P(x\_i \mid x\_1, ..., x\_{i-1}) = P(x\_i \mid \text{parents}(X\_i))}$.
 
 ---
 
