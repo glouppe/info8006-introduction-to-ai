@@ -616,7 +616,7 @@ $$
 \end{aligned}
 $$
 
-See `code/lecture6-forward-backward.ipynb` for the execution.
+See `demo/lec6/forward-backward.ipynb` for the execution.
 
 ---
 
@@ -966,6 +966,15 @@ class: middle
 .center.width-100[![](figures/lec6/particle-filter.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+A robot localizing itself in a maze, with its particles converging after a few moves:
+
+```
+cd demo/lec6/particle-filtering
+uv run python particle_filter.py
+```
 
 ---
 
