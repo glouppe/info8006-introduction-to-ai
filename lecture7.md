@@ -443,7 +443,7 @@ class: middle
 
 The hidden layer is a non-linear transformation of the input, such that
 $$h\_j = \sigma\left(\sum\_{i=0}^{d\_\text{in} - 1} w\_{ji} x\_i + b\_j  \right)$$
-for $j=0, ..., q-1$, where $w\_{ji}$ and $b\_j$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$) are the model parameters and $\sigma$ is an activation function.
+for $j=0, ..., q-1$, where $w\_{ji}$ and $b\_j$ ($i=0, ..., d\_\text{in}-1$, $j=0, ..., q-1$) are the model parameters and $\sigma$ is an .bold[activation function], such as the sigmoid of logistic regression.
 
 The output layer is a linear transformation of the hidden layer, such that
 $$y\_k = \sum\_{j=0}^{q-1} v\_{kj} h\_j + c\_k$$
