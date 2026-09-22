@@ -251,6 +251,20 @@ elimination = [
     (1, [kw("return "), proc("Normalize"), txt("("), proc("Join"), txt("("), var("factors"), txt("))")]),
 ]
 
+# Building a Bayesian network from an ordering of the variables, as lecture 5 states it
+construction = [
+    (0, [kw("function "), proc("Build-Network"), txt("("), var("order"), txt(") "), kw("returns "),
+         txt("a Bayesian network")]),
+    (1, [var("net"), gets(), txt("an empty network")]),
+    (1, [kw("for each "), txt("variable "), var("X"), txt(" in "), var("order"), txt(" "), kw("do")]),
+    (2, [var("parents"), gets(), txt("a minimal set of variables before "), var("X"), txt(" in "), var("order")]),
+    (3, [txt("such that "), var("P"), txt("("), var("X"), txt(" | "), var("parents"), txt(") = "), var("P"),
+         txt("("), var("X"), txt(" | the variables before "), var("X"), txt(")")]),
+    (2, [txt("add "), var("X"), txt(" to "), var("net"), txt(", with an edge from each of its "), var("parents")]),
+    (2, [txt("write down the CPT of "), var("X"), txt(" given its "), var("parents")]),
+    (1, [kw("return "), var("net")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -259,3 +273,4 @@ if __name__ == "__main__":
     listing("alpha-beta-search", alpha_beta, 1000, lecture="lec3")
     listing("enumeration", enumeration, 840, lecture="lec5")
     listing("elimination-ask", elimination, 840, lecture="lec5")
+    listing("build-network", construction, 900, lecture="lec5")

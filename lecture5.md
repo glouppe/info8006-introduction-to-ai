@@ -236,14 +236,7 @@ Diagnostic model: traffic correlates with rain and the Bayesian network represen
 
 Bayesian networks can be constructed in any order, provided that the conditional independence assertions are respected.
 
-## Algorithm
-
-1. Choose some .bold[ordering] of the variables $X\_1, ..., X\_n$.
-2. For $i=1$ to $n$:
-    1. Add $X\_i$ to the network.
-    2. Select a minimal set of parents from $X\_1, ..., X\_{i-1}$ such that $P(x\_i \mid x\_1, ..., x\_{i-1}) = P(x\_i \mid \text{parents}(X_i))$.
-    3. For each parent, insert a link from the parent to $X\_i$.
-    4. Write down the CPT.
+.center.width-100[![](figures/lec5/build-network.svg)]
 
 ---
 
