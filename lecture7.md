@@ -328,6 +328,16 @@ The estimate is noisy but right on average, at a fraction $B/N$ of the cost.
 
 ---
 
+class: middle
+
+## Training loop
+
+.center.width-100[![](figures/lec7/train.svg)]
+
+Each line comes from the previous slides.
+
+---
+
 class: middle, center
 
 (Step-by-step code example)
@@ -743,17 +753,7 @@ class: middle
 
 By hand, the chain rule becomes tedious and error-prone for networks with millions of parameters. .bold[Automatic differentiation] implements it generically: the program that computes $\mathcal{L}(\theta)$ is a composition of elementary operations with known derivatives, which are multiplied along the chain. The result is the exact gradient $\nabla\_\theta \mathcal{L}(\theta)$, at a small multiple of the cost of evaluating the loss once.
 
-This applies to any such program, neural networks included. In PyTorch, it is `loss.backward()`.
-
----
-
-class: middle
-
-## Training loop
-
-.center.width-100[![](figures/lec7/train.svg)]
-
-Each line comes from the previous slides.
+This applies to any such program, neural networks included. In PyTorch, it is `loss.backward()`. The training loop is unchanged.
 
 ---
 

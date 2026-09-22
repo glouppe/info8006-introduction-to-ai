@@ -341,7 +341,7 @@ train = [
     (3, [var("L"), gets(), txt("the average of "), sym("ℓ"), txt("("), var("y"), txt(", "), var("f"), txt("("),
          var("x"), txt("; "), greek("θ"), txt(")) over the pairs ("), var("x"), txt(", "), var("y"),
          txt(") of the minibatch")]),
-    (3, [var("g"), gets(), sym("∇"), sub("θ"), var("L"), txt(", by automatic differentiation")]),
+    (3, [var("g"), gets(), sym("∇"), sub("θ"), var("L"), txt(", the gradient of the loss")]),
     (3, [greek("θ"), gets(), greek("θ"), txt(" "), sym("−"), txt(" "), greek("γ"), txt(" "), var("g")]),
     (1, [kw("return "), greek("θ")]),
 ]
