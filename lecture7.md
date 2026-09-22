@@ -28,7 +28,7 @@ class: middle
 
 What if the environment is .bold[unknown]?
 
-A learning agent does not hardcode its program: it learns a part of it from data, with parameters $\theta$. This part can be a policy $\pi\_\theta$ (Lecture 1), a heuristic (Lecture 2), an evaluation function (Lecture 3) or a probabilistic model (Lecture 5).
+A learning agent does not hardcode its program: it learns a part of it from data, with parameters $\theta$. This part can be a policy $\pi\_\theta$ (Lecture 1), a heuristic $h(n)$ (Lecture 2), an evaluation function $\text{eval}(s)$ (Lecture 3) or a probabilistic model $\mathbf{P}\_\theta(X)$ (Lecture 5).
 
 .success[Learning is useful whenever a task is hard to program but examples of the desired behavior are easy to obtain.]
 
