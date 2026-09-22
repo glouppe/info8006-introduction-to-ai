@@ -777,13 +777,13 @@ We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on t
 
 .center.width-90[![](figures/lec7/PerfMNIST1DResults.svg)]
 
-A classifier is also judged by its .bold[error rate] (left), the fraction of pairs whose predicted class $\hat{y} = \arg\max\_i f\_i(\mathbf{x}; \theta)$ differs from $y$. Gradient descent cannot minimize it: it is piecewise constant in $\theta$, with a zero gradient almost everywhere.
-
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
 class: middle
+
+A classifier is also judged by its .bold[error rate], the fraction of pairs whose predicted class $\hat{y} = \arg\max\_i f\_i(\mathbf{x}; \theta)$ differs from $y$. Gradient descent cannot minimize it: it is piecewise constant in $\theta$, with a zero gradient almost everywhere.
 
 A model too small for the data .bold[underfits]: both losses stay high. A model large enough to memorize $\mathbf{d}$ .bold[overfits]: the training loss keeps decreasing while the test loss increases, as on the previous slide.
 
