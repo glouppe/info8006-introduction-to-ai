@@ -1001,9 +1001,9 @@ class: middle
 class: black-slide, middle
 
 .center[
-<iframe width="640" height="400" src="https://www.youtube.com/embed/4MvGnmmP3c0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="400" src="https://www.youtube.com/embed/zMNumQ45pJ8" frameborder="0" allowfullscreen></iframe>
 
-Gemini Robotics (Google DeepMind, 2025):<br>a policy learned from demonstrations, as for Pacman.
+Mobile ALOHA (Stanford, 2024): each task is learned<br>from about 50 teleoperated demonstrations, as Pacman learns from an expert.
 ]
 
 ---
