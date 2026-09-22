@@ -165,7 +165,7 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 
 ---
 
-<br><br>
+<br>
 
 Following the principle of maximum likelihood estimation (Lecture 5), we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_i, y\_i) \\\}$ with respect to $\mathbf{w}$ and $b$,
 $$\begin{aligned}
