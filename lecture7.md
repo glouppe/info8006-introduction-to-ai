@@ -941,7 +941,7 @@ class: middle
 Pooling layers are used to progressively reduce the spatial size of the representation, hence capturing longer-range dependencies between features.
 
 Considering a pooling area of size $h \times w$ and a 3D input tensor $\mathbf{x} \in \mathbb{R}^{C\times(rh)\times(sw)}$, max-pooling produces a tensor $\mathbf{o} \in \mathbb{R}^{C \times r \times s}$ such that
-$$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,rj+n,si+m}.$$
+$$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.$$
 
 ---
 
