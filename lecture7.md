@@ -744,27 +744,6 @@ Each line comes from the previous slides.
 
 ---
 
-class: middle
-
-## In PyTorch
-
-```python
-f = nn.Sequential(                # f(x; θ)
-    nn.Linear(d, q), nn.ReLU(),   # σ(Wᵀx + b)
-    nn.Linear(q, C))              # logits
-loss_fn = nn.CrossEntropyLoss()   # ℓ, softmax included
-opt = torch.optim.SGD(f.parameters(), lr=0.1)
-
-for epoch in range(epochs):
-    for x, y in minibatches:      # B pairs
-        loss = loss_fn(f(x), y)   # L
-        opt.zero_grad()
-        loss.backward()           # ∇θ L
-        opt.step()                # θ ← θ − γ ∇θ L
-```
-
----
-
 class: middle, center
 
 (Step-by-step code example)
