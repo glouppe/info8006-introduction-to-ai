@@ -323,28 +323,17 @@ $P(\text{sun}) = \frac{3}{4}$ and $P(\text{rain}) = \frac{1}{4}$.
 
 # Filtering
 
-We want to compute a belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ and maintain it as time passes and new evidence $\mathbf{e}\_{t+1}$ is collected.
+We want to compute the belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ and maintain it as new evidence $\mathbf{e}\_{t+1}$ arrives.
 
-This process can be implemented using the .bold[Bayes filter] algorithm, which alternates between prediction and update steps:
-- (Predict step): Project the current belief state forward from $t$ to $t+1$ through the transition model.
-- (Update step): Update this new state using the evidence $\mathbf{e}\_{t+1}$.
+The .bold[Bayes filter] alternates two steps:
+- (Predict step): Project the belief state from $t$ to $t+1$ through the transition model.
+- (Update step): Update it with the evidence $\mathbf{e}\_{t+1}$.
 
-The update step is the sequential Bayes update of Lecture 4, which cornered the ghost from its readings. What is new is the predict step: between two readings, the ghost moves.
+The update step is the sequential Bayes update of Lecture 4. What is new is the predict step, since the ghost moves between two readings.
 
 .center.width-25[![](figures/lec6/pacman-ghosts.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-???
-
-To play it live, with a ghost that moves:
-
-```
-cd demo/lec4
-uv run python ghostbusters.py --cell 90 --ghost circles --beliefs
-```
-
-`--ghost random` spreads the belief fastest, `--ghost swirl` is in between. Pressing `t`, or the TIME+1 button, is the predict step; clicking a cell is the update step.
 
 ---
 
