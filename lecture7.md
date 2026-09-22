@@ -771,7 +771,9 @@ class: middle, center
 
 ---
 
-# Measuring performance
+class: middle
+
+## Measuring performance
 
 We want a small loss on .bold[new] pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. The training loss underestimates it, since $\theta$ was fitted to those very pairs. An honest estimate comes from a .bold[test set] $\mathbf{d}\_\text{test}$, held out from training.
 
