@@ -2,7 +2,7 @@
 
     uv run python scripts/draw_search_algorithms.py
 
-Writes the algorithm listings of lectures 2, 3 and 4 as SVG, replacing the screenshots taken
+Writes the algorithm listings of lectures 2 to 7 as SVG, replacing the screenshots taken
 from Russell and Norvig. The listings are the ones of the exercise sheets
 (`exercises/exercises.sty`, `pseudocode` environment): keywords in bold, procedure names in
 small capitals, variables in italics, each in its own colour. Roboto and the KaTeX faces are embedded from
@@ -89,6 +89,12 @@ def sym(text):
 def greek(letter):
     """A Greek variable, italic as on the slides (KaTeX_Main-Italic has none)."""
     return span(letter, family="KaTeXMathItalic", fill=INK)
+
+
+def sub(text, family="KaTeXMathItalic"):
+    """A subscript, as the θ of ∇θ; the next token returns to the baseline."""
+    return (f'<tspan font-family="{family}, sans-serif" font-weight="400" font-size="{SIZE * 0.7:g}" '
+            f'fill="{INK}" baseline-shift="sub">{escape(text)}</tspan>')
 
 
 def line(level, tokens, y):
@@ -322,6 +328,24 @@ particle_filter = [
     (1, [kw("return "), var("S")]),
 ]
 
+# The training loop of lecture 7: minibatches, a gradient by automatic
+# differentiation, and the update of gradient descent
+train = [
+    (0, [kw("function "), proc("Train"), txt("("), var("d"), txt(", "), var("f"), txt(", "), greek("γ"),
+         txt(", "), var("B"), txt(", "), var("epochs"), txt(") "), kw("returns "), txt("the parameters "),
+         greek("θ")]),
+    (1, [greek("θ"), gets(), txt("random values")]),
+    (1, [kw("repeat "), var("epochs"), txt(" times")]),
+    (2, [kw("for each "), txt("minibatch of "), var("B"), txt(" pairs of "), var("d"), txt(", in random order "),
+         kw("do")]),
+    (3, [var("L"), gets(), txt("the average of "), sym("ℓ"), txt("("), var("y"), txt(", "), var("f"), txt("("),
+         var("x"), txt("; "), greek("θ"), txt(")) over the pairs ("), var("x"), txt(", "), var("y"),
+         txt(") of the minibatch")]),
+    (3, [var("g"), gets(), sym("∇"), sub("θ"), var("L"), txt(", by automatic differentiation")]),
+    (3, [greek("θ"), gets(), greek("θ"), txt(" "), sym("−"), txt(" "), greek("γ"), txt(" "), var("g")]),
+    (1, [kw("return "), greek("θ")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -334,3 +358,4 @@ if __name__ == "__main__":
     listing("enumerate-all", enumerate_all, 900, lecture="lec5")
     listing("forward-backward", forward_backward, 900, lecture="lec6")
     listing("particle-filtering", particle_filter, 980, lecture="lec6")
+    listing("train", train, 1000, lecture="lec7")

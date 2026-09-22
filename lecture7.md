@@ -687,6 +687,16 @@ It applies to any program built from differentiable operations, and to neural ne
 
 ---
 
+class: middle
+
+## Training loop
+
+.center.width-100[![](figures/lec7/train.svg)]
+
+Each line comes from the previous slides.
+
+---
+
 class: middle, center
 
 (Step-by-step code example)
