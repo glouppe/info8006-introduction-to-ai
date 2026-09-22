@@ -1083,15 +1083,11 @@ Reanalysis of past data $p(x\_{1:T} \mid y\_{1:T})$.
 
 # Summary
 
-- Temporal models use state and sensor variables replicated over time.
-    - Their purpose is to maintain a belief state as time passes and as more evidence is collected.
-- The Markov and stationarity assumptions imply that we only need to specify
-    - a transition model $\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t)$,
-    - a sensor model $\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_t)$.
-- Inference tasks include filtering, prediction, smoothing and finding the most likely sequence.
-- Filter algorithms are all based on the core of idea of
-    - projecting the current belief state through the transition model,
-    - updating the prediction according to the new evidence.
+- A temporal model replicates the state $\mathbf{X}\_t$ and the evidence $\mathbf{E}\_t$ over time. Under the Markov and stationarity assumptions, it is specified by a prior $\mathbf{P}(\mathbf{X}\_0)$, a transition model ${\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t)}$ and a sensor model ${\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_t)}$.
+- .bold[Filtering] maintains the belief state by alternating a predict and an update step,
+$$\mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t+1}) \propto \mathbf{P}(\mathbf{e}\_{t+1} \mid \mathbf{X}\_{t+1}) \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}),$$
+at a cost per step that does not grow with $t$. Prediction, smoothing and the most likely explanation are the same recursion, run forward, backward, or with the sum replaced by a max.
+- The same recursion holds for continuous variables, with integrals in place of sums: exactly for linear Gaussian models, where it is the .bold[Kalman filter], and approximately by sampling, where it is the .bold[particle filter].
 
 ---
 
