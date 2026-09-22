@@ -88,7 +88,7 @@ class: middle
 
 ---
 
-# Problem statement
+# Supervised learning
 
 .grid[
 .kol-2-3[
