@@ -960,20 +960,6 @@ This is the next-token prediction of Sutskever's quote in Lecture 0.
 
 class: middle
 
-.width-100[![](./figures/lec0/scaling-power-law.png)]
-
-## Scaling laws 
-
-- The more data, the better the model.
-- The more parameters, the better the model.
-- The more compute, the better the model.
-
-(... at least until 2024-2025.)
-
----
-
-class: middle
-
 # AI beyond Pacman
 
 ---
