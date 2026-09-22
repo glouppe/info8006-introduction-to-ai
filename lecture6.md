@@ -264,7 +264,7 @@ What if $t \to \infty$?
 - For most chains, the influence of the initial distribution gets lesser and lesser over time.
 - Eventually, the distribution may converge to a fixed distribution, called a .bold[stationary distribution].
 - This distribution is such that
-$$\mathbf{P}(\mathbf{X}\_\infty) = \mathbf{P}(\mathbf{X}\_{\infty+1}) = \sum\_{\mathbf{x}\_\infty} \mathbf{P}(\mathbf{X}\_{\infty+1} \mid \mathbf{x}\_\infty) P(\mathbf{x}\_\infty).$$
+$$\mathbf{P}(\mathbf{X}\_{t+1}) = \mathbf{P}(\mathbf{X}\_t) = \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t).$$
 
 ---
 
@@ -279,20 +279,16 @@ class: middle
 
 ## Example
 
-$
+Writing $P(\text{sun})$ and $P(\text{rain})$ for the stationary probabilities,
+$$
 \begin{aligned}
-P(\mathbf{X}\_\infty = \text{sun}) =&\, P(\mathbf{X}\_{\infty+1} = \text{sun}) \\\\
-=&\, P(\mathbf{X}\_{\infty+1}=\text{sun} \mid \mathbf{X}\_{\infty}=\text{sun}) P(\mathbf{X}\_{\infty}=\text{sun})\\\\
- & + P(\mathbf{X}\_{\infty+1}=\text{sun} \mid \mathbf{X}\_{\infty}=\text{rain}) P(\mathbf{X}\_{\infty}=\text{rain})\\\\
-=&\, 0.9 P(\mathbf{X}\_{\infty}=\text{sun}) + 0.3 P(\mathbf{X}\_{\infty}=\text{rain})
+P(\text{sun}) =&\, P(\text{sun} \mid \text{sun}) P(\text{sun}) + P(\text{sun} \mid \text{rain}) P(\text{rain}) \\\\
+=&\, 0.9 P(\text{sun}) + 0.3 P(\text{rain}).
 \end{aligned}
-$
+$$
 
-Therefore, $P(\mathbf{X}\_\infty=\text{sun}) = 3 P(\mathbf{X}\_\infty=\text{rain})$.
-
-Which implies that
-$P(\mathbf{X}\_\infty=\text{sun}) = \frac{3}{4}$ and
-$P(\mathbf{X}\_\infty=\text{rain}) = \frac{1}{4}$.
+Therefore $P(\text{sun}) = 3 P(\text{rain})$, and since the two sum to 1,
+$P(\text{sun}) = \frac{3}{4}$ and $P(\text{rain}) = \frac{1}{4}$.
 
 ---
 
@@ -323,7 +319,7 @@ $$
 \end{aligned}
 $$
 where
-- the normalization constant $$Z = P(\mathbf{e}\_{t+1} \mid \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) $$  is used to make probabilities sum to 1;
+- the normalization constant $$Z = P(\mathbf{e}\_{t+1} \mid \mathbf{e}\_{1:t}) = \sum\_{\mathbf{x}\_{t+1}} P(\mathbf{e}\_{t+1} \mid \mathbf{x}\_{t+1}) P(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) $$ makes the probabilities sum to 1 (it is also written $\alpha = 1/Z$);
 - in the last expression, the first and second terms are given by the model while the third is obtained recursively.
 
 <!-- $P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t+1}) = P(\mathbf{X}\_{t+1} \mid \mathbf{e}\_{1:t}, \mathbf{e}\_{t+1})$<br>
@@ -417,7 +413,7 @@ $$
 class: middle
 
 Let the .bold[backward] message $\mathbf{b}\_{k+1:t}$ correspond to $\mathbf{P}(\mathbf{e}\_{k+1:t} \mid \mathbf{X}\_k)$. Then,
-$$\mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:t}) = \alpha\, \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
+$$\mathbf{P}(\mathbf{X}\_k \mid \mathbf{e}\_{1:t}) = \frac{1}{Z} \mathbf{f}\_{1:k} \times \mathbf{b}\_{k+1:t},$$
 where $\times$ is a pointwise multiplication of vectors.
 
 
@@ -568,7 +564,7 @@ class: middle
 
 - Let the observation matrix $\mathbf{O}\_t$ be a diagonal matrix whose elements corresponds to the column $e\_t$ of the sensor matrix $\mathbf{B}$.
 - If we use column vectors to represent forward and backward messages, then we have
-$$\mathbf{f}\_{1:t+1} = \alpha \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
+$$\mathbf{f}\_{1:t+1} = \frac{1}{Z} \mathbf{O}\_{t+1} \mathbf{T}^T \mathbf{f}\_{1:t}$$
 $$\mathbf{b}\_{k+1:t} = \mathbf{T} \mathbf{O}\_{k+1} \mathbf{b}\_{k+2:t},$$
 where $\mathbf{b}\_{t+1:t}$ is an all-one vector of size $S$.
 - Therefore the forward-backward algorithm needs time $O(S^2t)$ and space $O(St)$.
