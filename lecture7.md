@@ -988,6 +988,26 @@ class: middle
 
 ---
 
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/4MvGnmmP3c0" frameborder="0" allowfullscreen></iframe>
+
+Gemini Robotics (Google DeepMind, 2025):<br>a policy learned from demonstrations, as for Pacman.
+]
+
+---
+
+class: black-slide, middle
+
+.center[
+<iframe width="640" height="400" src="https://www.youtube.com/embed/AbdVsi1VjQY" frameborder="0" allowfullscreen></iframe>
+
+How AI is advancing science and medicine (Google):<br>images read by convolutional networks.
+]
+
+---
+
 class: middle
 
 .center.width-90[![](figures/lec7/transformer-next.png)]
