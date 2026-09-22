@@ -97,7 +97,7 @@ class: middle
 
 Let $\mathbf{d}$ be a dataset of $N$ input-output pairs, drawn i.i.d. from $p(\mathbf{x}, y)$,
     $$\mathbf{d} = \\\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\\},$$
-where $\mathbf{x}\_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values.
+with inputs $\mathbf{x}\_j \in \mathbb{R}^d$ and outputs $y\_j \in \mathcal{Y}$.
 
 From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \mathbf{x})$$ that best explains the data.
 
@@ -201,7 +201,7 @@ Minimizing the negative log-likelihood of a linear Gaussian model reduces to min
 
 class: middle
 
-If we absorb the bias term $b$ into the weight vector $\mathbf{w}$ by adding a constant feature $x_0=1$ to the input vector $\mathbf{x}$, the solution $\mathbf{w}^\*$ is given analytically by
+If we absorb the bias term $b$ into the weight vector $\mathbf{w}$ by appending a constant feature equal to 1 to the input vector $\mathbf{x}$, the solution $\mathbf{w}^\*$ is given analytically by
 $$\mathbf{w}^\* = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y},$$
 where $\mathbf{X}$ is the input matrix made of the stacked input vectors $\mathbf{x}_j$ (including the constant feature) and $\mathbf{y}$ is the output vector made of the output values $y_j$.
 
@@ -239,12 +239,12 @@ Following the principle of maximum likelihood estimation (Lecture 5), we have
 
 $$\begin{aligned}
 &\arg \max\_{\mathbf{w},b} P(\mathbf{d} \mid \mathbf{w},b) \\\\
-&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i \mid \mathbf{x}\_i, \mathbf{w},b) \\\\
-&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_i + b)^{y\_i}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))^{1-y\_i}  \\\\
-&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} P(Y=y\_j \mid \mathbf{x}\_j, \mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_j + b)^{y\_j}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_j + b))^{1-y\_j}  \\\\
+&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} -{y\_j} \log\sigma(\mathbf{w}^T \mathbf{x}\_j + b) - {(1-y\_j)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_j + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_j \ell(y\_j, \hat{y}(\mathbf{x}\_j; \mathbf{w}, b))}
 \end{aligned}$$
 
-This loss is an estimator of the .bold[cross-entropy] $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y \mid \mathbf{x}\_i$ and $q=\hat{Y} \mid \mathbf{x}\_i$. 
+This loss is an estimator of the .bold[cross-entropy] $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y \mid \mathbf{x}\_j$ and $q=\hat{Y} \mid \mathbf{x}\_j$. 
 
 Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and $b$.
 
