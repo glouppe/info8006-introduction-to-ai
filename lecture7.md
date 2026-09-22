@@ -411,9 +411,7 @@ No more Minimax!
 
 class: middle
 
-# Deep Learning
-
-(a short introduction)
+# Deep learning
 
 ---
 
