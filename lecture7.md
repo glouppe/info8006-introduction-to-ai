@@ -346,6 +346,68 @@ class: middle, center
 
 class: middle
 
+## Example: imitation learning in Pacman
+
+Can we learn to play Pacman only from observations?
+- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
+- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
+- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
+- This is a multiclass classification problem.
+
+.center.width-70[![](figures/lec7/pacman.png)]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+???
+
+!!! This year's project is about imitation learning in Pacman.
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/training1.mp4" type="video/mp4">
+</video>
+
+The agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
+]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/training2.mp4" type="video/mp4">
+</video>
+
+<br><br>]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle, black-slide
+
+.center[
+<video controls muted preload="auto" height="400" width="640">
+  <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
+</video>
+
+After two training episodes, the ML-based agents plays.<br>
+No more Minimax!
+]
+
+.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+class: middle
+
 # Deep learning
 
 ---
@@ -709,68 +771,6 @@ To assess its generalization performance, a model should be evaluated on a separ
 .center.width-100[![](figures/lec7/PerfMNIST1DResults.svg)]
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
----
-
-class: middle
-
-## Example: imitation learning in Pacman
-
-Can we learn to play Pacman only from observations?
-- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ corresponds to actions $a$ .
-- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
-- We want to learn the actions that the expert would take in a given situation. That is, learn the mapping $f:\mathbb{R}^d \to \mathcal{A}$.
-- This is a multiclass classification problem.
-
-.center.width-70[![](figures/lec7/pacman.png)]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
-???
-
-!!! This year's project is about imitation learning in Pacman.
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/training1.mp4" type="video/mp4">
-</video>
-
-The agent observes a very good Minimax-based agent for two games and updates its weight vectors as data are collected.
-]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/training2.mp4" type="video/mp4">
-</video>
-
-<br><br>]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle, black-slide
-
-.center[
-<video controls muted preload="auto" height="400" width="640">
-  <source src="./figures/lec7/apprentice.mp4" type="video/mp4">
-</video>
-
-After two training episodes, the ML-based agents plays.<br>
-No more Minimax!
-]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
 
