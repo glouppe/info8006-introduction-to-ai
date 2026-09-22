@@ -132,8 +132,8 @@ class: middle
 ## Data
 
 The pairs $(\mathbf{x}, y)$ are first written as numbers.
-- An input is a vector of features, a tensor (e.g., an image as $C \times H \times W$ pixel values), or a sequence of tokens (e.g., a text).
-- An output is a real or a vector of reals for regression. For classification, it is a class $y \in \\{0, \ldots, C-1\\}$, often encoded as a .bold[one-hot] vector of $C$ zeros with a single 1 at position $y$.
+- An input $\mathbf{x}$ is a vector of features, a tensor (e.g., an image as $C \times H \times W$ pixel values), or a sequence of tokens (e.g., a text).
+- An output $y$ is a real or a vector of reals for regression. For classification, it is a class in $\\{0, \ldots, C-1\\}$, often encoded as a .bold[one-hot] vector of $C$ zeros with a single 1 at position $y$.
 
 ---
 
