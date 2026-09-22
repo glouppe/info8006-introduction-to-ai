@@ -1036,9 +1036,7 @@ class: middle
 
 .center.circle.width-30[![](figures/lec7/bishop.jpg)]
 
-.italic[For the last forty years we have programmed computers; for the next forty years we will train them.]
-
-.pull-right[Chris Bishop, 2020.]
+.quote[For the last forty years we have programmed computers; for the next forty years we will train them. .author[Chris Bishop, 2020]]
 
 ---
 
