@@ -125,16 +125,6 @@ class: middle
 
 ---
 
-class: middle
-
-.center.width-90[![](figures/lec7/transformer-next.png)]
-
-.center[Language models predict the next token, a classification over the vocabulary.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
----
-
 # Linear regression
 
 Let us first assume that $y \in \mathbb{R}$.
@@ -995,6 +985,16 @@ See also https://poloclub.github.io/cnn-explainer/
 class: middle
 
 # AI beyond Pacman
+
+---
+
+class: middle
+
+.center.width-90[![](figures/lec7/transformer-next.png)]
+
+.center[Language models predict the next token, a classification over the vocabulary.]
+
+.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
