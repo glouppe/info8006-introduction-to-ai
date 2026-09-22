@@ -692,8 +692,8 @@ class: middle
 .center.width-60[![](figures/lec6/mvn.png)]
 
 The multivariate Gaussian distribution generalizes to $n$ random variables. Its (joint) density function is defined as
-$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n \mid \mathbf{\Sigma} \mid }} \exp\left(-\frac{1}{2} (\mathbf{x}-\mathbf{m})^T \mathbf{\Sigma}^{-1} (\mathbf{x}-\mathbf{m}) \right) $$
-where $\mathbf{m} \in \mathbb{R}^n$ is the mean vector and $\mathbf{\Sigma} \in \mathbb{R}^{n\times n}$ is the covariance matrix.
+$$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n \lvert \boldsymbol{\Sigma} \rvert}} \exp\left(-\frac{1}{2} (\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu}) \right) $$
+where $\boldsymbol{\mu} \in \mathbb{R}^n$ is the mean vector and $\boldsymbol{\Sigma} \in \mathbb{R}^{n\times n}$ is the covariance matrix.
 
 ---
 
@@ -736,7 +736,7 @@ class: middle
 If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
 $$
 \begin{aligned}
-p(\mathbf{x}) &= \mathcal{N}(\mathbf{x} \mid \mathbf{m}, \mathbf{P}) \\\\
+p(\mathbf{x}) &= \mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}) \\\\
 p(\mathbf{y} \mid \mathbf{x}) &= \mathcal{N}(\mathbf{y} \mid \mathbf{H}\mathbf{x}+\mathbf{u}, \mathbf{R}),
 \end{aligned}
 $$
@@ -750,11 +750,11 @@ p\left(\begin{matrix}
 \mathbf{x} \\\\
 \mathbf{y} 
 \end{matrix}\right) \bigg\vert \left(\begin{matrix}
-\mathbf{m} \\\\
-\mathbf{H}\mathbf{m}+\mathbf{u} 
+\boldsymbol{\mu} \\\\
+\mathbf{H}\boldsymbol{\mu}+\mathbf{u} 
 \end{matrix}\right), \left(\begin{matrix}
-\mathbf{P} & \mathbf{P}\mathbf{H}^T \\\\
-\mathbf{H}\mathbf{P} & \mathbf{H}\mathbf{P}\mathbf{H}^T + \mathbf{R} 
+\boldsymbol{\Sigma} & \boldsymbol{\Sigma}\mathbf{H}^T \\\\
+\mathbf{H}\boldsymbol{\Sigma} & \mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T + \mathbf{R} 
 \end{matrix}\right) \right).
 \end{aligned}
 $$
@@ -889,14 +889,14 @@ the prediction step yields
 $$
 \begin{aligned}
 p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t}) &= \int p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) p(\mathbf{x}\_t \mid \mathbf{e}\_{1:t}) d\mathbf{x}\_t \\\\
-&= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{\mu}\_{t+1}^-, \mathbf{\Sigma}\_{t+1}^-)
+&= \mathcal{N}(\mathbf{x}\_{t+1} \mid \boldsymbol{\mu}\_{t+1}^-, \boldsymbol{\Sigma}\_{t+1}^-)
 \end{aligned}
 $$
 where
 $$
 \begin{aligned}
-\mathbf{\mu}\_{t+1}^- &= \mathbf{A} \mathbf{\mu}\_t \\\\
-\mathbf{\Sigma}\_{t+1}^- &= \mathbf{A} \mathbf{\Sigma}\_t \mathbf{A}^T + \mathbf{Q}.
+\boldsymbol{\mu}\_{t+1}^- &= \mathbf{A} \boldsymbol{\mu}\_t \\\\
+\boldsymbol{\Sigma}\_{t+1}^- &= \mathbf{A} \boldsymbol{\Sigma}\_t \mathbf{A}^T + \mathbf{Q}.
 \end{aligned}
 $$
 
@@ -907,15 +907,15 @@ class: middle
 The update step yields the final Kalman filter equations,
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t+1}) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{\mu}\_{t+1}, \mathbf{\Sigma}\_{t+1}) 
+p(\mathbf{x}\_{t+1} \mid \mathbf{e}\_{1:t+1}) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \boldsymbol{\mu}\_{t+1}, \boldsymbol{\Sigma}\_{t+1}) 
 \end{aligned}
 $$
 where
 $$
 \begin{aligned}
-\mathbf{\mu}\_{t+1} &= \mathbf{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \mathbf{\mu}\_{t+1}^-) \\\\
-\mathbf{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) \mathbf{\Sigma}\_{t+1}^- \\\\
-\mathbf{K}\_{t+1} &= \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \mathbf{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{R})^{-1}
+\boldsymbol{\mu}\_{t+1} &= \boldsymbol{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \boldsymbol{\mu}\_{t+1}^-) \\\\
+\boldsymbol{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) \boldsymbol{\Sigma}\_{t+1}^- \\\\
+\mathbf{K}\_{t+1} &= \boldsymbol{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \boldsymbol{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{R})^{-1}
 \end{aligned}
 $$
 in which $\mathbf{K}\_{t+1}$ is called the .bold[Kalman gain] and represents the relative weight given to the new observation versus the prediction.
