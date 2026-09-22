@@ -93,7 +93,7 @@ class: middle
 .grid[
 .kol-2-3[
 
-Let $\mathbf{d} \sim p(\mathbf{x}, y)$ be a dataset of $N$ example input-output pairs
+Let $\mathbf{d}$ be a dataset of $N$ input-output pairs, drawn i.i.d. from $p(\mathbf{x}, y)$,
     $$\mathbf{d} = \\\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\\},$$
 where $\mathbf{x}\_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values.
 
@@ -167,17 +167,19 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 
 <br><br>
 
-Following the principle of maximum likelihood estimation, we maximize
-$$p(y|\mathbf{x}) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{1}{2}\frac{(y-(\mathbf{w}^T \mathbf{x} + b))^2}{\sigma^2}\right)$$
-w.r.t. $\mathbf{w}$ and $b$ over the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$.
+Following the principle of maximum likelihood estimation (Lecture 5), we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$ with respect to $\mathbf{w}$ and $b$,
+$$\begin{aligned}
+\log \prod\_{j=1}^N p(y\_j \mid \mathbf{x}\_j, \mathbf{w}, b) &= \sum\_{j=1}^N \log \mathcal{N}(y\_j \mid \mathbf{w}^T \mathbf{x}\_j + b, \sigma^2) \\\\
+&= -\frac{1}{2\sigma^2} \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2 + \text{const}.
+\end{aligned}$$
 
 --
 
 count: false
 
-After simplification, we arrive to the problem of minimizing
+This amounts to minimizing the sum of squared errors,
 $$\mathcal{L}(\mathbf{w},b) = \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
-Therefore, minimizing the sum of squared errors corresponds to the MLE solution for a linear fit, assuming Gaussian noise of fixed variance. 
+Least squares is the maximum likelihood estimate of a linear model with Gaussian noise of fixed variance.
 
 ---
 
@@ -229,7 +231,7 @@ This model is the core building block of deep neural networks!
 
 class: middle
 
-Following the principle of maximum likelihood estimation, we have
+Following the principle of maximum likelihood estimation (Lecture 5), we have
 
 $$\begin{aligned}
 &\arg \max\_{\mathbf{w},b} P(\mathbf{d}|\mathbf{w},b) \\\\
