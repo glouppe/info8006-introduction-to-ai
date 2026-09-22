@@ -270,18 +270,13 @@ class: middle
 
 class: middle
 
-A minimizer of the approximation $\hat{\mathcal{L}}(\epsilon; \theta\_0)$ is given for
-$$\begin{aligned}
-\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta\_0) &= 0 \\\\
- &= \nabla\_\theta \mathcal{L}(\theta\_0) + \frac{1}{\gamma} \epsilon,
-\end{aligned}$$
-which results in the best improvement for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta\_0)$.
+The approximation $\hat{\mathcal{L}}(\epsilon; \theta)$ is minimized where its gradient vanishes,
+$$\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta) = \nabla\_\theta \mathcal{L}(\theta) + \frac{1}{\gamma} \epsilon = 0,$$
+that is, for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta)$.
 
-Therefore, model parameters can be updated iteratively using the update rule
+Starting from initial parameters $\theta\_0$, gradient descent repeats this step,
 $$\theta\_{t+1} = \theta\_t -\gamma \nabla\_\theta \mathcal{L}(\theta\_t),$$
-where
-- $\theta_0$ are the initial parameters of the model,
-- $\gamma$ is the learning rate.
+where $\gamma$ is the .bold[learning rate].
 
 ---
 
