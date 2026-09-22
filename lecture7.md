@@ -744,12 +744,6 @@ Each line comes from the previous slides.
 
 ---
 
-class: middle, center
-
-(Step-by-step code example)
-
----
-
 class: middle
 
 ## Measuring performance
@@ -771,6 +765,12 @@ class: middle
 A model too small for the data .bold[underfits]: both losses stay high. A model large enough to memorize $\mathbf{d}$ .bold[overfits]: the training loss keeps decreasing while the test loss increases, as on the previous slide.
 
 Width, depth, learning rate, minibatch size and number of epochs are .bold[hyperparameters]. They are chosen on a .bold[validation set], also held out from training. The test set is used once, at the end.
+
+---
+
+class: middle, center
+
+(Step-by-step code example)
 
 ---
 
