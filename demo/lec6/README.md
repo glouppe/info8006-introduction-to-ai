@@ -37,3 +37,11 @@ cd demo/lec4 && uv run python ghostbusters.py --cell 90 --ghost circles --belief
 `t`, or the TIME+1 button, is the predict step; clicking a cell is the update
 step. `--ghost random` spreads the belief fastest, `--ghost swirl` sits in
 between.
+
+## Pacman revenge
+
+The maze demo of the two videos, where Pacman hunts ghosts it only senses
+through noisy distances, is kept out of the repository: it is a worked Bayes
+filter, which is what project 1 asks students to write. It lives in
+`demo/lec6/pacman/`, ignored by git, and the commands to play it are in the
+speaker notes of the two video slides.

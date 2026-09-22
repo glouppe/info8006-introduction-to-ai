@@ -21,6 +21,9 @@ __pycache__/
 # Lecture demos: run.py rewrites this scratch file (score;time;nodes) after every game
 demo/*/temp
 
+# Lecture 6 Pacman demo: a worked Bayes filter, which is what project 1 asks for
+demo/lec6/pacman/
+
 # Planning notes and assistant guidance
 TODO.md
 CLAUDE.md
