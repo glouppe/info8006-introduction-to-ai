@@ -167,10 +167,10 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 
 <br><br>
 
-Following the principle of maximum likelihood estimation (Lecture 5), we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_j, y\_j) \\\}$ with respect to $\mathbf{w}$ and $b$,
+Following the principle of maximum likelihood estimation (Lecture 5), we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_i, y\_i) \\\}$ with respect to $\mathbf{w}$ and $b$,
 $$\begin{aligned}
-\log \prod\_{j=1}^N p(y\_j \mid \mathbf{x}\_j, \mathbf{w}, b) &= \sum\_{j=1}^N \log \mathcal{N}(y\_j \mid \mathbf{w}^T \mathbf{x}\_j + b, \sigma^2) \\\\
-&= -\frac{1}{2\sigma^2} \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2 + \text{const}.
+\log \prod\_{i=1}^N p(y\_i \mid \mathbf{x}\_i, \mathbf{w}, b) &= \sum\_{i=1}^N \log \mathcal{N}(y\_i \mid \mathbf{w}^T \mathbf{x}\_i + b, \sigma^2) \\\\
+&= -\frac{1}{2\sigma^2} \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i + b))^2 + \text{const}.
 \end{aligned}$$
 
 --
@@ -178,7 +178,7 @@ $$\begin{aligned}
 count: false
 
 This amounts to minimizing the sum of squared errors,
-$$\mathcal{L}(\mathbf{w},b) = \sum\_{j=1}^N (y\_j - (\mathbf{w}^T \mathbf{x}\_j + b))^2.$$
+$$\mathcal{L}(\mathbf{w},b) = \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i + b))^2.$$
 Least squares is the maximum likelihood estimate of a linear model with Gaussian noise of fixed variance.
 
 ---
@@ -199,7 +199,7 @@ class: middle
 
 If we absorb the bias term $b$ into the weight vector $\mathbf{w}$ by appending a constant feature equal to 1 to the input vector $\mathbf{x}$, the solution $\mathbf{w}^\*$ is given analytically by
 $$\mathbf{w}^\* = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y},$$
-where $\mathbf{X}$ is the input matrix made of the stacked input vectors $\mathbf{x}_j$ (including the constant feature) and $\mathbf{y}$ is the output vector made of the output values $y_j$.
+where $\mathbf{X}$ is the input matrix made of the stacked input vectors $\mathbf{x}_i$ (including the constant feature) and $\mathbf{y}$ is the output vector made of the output values $y_i$.
 
 ---
 
@@ -235,9 +235,9 @@ Following the principle of maximum likelihood estimation (Lecture 5), we have
 
 $$\begin{aligned}
 &\arg \max\_{\mathbf{w},b} P(\mathbf{d} \mid \mathbf{w},b) \\\\
-&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} P(Y=y\_j \mid \mathbf{x}\_j, \mathbf{w},b) \\\\
-&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_j + b)^{y\_j}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_j + b))^{1-y\_j}  \\\\
-&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} -{y\_j} \log\sigma(\mathbf{w}^T \mathbf{x}\_j + b) - {(1-y\_j)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_j + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_j \ell(y\_j, \hat{y}(\mathbf{x}\_j; \mathbf{w}, b))}
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} P(Y=y\_i \mid \mathbf{x}\_i, \mathbf{w},b) \\\\
+&= \arg \max\_{\mathbf{w},b} \prod\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} \sigma(\mathbf{w}^T \mathbf{x}\_i + b)^{y\_i}  (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))^{1-y\_i}  \\\\
+&= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_i, y\_i \in \mathbf{d}} -{y\_i} \log\sigma(\mathbf{w}^T \mathbf{x}\_i + b) - {(1-y\_i)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_i + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_i \ell(y\_i, \hat{y}(\mathbf{x}\_i; \mathbf{w}, b))}
 \end{aligned}$$
 
 The loss $\ell$ is the .bold[cross-entropy], the negative log-probability of the observed class.
@@ -328,11 +328,11 @@ class: center, middle
 class: middle
 
 Up to a constant factor, the loss is an average over the $N$ pairs,
-$$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta)),$$
+$$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{i=1}^N \ell(y\_i, \hat{y}(\mathbf{x}\_i; \theta)),$$
 and each step of gradient descent costs a pass over the dataset.
 
 .bold[Stochastic gradient descent] averages the gradient over a random .bold[minibatch] $\mathcal{B}$ of $B \ll N$ pairs instead,
-$$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{j \in \mathcal{B}} \nabla\_\theta \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta\_t)).$$
+$$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{i \in \mathcal{B}} \nabla\_\theta \ell(y\_i, \hat{y}(\mathbf{x}\_i; \theta\_t)).$$
 The estimate is noisy but right on average, at a fraction $B/N$ of the cost.
 
 ---
@@ -728,11 +728,11 @@ so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y=i \mid \mathbf{x})$ s
 
 ## Loss functions
 
-The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_j, \mathbf{y}\_j) \\\}$ of input-output pairs.
+The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_i, \mathbf{y}\_i) \\\}$ of input-output pairs.
 
 The loss function is derived from the likelihood: 
-- For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \lVert \mathbf{y}\_j - f(\mathbf{x}\_j; \theta) \rVert^2$.
-- For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{j=1}^N \log f\_{y\_j}(\mathbf{x}\_j; \theta)$, the negative log-probability of the correct class.
+- For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{i=1}^N \lVert \mathbf{y}\_i - f(\mathbf{x}\_i; \theta) \rVert^2$.
+- For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{i=1}^N \log f\_{y\_i}(\mathbf{x}\_i; \theta)$, the negative log-probability of the correct class.
 
 ---
 
@@ -1020,7 +1020,7 @@ How machine learning is advancing medicine (Google, 2018)
 
 # Summary
 
-- Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_j, y\_j)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
+- Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_i, y\_i)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
 - A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k^T \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
 - Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \gamma \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
 - Its performance is measured on pairs held out from training.
