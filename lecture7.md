@@ -636,7 +636,7 @@ Activation functions $\sigma: \mathbb{R} \to \mathbb{R}$ introduce non-lineariti
 Common activation functions include:
 - Sigmoid: $\sigma(x) = \frac{1}{1 + \exp(-x)}$, which maps inputs to the range $(0, 1)$.
 - Hyperbolic tangent (tanh): $\sigma(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}$, which maps inputs to the range $(-1, 1)$.
-- Rectified Linear Unit (ReLU): $\sigma(x) = \max(0, x)$, which introduces sparsity and mitigates the vanishing gradient problem.
+- Rectified Linear Unit (ReLU): $\sigma(x) = \max(0, x)$, which introduces sparsity, and whose derivative, unlike that of the sigmoid, does not vanish for large inputs.
 
 The choice of the activation function $\sigma$ is crucial for the expressiveness of the network and the optimization of the model parameters. 
 
@@ -672,6 +672,18 @@ The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of
 The loss function is derived from the likelihood: 
 - For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} (\mathbf{y}\_j - f(\mathbf{x}\_j; \theta))^2$.
 - For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} \sum\_{i=1}^C y\_{ij} \log f\_{i}(\mathbf{x}\_j; \theta)$.
+
+---
+
+class: middle
+
+## Automatic differentiation
+
+Gradient descent needs the gradient $\nabla\_\theta \mathcal{L}(\theta)$, for networks with millions or billions of parameters. Deriving it by hand is tedious and error-prone. Estimating it by finite differences is approximate, and costs one evaluation of the loss per parameter.
+
+.bold[Automatic differentiation] computes it exactly, from the program that computes $\mathcal{L}(\theta)$. The program is made of elementary operations (sums, products, exponentials, maxima) whose derivatives are known, and all the partial derivatives $\partial \mathcal{L} / \partial \theta\_i$ are obtained at a small multiple of the cost of evaluating the loss once.
+
+It applies to any program built from differentiable operations, and to neural networks in particular. It is what `loss.backward()` does in PyTorch.
 
 ---
 
