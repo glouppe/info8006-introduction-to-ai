@@ -244,7 +244,7 @@ $$\begin{aligned}
 &= \arg \min\_{\mathbf{w},b} \underbrace{\sum\_{\mathbf{x}\_j, y\_j \in \mathbf{d}} -{y\_j} \log\sigma(\mathbf{w}^T \mathbf{x}\_j + b) - {(1-y\_j)} \log (1-\sigma(\mathbf{w}^T \mathbf{x}\_j + b))}\_{\mathcal{L}(\mathbf{w}, b) = \sum\_j \ell(y\_j, \hat{y}(\mathbf{x}\_j; \mathbf{w}, b))}
 \end{aligned}$$
 
-This loss is an estimator of the .bold[cross-entropy] $$H(p,q) = \mathbb{E}_p[-\log q]$$ for  $p=Y \mid \mathbf{x}\_j$ and $q=\hat{Y} \mid \mathbf{x}\_j$. 
+The loss $\ell$ is the .bold[cross-entropy], the negative log-probability of the observed class.
 
 Unfortunately, there is no closed-form solution for the MLE of $\mathbf{w}$ and $b$.
 
@@ -746,8 +746,8 @@ so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y=i \mid \mathbf{x})$ s
 The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_j, \mathbf{y}\_j) \\\}$ of input-output pairs.
 
 The loss function is derived from the likelihood: 
-- For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} (\mathbf{y}\_j - f(\mathbf{x}\_j; \theta))^2$.
-- For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{(\mathbf{x}\_j, \mathbf{y}\_j) \in \mathbf{d}} \sum\_{i=1}^C y\_{ij} \log f\_{i}(\mathbf{x}\_j; \theta)$.
+- For regression, assuming a Gaussian likelihood, the loss is the mean squared error $\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \lVert \mathbf{y}\_j - f(\mathbf{x}\_j; \theta) \rVert^2$.
+- For classification, assuming a categorical likelihood, the loss is the cross-entropy $\mathcal{L}(\theta) = -\frac{1}{N} \sum\_{j=1}^N \log f\_{y\_j}(\mathbf{x}\_j; \theta)$, the negative log-probability of the correct class.
 
 ---
 
