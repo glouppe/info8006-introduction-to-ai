@@ -673,9 +673,9 @@ class: middle
 
 .center.width-60[![](figures/lec6/normal.png)]
 
-The Gaussian (or Normal) distribution $\mathcal{N}(\mu,\sigma)$ is described by the density function
+The Gaussian (or Normal) distribution $\mathcal{N}(\mu,\sigma^2)$ is described by the density function
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
-where $\mu \in \mathbb{R}$ and $\sigma \in \mathbb{R}^+$ are its mean and standard deviation parameters.
+where $\mu \in \mathbb{R}$ is its mean and $\sigma^2 \in \mathbb{R}^+$ its variance.
 
 ???
 
