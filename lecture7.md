@@ -730,6 +730,14 @@ so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y=i \mid \mathbf{x})$ s
 
 # Training
 
+.center.width-100[![](figures/lec7/train.svg)]
+
+Same loop as for logistic regression. Only the ingredients change: the model $f$, its loss $\ell$, and the way the gradient is computed.
+
+---
+
+class: middle
+
 ## Loss functions
 
 The parameters (e.g., $\mathbf{W}\_k$ and $\mathbf{b}\_k$ for each layer $k$) of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over a dataset $\mathbf{d} = \\\{ (\mathbf{x}\_i, \mathbf{y}\_i) \\\}$ of input-output pairs.
