@@ -95,7 +95,7 @@ class: middle
 
 Let $\mathbf{d}$ be a dataset of $N$ input-output pairs, drawn i.i.d. from $p(\mathbf{x}, y)$,
     $$\mathbf{d} = \\\\{ (\mathbf{x}\_1, y\_1), (\mathbf{x}\_2, y\_2), ..., (\mathbf{x}\_N, y\_N) \\\\},$$
-with inputs $\mathbf{x}\_j \in \mathbb{R}^d$ and outputs $y\_j \in \mathcal{Y}$.
+with inputs $\mathbf{x}\_i \in \mathbb{R}^d$ and outputs $y\_i \in \mathcal{Y}$.
 
 From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \mathbf{x})$$ that best explains the data.
 
