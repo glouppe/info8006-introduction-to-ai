@@ -324,6 +324,22 @@ class: center, middle
 
 ---
 
+class: middle
+
+## Stochastic gradient descent
+
+The loss is a sum over the $N$ examples, and so is its gradient. Dividing it by $N$ does not move its minimizer, so that we can write it as an average,
+$$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{j=1}^N \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta)).$$
+Each step of gradient descent then costs a pass over the whole dataset.
+
+.bold[Stochastic gradient descent] replaces the gradient by its average over a .bold[minibatch] $\mathcal{B}$ of $B \ll N$ examples drawn at random,
+$$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{j \in \mathcal{B}} \nabla\_\theta \ell(y\_j, \hat{y}(\mathbf{x}\_j; \theta\_t)).$$
+This estimate is noisy but right on average, and $N/B$ times cheaper. A pass over the dataset, in $N/B$ steps, is an .bold[epoch].
+
+Variants such as Adam, the default in practice, adapt the step size of each parameter along the way.
+
+---
+
 class: middle, center
 
 (Step-by-step code example)
