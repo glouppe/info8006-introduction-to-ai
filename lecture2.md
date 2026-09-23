@@ -444,6 +444,9 @@ class: middle
 - .bold[Strategy]: expand the cheapest node in the fringe.
 - .bold[Implementation]: fringe is a .bold[priority queue], using the cumulative cost $g(n)$ from the initial state to node $n$ as priority.
 
+With $n$ the path $a\_{1:k}$ from $s\_1$ through the states $s\_{1:k+1}$,
+$$g(n) = \sum\_{t=1}^{k} c(s\_t, a\_t, s\_{t+1}).$$
+
 ---
 
 class: middle
