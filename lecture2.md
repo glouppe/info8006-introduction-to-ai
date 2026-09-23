@@ -816,12 +816,9 @@ class: middle
 
 .center.width-75[![](figures/lec2/redundant.svg)]
 
-A state can be reached by several paths, and the tree holds one node per path: two edges at each level make ${2^3 = 8}$ paths from A to D, for 4 states.
+A state reached by several paths sits in as many nodes: two edges per level make ${2^3 = 8}$ paths from A to D, for 4 states. A linear problem becomes exponential, and a cycle makes the search endless.
 
-The failure to detect .bold[repeated states] can turn a linear problem into an exponential one. It can also lead to non-terminating searches.
-
-Redundant paths and cycles can be avoided by .bold[keeping track] of the states that have been .bold[explored].
-This amounts to grow a tree directly on the state-space graph.
+.bold[Graph search] keeps track of the states already explored, which amounts to growing the tree directly on the state-space graph.
 
 ???
 
