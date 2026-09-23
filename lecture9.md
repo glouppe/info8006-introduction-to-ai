@@ -272,13 +272,13 @@ class: middle
 ## Example
 
 .grid[
-.kol-1-4.smaller-x[
+.kol-1-4.smaller[
 Policy $\pi$:
 
 .width-100[![](figures/lec9/policy-example.png)]
 ]
 .kol-3-4[
-.smaller-x[
+.smaller[
 Trajectories:
 
 $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
@@ -290,7 +290,7 @@ $(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)
 ]
 ]
 
-.grid.smaller-x[
+.grid.smaller[
 .kol-1-2[
 Learned transition model $\hat{P}$:
 
@@ -336,13 +336,13 @@ class: middle
 ## Example ($\gamma=1$)
 
 .grid[
-.kol-1-4.smaller-x[
+.kol-1-4.smaller[
 Policy $\pi$:
 
 .width-100[![](figures/lec9/policy-example.png)]
 ]
 .kol-3-4[
-.smaller-x[
+.smaller[
 Trajectories:
 
 $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
@@ -354,7 +354,7 @@ $(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)
 ]
 
 .grid[
-.kol-1-4.smaller-x[
+.kol-1-4.smaller[
 Output values $\hat{V}^\pi(s)$:
 
 .width-100[![](figures/lec9/due-example.png)]
