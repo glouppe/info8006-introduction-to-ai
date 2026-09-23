@@ -85,10 +85,8 @@ A .bold[Markov decision process] (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P,
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s' \mid s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
+- $R$ is a reward function that maps immediate (finite) reward values $R(s)$; the agent collects $R(s\_t)$ on arriving in $s\_t$, whatever the action that led there;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
-
-The agent collects $R(s\_t)$ for the state it occupies at each step, starting with $s\_0$: the reward comes with arriving in a state, and does not depend on the action that led there. Rewards can also be attached to transitions, $R(s,a,s')$, as we will see.
 
 ---
 
