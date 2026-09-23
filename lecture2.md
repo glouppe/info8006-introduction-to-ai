@@ -803,16 +803,6 @@ class: middle
 
 Both are admissible, and ${h\_2}$ .bold[dominates] ${h\_1}$: a misplaced tile is at least one move away from its goal position, so ${h\_1(n) \leq h\_2(n)}$ everywhere. A* expands fewer nodes with ${h\_2}$.
 
----
-
-class: middle
-
-## Learning heuristics from experience
-
-- In an .bold[episodic] environment, an agent can .bold[learn] a heuristic by solving the problem many times.
-- Each optimal solution provides training pairs ${(n, h^\*(n))}$: a node on the optimal path, and the cost of the path remaining from it.
-- Learning $h$ from these pairs is a .bold[supervised regression] problem (lecture 7), solved with linear models, neural networks, etc.
-- The learned $h$ is cheap to evaluate, but it is not admissible in general, so A* loses its optimality.
 
 ---
 
