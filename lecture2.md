@@ -176,7 +176,7 @@ class: middle
 
 The real world is absurdly .bold[complex].
 - The .bold[world state] includes every last detail of the environment.
-- A .bold[search state] keeps only the details needed for planning.
+- A .bold[search state] ${s \in \mathcal{S}}$ keeps only the details needed for planning.
 
 .width-75.center[![](figures/lec2/search-problems-models.png)]
 .center[Search problems are .bold[models].]
@@ -193,11 +193,14 @@ The process of removing details from a representation is called abstraction.
 
 class: middle
 
-##  Example: eat-all-dots
-- States: $\\{ (x, y), \text{dot booleans}\\}$
-- Actions: NSEW
-- Transition: update location and possibly a dot boolean
-- Goal states: no dot left
+## Example: eat-all-dots
+
+In a maze with $k$ dots,
+- states: a position and the dots left, ${s = ((x,y), d)}$ with ${d \in \\{0,1\\}^k}$;
+- actions: ${\mathcal{A} = \\{ \text{N}, \text{S}, \text{E}, \text{W} \\}}$;
+- transition model: ${\text{result}(s, a)}$ moves Pacman one cell, and clears the dot it finds there;
+- goal states: ${G = \\{ ((x,y), d) : d = \mathbf{0} \\}}$;
+- step cost: $1$ per move.
 
 .width-100.center[![](figures/lec2/pacman-world.png)]
 
@@ -208,19 +211,16 @@ class: middle
 ## State space size
 
 .grid[
-.kol-1-2[
-- .bold[World state]:
-    - Agent positions: 120
-    - Found count: 30
-    - Ghost positions: 12
-    - Agent facing: NSEW
-- .bold[How many?]
-    - World states?
-        - $120 \times 2^{30} \times 12^2 \times 4$
-    - States for eat-all-dots?
-        - $120 \times 2^{30}$
+.kol-3-5[
+The maze on the right has 120 cells, 30 dots and 2 ghosts. A .bold[world state] holds
+- the position of Pacman, 120 values;
+- the dots left, $2^{30}$;
+- the positions of the ghosts, $12^2$;
+- the direction Pacman faces, 4;
+
+hence ${120 \times 2^{30} \times 12^2 \times 4 \approx 7 \times 10^{13}}$ world states, against ${|\mathcal{S}| = 120 \times 2^{30} \approx 1.3 \times 10^{11}}$ for eat-all-dots.
 ]
-.kol-1-2[
+.kol-2-5[
 .width-100[![](figures/lec2/pacman-size.png)]
 ]
 ]
@@ -252,7 +252,7 @@ We can rarely build the whole tree, yet we want an optimal branch.
 
 class: middle
 
-.exercise[Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?]
+.question[Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?]
 
 ---
 
@@ -416,7 +416,7 @@ It is .bold[complete], .bold[optimal] when the path cost is non-decreasing with 
 
 .grid[
 .kol-1-2[
-.exercise[Isn't this process wastefully redundant?]
+.question[Isn't this process wastefully redundant?]
 ]
 .kol-1-2[
 .center.width-80[![](figures/lec2/id-properties.png)]
@@ -620,7 +620,7 @@ class: middle
 
 .center.width-80[![](figures/lec2/as-progress2.png)]
 
-.exercise[Why doesn't A* stop at step (e), since Bucharest is in the fringe?]
+.question[Why doesn't A* stop at step (e), since Bucharest is in the fringe?]
 
 ---
 
