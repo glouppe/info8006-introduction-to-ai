@@ -102,7 +102,7 @@ $$r' = R(s')$$
 ]
 .kol-3-5.center[
 $$s$$
-.width-90[![](figures/lec8/loop.png)]
+.width-90[![](figures/lec1/loop.svg)]
 $$s' \sim P(s' \mid s,a)$$
 ]
 .kol-1-5[
@@ -614,7 +614,7 @@ $$e'$$
 ]
 .kol-3-5.center[
 $$b$$
-.width-90[![](figures/lec8/loop.png)]
+.width-90[![](figures/lec1/loop.svg)]
 $$s' \sim P(s' \mid s,a)$$
 $$e' \sim P(e' \mid s')$$
 ]
@@ -673,7 +673,7 @@ $$\rho(b')$$
 ]
 .kol-3-5.center[
 $$b$$
-.width-90[![](figures/lec8/loop.png)]
+.width-90[![](figures/lec1/loop.svg)]
 $$b' \sim P(b' \mid b,a)$$
 ]
 .kol-1-5[

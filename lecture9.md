@@ -75,7 +75,7 @@ $$r' = R(s')$$
 ]
 .kol-3-5.center[
 $$s$$
-.width-90[![](figures/lec9/loop.png)]
+.width-90[![](figures/lec1/loop.svg)]
 $$s' \sim P(s' \mid s,a)$$
 ]
 .kol-1-5[
@@ -203,7 +203,7 @@ $$r' = \underbrace{R(s')}\_{???}$$
 ]
 .kol-3-5.center[
 $$s$$
-.width-90[![](figures/lec9/loop.png)]
+.width-90[![](figures/lec1/loop.svg)]
 $$s' \sim \underbrace{P(s' \mid s,a)}\_{???}$$
 ]
 .kol-1-5[
