@@ -248,13 +248,8 @@ class: middle
 - .bold[Expansion]: replacing a leaf by its children.
 - .bold[Strategy]: which leaf to expand next.
 
-.alert[The tree is often too large to be built. How do we find a branch leading to $G$?]
+.alert[The tree is far too large to build. Which leaves do we expand to reach $G$, and how do we expand as few as possible?]
 
----
-
-class: middle
-
-.question[Which fringe nodes to explore? How to expand as few nodes as possible, while achieving the goal?]
 
 ---
 
