@@ -359,7 +359,7 @@ $$\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s')$$
 
 The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
 $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s').$$
-- These equations are called the .bold[Bellman equations]. They form a system of $n= \mid \mathcal{S} \mid $ non-linear equations with as many unknowns.
+- These equations are called the .bold[Bellman equations]. They form a system of $n = |\mathcal{S}|$ non-linear equations with as many unknowns.
 - The utilities of states, defined as the expected utility of subsequent state sequences, are solutions of the set of Bellman equations.
 
 ???
@@ -436,17 +436,19 @@ class: middle
 
 .italic[Proof.] 
 
+.smaller[
 $$\begin{aligned}
 &||V\_{i+1} - V'\_{i+1}||\_\infty \\\\
-&= \max\_s \mid V\_{i+1}(s) - V'\_{i+1}(s) \mid \\\\
-&= \max\_s \left \mid R(s) + \gamma\max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') - R(s) - \gamma\max\_a \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right \mid \\\\
-&= \gamma \max\_s \left \mid \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') - \max\_a \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right \mid \\\\
-&\leq \gamma \max\_s \max\_a \left \mid \sum\_{s'} P(s' \mid s,a) V\_i(s') - \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right \mid \\\\
-&= \gamma \max\_s \max\_a \left \mid \sum\_{s'} P(s' \mid s,a) (V\_i(s') - V'\_i(s')) \right \mid \\\\
-&\leq \gamma \max\_s \max\_a \sum\_{s'} P(s' \mid s,a) \mid V\_i(s') - V'\_i(s') \mid \\\\
+&= \max\_s |V\_{i+1}(s) - V'\_{i+1}(s)| \\\\
+&= \max\_s \left| R(s) + \gamma\max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') - R(s) - \gamma\max\_a \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right| \\\\
+&= \gamma \max\_s \left| \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') - \max\_a \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right| \\\\
+&\leq \gamma \max\_s \max\_a \left| \sum\_{s'} P(s' \mid s,a) V\_i(s') - \sum\_{s'} P(s' \mid s,a) V'\_i(s') \right| \\\\
+&= \gamma \max\_s \max\_a \left| \sum\_{s'} P(s' \mid s,a) (V\_i(s') - V'\_i(s')) \right| \\\\
+&\leq \gamma \max\_s \max\_a \sum\_{s'} P(s' \mid s,a) |V\_i(s') - V'\_i(s')| \\\\
 &\leq \gamma \max\_s \max\_a \sum\_{s'} P(s' \mid s,a) ||V\_i - V'\_i||\_\infty \\\\
 &= \gamma ||V\_i - V'\_i||\_\infty
 \end{aligned}$$
+]
 
 ---
 
@@ -477,7 +479,7 @@ class: middle
 
 Value iteration repeats the Bellman updates:
 $$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') $$
-- Problem 1: it is slow – $O( \mid \mathcal{S} \mid ^2 \mid \mathcal{A} \mid )$ per iteration.
+- Problem 1: it is slow – $O(|\mathcal{S}|^2 |\mathcal{A}|)$ per iteration.
 - Problem 2: the $\max$ at each state rarely changes.
 - Problem 3: the policy $\pi\_i$ extracted from the estimate $V\_i$ might be optimal even if $V\_i$ is inaccurate!
 
