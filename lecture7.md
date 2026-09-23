@@ -256,20 +256,20 @@ Let $\mathcal{L}(\theta)$ denote a loss function (e.g., the negative log-likelih
 To minimize $\mathcal{L}(\theta)$, .bold[gradient descent] relies on 1st-order Taylor approximations
 $$\mathcal{L}(\theta + \epsilon) \approx \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta)$$
 and adds a quadratic regularization term to ensure that the approximation is valid only in a neighborhood of $\theta$, leading to the approximation
-$$\hat{\mathcal{L}}(\epsilon; \theta) = \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta) + \frac{1}{2\gamma} \|\epsilon\|^2,$$
-where $\gamma > 0$ controls the size of the neighborhood.
+$$\hat{\mathcal{L}}(\epsilon; \theta) = \mathcal{L}(\theta) + \epsilon^T\nabla\_\theta \mathcal{L}(\theta) + \frac{1}{2\alpha} \|\epsilon\|^2,$$
+where $\alpha > 0$ controls the size of the neighborhood.
 
 ---
 
 class: middle
 
 The approximation $\hat{\mathcal{L}}(\epsilon; \theta)$ is minimized where its gradient vanishes,
-$$\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta) = \nabla\_\theta \mathcal{L}(\theta) + \frac{1}{\gamma} \epsilon = 0,$$
-that is, for the step $\epsilon = -\gamma \nabla\_\theta \mathcal{L}(\theta)$.
+$$\nabla\_\epsilon \hat{\mathcal{L}}(\epsilon; \theta) = \nabla\_\theta \mathcal{L}(\theta) + \frac{1}{\alpha} \epsilon = 0,$$
+that is, for the step $\epsilon = -\alpha \nabla\_\theta \mathcal{L}(\theta)$.
 
 Starting from initial parameters $\theta\_0$, gradient descent repeats this step,
-$$\theta\_{t+1} = \theta\_t -\gamma \nabla\_\theta \mathcal{L}(\theta\_t),$$
-where $\gamma$ is the .bold[learning rate].
+$$\theta\_{t+1} = \theta\_t -\alpha \nabla\_\theta \mathcal{L}(\theta\_t),$$
+where $\alpha$ is the .bold[learning rate].
 
 ---
 
@@ -335,7 +335,7 @@ $$\mathcal{L}(\theta) = \frac{1}{N} \sum\_{i=1}^N \ell(y\_i, \hat{y}(\mathbf{x}\
 and each step of gradient descent costs a pass over the dataset.
 
 .bold[Stochastic gradient descent] averages the gradient over a random .bold[minibatch] $\mathcal{B}$ of $B \ll N$ pairs instead,
-$$\theta\_{t+1} = \theta\_t - \gamma \frac{1}{B} \sum\_{i \in \mathcal{B}} \nabla\_\theta \ell(y\_i, \hat{y}(\mathbf{x}\_i; \theta\_t)).$$
+$$\theta\_{t+1} = \theta\_t - \alpha \frac{1}{B} \sum\_{i \in \mathcal{B}} \nabla\_\theta \ell(y\_i, \hat{y}(\mathbf{x}\_i; \theta\_t)).$$
 The estimate is noisy but right on average, at a fraction $B/N$ of the cost.
 
 ---
@@ -1056,7 +1056,7 @@ WeatherNext 2 (Google DeepMind, 2025): a network trained on decades<br>of past w
 
 - Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_i, y\_i)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
 - A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k^T \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
-- Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \gamma \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
+- Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \alpha \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
 - Its performance is measured on pairs held out from training.
 
 ---

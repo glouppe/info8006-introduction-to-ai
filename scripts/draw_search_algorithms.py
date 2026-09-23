@@ -331,7 +331,7 @@ particle_filter = [
 # The training loop of lecture 7: minibatches, a gradient by automatic
 # differentiation, and the update of gradient descent
 train = [
-    (0, [kw("function "), proc("Train"), txt("("), var("d"), txt(", "), var("f"), txt(", "), greek("γ"),
+    (0, [kw("function "), proc("Train"), txt("("), var("d"), txt(", "), var("f"), txt(", "), greek("α"),
          txt(", "), var("B"), txt(", "), var("epochs"), txt(") "), kw("returns "), txt("the parameters "),
          greek("θ")]),
     (1, [greek("θ"), gets(), txt("random values")]),
@@ -342,7 +342,7 @@ train = [
          var("x"), txt("; "), greek("θ"), txt(")) over the pairs ("), var("x"), txt(", "), var("y"),
          txt(") of the minibatch")]),
     (3, [var("g"), gets(), sym("∇"), sub("θ"), var("L"), txt(", the gradient of the loss")]),
-    (3, [greek("θ"), gets(), greek("θ"), txt(" "), sym("−"), txt(" "), greek("γ"), txt(" "), var("g")]),
+    (3, [greek("θ"), gets(), greek("θ"), txt(" "), sym("−"), txt(" "), greek("α"), txt(" "), var("g")]),
     (1, [kw("return "), greek("θ")]),
 ]
 
