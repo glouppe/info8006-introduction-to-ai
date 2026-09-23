@@ -88,6 +88,8 @@ A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R,
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
+Rewards are attached to states. Attaching them to transitions instead, $R(s,a,s')$, gives the same algorithms.
+
 ---
 
 class: middle
