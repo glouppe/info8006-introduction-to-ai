@@ -2,7 +2,7 @@
 
     uv run python scripts/draw_search_algorithms.py
 
-Writes the algorithm listings of lectures 2 to 7 as SVG, replacing the screenshots taken
+Writes the algorithm listings of lectures 2 to 9 as SVG, replacing the screenshots taken
 from Russell and Norvig. The listings are the ones of the exercise sheets
 (`exercises/exercises.sty`, `pseudocode` environment): keywords in bold, procedure names in
 small capitals, variables in italics, each in its own colour. Roboto and the KaTeX faces are embedded from
