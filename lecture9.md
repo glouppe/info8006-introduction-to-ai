@@ -763,7 +763,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/Tnu4O_xEmVk?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-MarIQ
+MarIQ: approximate Q-learning on Mario Kart (SethBling, 2019).
 ]
 
 ---
@@ -773,7 +773,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/l5o429V1bbU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Playing Atari Games (Pinball)
+DQN on Atari, from the pixels (Mnih et al., 2015).
 ]
 
 ---
@@ -783,7 +783,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/W4joe3zzglU?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Robotic manipulation
+QT-Opt: Q-learning on real robots (Kalashnikov et al., 2018),<br>where the robots of Lecture 7 learned by imitation.
 ]
 
 ---
@@ -793,7 +793,7 @@ class: middle, black-slide
 .center[
 <iframe width="640" height="480" src="https://www.youtube.com/embed/fBiataDpGIo?&loop=1&start=0" frameborder="0" volume="0" allowfullscreen></iframe>
 
-Drone racing
+Champion-level drone racing (Kaufmann et al., 2023).
 ]
 
 ---
