@@ -955,7 +955,7 @@ Comment on the actions taken at any frame (right, jump, speed) shown in red.
 
 - A .bold[search problem] is a state space ${\mathcal{S}}$, an initial state ${s\_1}$, actions ${\text{actions}(s)}$, a transition model ${\text{result}(s, a)}$, goal states ${G}$ and step costs ${c}$. A solution is a sequence ${a\_{1:T}}$ reaching ${G}$, optimal when its path cost is minimal.
 - A .bold[strategy] is the order in which the fringe is expanded: LIFO for depth-first, FIFO for breadth-first, ${g(n)}$ for uniform-cost, ${h(n)}$ for greedy, ${f(n) = g(n) + h(n)}$ for A*.
-- Only .bold[uniform-cost] and .bold[A*] order by cost, hence are optimal in general; breadth-first and iterative deepening return the .bold[shallowest] goal, the cheapest one only under uniform step costs.
+- Only .bold[uniform-cost] and .bold[A*] order by cost, hence are optimal in general; breadth-first and iterative deepening return the .bold[shallowest] goal, optimal only when the path cost never decreases with the depth, as when every step costs the same.
 - ${h}$ is .bold[admissible] if ${h(n) \leq h^\*(n)}$, which makes tree-search A\* optimal, and .bold[consistent] if ${h(n) \leq c(n, a, n') + h(n')}$, which makes graph-search A\* optimal. A .bold[dominating] heuristic expands fewer nodes.
 - .bold[Graph search] keeps a closed set, so a state is expanded once, along the first path reaching it.
 
