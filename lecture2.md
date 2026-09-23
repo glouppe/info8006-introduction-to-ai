@@ -248,6 +248,8 @@ class: middle
 - .bold[Expansion]: replacing a leaf by its children.
 - .bold[Strategy]: which leaf to expand next.
 
+.alert[The tree is often too large to be built. How do we find a branch leading to $G$?]
+
 ---
 
 class: middle
