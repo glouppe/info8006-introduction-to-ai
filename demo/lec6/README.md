@@ -38,8 +38,10 @@ Kalman filter that tracks the position from noisy measurements.
 uv run jupyter lab demo/lec6/kalman.ipynb
 ```
 
-It imports `corner` and `mark_point` from `lampe.plots`, which is not in the
-environment, so the plotting cells fail as committed.
+The corner plots of the three models come from `demo/lec6/plots.py`, written
+for the notebook with numpy, scipy and matplotlib: the histogram of each
+variable on the diagonal, the credible regions of each pair below it, and the
+mean marked across the panels.
 
 ## Ghostbusters with a moving ghost
 
