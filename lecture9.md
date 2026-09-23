@@ -254,7 +254,7 @@ Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this,
 A .bold[model-based] agent estimates approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
 
 - Step 1: Learn an empirical MDP.
-  - Estimate $\hat{P}(s' \mid s,a)$ from empirical samples $(s,a,s')$ or with supervised learning.
+  - Estimate $\hat{P}(s' \mid s,a)$ by counting the transitions $(s,a,s')$, the maximum likelihood estimate of Lecture 5.
   - Discover each $\hat{R}(s)$ for each $s$.
 - Step 2: Evaluate $\pi$ using $\hat{P}$ and $\hat{R}$, e.g. as
   $$V(s)  = \hat{R}(s) + \gamma \sum\_{s'} \hat{P}(s' \mid s,\pi(s)) V(s').$$
@@ -687,7 +687,7 @@ class: middle
 .kol-3-4[
 ## Feature-based representations
 
-Solution: describe a state $s$ using a vector $\mathbf{x} = [f\_1(s), ..., f\_d(s)] \in \mathbb{R}^d$ of features.
+Solution: describe a state $s$ using a vector $\mathbf{x} = [f\_1(s), ..., f\_d(s)] \in \mathbb{R}^d$ of features, as the Pacman agent of Lecture 7.
 - Features are functions $f\_k$ from states to real numbers that capture important properties of the state.
 - Example features:
   - Distance to closest ghost
@@ -709,7 +709,7 @@ class: middle
 
 ## Approximate Q-Learning
 
-Using a feature-based representation, the Q-table can now be replaced with a function approximator, such as a linear model 
+Using a feature-based representation, the Q-table can now be replaced with a function approximator, such as the linear model of Lecture 7, 
 $$Q(s,a) = w\_1 f\_1(s,a) + w\_2 f\_2(s,a) + ... + w\_d f\_d(s,a).$$
 
 Upon the transition $(s, r, a, s')$, the update becomes
@@ -728,7 +728,7 @@ Remember that the TD-update can be viewed as a online GD update, except now we d
 
 class: middle
 
-In linear regression, imagine we had only one point $\mathbf{x}$ with features $[f\_1, ..., f\_d]$. Then,
+In linear regression (Lecture 7), imagine we had only one point $\mathbf{x}$ with features $[f\_1, ..., f\_d]$. Then,
 $$
 \begin{aligned}
 \ell(\mathbf{w}) &= \frac{1}{2} \left( y - \sum\_k w\_k f\_k \right)^2 \\\\
@@ -746,7 +746,7 @@ class: middle
 
 ## DQN
 
-Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the .italic[DQN] algorithm.
+Similarly, the Q-table can be replaced with a neural network (Lecture 7), resulting in the .italic[DQN] algorithm.
 
 .center.width-100[![](figures/lec9/dqn.png)]
 
