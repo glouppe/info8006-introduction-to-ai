@@ -184,7 +184,7 @@ We still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R, \gam
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
-Our goal is find the optimal policy $\pi^\*(s)$.
+Our goal is to find the optimal policy $\pi^\*(s)$.
 
 ---
 
@@ -511,7 +511,7 @@ The resulting policy is .bold[greedy] and .bold[suboptimal]:
 Actions do more than provide rewards according to the current learned model. 
 They also contribute to learning the true environment. 
 
-This is the .bold[exploitation-exploration] trade-off:
+This is the .bold[exploration-exploitation] trade-off:
 - Exploitation: follow actions that maximize the rewards, under the current learned model;
 - Exploration: follow actions to explore and learn about the true environment.
 
@@ -529,7 +529,7 @@ Simplest approach for forcing exploration: random actions ($\epsilon$-greedy).
 - With a (small) probability $\epsilon$, act randomly.
 - With a (large) probability $(1-\epsilon)$, follow the current policy.
 
-$\epsilon$-greedy does eventually explore the space, but keeps trashing around once learning is done.
+$\epsilon$-greedy does eventually explore the space, but keeps thrashing around once learning is done.
 
 ---
 
@@ -564,7 +564,7 @@ Although temporal difference learning provides a way to estimate $V^\pi$ in a mo
 
 ---
 
-# Détour: Q-values
+# Detour: Q-values
 
 .grid[
 .kol-1-2[
@@ -724,7 +724,7 @@ for all $w\_k$.
 
 ???
 
-Remember that the TD-update can be viewed as a online GD update, except now we dot not directly modify $Q(s,a)$ but rather the parameters of the function approximator.
+Remember that the TD-update can be viewed as a online GD update, except now we do not directly modify $Q(s,a)$ but rather the parameters of the function approximator.
 
 ---
 
