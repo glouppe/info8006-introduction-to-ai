@@ -346,6 +346,86 @@ train = [
     (1, [kw("return "), greek("θ")]),
 ]
 
+
+def sums(index):
+    """The sum over s' or a', with the prime from the italic face, which has one."""
+    return [sym("Σ"), sub(index), sub("'", family="KaTeXItalic")]
+
+
+def step(i):
+    """An iterate, V_i or V_{i+1} of a state s, as the slides write it."""
+    at = [var("V"), sub("i")] if i == "i" else [var("V"), sub("i"), sub("+1", family="KaTeXMain")]
+    return at + [txt("("), var("s"), txt(")")]
+
+
+# Value iteration, as lecture 8 states it: the Bellman update on every state,
+# until the iterates stop moving. The book writes the values U and keeps two
+# vectors; the slides write the iterates V_i, so the listing does too
+value_iteration = [
+    (0, [kw("function "), proc("Value-Iteration"), txt("("), var("mdp"), txt(", "), greek("ε"), txt(") "),
+         kw("returns "), txt("the values "), var("V")]),
+    (1, [var("V"), sub("0"), txt("("), var("s"), txt(") "), gets(), txt("0, "), kw("for each "), txt("state "),
+         var("s"), txt(" of "), var("S")]),
+    (1, [kw("for "), var("i"), txt(" = 0, 1, 2, ... "), kw("do")]),
+    (2, [kw("for each "), txt("state "), var("s"), txt(" of "), var("S"), txt(" "), kw("do")]),
+    (3, step("i+1") + [gets(), var("R"), txt("("), var("s"), txt(") + "), greek("γ"), txt(" "), sym("max"),
+                       sub("a"), txt(" ")] + sums("s") +
+       [txt(" "), var("P"), txt("("), var("s"), txt("' | "), var("s"), txt(", "), var("a"), txt(") "),
+        var("V"), sub("i"), txt("("), var("s"), txt("')")]),
+    (2, [kw("if "), sym("max"), sub("s"), txt(" "), sym("|")] + step("i+1") + [txt(" "), sym("−"), txt(" ")] +
+       step("i") + [sym("|"), txt(" "), sym("<"), txt(" "), greek("ε"), txt("(1 "), sym("−"), txt(" "),
+                    greek("γ"), txt(")/"), greek("γ"), txt(" "), kw("then return "), var("V"), sub("i"),
+                    sub("+1", family="KaTeXMain")]),
+]
+
+# Policy iteration, as lecture 8 states it: evaluate the current policy, then
+# act greedily on its values, until the policy stops changing
+policy_iteration = [
+    (0, [kw("function "), proc("Policy-Iteration"), txt("("), var("mdp"), txt(") "), kw("returns "),
+         txt("a policy "), greek("π")]),
+    (1, [greek("π"), sub("0"), txt("("), var("s"), txt(") "), gets(), txt("an action, "), kw("for each "),
+         txt("state "), var("s"), txt(" of "), var("S")]),
+    (1, [kw("for "), var("i"), txt(" = 0, 1, 2, ... "), kw("do")]),
+    (2, [var("V"), sub("i"), gets(), proc("Policy-Evaluation"), txt("("), greek("π"), sub("i"), txt(", "),
+         var("mdp"), txt(")")]),
+    (2, [greek("π"), sub("i"), sub("+1", family="KaTeXMain"), txt("("), var("s"), txt(") "), gets(),
+         sym("argmax"), sub("a"), txt(" ")] + sums("s") +
+       [txt(" "), var("P"), txt("("), var("s"), txt("' | "), var("s"), txt(", "), var("a"), txt(") "),
+        var("V"), sub("i"), txt("("), var("s"), txt("'), "), kw("for each "), txt("state "), var("s"),
+        txt(" of "), var("S")]),
+    (2, [kw("if "), greek("π"), sub("i"), sub("+1", family="KaTeXMain"), txt(" = "), greek("π"), sub("i"),
+         txt(" "), kw("then return "), greek("π"), sub("i")]),
+]
+
+# Figure 21.8 of Russell and Norvig, in the notation of lecture 9: the reward r
+# is the one of the state being left, as in the trials (s, r, a, s'), and the
+# next action is the one the exploration function f prefers
+q_learning = [
+    (0, [kw("function "), proc("Q-Learning-Agent"), txt("("), var("e"), txt(") "), kw("returns "),
+         txt("an action")]),
+    (1, [kw("persistent"), txt(": "), var("Q"), txt(", the values "), var("Q"), txt("("), var("s"), txt(", "),
+         var("a"), txt("), initially zero")]),
+    (2.15, [var("N"), txt(", the counts "), var("N"), txt("("), var("s"), txt(", "), var("a"),
+            txt("), initially zero")]),
+    (2.15, [var("s"), txt(", "), var("a"), txt(", "), var("r"), txt(", the previous state, action and reward, "
+            "initially null")]),
+    (0, []),
+    (1, [var("s"), txt("', "), var("r"), txt("' "), gets(), txt("the state and the reward of "), var("e")]),
+    (1, [kw("if "), var("s"), txt(" is not null "), kw("then")]),
+    (2, [var("N"), txt("("), var("s"), txt(", "), var("a"), txt(") "), gets(), var("N"), txt("("), var("s"),
+         txt(", "), var("a"), txt(") + 1")]),
+    (2, [var("Q"), txt("("), var("s"), txt(", "), var("a"), txt(") "), gets(), var("Q"), txt("("), var("s"),
+         txt(", "), var("a"), txt(") + "), greek("α"), txt(" ("), var("r"), txt(" + "), greek("γ"), txt(" "),
+         sym("max"), sub("a"), sub("'", family="KaTeXItalic"), txt(" "), var("Q"), txt("("), var("s"),
+         txt("', "), var("a"), txt("') "), sym("−"), txt(" "), var("Q"), txt("("), var("s"), txt(", "),
+         var("a"), txt("))")]),
+    (1, [var("s"), txt(", "), var("a"), txt(", "), var("r"), gets(), var("s"), txt("', "), sym("argmax"),
+         sub("a"), sub("'", family="KaTeXItalic"), txt(" "), var("f"), txt("("), var("Q"), txt("("), var("s"),
+         txt("', "), var("a"), txt("'), "), var("N"), txt("("), var("s"), txt("', "), var("a"), txt("')), "),
+         var("r"), txt("'")]),
+    (1, [kw("return "), var("a")]),
+]
+
 if __name__ == "__main__":
     listing("tree-search", tree, 840)
     listing("graph-search", graph, 840)
@@ -359,3 +439,6 @@ if __name__ == "__main__":
     listing("forward-backward", forward_backward, 900, lecture="lec6")
     listing("particle-filtering", particle_filter, 980, lecture="lec6")
     listing("train", train, 1000, lecture="lec7")
+    listing("value-iteration", value_iteration, 900, lecture="lec8")
+    listing("policy-iteration", policy_iteration, 900, lecture="lec8")
+    listing("q-learning", q_learning, 1040, lecture="lec9")

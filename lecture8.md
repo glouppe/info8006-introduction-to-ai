@@ -399,7 +399,7 @@ $$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') $$
 
 class: middle
 
-.center.width-100[![](figures/lec8/value-iteration.png)]
+.center.width-100[![](figures/lec8/value-iteration.svg)]
 
 ???
 
@@ -527,7 +527,7 @@ This hybrid algorithm is called .bold[modified policy iteration].
 
 class: middle
 
-.center.width-100[![](figures/lec8/policy-iteration.png)]
+.center.width-100[![](figures/lec8/policy-iteration.svg)]
 
 ---
 

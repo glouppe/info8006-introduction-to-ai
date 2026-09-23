@@ -617,7 +617,7 @@ $$Q(s,a) \leftarrow Q(s,a) + \alpha (r + \gamma \max\_{a'} Q(s',a') - Q(s,a)).$$
 
 class: middle
 
-.width-100[![](figures/lec9/q-learning.png)]
+.width-100[![](figures/lec9/q-learning.svg)]
 
 ---
 
