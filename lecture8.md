@@ -39,7 +39,7 @@ Reasoning under uncertainty and .bold[taking decisions]:
 Assume our agent lives in a $3 \times 4$ grid environment.
 - Noisy movements: actions do not always go as planned.
     - Each action achieves the intended effect with probability $0.8$.
-    - The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intented direction.
+    - The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intended direction.
     - If there is a wall in the direction the agent would have been taken, the agent stays put.
 - The agent receives rewards at each time step.
     - Small 'living' reward each step (can be negative).
@@ -163,7 +163,7 @@ This is similar to search problems, where the successor function could only depe
     - Lecture 1 writes $\pi : \mathcal{P}^\* \to \mathcal{A}$ on percept sequences; here the state is observed and Markovian, so the current state is enough.
     - An optimal policy is one that maximizes the expected utility, e.g. the expected sum of rewards.
     - An explicit policy defines a reflex agent.
-- Expectiminimax did not compute entire policies, but only some action for a single state.
+- Expectiminimax computed no policy, only an action for a single state.
 
 ]
 .kol-1-3[
@@ -423,7 +423,7 @@ Let $V\_i$ and $V\_{i+1}$ be successive approximations to the true utility $V$.
 
 .bold[Theorem.] For any two approximations $V\_i$ and $V'\_i$,
 $$||V\_{i+1} - V'\_{i+1}||\_\infty \leq \gamma ||V\_i - V'\_i||\_\infty.$$
-- That is, the Bellman update is a contraction by a factor $\gamma$ on the space of utility vector.
+- That is, the Bellman update is a contraction by a factor $\gamma$ on the space of utility vectors.
 - Therefore, any two approximations must get closer to each other, and in particular any approximation must get closer to the true $V$.
 
 $\Rightarrow$ Value iteration always converges to a unique solution of the Bellman equations whenever $\gamma < 1$.
@@ -699,7 +699,7 @@ While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent ca
 - The transition and sensor models are represented by a .italic[dynamic Bayesian network];
 - The dynamic Bayesian network is extended with decision ($A$) and utility ($R$ and $U$) nodes to form a dynamic decision network;
 - A .bold[filtering algorithm] is used to incorporate each new percept and action and to update the belief state representation;
-- Decisions are made by projecting forward possible action sequences and choosing (approximately) the best one, in a manner similar to a truncated .italic[Expectiminimax].
+- Decisions are made by projecting forward possible action sequences and choosing (approximately) the best one, in a manner similar to a truncated expectiminimax.
 
 ---
 
