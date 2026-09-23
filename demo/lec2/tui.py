@@ -19,12 +19,17 @@ OFF = "\033[0m"
 
 ANSI = re.compile(r"\033\[[0-9;]*m")
 
-LOGO = r"""
- ▄▄▄▄▄   ▄▄▄▄   ▄▄▄▄▄  ▄▄  ▄▄   ▄▄▄▄   ▄▄  ▄▄
- ██  ██  ██ ██  ██     ███▄███  ██ ██  ███ ██
- ██▀▀▀   █████  ██     ██ █ ██  █████  ██▀███
- ██      ██ ██  ▀███▄  ██   ██  ██ ██  ██  ██
-"""
+SHADOW = "\033[38;5;136m"
+GHOSTS = ("\033[38;5;203m", "\033[38;5;87m", "\033[38;5;218m")
+
+LOGO = r"""██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗
+██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║
+██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
+██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
+██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
+╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝"""
+
+CHASE = "ᗧ" + " ·" * 16 + "    ᗣ   ᗣ   ᗣ"
 
 
 def colours():
@@ -49,8 +54,21 @@ def pad(text, size, right=False):
 
 
 def logo():
-    """Print the Pacman banner."""
-    print(paint(LOGO, YELLOW + BOLD))
+    """Print the Pacman banner, the letters lit and their shadow behind."""
+    if not colours():
+        print(f"\n{LOGO}\n{CHASE}\n")
+        return
+
+    lit = ""
+    for line in LOGO.split("\n"):
+        for char in line:
+            lit += (YELLOW + BOLD if char == "█" else SHADOW) + char
+        lit += OFF + "\n"
+
+    chase = paint("ᗧ", YELLOW + BOLD) + paint(" ·" * 16, DIM) + "   "
+    for ghost in GHOSTS:
+        chase += "  " + paint("ᗣ", ghost)
+    print("\n" + lit + chase + "\n")
 
 
 def panel(title, rows):

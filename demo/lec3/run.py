@@ -151,9 +151,10 @@ def ghost_name(ghostagent):
     return ghostagent
 
 
-def print_results(score, computation_time, expanded_nodes):
-    """Print the score, the expanded nodes and the computation time."""
+def print_results(won, score, computation_time, expanded_nodes):
+    """Print the outcome, the score, the expanded nodes and the time."""
     tui.panel("Result", [
+        ("Outcome", tui.outcome(won)),
         ("Score", int(score)),
         ("Expanded nodes", expanded_nodes),
         ("Time", tui.seconds(computation_time)),
@@ -266,11 +267,11 @@ def main():
 
     layout = layout_thin_borders(args.layout, args.w)
 
-    score, computation_time, expanded_nodes = runGame(
+    score, computation_time, expanded_nodes, won = runGame(
         layout, agent, ghosts, bsagent, not args.silentdisplay,
         expout=0, hiddenGhosts=args.hiddenghosts)
 
-    print_results(score, computation_time, expanded_nodes)
+    print_results(won, score, computation_time, expanded_nodes)
 
     # Scratch file read back by the scripts that compare the agents
     with open("temp", "w+") as f:

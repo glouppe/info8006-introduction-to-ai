@@ -373,13 +373,9 @@ class ClassicGameRules:
             self.lose(state, game)
 
     def win(self, state, game):
-        if not self.quiet:
-            print("\nPacman emerges VICTORIOUS!\n")
         game.gameOver = True
 
     def lose(self, state, game):
-        if not self.quiet:
-            print("\nPacman DIED!\n")
         game.gameOver = True
 
     def getProgress(self, game):
@@ -919,4 +915,6 @@ def runGame(
 
     rules = ClassicGameRules(expout)
     game = rules.newGame(lay, pacman, ghosts, beliefstateagent, display, False, False, hiddenGhosts=hiddenGhosts)
-    return game.run(s = show)
+    score, computation_time, expanded_nodes = game.run(s = show)
+
+    return score, computation_time, expanded_nodes, game.state.isWin()
