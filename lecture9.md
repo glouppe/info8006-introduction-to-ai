@@ -12,7 +12,7 @@ Prof. Gilles Louppe<br>
 
 # Today
 
-How to make decisions under uncertainty, **while learning** about the environment?
+How to make decisions under uncertainty, .bold[while learning] about the environment?
 
 .grid[
 .kol-1-2[
@@ -56,10 +56,10 @@ A short recap.
 
 # MDPs
 
-A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
+A .bold[Markov decision process] (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
-- $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
+- $P$ is a (stationary) transition model such that  $P(s' \mid s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
@@ -76,7 +76,7 @@ $$r' = R(s')$$
 .kol-3-5.center[
 $$s$$
 .width-90[![](figures/lec9/loop.png)]
-$$s' \sim P(s'|s,a)$$
+$$s' \sim P(s' \mid s,a)$$
 ]
 .kol-1-5[
 <br><br><br><br><br>
@@ -97,7 +97,7 @@ class: middle
 # The Bellman equation
 
 The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
-$$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
+$$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s').$$
 
 .center.width-75[![](figures/lec8/how-to.png)]
 
@@ -107,21 +107,21 @@ $$V(s) = R(s) + \gamma  \max\_{a} \sum\_{s'} P(s'|s,a) V(s').$$
 
 # Value iteration
 
-The **value iteration** algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
+The .bold[value iteration] algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
 - Let $V\_i(s)$ be the estimated utility value for $s$ at the $i$-th iteration step.
-- The **Bellman update** consists in updating simultaneously all the estimates to make them *locally consistent* with the Bellman equation:
-$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s'|s,a) V\_i(s'). $$
+- The .bold[Bellman update] consists in updating simultaneously all the estimates to make them .italic[locally consistent] with the Bellman equation:
+$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s'). $$
 - Repeat until convergence.
 
 ---
 
 # Policy iteration
 
-The **policy iteration** algorithm directly computes the policy (instead of state values). It alternates the following two steps:
+The .bold[policy iteration] algorithm directly computes the policy (instead of state values). It alternates the following two steps:
 - Policy evaluation: given $\pi\_i$, calculate $V\_i = V^{\pi\_i}$, i.e. the utility of each state if $\pi\_i$ is executed:
-$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s'|s,\pi\_i(s)) V\_i(s').$$
+$$V\_i(s)  = R(s) + \gamma \sum\_{s'} P(s' \mid s,\pi\_i(s)) V\_i(s').$$
 - Policy improvement: calculate a new policy $\pi\_{i+1}$ using one-step look-ahead based on $V\_i$:
-$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s'|s,a)V\_i(s').$$
+$$\pi\_{i+1}(s) = \arg\max\_a \sum\_{s'} P(s' \mid s,a)V\_i(s').$$
 
 ---
 
@@ -180,7 +180,7 @@ There was a chicken, in some unknown MDP. The chicken wanted to maximise his rew
 We still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
-- $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
+- $P$ is a (stationary) transition model such that  $P(s' \mid s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
@@ -192,9 +192,9 @@ class: middle
 
 ## New twist 
 
-The transition model $P(s'|s,a)$ and the reward function $R(s)$ are **unknown**.
+The transition model $P(s' \mid s,a)$ and the reward function $R(s)$ are .bold[unknown].
 - We do not know which states are good nor what actions do!
-- We must observe or interact with the environment in order  to jointly *learn* these dynamics and act upon them.
+- We must observe or interact with the environment in order  to jointly .italic[learn] these dynamics and act upon them.
 .grid[
 .kol-1-5.center[
 <br><br><br><br>
@@ -204,7 +204,7 @@ $$r' = \underbrace{R(s')}\_{???}$$
 .kol-3-5.center[
 $$s$$
 .width-90[![](figures/lec9/loop.png)]
-$$s' \sim \underbrace{P(s'|s,a)}\_{???}$$
+$$s' \sim \underbrace{P(s' \mid s,a)}\_{???}$$
 ]
 .kol-1-5[
 <br><br><br><br><br>
@@ -242,7 +242,7 @@ class: middle
 
 .center.width-30[![](figures/lec9/policy-example.png)]
 
-The agent executes a set of **trials** (or episodes) in the environment using policy $\pi$.
+The agent executes a set of .bold[trials] (or episodes) in the environment using policy $\pi$.
 Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
 - Trial 1: $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
 - Trial 2: $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
@@ -253,13 +253,13 @@ Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
 
 # Model-based estimation
 
-A **model-based** agent estimates approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
+A .bold[model-based] agent estimates approximate transition and reward models $\hat{P}$ and $\hat{R}$ based on experiences and then evaluates the resulting empirical MDP.
 
 - Step 1: Learn an empirical MDP.
-  - Estimate $\hat{P}(s'|s,a)$ from empirical samples $(s,a,s')$ or with supervised learning.
+  - Estimate $\hat{P}(s' \mid s,a)$ from empirical samples $(s,a,s')$ or with supervised learning.
   - Discover each $\hat{R}(s)$ for each $s$.
 - Step 2: Evaluate $\pi$ using $\hat{P}$ and $\hat{R}$, e.g. as
-  $$V(s)  = \hat{R}(s) + \gamma \sum\_{s'} \hat{P}(s'|s,\pi(s)) V(s').$$
+  $$V(s)  = \hat{R}(s) + \gamma \sum\_{s'} \hat{P}(s' \mid s,\pi(s)) V(s').$$
 
 .center.width-55[![](figures/lec9/model-based-rl.png)]
 
@@ -294,9 +294,9 @@ $(E, -1, \text{north}, C), (C, -1, \text{east}, A), (A, -10, \text{exit}, \perp)
 .kol-1-2[
 Learned transition model $\hat{P}$:
 
-$\hat{P}(C|B, \text{east}) = 1$<br>
-$\hat{P}(D|C, \text{east}) = 0.75$<br>
-$\hat{P}(A|C, \text{east}) = 0.25$<br>
+$\hat{P}(C \mid B, \text{east}) = 1$<br>
+$\hat{P}(D \mid C, \text{east}) = 0.75$<br>
+$\hat{P}(A \mid C, \text{east}) = 0.25$<br>
 $(...)$
 ]
 .kol-1-2[
@@ -313,7 +313,7 @@ $(...)$
 
 # Model-free estimation
 
-Can we learn $V^\pi$ in a **model-free** fashion, without explicitly modeling the environment, i.e. without learning $\hat{P}$ and $\hat{R}$?
+Can we learn $V^\pi$ in a .bold[model-free] fashion, without explicitly modeling the environment, i.e. without learning $\hat{P}$ and $\hat{R}$?
 
 ---
 
@@ -321,9 +321,9 @@ Can we learn $V^\pi$ in a **model-free** fashion, without explicitly modeling th
 
 (a.k.a. Monte Carlo evaluation)
 
-- The utility $V^\pi(s)$ of state $s$ is the expected total reward from the state onward (called the expected **reward-to-go**)
+- The utility $V^\pi(s)$ of state $s$ is the expected total reward from the state onward (called the expected .bold[reward-to-go])
 $$V^\pi(s) = \mathbb{E}\left[\sum\_{t \geq 0} \gamma^t R(s\_t) \mid s\_0 = s, \pi \right]$$
-- Each trial provides a *sample* of this quantity for each state visited.
+- Each trial provides a .italic[sample] of this quantity for each state visited.
 - Therefore, at the end of each sequence, one can update a sample average $\hat{V}^\pi(s)$ by:
   - computing the observed reward-to-go for each state;
   - updating the estimated utility for that state, by keeping a running average.
@@ -369,7 +369,7 @@ If both $B$ and $E$ go to $C$ under $\pi$,<br> how can their values be different
 class: middle
 
 Unfortunately, direct utility estimation misses the fact that the state values $V^\pi(s)$ are not independent, since they obey the Bellman equations for a fixed policy:
-$$V^\pi(s) = R(s) + \gamma \sum\_{s'}P(s'|s,\pi(s)) V^\pi(s').$$
+$$V^\pi(s) = R(s) + \gamma \sum\_{s'}P(s' \mid s,\pi(s)) V^\pi(s').$$
 Therefore, direct utility estimation misses opportunities for learning and takes a long time to learn.
 
 ---
@@ -382,7 +382,7 @@ Temporal-difference (TD) learning consists in updating $V^\pi(s)$ each time the 
 
 When a transition from $s$ to $s'$ occurs, the temporal-difference update steers $V^\pi(s)$ to better agree with the Bellman equations for a fixed policy, i.e.
 $$V^\pi(s) \leftarrow V^\pi(s) + \alpha \underbrace{(r + \gamma V^\pi(s') - V^\pi(s))}\_{\text{temporal difference error}}$$
-where $\alpha$ is the *learning rate* parameter.
+where $\alpha$ is the .italic[learning rate] parameter.
 
 ???
 
@@ -462,7 +462,7 @@ class: middle
 
 ## Convergence
 
-- Notice that the TD-update involves only the observed successor $s'$, whereas the actual Bellman equations for a fixed policy involves all possible next states. Nevertheless, the *average* value of $V^\pi(s)$ will converge to the correct value.
+- Notice that the TD-update involves only the observed successor $s'$, whereas the actual Bellman equations for a fixed policy involves all possible next states. Nevertheless, the .italic[average] value of $V^\pi(s)$ will converge to the correct value.
 - If we change $\alpha$ from a fixed parameter to a function that decreases as the number of times a state has been visited increases, then $V^\pi(s)$  will itself converge to the correct value.
 
 ---
@@ -486,7 +486,7 @@ class: middle
 The passive model-based agent can be made active by instead finding the optimal policy $\pi^*$ for the empirical MDP.
 
 For example, having obtained a utility function $V$ that is optimal for the learned model (e.g., with Value Iteration), the optimal action by one-step look-ahead to maximize the expected utility is
-$$\pi^*(s) = \arg \max\_a \sum\_{s'} \hat{P}(s'|s,a) V(s').$$
+$$\pi^*(s) = \arg \max\_a \sum\_{s'} \hat{P}(s' \mid s,a) V(s').$$
 
 ---
 
@@ -494,13 +494,13 @@ class: middle, center
 
 .width-100[![](figures/lec9/active-model-based.png)]
 
-The agent **does not** learn the true utilities or the true optimal policy!
+The agent .bold[does not] learn the true utilities or the true optimal policy!
 
 ---
 
 class: middle
 
-The resulting policy is **greedy** and **suboptimal**:
+The resulting policy is .bold[greedy] and .bold[suboptimal]:
 - The learned transition and reward models $\hat{P}$ and $\hat{R}$ are not the same as the true environment since they are based on the samples obtained by the agent's policy, which biases the learning.
 - Therefore, what is optimal in the learned model can be suboptimal in the true environment.
 
@@ -511,7 +511,7 @@ The resulting policy is **greedy** and **suboptimal**:
 Actions do more than provide rewards according to the current learned model. 
 They also contribute to learning the true environment. 
 
-This is the **exploitation-exploration** trade-off:
+This is the .bold[exploitation-exploration] trade-off:
 - Exploitation: follow actions that maximize the rewards, under the current learned model;
 - Exploration: follow actions to explore and learn about the true environment.
 
@@ -542,8 +542,8 @@ Better idea: explore areas whose badness is not (yet) established, then stop exp
 Formally, let $V^+(s)$ denote an optimistic estimate of the utility of state $s$ and let $N(s,a)$ be the number of times actions $a$ has been tried in $s$. 
 
 For Value Iteration, the update equation becomes
-$$V^+\_{i+1}(s) = R(s) + \gamma \max\_a f(\sum_{s'} P(s'|s,a) V^+\_i(s'), N(s,a)),$$
-where $f(v, n)$ is called the **exploration function**. 
+$$V^+\_{i+1}(s) = R(s) + \gamma \max\_a f(\sum_{s'} P(s' \mid s,a) V^+\_i(s'), N(s,a)),$$
+where $f(v, n)$ is called the .bold[exploration function]. 
 
 The function $f(v,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$.
 
@@ -555,7 +555,7 @@ This is similar to MCTS! (Lecture 3)
 
 # Model-free learning
 
-Although temporal difference learning provides a way to estimate $V^\pi$ in a model-free fashion, we would still have to learn a model $P(s'|s,a)$ to choose an action based on a one-step look-ahead.
+Although temporal difference learning provides a way to estimate $V^\pi$ in a model-free fashion, we would still have to learn a model $P(s' \mid s,a)$ to choose an action based on a one-step look-ahead.
 
 <br>
 .center.width-50[![](figures/lec9/cartoon-model-free.png)]
@@ -582,7 +582,7 @@ class: middle
 
 The optimal policy $\pi^\*(s)$ can be defined in terms of either $V(s)$ or $Q(s,a)$:
 $$\begin{aligned}
-\pi^\*(s) &= \arg \max\_a \sum\_{s'} P(s'|s,a) V(s') \\\\
+\pi^\*(s) &= \arg \max\_a \sum\_{s'} P(s' \mid s,a) V(s') \\\\
 &= \arg \max\_a Q(s,a)
 \end{aligned}$$
 
@@ -596,24 +596,24 @@ class: middle
 
 Since $V(s) = \max\_a Q(s,a)$, the Q-values $Q(s,a)$ are recursively defined as
 $$\begin{aligned}
-Q(s,a) &= R(s) + \gamma \sum\_{s'} P(s'|s,a) V(s') \\\\
-&= R(s) + \gamma \sum\_{s'} P(s'|s,a) \max\_{a'} Q(s',a').
+Q(s,a) &= R(s) + \gamma \sum\_{s'} P(s' \mid s,a) V(s') \\\\
+&= R(s) + \gamma \sum\_{s'} P(s' \mid s,a) \max\_{a'} Q(s',a').
 \end{aligned} $$
 
-As for value iteration, the last equation can be used as an update equation for a fixed-point iteration procedure that calculates the Q-values $Q(s,a)$. However, it still requires knowing $P(s'|s,a)$!
+As for value iteration, the last equation can be used as an update equation for a fixed-point iteration procedure that calculates the Q-values $Q(s,a)$. However, it still requires knowing $P(s' \mid s,a)$!
 
 ---
 
 # Q-Learning
 
-The state-action-values $Q(s,a)$ can be learned in a model-free fashion using a temporal-difference method known as **Q-Learning**.
+The state-action-values $Q(s,a)$ can be learned in a model-free fashion using a temporal-difference method known as .bold[Q-Learning].
 
 Q-Learning consists in updating $Q(s,a)$ each time the agent experiences a transition $(s, r=R(s), a, s')$.
 
 The update equation for TD Q-Learning is
 $$Q(s,a) \leftarrow Q(s,a) + \alpha (r + \gamma \max\_{a'} Q(s',a') - Q(s,a)).$$
 
-.alert[Since $\pi^*(s) = \arg \max\_a Q(s,a)$, a TD agent that learns Q-values does not need a model of the form $P(s'|s,a)$, neither for learning nor for action selection!]
+.alert[Since $\pi^*(s) = \arg \max\_a Q(s,a)$, a TD agent that learns Q-values does not need a model of the form $P(s' \mid s,a)$, neither for learning nor for action selection!]
 
 ---
 
@@ -629,7 +629,7 @@ class: middle
 
 ## Convergence
 
-Q-Learning **converges to an optimal policy**, even when acting suboptimally.
+Q-Learning .bold[converges to an optimal policy], even when acting suboptimally.
 - This is called off-policy learning.
 - Technical caveats:
   - You have to explore enough.
@@ -651,7 +651,7 @@ Q-Learning **converges to an optimal policy**, even when acting suboptimally.
 - We want to generalize:
   - Learn about some small number of training states from experience.
   - Generalize that experience to new, similar situations.
-  - This is supervised *machine learning* again!
+  - This is supervised .italic[machine learning] again!
 ]
 .kol-1-3.width-100[<br><br>![](figures/lec9/cartoon-generalization.png)]
 ]
@@ -748,7 +748,7 @@ class: middle
 
 ## DQN
 
-Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the *DQN* algorithm.
+Similarly, the Q-table can be replaced with a neural network as function approximator, resulting in the .italic[DQN] algorithm.
 
 .center.width-100[![](figures/lec9/dqn.png)]
 
