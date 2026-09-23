@@ -413,6 +413,8 @@ class: middle, center
 
 (Step-by-step code example)
 
+`demo/lec8/mdp.ipynb`
+
 ---
 
 class: middle
@@ -530,6 +532,8 @@ class: middle
 class: middle, center
 
 (Step-by-step code example)
+
+`demo/lec8/mdp.ipynb`
 
 ---
 
