@@ -241,7 +241,7 @@ class: middle
 .center.width-30[![](figures/lec9/policy-example.png)]
 
 The agent executes a set of .bold[trials] (or episodes) in the environment using policy $\pi$.
-Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this:
+Trial trajectories $(s, r, a, s'), (s', r', a', s''), ...$ might look like this, each tuple holding a state, its reward $r = R(s)$, the action taken and the state reached:
 - Trial 1: $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
 - Trial 2: $(B, -1, \text{east}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
 - Trial 3: $(E, -1, \text{north}, C), (C, -1, \text{east}, D), (D, +10, \text{exit}, \perp)$
