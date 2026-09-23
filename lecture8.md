@@ -392,7 +392,7 @@ Because of the $\max$ operator, the Bellman equations are non-linear and solving
 The .bold[value iteration] algorithm provides a fixed-point iteration procedure for computing the state utilities $V(s)$:
 - Let $V\_i(s)$ be the estimated utility value for $s$ at the $i$-th iteration step.
 - The .bold[Bellman update] consists in updating simultaneously all the estimates to make them .italic[locally consistent] with the Bellman equation:
-$$V\_{i+1}(s) := R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') $$
+$$V\_{i+1}(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V\_i(s') $$
 - Repeat until convergence.
 
 ---
