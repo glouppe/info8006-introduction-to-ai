@@ -11,7 +11,7 @@ import os
 import sys
 from argparse import ArgumentParser, ArgumentTypeError
 
-from Display import display_b, display_PACMANLOGO
+import tui
 from pacman_module.ghostAgents import (
     CheekyGhost1,
     CheekyGhost2,
@@ -153,19 +153,11 @@ def ghost_name(ghostagent):
 
 def print_results(score, computation_time, expanded_nodes):
     """Print the score, the expanded nodes and the computation time."""
-    rows = [
-        ("Score", score),
+    tui.panel("Result", [
+        ("Score", int(score)),
         ("Expanded nodes", expanded_nodes),
-        ("Computation Time [s]", computation_time),
-    ]
-    width = len(f"Total computation time (seconds) : {computation_time}") - 8
-    rule = "-" * width
-
-    print(rule)
-    for name, value in rows:
-        print(f"{name:<20} | {value}".ljust(width - 1) + "|")
-        print(rule)
-    print("\n")
+        ("Time", tui.seconds(computation_time)),
+    ])
 
 
 def parse_args():
@@ -247,14 +239,16 @@ def main():
     if args.ghostagent == "cheeky":
         args.ghostagent = f"cheekyghost_{args.gdepth}"
 
-    display_PACMANLOGO()
-    display_b("Game's Information")
-    print(f"\nSearch Method        : {search_name(args.agentfile)}")
-    print(f"\nPacman's tree depth  : {args.pdepth}")
-    print(f"\nGhost's mindset      : {ghost_name(args.ghostagent)}")
-
+    tui.logo()
+    rows = [
+        ("Search", search_name(args.agentfile)),
+        ("Pacman's tree depth", args.pdepth),
+        ("Ghost's mindset", ghost_name(args.ghostagent)),
+    ]
     if "cheeky" in args.ghostagent:
-        print(f"\nGhost's tree depth   : {args.gdepth}")
+        rows.append(("Ghost's tree depth", args.gdepth))
+    rows.append(("Layout", args.layout))
+    tui.panel("Game", rows)
 
     if args.agentfile == "humanagent.py" and args.silentdisplay:
         print("Human agent cannot play without graphical display")

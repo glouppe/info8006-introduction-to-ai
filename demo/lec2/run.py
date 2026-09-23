@@ -11,7 +11,7 @@ import os
 import sys
 from argparse import ArgumentParser, ArgumentTypeError
 
-from Display import display_b, display_PACMANLOGO
+import tui
 from pacman_module.ghostAgents import (
     DumbyGhost,
     EastRandyGhost,
@@ -111,19 +111,11 @@ def search_name(agentfile):
 
 def print_results(score, computation_time, expanded_nodes):
     """Print the score, the expanded nodes and the computation time."""
-    rows = [
-        ("Score", score),
+    tui.panel("Result", [
+        ("Score", int(score)),
         ("Expanded nodes", expanded_nodes),
-        ("Computation Time [s]", computation_time),
-    ]
-    width = len(f"Total computation time (seconds) : {computation_time}") - 8
-    rule = "-" * width
-
-    print(rule)
-    for name, value in rows:
-        print(f"{name:<20} | {value}".ljust(width - 1) + "|")
-        print(rule)
-    print("\n")
+        ("Time", tui.seconds(computation_time)),
+    ])
 
 
 def parse_args():
@@ -190,9 +182,11 @@ def main():
     """Play one game and print what it cost to solve it."""
     args = parse_args()
 
-    display_PACMANLOGO()
-    display_b("Game's Information")
-    print(f"\nSearch Method : {search_name(args.agentfile)}")
+    tui.logo()
+    rows = [("Search", search_name(args.agentfile)), ("Layout", args.layout)]
+    if args.nghosts > 0:
+        rows.append(("Ghosts", f"{args.nghosts} {args.ghostagent}"))
+    tui.panel("Game", rows)
 
     if args.agentfile == "humanagent.py" and args.silentdisplay:
         print("Human agent cannot play without graphical display")
