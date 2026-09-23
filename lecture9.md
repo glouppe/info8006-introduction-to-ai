@@ -808,11 +808,23 @@ Reasoning models are trained the same way: the model tries, a program checks the
 
 ---
 
-# Summary
+class: middle
 
 .width-100[![](figures/lec9/plan.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+
+---
+
+# Summary
+
+- Reinforcement learning solves an MDP whose $P$ and $R$ are unknown, from the trials $(s, r, a, s')$ the agent collects itself.
+- Passive RL evaluates a fixed policy $\pi$: a model-based agent estimates $\hat{P}$ and $\hat{R}$ by counting and solves the empirical MDP, while temporal-difference learning does without a model,
+$$V^\pi(s) \leftarrow V^\pi(s) + \alpha (r + \gamma V^\pi(s') - V^\pi(s)).$$
+- Active RL learns an optimal policy, and must therefore explore. Q-learning,
+$$Q(s,a) \leftarrow Q(s,a) + \alpha (r + \gamma \max\_{a'} Q(s',a') - Q(s,a)),$$
+converges to $Q^\*$ whatever the actions taken, provided every pair $(s,a)$ is visited often enough.
+- One value per state does not scale. Learning $Q(s,a) = \sum\_k w\_k f\_k(s,a)$, or a network in its place, makes the update a gradient step of Lecture 7 and generalizes to unseen states.
 
 ---
 
