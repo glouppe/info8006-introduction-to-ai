@@ -461,7 +461,7 @@ class: middle
 ## Convergence
 
 - Notice that the TD-update involves only the observed successor $s'$, whereas the actual Bellman equations for a fixed policy involves all possible next states. Nevertheless, the .italic[average] value of $V^\pi(s)$ will converge to the correct value.
-- If we change $\alpha$ from a fixed parameter to a function that decreases as the number of times a state has been visited increases, then $V^\pi(s)$  will itself converge to the correct value.
+- If $\alpha$ decreases as a state is visited more often, with $\sum\_t \alpha\_t = \infty$ and $\sum\_t \alpha\_t^2 < \infty$, then $V^\pi(s)$ itself converges to the correct value.
 
 ---
 
@@ -540,10 +540,10 @@ Better idea: explore areas whose badness is not (yet) established, then stop exp
 Formally, let $V^+(s)$ denote an optimistic estimate of the utility of state $s$ and let $N(s,a)$ be the number of times actions $a$ has been tried in $s$. 
 
 For Value Iteration, the update equation becomes
-$$V^+\_{i+1}(s) = R(s) + \gamma \max\_a f(\sum_{s'} P(s' \mid s,a) V^+\_i(s'), N(s,a)),$$
+$$V^+\_{i+1}(s) = R(s) + \gamma \max\_a f\left(\sum\_{s'} P(s' \mid s,a) V^+\_i(s'), N(s,a)\right),$$
 where $f(v, n)$ is called the .bold[exploration function]. 
 
-The function $f(v,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$.
+The function $f(v,n)$ should be increasing in $v$ and decreasing in $n$. A simple choice is $f(v,n) = v + K/n$, where $K>0$ sets how long the agent keeps exploring. This is the bonus of MCTS (Lecture 3).
 
 ???
 
