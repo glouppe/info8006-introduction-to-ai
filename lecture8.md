@@ -737,12 +737,12 @@ That is, we transition from $b$ to $b'$, instead of $s$ to $s'$.
 
 # Summary
 
-- Sequential decision problems in uncertain environments, called MDPs, are defined by transition model and a reward function.
-- The utility of a state sequence is the sum of all the rewards over the sequence, possibly discounted over time.
-    - The solution of an MDP is a policy that associates a decision with every state that the agent might reach.
-    - An optimal policy maximizes the utility of the state sequence encountered when it is executed.
-- Value iteration and policy iteration can both be used for solving MDPs.
-- POMDPs are much more difficult than MDPs. However, a decision-theoretic agent can be constructed for those environments.
+- An MDP $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ scores a run by its discounted rewards $\sum\_{t \geq 0} \gamma^t R(s\_t)$. Its solution is a policy $\pi : \mathcal{S} \to \mathcal{A}$, optimal when it maximizes $V^\pi(s)$ in every state.
+- The values of the optimal policy satisfy the Bellman equation,
+$$V(s) = R(s) + \gamma \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s'),$$
+from which $\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s')$.
+- Value iteration solves it by iterating the Bellman update, a contraction of factor $\gamma$; policy iteration alternates evaluation and improvement, and stops when the policy no longer changes.
+- A POMDP is an MDP over belief states, where the update is filtering. Exact solutions are out of reach, but an agent can still look ahead with a decision network.
 
 ---
 
