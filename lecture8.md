@@ -88,7 +88,7 @@ A .bold[Markov decision process] (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P,
 - $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
-Rewards are attached to states. Attaching them to transitions instead, $R(s,a,s')$, gives the same algorithms.
+The agent collects $R(s\_t)$ for the state it occupies at each step, starting with $s\_0$: the reward comes with arriving in a state, and does not depend on the action that led there. Rewards can also be attached to transitions, $R(s,a,s')$, as we will see.
 
 ---
 
@@ -382,6 +382,27 @@ V(1,1) = -0.04 + \gamma \max  [& 0.8 V(1,2) + 0.1 V(2,1) + 0.1 V(1,1), \\\\
     & 0.8 V(2,1) + 0.1 V(1,2) + 0.1 V(1,1)]
 \end{aligned}
 $$
+
+---
+
+class: middle
+
+## Rewards on transitions
+
+Some problems reward the transition rather than the state: the fuel a move spends, the toll of a road, the points a capture scores. With $R(s,a,s')$, the Bellman equation carries the reward under the sum,
+$$V(s) = \max\_a \sum\_{s'} P(s' \mid s,a) \left[ R(s,a,s') + \gamma V(s') \right].$$
+
+Both formalisms are equivalent:
+- when the reward ignores $a$ and $s'$, it comes out of the sum, which gives back $V(s) = R(s) + \gamma \max\_a \sum\_{s'} P(s' \mid s,a) V(s')$;
+- conversely, letting each state carry the transition that led to it, $\tilde{s} = (s,a,s')$, puts the rewards back on states.
+
+Either way, the algorithms are the same. Only the term under the sum changes.
+
+???
+
+The fourth edition of Russell and Norvig, and CS188, both write $R(s,a,s')$.
+
+In Pacman, eating a dot on arriving in a cell is a reward on states; the cost of a move, or the bonus for eating a ghost rather than being eaten, is a reward on transitions.
 
 ---
 
