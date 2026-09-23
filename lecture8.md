@@ -194,11 +194,13 @@ Discuss the balance between risk and rewards.
 
 # Utilities over time
 
-.center.width-70[![](figures/lec8/preferences.png)]
+.center.width-50[![](figures/lec8/preferences.png)]
 
 What preferences should an agent have over state or reward sequences?
 - More or less? $[2,3,4]$ or $[1, 2, 2]$?
 - Now or later? $[1,0,0]$ or $[0,0,1]$?
+
+Lecture 1 scores a run with $V(s\_{1:T})$. With a reward $R(s\_t)$ at each step, this amounts to scoring its reward sequence.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
@@ -708,7 +710,7 @@ class: middle
 At time $t$, the agent must decide what to do.
 - Shaded nodes represent variables with known values.
 - The network is unrolled for a finite horizon.
-- It includes nodes for the reward of $\mathbf{X}\_{t+1}$ and $\mathbf{X}\_{t+2}$, but the (estimated) utility of $\mathbf{X}\_{t+3}$.
+- It includes reward nodes for $\mathbf{X}\_{t+1}$ and $\mathbf{X}\_{t+2}$, and a node $U\_{t+3}$ for the estimated value $V$ of $\mathbf{X}\_{t+3}$.
 
 ---
 
