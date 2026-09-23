@@ -231,7 +231,7 @@ hence ${120 \times 2^{30} \times 12^2 \times 4 \approx 7 \times 10^{13}}$ world 
 
 The applicable action sequences from $s\_1$ form a .bold[search tree]: the root holds $s\_1$, branches are actions, children hold successors.
 
-A .bold[node] $n$ holds a state $s(n)$ and the cost $g(n)$ of the path from $s\_1$; distinct nodes may hold the same state. Step costs and heuristics are written $c(s, a, s')$ and $h(s)$, or $c(n, a, n')$ and $h(n)$, indifferently.
+A .bold[node] $n$ holds a state $s(n)$ and the cost $g(n)$ of the path from $s\_1$; distinct nodes may hold the same state. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
 
 We can rarely build the whole tree, yet we want an optimal branch.
 
