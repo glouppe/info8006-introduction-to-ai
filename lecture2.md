@@ -233,7 +233,7 @@ We look for a path from $s\_1$ to $G$ in the state space.
 
 To find one, search .bold[grows candidate paths] from $s\_1$, one action at a time, until one of them reaches $G$.
 
-The candidates form the .bold[search tree]: its root is $s\_1$, its branches are actions, and a .bold[node] $n$ is a path, of last state $s(n)$ and cost $g(n)$. A state reached by several paths sits in several nodes. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
+The candidates form the .bold[search tree]: its root is $s\_1$, its branches are actions, and a .bold[node] $n$ is a path, of last state $s(n)$ and cost $g(n)$. A state reached by several paths sits in several nodes.
 
 We can rarely build the whole tree, yet we want an optimal branch.
 
