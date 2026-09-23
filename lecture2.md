@@ -235,8 +235,6 @@ To find one, search .bold[grows candidate paths] from $s\_1$, one action at a ti
 
 The candidates form the .bold[search tree]: its root is $s\_1$, its branches are actions, and a .bold[node] $n$ is a path, of last state $s(n)$ and cost $g(n)$. A state reached by several paths sits in several nodes.
 
-We can rarely build the whole tree, yet we want an optimal branch.
-
 .center.width-45[![](figures/lec2/pacman-tree.png)]
 
 ---
