@@ -85,7 +85,7 @@ A .bold[Markov decision process] (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P,
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s' \mid s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
+- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
 - $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
 Rewards are attached to states. Attaching them to transitions instead, $R(s,a,s')$, gives the same algorithms.
@@ -639,6 +639,8 @@ $$a$$
 - It does not depend on the actual state the agent is in.
 
 In other words, POMDPs can be reduced to an MDP in belief-state space, provided we can define a transition model $P(b' \mid b,a)$ and a reward function $\rho$ over belief states.
+
+.footnote[Reference: [Åström](https://doi.org/10.1016/0022-247X%2865%2990154-X), Optimal control of Markov processes with incomplete state information, 1965.]
 
 ---
 
