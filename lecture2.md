@@ -72,7 +72,7 @@ Yes, provided the correct decision can be made from the current percept, i.e. if
 
 # Problem-solving agents
 
-A .bold[problem-solving agent] is the .bold[goal-based agent] of lecture 1: given goal states ${G \subseteq \mathcal{S}}$, it .bold[searches] its transition model for an action sequence that reaches one of them, instead of reacting to the current percept.
+A .bold[problem-solving agent] is a .bold[goal-based agent] (Lecture 1): given goal states ${G \subseteq \mathcal{S}}$, it .bold[searches] its transition model for an action sequence that reaches one of them, instead of reacting to the current percept.
 
 Assumptions on the environment:
 - .bold[single agent]: no other agent acts on the environment;
@@ -143,18 +143,6 @@ A .bold[solution] is an action sequence ${a\_{1:T}}$ such that ${s\_{t+1} = \tex
 $$\sum\_{t=1}^{T} c(s\_t, a\_t, s\_{t+1}).$$
 
 An .bold[optimal solution] is a solution of minimal path cost.
-
-.exercise[What if the environment is partially observable? non-deterministic?]
-
-???
-
-With partial observability, the agent needs to keep in which states it might be in.
-- Percepts narrow down the set of possible states.
-
-If stochastic, the agent will need to consider what to do for each contingency that its percepts may reveal.
-- Percepts reveal which outcome has actually occurred.
-
-See 4.3 and 4.4 for more details.
 
 ---
 
