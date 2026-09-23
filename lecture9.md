@@ -2,7 +2,7 @@ class: middle, center, title-slide
 
 # Introduction to Artificial Intelligence
 
-Lecture 9: Reinforcement Learning
+Lecture 9: Reinforcement learning
 
 <br><br>
 Prof. Gilles Louppe<br>
@@ -49,8 +49,6 @@ Offline solution = Planning
 class: middle
 
 # MDPs
-
-A short recap.
 
 ---
 
