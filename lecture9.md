@@ -798,6 +798,16 @@ Champion-level drone racing (Kaufmann et al., 2023).
 
 ---
 
+class: middle
+
+.center.width-70[![](figures/lec0/deepseek-r1-length.png)]
+
+Reasoning models are trained the same way: the model tries, a program checks the answer, successful attempts are reinforced, and the model learns by itself to think longer (Lecture 0).
+
+.footnote[Credits: [Guo et al.](https://doi.org/10.1038/s41586-025-09422-z), Nature, 2025 (DeepSeek-R1).]
+
+---
+
 # Summary
 
 .width-100[![](figures/lec9/plan.png)]
