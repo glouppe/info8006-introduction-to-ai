@@ -28,6 +28,19 @@ The robot is the green turtle, the particles are the red and blue dots, and the
 grey circle is the mean of the confident ones, which turns green once the
 filter has found the robot.
 
+## Kalman filter on a ball on a spring
+
+The notebook of exercise session 5 (Ball on a spring): a linear-Gaussian model
+of a ball on a spring in the wind, its transition and sensor matrices, and the
+Kalman filter that tracks the position from noisy measurements.
+
+```bash
+uv run jupyter lab demo/lec6/kalman.ipynb
+```
+
+It imports `corner` and `mark_point` from `lampe.plots`, which is not in the
+environment, so the plotting cells fail as committed.
+
 ## Ghostbusters with a moving ghost
 
 ```bash
