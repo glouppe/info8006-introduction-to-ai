@@ -328,7 +328,7 @@ class: middle
 
 ???
 
-The whole tree holds $1 + b + b^2 + \ldots + b^m = \frac{b^{m+1} - 1}{b - 1}$ nodes, that is $O(b^m)$: the last tier dominates all the others together.
+The whole tree holds $1 + b + b^2 + \ldots + b^m$ nodes, the geometric series $\sum\_{i=0}^{m} b^i = \frac{b^{m+1} - 1}{b - 1}$, that is $O(b^m)$: the last tier dominates all the others together.
 
 ---
 
