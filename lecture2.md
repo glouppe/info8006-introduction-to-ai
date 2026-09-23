@@ -229,13 +229,14 @@ hence ${120 \times 2^{30} \times 12^2 \times 4 \approx 7 \times 10^{13}}$ world 
 
 # Search trees
 
-The applicable action sequences from $s\_1$ form a .bold[search tree]: the root holds $s\_1$, branches are actions, children hold successors.
+The state space is the .bold[problem]. A .bold[search tree] is the .bold[data structure] an algorithm builds to explore it: the root holds $s\_1$, branches are actions, children hold successors.
 
-A .bold[node] $n$ holds a state $s(n)$ and the cost $g(n)$ of the path from $s\_1$; distinct nodes may hold the same state. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
+- A .bold[node] $n$ stands for a path from $s\_1$, of which it holds the last state $s(n)$ and the cost $g(n)$. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
+- A state reached by several paths sits in several nodes, so the tree is larger than the state space, and infinite as soon as the graph has a cycle.
 
 We can rarely build the whole tree, yet we want an optimal branch.
 
-.center[![](figures/lec2/pacman-tree.png)]
+.center.width-45[![](figures/lec2/pacman-tree.png)]
 
 ---
 
@@ -243,10 +244,10 @@ We can rarely build the whole tree, yet we want an optimal branch.
 
 .width-100[![](figures/lec2/tree-search.svg)]
 
-## Important ideas
-- Fringe (or frontier) of partial plans under consideration
-- Expansion
-- Exploration
+The tree is grown .bold[lazily], one node at a time:
+- the .bold[fringe] (or frontier) holds the nodes generated but not expanded yet, the leaves of the tree so far;
+- .bold[expanding] a node generates its children and puts them in the fringe;
+- the .bold[strategy] decides which node of the fringe to expand next, and is what the algorithms that follow differ in.
 
 ---
 
