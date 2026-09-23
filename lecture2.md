@@ -326,6 +326,10 @@ class: middle
 
 .center.width-80[![](figures/lec2/dfs-properties.png)]
 
+???
+
+The whole tree holds $1 + b + b^2 + \ldots + b^m = \frac{b^{m+1} - 1}{b - 1}$ nodes, that is $O(b^m)$: the last tier dominates all the others together.
+
 ---
 
 class: middle
