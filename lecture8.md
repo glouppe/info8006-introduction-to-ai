@@ -584,7 +584,9 @@ What if the environment is only .bold[partially observable]?
 - The agent does not know in which state $s$ it is in.
     - Therefore, it cannot evaluate the reward $R(s)$ associated to the unknown state.
     - Also, it makes no sense to talk about a policy $\pi(s)$.
-- Instead, the agent collects percepts $e$ through a sensor model $P(e \mid s)$, from which it can reason about the unknown state $s$.
+- Instead, the agent collects percepts $e \in \mathcal{E}$ (Lecture 1) through a sensor model $P(e \mid s)$, from which it can reason about the unknown state $s$.
+
+A .bold[POMDP] is the tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma, \mathcal{E}, P(e \mid s))$.
 
 .center.width-60[![](figures/lec8/pomdp.png)]
 
@@ -599,7 +601,7 @@ We will assume that the agent maintains a belief state $b$.
 - $b(s)$  denotes the probability $P(S=s)$ under the current belief state;
 - the belief state $b$ is updated as evidence $e$ are collected.
 
-This is filtering!
+This is filtering (Lecture 6), with the action $a$ in the transition model.
 
 ---
 
