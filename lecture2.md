@@ -442,9 +442,7 @@ No: the last level dominates, $b^d$ nodes against the ${b + 2b^2 + \ldots + db^{
 class: middle
 
 - .bold[Strategy]: expand the cheapest node in the fringe.
-- .bold[Implementation]: fringe is a .bold[priority queue], using the cumulative cost $g(n)$ from the initial state to node $n$ as priority.
-
-With $n$ the path $a\_{1:k}$ from $s\_1$ through the states $s\_{1:k+1}$,
+- .bold[Implementation]: fringe is a .bold[priority queue], using as priority the cumulative cost from $s\_1$ to node $n$, that is, over the path $a\_{1:k}$ that $n$ holds,
 $$g(n) = \sum\_{t=1}^{k} c(s\_t, a\_t, s\_{t+1}).$$
 
 ---
