@@ -74,7 +74,13 @@ Yes, provided the correct decision can be made from the current percept, i.e. if
 
 A .bold[problem-solving agent] is the .bold[goal-based agent] of lecture 1: given goal states ${G \subseteq \mathcal{S}}$, it .bold[searches] its transition model for an action sequence that reaches one of them, instead of reacting to the current percept.
 
-Assumptions: the environment is .bold[single-agent], .bold[fully observable], .bold[deterministic] and .bold[known], so that the agent knows ${s\_{t+1} = \text{result}(s\_t, a\_t)}$ and can plan before acting.
+Assumptions on the environment:
+- .bold[single agent]: no other agent acts on the environment;
+- .bold[fully observable]: the percept reveals the state, ${e\_t = s\_t}$;
+- .bold[deterministic]: ${s\_{t+1} = \text{result}(s\_t, a\_t)}$;
+- .bold[known]: the agent knows $\text{result}$.
+
+The agent can therefore plan the whole sequence before acting.
 
 ---
 
