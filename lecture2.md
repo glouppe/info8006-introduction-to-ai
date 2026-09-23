@@ -227,12 +227,13 @@ hence ${120 \times 2^{30} \times 12^2 \times 4 \approx 7 \times 10^{13}}$ world 
 
 ---
 
-# Search trees
+# Tree search algorithms
 
-The state space is the .bold[problem]. A .bold[search tree] is the .bold[data structure] an algorithm builds to explore it: the root holds $s\_1$, branches are actions, children hold successors.
+We look for a path from $s\_1$ to $G$ in the state space.
 
-- A .bold[node] $n$ stands for a path from $s\_1$, of which it holds the last state $s(n)$ and the cost $g(n)$. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
-- A state reached by several paths sits in several nodes, so the tree is larger than the state space, and infinite as soon as the graph has a cycle.
+To find one, search .bold[grows candidate paths] from $s\_1$, one action at a time, until one of them reaches $G$.
+
+The candidates form the .bold[search tree]: its root is $s\_1$, its branches are actions, and a .bold[node] $n$ is a path, of last state $s(n)$ and cost $g(n)$. A state reached by several paths sits in several nodes. Step costs are written $c(s, a, s')$ or $c(n, a, n')$, indifferently.
 
 We can rarely build the whole tree, yet we want an optimal branch.
 
@@ -240,14 +241,14 @@ We can rarely build the whole tree, yet we want an optimal branch.
 
 ---
 
-# Tree search algorithms
+class: middle
 
 .width-100[![](figures/lec2/tree-search.svg)]
 
-The tree is grown .bold[lazily], one node at a time:
-- the .bold[fringe] (or frontier) holds the nodes generated but not expanded yet, the leaves of the tree so far;
-- .bold[expanding] a node generates its children and puts them in the fringe;
-- the .bold[strategy] decides which node of the fringe to expand next, and is what the algorithms that follow differ in.
+## Important ideas
+- .bold[Fringe] (or frontier): the leaves of the tree, generated but not expanded.
+- .bold[Expansion]: replacing a leaf by its children.
+- .bold[Strategy]: which leaf to expand next.
 
 ---
 
