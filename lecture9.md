@@ -322,7 +322,7 @@ Can we learn $V^\pi$ in a **model-free** fashion, without explicitly modeling th
 (a.k.a. Monte Carlo evaluation)
 
 - The utility $V^\pi(s)$ of state $s$ is the expected total reward from the state onward (called the expected **reward-to-go**)
-$$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\rvert\_{s\_0=s}$$
+$$V^\pi(s) = \mathbb{E}\left[\sum\_{t \geq 0} \gamma^t R(s\_t) \mid s\_0 = s, \pi \right]$$
 - Each trial provides a *sample* of this quantity for each state visited.
 - Therefore, at the end of each sequence, one can update a sample average $\hat{V}^\pi(s)$ by:
   - computing the observed reward-to-go for each state;

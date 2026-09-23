@@ -284,9 +284,9 @@ class: middle
 
 ## Policy evaluation
 
-The expected utility obtained by executing $\pi$ starting in $s$ is given by
-$$V^\pi(s) = \mathbb{E}\left[\sum\_{t=0}^\infty \gamma^t R(s\_t) \right]\Biggr\rvert\_{s\_0=s}$$
-where the expectation is with respect to the probability distribution over state sequences determined by $s$ and $\pi$.
+The **expectation** of $f(X)$ is $\mathbb{E}\left[f(X)\right] = \sum\_x P(x) f(x)$. The expected utility of executing $\pi$ from $s$ is therefore
+$$V^\pi(s) = \mathbb{E}\left[\sum\_{t \geq 0} \gamma^t R(s\_t) \mid s\_0 = s, \pi \right],$$
+over the state sequences that $\pi$ generates from $s$.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
