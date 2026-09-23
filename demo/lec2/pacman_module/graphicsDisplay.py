@@ -323,28 +323,42 @@ class PacmanGraphics:
 
     def drawExpandedCells(self, cells):
         """
-        Draws an overlay of expanded grid positions for search agents
+        Draws an overlay of expanded grid positions for search agents.
+
+        A cell that is already on screen keeps its square and only changes
+        colour. Deleting and recreating the whole trail at every move, as an
+        earlier version did, made it blink.
         """
         n = float(len(cells))
         baseColor = [1.0, 0.0, 0.0]
-        self.clearExpandedCells()
-        self.expandedCells = []
+        if not hasattr(self, 'expandedCells'):
+            self.expandedCells = {}
+
+        drawn = set()
         for k, cell in enumerate(cells):
-            screenPos = self.to_screen(cell)
+            key = (cell[0], cell[1])
+            drawn.add(key)
             cellColor = formatColor(
                 *[(n - k) * c * .5 / n + .25 for c in baseColor])
-            block = square(screenPos,
-                           0.5 * self.gridSize,
-                           color=cellColor,
-                           filled=1, behind=2)
-            self.expandedCells.append(block)
-            if self.frameTime < 0:
-                refresh()
+            block = self.expandedCells.get(key)
+            if block is None:
+                self.expandedCells[key] = square(self.to_screen(cell),
+                                                 0.5 * self.gridSize,
+                                                 color=cellColor,
+                                                 filled=1, behind=2)
+            else:
+                changeColor(block, cellColor)
+
+        for key in [key for key in self.expandedCells if key not in drawn]:
+            remove_from_screen(self.expandedCells.pop(key))
+
+        refresh()
 
     def clearExpandedCells(self):
-        if 'expandedCells' in dir(self) and len(self.expandedCells) > 0:
-            for cell in self.expandedCells:
-                remove_from_screen(cell)
+        if getattr(self, 'expandedCells', None):
+            for block in self.expandedCells.values():
+                remove_from_screen(block)
+            self.expandedCells = {}
 
     def make_window(self, width, height):
         grid_width = (width - 1) * self.gridSize
