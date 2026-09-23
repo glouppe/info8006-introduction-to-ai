@@ -56,12 +56,12 @@ A short recap.
 
 # MDPs
 
-A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ such that:
+A **Markov decision process** (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
-- ($0 < \gamma \leq 1$ is the discount factor.)
+- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
+- $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
 ---
 
@@ -178,11 +178,12 @@ There was a chicken, in some unknown MDP. The chicken wanted to maximise his rew
 
 # Reinforcement learning
 
-We still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R)$ such that:
+We still assume a Markov decision process $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ such that:
 - $\mathcal{S}$ is a set of states $s$;
 - $\mathcal{A}$ is a set of actions $a$;
 - $P$ is a (stationary) transition model such that  $P(s'|s,a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$.
+- $R$ is a reward function that maps immediate (finite) reward values $R(s)$ obtained in states $s$;
+- $\gamma \in (0, 1]$ is the discount factor, with $\gamma < 1$ unless every run reaches a terminal state.
 
 Our goal is find the optimal policy $\pi^\*(s)$.
 
