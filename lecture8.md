@@ -208,9 +208,7 @@ Lecture 1 scores a run with $V(s\_{1:T})$. With a reward $R(s\_t)$ at each step,
 
 class: middle
 
-## Theorem
-
-If we assume .bold[stationary] preferences over reward sequences, i.e. such that
+.bold[Theorem.] If we assume .bold[stationary] preferences over reward sequences, i.e. such that
 $$[r\_0, r\_1, r\_2, ...] \succ [r\_0, r\_1', r\_2', ...] \Rightarrow [r\_1, r\_2, ...] \succ [r\_1', r\_2', ...],$$
 then there are only two coherent ways to assign utilities to sequences:
 
@@ -628,7 +626,7 @@ $$a$$
 
 # Belief MDP
 
-.bold[Theorem (Astrom, 1965).] The optimal action depends only on the agent's current belief state.
+.bold[Theorem (Åström, 1965).] The optimal action depends only on the agent's current belief state.
 - The optimal policy can be described by a mapping $\pi^\*(b)$ from beliefs to actions.
 - It does not depend on the actual state the agent is in.
 
