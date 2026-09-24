@@ -482,6 +482,8 @@ uv run python run.py --agentfile bfs.py --show 1 --layout medium
 uv run python run.py --agentfile ucs.py --show 1 --layout medium
 ```
 
+The step costs of the demo are not uniform: stepping onto a dot costs 0.1, onto a capsule 5, onto an empty cell 1. Uniform-cost search is therefore pulled through the dots, where breadth-first goes by depth: 18721 nodes against 24497 on `medium`. With uniform step costs the two expand the same nodes, as they do on `ex`.
+
 ---
 
 class: middle
