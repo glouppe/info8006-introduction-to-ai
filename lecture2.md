@@ -774,12 +774,11 @@ With $b$ the branching factor, $d$ the depth of the least-cost solution, $m$ the
 
 # Creating admissible heuristics
 
-Most of the work in solving hard search problems optimally is in finding admissible heuristics.
+A .bold[relaxed problem] is the same problem with a constraint dropped, hence with more actions allowed. Its optimal cost is a lower bound on the true one, so it is an .bold[admissible] heuristic, as long as it is cheap to compute.
 
-Admissible heuristics can be derived from the exact solutions to .bold[relaxed problems], where new actions are available.
+The straight-line distance lets the agent leave the roads: 366 km from Arad to Bucharest, where the shortest drive is 418.
 
-<br><br>
-.center.width-80[![](figures/lec2/admissible-relax.png)]
+.center.width-75[![](figures/lec2/admissible-relax.png)]
 
 ---
 
