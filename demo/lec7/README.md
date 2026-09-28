@@ -4,6 +4,12 @@ The two notebooks of the live coding sessions, adapted from
 [Deep Learning (with PyTorch)](https://github.com/Atcold/pytorch-Deep-Learning)
 by Alfredo Canziani.
 
+Both need PyTorch, which is an extra of the course environment:
+
+```bash
+uv sync --extra torch
+```
+
 ## Logistic regression and MLPs on a spiral
 
 Two classes of points in the plane, wound into a spiral. The notebook trains,

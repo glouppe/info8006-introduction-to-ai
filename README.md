@@ -107,7 +107,13 @@ cd info8006-introduction-to-ai
 uv sync
 ```
 
-`uv sync` downloads Python 3.13 and installs the exact package versions pinned in `uv.lock` into a local `.venv/` directory. Launch Jupyter with
+`uv sync` downloads Python 3.13 and installs the exact package versions pinned in `uv.lock` into a local `.venv/` directory. PyTorch is kept apart, since it has no wheels for Intel Macs; the notebooks of lecture 7 need it, with
+
+```bash
+uv sync --extra torch
+```
+
+Launch Jupyter with
 
 ```bash
 uv run jupyter lab
