@@ -34,7 +34,7 @@ ARCHIVES = {
 }
 
 SKIP_DIRS = {"__pycache__", "__MACOSX", ".venv", ".ipynb_checkpoints", ".git"}
-SKIP_NAMES = {"README.md", ".DS_Store", ".gitignore"}
+SKIP_NAMES = {"README.md", ".DS_Store", ".gitignore", "uv.lock"}
 SKIP_SUFFIXES = {".pyc", ".pyo"}
 
 TIMESTAMP = (1980, 1, 1, 0, 0, 0)
