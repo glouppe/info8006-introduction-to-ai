@@ -13,8 +13,11 @@ if [ -n "$decks" ]; then
     git add $pdfs
 fi
 
-folders=$(git diff --cached --name-only --diff-filter=ACMRD -- 'projects/project*/' 'python-tutorial/tutorial_code/' \
-          | cut -d/ -f1-2 | sort -u)
+# grep finds nothing when no project file is staged, which pipefail turns into
+# a failure of the hook, hence the `|| true`
+folders=$(git diff --cached --name-only --diff-filter=ACMRD -- 'projects/project*' 'python-tutorial/tutorial_code' \
+          | grep -E '^(projects/project[^./]+|python-tutorial/tutorial_code)/' \
+          | cut -d/ -f1-2 | sort -u || true)
 
 if [ -n "$folders" ]; then
     echo "pre-commit: rebuilding the archives of" $folders >&2
