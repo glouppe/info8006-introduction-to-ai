@@ -9,9 +9,16 @@ dependencies = [
     "numpy>=2.5.3",
     "pandas>=3.0.5",
     "scipy>=1.18.1",
+    "tqdm>=4.70.1",
+]
+
+# PyTorch is only needed by the lecture 7 notebooks and by project 2. It is kept
+# apart so that `uv sync` works on every machine: since torch 2.3, there are no
+# wheels for Intel Macs, which would otherwise fail to install the environment.
+[project.optional-dependencies]
+torch = [
     "torch>=2.14.0",
     "torchvision>=0.29.0",
-    "tqdm>=4.70.1",
 ]
 
 [tool.uv]
