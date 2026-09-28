@@ -30,3 +30,5 @@ demo/lec7/data/
 # Planning notes and assistant guidance
 TODO.md
 CLAUDE.md
+# Gradescope autograders: the tests must stay out of the students' hands
+projects/autograder/
