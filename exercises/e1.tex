@@ -99,7 +99,7 @@ For a given grid
 
         \textbf{Goal states}: $G = \cbk{s \in \mathcal{S} : \lnot L \text{ and } w_G = 0}$.
 
-        \textbf{Step cost}: Under the given assumptions, every step from one node to another is equivalent. Then $c(s, a, s') = 1$ is relevant. Note that it could be any constant step cost.
+        \textbf{Step cost}: Under the given assumptions, every step from one state to the next is equivalent. Then $c(s, a, s') = 1$ is relevant. Note that it could be any constant step cost.
     \end{solution}
 
     \part Knowing that the terrain can be rugged at specific places, causing slow down of the robot, propose an admissible heuristic which estimates the remaining cost at any node.
@@ -460,7 +460,7 @@ As an example, in the maze above, if the agent is initially stationary, it might
         $N \times M \times 4 \times (V + 1)$
     \end{solution}
 
-    \part What is the maximum branching factor of this problem? Assume that illegal actions are simply not returned by the successor function.
+    \part What is the maximum branching factor of this problem? Assume that illegal actions are simply not in $\text{actions}(s)$.
 
     \begin{solution}
         The maximum branching factor is 3, and this happens when the agent is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
