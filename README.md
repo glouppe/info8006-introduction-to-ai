@@ -81,7 +81,6 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 ## Pacman programming projects
 
 - [General instructions](projects)
-- [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
 - Part 0: (tutorial session in class, due by October 16)
     - [Search algorithms](projects/project0)
     - [Adversarial search](projects/project0bis)

@@ -19,7 +19,6 @@ __pycache__/
 # The lock files students' `uv sync` writes in a project folder; the course's own
 # uv.lock, at the root, stays tracked
 projects/*/uv.lock
-python-tutorial/**/uv.lock
 .ipynb_checkpoints/
 
 # Lecture demos: run.py rewrites this scratch file (score;time;nodes) after every game

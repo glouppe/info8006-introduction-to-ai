@@ -5,8 +5,6 @@
 
 `projects/projectN/` goes to `projects/projectN.zip`, with its content at the
 root of the archive and without its `README.md`, which GitHub renders anyway.
-`python-tutorial/tutorial_code/` goes to `python-tutorial/tutorial_code.zip`,
-with its content under `tutorial_code/`, as the tutorial expects.
 
 The archives are written deterministically, files sorted and timestamps fixed,
 so that rebuilding one without touching its folder leaves it byte for byte
@@ -29,8 +27,6 @@ ARCHIVES = {
     "projects/project0bis": ("projects/project0bis.zip", ""),
     "projects/project1": ("projects/project1.zip", ""),
     "projects/project2": ("projects/project2.zip", ""),
-    "python-tutorial/tutorial_code": ("python-tutorial/tutorial_code.zip",
-                                      "tutorial_code/"),
 }
 
 SKIP_DIRS = {"__pycache__", "__MACOSX", ".venv", ".ipynb_checkpoints", ".git"}
