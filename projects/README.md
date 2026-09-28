@@ -150,7 +150,7 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The purpose of the projects is to give you an opportunity to have a practical approach of the core concepts of the course. However, you might be stuck during your work progression. Although we are glad to help you to figure out how to solve your various issues, the relevance of our guidance strongly relies on the specificity of your questions, which implies that you have at least tried to solve your issues by referring to the lectures.
 
-You may send your questions at **info8006@montefiore.uliege.be**. You may also meet us at our office on Thursday 12PM-3PM (Fanny Bodart, I87b).
+You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office on Thursday 12PM-3PM (Fanny Bodart, I87b).
 
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can be outside the duty periods mentioned above. Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
 
