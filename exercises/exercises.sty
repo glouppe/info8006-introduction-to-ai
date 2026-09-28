@@ -171,7 +171,7 @@
 \colorlet{diagram-grid}{black!20}
 \colorlet{diagram-flooded}{black!28}
 \definecolor{diagram-pacman}{HTML}{F2C230}
-\definecolor{diagram-insect}{HTML}{C8463D}
+\definecolor{diagram-robot}{HTML}{C8463D}
 
 \tikzset{
     diagram/.style={
@@ -229,13 +229,14 @@
     pics/car/.style={code={
         \fill[diagram-accent, draw=diagram-ink, line width=0.4pt] (0, 0.3) -- (0.21, -0.27) -- (0, -0.15) -- (-0.21, -0.27) -- cycle;
     }},
-    pics/insect/.style={code={
-        \draw[diagram-ink, line width=0.5pt] (-0.29, 0.1) -- (0.29, 0.1) (-0.31, -0.05) -- (0.31, -0.05) (-0.28, -0.2) -- (0.28, -0.2);
-        \draw[diagram-ink, line width=0.5pt] (-0.05, 0.28) -- (-0.14, 0.38) (0.05, 0.28) -- (0.14, 0.38);
-        \fill[diagram-ink] (0, 0.22) circle (0.08);
-        \fill[diagram-insect, draw=diagram-ink, line width=0.4pt] (0, -0.05) ellipse (0.18 and 0.23);
-        \draw[diagram-ink, line width=0.4pt] (0, 0.18) -- (0, -0.28);
-        \fill[diagram-ink] (-0.08, 0.02) circle (0.035) (0.08, 0.02) circle (0.035) (-0.08, -0.14) circle (0.035) (0.08, -0.14) circle (0.035);
+    pics/robot/.style={code={
+        \draw[diagram-ink, line width=0.5pt] (0, 0.2) -- (0, 0.33);
+        \fill[diagram-ink] (0, 0.35) circle (0.04);
+        \fill[diagram-robot, draw=diagram-ink, line width=0.4pt, rounded corners=0.04cm] (-0.22, -0.2) rectangle (0.22, 0.2);
+        \fill[white] (-0.1, 0.06) circle (0.055) (0.1, 0.06) circle (0.055);
+        \fill[diagram-ink] (-0.1, 0.06) circle (0.028) (0.1, 0.06) circle (0.028);
+        \draw[diagram-ink, line width=0.5pt] (-0.09, -0.09) -- (0.09, -0.09);
+        \fill[diagram-ink] (-0.16, -0.3) rectangle (-0.06, -0.2) (0.06, -0.3) rectangle (0.16, -0.2);
     }},
 }
 

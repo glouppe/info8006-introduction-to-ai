@@ -125,9 +125,9 @@ For a given grid
     \end{solution}
 \end{parts}
 
-\titledquestion{The hive \source{CS188, Spring 2019}}
+\titledquestion{Sewer inspection \source{CS188, Spring 2019}}
 
-The hive of insects needs your help. You control an insect in a rectangular maze-like environment of size $M \times N$, as shown in the figure below. At each time-step, the insect can move into a free adjacent cell or stay in its current location. All actions have a unit cost.
+You control an inspection robot in a rectangular maze of sewers of size $M \times N$, as shown in the figure below. At each time-step, the robot can move into a free adjacent cell or stay in its current location. All actions have a unit cost.
 
 \begin{center}
     \begin{tikzpicture}[world diagram]
@@ -137,23 +137,23 @@ The hive of insects needs your help. You control an insect in a rectangular maze
         \draw[grid lines] (0, 0) grid (5, 5);
         \draw[world border] (0, 0) rectangle (5, 5);
         \pic at (4.5, 4.5) {exit};
-        \pic at (0.5, 0.5) {insect};
+        \pic at (0.5, 0.5) {robot};
     \end{tikzpicture}
 \end{center}
 
-In this particular case, the insect must pass through a series of partially flooded tunnels, as illustrated by the gray cells on the map. The insect can hold its breath for $A$ time-steps in a row. Moving into a flooded cell requires your insect to consume 1 unit of air, while moving into a free cell refills its air supply.
+In this particular case, the robot must pass through a series of partially flooded tunnels, as illustrated by the gray cells on the map. In a flooded cell, the robot runs on a sealed backup battery, which lasts $A$ time-steps in a row. Moving into a flooded cell uses 1 unit of that battery, while moving into a free cell recharges it completely.
 
 \begin{parts}
     \part Give a minimal state space for this problem (do not include extra information). You should answer for a general instance of the problem, not the specific map above.
 
     \begin{solution}
-        The position of the insect as well as the number of units of air it has left, $s = (x, y, u_a) \in \cbk{1, \ldots, M} \times \cbk{1, \ldots, N} \times \cbk{0, \ldots, A}$. The air supply is $A$ in a free cell and drops to $0$ after $A$ moves through flooded cells.
+        The position of the robot as well as the number of units of battery it has left, $s = (x, y, u_b) \in \cbk{1, \ldots, M} \times \cbk{1, \ldots, N} \times \cbk{0, \ldots, A}$. The battery holds $A$ units in a free cell and drops to $0$ after $A$ moves through flooded cells.
     \end{solution}
 
     \part Give the size of your state space.
 
     \begin{solution}
-        $M \times N \times (A + 1)$, since the air left takes the $A + 1$ values $0, 1, \ldots, A$.
+        $M \times N \times (A + 1)$, since the battery left takes the $A + 1$ values $0, 1, \ldots, A$.
     \end{solution}
 \end{parts}
 
