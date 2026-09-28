@@ -30,3 +30,5 @@ Each of your agents will be evaluated against new mazes, some being designed to 
 - **BFS** (20%): If implemented correctly, your implementation should return the same score as ours and expand roughly the same amount of nodes.
 - **A\*** (75%): A well-implemented A\* algorithm should return the optimal solution no matter the maze structure. The number of expanded nodes needed to find an optimal solution depends on the quality of the heuristic. For this algorithm, we check whether the returned solution is optimal for all mazes. The number of expanded nodes is also taken into account (the lower the better) in the grade.
 - **Code style** (5%): No points are awarded if your code is not PEP-8 compliant.
+
+Each game is given a time budget proportional to the number of nodes we expect it to need, a few seconds on the small layouts, and a game in which Pacman neither wins nor dies is stopped after 1000 moves. Both count as a failed layout.
