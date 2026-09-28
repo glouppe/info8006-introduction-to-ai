@@ -1,5 +1,7 @@
 # Project 0 bis - Adversarial search
 
+**Deadline: Friday, October 16, 23:59.**
+
 ## Deliverables
 
 You are requested to deliver

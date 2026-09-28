@@ -18,6 +18,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 | October 1 | Lecture 3: [Games and adversarial search][l3] [[PDF][l3-pdf]] <br> Exercises 1: Solving problems by searching [[PDF][e1]] [[Solutions][e1s]]|
 | October 8 | Lecture 4: [Quantifying uncertainty][l4] [[PDF][l4-pdf]] <br> Lecture 5: [Probabilistic reasoning][l5] [[PDF][l5-pdf]] <br> Exercises 2: Games and adversarial search [[PDF][e2]] [[Solutions][e2s]]|
 | October 15 | Lecture 5: [Probabilistic reasoning][l5] (continued) [[PDF][l5-pdf]] <br> Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]]  <br>Exercises 3: Quantifying uncertainty [[PDF][e3]] [[Solutions][e3s]]|
+| October 16 | Deadline for Project 0 and Project 0 bis |
 | October 22 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued) <br>Exercises 4: Probabilistic reasoning [[PDF][e4]] [[Solutions][e4s]]|
 | October 29 | _No class_ |
 | November 5 | Lecture 6: [Reasoning over time][l6] [[PDF][l6-pdf]] (continued)<br>Lecture 7: [Machine learning and neural networks][l7] [[PDF][l7-pdf]] <br> Exercises 5: Reasoning over time [[PDF][e5]] [[Solutions][e5s]]|
@@ -81,7 +82,7 @@ Lectures for INFO8006 Introduction to Artificial Intelligence, ULiège, Fall 202
 
 - [General instructions](projects)
 - [Python tutorial](python-tutorial) [[video (Linux)](https://www.youtube.com/watch?v=aul2ARPn790), [video (Windows)](https://www.youtube.com/watch?v=CWNOHrwzIaM)]
-- Part 0: (tutorial session in class)
+- Part 0: (tutorial session in class, due by October 16)
     - [Search algorithms](projects/project0)
     - [Adversarial search](projects/project0bis)
 - Part 1: [Bayes Filter](projects/project1) (TBD.)

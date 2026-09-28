@@ -1,6 +1,9 @@
 # Project 0 - Search algorithms
 
 Both Project 0 and [Project 0 bis](../project0bis) are considered **tutorials** and are therefore only graded artificially; they do **not** contribute to the final exam grade.
+
+**Deadline: Friday, October 16, 23:59.**
+
 ## Deliverables
 
 You are requested to deliver
