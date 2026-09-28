@@ -1,0 +1,13 @@
+# Project 0 bis of INFO8006 Introduction to Artificial Intelligence.
+# The environment is managed with uv, as the rest of the course:
+#
+#     uv sync                   # create .venv with Python and numpy
+#     uv run python run.py      # play the game in that environment
+[project]
+name = "info8006-project0bis"
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[tool.uv]
+package = false

@@ -2,57 +2,60 @@
 
 <p align="center"><img src="pacman_game.png" width="50%"></p>
 
-The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into three parts:
+The goal of this programming project is to implement intelligent agents for the game of Pacman. The project is divided into four parts:
 - [Project 0](project0): you have to implement a Search agent for eating all the food dots as quickly as possible.
 - [Project 0 bis](project0bis): you have to implement a Minimax agent for eating all the food dots as quickly as possible, while avoiding the ghost enemies that are chasing you.
 - [Project 1](project1): you have to implement a Bayes filter for tracking all the non-visible ghosts' positions.
-- Project 2: you have to implement an imitation learning algorithm to train an agent to mimic an expert’s behavior. (*Coming soon*)
+- [Project 2](project2): you have to implement an imitation learning algorithm to train an agent to mimic an expert's behavior.
 
 ## Installation
 
 > The instructions below have been tested under Windows, Linux and MacOS.
 
-We recommend to install a Python (3) environment using the `conda` package manager. The easiest way is to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html). You also need a code editor that supports Python. If you don't already have one, here are a few you might consider : [Sublime Text](https://www.sublimetext.com/), [VS Code](https://code.visualstudio.com/), [Vim](https://www.vim.org/), ...
+Each project comes with its own environment, managed by [uv](https://docs.astral.sh/uv/) as the rest of the course. Install uv:
 
-Once Miniconda is installed, open the Anaconda prompt (Windows) or a terminal (Linux/MacOS).
+```console
+$ curl -LsSf https://astral.sh/uv/install.sh | sh                                    # macOS and Linux
+$ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
+```
+
+You also need a code editor that supports Python. If you don't already have one, here are a few you might consider : [Sublime Text](https://www.sublimetext.com/), [VS Code](https://code.visualstudio.com/), [Vim](https://www.vim.org/), ...
 
 ### Setup
 
-Create a `pacman` environment, activate it and install the dependencies:
+Extract the archive of the project, then, from its directory:
 
 ```console
-$ conda create --name pacman python=3.8
-$ conda activate pacman
-$ conda install numpy
+$ uv sync
 ```
 
-From now, it is assumed that `pacman` is activated.
+This downloads Python and installs the dependencies into a local `.venv` directory. Every command below is run with `uv run`, which uses that environment; in VS Code, select `.venv` as the interpreter.
 
 ### Usage
 
 - `--agent`: start the game with a user-specifed Pacman agent
     ```console
-    $ python run.py --agent humanagent
+    $ uv run python run.py --agent humanagent
     ```
 
 - `--ghost`: start the game with a user-specifed Ghost agent (`dumby`, `greedy`, `smarty` or `eastrandy`)
     ```console
-    $ python run.py --ghost dumby
+    $ uv run python run.py --ghost dumby
     ```
 
 - `--layout`: start the game with a user-specifed maze layout (see `pacman_module/layouts` directory)
     ```console
-    $ python run.py --layout medium
+    $ uv run python run.py --layout medium
     ```
 
 - `--nographics`: disable the graphical user interface
     ```console
-    $ python run.py --agent dfs --nographics
+    $ uv run python run.py --agent dfs --nographics
     ```
 
 ## Instructions
 
-All parts (1 & 2) of the project must be carried out in groups of maximum 3 students. You must keep the same group across all parts. For each part, login to [Gradescope](https://www.gradescope.com/) with your `@student.uliege.be` account and submit the requested deliverables. Don't forget to add other group members for each submission.
+All parts of the project must be carried out in groups of maximum 3 students. You must keep the same group across all parts. For each part, login to [Gradescope](https://www.gradescope.com/) with your `@student.uliege.be` account and submit the requested deliverables. Don't forget to add other group members for each submission.
 
 We tolerate only **one delay of maximum 24 hours**. For example, if you submit your first part late, no more delay will be allowed for the other part. In case of *more than one delay*, the concerned parts will receive a *0/20* grade.
 
@@ -137,7 +140,7 @@ Useful methods of the state are specified below:
 - `s.isWin()`: Returns `True` if the state is in a *winning end*.
 - `s.isLose()`: Returns `True` if the state is in a *losing end*.
 
-Implementation examples are provided in `humanagent.py` and `randomagent.py`.
+An implementation example is provided in `humanagent.py`.
 
 ### Illegal moves
 
@@ -147,7 +150,7 @@ You need to ensure that your agent always returns a legal move. If it is not the
 
 The purpose of the projects is to give you an opportunity to have a practical approach of the core concepts of the course. However, you might be stuck during your work progression. Although we are glad to help you to figure out how to solve your various issues, the relevance of our guidance strongly relies on the specificity of your questions, which implies that you have at least tried to solve your issues by referring to the lectures.
 
-You may send your questions at **info8006@montefiore.ulg.ac.be**. You may also meet us at our office on Thursday 12PM-3PM (Fanny Bodart, I87b).
+You may send your questions at **info8006@montefiore.uliege.be**. You may also meet us at our office on Thursday 12PM-3PM (Fanny Bodart, I87b).
 
 If none of these time slots suits you, feel free to send an email in order to fix an appointment. When you send your email, make sure to already suggest a few time slots. These can be outside the duty periods mentioned above. Do not wait a couple of days before the **hard** deadline to start your project and/or ask your questions. Be also aware that we cannot guarantee to answer your questions outside office hours.
 

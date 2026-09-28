@@ -11,11 +11,14 @@ You are requested to deliver
 
 You can download the [archive](../project0.zip?raw=true) of the project into a directory of your choice. In this first part of the project, only food dots, capsules and Pacman are in the maze. Your task is to design an intelligent agent based on search algorithms (see [Lecture 2](https://glouppe.github.io/info8006-introduction-to-ai/?p=lecture2.md)) for **maximizing** the score. You are asked to implement the **breadth-first search (BFS)** and **A\*** algorithms. We recommend to implement them in this order. It is mandatory to use only the [API](..#api) to retrieve game information.
 
-To help you, we provide an implementation of the DFS algorithm in the `dfs.py` file. However, the `key` function is not finished. Once you have activated your Pacman environment (see [installation](..#installation)), you can test the DFS algorithm using the following commands:
+To help you, we provide an implementation of the DFS algorithm in the `dfs.py` file. However, the `key` function is not finished: as shipped, it identifies a state by the position of Pacman alone, so the search discards the paths that eat the remaining dots and returns no solution at all. Pacman then stands still and the game never ends, except on layouts holding a single dot. Completing `key` is the first thing to do.
+
+Once the environment of the project is set up (see [installation](..#installation)), you can test the DFS algorithm with
+
 ```console
-$ python run.py --agent dfs --layout medium
+$ uv run python run.py --agent dfs --layout medium
 ```
-If you want to test one of your implementation, just replace the script parameter `dfs` by the name (without the extension) of the agent file you want to test. Refer to the [usage section](..#usage) for more details about the options.
+If you want to test one of your implementation, just replace the `--agent` value `dfs` by the name (without the extension) of the agent file you want to test. Refer to the [usage section](..#usage) for more details about the options.
 
 ## Evaluation
 
