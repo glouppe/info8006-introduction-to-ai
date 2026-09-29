@@ -433,6 +433,12 @@ Finding the exact solution with Minimax remains .bold[intractable].
 
 .question[What data structure should be used to efficiently store and look up the values of states?]
 
+???
+
+A .bold[hash table], keyed by the state, with expected ${O(1)}$ insertion and look-up.
+
+In chess programs, the key is a 64-bit Zobrist hash: a random number is drawn once for every (piece, square) pair, and the key of a position is the XOR of the numbers of its pieces, updated in ${O(1)}$ after each move. The table has a fixed size and replaces old entries, keeping those searched deepest. With α-β pruning, an entry also stores the depth of the search and whether the value is exact or only a bound.
+
 ---
 
 # Imperfect real-time decisions
