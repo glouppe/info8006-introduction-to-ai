@@ -563,14 +563,14 @@ class: middle, black-slide
 
 # Multi-agent games
 
-- What if the game is not zero-sum, or has .bold[multiple players]?
-- Generalization of Minimax:
-    - Terminal states are labeled with utility .bold[tuples] (1 value per player).
-    - Intermediate states are also labeled with utility tuples.
-    - Each player maximizes its own component.
-    - May give rise to cooperation and competition dynamically.
+What if the game is not zero-sum, or has .bold[more than two players]? Minimax generalizes by backing up a .bold[vector] of utilities ${v(s) \in \mathbb{R}^N}$, one per player, where the player to move maximizes its own component:
+$$v(s) = \begin{cases}
+\left(\text{utility}(s, 1), \ldots, \text{utility}(s, N)\right) & \text{if } s \in T \\\\
+v(\text{result}(s, a^\*)) & \text{otherwise,}
+\end{cases}$$
+where ${a^\* = \arg\max\_{a} v\_{\text{player}(s)}(\text{result}(s, a))}$. In a two-player zero-sum game, ${v\_2(s) = c - v\_1(s)}$, and maximizing ${v\_2}$ is minimizing ${v\_1}$: this is minimax. Otherwise, players may .bold[cooperate] or .bold[compete], depending on the state.
 
-.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+.center.width-50[![](figures/lec3/multi-agent-tree.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
