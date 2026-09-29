@@ -722,7 +722,7 @@ Rounds are repeated for as long as the time budget allows. The move played is th
 
 ---
 
-# One round of MCTS
+## One round of MCTS
 
 .center.width-60[![](figures/lec3/mcts-1.svg)]
 
@@ -733,7 +733,7 @@ Rounds are repeated for as long as the time budget allows. The move played is th
 
 count: false
 
-# One round of MCTS
+## One round of MCTS
 
 .center.width-60[![](figures/lec3/mcts-2.svg)]
 
@@ -744,7 +744,7 @@ count: false
 
 count: false
 
-# One round of MCTS
+## One round of MCTS
 
 .center.width-60[![](figures/lec3/mcts-3.svg)]
 
@@ -755,7 +755,7 @@ count: false
 
 count: false
 
-# One round of MCTS
+## One round of MCTS
 
 .center.width-60[![](figures/lec3/mcts-4.svg)]
 
