@@ -81,7 +81,7 @@ LEAVES = [[3, 12, 8], [2, 4, 6], [14, 5, 2]]
 
 def minimax_tree(step):
     """The two-ply tree after `step` levels are known: 1 the leaves, 2 the MIN nodes, 3 the root."""
-    rows = {"MAX": 60, "MIN": 220, "leaves": 385}
+    rows = {"MAX": 58, "MIN": 198, "leaves": 345}
     xs = [300, 560, 820]
     root = (560, rows["MAX"])
     parts = [text(110, y, label, size=24, fill=GREY, anchor="end") for label, y in
@@ -112,4 +112,4 @@ def minimax_tree(step):
 
 if __name__ == "__main__":
     for step in (1, 2, 3):
-        svg(f"minimax-tree-{step}", 960, 420, minimax_tree(step))
+        svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
