@@ -157,20 +157,18 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 
 ---
 
-# Adversarial search
+class: middle
 
-.grid[.kol-2-3[
+## Adversarial search
+
+.center.width-25[![](figures/lec3/adversarial-search-cartoon.png)]
+
 - In a search problem, the solution ${a\_{1:T}}$ is a fixed plan.
 - In a game, MAX cannot know which move MIN will play, .bold[now or later]. It must anticipate .bold[every] reply of MIN, every reply to its own answers, and so on until the game ends.
 - A .bold[strategy] ${\pi\_\text{MAX}}$ therefore fixes, in advance,
     - its move in the initial state,
     - its move after each possible reply of MIN,
     - its move after each possible reply of MIN to those moves, ...
-]
-.kol-1-3.width-100[
-![](figures/lec3/adversarial-search-cartoon.png)
-]
-]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
