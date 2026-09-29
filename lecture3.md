@@ -51,7 +51,7 @@ class: middle
 
 ## Formal definition
 
-A .bold[game] is the search problem of lecture 2, with two components added and one replaced:
+A .bold[game] is a search problem with two components added and one replaced:
 - the .bold[states] ${s \in \mathcal{S}}$ and the .bold[initial state] ${s\_1 \in \mathcal{S}}$, as before;
 - the .bold[actions] ${\text{actions}(s) \subseteq \mathcal{A}}$ and the .bold[transition model] ${s' = \text{result}(s, a)}$, as before;
 - .bold[new]: a function ${\text{player}(s) \in \\{1, \ldots, N\\}}$ that says whose turn it is in state $s$;
