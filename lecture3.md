@@ -568,9 +568,19 @@ $$v(s) = \begin{cases}
 \left(\text{utility}(s, 1), \ldots, \text{utility}(s, N)\right) & \text{if } s \in T \\\\
 v(\text{result}(s, a^\*)) & \text{otherwise,}
 \end{cases}$$
-where ${a^\* = \arg\max\_{a} v\_{\text{player}(s)}(\text{result}(s, a))}$. In a two-player zero-sum game, ${v\_2(s) = c - v\_1(s)}$, and maximizing ${v\_2}$ is minimizing ${v\_1}$: this is minimax. Otherwise, players may .bold[cooperate] or .bold[compete], depending on the state.
+where ${a^\* = \arg\max\_{a} v\_{\text{player}(s)}(\text{result}(s, a))}$.
 
-.center.width-50[![](figures/lec3/multi-agent-tree.png)]
+In a two-player zero-sum game, ${v\_2(s) = c - v\_1(s)}$, and maximizing ${v\_2}$ is minimizing ${v\_1}$: this is minimax.
+
+---
+
+class: middle
+
+## Cooperation and competition
+
+.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+
+Without a zero-sum constraint, the interests of the players are no longer opposed: they may .bold[cooperate] or .bold[compete], depending on the state.
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
