@@ -13,52 +13,57 @@
 
 \begin{recap}
     \topic{Games}
-    A \term{game} is formally defined as a kind of search problem with the following components:
+    A \term{game} is the search problem of lecture 2 with the states $s \in \mathcal{S}$, the initial state $s_1$, the actions $\text{actions}(s) \subseteq \mathcal{A}$ and the transition model $\text{result}(s, a)$, where
     \begin{itemize}
-        \item a representation of the \term{states} of the agents and their environment;
-        \item the \term{initial state} $s_1 \in \mathcal{S}$ of the game;
-        \item a function $\text{player}(s)$ that defines which \term{player} $p \in \{1, \ldots, N\}$ has the move in state $s$;
-        \item a description of the legal \term{actions} (or \term{moves}) available to a state $s$, denoted $\text{actions}(s)$;
-        \item a \term{transition model} that returns the state $s' = \text{result}(s, a)$ that results from doing action $a$ in state $s$;
-        \item the \term{terminal states} $T \subseteq \mathcal{S}$, in which the game is over, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
-        \item a \term{utility function} $\text{utility}(s, p)$ (or payoff) that defines the final numeric value for a game that ends in $s \in T$ for a player $p$.
+        \item $\text{player}(s) \in \{1, \ldots, N\}$ says whose turn it is in $s$;
+        \item the goal states become the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
+        \item the path cost becomes a \term{utility} $\text{utility}(s, p)$, the payoff of player $p$ when the game ends in $s \in T$.
     \end{itemize}
-    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}, whose nodes are game states and whose edges are actions.
+    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}. A solution is a \term{strategy}, a policy $\pi_p : \mathcal{S} \to \mathcal{A}$ that gives a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
-    In a \term{zero-sum game}, the total payoff to all players is constant for all games. For two-player games, agents share the same utility function, but one wants to maximize it while the other wants to minimize it: MAX maximizes the game's $\text{utility}$ function and MIN minimizes it. We assume a deterministic, turn-taking, two-player zero-sum game with perfect information, in which MAX moves first.
+    In a \term{zero-sum} game, the total payoff to all players is constant. We assume a deterministic, turn-taking, two-player zero-sum game with perfect information, whose players MAX and MIN maximize and minimize the same $\text{utility}$; MAX moves first.
 
     \topic{Minimax}
-    In a game, the opponent (MIN) may react arbitrarily to a move. Therefore, MAX must define a contingent \term{strategy}, which specifies its moves in the initial state and in the states resulting from every possible response by MIN. The \term{minimax value} $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an optimal adversary (MIN),
+    The \term{minimax value} of $s$ is the largest payoff MAX can achieve against an optimal MIN,
     \[
         \text{minimax}(s) = \begin{cases}
-            \text{utility}(s) & \text{if } \text{terminal-test}(s) \\
-            \max_{a \in \text{actions}(s)} \text{minimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MAX} \\
-            \min_{a \in \text{actions}(s)} \text{minimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MIN}.
+            \text{utility}(s) & \text{if } s \in T \\
+            \max_{a} \text{minimax}(\text{result}(s, a)) & \text{if MAX plays} \\
+            \min_{a} \text{minimax}(\text{result}(s, a)) & \text{if MIN plays,}
         \end{cases}
     \]
-    The optimal next move (for MAX) is to take the action that maximizes the minimax value in the resulting state.
+    over $a \in \text{actions}(s)$, and the optimal move is $\pi^*(s) = \arg\max_a \text{minimax}(\text{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
+
+    \topic{$\alpha$-$\beta$ pruning}
+    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN along the path from the root. A MIN node stops expanding its children as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. Pruning leaves the minimax values unchanged; with a perfect ordering of the moves, it examines $O(b^{m/2})$ nodes.
 
     \topic{H-Minimax}
-    Under time constraints, the search is cut earlier: the $\text{utility}(s)$ function is replaced with a heuristic \term{evaluation function} $\text{eval}(s)$ that estimates the state utility, and the terminal test by a \term{cutoff test} $\text{cutoff-test}(s, d)$ that decides when to stop expanding a state $s$ at depth $d$,
+    Under time constraints, the utility is replaced by an \term{evaluation function} $\text{eval}(s)$ and the terminal test by a \term{cutoff test} $\text{cutoff-test}(s, d)$ at depth $d$,
     \[
         \text{h-minimax}(s, d) = \begin{cases}
-            \text{eval}(s) & \text{if } \text{cutoff-test}(s, d) \\
-            \max_{a \in \text{actions}(s)} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if } \text{player}(s) = \text{MAX} \\
-            \min_{a \in \text{actions}(s)} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if } \text{player}(s) = \text{MIN}.
+            \text{eval}(s) & \text{if cutoff} \\
+            \max_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MAX plays} \\
+            \min_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
         \end{cases}
     \]
-    Ideally, the evaluation function should order states in the same way as in Minimax.
+    Ideally, $\text{eval}$ orders the states as their minimax values do. The cutoff applies to \term{quiescent} states; consequences beyond the depth limit are hidden by the \term{horizon effect}.
 
     \topic{Expectiminimax}
-    In \term{stochastic games}, the random element is modeled with \term{chance nodes} that map a state-action pair to the set of possible outcomes, along with their respective probability. States no longer have a definite $\text{minimax}$ value, but we can calculate the \term{expected} value of a state under optimal play by the opponent, \ie{} the average over all possible outcomes of the chance nodes,
+    In \term{stochastic games}, \term{chance nodes} map a state-action pair to its outcomes $r$, with probabilities $P(r)$. Writing $v(s) = \text{expectiminimax}(s)$,
     \[
-        \text{expectiminimax}(s) = \begin{cases}
-            \text{utility}(s) & \text{if } \text{terminal-test}(s) \\
-            \max_a \text{expectiminimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MAX} \\
-            \min_a \text{expectiminimax}(\text{result}(s, a)) & \text{if } \text{player}(s) = \text{MIN} \\
-            \sum_r P(r) \text{expectiminimax}(\text{result}(s, r)) & \text{if } \text{player}(s) = \text{CHANCE}.
+        v(s) = \begin{cases}
+            \text{utility}(s) & \text{if } s \in T \\
+            \max_a v(\text{result}(s, a)) & \text{if MAX plays} \\
+            \min_a v(\text{result}(s, a)) & \text{if MIN plays} \\
+            \sum_r P(r) \, v(\text{result}(s, r)) & \text{if CHANCE plays.}
         \end{cases}
+    \]
+
+    \topic{Monte Carlo tree search}
+    Each node $n$ keeps the number of wins $Q(n, p)$ of player $p$ over the random playouts through $n$, and its number of visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
+    \[
+        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.
     \]
 \end{recap}
 
@@ -66,9 +71,9 @@
 
 \titledquestion{Tic-tac-toe \aima{5}}
 
-Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players win before the grid is full, its a draw.
+Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
 
-We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\mathit{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
+We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\text{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
 
 \begin{parts}
     \part Define the search problem associated with the Tic-Tac-Toe game.
@@ -82,15 +87,15 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
             \end{equation*}
             \item[Player function] The next player should be X if there are as many X's as O's on the grid and O otherwise. Choosing $+1$ for X and $-1$ for O,
             \begin{equation*}
-                \mathit{player}(s) = \begin{cases}
+                \text{player}(s) = \begin{cases}
                     +1 & \text{if } \sum_{i, j} s_{ij} = 0 \\
                     -1 & \text{otherwise}
                 \end{cases}
             \end{equation*}
-            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $\mathit{actions}(s) = \cbk{(i, j): s_{ij} = 0}$.
-            \item[Transition model] For an action $(i, j) \in \mathit{actions}(s)$, $\mathit{result}(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = \mathit{player}(s)$.
-            \item[Terminal test] $\mathit{terminal}(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
-            \item[Utility function] $\mathit{utility}(s) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
+            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $\text{actions}(s) = \cbk{(i, j): s_{ij} = 0}$.
+            \item[Transition model] For an action $(i, j) \in \text{actions}(s)$, $\text{result}(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = \text{player}(s)$.
+            \item[Terminal test] $\text{terminal-test}(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
+            \item[Utility function] $\text{utility}(s) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
         \end{description}
     \end{solution}
 
@@ -110,11 +115,11 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
         \begin{center}
             \includegraphics[width=0.8\linewidth]{figures/e2_tictactoe.pdf}
             \captionsetup{type=figure}
-            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
+            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha$-$\beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha$-$\beta$ pruning.}
         \end{center}
     \end{solution}
 
-    \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\mathit{eval}(s)$ is misleading.
+    \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\text{eval}(s)$ is misleading.
 
     \begin{solution}
         This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning.
@@ -144,7 +149,7 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
         \end{center}
     \end{solution}
 
-    \part Which nodes can be pruned from the game tree above through alpha-beta pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
+    \part Which nodes can be pruned from the game tree above through $\alpha$-$\beta$ pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
 
     \begin{solution}
         \begin{center}
@@ -152,7 +157,7 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
         \end{center}
     \end{solution}
 
-    \part Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the Expectminimax value of each node. The game tree is redrawn below for your convenience.
+    \part Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the expectiminimax value of each node. The game tree is redrawn below for your convenience.
 
     \begin{solution}
         \begin{center}
@@ -172,14 +177,14 @@ The game \enquote{21} is played with any number of players who take turns increa
         Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{0, 1}$, where $v$ is the current value of the counter and $p$ the player to play next.
         \begin{description}
             \item[Initial state] $s_1 = (1, 0)$.
-            \item[Player function] $\mathit{player}(s = (v, p)) = p$.
-            \item[Actions] $\mathit{actions}(s) = \cbk{1, 2, 3}$.
-            \item[Transition model] For an action $a \in \mathit{actions}(s)$,
+            \item[Player function] $\text{player}(s = (v, p)) = p$.
+            \item[Actions] $\text{actions}(s) = \cbk{1, 2, 3}$.
+            \item[Transition model] For an action $a \in \text{actions}(s)$,
             \[
-                \mathit{result}(s = (v, p), a) = (v + a, p + 1 \bmod 2).
+                \text{result}(s = (v, p), a) = (v + a, p + 1 \bmod 2).
             \]
-            \item[Terminal test] $\mathit{terminal}(s = (v, p))$ is true if $v \geq 21$, false otherwise.
-            \item[Utility function] $\mathit{utility}(s) = 1$ if $p = 0$, $0$ otherwise.
+            \item[Terminal test] $\text{terminal-test}(s = (v, p))$ is true if $v \geq 21$, false otherwise.
+            \item[Utility function] $\text{utility}(s) = 1$ if $p = 0$, $0$ otherwise.
         \end{description}
     \end{solution}
 
@@ -191,7 +196,7 @@ The game \enquote{21} is played with any number of players who take turns increa
         \begin{center}
             \includegraphics[width=0.9\linewidth]{figures/e2_21.pdf}
             \captionsetup{type=figure}
-            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha - \beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha - \beta$ pruning.}
+            \caption{Nodes in red corresponds to nodes that would have been pruned, \ie{} not evaluated, if $\alpha$-$\beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha$-$\beta$ pruning.}
         \end{center}
     \end{solution}
 \end{parts}
@@ -219,32 +224,32 @@ Consider the following two-player turn-taking game which initial configuration i
         Let a state of the game be a tuple $s = (i, j, p) \in \cbk{1, 2, 3, 4}^2 \times \cbk{0, 1}$, where $i$ and $j$ are the respective positions of $A$ and $B$ and $p$ is $0$ when it is $A$'s turn and $1$ when it is $B$'s.
         \begin{description}
             \item[Initial state] $s_1 = (1, 4, 0)$.
-            \item[Player function] $\mathit{player}(s = (i, j, p)) = p$.
-            \item[Actions] $\mathit{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
-            \item[Transition model] For an available action $a \in \mathit{actions}(s)$,
+            \item[Player function] $\text{player}(s = (i, j, p)) = p$.
+            \item[Actions] $\text{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
+            \item[Transition model] For an available action $a \in \text{actions}(s)$,
             \begin{equation*}
-                \mathit{result}(s = (i, j, p), a) = \begin{cases}
-                    (\mathit{next}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{right} \\
-                    (\mathit{prev}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{left} \\
-                    (i, \mathit{next}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{right} \\
-                    (i, \mathit{prev}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{left}
+                \text{result}(s = (i, j, p), a) = \begin{cases}
+                    (\text{next}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{right} \\
+                    (\text{prev}(i, j), j, 1) & \text{if } p = 0 \text{ and } a = \text{left} \\
+                    (i, \text{next}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{right} \\
+                    (i, \text{prev}(j, i), 0) & \text{if } p = 1 \text{ and } a = \text{left}
                 \end{cases}
             \end{equation*}
             where
             \begin{align*}
-                \mathit{next}(x, y) & = \begin{cases}
+                \text{next}(x, y) & = \begin{cases}
                     y + 1 & \text{if } x + 1 = y \\
                     x + 1 & \text{otherwise}
                 \end{cases} \\
-                \mathit{prev}(x, y) & = \begin{cases}
+                \text{prev}(x, y) & = \begin{cases}
                     y - 1 & \text{if } x - 1 = y \\
                     x - 1 & \text{otherwise}
                 \end{cases} .
             \end{align*}
-            \item[Terminal test] $\mathit{terminal}(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
+            \item[Terminal test] $\text{terminal-test}(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
             \item[Utility function]
             \begin{equation*}
-                \mathit{utility}(s = (i, j, p)) = \begin{cases}
+                \text{utility}(s = (i, j, p)) = \begin{cases}
                     +1 & \text{if } i = 4 \\
                     -1 & \text{if } j = 1
                 \end{cases} .
@@ -374,7 +379,7 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
 \begin{quiz}
     \item In Monte Carlo Tree Search (MCTS), in the formula
     \begin{equation*}
-        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{2 \log N(n)}{N(n')}},
+        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}},
     \end{equation*}
     which of the following is true?
     \begin{enumerate}[label=$\bigcirc$]
