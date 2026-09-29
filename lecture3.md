@@ -641,15 +641,22 @@ class: middle
 
 # Expectiminimax
 
-Because of the uncertainty in the outcomes of actions, states no longer have a .bold[definite] $\text{minimax}$ value. We can however compute their .bold[expected] value under optimal play: the average over the outcomes of the chance nodes, where $\text{minimax}$ would instead assume the worst outcome.
+Because of the uncertainty in the outcomes of actions, states no longer have a .bold[definite] $\text{minimax}$ value. The value of a chance node ${(s, a)}$ is instead the .bold[expected] value of the state that follows,
+$$q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s'),$$
+the average over the outcomes, weighted by their probabilities, where $\text{minimax}$ would assume the worst outcome. A deterministic action is the special case ${P(\text{result}(s, a) \mid s, a) = 1}$.
 
-Writing ${v(s) = \text{expectiminimax}(s)}$ for short,
+---
+
+class: middle
+
+## The expectiminimax recursion
+
+Writing ${v(s) = \text{expectiminimax}(s)}$ for short, the values of states and chance nodes are defined together,
 $$v(s) = \begin{cases}
 \text{utility}(s) & \text{if } s \in T \\\\
 \max\limits\_a q(s, a) & \text{if MAX plays} \\\\
 \min\limits\_a q(s, a) & \text{if MIN plays,}
-\end{cases} \qquad q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s'),$$
-where ${q(s, a)}$ is the value of the chance node ${(s, a)}$. A deterministic action has ${P(\text{result}(s, a) \mid s, a) = 1}$.
+\end{cases} \qquad q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s').$$
 
 .question[Does taking the rational move mean the agent will be successful?]
 
