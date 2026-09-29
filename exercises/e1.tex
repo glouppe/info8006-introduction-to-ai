@@ -196,7 +196,7 @@ In this particular case, the robot must pass through a series of partially flood
 
 \titledquestion{Route planning}
 
-A navigation app plans a route from junction S to junction G on the road network drawn below, whose edges are labelled with travel times in minutes. The heuristic value $h$ of each junction, on its vertex, is the travel time to G predicted by a learned model. For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm of the recap to this undirected graph, and give the order in which the states are expanded, as well as the final path returned by the algorithm. Ties are broken by alphabetical order on the states and, between two nodes of the same state, in favour of the one inserted first in the fringe. The goal test is applied when a node leaves the fringe, so the goal state is returned without ever being expanded.
+A navigation app plans a route from junction S to junction G on the road network drawn below, whose edges are labelled with travel times in minutes. The heuristic value $h$ of each junction, on its vertex, is the travel time to G predicted by a learned model. For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm of the recap to this undirected graph, and give the order in which the states are expanded, as well as the final path returned by the algorithm. Ties are broken by alphabetical order on the states and, between two nodes of the same state, in favour of the one inserted first in the fringe.
 
 \begin{center}
     \begin{tikzpicture}[graph diagram]
@@ -383,7 +383,7 @@ A navigation app plans a route from junction S to junction G on the road network
 
 \titledquestion{Pathfinding in a video game}
 
-A character of a video game, controlled by the game, moves from S to G between the waypoints of a level, drawn below with the lengths of the passages between them; the direct passage from S to G is a long one. Apply the \textsc{Graph-Search} algorithm of the recap to this graph, with the conventions of exercise 3 (goal test on removal, same tie-breaking).
+A character of a video game, controlled by the game, moves from S to G between the waypoints of a level, drawn below with the lengths of the passages between them; the direct passage from S to G is a long one. Apply the \textsc{Graph-Search} algorithm of the recap to this graph, with the tie-breaking of exercise 3.
 
 \begin{center}
     \begin{tikzpicture}[graph diagram]
