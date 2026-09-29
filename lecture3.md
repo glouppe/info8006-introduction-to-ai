@@ -106,13 +106,11 @@ class: middle
 
 ## Zero-sum games
 
-- In a .bold[zero-sum] game, the total payoff to all players is .bold[constant] for all games.
-    - e.g., in chess: $0+1$, $1+0$ or $\frac{1}{2} + \frac{1}{2}$.
-- For two-player games, agents share the .bold[same utility] function, but one wants to .bold[maximize] it while the other wants to .bold[minimize] it.
-    - MAX maximizes the game's $\text{utility}$ function.
-    - MIN minimizes the game's $\text{utility}$ function.
-- .bold[Strict competition].
-    - If one wins, the other loses, and vice-versa.
+A game is .bold[zero-sum] if the utilities of the players sum to the same constant ${c}$ in every terminal state:
+$$\sum\_{p=1}^N \text{utility}(s, p) = c \quad \text{for all } s \in T.$$
+- e.g., in chess, ${c = 1}$: ${1 + 0}$, ${0 + 1}$ or ${\frac{1}{2} + \frac{1}{2}}$.
+- With two players, ${\text{utility}(s, 2) = c - \text{utility}(s, 1)}$: a .bold[single utility] describes the game, which player 1 .bold[maximizes] and player 2 .bold[minimizes].
+- This is .bold[strict competition]: what one player gains, the other loses.
 
 <br>
 .center.width-40[![](figures/lec3/zero-sum-cartoon.png)]
@@ -122,6 +120,8 @@ class: middle
 ???
 
 The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
+
+The bar scene is not zero-sum: everyone for the blonde sums to 0, nobody for the blonde to N.
 
 ---
 
