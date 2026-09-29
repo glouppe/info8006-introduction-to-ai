@@ -159,9 +159,9 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 
 class: middle
 
-## Adversarial search
-
 .center.width-25[![](figures/lec3/adversarial-search-cartoon.png)]
+
+## Adversarial search
 
 - In a search problem, the solution ${a\_{1:T}}$ is a fixed plan.
 - In a game, MAX cannot know which move MIN will play, .bold[now or later]. It must anticipate .bold[every] reply of MIN, every reply to its own answers, and so on until the game ends.
