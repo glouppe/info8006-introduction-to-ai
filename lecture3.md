@@ -50,8 +50,6 @@ class: middle
 # Games
 
 - A .bold[game] is a multi-agent environment where agents may have either .bold[conflicting] or .bold[common] interests.
-- The solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, i.e. a .bold[policy]: a move for every state the opponent can lead to.
-    - This is different from search, where a solution is a .bold[fixed sequence] ${a\_{1:T}}$.
 - Opponents may act .bold[arbitrarily], even if we assume a deterministic fully observable environment.
 - Time is often .bold[limited].
 
@@ -72,7 +70,7 @@ A .bold[game] is the search problem of lecture 2, with two components added and 
 - .bold[replaced]: the goal states ${G}$ become the .bold[terminal states] ${T \subseteq \mathcal{S}}$, tested by ${\text{terminal-test}(s)}$, i.e. ${s \in T}$;
 - .bold[new]: the path cost becomes a .bold[utility] ${\text{utility}(s, p)}$, the payoff of player $p$ when the game ends in ${s \in T}$, e.g. ${1}$, ${0}$ or ${\frac{1}{2}}$ for a win, a loss or a draw.
 
-Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions.
+Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions. A .bold[solution] is a .bold[strategy] (or policy) ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, a move for every state the opponent can lead to, rather than a fixed sequence ${a\_{1:T}}$.
 
 ???
 
