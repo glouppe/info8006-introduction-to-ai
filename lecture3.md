@@ -491,10 +491,35 @@ The cutoff should only be applied to .bold[quiescent] states, whose value is unl
 
 # The horizon effect
 
-Evaluations functions are .bold[always imperfect].
-- If not looked deep enough, .bold[bad moves] may appear as .bold[good moves] (as estimated by the evaluation function) because their consequences are hidden beyond the search horizon.
-    - and vice-versa!
-- Often, the deeper in the tree the evaluation function is buried, the less the quality of the evaluation function matters.
+H-Minimax sees the game only down to its cutoff depth, its .bold[horizon]. Below it, $\text{eval}(s)$ stands in for everything that may happen next, and evaluation functions are .bold[always imperfect].
+
+.center.width-70[![](figures/lec3/horizon-1.svg)]
+
+Searching to depth 2, ${a\_1}$ looks best: $\text{eval}$ rates it ${5}$, against ${0}$ for ${a\_2}$.
+
+---
+
+count: false
+
+# The horizon effect
+
+H-Minimax sees the game only down to its cutoff depth, its .bold[horizon]. Below it, $\text{eval}(s)$ stands in for everything that may happen next, and evaluation functions are .bold[always imperfect].
+
+.center.width-70[![](figures/lec3/horizon-2.svg)]
+
+Beyond the horizon, ${a\_1}$ loses: what it seemed to gain is paid back later (${-9}$). The search took a .bold[bad move] for a .bold[good move], because its consequences were hidden beyond the horizon.
+
+---
+
+class: middle
+
+## Living with the horizon
+
+The error goes both ways: a .bold[good move], such as a sacrifice that pays off only later, may look .bold[bad].
+
+Worse, the search .bold[delays] what it cannot avoid: it prefers moves that push an inevitable loss beyond the horizon, where $\text{eval}$ no longer sees it, even if they weaken the position on the way.
+
+The horizon cannot be removed, only moved: search deeper where the state is not quiescent (.bold[quiescence search]) or where a move is forced (.bold[singular extensions]). The deeper the cutoff, the less the quality of $\text{eval}$ matters.
 
 ---
 

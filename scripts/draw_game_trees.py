@@ -11,7 +11,8 @@ down, terminal states boxes, backed-up values in the course blue. Roboto is embe
 
 Also writes `minimax-pruned.svg` (the same tree with two unknown leaves), `alpha-beta-1.svg` to
 `alpha-beta-6.svg` (the steps of alpha-beta pruning on it, Figure 5.5, unexplored parts faded and
-the interval of possible values beside each node) and `alpha-beta-path.svg` (Figure 5.6).
+the interval of possible values beside each node), `alpha-beta-path.svg` (Figure 5.6) and
+`horizon-1.svg`, `horizon-2.svg` (a search cut at depth 2, then what lies beyond its horizon).
 """
 
 import base64
@@ -58,7 +59,7 @@ def triangle(x, y, up, value=None):
     points = f"{apex[0]:g},{apex[1]:g} {x - HALF:g},{base:g} {x + HALF:g},{base:g}"
     out = f'<polygon points="{points}" fill="{FILL}" stroke="{INK}" stroke-width="{STROKE}" stroke-linejoin="round"/>'
     if value is not None:
-        out += text(x, y - s * 6, str(value), size=26, weight=900, fill=BLUE)
+        out += text(x, y - s * 6, str(value).replace("-", "\u2212"), size=26, weight=900, fill=BLUE)
     return out
 
 
@@ -240,6 +241,57 @@ def alpha_path():
     return parts
 
 
+RED = "#c8463d"
+
+
+def horizon_tree(step):
+    """A search cut at depth 2, and what lies beyond its horizon.
+
+    Step 1: the evaluation at the cutoff makes a1 look best (5 against 0). Step 2: the values
+    beyond the horizon show that a1 loses (-9) and that a2 (0) was the right move.
+    """
+    rows = {"MAX": 50, "MIN": 165, "eval": 285, "beyond": 405}
+    horizon = 340
+    root = (480, rows["MAX"])
+    xs = [300, 660]
+    evals = [[5, 6], [0, 1]]
+    truth = [[-9, -8], [0, 1]]
+    parts = [text(110, rows[k], label, size=24, fill=GREY, anchor="end")
+             for k, label in [("MAX", "MAX"), ("MIN", "MIN"), ("eval", "eval"),
+                              ("beyond", "true value" if step >= 2 else "")]]
+    parts.append(f'<path d="M 125 {horizon} L 900 {horizon}" stroke="{BLUE}" stroke-width="2.5" '
+                 f'stroke-dasharray="10 8" fill="none"/>')
+    parts.append(text(110, horizon, "horizon", size=24, fill=BLUE, anchor="end"))
+
+    mins = [min(v) for v in (evals if step == 1 else truth)]
+    best = max(range(2), key=lambda i: mins[i])
+    for i, x in enumerate(xs):
+        chosen = i == best
+        parts.append(line((root[0], root[1] + BOTTOM), (x, rows["MIN"] - BOTTOM),
+                          colour=BLUE if chosen else INK, width=4 if chosen else STROKE))
+        mx, my = (root[0] + x) / 2, (root[1] + BOTTOM + rows["MIN"] - BOTTOM) / 2
+        parts.append(action(mx + (-30 if x < root[0] else 30), my - 14, i + 1, BLUE if chosen else GREY))
+        for j in range(2):
+            cx = x + (j - 0.5) * 150
+            parts.append(line((x, rows["MIN"] + TOP), (cx, rows["eval"] - LEAF[1] / 2)))
+            p, q = (cx, rows["eval"] + LEAF[1] / 2), (cx, rows["beyond"] - LEAF[1] / 2)
+            parts.append(faded_line(p, q))
+    parts.append(triangle(*root, up=True, value=max(mins)))
+    for i, x in enumerate(xs):
+        parts.append(triangle(x, rows["MIN"], up=False, value=mins[i]))
+        for j in range(2):
+            cx = x + (j - 0.5) * 150
+            parts.append(leaf(cx, rows["eval"], evals[i][j]))
+            if step == 1:
+                parts.append(faded_leaf(cx, rows["beyond"]) + text(cx, rows["beyond"], "?", size=26, fill=FADED))
+            else:
+                v = truth[i][j]
+                parts.append(leaf(cx, rows["beyond"], "") +
+                             text(cx, rows["beyond"], str(v).replace("-", "\u2212"), size=26, weight=900,
+                                  fill=RED if v < 0 else INK))
+    return parts
+
+
 if __name__ == "__main__":
     for step in (1, 2, 3):
         svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
@@ -247,3 +299,5 @@ if __name__ == "__main__":
     for step in range(1, 7):
         svg(f"alpha-beta-{step}", 960, 380, alpha_beta_tree(step))
     svg("alpha-beta-path", 620, 560, alpha_path())
+    for step in (1, 2):
+        svg(f"horizon-{step}", 960, 440, horizon_tree(step))
