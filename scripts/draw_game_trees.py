@@ -404,14 +404,21 @@ def order_preserving():
     return parts
 
 
+PLAYER_COLOURS = ["#c8463d", "#356aaf", "#3d8a4f"]   # players 1, 2 and 3
+
+
 def player(x, y, p):
-    """A node of a multi-player game, a filled circle labelled with the player to move."""
-    return (f'<circle cx="{x:g}" cy="{y:g}" r="{CHANCE_R}" fill="{FILL}" stroke="{INK}" stroke-width="{STROKE}"/>'
-            + text(x, y, str(p), size=24, weight=900))
+    """A node of a multi-player game, a triangle in the colour of the player to move."""
+    points = f"{x:g},{y - TOP:g} {x - HALF:g},{y + BOTTOM:g} {x + HALF:g},{y + BOTTOM:g}"
+    return (f'<polygon points="{points}" fill="{PLAYER_COLOURS[p - 1]}" stroke="{INK}" stroke-width="{STROKE}" '
+            f'stroke-linejoin="round"/>')
 
 
-def vector(v):
-    return "(" + ", ".join(str(x) for x in v) + ")"
+def vector(x, y, v, size=20, weight=400, anchor="middle"):
+    """A utility vector, each component in the colour of its player."""
+    spans = ", ".join(f'<tspan fill="{PLAYER_COLOURS[i]}">{c}</tspan>' for i, c in enumerate(v))
+    return (f'<text x="{x:g}" y="{y + 0.35 * size:.1f}" font-family="Roboto, sans-serif" font-weight="{weight}" '
+            f'font-size="{size:g}" fill="{INK}" text-anchor="{anchor}">({spans})</text>')
 
 
 MULTI_LEAVES = [(1, 6, 6), (7, 1, 2), (6, 1, 2), (7, 2, 1), (5, 1, 7), (1, 5, 2), (7, 7, 1), (5, 2, 5)]
@@ -419,9 +426,9 @@ MULTI_LEAVES = [(1, 6, 6), (7, 1, 2), (6, 1, 2), (7, 2, 1), (5, 1, 7), (1, 5, 2)
 
 def multi_agent_tree(step):
     """Three players, each maximizing its own component: step 1 the leaves, step 2 the backed-up vectors."""
-    rows = [45, 165, 285, 405]
-    parts = [text(110, y, label, size=22, fill=GREY, anchor="end")
-             for label, y in zip(["player 1", "player 2", "player 3", "utility"], rows)]
+    rows = [50, 170, 290, 405]
+    parts = [text(110, y, label, size=22, fill=PLAYER_COLOURS[i] if i < 3 else GREY, anchor="end")
+             for i, (label, y) in enumerate(zip(["player 1", "player 2", "player 3", "utility"], rows))]
     lx = [190 + 108 * k for k in range(8)]
     p3 = [(lx[2 * k] + lx[2 * k + 1]) / 2 for k in range(4)]
     p2 = [(p3[0] + p3[1]) / 2, (p3[2] + p3[3]) / 2]
@@ -433,36 +440,35 @@ def multi_agent_tree(step):
     shown = step >= 2
 
     def link(p, q, chosen):
-        return line(p, q, colour=BLUE if chosen and shown else INK, width=4 if chosen and shown else STROKE)
+        return line(p, q, colour=INK, width=4.5 if chosen and shown else 1.6)
 
     for i, x in enumerate(p2):
-        parts.append(link((root[0], root[1] + CHANCE_R), (x, rows[1] - CHANCE_R), v2[i] == v1))
+        parts.append(link((root[0], root[1] + BOTTOM), (x, rows[1] - TOP), v2[i] == v1))
         for j in range(2):
             k = 2 * i + j
-            parts.append(link((x, rows[1] + CHANCE_R), (p3[k], rows[2] - CHANCE_R), v3[k] == v2[i]))
+            parts.append(link((x, rows[1] + BOTTOM), (p3[k], rows[2] - TOP), v3[k] == v2[i]))
             for m in range(2):
-                parts.append(link((p3[k], rows[2] + CHANCE_R), (lx[2 * k + m], rows[3] - LEAF[1] / 2),
+                parts.append(link((p3[k], rows[2] + BOTTOM), (lx[2 * k + m], rows[3] - LEAF[1] / 2),
                                   MULTI_LEAVES[2 * k + m] == v3[k]))
     parts.append(player(*root, 1))
     if shown:
-        parts.append(text(root[0] + CHANCE_R + 12, root[1], vector(v1), size=22, weight=900, fill=BLUE,
-                          anchor="start"))
+        parts.append(vector(root[0] + HALF + 12, root[1] + 4, v1, size=22, weight=900, anchor="start"))
     for i, x in enumerate(p2):
         parts.append(player(x, rows[1], 2))
         if shown:
             side = -1 if i == 0 else 1
-            parts.append(text(x + side * (CHANCE_R + 12), rows[1], vector(v2[i]), size=22, weight=900,
-                              fill=BLUE, anchor="end" if side < 0 else "start"))
+            parts.append(vector(x + side * (HALF + 12), rows[1] + 4, v2[i], size=22, weight=900,
+                                anchor="end" if side < 0 else "start"))
     for k, x in enumerate(p3):
         parts.append(player(x, rows[2], 3))
         if shown:
             side = -1 if k % 2 == 0 else 1
-            parts.append(text(x + side * (CHANCE_R + 8), rows[2], vector(v3[k]), size=20, weight=900, fill=BLUE,
-                              anchor="end" if side < 0 else "start"))
+            parts.append(vector(x + side * 14, rows[2] - TOP - 4, v3[k], size=20, weight=900,
+                                anchor="end" if side < 0 else "start"))
     for k, x in enumerate(lx):
         w, h = 92, LEAF[1]
         parts.append(f'<rect x="{x - w / 2:g}" y="{rows[3] - h / 2:g}" width="{w}" height="{h}" fill="white" '
-                     f'stroke="{INK}" stroke-width="{STROKE}"/>' + text(x, rows[3], vector(MULTI_LEAVES[k]), size=20))
+                     f'stroke="{INK}" stroke-width="{STROKE}"/>' + vector(x, rows[3], MULTI_LEAVES[k]))
     return parts
 
 
