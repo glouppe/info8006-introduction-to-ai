@@ -19,7 +19,8 @@
     \begin{itemize}
         \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$;
         \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ and the \term{transition model} $s' = \text{result}(s, a)$;
-        \item the \term{goal states} $G \subseteq \mathcal{S}$, tested by the \term{goal test} $s \in G$, and the \term{step costs} $c(s, a, s') > 0$.
+        \item the \term{goal states} $G \subseteq \mathcal{S}$, tested by the \term{goal test} $s \in G$;
+        \item the \term{step costs} $c(s, a, s') > 0$ of taking $a$ in $s$ to reach $s'$.
     \end{itemize}
     The \term{state space} is the set of states reachable from $s_1$. A \term{solution} is an action sequence $a_{1:T}$ with $s_{t+1} = \text{result}(s_t, a_t)$ and $s_{T+1} \in G$; an \term{optimal} one minimizes the \term{path cost} $\sum_t c(s_t, a_t, s_{t+1})$.
 
