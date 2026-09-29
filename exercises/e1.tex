@@ -141,7 +141,7 @@ For a given grid
     \part Knowing that the terrain can be rugged at specific places, causing slow down of the robot, propose an admissible heuristic which estimates the remaining cost at any node.
 
     \begin{solution}
-        As usual in grid problems, the Manhattan or the Euclidean distance is admissible as long as every step costs at least 1\footnote{Choosing a constant step cost $K > 1$ does not break admissibility in this case. If $K \in \,]0, 1[$, then $h(n)$ is not admissible but $K h(n)$ is.}. However, the robot can go back and forth if $w_G > w_{\text{max}}$. Then an admissible heuristic would be
+        As usual in grid problems, the Manhattan or the Euclidean distance is admissible as long as every step costs at least 1: with a constant step cost $K \geq 1$, it stays admissible, while with $K \in \,]0, 1[$, $h(n)$ is not admissible but $K h(n)$ is. However, the robot can go back and forth if $w_G > w_{\text{max}}$. Then an admissible heuristic would be
         \[
             h(n) = \begin{cases*}
                 0\ & \text{if $\lnot L$ and $w_G = 0$} \\
