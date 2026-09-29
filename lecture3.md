@@ -282,7 +282,7 @@ class: middle
 
 # Pruning
 
-.center.width-70[![](figures/lec3/minimax-pruned.svg)]
+.center.width-80[![](figures/lec3/minimax-pruned.svg)]
 
 $$\begin{aligned}
 \text{minimax}(\text{root}) &= \max(\min(3, 12, 8), \min(2, x, y), \min(14, 5, 2)) \\\\
