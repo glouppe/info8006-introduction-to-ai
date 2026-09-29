@@ -30,7 +30,7 @@
     and an \term{optimal solution} is a solution of minimal path cost.
 
     \topic{Search algorithms}
-    Search algorithms grow a \term{search tree} whose nodes $n$ are paths from $s_1$, each ending in a state $s(n)$. \proc{Tree-Search} keeps the leaves of the tree not yet expanded in the \term{fringe}. It repeatedly removes a node from the fringe, returns it if its state is a goal state and otherwise \term{expands} it, inserting its successors into the fringe. \proc{Graph-Search} also keeps the set of states already expanded, the \term{closed} set, and never expands a state twice, which avoids repeated states and cycles.
+    The nodes $n$ of the search tree are paths from $s_1$, each ending in a state $s(n)$. \proc{Tree-Search} expands the nodes of the \term{fringe} until a goal state leaves it. \proc{Graph-Search} also keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles.
 
     \begin{pseudocode}
         \kw{function} \proc{Tree-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
