@@ -103,15 +103,15 @@ For a given grid
     \part Formulate a corresponding search problem.
 
     \begin{solution}
-        \textbf{State representation}: Assuming a $H \times W$ grid, the state is represented by the position $(i, j) \in \{1, \ldots, W\} \times \{1, \ldots, H\}$ of the robot, the remaining weight of grass $w_G$ and a flag $L$ indicating whether the robot is loaded or not. Following other assumptions, we also define the location of the pile and the container respectively by $P = (i_p, j_p)$ and $C = (i_c, j_c)$ as well as the weight limit of the robot $w_{\text{max}}$.
+        \textbf{States}: On an $H \times W$ grid, let a state be a tuple $s = (i, j, w_G, L)$, where $(i, j) \in \{1, \ldots, W\} \times \{1, \ldots, H\}$ is the position of the robot, $w_G \geq 0$ the weight of grass left on the pile and $L \in \cbk{\text{True}, \text{False}}$ whether the robot is loaded. The positions $P = (i_p, j_p)$ of the pile and $C = (i_c, j_c)$ of the container, and the weight limit $w_{\text{max}}$ of the robot, are fixed and known, so they are not part of the state.
 
-        \textbf{Initial state}: No specific information is given, we can assume it starts anywhere on the grid, unloaded. $s_1 = (i_0, j_0, w_{G0}, \mathit{False})$
+        \textbf{Initial state}: No specific information is given, we can assume it starts anywhere on the grid, unloaded. $s_1 = (i_0, j_0, w_{G0}, \text{False})$
 
         \textbf{Actions}: $a \in \{\mathit{LEFT}, \mathit{UP}, \mathit{RIGHT}, \mathit{DOWN}\}$
 
-        \textbf{Transition model}:
+        \textbf{Transition model}: $\text{result}(s, a) = (i', j', w_G', L')$, with
         \[
-            (i, j)' = \begin{cases*}
+            (i', j') = \begin{cases*}
                 (i + 1, j)\ & \text{if $a = \mathit{RIGHT}$ and $i < W$} \\
                 (i, j + 1)\ & \text{if $a = \mathit{UP}$ and $j < H$} \\
                 (i - 1, j)\ & \text{if $a = \mathit{LEFT}$ and $i > 1$} \\
@@ -121,19 +121,19 @@ For a given grid
         \]
         \[
             w_G' = \begin{cases*}
-                w_G - \min(w_G, w_{\text{max}})\ & \text{if $\lnot L$ and $(i, j)' = P$} \\
+                w_G - \min(w_G, w_{\text{max}})\ & \text{if $\lnot L$ and $(i', j') = P$} \\
                 w_G\ & \text{otherwise}
             \end{cases*}
         \]
         \[
             L' = \begin{cases*}
-                \text{True} & \text{if $L$ and $(i, j)' \neq C$} \\
-                \text{True} & \text{if $w_G > 0$ and $(i, j)' = P$} \\
+                \text{True} & \text{if $L$ and $(i', j') \neq C$} \\
+                \text{True} & \text{if $w_G > 0$ and $(i', j') = P$} \\
                 \text{False} & \text{otherwise}
             \end{cases*}
         \]
 
-        \textbf{Goal states}: $G = \cbk{s \in \mathcal{S} : \lnot L \text{ and } w_G = 0}$.
+        \textbf{Goal states}: $G = \cbk{(i, j, w_G, L) \in \mathcal{S} : \lnot L \text{ and } w_G = 0}$.
 
         \textbf{Step cost}: Under the given assumptions, every step from one state to the next is equivalent. Then $c(s, a, s') = 1$ is relevant. Note that it could be any constant step cost.
     \end{solution}
