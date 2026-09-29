@@ -28,8 +28,8 @@ Questions to ask after the video, each a preview of the lecture:
 
 # Today
 
-- How to act rationally in a .bold[multi-agent] environment?
-- How to anticipate and respond to the .bold[arbitrary behavior] of other agents?
+.question[How to act rationally in a .bold[multi-agent] environment? How to anticipate and respond to the .bold[arbitrary behavior] of other agents?]
+
 - Adversarial search
     - Minimax
     - $\alpha-\beta$ pruning
