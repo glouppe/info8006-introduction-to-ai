@@ -18,7 +18,8 @@
     A \term{search problem} is defined by
     \begin{itemize}
         \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$;
-        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ and the \term{transition model} $s' = \text{result}(s, a)$;
+        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ available in state $s$;
+        \item the \term{transition model} $s' = \text{result}(s, a)$, the state reached by taking $a$ in $s$;
         \item the \term{goal states} $G \subseteq \mathcal{S}$, tested by the \term{goal test} $s \in G$;
         \item the \term{step costs} $c(s, a, s') > 0$ of taking $a$ in $s$ to reach $s'$.
     \end{itemize}
