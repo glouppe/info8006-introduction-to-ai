@@ -508,7 +508,7 @@ As an example, in the car park above, if the car is initially stationary, it mig
         \begin{itemize}
             \item The Manhattan distance to the free spot divided by the maximum speed $V$, since the car covers at most $V$ squares per action.
             \item The current velocity $v$, since the car needs $v$ actions of \texttt{slower} to park on the free spot.
-            \item The maximum of the two, $\max\cbk{\frac{\text{Manhattan}}{V}, v}$, which \emph{dominates} both and is still admissible, as both are lower bounds on the true forward cost. Their \emph{sum} is not admissible: two squares away from the free spot at velocity $v = 2$, parking takes 2 actions (\texttt{slower} twice), while the sum gives $2/V + 2 > 2$.
+            \item The maximum of the two, $\max\cbk{\frac{\text{Manhattan}}{V}, v}$, which \emph{dominates} both and is still admissible, as both are lower bounds on the true forward cost. Their \emph{sum} is not admissible: one square away from the free spot at velocity $v = 2$, parking takes 2 actions (\texttt{slower} twice, which moves the car by 1 then 0 squares), while the sum gives $1/V + 2 > 2$.
         \end{itemize}
     \end{solution}
 
