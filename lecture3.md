@@ -987,11 +987,11 @@ class: middle
 
 ## Imperfect information
 
-The assumption of .bold[perfect information] we made at the start is what these games drop:
+The assumption of perfect information we made at the start is what these games drop:
 
-- .bold[2017-2019], .bold[Libratus] then .bold[Pluribus] beat professionals at no-limit poker, the latter with .bold[six players] at the table, where no notion of optimal play against all opponents exists.
-- .bold[2022], .bold[DeepNash] reaches expert level at .bold[Stratego], where each side hides its pieces.
-- .bold[2022], .bold[Cicero] plays .bold[Diplomacy] at human level, combining planning with .bold[negotiation in natural language].
+- 2017-2019, .bold[Libratus] then .bold[Pluribus] beat professionals at no-limit poker, the latter with six players at the table, where no notion of optimal play against all opponents exists.
+- 2022, .bold[DeepNash] reaches expert level at Stratego, where each side hides its pieces.
+- 2022, .bold[Cicero] plays Diplomacy at human level, combining planning with negotiation in natural language.
 
 .question[What does an optimal strategy even mean when the opponents may cooperate, and lie?]
 
