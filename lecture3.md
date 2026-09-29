@@ -32,7 +32,7 @@ Questions to ask after the video, each a preview of the lecture:
 
 - Adversarial search
     - Minimax
-    - $\alpha-\beta$ pruning
+    - $\alpha$-$\beta$ pruning
     - H-Minimax
     - Expectiminimax
     - Monte Carlo Tree Search
@@ -309,8 +309,8 @@ class: middle
 - Pruning has .bold[no effect] on the minimax values. Therefore, .bold[completeness] and .bold[optimality] are preserved from Minimax.
 - Time complexity:
     - The effectiveness depends on the order in which the states are examined.
-    - If states could be examined in .bold[perfect order], then $\alpha-\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
-        - $\alpha-\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
+    - If states could be examined in .bold[perfect order], then $\alpha$-$\beta$ search examines only $O(b^{m/2})$ nodes to pick the best move, vs. $O(b^m)$ for minimax.
+        - $\alpha$-$\beta$ can solve a tree twice as deep as minimax can in the same amount of time.
         - Equivalent to an effective branching factor $\sqrt{b}$.
 - Space complexity: $O(m)$, as for Minimax.
 
@@ -324,7 +324,7 @@ Chess:
 - $b \approx 35$ (approximate average branching factor)
 - $d \approx 100$ (depth of a game tree for typical games)
 - $b^d \approx 35^{100} \approx 10^{154}$.
-- For $\alpha-\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
+- For $\alpha$-$\beta$ search and perfect ordering, we get $b^{d/2} \approx 35^{50} = 10^{77}$.
 
 Finding the exact solution with Minimax remains .bold[intractable].
 
@@ -352,7 +352,7 @@ $$\text{h-minimax}(s, d) = \begin{cases}
 \min\limits\_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
 \end{cases}$$
 
-.question[Can $\alpha-\beta$ search  be adapted to implement H-Minimax?]
+.question[Can $\alpha$-$\beta$ search be adapted to implement H-Minimax?]
 
 ???
 
@@ -521,7 +521,7 @@ class: middle
 be approximated by stopping the recursion early and using an evaluation function.
 - However, to obtain correct move, the evaluation function should be a .bold[positive linear transformation] of the expected utility of the state.
     - It is not enough for the evaluation function to just be order-preserving.
-- If we assume bounds on the utility function, $\alpha-\beta$ search can be adapted to stochastic games.
+- If we assume bounds on the utility function, $\alpha$-$\beta$ search can be adapted to stochastic games.
 
 <br>
 .center.width-70[![](figures/lec3/chance-order-preserving.png)]
