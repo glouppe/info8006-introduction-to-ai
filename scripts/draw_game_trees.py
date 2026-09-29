@@ -15,7 +15,8 @@ the interval of possible values beside each node), `alpha-beta-path.svg` (Figure
 `horizon-1.svg`, `horizon-2.svg` (a search cut at depth 2, then what lies beyond its horizon),
 `stochastic-game-tree.svg` (backgammon, Figure 5.11) and `chance-order-preserving.svg`
 (Figure 5.12, without its MIN nodes, which only repeat their leaves), and `multi-agent-tree-1.svg`,
-`multi-agent-tree-2.svg` (three players and their utility vectors, then the vectors backed up).
+`multi-agent-tree-2.svg` (three players and their utility vectors, then the vectors backed up), and
+`mcts-1.svg` to `mcts-4.svg` (one round of Monte Carlo tree search, after Wikipedia).
 """
 
 import base64
@@ -472,6 +473,78 @@ def multi_agent_tree(step):
     return parts
 
 
+MCTS_R = 36
+DARK = "#c4c4c4"
+
+
+def mcts_node(x, y, label, dark, highlight=False):
+    colour = BLUE if highlight else INK
+    return (f'<circle cx="{x:g}" cy="{y:g}" r="{MCTS_R}" fill="{DARK if dark else "white"}" stroke="{INK}" '
+            f'stroke-width="{STROKE}"/>' + text(x, y, label, size=20, weight=900 if highlight else 400, fill=colour))
+
+
+def arrow(p, q, colour=BLUE, width=3.5):
+    """A straight edge from p to q, stopped at the border of the circles, with an arrow head at q."""
+    dx, dy = q[0] - p[0], q[1] - p[1]
+    d = (dx * dx + dy * dy) ** 0.5
+    a = (p[0] + dx / d * MCTS_R, p[1] + dy / d * MCTS_R)
+    b = (q[0] - dx / d * (MCTS_R + 4), q[1] - dy / d * (MCTS_R + 4))
+    ux, uy = dx / d, dy / d
+    head = (f"{b[0]:g},{b[1]:g} {b[0] - 14 * ux + 7 * uy:g},{b[1] - 14 * uy - 7 * ux:g} "
+            f"{b[0] - 14 * ux - 7 * uy:g},{b[1] - 14 * uy + 7 * ux:g}")
+    return (line(a, (b[0] - 10 * ux, b[1] - 10 * uy), colour=colour, width=width)
+            + f'<polygon points="{head}" fill="{colour}"/>')
+
+
+def mcts_tree(step):
+    """One round of Monte Carlo tree search, after Wikipedia: 1 selection, 2 expansion, 3 simulation,
+    4 backpropagation. Nodes show the wins and visits of the player who moved into them; grey nodes
+    are the moves of one player, white nodes those of the other."""
+    y = [50, 160, 270, 380, 490]
+    nodes = {   # name: (x, level, dark, label before, label after backpropagation)
+        "root": (560, 0, False, "11/21", "11/22"),
+        "a": (300, 1, True, "7/10", "8/11"), "b": (620, 1, True, "3/8", None), "c": (780, 1, True, "0/3", None),
+        "a1": (220, 2, False, "2/4", None), "a2": (380, 2, False, "1/6", "1/7"),
+        "b1": (520, 2, False, "1/2", None), "b2": (620, 2, False, "2/3", None), "b3": (720, 2, False, "2/3", None),
+        "a21": (300, 3, True, "2/3", None), "a22": (460, 3, True, "3/3", "4/4"),
+    }
+    parent = {"a": "root", "b": "root", "c": "root", "a1": "a", "a2": "a", "b1": "b", "b2": "b", "b3": "b",
+              "a21": "a2", "a22": "a2"}
+    path = ["root", "a", "a2", "a22"]
+    new = (460, y[4])
+    pos = {k: (v[0], y[v[1]]) for k, v in nodes.items()}
+
+    parts = []
+    for k, p in parent.items():
+        on_path = step in (1, 4) and k in path
+        if not on_path:
+            parts.append(line(pos[p], pos[k], colour="#9a9a9a", width=1.6))
+    if step == 1:
+        for a, b in zip(path, path[1:]):
+            parts.append(arrow(pos[a], pos[b]))
+    if step >= 2:
+        parts.append(arrow(pos["a22"], new) if step == 2 else line(pos["a22"], new, colour="#9a9a9a", width=1.6))
+    if step == 3:
+        x0, y0, y1 = new[0], new[1] + MCTS_R, new[1] + 105
+        d, k = f"M {x0} {y0}", 4
+        for i in range(k):
+            ya, yb = y0 + (y1 - y0) * i / k, y0 + (y1 - y0) * (i + 1) / k
+            d += f" Q {x0 + (14 if i % 2 == 0 else -14)} {(ya + yb) / 2:g} {x0} {yb:g}"
+        parts.append(f'<path d="{d}" stroke="{BLUE}" stroke-width="3" fill="none"/>')
+        parts.append(text(x0, y1 + 22, "0/1", size=22, weight=900, fill=BLUE))
+    if step == 4:
+        parts.append(arrow(new, pos["a22"]))
+        for a, b in zip(path, path[1:]):
+            parts.append(arrow(pos[b], pos[a]))
+
+    for k, (x, lvl, dark, before, after) in nodes.items():
+        updated = step == 4 and after is not None
+        parts.append(mcts_node(x, y[lvl], after if updated else before, dark, highlight=updated))
+    if step >= 2:
+        parts.append(mcts_node(*new, "0/1" if step == 4 else "0/0", False, highlight=step in (2, 4)))
+    return ['<g transform="translate(-150, 0)">'] + parts + ["</g>"]
+
+
 if __name__ == "__main__":
     for step in (1, 2, 3):
         svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
@@ -485,3 +558,5 @@ if __name__ == "__main__":
     svg("chance-order-preserving", 980, 360, order_preserving())
     for step in (1, 2):
         svg(f"multi-agent-tree-{step}", 1000, 440, multi_agent_tree(step))
+    for step in range(1, 5):
+        svg(f"mcts-{step}", 700, 640, mcts_tree(step))
