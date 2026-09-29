@@ -632,10 +632,7 @@ class: middle
 
 # Expectiminimax
 
-- Because of the uncertainty in the action outcomes, states no longer have a .bold[definite] $\text{minimax}$ value.
-- However, we can calculate the .bold[expected] value of a state under optimal play by the opponent.
-    - i.e., the average over all possible outcomes of the chance nodes.
-    - $\text{minimax}$ values correspond instead to the worst-case outcome.
+Because of the uncertainty in the outcomes of actions, states no longer have a .bold[definite] $\text{minimax}$ value. We can however compute their .bold[expected] value under optimal play: the average over the outcomes of the chance nodes, where $\text{minimax}$ would instead assume the worst outcome.
 
 Writing ${v(s) = \text{expectiminimax}(s)}$ for short,
 $$v(s) = \begin{cases}
