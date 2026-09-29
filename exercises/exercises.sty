@@ -161,6 +161,7 @@
 %           \draw[world border] (0, 0) rectangle (5, 5);
 %           \pic at (0.5, 0.5) {pacman};
 %       \end{tikzpicture}
+%   The pics pacman, ghost, exit, car, robot and drone (drone=<fill color>) fit in a cell.
 %
 %   Game trees, 1 cm by 1.5 cm between grid points:
 %       \begin{tikzpicture}[game diagram]
@@ -285,6 +286,13 @@
     pics/car/.style={code={
         \fill[diagram-accent, draw=diagram-ink, line width=0.4pt] (0, 0.3) -- (0.21, -0.27) -- (0, -0.15) -- (-0.21, -0.27) -- cycle;
     }},
+    pics/drone/.style={code={
+        \draw[diagram-ink, line width=0.6pt] (-0.22, -0.22) -- (0.22, 0.22) (-0.22, 0.22) -- (0.22, -0.22);
+        \draw[diagram-ink, fill=white, line width=0.4pt] (-0.22, -0.22) circle (0.11) (0.22, 0.22) circle (0.11)
+            (-0.22, 0.22) circle (0.11) (0.22, -0.22) circle (0.11);
+        \fill[#1, draw=diagram-ink, line width=0.4pt, rounded corners=0.03cm] (-0.1, -0.1) rectangle (0.1, 0.1);
+    }},
+    pics/drone/.default=diagram-accent,
     pics/robot/.style={code={
         \draw[diagram-ink, line width=0.5pt] (0, 0.2) -- (0, 0.33);
         \fill[diagram-ink] (0, 0.35) circle (0.04);

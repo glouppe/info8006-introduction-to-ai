@@ -101,9 +101,9 @@
 
 \titledquestion{Tic-tac-toe \aima{5}}
 
-Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid, X moving first. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
+You are writing the engine of a program that plays Tic-Tac-Toe against human players. Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid, X moving first. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
 
-We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\text{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
+The program plays X, the MAX player, and its opponent O, the MIN player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\text{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
 
 \begin{parts}
     \part Define the search problem associated with the Tic-Tac-Toe game.
@@ -139,7 +139,7 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
 
     \part Annotate your tree with the evaluations of all the positions at depth 2.
 
-    \part Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
+    \part Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the first move of the program.
 
     \begin{solution}
         The tree below answers (c) to (e). The center is worth $+1$, a corner $-1$ and an edge $-2$, so X starts in the center.
@@ -224,9 +224,9 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
     \end{solution}
 \end{parts}
 
-\titledquestion{Minimax \source{CS188, Fall 2019}}
+\titledquestion{Defending a network \source{CS188, Fall 2019}}
 
-Consider the zero-sum game tree below. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player.
+A security program protects a computer network. It first chooses one of three configurations of the network; an attacker program, which observes the configuration, then chooses one of three attacks. The leaves of the tree below score the damage prevented: the defender maximizes it and the attacker minimizes it, so the game is zero-sum. The triangle that points up, at the root, is the choice of the defender (MAX); the triangles that point down are the choices of the attacker (MIN).
 
 \begin{center}
     \begin{tikzpicture}[game diagram]
@@ -259,9 +259,11 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
 \end{center}
 
 \begin{parts}
-    \part Assuming both players act optimally, fill in the Minimax value of each node.
+    \part Assuming both programs act optimally, fill in the minimax value of each node. Which configuration does the defender choose?
 
     \begin{solution}
+        The defender chooses the third configuration, which guarantees a score of 4 whatever the attack.
+
         \begin{center}
             \begin{tikzpicture}[game diagram]
                 \node[max node] (R) at (4.6, 0) {\textcolor{diagram-accent}{4}};
@@ -329,9 +331,11 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
         \end{center}
     \end{solution}
 
-    \part Again, consider the same zero-sum game tree, except that now, instead of a minimizing player, we have a chance node that will select one of the three values uniformly at random. Fill in the expectiminimax value of each node.
+    \part Suppose now that there is no attacker, but random failures: once the configuration is chosen, one of its three outcomes happens uniformly at random. The MIN nodes become chance nodes. Fill in the expectiminimax value of each node. Which configuration does the defender choose, and why does it differ from (a)?
 
     \begin{solution}
+        The defender now chooses the second configuration, of expected score 8, although its worst outcome scores 2. Against random failures, the average outcome matters; against an attacker, who always picks the worst outcome for the defender, only the worst case does.
+
         \begin{center}
             \begin{tikzpicture}[game diagram]
                 \node[max node] (R) at (4.6, 0) {\textcolor{diagram-accent}{8}};
@@ -366,15 +370,15 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
 
 \titledquestion{21 misère game \source{Exam, January 2019}}
 
-The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3; the player who says \enquote{21} or larger loses. Such a game, where the player who makes the last move loses, is a \emph{misère} game. With two players, a state is a pair $(v, p)$ of the value $v$ of the counter and the player $p \in \cbk{\text{MAX}, \text{MIN}}$ to play, MAX playing first.
+A game is \emph{solved} when the outcome of perfect play from its initial state is known, and a program that plays perfectly never loses; checkers was solved in 2007. We want to solve a small game. The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3; the player who says \enquote{21} or larger loses. Such a game, where the player who makes the last move loses, is a \emph{misère} game. With two players, a state is a pair $(v, p)$ of the value $v$ of the counter and the player $p \in \cbk{\text{MAX}, \text{MIN}}$ to play, MAX playing first.
 
 \begin{parts}
     \part Consider the 2-player game of \enquote{5}, which has the same rules as \enquote{21} except that the player who says 5 or larger loses. Show the whole game tree.
 
-    \part Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
+    \part Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move. Who wins the game of \enquote{5} with perfect play?
 
     \begin{solution}
-        The tree below answers (a) and (b). The utility of MAX is 1 when MIN says 5 or larger, \ie{} in the terminal states $(v, \text{MAX})$, and 0 otherwise. A node $(5+, p)$ merges the terminal states that the moves of its parent reach with a counter of 5 or larger, which all have the same value. MAX starts by adding 3.
+        The tree below answers (a) and (b). The utility of MAX is 1 when MIN says 5 or larger, \ie{} in the terminal states $(v, \text{MAX})$, and 0 otherwise. A node $(5+, p)$ merges the terminal states that the moves of its parent reach with a counter of 5 or larger, which all have the same value. MAX starts by adding 3, and the root is worth 1: the first player wins with perfect play, and the game of \enquote{5} is solved.
 
         \begin{center}
             \begin{tikzpicture}[game diagram, x=2.1cm, y=1.45cm]
@@ -420,9 +424,9 @@ The game \enquote{21} is played with any number of players who take turns increa
     \end{solution}
 \end{parts}
 
-\titledquestion{Leapfrog \aima{5}}
+\titledquestion{Drone race \aima{5}}
 
-Consider the following two-player turn-taking game whose initial configuration is shown in the figure below. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
+Two delivery drones, $A$ and $B$, race in a narrow tunnel of four cells, shown below: $A$ starts in cell 1 and must reach cell 4, and $B$ starts in cell 4 and must reach cell 1. The drones move in turn, $A$ first. At each turn, a drone must move to an adjacent free cell, in either direction. If the other drone occupies an adjacent cell, a drone may fly over it to the next free cell, if any. For example, if $A$ is on 3 and $B$ is on 2, then $A$ may fly back to 1. The race ends when a drone reaches the opposite end of the tunnel. If $A$ reaches cell 4 first, the value of the race to $A$ is $+1$; if $B$ reaches cell 1 first, it is $-1$.
 
 \begin{center}
     \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
@@ -431,13 +435,15 @@ Consider the following two-player turn-taking game whose initial configuration i
         \foreach \i in {1, ..., 4} {
             \node[tag] at (\i - 0.5, -0.35) {\i};
         }
-        \node[player node] at (0.5, 0.5) {$A$};
-        \node[player node, fill=white] at (3.5, 0.5) {$B$};
+        \pic at (0.5, 0.5) {drone};
+        \pic at (3.5, 0.5) {drone=diagram-robot};
+        \node[tag] at (0.5, 1.3) {$A$};
+        \node[tag] at (3.5, 1.3) {$B$};
     \end{tikzpicture}
 \end{center}
 
 \begin{parts}
-    \part Define the search problem associated with this game.
+    \part Define the search problem associated with this race.
 
     \begin{solution}
         Let a state of the game be a tuple $s = (i, j, p) \in \cbk{1, 2, 3, 4}^2 \times \cbk{A, B}$, where $i$ and $j$ are the respective positions of $A$ and $B$ and $p$ is the player whose turn it is.
@@ -550,15 +556,15 @@ Consider the following two-player turn-taking game whose initial configuration i
         Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than Minimax must be used.
     \end{solution}
 
-    \part This 4-cell game can be generalized to $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
+    \part This race can be generalized to a tunnel of $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
 
     \begin{solution}
-        Let $P$ be $A$ if $n$ is even and $B$ if $n$ is odd, and $Q$ the other player. We show that $P$ wins by always moving towards its goal, the cell where $Q$ starts. Let $d$ be the number of free cells between the two tokens, as long as they have not crossed.
+        Let $P$ be $A$ if $n$ is even and $B$ if $n$ is odd, and $Q$ the other player. We show that $P$ wins by always moving towards its goal, the cell where $Q$ starts. Let $d$ be the number of free cells between the two drones, as long as they have not crossed.
         \begin{itemize}
-            \item \emph{$Q$ never jumps before the crossing.} $d = n - 2$ at the first turn of $A$ and $d = n - 3$ at the first turn of $B$, so $d$ is even at the first turn of $P$. Each move of $P$ decreases $d$ by 1 and each move of $Q$ changes it by $\pm 1$, so $d$ is even at every turn of $P$ and odd at every turn of $Q$. $Q$ therefore never faces an adjacent token, the only case where it could jump.
-            \item \emph{$P$ can always move forward.} It steps into a free cell if $d > 0$ and jumps over $Q$ if $d = 0$. The jump is impossible only if $Q$ stands on the goal of $P$, at the end of the board, but $Q$ could only have moved there from the cell that $P$ now occupies, or by jumping over $P$, and neither is possible.
-            \item \emph{The crossing.} Let $P$ jump on its $(m + 1)$-th move, after $m$ moves of one cell. Meanwhile, $Q$ made $m$ moves (if $P = A$) or $m + 1$ (if $P = B$), each bringing it at most one cell closer. The tokens started $n - 2$ free cells apart, so $n - 2 \leq 2m + 1$, \ie{} $n - 3 - m \leq m$. After the jump, $P$ is $n - 3 - m$ cells from its goal and $Q$, to move, is $m + 1$ cells from its own.
-            \item \emph{The race.} No token stands between $Q$ and its goal any more, so $Q$ needs at least $m + 1$ moves, while $P$ reaches its goal in $n - 3 - m \leq m$ moves, before the $(m + 1)$-th move of $Q$. $Q$ can get in front of $P$ again only by jumping over it, two cells away from its own goal; $P$ then jumps over $Q$ in turn or, if $Q$ landed on the goal of $P$, steps back and jumps over $Q$ once $Q$, forced to move, has left that cell.
+            \item \emph{$Q$ never jumps before the crossing.} $d = n - 2$ at the first turn of $A$ and $d = n - 3$ at the first turn of $B$, so $d$ is even at the first turn of $P$. Each move of $P$ decreases $d$ by 1 and each move of $Q$ changes it by $\pm 1$, so $d$ is even at every turn of $P$ and odd at every turn of $Q$. $Q$ therefore never faces an adjacent drone, the only case where it could jump.
+            \item \emph{$P$ can always move forward.} It steps into a free cell if $d > 0$ and jumps over $Q$ if $d = 0$. The jump is impossible only if $Q$ stands on the goal of $P$, at the end of the tunnel, but $Q$ could only have moved there from the cell that $P$ now occupies, or by jumping over $P$, and neither is possible.
+            \item \emph{The crossing.} Let $P$ jump on its $(m + 1)$-th move, after $m$ moves of one cell. Meanwhile, $Q$ made $m$ moves (if $P = A$) or $m + 1$ (if $P = B$), each bringing it at most one cell closer. The drones started $n - 2$ free cells apart, so $n - 2 \leq 2m + 1$, \ie{} $n - 3 - m \leq m$. After the jump, $P$ is $n - 3 - m$ cells from its goal and $Q$, to move, is $m + 1$ cells from its own.
+            \item \emph{The race.} No drone stands between $Q$ and its goal any more, so $Q$ needs at least $m + 1$ moves, while $P$ reaches its goal in $n - 3 - m \leq m$ moves, before the $(m + 1)$-th move of $Q$. $Q$ can get in front of $P$ again only by jumping over it, two cells away from its own goal; $P$ then jumps over $Q$ in turn or, if $Q$ landed on the goal of $P$, steps back and jumps over $Q$ once $Q$, forced to move, has left that cell.
         \end{itemize}
         $P$ thus wins: $A$ wins if $n$ is even and $B$ if $n$ is odd.
     \end{solution}
@@ -566,7 +572,7 @@ Consider the following two-player turn-taking game whose initial configuration i
 
 \titledquestion{Chess and transposition table \aima{5}}
 
-Suppose you have a chess program that can evaluate 16 million nodes per second.
+Chess engines store the positions they have already evaluated in a transposition table, since many move orders lead to the same position. Suppose you write a chess engine that evaluates 16 million nodes per second (Deep Blue, which beat Garry Kasparov in 1997, evaluated about 200 million).
 
 \begin{parts}
     \part Decide on a compact representation of a game state for storage in a transposition table.
@@ -598,9 +604,9 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
     \end{solution}
 \end{parts}
 
-\titledquestion{Three-player game}
+\titledquestion{Self-driving cars at an intersection}
 
-Three game agents play the game below, player 1 at the root, player 2 at the second level and player 3 at the third. Each leaf gives the utilities $(u_1, u_2, u_3)$ of the three players, and each player maximizes its own utility.
+Three self-driving cars reach an intersection and decide in turn how to cross it, each between two maneuvers and after observing the choices of the cars before it: car 1 at the root of the tree below, car 2 at the second level and car 3 at the third. Each leaf gives the time saved by the three cars, $(u_1, u_2, u_3)$, and each car maximizes its own.
 
 \begin{center}
     \begin{tikzpicture}[game diagram, x=1.85cm]
@@ -620,22 +626,22 @@ Three game agents play the game below, player 1 at the root, player 2 at the sec
 \end{center}
 
 \begin{parts}
-    \part Back up the utilities to the root. Which move does player 1 choose? Is the game zero-sum?
+    \part Back up the utilities to the root. Which maneuver does car 1 choose? Is the game zero-sum?
 
     \begin{solution}
-        The nodes of player 3 are worth, from left to right, $(4, 2, 5)$, $(2, 5, 4)$, $(3, 3, 6)$ and $(5, 1, 3)$, those of player 2 are worth $(2, 5, 4)$ and $(3, 3, 6)$, and the root $(3, 3, 6)$: player 1 moves right. The game is not zero-sum, as the total utility of the leaves varies from 9 to 12.
+        The nodes of car 3 are worth, from left to right, $(4, 2, 5)$, $(2, 5, 4)$, $(3, 3, 6)$ and $(5, 1, 3)$, those of car 2 are worth $(2, 5, 4)$ and $(3, 3, 6)$, and the root $(3, 3, 6)$: car 1 takes the right maneuver. The game is not zero-sum, as the total time saved varies from 9 to 12 across the leaves.
     \end{solution}
 
-    \part Player 1 now assumes that the two other players play against it: it runs minimax on $u_1$, as MAX, with players 2 and 3 as MIN. Which move does it choose, and what does it get if players 2 and 3 in fact play as in (a)?
+    \part Car 1 now drives defensively: it assumes that the two other cars act against it and runs minimax on $u_1$, as MAX, with cars 2 and 3 as MIN. Which maneuver does it choose, and what does it get if cars 2 and 3 in fact drive as in (a)?
 
     \begin{solution}
-        The nodes of player 2 are worth $\min(1, 4, 7, 2) = 1$ on the left and $\min(3, 6, 5, 0) = 0$ on the right, so player 1 moves left. Players 2 and 3 then lead to $(2, 5, 4)$, and player 1 gets 2 instead of 3. Minimax guarantees at least 1, but its assumption is wrong here: players 2 and 3 maximize their own utilities, not the loss of player 1.
+        The nodes of car 2 are worth $\min(1, 4, 7, 2) = 1$ on the left and $\min(3, 6, 5, 0) = 0$ on the right, so car 1 takes the left maneuver. Cars 2 and 3 then lead to $(2, 5, 4)$, and car 1 saves 2 instead of 3. Minimax guarantees at least 1, but its assumption is wrong here: cars 2 and 3 maximize their own time saved, not the loss of car 1.
     \end{solution}
 \end{parts}
 
-\titledquestion{Evaluation functions with chance nodes}
+\titledquestion{Evaluation functions in backgammon}
 
-Consider the game tree below, in which MAX chooses between two chance nodes, with the probabilities of the outcomes on the edges.
+A backgammon program chooses a move, after which the dice are rolled. Its evaluation function, learned from games against itself as in TD-Gammon, scores the positions reached, on the leaves of the tree below; the probabilities of the dice outcomes are on the edges.
 
 \begin{center}
     \begin{tikzpicture}[game diagram, x=1.5cm, y=1.8cm]
@@ -653,28 +659,28 @@ Consider the game tree below, in which MAX chooses between two chance nodes, wit
 \end{center}
 
 \begin{parts}
-    \part Compute the expectiminimax value of each node. Which move does MAX choose?
+    \part Compute the expectiminimax value of each node. Which move does the program choose?
 
     \begin{solution}
-        The chance nodes are worth $0.5 \times 2 + 0.5 \times 4 = 3$ and $0.8 \times 1 + 0.2 \times 6 = 2$, so MAX moves left, for a value of 3.
+        The chance nodes are worth $0.5 \times 2 + 0.5 \times 4 = 3$ and $0.8 \times 1 + 0.2 \times 6 = 2$, so the program moves left, for a value of 3.
     \end{solution}
 
-    \part Both $f(x) = 2x + 1$ and $g(x) = 2^x$ preserve the order of the leaves. Replace every leaf value $x$ by $f(x)$, then by $g(x)$. Which move does MAX choose in each case?
+    \part The developers rescale the scores $x$ of the evaluation function, into $f(x) = 2x + 1$ or into $g(x) = 2^x$, which both keep the ranking of the positions. Which move does the program choose in each case?
 
     \begin{solution}
-        With $f$, the leaves become 5, 9, 3 and 13, and the chance nodes are worth 7 and $0.8 \times 3 + 0.2 \times 13 = 5$: MAX still moves left. With $g$, the leaves become 4, 16, 2 and 64, and the chance nodes are worth 10 and $0.8 \times 2 + 0.2 \times 64 = 14.4$: MAX now moves right.
+        With $f$, the leaves become 5, 9, 3 and 13, and the chance nodes are worth 7 and $0.8 \times 3 + 0.2 \times 13 = 5$: the program still moves left. With $g$, the leaves become 4, 16, 2 and 64, and the chance nodes are worth 10 and $0.8 \times 2 + 0.2 \times 64 = 14.4$: the program now moves right.
     \end{solution}
 
     \part Would $g$ change the move if the chance nodes were MIN nodes? What does this say of the evaluation functions of H-Minimax, with and without chance nodes?
 
     \begin{solution}
-        No: the MIN nodes are worth $\min(2, 4) = 2$ and $\min(1, 6) = 1$, and $\min(4, 16) = 4$ and $\min(2, 64) = 2$ with $g$, so MAX moves left in both cases. Minimax only compares values, so any order-preserving transformation of the evaluation function leaves its decisions unchanged. Expectations add values, so with chance nodes the evaluation function must be a positive linear transformation of the expected utility, such as $f$ and unlike $g$.
+        No: the MIN nodes are worth $\min(2, 4) = 2$ and $\min(1, 6) = 1$, and $\min(4, 16) = 4$ and $\min(2, 64) = 2$ with $g$, so the program moves left in both cases. Minimax only compares values, so any order-preserving transformation of the evaluation function leaves its decisions unchanged. Expectations add values, so with chance nodes the evaluation function must be a positive linear transformation of the expected utility, such as $f$ and unlike $g$.
     \end{solution}
 \end{parts}
 
 \titledquestion{Selection in Monte Carlo tree search}
 
-During the selection step of Monte Carlo tree search, player $p$ is to move at a node $n$ that has been visited $N(n) = 20$ times. The wins of $p$ and the visits of the three children of $n$ are given below.
+A Go program chooses its moves with Monte Carlo tree search, as AlphaGo does. During a selection step, the program, player $p$, is to move at a node $n$ that has been visited $N(n) = 20$ times. Its three children are candidate moves, whose wins for $p$ and visits are given below.
 
 \begin{center}
     \small
