@@ -166,7 +166,6 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
     - its move in the initial state,
     - its move after each possible reply of MIN,
     - its move after each possible reply of MIN to those moves, ...
-- In the game tree, it keeps .bold[one] move at each MAX node and .bold[all] moves at each MIN node.
 ]
 .kol-1-3.width-100[
 ![](figures/lec3/adversarial-search-cartoon.png)
