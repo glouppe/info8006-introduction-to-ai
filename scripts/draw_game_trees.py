@@ -14,7 +14,8 @@ Also writes `minimax-pruned.svg` (the same tree with two unknown leaves), `alpha
 the interval of possible values beside each node), `alpha-beta-path.svg` (Figure 5.6) and
 `horizon-1.svg`, `horizon-2.svg` (a search cut at depth 2, then what lies beyond its horizon),
 `stochastic-game-tree.svg` (backgammon, Figure 5.11) and `chance-order-preserving.svg`
-(Figure 5.12, without its MIN nodes, which only repeat their leaves).
+(Figure 5.12, without its MIN nodes, which only repeat their leaves), and `multi-agent-tree-1.svg`,
+`multi-agent-tree-2.svg` (three players and their utility vectors, then the vectors backed up).
 """
 
 import base64
@@ -403,6 +404,68 @@ def order_preserving():
     return parts
 
 
+def player(x, y, p):
+    """A node of a multi-player game, a filled circle labelled with the player to move."""
+    return (f'<circle cx="{x:g}" cy="{y:g}" r="{CHANCE_R}" fill="{FILL}" stroke="{INK}" stroke-width="{STROKE}"/>'
+            + text(x, y, str(p), size=24, weight=900))
+
+
+def vector(v):
+    return "(" + ", ".join(str(x) for x in v) + ")"
+
+
+MULTI_LEAVES = [(1, 6, 6), (7, 1, 2), (6, 1, 2), (7, 2, 1), (5, 1, 7), (1, 5, 2), (7, 7, 1), (5, 2, 5)]
+
+
+def multi_agent_tree(step):
+    """Three players, each maximizing its own component: step 1 the leaves, step 2 the backed-up vectors."""
+    rows = [45, 165, 285, 405]
+    parts = [text(110, y, label, size=22, fill=GREY, anchor="end")
+             for label, y in zip(["player 1", "player 2", "player 3", "utility"], rows)]
+    lx = [190 + 108 * k for k in range(8)]
+    p3 = [(lx[2 * k] + lx[2 * k + 1]) / 2 for k in range(4)]
+    p2 = [(p3[0] + p3[1]) / 2, (p3[2] + p3[3]) / 2]
+    root = ((p2[0] + p2[1]) / 2, rows[0])
+
+    v3 = [max(MULTI_LEAVES[2 * k:2 * k + 2], key=lambda v: v[2]) for k in range(4)]
+    v2 = [max(v3[2 * k:2 * k + 2], key=lambda v: v[1]) for k in range(2)]
+    v1 = max(v2, key=lambda v: v[0])
+    shown = step >= 2
+
+    def link(p, q, chosen):
+        return line(p, q, colour=BLUE if chosen and shown else INK, width=4 if chosen and shown else STROKE)
+
+    for i, x in enumerate(p2):
+        parts.append(link((root[0], root[1] + CHANCE_R), (x, rows[1] - CHANCE_R), v2[i] == v1))
+        for j in range(2):
+            k = 2 * i + j
+            parts.append(link((x, rows[1] + CHANCE_R), (p3[k], rows[2] - CHANCE_R), v3[k] == v2[i]))
+            for m in range(2):
+                parts.append(link((p3[k], rows[2] + CHANCE_R), (lx[2 * k + m], rows[3] - LEAF[1] / 2),
+                                  MULTI_LEAVES[2 * k + m] == v3[k]))
+    parts.append(player(*root, 1))
+    if shown:
+        parts.append(text(root[0] + CHANCE_R + 12, root[1], vector(v1), size=22, weight=900, fill=BLUE,
+                          anchor="start"))
+    for i, x in enumerate(p2):
+        parts.append(player(x, rows[1], 2))
+        if shown:
+            side = -1 if i == 0 else 1
+            parts.append(text(x + side * (CHANCE_R + 12), rows[1], vector(v2[i]), size=22, weight=900,
+                              fill=BLUE, anchor="end" if side < 0 else "start"))
+    for k, x in enumerate(p3):
+        parts.append(player(x, rows[2], 3))
+        if shown:
+            side = -1 if k % 2 == 0 else 1
+            parts.append(text(x + side * (CHANCE_R + 8), rows[2], vector(v3[k]), size=20, weight=900, fill=BLUE,
+                              anchor="end" if side < 0 else "start"))
+    for k, x in enumerate(lx):
+        w, h = 92, LEAF[1]
+        parts.append(f'<rect x="{x - w / 2:g}" y="{rows[3] - h / 2:g}" width="{w}" height="{h}" fill="white" '
+                     f'stroke="{INK}" stroke-width="{STROKE}"/>' + text(x, rows[3], vector(MULTI_LEAVES[k]), size=20))
+    return parts
+
+
 if __name__ == "__main__":
     for step in (1, 2, 3):
         svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
@@ -414,3 +477,5 @@ if __name__ == "__main__":
         svg(f"horizon-{step}", 960, 440, horizon_tree(step))
     svg("stochastic-game-tree", 1000, 740, stochastic_tree())
     svg("chance-order-preserving", 980, 360, order_preserving())
+    for step in (1, 2):
+        svg(f"multi-agent-tree-{step}", 1000, 440, multi_agent_tree(step))

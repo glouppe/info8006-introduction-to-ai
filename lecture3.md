@@ -578,11 +578,20 @@ class: middle
 
 ## Cooperation and competition
 
-.center.width-70[![](figures/lec3/multi-agent-tree.png)]
+.center.width-80[![](figures/lec3/multi-agent-tree-1.svg)]
 
 Without a zero-sum constraint, the interests of the players are no longer opposed: they may .bold[cooperate] or .bold[compete], depending on the state.
 
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+---
+
+count: false
+class: middle
+
+## Cooperation and competition
+
+.center.width-80[![](figures/lec3/multi-agent-tree-2.svg)]
+
+Without a zero-sum constraint, the interests of the players are no longer opposed: they may .bold[cooperate] or .bold[compete], depending on the state.
 
 ---
 
