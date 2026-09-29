@@ -3,6 +3,34 @@
 \usepackage[english]{babel}
 \usepackage{exercises}
 
+% \tttboard[style]{name}{position}{X cells}{O cells} draws a tic-tac-toe grid centered
+% at position, and names it; cells are row/column, from 0/0 at the top left.
+\tikzset{
+    ttt lines/.style={draw=diagram-ink, line width=0.5pt},
+    ttt x/.style={draw=diagram-ink, line width=0.9pt},
+    ttt o/.style={draw=diagram-accent, line width=0.9pt},
+    ttt pruned/.style={
+        ttt lines/.style={draw=diagram-grid, line width=0.5pt},
+        ttt x/.style={draw=diagram-grid, line width=0.9pt},
+        ttt o/.style={draw=diagram-grid, line width=0.9pt},
+    },
+}
+\newcommand*{\tttcell}{0.28}
+\newcommand{\tttboard}[5][]{%
+    \begin{scope}[shift={#3}, #1]
+        \begin{scope}[x=\tttcell cm, y=\tttcell cm]
+            \node[minimum size=3*\tttcell cm, inner sep=0pt] (#2) at (0, 0) {};
+            \draw[ttt lines] (-0.5, -1.5) -- (-0.5, 1.5) (0.5, -1.5) -- (0.5, 1.5)
+                (-1.5, -0.5) -- (1.5, -0.5) (-1.5, 0.5) -- (1.5, 0.5);
+            \foreach \r/\c in {#4} {
+                \draw[ttt x] (\c - 1.28, 1.28 - \r) -- (\c - 0.72, 0.72 - \r) (\c - 1.28, 0.72 - \r) -- (\c - 0.72, 1.28 - \r);
+            }
+            \foreach \r/\c in {#5} {
+                \draw[ttt o] (\c - 1, 1 - \r) circle (0.3);
+            }
+        \end{scope}
+    \end{scope}}
+
 \title{\bfseries INFO8006 Introduction to Artificial Intelligence}
 \author{Exercise session 2: Games and adversarial search}
 \date{}
@@ -117,14 +145,64 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
         The tree below answers (c) to (e). The center is worth $+1$, a corner $-1$ and an edge $-2$, so X starts in the center.
 
         \begin{center}
-            \includegraphics[width=0.8\linewidth]{figures/e2_tictactoe.pdf}
+            \begin{tikzpicture}[game diagram, x=1cm, y=1cm]
+                \tttboard{r}{(5.4, 0)}{}{}
+                \node[value] at (6.12, 0) {$+1$};
+                \tttboard{c0}{(0, -4.4)}{1/1}{0/0}
+                \node[value] at (0, -5.12) {$+1$};
+                \tttboard{c1}{(1.2, -4.4)}{1/1}{0/1}
+                \node[value] at (1.2, -5.12) {$+2$};
+                \tttboard{k0}{(2.4, -4.4)}{0/0}{1/1}
+                \node[value] at (2.4, -5.12) {$-1$};
+                \tttboard[ttt pruned]{k1}{(3.6, -4.4)}{0/0}{0/1}
+                \node[value, text=diagram-muted] at (3.6, -5.12) {$+1$};
+                \tttboard[ttt pruned]{k2}{(4.8, -4.4)}{0/0}{0/2}
+                \node[value, text=diagram-muted] at (4.8, -5.12) {$0$};
+                \tttboard[ttt pruned]{k3}{(6, -4.4)}{0/0}{1/2}
+                \node[value, text=diagram-muted] at (6, -5.12) {$+1$};
+                \tttboard[ttt pruned]{k4}{(7.2, -4.4)}{0/0}{2/2}
+                \node[value, text=diagram-muted] at (7.2, -5.12) {$0$};
+                \tttboard{e0}{(8.4, -4.4)}{0/1}{1/1}
+                \node[value] at (8.4, -5.12) {$-2$};
+                \tttboard[ttt pruned]{e1}{(9.6, -4.4)}{0/1}{0/0}
+                \node[value, text=diagram-muted] at (9.6, -5.12) {$-1$};
+                \tttboard[ttt pruned]{e2}{(10.8, -4.4)}{0/1}{1/0}
+                \node[value, text=diagram-muted] at (10.8, -5.12) {$0$};
+                \tttboard[ttt pruned]{e3}{(12, -4.4)}{0/1}{2/0}
+                \node[value, text=diagram-muted] at (12, -5.12) {$-1$};
+                \tttboard[ttt pruned]{e4}{(13.2, -4.4)}{0/1}{2/1}
+                \node[value, text=diagram-muted] at (13.2, -5.12) {$0$};
+                \tttboard{c}{(0.6, -2.2)}{1/1}{}
+                \node[value] at (1.32, -2.2) {$+1$};
+                \tttboard{k}{(4.8, -2.2)}{0/0}{}
+                \node[value] at (5.52, -2.2) {$-1$};
+                \tttboard{e}{(10.8, -2.2)}{0/1}{}
+                \node[value] at (11.52, -2.2) {$-2$};
+                \draw[best link] (r.south) -- (c.north);
+                \draw[best link] (c.south) -- (c0.north);
+                \draw[link] (c.south) -- (c1.north);
+                \draw[link] (r.south) -- (k.north);
+                \draw[link] (k.south) -- (k0.north);
+                \draw[pruned link] (k.south) -- (k1.north);
+                \draw[pruned link] (k.south) -- (k2.north);
+                \draw[pruned link] (k.south) -- (k3.north);
+                \draw[pruned link] (k.south) -- (k4.north);
+                \draw[link] (r.south) -- (e.north);
+                \draw[link] (e.south) -- (e0.north);
+                \draw[pruned link] (e.south) -- (e1.north);
+                \draw[pruned link] (e.south) -- (e2.north);
+                \draw[pruned link] (e.south) -- (e3.north);
+                \draw[pruned link] (e.south) -- (e4.north);
+                \draw[best link] (11.6, 0.35) -- ++(0.5, 0) node[tag, right, text=diagram-ink] {optimal play};
+                \draw[pruned link] (11.6, -0.15) -- ++(0.5, 0) node[tag, right] {pruned};
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
     \part Mark the nodes that $\alpha$-$\beta$ pruning would not evaluate if the nodes were generated in the optimal order.
 
     \begin{solution}
-        The nodes in red in the tree of (e). With the center first, $\alpha = +1$ at the root once its two children are evaluated. The corner and the edge then start with their worst child for X, of values $-1$ and $-2$, both $\leq \alpha$, and their four other children are pruned.
+        The faded nodes in the tree of (e). With the center first, $\alpha = +1$ at the root once its two children are evaluated. The corner and the edge then start with their worst child for X, of values $-1$ and $-2$, both $\leq \alpha$, and their four other children are pruned.
     \end{solution}
 
     \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\text{eval}(s)$ is misleading.
@@ -133,7 +211,13 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
         This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning. In the states below, X is to move on the left and wins at once, yet $\text{eval}(s) = 0$; O is to move on the right and wins at once, yet $\text{eval}(s) = 3$.
 
         \begin{center}
-            \includegraphics[width=0.3\linewidth]{figures/e2_misleading.pdf}
+            \begin{tikzpicture}[game diagram, x=1cm, y=1cm]
+                \renewcommand*{\tttcell}{0.45}
+                \tttboard{m1}{(0, 0)}{0/0, 1/0}{1/2, 2/2}
+                \tttboard{m2}{(4.5, 0)}{0/0, 0/1, 1/0}{1/2, 2/2}
+                \node[diagram caption] at (0, -1.1) {X to move, $\text{eval}(s) = 0$};
+                \node[diagram caption] at (4.5, -1.1) {O to move, $\text{eval}(s) = 3$};
+            \end{tikzpicture}
         \end{center}
 
         This heuristic does not preserve the Minimax \emph{ordering} of intermediate states.
@@ -145,7 +229,33 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
 Consider the zero-sum game tree below. Triangles that point up, such as at the top node (root), represent choices for the maximizing player; triangles that point down represent choices for the minimizing player.
 
 \begin{center}
-    \includegraphics[width=0.6\linewidth]{figures/e2_minimax_0.pdf}
+    \begin{tikzpicture}[game diagram]
+            \node[max node] (R) at (4.6, 0) {};
+            \node[min node] (C0) at (1, -1.3) {};
+            \node[min node] (C1) at (4.6, -1.3) {};
+            \node[min node] (C2) at (8.2, -1.3) {};
+            \node[leaf] (L0) at (0, -2.6) {10};
+            \node[leaf] (L1) at (1, -2.6) {8};
+            \node[leaf] (L2) at (2, -2.6) {3};
+            \node[leaf] (L3) at (3.6, -2.6) {2};
+            \node[leaf] (L4) at (4.6, -2.6) {15};
+            \node[leaf] (L5) at (5.6, -2.6) {7};
+            \node[leaf] (L6) at (7.2, -2.6) {6};
+            \node[leaf] (L7) at (8.2, -2.6) {5};
+            \node[leaf] (L8) at (9.2, -2.6) {4};
+            \draw[link] (R.south) -- (C0.north);
+            \draw[link] (R.south) -- (C1.north);
+            \draw[link] (R.south) -- (C2.north);
+            \draw[link] (C0.south) -- (L0.north);
+            \draw[link] (C0.south) -- (L1.north);
+            \draw[link] (C0.south) -- (L2.north);
+            \draw[link] (C1.south) -- (L3.north);
+            \draw[link] (C1.south) -- (L4.north);
+            \draw[link] (C1.south) -- (L5.north);
+            \draw[link] (C2.south) -- (L6.north);
+            \draw[link] (C2.south) -- (L7.north);
+            \draw[link] (C2.south) -- (L8.north);
+        \end{tikzpicture}
 \end{center}
 
 \begin{parts}
@@ -153,7 +263,33 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
 
     \begin{solution}
         \begin{center}
-            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_1.pdf}
+            \begin{tikzpicture}[game diagram]
+                \node[max node] (R) at (4.6, 0) {\textcolor{diagram-accent}{4}};
+                \node[min node] (C0) at (1, -1.3) {\textcolor{diagram-accent}{3}};
+                \node[min node] (C1) at (4.6, -1.3) {\textcolor{diagram-accent}{2}};
+                \node[min node] (C2) at (8.2, -1.3) {\textcolor{diagram-accent}{4}};
+                \node[leaf] (L0) at (0, -2.6) {10};
+                \node[leaf] (L1) at (1, -2.6) {8};
+                \node[leaf] (L2) at (2, -2.6) {3};
+                \node[leaf] (L3) at (3.6, -2.6) {2};
+                \node[leaf] (L4) at (4.6, -2.6) {15};
+                \node[leaf] (L5) at (5.6, -2.6) {7};
+                \node[leaf] (L6) at (7.2, -2.6) {6};
+                \node[leaf] (L7) at (8.2, -2.6) {5};
+                \node[leaf] (L8) at (9.2, -2.6) {4};
+                \draw[link] (R.south) -- (C0.north);
+                \draw[link] (R.south) -- (C1.north);
+                \draw[link] (R.south) -- (C2.north);
+                \draw[link] (C0.south) -- (L0.north);
+                \draw[link] (C0.south) -- (L1.north);
+                \draw[link] (C0.south) -- (L2.north);
+                \draw[link] (C1.south) -- (L3.north);
+                \draw[link] (C1.south) -- (L4.north);
+                \draw[link] (C1.south) -- (L5.north);
+                \draw[link] (C2.south) -- (L6.north);
+                \draw[link] (C2.south) -- (L7.north);
+                \draw[link] (C2.south) -- (L8.north);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -163,7 +299,33 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
         The first MIN node is worth 3, so $\alpha = 3$ at the root. The first leaf of the second MIN node is $2 \leq \alpha$: MAX will not play this node whatever its other leaves, and 15 and 7 are pruned. The leaves of the third MIN node, 6, 5 and 4, all stay above $\alpha = 3$, so all three are evaluated.
 
         \begin{center}
-            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_2.pdf}
+            \begin{tikzpicture}[game diagram]
+                \node[max node] (R) at (4.6, 0) {\textcolor{diagram-accent}{4}};
+                \node[min node] (C0) at (1, -1.3) {\textcolor{diagram-accent}{3}};
+                \node[min node] (C1) at (4.6, -1.3) {\textcolor{diagram-accent}{2}};
+                \node[min node] (C2) at (8.2, -1.3) {\textcolor{diagram-accent}{4}};
+                \node[leaf] (L0) at (0, -2.6) {10};
+                \node[leaf] (L1) at (1, -2.6) {8};
+                \node[leaf] (L2) at (2, -2.6) {3};
+                \node[leaf] (L3) at (3.6, -2.6) {2};
+                \node[leaf, pruned] (L4) at (4.6, -2.6) {15};
+                \node[leaf, pruned] (L5) at (5.6, -2.6) {7};
+                \node[leaf] (L6) at (7.2, -2.6) {6};
+                \node[leaf] (L7) at (8.2, -2.6) {5};
+                \node[leaf] (L8) at (9.2, -2.6) {4};
+                \draw[link] (R.south) -- (C0.north);
+                \draw[link] (R.south) -- (C1.north);
+                \draw[link] (R.south) -- (C2.north);
+                \draw[link] (C0.south) -- (L0.north);
+                \draw[link] (C0.south) -- (L1.north);
+                \draw[link] (C0.south) -- (L2.north);
+                \draw[link] (C1.south) -- (L3.north);
+                \draw[pruned link] (C1.south) -- (L4.north);
+                \draw[pruned link] (C1.south) -- (L5.north);
+                \draw[link] (C2.south) -- (L6.north);
+                \draw[link] (C2.south) -- (L7.north);
+                \draw[link] (C2.south) -- (L8.north);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -171,7 +333,33 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
 
     \begin{solution}
         \begin{center}
-            \includegraphics[width=0.6\linewidth]{figures/e2_minimax_3.pdf}
+            \begin{tikzpicture}[game diagram]
+                \node[max node] (R) at (4.6, 0) {\textcolor{diagram-accent}{8}};
+                \node[chance node] (C0) at (1, -1.3) {\textcolor{diagram-accent}{7}};
+                \node[chance node] (C1) at (4.6, -1.3) {\textcolor{diagram-accent}{8}};
+                \node[chance node] (C2) at (8.2, -1.3) {\textcolor{diagram-accent}{5}};
+                \node[leaf] (L0) at (0, -2.6) {10};
+                \node[leaf] (L1) at (1, -2.6) {8};
+                \node[leaf] (L2) at (2, -2.6) {3};
+                \node[leaf] (L3) at (3.6, -2.6) {2};
+                \node[leaf] (L4) at (4.6, -2.6) {15};
+                \node[leaf] (L5) at (5.6, -2.6) {7};
+                \node[leaf] (L6) at (7.2, -2.6) {6};
+                \node[leaf] (L7) at (8.2, -2.6) {5};
+                \node[leaf] (L8) at (9.2, -2.6) {4};
+                \draw[link] (R.south) -- (C0.north);
+                \draw[link] (R.south) -- (C1.north);
+                \draw[link] (R.south) -- (C2.north);
+                \draw[link] (C0.south) -- (L0.north);
+                \draw[link] (C0.south) -- (L1.north);
+                \draw[link] (C0.south) -- (L2.north);
+                \draw[link] (C1.south) -- (L3.north);
+                \draw[link] (C1.south) -- (L4.north);
+                \draw[link] (C1.south) -- (L5.north);
+                \draw[link] (C2.south) -- (L6.north);
+                \draw[link] (C2.south) -- (L7.north);
+                \draw[link] (C2.south) -- (L8.north);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 \end{parts}
@@ -189,14 +377,46 @@ The game \enquote{21} is played with any number of players who take turns increa
         The tree below answers (a) and (b). The utility of MAX is 1 when MIN says 5 or larger, \ie{} in the terminal states $(v, \text{MAX})$, and 0 otherwise. A node $(5+, p)$ merges the terminal states that the moves of its parent reach with a counter of 5 or larger, which all have the same value. MAX starts by adding 3.
 
         \begin{center}
-            \includegraphics[width=0.9\linewidth]{figures/e2_21.pdf}
+            \begin{tikzpicture}[game diagram, x=2.1cm, y=1.45cm]
+                \node[state node] (r) at (3.9, 0) {$(1, \text{MAX})$ \\ \textcolor{diagram-accent}{$1$}};
+                \node[state node] (a) at (1.75, -1) {$(2, \text{MIN})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[state node] (b) at (4.5, -1) {$(3, \text{MIN})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[state node] (c) at (6, -1) {$(4, \text{MIN})$ \\ \textcolor{diagram-accent}{$1$}};
+                \node[state node, pruned] (aa) at (0.5, -2) {$(3, \text{MAX})$ \\ \textcolor{diagram-muted}{$1$}};
+                \node[state node] (ab) at (2, -2) {$(4, \text{MAX})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[leaf, pruned] (ac) at (3, -2) {$(5, \text{MAX})$ \\ \textcolor{diagram-muted}{$1$}};
+                \node[state node] (ba) at (4, -2) {$(4, \text{MAX})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[leaf, pruned] (bb) at (5, -2) {$(5+, \text{MAX})$ \\ \textcolor{diagram-muted}{$1$}};
+                \node[leaf] (ca) at (6, -2) {$(5+, \text{MAX})$ \\ \textcolor{diagram-accent}{$1$}};
+                \node[state node, pruned] (aaa) at (0, -3) {$(4, \text{MIN})$ \\ \textcolor{diagram-muted}{$1$}};
+                \node[leaf, pruned] (aab) at (1, -3) {$(5+, \text{MIN})$ \\ \textcolor{diagram-muted}{$0$}};
+                \node[leaf] (aba) at (2, -3) {$(5+, \text{MIN})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[leaf] (baa) at (4, -3) {$(5+, \text{MIN})$ \\ \textcolor{diagram-accent}{$0$}};
+                \node[leaf, pruned] (aaaa) at (0, -4) {$(5+, \text{MAX})$ \\ \textcolor{diagram-muted}{$1$}};
+                \draw[link] (r.south) -- (a.north);
+                \draw[link] (r.south) -- (b.north);
+                \draw[best link] (r.south) -- (c.north);
+                \draw[pruned link] (a.south) -- (aa.north);
+                \draw[link] (a.south) -- (ab.north);
+                \draw[pruned link] (a.south) -- (ac.north);
+                \draw[link] (b.south) -- (ba.north);
+                \draw[pruned link] (b.south) -- (bb.north);
+                \draw[best link] (c.south) -- (ca.north);
+                \draw[pruned link] (aa.south) -- (aaa.north);
+                \draw[pruned link] (aa.south) -- (aab.north);
+                \draw[link] (ab.south) -- (aba.north);
+                \draw[link] (ba.south) -- (baa.north);
+                \draw[pruned link] (aaa.south) -- (aaaa.north);
+                \draw[best link] (5.3, 0.25) -- ++(0.3, 0) node[tag, right, text=diagram-ink] {optimal play};
+                \draw[pruned link] (5.3, -0.1) -- ++(0.3, 0) node[tag, right] {pruned};
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
     \part Mark the nodes that $\alpha$-$\beta$ pruning would not evaluate if the nodes were generated in the optimal order.
 
     \begin{solution}
-        The nodes in red in the tree of (b). With $(4, \text{MIN})$ first, $\alpha = 1$ at the root. The nodes $(2, \text{MIN})$ and $(3, \text{MIN})$ then start with their child $(4, \text{MAX})$, of value $0 \leq \alpha$, and their other children are pruned.
+        The faded nodes in the tree of (b). With $(4, \text{MIN})$ first, $\alpha = 1$ at the root. The nodes $(2, \text{MIN})$ and $(3, \text{MIN})$ then start with their child $(4, \text{MAX})$, of value $0 \leq \alpha$, and their other children are pruned.
     \end{solution}
 \end{parts}
 
@@ -205,14 +425,14 @@ The game \enquote{21} is played with any number of players who take turns increa
 Consider the following two-player turn-taking game whose initial configuration is shown in the figure below. Player $A$ moves first. Each player must move their token to an adjacent free cell in either direction. If the opponent occupies an adjacent cell, then a player may jump over the opponent to the next free cell, if any. For example, if $A$ is on $3$ and $B$ is on $2$, then $A$ may move back to $1$. The game ends when a player reaches the opposite end of the board. If player $A$ reaches cell $4$ first, then the value of the game to $A$ is $+1$; if player $B$ reaches cell $1$ first, then the value of the game to $A$ is $-1$.
 
 \begin{center}
-    \begin{tikzpicture}
-        \draw[step=1cm, black, thin] (0, 0) grid (4, 1);
-        \node at (0.5, -0.5) {1};
-        \node at (1.5, -0.5) {2};
-        \node at (2.5, -0.5) {3};
-        \node at (3.5, -0.5) {4};
-        \node[draw, circle] at (0.5, 0.5) {$A$};
-        \node[draw, circle] at (3.5, 0.5) {$B$};
+    \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+        \draw[grid lines] (0, 0) grid (4, 1);
+        \draw[world border] (0, 0) rectangle (4, 1);
+        \foreach \i in {1, ..., 4} {
+            \node[tag] at (\i - 0.5, -0.35) {\i};
+        }
+        \node[player node] at (0.5, 0.5) {$A$};
+        \node[player node, fill=white] at (3.5, 0.5) {$B$};
     \end{tikzpicture}
 \end{center}
 
@@ -264,30 +484,29 @@ Consider the following two-player turn-taking game whose initial configuration i
 
     \begin{solution}
         \begin{center}
-            \scalebox{0.75}{\begin{tikzpicture}[node distance = 2.5cm]
-                \node[state] (N0) {$(1, 4, A)$};
-                \node[state] (N1) [right of=N0] {$(2, 4, B)$};
-                \node[state] (N2) [right of=N1] {$(2, 3, A)$};
-                \node[state, square] (N3) [below of=N2] {$(4, 3, B)$\\$+1$};
-                \node[state] (N4) [right of=N2] {$(1, 3, B)$};
-                \node[state, square, double] (N5) [below of=N4] {$(1, 4, A)$\\$?$};
-                \node[state] (N6) [right of=N4] {$(1, 2, A)$};
-                \node[state] (N7) [right of=N6] {$(3, 2, B)$};
-                \node[state, square] (N8) [below of=N7] {$(3, 1, A)$\\$-1$};
-                \node[state] (N9) [right of=N7] {$(3, 4, A)$};
-                \node[state, square, double] (N10) [below of=N9] {$(2, 4, B)$\\$?$};
-
-                \draw[arrow] (N0) to (N1);
-                \draw[arrow] (N1) to (N2);
-                \draw[arrow] (N2) to (N3);
-                \draw[arrow] (N2) to (N4);
-                \draw[arrow] (N4) to (N5);
-                \draw[arrow] (N4) to (N6);
-                \draw[arrow] (N6) to (N7);
-                \draw[arrow] (N7) to (N8);
-                \draw[arrow] (N7) to (N9);
-                \draw[arrow] (N9) to (N10);
-            \end{tikzpicture}}
+            \begin{tikzpicture}[game diagram, x=1.95cm, y=1.5cm]
+                \node[state node] (s0) at (0, 0) {$(1, 4, A)$};
+                \node[state node] (s1) at (1, 0) {$(2, 4, B)$};
+                \node[state node] (s2) at (2, 0) {$(2, 3, A)$};
+                \node[state node] (s3) at (3, 0) {$(1, 3, B)$};
+                \node[state node] (s4) at (4, 0) {$(1, 2, A)$};
+                \node[state node] (s5) at (5, 0) {$(3, 2, B)$};
+                \node[state node] (s6) at (6, 0) {$(3, 4, A)$};
+                \node[leaf] (t2) at (2, -1) {$(4, 3, B)$ \\ $+1$};
+                \node[loop leaf] (t3) at (3, -1) {$(1, 4, A)$ \\ $?$};
+                \node[leaf] (t5) at (5, -1) {$(3, 1, A)$ \\ $-1$};
+                \node[loop leaf] (t6) at (6, -1) {$(2, 4, B)$ \\ $?$};
+                \draw[link, ->] (s0) -- (s1);
+                \draw[link, ->] (s1) -- (s2);
+                \draw[link, ->] (s2) -- (s3);
+                \draw[link, ->] (s3) -- (s4);
+                \draw[link, ->] (s4) -- (s5);
+                \draw[link, ->] (s5) -- (s6);
+                \draw[link, ->] (s2) -- (t2);
+                \draw[link, ->] (s3) -- (t3);
+                \draw[link, ->] (s5) -- (t5);
+                \draw[link, ->] (s6) -- (t6);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -303,30 +522,29 @@ Consider the following two-player turn-taking game whose initial configuration i
         We handle the \enquote{?} values by assuming that a player only chooses to go in loop states if no winning action is available. That is, $A$ (resp. $B$) prefers $+1$ (resp. $-1$) to \enquote{?}, but \enquote{?} to $-1$ (resp. $+1$).
 
         \begin{center}
-            \scalebox{0.75}{\begin{tikzpicture}[node distance=2.5cm]
-                \node[state] (N0) {$(1, 4, A)$\\$+1$};
-                \node[state] (N1) [right of=N0] {$(2, 4, B)$\\$+1$};
-                \node[state] (N2) [right of=N1] {$(2, 3, A)$\\$+1$};
-                \node[state, square] (N3) [below of=N2] {$(4, 3, B)$\\$+1$};
-                \node[state] (N4) [right of=N2] {$(1, 3, B)$\\$-1$};
-                \node[state, square, double] (N5) [below of=N4] {$(1, 4, A)$\\$?$};
-                \node[state] (N6) [right of=N4] {$(1, 2, A)$\\$-1$};
-                \node[state] (N7) [right of=N6] {$(3, 2, B)$\\$-1$};
-                \node[state, square] (N8) [below of=N7] {$(3, 1, A)$\\$-1$};
-                \node[state] (N9) [right of=N7] {$(3, 4, A)$\\$?$};
-                \node[state, square, double] (N10) [below of=N9] {$(2, 4, B)$\\$?$};
-
-                \draw[arrow] (N0) to (N1);
-                \draw[arrow] (N1) to (N2);
-                \draw[arrow] (N2) to (N3);
-                \draw[arrow] (N2) to (N4);
-                \draw[arrow] (N4) to (N5);
-                \draw[arrow] (N4) to (N6);
-                \draw[arrow] (N6) to (N7);
-                \draw[arrow] (N7) to (N8);
-                \draw[arrow] (N7) to (N9);
-                \draw[arrow] (N9) to (N10);
-            \end{tikzpicture}}
+            \begin{tikzpicture}[game diagram, x=1.95cm, y=1.5cm]
+                \node[state node] (s0) at (0, 0) {$(1, 4, A)$ \\ \textcolor{diagram-accent}{$+1$}};
+                \node[state node] (s1) at (1, 0) {$(2, 4, B)$ \\ \textcolor{diagram-accent}{$+1$}};
+                \node[state node] (s2) at (2, 0) {$(2, 3, A)$ \\ \textcolor{diagram-accent}{$+1$}};
+                \node[state node] (s3) at (3, 0) {$(1, 3, B)$ \\ \textcolor{diagram-accent}{$-1$}};
+                \node[state node] (s4) at (4, 0) {$(1, 2, A)$ \\ \textcolor{diagram-accent}{$-1$}};
+                \node[state node] (s5) at (5, 0) {$(3, 2, B)$ \\ \textcolor{diagram-accent}{$-1$}};
+                \node[state node] (s6) at (6, 0) {$(3, 4, A)$ \\ \textcolor{diagram-accent}{$?$}};
+                \node[leaf] (t2) at (2, -1) {$(4, 3, B)$ \\ $+1$};
+                \node[loop leaf] (t3) at (3, -1) {$(1, 4, A)$ \\ $?$};
+                \node[leaf] (t5) at (5, -1) {$(3, 1, A)$ \\ $-1$};
+                \node[loop leaf] (t6) at (6, -1) {$(2, 4, B)$ \\ $?$};
+                \draw[link, ->] (s0) -- (s1);
+                \draw[link, ->] (s1) -- (s2);
+                \draw[link, ->] (s2) -- (s3);
+                \draw[link, ->] (s3) -- (s4);
+                \draw[link, ->] (s4) -- (s5);
+                \draw[link, ->] (s5) -- (s6);
+                \draw[link, ->] (s2) -- (t2);
+                \draw[link, ->] (s3) -- (t3);
+                \draw[link, ->] (s5) -- (t5);
+                \draw[link, ->] (s6) -- (t6);
+            \end{tikzpicture}
         \end{center}
 
         Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than Minimax must be used.

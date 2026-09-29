@@ -170,7 +170,10 @@
 %           \draw[link] (R.south) -- (C) (C) -- node[cost] {0.5} (L);
 %       \end{tikzpicture}
 %   max node and min node are triangles pointing up and down, chance node a circle,
-%   player node a filled circle labelled with the player to move, leaf a box.
+%   player node a filled circle labelled with the player to move, state node a rounded
+%   box labelled with a state, leaf a box (loop leaf a double box, for repeated states).
+%   Solutions write backed-up values with value, draw the optimal play with best link,
+%   and fade the nodes that alpha-beta pruning skips with pruned and pruned link.
 
 \usetikzlibrary{arrows.meta}
 
@@ -185,6 +188,7 @@
 
 \tikzset{
     diagram/.style={
+        color=diagram-ink,
         font=\small,
         line width=0.6pt,
         line cap=round,
@@ -244,6 +248,20 @@
         minimum size=6mm,
         inner sep=2pt,
     },
+    state node/.style={
+        rectangle,
+        rounded corners=3pt,
+        draw=diagram-ink,
+        fill=diagram-fill,
+        line width=0.7pt,
+        minimum size=6mm,
+        inner sep=3pt,
+    },
+    loop leaf/.style={leaf, double, double distance=1.3pt, inner sep=3.5pt},
+    value/.style={font=\footnotesize, text=diagram-accent, inner sep=1pt},
+    best link/.style={link, draw=diagram-accent, line width=1.6pt},
+    pruned/.style={draw=diagram-grid, text=diagram-muted, fill=white},
+    pruned link/.style={link, draw=diagram-grid, dashed},
     % Grid worlds
     world diagram/.style={diagram, x=0.62cm, y=0.62cm},
     grid lines/.style={draw=diagram-grid, line width=0.4pt, step=1},
