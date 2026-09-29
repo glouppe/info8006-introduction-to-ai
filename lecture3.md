@@ -160,7 +160,7 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 # Adversarial search
 
 .grid[.kol-2-3[
-- In a search problem, the optimal solution is a sequence of actions leading to a goal state.
+- In a search problem, the optimal solution is a sequence of actions ${a\_{1:T}}$ leading to a goal state.
     - i.e., a terminal state where MAX wins.
 - In a game, the opponent (MIN) may react .bold[arbitrarily] to a move.
 - Therefore, a player (MAX) must define a contingent .bold[strategy] ${\pi\_\text{MAX}}$ which specifies
