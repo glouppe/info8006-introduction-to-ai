@@ -12,7 +12,9 @@ down, terminal states boxes, backed-up values in the course blue. Roboto is embe
 Also writes `minimax-pruned.svg` (the same tree with two unknown leaves), `alpha-beta-1.svg` to
 `alpha-beta-6.svg` (the steps of alpha-beta pruning on it, Figure 5.5, unexplored parts faded and
 the interval of possible values beside each node), `alpha-beta-path.svg` (Figure 5.6) and
-`horizon-1.svg`, `horizon-2.svg` (a search cut at depth 2, then what lies beyond its horizon).
+`horizon-1.svg`, `horizon-2.svg` (a search cut at depth 2, then what lies beyond its horizon),
+`stochastic-game-tree.svg` (backgammon, Figure 5.11) and `chance-order-preserving.svg`
+(Figure 5.12, without its MIN nodes, which only repeat their leaves).
 """
 
 import base64
@@ -292,6 +294,115 @@ def horizon_tree(step):
     return parts
 
 
+CHANCE_R = 22
+
+
+def chance(x, y, value=None, side=1):
+    """A chance node, a white circle, with its value in blue beside it."""
+    out = (f'<circle cx="{x:g}" cy="{y:g}" r="{CHANCE_R}" fill="white" stroke="{INK}" '
+           f'stroke-width="{STROKE}"/>')
+    if value is not None:
+        out += text(x + side * (CHANCE_R + 10), y, str(value), size=24, weight=900, fill=BLUE,
+                    anchor="start" if side > 0 else "end")
+    return out
+
+
+def stub(x, y):
+    """The first moves below a node that is not expanded, and an ellipsis."""
+    return "".join(line((x, y), (x + dx, y + 26), width=1.4) for dx in (-14, 0, 14))
+
+
+def dice(x, y, p, roll):
+    """The probability and the roll of a dice outcome, on an edge."""
+    halo = ' stroke="white" stroke-width="6" stroke-linejoin="round" paint-order="stroke"'
+    return text(x, y - 13, p, size=20, fill=GREY, style=halo) + text(x, y + 13, roll, size=20, fill=GREY, style=halo)
+
+
+def stochastic_tree():
+    """Backgammon, Figure 5.11 of Russell and Norvig: chance nodes roll the dice before each move."""
+    rows = [45, 160, 305, 440, 580, 700]
+    parts = [text(150, y, label, size=22, fill=GREY, anchor="end")
+             for label, y in zip(["MAX", "CHANCE", "MIN", "CHANCE", "MAX", "TERMINAL"], rows)]
+    root = (560, rows[0])
+
+    c1 = [260, 400, 560, 800, 920]      # chance nodes after the move of MAX, the third expanded
+    m1 = [300, 470, 700, 880]           # MIN nodes after the roll, the third expanded
+    c2 = [480, 660, 820, 920]           # chance nodes after the move of MIN, the first expanded
+    m2 = [230, 380, 560, 740]           # MAX nodes after the roll, the third expanded
+    leaves = [(420, "2"), (490, "\u22121"), (560, "1"), (690, "\u22121"), (760, "1")]
+
+    for x in c1:
+        parts.append(line((root[0], root[1] + BOTTOM), (x, rows[1] - CHANCE_R)))
+    parts.append(text(680, rows[1], "\u2026", size=30, fill=GREY))
+    for x, (p, roll) in zip(m1, [("1/36", "1,1"), ("1/18", "1,2"), ("1/18", "6,5"), ("1/36", "6,6")]):
+        parts.append(line((560, rows[1] + CHANCE_R), (x, rows[2] - BOTTOM)))
+        mx, my = 560 + 0.62 * (x - 560), rows[1] + CHANCE_R + 0.62 * (rows[2] - BOTTOM - rows[1] - CHANCE_R)
+        parts.append(dice(mx + (-32 if x < 560 else 32), my, p, roll))
+    parts.append(text(585, rows[2], "\u2026", size=30, fill=GREY))
+    for x in c2:
+        parts.append(line((700, rows[2] + TOP), (x, rows[3] - CHANCE_R)))
+    parts.append(text(740, rows[3], "\u2026", size=30, fill=GREY))
+    for x, (p, roll) in zip(m2, [("1/36", "1,1"), ("1/18", "1,2"), ("1/18", "6,5"), ("1/36", "6,6")]):
+        parts.append(line((480, rows[3] + CHANCE_R), (x, rows[4] - TOP)))
+        mx, my = 480 + 0.62 * (x - 480), rows[3] + CHANCE_R + 0.62 * (rows[4] - TOP - rows[3] - CHANCE_R)
+        parts.append(dice(mx + (-32 if x < 480 else 32), my, p, roll))
+    parts.append(text(470, rows[4], "\u2026", size=30, fill=GREY))
+    for x, _ in leaves:
+        parts.append(line((560, rows[4] + BOTTOM), (x, rows[5] - LEAF[1] / 2)))
+    parts.append(text(625, rows[5], "\u2026", size=30, fill=GREY))
+
+    parts.append(triangle(*root, up=True))
+    for x in c1:
+        parts.append(chance(x, rows[1]))
+        if x != 560:
+            parts.append(stub(x, rows[1] + CHANCE_R))
+    for x in m1:
+        parts.append(triangle(x, rows[2], up=False))
+        if x != 700:
+            parts.append(stub(x, rows[2] + TOP))
+    for x in c2:
+        parts.append(chance(x, rows[3]))
+        if x != 480:
+            parts.append(stub(x, rows[3] + CHANCE_R))
+    for x in m2:
+        parts.append(triangle(x, rows[4], up=True))
+        if x != 560:
+            parts.append(stub(x, rows[4] + BOTTOM))
+    for x, v in leaves:
+        parts.append(leaf(x, rows[5], "") + text(x, rows[5], v, size=24))
+    return parts
+
+
+def order_preserving():
+    """Figure 5.12 of Russell and Norvig, without its MIN nodes, which only repeat their leaves:
+    the transformation 1, 2, 3, 4 -> 1, 20, 30, 400 keeps the order of the leaves but changes the move."""
+    rows = {"MAX": 45, "CHANCE": 175, "utility": 320}
+    parts = [text(110, y, label, size=22, fill=GREY, anchor="end") for label, y in rows.items()]
+    for ox, leaves in [(0, [[2, 3], [1, 4]]), (440, [[20, 30], [1, 400]])]:
+        root = (330 + ox, rows["MAX"])
+        xs = [240 + ox, 420 + ox]
+        values = [round(0.9 * a + 0.1 * b, 1) for a, b in leaves]
+        best = max(range(2), key=lambda i: values[i])
+        for i, x in enumerate(xs):
+            chosen = i == best
+            parts.append(line((root[0], root[1] + BOTTOM), (x, rows["CHANCE"] - CHANCE_R),
+                              colour=BLUE if chosen else INK, width=4 if chosen else STROKE))
+            mx, my = (root[0] + x) / 2, (root[1] + BOTTOM + rows["CHANCE"] - CHANCE_R) / 2
+            parts.append(action(mx + (-26 if x < root[0] else 26), my - 12, i + 1, BLUE if chosen else GREY))
+            for j, (dx, p) in enumerate([(-45, ".9"), (45, ".1")]):
+                lx = x + dx
+                parts.append(line((x, rows["CHANCE"] + CHANCE_R), (lx, rows["utility"] - LEAF[1] / 2)))
+                parts.append(text((x + lx) / 2 + (-18 if dx < 0 else 18), (rows["CHANCE"] + rows["utility"]) / 2,
+                                  p, size=20, fill=GREY))
+                parts.append(leaf(lx, rows["utility"], leaves[i][j]))
+        parts.append(triangle(*root, up=True))
+        parts.append(text(root[0] + HALF + 12, root[1] + 4, f"{max(values):g}", size=24, weight=900,
+                          fill=BLUE, anchor="start"))
+        for i, x in enumerate(xs):
+            parts.append(chance(x, rows["CHANCE"], f"{values[i]:g}", side=-1 if i == 0 else 1))
+    return parts
+
+
 if __name__ == "__main__":
     for step in (1, 2, 3):
         svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
@@ -301,3 +412,5 @@ if __name__ == "__main__":
     svg("alpha-beta-path", 620, 560, alpha_path())
     for step in (1, 2):
         svg(f"horizon-{step}", 960, 440, horizon_tree(step))
+    svg("stochastic-game-tree", 1000, 740, stochastic_tree())
+    svg("chance-order-preserving", 980, 360, order_preserving())

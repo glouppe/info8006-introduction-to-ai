@@ -619,7 +619,7 @@ class: middle
 
 ## Stochastic game tree
 
-.center.width-80[![](figures/lec3/stochastic-game-tree.png)]
+.center.width-80[![](figures/lec3/stochastic-game-tree.svg)]
 
 ???
 
@@ -654,7 +654,7 @@ As for $\text{minimax}(s)$, $\text{expectiminimax}(s)$ may be approximated by cu
 
 With chance nodes, preserving the order of states is .bold[not enough]: expectations add values, so $\text{eval}(s)$ must be a .bold[positive linear transformation] of the expected utility for the move to stay correct.
 
-.center.width-70[![](figures/lec3/chance-order-preserving.png)]
+.center.width-70[![](figures/lec3/chance-order-preserving.svg)]
 .caption[An order-preserving transformation on leaf values changes the best move.]
 
 If the utilities are bounded, $\alpha$-$\beta$ search can be adapted to stochastic games.
@@ -667,7 +667,7 @@ class: middle
 
 ---
 
-# Monte Carlo Tree Search
+class: middle
 
 ## Random playout evaluation
 
