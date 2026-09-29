@@ -51,12 +51,13 @@ class: middle
 
 ## Formal definition
 
-A .bold[game] is a search problem with two components added and one replaced:
-- the .bold[states] ${s \in \mathcal{S}}$ and the .bold[initial state] ${s\_1 \in \mathcal{S}}$, as before;
-- the .bold[actions] ${\text{actions}(s) \subseteq \mathcal{A}}$ and the .bold[transition model] ${s' = \text{result}(s, a)}$, as before;
-- .bold[new]: a function ${\text{player}(s) \in \\{1, \ldots, N\\}}$ that says whose turn it is in state $s$;
-- .bold[replaced]: the goal states ${G}$ become the .bold[terminal states] ${T \subseteq \mathcal{S}}$, tested by ${\text{terminal-test}(s)}$, i.e. ${s \in T}$;
-- .bold[new]: the path cost becomes a .bold[utility] ${\text{utility}(s, p)}$, the payoff of player $p$ when the game ends in ${s \in T}$, e.g. ${1}$, ${0}$ or ${\frac{1}{2}}$ for a win, a loss or a draw.
+A .bold[game] is defined by
+- the .bold[states] ${s \in \mathcal{S}}$ and the .bold[initial state] ${s\_1 \in \mathcal{S}}$;
+- the .bold[actions] ${\text{actions}(s) \subseteq \mathcal{A}}$ available in state ${s}$;
+- the .bold[transition model] ${s' = \text{result}(s, a)}$, the state reached by taking ${a}$ in ${s}$;
+- a function ${\text{player}(s) \in \\{1, \ldots, N\\}}$ that says whose turn it is in state ${s}$;
+- the .bold[terminal states] ${T \subseteq \mathcal{S}}$, tested by ${\text{terminal-test}(s)}$, i.e. ${s \in T}$;
+- a .bold[utility] ${\text{utility}(s, p)}$, the payoff of player ${p}$ when the game ends in ${s \in T}$, e.g. ${1}$, ${0}$ or ${\frac{1}{2}}$ for a win, a loss or a draw.
 
 Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions.
 
