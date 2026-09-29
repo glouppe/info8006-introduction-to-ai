@@ -1001,17 +1001,17 @@ The assumption of .bold[perfect information] we made at the start is what these 
 
 # Summary
 
-- A .bold[game] adds ${\text{player}(s)}$, .bold[terminal states] ${T \subseteq \mathcal{S}}$ and a .bold[utility] ${\text{utility}(s, p)}$ to the search problem of lecture 2. Its solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, not a sequence ${a\_{1:T}}$.
+- A .bold[game] is defined by its states, actions and transitions, a function ${\text{player}(s)}$, terminal states ${T \subseteq \mathcal{S}}$ and a utility ${\text{utility}(s, p)}$. Its solution is a strategy ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, not a sequence ${a\_{1:T}}$.
 
 - .bold[Minimax] backs the utilities up the tree, ${\max\limits\_a}$ for MAX and ${\min\limits\_a}$ for MIN, in ${O(b^m)}$ time and ${O(bm)}$ space.
 
-- ${\alpha}$-${\beta}$ .bold[pruning] returns the .bold[same move] while examining ${O(b^{m/2})}$ nodes at best: twice the depth in the same time.
+- .bold[${\alpha}$-${\beta}$ pruning] returns the same move while examining ${O(b^{m/2})}$ nodes at best: twice the depth in the same time.
 
-- .bold[H-minimax] cuts the search at depth ${d}$ and replaces the utility by an .bold[evaluation function], at the price of the .bold[horizon effect].
+- .bold[H-minimax] cuts the search at depth ${d}$ and replaces the utility by an evaluation function, at the price of the horizon effect.
 
-- .bold[Expectiminimax] adds .bold[chance nodes], worth ${\sum\limits\_r P(r) \, v(\text{result}(s, r))}$, and .bold[Monte Carlo tree search] samples .bold[random playouts] instead of evaluating.
+- .bold[Expectiminimax] averages over chance nodes, ${q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s')}$, and .bold[Monte Carlo tree search] samples random playouts instead of evaluating.
 
-- Each is optimal only .bold[relative to a model] of the opponent. Assuming the .bold[wrong] one is not playing well.
+- Each is optimal only .bold[relative to a model] of the opponent. Assuming the wrong one is not playing well.
 
 ---
 
