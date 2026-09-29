@@ -650,15 +650,14 @@ class: middle
 
 ## Evaluation functions
 
-- As for $\text{minimax}(n)$, the value of $\text{expectiminimax}(n)$ may
-be approximated by stopping the recursion early and using an evaluation function.
-- However, to obtain correct move, the evaluation function should be a .bold[positive linear transformation] of the expected utility of the state.
-    - It is not enough for the evaluation function to just be order-preserving.
-- If we assume bounds on the utility function, $\alpha$-$\beta$ search can be adapted to stochastic games.
+As for $\text{minimax}(s)$, $\text{expectiminimax}(s)$ may be approximated by cutting the recursion early and using an evaluation function $\text{eval}(s)$.
 
-<br>
+With chance nodes, preserving the order of states is .bold[not enough]: expectations add values, so $\text{eval}(s)$ must be a .bold[positive linear transformation] of the expected utility for the move to stay correct.
+
 .center.width-70[![](figures/lec3/chance-order-preserving.png)]
 .caption[An order-preserving transformation on leaf values changes the best move.]
+
+If the utilities are bounded, $\alpha$-$\beta$ search can be adapted to stochastic games.
 
 ---
 
