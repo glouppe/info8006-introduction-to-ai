@@ -467,11 +467,9 @@ class: middle
 
 ## Evaluation functions
 
-- An evaluation function $\text{eval}(s)$ returns an .bold[estimate] of the expected utility of the game from a given position $s$.
-- The computation .bold[must be short] (that is the whole point to search faster).
-- Ideally, the evaluation should .bold[order] states in the same way as in Minimax.
-    - The evaluation values may be different from the true minimax values, as long as order is preserved.
-- In non-terminal states, the evaluation function should be strongly .bold[correlated] with the actual chances of winning.
+An evaluation function $\text{eval}(s)$ returns an .bold[estimate] of the expected utility of the game from a state $s$. Its computation .bold[must be short]: that is the whole point of cutting the search.
+
+Ideally, $\text{eval}(s)$ .bold[orders] states as their minimax values do. Its values may differ from the minimax values, as long as the order is preserved. In non-terminal states, it should be strongly .bold[correlated] with the actual chances of winning.
 
 ???
 
@@ -485,11 +483,9 @@ class: middle
 
 .center.width-70[![](figures/lec3/chess-eval.png)]
 
-- These states only differ in the position of the rook at lower right.
-- However, Black has advantage in (a), but not in (b).
-- If the search stops in (b), Black will not see that White's next move is to capture its Queen, gaining advantage.
-- Cutoff should only be applied to positions that are .bold[quiescent].
-    - i.e., states that are unlikely to exhibit wild swings in value in the near future.
+These two states differ only in the position of the rook at the lower right, yet Black has the advantage in (a) but not in (b). If the search stops in (b), Black does not see that White's next move captures its queen.
+
+The cutoff should only be applied to .bold[quiescent] states, whose value is unlikely to exhibit wild swings in the near future.
 
 ---
 
