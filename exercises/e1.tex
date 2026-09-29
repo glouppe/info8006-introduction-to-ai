@@ -30,7 +30,7 @@
     and an \term{optimal solution} is a solution of minimal path cost.
 
     \topic{Search algorithms}
-    \proc{Tree-Search} expands the nodes of the \term{fringe} until a goal state leaves it. \proc{Graph-Search} also keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles.
+    \proc{Tree-Search} expands the nodes $n$ of the \term{fringe}, each a path from $s_1$ to a state $s(n)$, until a goal state leaves it. \proc{Graph-Search} also keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles.
 
     \begin{pseudocode}
         \kw{function} \proc{Tree-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
