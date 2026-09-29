@@ -137,6 +137,12 @@ class: middle
 
 class: middle
 
+# Minimax
+
+---
+
+class: middle
+
 ## Assumptions
 
 Games vary along three axes: .bold[chance], .bold[information] and the .bold[number of players]. We start with the simplest case of each.
@@ -148,12 +154,6 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 .center.width-55[![](figures/lec3/tictactoe-cartoon.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
-
----
-
-class: middle
-
-# Minimax
 
 ---
 
