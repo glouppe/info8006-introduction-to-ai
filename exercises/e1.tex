@@ -57,7 +57,7 @@
     \end{pseudocode}
 
     \topic{Search strategies}
-    Both algorithms leave open the \term{strategy}, the order in which nodes leave the fringe. Uninformed strategies only use the problem definition: depth-first and breadth-first search order the fringe by depth, uniform-cost search by the path cost $g(n)$ of $n$ from $s_1$. Informed strategies also use a heuristic $h(n)$, and \Astar{} orders the fringe by $f(n) = g(n) + h(n)$, the estimated cost of the cheapest solution through $n$. The table below gives their properties, where $b$ is the maximum branching factor, $d$ the depth of the least-cost solution, $m$ the maximum path length (possibly infinite), $C^*$ the optimal path cost and $\epsilon > 0$ a lower bound on the step costs.
+    A \term{strategy} is the order in which nodes leave the fringe, based on the path cost $g(n)$ from $s_1$ to $n$, a heuristic $h(n)$, or $f(n) = g(n) + h(n)$, the estimated cost of the cheapest solution through $n$. In the table below, $b$ is the maximum branching factor, $d$ the depth of the least-cost solution, $m$ the maximum path length (possibly infinite), $C^*$ the optimal path cost and $\epsilon > 0$ a lower bound on the step costs.
 
     \begin{center}
         \small
