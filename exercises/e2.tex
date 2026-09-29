@@ -81,15 +81,16 @@
     The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}).
 
     \topic{Expectiminimax}
-    \term{Chance nodes} map a state-action pair to its outcomes $r$, of probabilities $P(r)$. With $v(s) = \text{expectiminimax}(s)$,
+    A \term{chance node} stands for a state-action pair $(s, a)$, from which the next state $s'$ follows with probability $P(s' \mid s, a)$. With $v(s) = \text{expectiminimax}(s)$,
     \[
         v(s) = \begin{cases}
             \text{utility}(s) & \text{if } s \in T \\
-            \max_a v(\text{result}(s, a)) & \text{if MAX plays} \\
-            \min_a v(\text{result}(s, a)) & \text{if MIN plays} \\
-            \sum_r P(r) \, v(\text{result}(s, r)) & \text{if CHANCE plays.}
+            \max_a q(s, a) & \text{if MAX plays} \\
+            \min_a q(s, a) & \text{if MIN plays,}
         \end{cases}
+        \qquad q(s, a) = \sum_{s'} P(s' \mid s, a) \, v(s'),
     \]
+    where $q(s, a)$ is the value of the chance node $(s, a)$; a deterministic action has \mbox{$P(\text{result}(s, a) \mid s, a) = 1$}.
 
     \topic{Monte Carlo tree search}
     Each node $n$ keeps the wins $Q(n, p)$ of player $p$ over the random playouts through $n$ and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ that maximizes
