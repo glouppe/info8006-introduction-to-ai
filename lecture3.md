@@ -515,11 +515,11 @@ class: middle
 
 ## Living with the horizon
 
-The error goes both ways: a .bold[good move], such as a sacrifice that pays off only later, may look .bold[bad].
+.bold[It goes both ways.] A good move may also look bad, e.g. a sacrifice that pays off only after the horizon.
 
-Worse, the search .bold[delays] what it cannot avoid: it prefers moves that push an inevitable loss beyond the horizon, where $\text{eval}$ no longer sees it, even if they weaken the position on the way.
+.bold[It delays losses.] When a loss cannot be avoided, the search prefers moves that push it past the horizon, where $\text{eval}$ no longer sees it, e.g. giving away pawns to postpone the loss of the queen.
 
-The horizon cannot be removed, only moved: search deeper where the state is not quiescent (.bold[quiescence search]) or where a move is forced (.bold[singular extensions]). The deeper the cutoff, the less the quality of $\text{eval}$ matters.
+.bold[It can only be moved.] Search deeper where it matters: on states that are not quiescent (.bold[quiescence search]) and on forced moves (.bold[singular extensions]). The deeper the cutoff, the less the quality of $\text{eval}$ matters.
 
 ---
 
