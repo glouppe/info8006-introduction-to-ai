@@ -13,13 +13,15 @@
 
 \begin{recap}
     \topic{Games}
-    A \term{game} is the search problem of lecture 2 with the states $s \in \mathcal{S}$, the initial state $s_1$, the actions $\text{actions}(s) \subseteq \mathcal{A}$ and the transition model $\text{result}(s, a)$, where
+    A \term{game} is the search problem of lecture 2, with two components added and one replaced:
     \begin{itemize}
-        \item $\text{player}(s) \in \{1, \ldots, N\}$ says whose turn it is in $s$;
-        \item the goal states become the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
-        \item the path cost becomes a \term{utility} $\text{utility}(s, p)$, the payoff of player $p$ when the game ends in $s \in T$.
+        \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$, as before;
+        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ and the \term{transition model} $s' = \text{result}(s, a)$, as before;
+        \item \textit{new}: a function $\text{player}(s) \in \{1, \ldots, N\}$ that says whose turn it is in state $s$;
+        \item \textit{replaced}: the goal states $G$ become the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
+        \item \textit{new}: the path cost becomes a \term{utility} $\text{utility}(s, p)$, the payoff of player $p$ when the game ends in $s \in T$, \eg{} $1$, $0$ or $\frac{1}{2}$ for a win, a loss or a draw.
     \end{itemize}
-    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}. A solution is a \term{strategy}, a policy $\pi_p : \mathcal{S} \to \mathcal{A}$ that gives a move for every state the opponent can lead to.
+    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}, whose nodes are states and whose edges are actions. The solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
     In a \term{zero-sum} game, the total payoff to all players is constant. We assume a deterministic, turn-taking, two-player zero-sum game with perfect information, whose players MAX and MIN maximize and minimize the same $\text{utility}$; MAX moves first.
