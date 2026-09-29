@@ -513,13 +513,19 @@ Beyond the horizon, ${a\_1}$ loses: what it seemed to gain is paid back later ($
 
 class: middle
 
-## Living with the horizon
+## Depth versus evaluation
 
-.bold[It goes both ways.] A good move may also look bad, e.g. a sacrifice that pays off only after the horizon.
+An inaccurate $\text{eval}$ can be compensated by a .bold[deeper search]. The deeper the cutoff, the closer the evaluated states are to the end of the game: the search sees more consequences for itself, and the errors of $\text{eval}$ matter less. At the limit, the search reaches the terminal states and needs no evaluation at all.
 
-.bold[It delays losses.] When a loss cannot be avoided, the search prefers moves that push it past the horizon, where $\text{eval}$ no longer sees it, e.g. giving away pawns to postpone the loss of the queen.
+The converse does not hold: a better $\text{eval}$ cannot compensate a .bold[shallow search]. What lies beyond the horizon can only be estimated, and a perfect evaluation, ${\text{eval}(s) = \text{minimax}(s)}$ everywhere, would require solving the game.
 
-.bold[It can only be moved.] Search deeper where it matters: on states that are not quiescent (.bold[quiescence search]) and on forced moves (.bold[singular extensions]). The deeper the cutoff, the less the quality of $\text{eval}$ matters.
+???
+
+The horizon effect goes both ways: a good move, such as a sacrifice that pays off only later, may look bad.
+
+It also delays losses: when a loss cannot be avoided, the search prefers moves that push it past the horizon, e.g. giving away pawns to postpone the loss of the queen.
+
+Programs move the horizon where it matters: they search deeper on states that are not quiescent (quiescence search) and on forced moves (singular extensions).
 
 ---
 
