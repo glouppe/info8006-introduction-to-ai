@@ -704,10 +704,10 @@ class: middle
 
 ## Monte Carlo Tree Search
 
-The focus of MCTS is the analysis of the most promising moves, as incrementally evaluated with random playouts.
+Evaluating every move with the same number of random playouts wastes most of them on bad moves. MCTS instead grows a search tree from the root and spends its playouts on the .bold[most promising moves].
 
-Each node $n$ in the current search tree maintains  two values:
-- the number of wins $Q(n,p)$ of player $p$ for all playouts that passed through $n$;
+Each node $n$ in the current search tree maintains two values:
+- the number of wins $Q(n,p)$, over the playouts that passed through $n$, of the player $p$ who moved into $n$;
 - the number $N(n)$ of times $n$ has been visited.
 
 ---
@@ -722,12 +722,28 @@ Rounds are repeated for as long as the time budget allows. The move played is th
 
 ---
 
+class: middle
+
+## Exploration and exploitation
+
+Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes made during the .bold[selection] step.
+
+During the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
+$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}},$$
+where $p$ is the player to move in $n$. The first term encourages the .bold[exploitation] of nodes with a high win rate, the second the .bold[exploration] of nodes visited little, and the constant $c > 0$ sets the trade-off between the two.
+
+???
+
+With UCB1, the values in the tree converge to the minimax values as the number of rounds grows: the most promising moves end up visited far more often than the others, and their win rates approach their true values.
+
+---
+
 <br>
 ## One round of MCTS
 
 .center.width-50[![](figures/lec3/mcts-1.svg)]
 
-.bold[Selection]: from the root, descend along the most promising children to a node that is not fully expanded.
+Each node shows ${Q(n, p) / N(n)}$ for the player who moved into it. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
 
 
 ---
@@ -772,20 +788,6 @@ This graph shows the steps involved in one decision, with each node showing the 
 If white loses the simulation, all nodes along the selection incremented their simulation count (the denominator), but among them only the black nodes were credited with wins (the numerator). If instead white wins, all nodes along the selection would still increment their simulation count, but among them only the white nodes would be credited with wins. In games where draws are possible, a draw causes the numerator for both black and white to be incremented by 0.5 and the denominator by 1. This ensures that during selection, each player's choices expand towards the most promising moves for that player, which mirrors the goal of each player to maximize the value of their move.
 
 Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
-
----
-
-class: middle
-
-## Exploration and exploitation
-
-Given a limited budget of random playouts, the efficiency of MCTS critically depends on the choice of the nodes made during the .bold[selection] step.
-
-During the traversal of the branch in the selection step, the UCB1 policy picks the child node $n'$ of $n$ that maximizes
-$$\frac{Q(n',p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.$$
-- The first term  encourages the .bold[exploitation] of higher-reward nodes.
-- The second term encourages the .bold[exploration] of less-visited nodes.
-- The constant $c>0$ controls the trade-off between exploitation and exploration.
 
 ---
 
