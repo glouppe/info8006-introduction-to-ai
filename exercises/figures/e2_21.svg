@@ -301,7 +301,7 @@
          id="tspan7131"
          style="fill:#008000;stroke-width:3.125"
          x="2336.3574"
-         y="105.35293">(1,0)</tspan><tspan
+         y="105.35293">(1, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#008000;stroke-width:3.125"
          x="2336.3574"
@@ -316,7 +316,7 @@
          id="tspan7131-6"
          style="stroke-width:3.125"
          x="1137.1927"
-         y="584.79059">(2,1)</tspan><tspan
+         y="584.79059">(2, MIN)</tspan><tspan
          sodipodi:role="line"
          style="stroke-width:3.125"
          x="1137.1927"
@@ -331,7 +331,7 @@
          style="stroke-width:3.125"
          x="2339.4563"
          y="584.79065"
-         id="tspan11452">(3,1)</tspan><tspan
+         id="tspan11452">(3, MIN)</tspan><tspan
          sodipodi:role="line"
          style="stroke-width:3.125"
          x="2339.4563"
@@ -346,7 +346,7 @@
          style="stroke-width:3.125"
          x="2097.7642"
          y="1061.4731"
-         id="tspan11452-2">(4,0)</tspan><tspan
+         id="tspan11452-2">(4, MAX)</tspan><tspan
          sodipodi:role="line"
          style="stroke-width:3.125"
          x="2097.7642"
@@ -361,7 +361,7 @@
          style="stroke-width:3.125"
          x="1140.2914"
          y="1064.5718"
-         id="tspan11452-2-9">(4,0)</tspan><tspan
+         id="tspan11452-2-9">(4, MAX)</tspan><tspan
          sodipodi:role="line"
          style="stroke-width:3.125"
          x="1140.2914"
@@ -376,7 +376,7 @@
          style="fill:#ff0000;stroke-width:3.125"
          x="660.00562"
          y="1061.4731"
-         id="tspan11452-2-3">(3,0)</tspan><tspan
+         id="tspan11452-2-3">(3, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="660.00562"
@@ -391,7 +391,7 @@
          style="fill:#ff0000;stroke-width:3.125"
          x="179.71986"
          y="1545.3621"
-         id="tspan11452-2-3-7">(4,1)</tspan><tspan
+         id="tspan11452-2-3-7">(4, MIN)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="179.71986"
@@ -406,7 +406,7 @@
          style="fill:#008000;stroke-width:3.125"
          x="3179.1816"
          y="590.98785"
-         id="tspan20642">(4,1)</tspan><tspan
+         id="tspan20642">(4, MIN)</tspan><tspan
          sodipodi:role="line"
          style="fill:#008000;stroke-width:3.125"
          x="3179.1816"
@@ -421,7 +421,7 @@
          id="tspan7131-93"
          style="fill:#008000;stroke-width:3.125"
          x="3179.1816"
-         y="1065.0763">(5+,0)</tspan><tspan
+         y="1065.0763">(5+, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#008000;stroke-width:3.125"
          x="3179.1816"
@@ -436,7 +436,7 @@
          id="tspan7131-93-4"
          style="fill:#000000;stroke-width:3.125"
          x="1146.4886"
-         y="1542.2634">(5+,1)</tspan><tspan
+         y="1542.2634">(5+, MIN)</tspan><tspan
          sodipodi:role="line"
          style="fill:#000000;stroke-width:3.125"
          x="1146.4886"
@@ -451,7 +451,7 @@
          id="tspan7131-93-4-0"
          style="stroke-width:3.125"
          x="2103.9614"
-         y="1544.8575">(5+,1)</tspan><tspan
+         y="1544.8575">(5+, MIN)</tspan><tspan
          sodipodi:role="line"
          style="fill:#000000;stroke-width:3.125"
          x="2103.9614"
@@ -466,7 +466,7 @@
          id="tspan7131-93-2"
          style="fill:#ff0000;stroke-width:3.125"
          x="179.71982"
-         y="2031.8451">(5+,0)</tspan><tspan
+         y="2031.8451">(5+, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="179.71982"
@@ -481,7 +481,7 @@
          id="tspan7131-93-2-1"
          style="fill:#ff0000;stroke-width:3.125"
          x="660.00555"
-         y="1545.3621">(5+,1)</tspan><tspan
+         y="1545.3621">(5+, MIN)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="660.00555"
@@ -496,7 +496,7 @@
          id="tspan7131-93-8"
          style="fill:#ff0000;stroke-width:3.125"
          x="2581.1484"
-         y="1065.0763">(5+,0)</tspan><tspan
+         y="1065.0763">(5+, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="2581.1484"
@@ -511,7 +511,7 @@
          id="tspan7131-93-8-3"
          style="fill:#ff0000;stroke-width:3.125"
          x="1620.5769"
-         y="1065.0763">(5,0)</tspan><tspan
+         y="1065.0763">(5, MAX)</tspan><tspan
          sodipodi:role="line"
          style="fill:#ff0000;stroke-width:3.125"
          x="1620.5769"

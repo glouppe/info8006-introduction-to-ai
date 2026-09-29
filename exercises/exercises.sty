@@ -161,6 +161,16 @@
 %           \draw[world border] (0, 0) rectangle (5, 5);
 %           \pic at (0.5, 0.5) {pacman};
 %       \end{tikzpicture}
+%
+%   Game trees, 1 cm by 1.5 cm between grid points:
+%       \begin{tikzpicture}[game diagram]
+%           \node[max node] (R) at (1, 0) {};
+%           \node[chance node] (C) at (0, -1) {};
+%           \node[leaf] (L) at (0, -2) {3};
+%           \draw[link] (R.south) -- (C) (C) -- node[cost] {0.5} (L);
+%       \end{tikzpicture}
+%   max node and min node are triangles pointing up and down, chance node a circle,
+%   player node a filled circle labelled with the player to move, leaf a box.
 
 \usetikzlibrary{arrows.meta}
 
@@ -206,6 +216,34 @@
     },
     link/.style={draw=diagram-ink, line width=0.7pt},
     cost/.style={font=\footnotesize, fill=white, inner sep=1.5pt},
+    % Game trees
+    game diagram/.style={diagram, x=1cm, y=1.5cm},
+    max node/.style={
+        regular polygon,
+        regular polygon sides=3,
+        draw=diagram-ink,
+        fill=diagram-fill,
+        line width=0.7pt,
+        minimum size=11mm,
+        inner sep=0pt,
+    },
+    min node/.style={max node, shape border rotate=180},
+    player node/.style={
+        circle,
+        draw=diagram-ink,
+        fill=diagram-fill,
+        line width=0.7pt,
+        minimum size=7mm,
+        inner sep=0pt,
+    },
+    chance node/.style={player node, fill=white},
+    leaf/.style={
+        rectangle,
+        draw=diagram-ink,
+        line width=0.7pt,
+        minimum size=6mm,
+        inner sep=2pt,
+    },
     % Grid worlds
     world diagram/.style={diagram, x=0.62cm, y=0.62cm},
     grid lines/.style={draw=diagram-grid, line width=0.4pt, step=1},

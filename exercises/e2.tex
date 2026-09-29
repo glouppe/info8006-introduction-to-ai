@@ -38,7 +38,7 @@
     over $a \in \text{actions}(s)$, and the optimal move is $\pi^*(s) = \arg\max_a \text{minimax}(\text{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
 
     \topic{$\alpha$-$\beta$ pruning}
-    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root: a MIN node stops as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. The minimax values are unchanged and, with a perfect move ordering, $O(b^{m/2})$ nodes are examined.
+    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root: a MIN node stops as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. The minimax values are unchanged and, with a perfect move ordering, $O(b^{m/2})$ nodes are examined. A \term{transposition table} stores the values of the states already evaluated, which other move sequences reach again.
 
     \topic{H-Minimax}
     Under time constraints, an \term{evaluation function} $\text{eval}(s)$ replaces the utility and a \term{cutoff test} at depth $d$ replaces the terminal test,
@@ -69,11 +69,11 @@
     \]
 \end{recap}
 
-\begin{exercises}[1, 2]
+\begin{exercises}[1, 2, 4 (b)--(d)]
 
 \titledquestion{Tic-tac-toe \aima{5}}
 
-Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
+Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid, X moving first. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
 
 We consider X as the max player and O as the min player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\text{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
 
@@ -114,17 +114,23 @@ We consider X as the max player and O as the min player. We define $X_n$ as the 
     \part Using the H-Minimax algorithm, annotate your tree with the backed-up values for the positions at depths 1 and 0, and use those values to choose the optimal starting move.
 
     \begin{solution}
+        The tree below answers (c) to (e). The center is worth $+1$, a corner $-1$ and an edge $-2$, so X starts in the center.
+
         \begin{center}
             \includegraphics[width=0.8\linewidth]{figures/e2_tictactoe.pdf}
-            \captionsetup{type=figure}
-            \caption{Nodes in red correspond to nodes that would have been pruned, \ie{} not evaluated, if $\alpha$-$\beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha$-$\beta$ pruning.}
         \end{center}
+    \end{solution}
+
+    \part Mark the nodes that $\alpha$-$\beta$ pruning would not evaluate if the nodes were generated in the optimal order.
+
+    \begin{solution}
+        The nodes in red in the tree of (e). With the center first, $\alpha = +1$ at the root once its two children are evaluated. The corner and the edge then start with their worst child for X, of values $-1$ and $-2$, both $\leq \alpha$, and their four other children are pruned.
     \end{solution}
 
     \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\text{eval}(s)$ is misleading.
 
     \begin{solution}
-        This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning.
+        This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning. In the states below, X is to move on the left and wins at once, yet $\text{eval}(s) = 0$; O is to move on the right and wins at once, yet $\text{eval}(s) = 3$.
 
         \begin{center}
             \includegraphics[width=0.3\linewidth]{figures/e2_misleading.pdf}
@@ -154,6 +160,8 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
     \part Which nodes can be pruned from the game tree above through $\alpha$-$\beta$ pruning? If no nodes can be pruned, explain why not. Assume the search goes from left to right; when choosing which child to visit first, choose the left-most unvisited child.
 
     \begin{solution}
+        The first MIN node is worth 3, so $\alpha = 3$ at the root. The first leaf of the second MIN node is $2 \leq \alpha$: MAX will not play this node whatever its other leaves, and 15 and 7 are pruned. The leaves of the third MIN node, 6, 5 and 4, all stay above $\alpha = 3$, so all three are evaluated.
+
         \begin{center}
             \includegraphics[width=0.6\linewidth]{figures/e2_minimax_2.pdf}
         \end{center}
@@ -168,39 +176,27 @@ Consider the zero-sum game tree below. Triangles that point up, such as at the t
     \end{solution}
 \end{parts}
 
-\titledquestion{21 misery game \source{Exam, January 2019}}
+\titledquestion{21 misère game \source{Exam, January 2019}}
 
-The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3, but may not exceed 21; the player who says \enquote{21} or larger loses.
+The game \enquote{21} is played with any number of players who take turns increasing a counter. The counter starts at 1 and each player in turn increases the counter by 1, 2, or 3; the player who says \enquote{21} or larger loses. Such a game, where the player who makes the last move loses, is a \emph{misère} game. With two players, a state is a pair $(v, p)$ of the value $v$ of the counter and the player $p \in \cbk{\text{MAX}, \text{MIN}}$ to play, MAX playing first.
 
 \begin{parts}
-    \part Define the search problem associated with the 2-player version of the \enquote{21} game.
-
-    \begin{solution}
-        Let a state of the game be a pair $s = (v, p) \in \mathbb{Z} \times \cbk{\text{MAX}, \text{MIN}}$, where $v$ is the current value of the counter and $p$ the player to play next, MAX playing first.
-        \begin{description}
-            \item[Initial state] $s_1 = (1, \text{MAX})$.
-            \item[Player function] $\text{player}(s = (v, p)) = p$.
-            \item[Actions] $\text{actions}(s) = \cbk{1, 2, 3}$.
-            \item[Transition model] For an action $a \in \text{actions}(s)$,
-            \[
-                \text{result}(s = (v, p), a) = (v + a, \bar{p}),
-            \]
-            where $\bar{p}$ is the other player.
-            \item[Terminal test] $\text{terminal-test}(s = (v, p))$ is true if $v \geq 21$, false otherwise.
-            \item[Utility function] $\text{utility}(s, \text{MAX}) = 1$ if $p = \text{MAX}$, $0$ otherwise.
-        \end{description}
-    \end{solution}
-
-    \part For the following, consider the game of \enquote{5} (still in its 2-player version), which has the same rules as \enquote{21} except that you should not say 5 or more. Show the whole game tree.
+    \part Consider the 2-player game of \enquote{5}, which has the same rules as \enquote{21} except that the player who says 5 or larger loses. Show the whole game tree.
 
     \part Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move.
 
     \begin{solution}
+        The tree below answers (a) and (b). The utility of MAX is 1 when MIN says 5 or larger, \ie{} in the terminal states $(v, \text{MAX})$, and 0 otherwise. A node $(5+, p)$ merges the terminal states that the moves of its parent reach with a counter of 5 or larger, which all have the same value. MAX starts by adding 3.
+
         \begin{center}
             \includegraphics[width=0.9\linewidth]{figures/e2_21.pdf}
-            \captionsetup{type=figure}
-            \caption{Nodes in red correspond to nodes that would have been pruned, \ie{} not evaluated, if $\alpha$-$\beta$ pruning was applied, assuming the nodes are generated in the optimal order for $\alpha$-$\beta$ pruning.}
         \end{center}
+    \end{solution}
+
+    \part Mark the nodes that $\alpha$-$\beta$ pruning would not evaluate if the nodes were generated in the optimal order.
+
+    \begin{solution}
+        The nodes in red in the tree of (b). With $(4, \text{MIN})$ first, $\alpha = 1$ at the root. The nodes $(2, \text{MIN})$ and $(3, \text{MIN})$ then start with their child $(4, \text{MAX})$, of value $0 \leq \alpha$, and their other children are pruned.
     \end{solution}
 \end{parts}
 
@@ -228,7 +224,7 @@ Consider the following two-player turn-taking game whose initial configuration i
         \begin{description}
             \item[Initial state] $s_1 = (1, 4, A)$.
             \item[Player function] $\text{player}(s = (i, j, p)) = p$.
-            \item[Actions] $\text{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. The \enquote{left} (resp. \enquote{right}) action is only available if there is a free cell to the left (resp. right) of the current player.
+            \item[Actions] $\text{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. For the player to move at $x$, with its opponent at $y$, \enquote{right} is available if $\text{next}(x, y) \leq 4$ and \enquote{left} if $\text{prev}(x, y) \geq 1$, where $\text{next}$ and $\text{prev}$, defined below, give the cell reached, jump included.
             \item[Transition model] For an available action $a \in \text{actions}(s)$,
             \begin{equation*}
                 \text{result}(s = (i, j, p), a) = \begin{cases}
@@ -298,7 +294,7 @@ Consider the following two-player turn-taking game whose initial configuration i
     \part Explain why the standard minimax algorithm would fail on this game.
 
     \begin{solution}
-        The Minimax algorithm is designed to work on finite acyclic game trees. In our case, the tree is not acyclic, which leads the standard Minimax algorithm into infinite loops.
+        Minimax recurses depth-first down to the terminal states, which requires a finite game tree. Here, a state can appear again further down a path (the loop states of (b)), so the game tree is infinite and the recursion never terminates on a branch that loops.
     \end{solution}
 
     \part Annotate each node with its backed-up minimax value. Explain how you handled the \enquote{?} values and why.
@@ -339,7 +335,14 @@ Consider the following two-player turn-taking game whose initial configuration i
     \part This 4-cell game can be generalized to $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
 
     \begin{solution}
-        We already know that $A$ wins if $n = 4$ and it is quick to verify that $B$ wins if $n = 3$. For $n \geq 5$, we notice that the first three states are $(1, n, A)$, $(2, n, B)$ and $(2, n - 1, A)$. For optimal players, the state $(2, n - 1, A)$ is equivalent (in the sense that the winner is the same) to the initial state of the game with $n - 2$ cells. Likewise, the outcome for $n$ cells is the same as for $n + 2$ cells and, by induction, for $n + 2k$ ($k \geq 0$) cells. Therefore, we have that $A$ wins games with $4 + 2k$ cells (even) and loses those with $3 + 2k$ cells (odd).
+        Let $P$ be $A$ if $n$ is even and $B$ if $n$ is odd, and $Q$ the other player. We show that $P$ wins by always moving towards its goal, the cell where $Q$ starts. Let $d$ be the number of free cells between the two tokens, as long as they have not crossed.
+        \begin{itemize}
+            \item \emph{$Q$ never jumps before the crossing.} $d = n - 2$ at the first turn of $A$ and $d = n - 3$ at the first turn of $B$, so $d$ is even at the first turn of $P$. Each move of $P$ decreases $d$ by 1 and each move of $Q$ changes it by $\pm 1$, so $d$ is even at every turn of $P$ and odd at every turn of $Q$. $Q$ therefore never faces an adjacent token, the only case where it could jump.
+            \item \emph{$P$ can always move forward.} It steps into a free cell if $d > 0$ and jumps over $Q$ if $d = 0$. The jump is impossible only if $Q$ stands on the goal of $P$, at the end of the board, but $Q$ could only have moved there from the cell that $P$ now occupies, or by jumping over $P$, and neither is possible.
+            \item \emph{The crossing.} Let $P$ jump on its $(m + 1)$-th move, after $m$ moves of one cell. Meanwhile, $Q$ made $m$ moves (if $P = A$) or $m + 1$ (if $P = B$), each bringing it at most one cell closer. The tokens started $n - 2$ free cells apart, so $n - 2 \leq 2m + 1$, \ie{} $n - 3 - m \leq m$. After the jump, $P$ is $n - 3 - m$ cells from its goal and $Q$, to move, is $m + 1$ cells from its own.
+            \item \emph{The race.} No token stands between $Q$ and its goal any more, so $Q$ needs at least $m + 1$ moves, while $P$ reaches its goal in $n - 3 - m \leq m$ moves, before the $(m + 1)$-th move of $Q$. $Q$ can get in front of $P$ again only by jumping over it, two cells away from its own goal; $P$ then jumps over $Q$ in turn or, if $Q$ landed on the goal of $P$, steps back and jumps over $Q$ once $Q$, forced to move, has left that cell.
+        \end{itemize}
+        $P$ thus wins: $A$ wins if $n$ is even and $B$ if $n$ is odd.
     \end{solution}
 \end{parts}
 
@@ -351,19 +354,19 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
     \part Decide on a compact representation of a game state for storage in a transposition table.
 
     \begin{solution}
-        There are 32 pieces and we need to specify their positions in an $8 \times 8$ board. If a piece is not on the board anymore, we can fix its position as the position of the King. This position can be stored in \qty{6}{bits} ($2^6 = 64$), for a total of \qty{24}{B} per state.
+        There are 32 pieces, each on one of the 64 squares of the board, which takes \qty{6}{bits} ($2^6 = 64$); a captured piece can be put on the square of its own king, which is never captured. This makes $32 \times 6 = 192$ bits, \ie{} \qty{24}{B} per state. This is a lower bound: a complete entry also stores the side to move, the castling and en passant rights, the promoted pieces, which fixed piece slots cannot encode, and the value found by the search with its depth.
     \end{solution}
 
     \part About how many entries can you fit in a \qty{4}{\giga B} in-memory table?
 
     \begin{solution}
-        We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{160e6}$ states in the table.
+        We can store roughly $\num{4e9} \times \frac{1}{24} \approx \num{1.7e8}$ states in the table.
     \end{solution}
 
     \part Will that be enough for the three minutes of search allocated for one move?
 
     \begin{solution}
-        It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.880e9}$ evaluated nodes.
+        It is not enough to store all $\num{16e6} \times 3 \times 60 = \num{2.88e9}$ evaluated nodes, about 17 times more.
     \end{solution}
 
     \part How many table lookups can you do in the time it would take to do one evaluation? Suppose that you have a \qty{3.2}{\giga\hertz} machine and that it takes 20 operations to do one lookup on the transposition table.
@@ -373,7 +376,111 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
         \begin{equation*}
             \frac{\num{3.2e9}}{\num{16e6}} \times \frac{1}{20} = 10
         \end{equation*}
-        table lookups in the same amount of time as a single evaluation. This demonstrates the importance of transposition tables.
+        table lookups in the same amount of time as a single evaluation. A lookup thus costs a tenth of an evaluation, and a hit saves at least that evaluation: the table pays off as soon as more than one lookup in ten finds its state.
+    \end{solution}
+\end{parts}
+
+\titledquestion{Three-player game}
+
+Three game agents play the game below, player 1 at the root, player 2 at the second level and player 3 at the third. Each leaf gives the utilities $(u_1, u_2, u_3)$ of the three players, and each player maximizes its own utility.
+
+\begin{center}
+    \begin{tikzpicture}[game diagram, x=1.85cm]
+        \node[player node] (R) at (3.5, 0) {1};
+        \node[player node] (X) at (1.5, -1) {2};
+        \node[player node] (Y) at (5.5, -1) {2};
+        \foreach \i/\x in {1/0.5, 2/2.5, 3/4.5, 4/6.5} {
+            \node[player node] (Z\i) at (\x, -2) {3};
+        }
+        \foreach \i/\u in {0/{1, 6, 3}, 1/{4, 2, 5}, 2/{7, 1, 1}, 3/{2, 5, 4}, 4/{3, 3, 6}, 5/{6, 4, 2}, 6/{5, 1, 3}, 7/{0, 7, 2}} {
+            \node[leaf] (L\i) at (\i, -3) {$(\u)$};
+        }
+        \draw[link] (R) -- (X) (R) -- (Y) (X) -- (Z1) (X) -- (Z2) (Y) -- (Z3) (Y) -- (Z4)
+            (Z1) -- (L0) (Z1) -- (L1) (Z2) -- (L2) (Z2) -- (L3)
+            (Z3) -- (L4) (Z3) -- (L5) (Z4) -- (L6) (Z4) -- (L7);
+    \end{tikzpicture}
+\end{center}
+
+\begin{parts}
+    \part Back up the utilities to the root. Which move does player 1 choose? Is the game zero-sum?
+
+    \begin{solution}
+        The nodes of player 3 are worth, from left to right, $(4, 2, 5)$, $(2, 5, 4)$, $(3, 3, 6)$ and $(5, 1, 3)$, those of player 2 are worth $(2, 5, 4)$ and $(3, 3, 6)$, and the root $(3, 3, 6)$: player 1 moves right. The game is not zero-sum, as the total utility of the leaves varies from 9 to 12.
+    \end{solution}
+
+    \part Player 1 now assumes that the two other players play against it: it runs minimax on $u_1$, as MAX, with players 2 and 3 as MIN. Which move does it choose, and what does it get if players 2 and 3 in fact play as in (a)?
+
+    \begin{solution}
+        The nodes of player 2 are worth $\min(1, 4, 7, 2) = 1$ on the left and $\min(3, 6, 5, 0) = 0$ on the right, so player 1 moves left. Players 2 and 3 then lead to $(2, 5, 4)$, and player 1 gets 2 instead of 3. Minimax guarantees at least 1, but its assumption is wrong here: players 2 and 3 maximize their own utilities, not the loss of player 1.
+    \end{solution}
+\end{parts}
+
+\titledquestion{Evaluation functions with chance nodes}
+
+Consider the game tree below, in which MAX chooses between two chance nodes, with the probabilities of the outcomes on the edges.
+
+\begin{center}
+    \begin{tikzpicture}[game diagram, x=1.5cm, y=1.8cm]
+        \node[max node] (R) at (1.5, 0) {};
+        \node[chance node] (A) at (0.5, -1) {};
+        \node[chance node] (B) at (2.5, -1) {};
+        \node[leaf] (A1) at (-0.1, -2) {2};
+        \node[leaf] (A2) at (1.1, -2) {4};
+        \node[leaf] (B1) at (1.9, -2) {1};
+        \node[leaf] (B2) at (3.1, -2) {6};
+        \draw[link] (R.south) -- node[tag, left] {left} (A) (R.south) -- node[tag, right] {right} (B)
+            (A) -- node[cost] {0.5} (A1) (A) -- node[cost] {0.5} (A2)
+            (B) -- node[cost] {0.8} (B1) (B) -- node[cost] {0.2} (B2);
+    \end{tikzpicture}
+\end{center}
+
+\begin{parts}
+    \part Compute the expectiminimax value of each node. Which move does MAX choose?
+
+    \begin{solution}
+        The chance nodes are worth $0.5 \times 2 + 0.5 \times 4 = 3$ and $0.8 \times 1 + 0.2 \times 6 = 2$, so MAX moves left, for a value of 3.
+    \end{solution}
+
+    \part Both $f(x) = 2x + 1$ and $g(x) = 2^x$ preserve the order of the leaves. Replace every leaf value $x$ by $f(x)$, then by $g(x)$. Which move does MAX choose in each case?
+
+    \begin{solution}
+        With $f$, the leaves become 5, 9, 3 and 13, and the chance nodes are worth 7 and $0.8 \times 3 + 0.2 \times 13 = 5$: MAX still moves left. With $g$, the leaves become 4, 16, 2 and 64, and the chance nodes are worth 10 and $0.8 \times 2 + 0.2 \times 64 = 14.4$: MAX now moves right.
+    \end{solution}
+
+    \part Would $g$ change the move if the chance nodes were MIN nodes? What does this say of the evaluation functions of H-Minimax, with and without chance nodes?
+
+    \begin{solution}
+        No: the MIN nodes are worth $\min(2, 4) = 2$ and $\min(1, 6) = 1$, and $\min(4, 16) = 4$ and $\min(2, 64) = 2$ with $g$, so MAX moves left in both cases. Minimax only compares values, so any order-preserving transformation of the evaluation function leaves its decisions unchanged. Expectations add values, so with chance nodes the evaluation function must be a positive linear transformation of the expected utility, such as $f$ and unlike $g$.
+    \end{solution}
+\end{parts}
+
+\titledquestion{Selection in Monte Carlo tree search}
+
+During the selection step of Monte Carlo tree search, player $p$ is to move at a node $n$ that has been visited $N(n) = 20$ times. The wins of $p$ and the visits of the three children of $n$ are given below.
+
+\begin{center}
+    \small
+    \begin{tabular}{lccc}
+        \toprule
+        Child $n'$ & $n'_1$ & $n'_2$ & $n'_3$ \\
+        \midrule
+        Wins $Q(n', p)$ & 8 & 3 & 1 \\
+        Visits $N(n')$ & 12 & 6 & 2 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\begin{parts}
+    \part Which child does UCB1 select with $c = 0$? With $c = 1$? Use the natural logarithm.
+
+    \begin{solution}
+        The exploitation terms $Q(n', p) / N(n')$ are $0.667$, $0.5$ and $0.5$, and the exploration terms $\sqrt{\log N(n) / N(n')}$ are $0.500$, $0.707$ and $1.224$, with $\log 20 = 3.00$. With $c = 0$, UCB1 selects $n'_1$, the best win rate. With $c = 1$, the scores are $1.166$, $1.207$ and $1.724$, and UCB1 selects $n'_3$, the least visited child.
+    \end{solution}
+
+    \part For which values of $c$ does UCB1 select $n'_1$?
+
+    \begin{solution}
+        $n'_1$ beats $n'_3$ if $0.667 + 0.500 c \geq 0.5 + 1.224 c$, \ie{} $c \leq 0.23$, and beats $n'_2$ if $0.667 + 0.500 c \geq 0.5 + 0.707 c$, \ie{} $c \leq 0.81$. UCB1 thus selects $n'_1$ for $c \leq 0.23$: the smaller $c$, the more UCB1 exploits the best win rate so far, and the larger $c$, the more it explores the children visited least.
     \end{solution}
 \end{parts}
 
@@ -392,7 +499,7 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
         \item The first term encourages the exploration of lesser-rewarding nodes, while the second term encourages the exploitation of highly-visited nodes.
     \end{enumerate}
 
-    \item In adversarial search,
+    \item Which of the following is true in adversarial search?
     \begin{enumerate}[label=$\bigcirc$]
         \item The horizon effect arises when the search is stuck in a cycle.
         \item The horizon effect arises when the evaluation function is perfect.
@@ -404,15 +511,15 @@ Suppose you have a chess program that can evaluate 16 million nodes per second.
     \begin{enumerate}[label=$\bigcirc$]
         \item A state in which the game will loop indefinitely.
         \item A state in which an agent is stuck.
-        \item \correct{A state in which the outcome of a game is unlikely to vary a lot in the near future.}
+        \item \correct{A state whose value is unlikely to exhibit wild swings in the near future.}
         \item A state in which the MAX agent is certain to win.
     \end{enumerate}
 
-    \item Minimax algorithm
+    \item Which of the following is true of the minimax algorithm?
     \begin{enumerate}[label=$\bigcirc$]
-        \item Cannot fail more against a sub-optimal agent than an optimal one.
-        \item May be outperformed by a strategy that exploits a sub-optimal but predictable opponent.
-        \item Does not ensure that the MAX agent always wins.
+        \item It cannot fail more against a sub-optimal opponent than against an optimal one.
+        \item It may be outperformed by a strategy that exploits a sub-optimal but predictable opponent.
+        \item It does not ensure that MAX always wins.
         \item \correct{All of the above.}
     \end{enumerate}
 \end{quiz}
