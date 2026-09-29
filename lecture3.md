@@ -443,10 +443,9 @@ In chess programs, the key is a 64-bit Zobrist hash: a random number is drawn on
 
 # Imperfect real-time decisions
 
-- Under .bold[time constraints], searching for the exact solution is not feasible in most realistic games.
-- Solution: cut the search earlier.
-    - Replace the $\text{utility}(s)$ function with a heuristic .bold[evaluation function] $\text{eval}(s)$ that estimates the state utility.
-    - Replace the terminal test by a .bold[cutoff test] ${\text{cutoff-test}(s, d)}$ that decides when to stop expanding a state $s$ at depth $d$.
+Under .bold[time constraints], searching down to the terminal states is not feasible in most realistic games. The solution is to cut the search earlier:
+- replace the $\text{utility}(s)$ function with a heuristic .bold[evaluation function] $\text{eval}(s)$ that estimates the state utility;
+- replace the terminal test by a .bold[cutoff test] ${\text{cutoff-test}(s, d)}$ that decides when to stop expanding a state $s$ at depth $d$.
 
 $$\text{h-minimax}(s, d) = \begin{cases}
 \text{eval}(s) & \text{if cutoff} \\\\
