@@ -944,11 +944,11 @@ class: middle
 
 .grid[
 .kol-2-3[
-- .bold[1997], .bold[Deep Blue] defeats Garry Kasparov at chess: $2 \times 10^8$ positions per second, a sophisticated evaluation function, and search extended up to 40 plies on some lines.
-- .bold[2007], .bold[checkers is solved]: $10^{14}$ calculations over 18 years prove that perfect play by both sides is a draw.
-- .bold[2016], .bold[AlphaGo] beats Lee Sedol 4-1, then Ke Jie in 2017, by combining Monte Carlo tree search with deep learning trained on human and self-play games.
+- 1997, .bold[Deep Blue] defeats Garry Kasparov at chess: $2 \times 10^8$ positions per second, a sophisticated evaluation function, and search extended up to 40 plies on some lines.
+- 2007, .bold[checkers is solved]: $10^{14}$ calculations over 18 years prove that perfect play by both sides is a draw.
+- 2016, .bold[AlphaGo] beats Lee Sedol 4-1, then Ke Jie in 2017, by combining Monte Carlo tree search with deep learning trained on human and self-play games.
 
-Chess and Go remain .bold[unsolved]: only their best play is now superhuman.
+Chess and Go remain unsolved: only their best play is now superhuman.
 ]
 .kol-1-3[.center.width-100[![](figures/lec3/deep-blue.jpg)]]
 ]
@@ -973,9 +973,9 @@ class: middle
 
 ## Learning to play, from less and less
 
-- .bold[2017], .bold[AlphaGo Zero] reaches the same level from .bold[self-play only], with no human games.
-- .bold[2018], .bold[AlphaZero] applies the same recipe to chess, shogi and Go, given only the rules.
-- .bold[2020], .bold[MuZero] drops the rules too: it .bold[learns a model] of the game and plans with it, mastering Go, chess, shogi and Atari.
+- 2017, .bold[AlphaGo Zero] reaches the same level from self-play only, with no human games.
+- 2018, .bold[AlphaZero] applies the same recipe to chess, shogi and Go, given only the rules.
+- 2020, .bold[MuZero] drops the rules too: it learns a model of the game and plans with it, mastering Go, chess, shogi and Atari.
 
 .center.width-55[![](figures/lec3/alphagozero-training.gif)]
 
