@@ -18,12 +18,12 @@
     A \term{search problem} is defined by
     \begin{itemize}
         \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$;
-        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ available in state $s$;
-        \item the \term{transition model} $s' = \text{result}(s, a)$, the state reached by taking $a$ in $s$;
+        \item the \term{actions} $\texttt{actions}(s) \subseteq \mathcal{A}$ available in state $s$;
+        \item the \term{transition model} $s' = \texttt{result}(s, a)$, the state reached by taking $a$ in $s$;
         \item the \term{goal states} $G \subseteq \mathcal{S}$, tested by the \term{goal test} $s \in G$;
         \item the \term{step costs} $c(s, a, s') > 0$ of taking $a$ in $s$ to reach $s'$.
     \end{itemize}
-    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{state space}, the set of states reachable from $s_1$ by any sequence of actions. A \term{solution} is an action sequence $a_{1:T}$ that leads from $s_1$ to a goal state, \ie{} such that $s_{t+1} = \text{result}(s_t, a_t)$ for $t = 1, \ldots, T$ and $s_{T+1} \in G$. Its \term{path cost} is
+    Together, $s_1$, $\texttt{actions}$ and $\texttt{result}$ define the \term{state space}, the set of states reachable from $s_1$ by any sequence of actions. A \term{solution} is an action sequence $a_{1:T}$ that leads from $s_1$ to a goal state, \ie{} such that $s_{t+1} = \texttt{result}(s_t, a_t)$ for $t = 1, \ldots, T$ and $s_{T+1} \in G$. Its \term{path cost} is
     \[
         \sum_{t=1}^T c(s_t, a_t, s_{t+1}),
     \]
