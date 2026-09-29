@@ -47,18 +47,6 @@ class: middle
 
 ---
 
-# Games
-
-- A .bold[game] is a multi-agent environment where agents may have either .bold[conflicting] or .bold[common] interests.
-- Opponents may act .bold[arbitrarily], even if we assume a deterministic fully observable environment.
-- Time is often .bold[limited].
-
-???
-
-A game is a mathematical model of strategic interaction between rational decision makers.
-
----
-
 class: middle
 
 ## Formal definition
@@ -70,11 +58,23 @@ A .bold[game] is the search problem of lecture 2, with two components added and 
 - .bold[replaced]: the goal states ${G}$ become the .bold[terminal states] ${T \subseteq \mathcal{S}}$, tested by ${\text{terminal-test}(s)}$, i.e. ${s \in T}$;
 - .bold[new]: the path cost becomes a .bold[utility] ${\text{utility}(s, p)}$, the payoff of player $p$ when the game ends in ${s \in T}$, e.g. ${1}$, ${0}$ or ${\frac{1}{2}}$ for a win, a loss or a draw.
 
-Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions. A .bold[solution] is a .bold[strategy] (or policy) ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, a move for every state the opponent can lead to, rather than a fixed sequence ${a\_{1:T}}$.
+Together, ${s\_1}$, ${\text{actions}}$ and ${\text{result}}$ define the .bold[game tree], whose nodes are states and whose edges are actions.
 
 ???
 
+A game is a mathematical model of strategic interaction between rational decision makers.
+
 Outline on the blackboard.
+
+---
+
+class: middle
+
+## Strategies
+
+Even in a deterministic and fully observable environment, the opponents may act .bold[arbitrarily]: the next state depends on their choices, which we cannot predict.
+
+A fixed sequence of actions ${a\_{1:T}}$, the solution of a search problem, is then of no use, since the opponent may lead the game anywhere. A .bold[solution] is instead a .bold[strategy], or .bold[policy], ${\pi\_p : \mathcal{S} \to \mathcal{A}}$ for player ${p}$: a move for every state the opponent can lead to.
 
 ---
 
