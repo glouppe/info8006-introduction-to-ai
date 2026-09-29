@@ -180,9 +180,50 @@ Analogy with chess, checkers or belotte.
 
 ---
 
+# Perfect play
+
+What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
+
+.center.width-70[![](figures/lec3/minimax-tree-1.svg)]
+
+- At the .bold[leaves], the game is over: the payoff is the utility.
+
+---
+
+count: false
+
+# Perfect play
+
+What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
+
+.center.width-70[![](figures/lec3/minimax-tree-2.svg)]
+
+- At the .bold[leaves], the game is over: the payoff is the utility.
+- At a .bold[MIN node], MIN plays the move that is worst for MAX: the left node is worth ${\min(3, 12, 8) = 3}$, the other two ${2}$.
+
+---
+
+count: false
+
+# Perfect play
+
+What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
+
+.center.width-70[![](figures/lec3/minimax-tree-3.svg)]
+
+- At the .bold[leaves], the game is over: the payoff is the utility.
+- At a .bold[MIN node], MIN plays the move that is worst for MAX: the left node is worth ${\min(3, 12, 8) = 3}$, the other two ${2}$.
+- At the .bold[root], MAX plays the move that is best for it, knowing how MIN will answer: ${\max(3, 2, 2) = 3}$, reached by ${a\_1}$.
+
+???
+
+This is backward induction, the reasoning of the bar scene made exact: the scores of the outcomes are backed up, one level at a time, to the decision at the root.
+
+---
+
 # Minimax
 
-The .bold[minimax value] $\text{minimax}(s)$ is the largest achievable payoff (for MAX) from state $s$, assuming an .bold[optimal adversary] (MIN),
+The .bold[minimax value] $\text{minimax}(s)$ is the utility that MAX obtains from $s$ when both players play perfectly. Backing up values from the terminal states gives
 $$\text{minimax}(s) = \begin{cases}
 \text{utility}(s) & \text{if } s \in T \\\\
 \max\limits\_{a} \text{minimax}(\text{result}(s, a)) & \text{if MAX plays} \\\\
@@ -191,18 +232,12 @@ $$\text{minimax}(s) = \begin{cases}
 where the $\max$ and $\min$ are over ${a \in \text{actions}(s)}$.
 
 The .bold[optimal] next move (for MAX) maximizes the minimax value of the resulting state, ${\pi^\*(s) = \arg\max\limits\_{a} \text{minimax}(\text{result}(s, a))}$.
-- Assuming that MIN is an optimal adversary that maximizes the .bold[worst-case outcome] for MAX.
-- This is equivalent to not making an assumption about the strength of the opponent.
+- ${\text{minimax}(s)}$ is a .bold[guarantee]: whatever MIN plays, MAX obtains at least ${\text{minimax}(s)}$, and an optimal MIN holds it to exactly that.
+- MAX thus plans for the .bold[worst case], without any assumption on the strength of the opponent.
 
 ???
 
 Blackboard.
-
----
-
-class: middle
-
-.width-100[![](figures/lec3/minimax-example.png)]
 
 ---
 
