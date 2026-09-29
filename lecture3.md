@@ -282,24 +282,80 @@ class: middle
 
 # Pruning
 
-.center.width-70[![](figures/lec3/minimax-incomplete-tree.png)]
+.center.width-70[![](figures/lec3/minimax-pruned.svg)]
 
-.width-100[![](figures/lec3/minimax-incomplete-formula.png)]
+$$\begin{aligned}
+\text{minimax}(\text{root}) &= \max(\min(3, 12, 8), \min(2, x, y), \min(14, 5, 2)) \\\\
+&= \max(3, z, 2) \quad \text{where } z = \min(2, x, y) \leq 2 \\\\
+&= 3.
+\end{aligned}$$
 
 Therefore, it is possible to compute the .bold[correct] minimax decision .bold[without looking at every node] in the tree.
 
 ---
 
-class: middle
+# Pruning, step by step
 
-.center.width-80[![](figures/lec3/minimax-incomplete-stepbystep.png)]
+.center.width-80[![](figures/lec3/alpha-beta-1.svg)]
+
+The first leaf of B is ${3}$: B, a MIN node, is worth .bold[at most] ${3}$.
+
+---
+
+count: false
+
+# Pruning, step by step
+
+.center.width-80[![](figures/lec3/alpha-beta-2.svg)]
+
+The leaf ${12}$ does not change the bound of B: MIN would not choose it.
+
+---
+
+count: false
+
+# Pruning, step by step
+
+.center.width-80[![](figures/lec3/alpha-beta-3.svg)]
+
+B is worth exactly ${3}$: MAX is guaranteed .bold[at least] ${3}$ at the root.
+
+---
+
+count: false
+
+# Pruning, step by step
+
+.center.width-80[![](figures/lec3/alpha-beta-4.svg)]
+
+The first leaf of C is ${2}$: C is worth at most ${2 < 3}$. MAX will never choose C, so its other leaves are .bold[pruned].
+
+---
+
+count: false
+
+# Pruning, step by step
+
+.center.width-80[![](figures/lec3/alpha-beta-5.svg)]
+
+The first leaf of D is ${14}$: D is worth at most ${14}$, and so is the root.
+
+---
+
+count: false
+
+# Pruning, step by step
+
+.center.width-80[![](figures/lec3/alpha-beta-6.svg)]
+
+The other leaves bring D down to ${2}$. The root is worth exactly ${3}$, reached by ${a\_1}$.
 
 ---
 
 class: middle
 
 .grid[
-.kol-2-3[
+.kol-3-5[
 We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 - We loop over $n$'s children.
 - The minimax values are being computed one at a time and $v$ is updated iteratively.
@@ -307,12 +363,12 @@ We want to compute $v = \text{minimax}(n)$, for $\text{player(n)}$=MIN.
 - If $v$ becomes lower than $\alpha$, then .bold[$n$ will never be reached] in actual play.
 - Therefore, we can .bold[stop iterating] over the remaining $n$'s other children.
 ]
-.kol-1-3[<br><br>.center.width-100[![](figures/lec3/alpha-beta.png)]]
+.kol-2-5[.center.width-100[![](figures/lec3/alpha-beta-path.svg)]]
 ]
 
 ???
 
-Go back to the previous slide and the transition from (d) to (e).
+Go back to step 4 of the previous sequence: C is pruned because its value, at most 2, is below α = 3.
 
 If the minimax value $v$ for MIN becomes lower than the best value $\alpha$ for MAX, then $n$ will never be reached.
 

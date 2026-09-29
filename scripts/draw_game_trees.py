@@ -8,6 +8,10 @@ leaves only, then the MIN nodes, then the root and the move of MAX. Same shapes 
 trees of exercise sheet 2: MAX nodes are triangles pointing up, MIN nodes triangles pointing
 down, terminal states boxes, backed-up values in the course blue. Roboto is embedded from
 `assets/fonts/`, since an SVG shown as an image cannot load fonts from the page.
+
+Also writes `minimax-pruned.svg` (the same tree with two unknown leaves), `alpha-beta-1.svg` to
+`alpha-beta-6.svg` (the steps of alpha-beta pruning on it, Figure 5.5, unexplored parts faded and
+the interval of possible values beside each node) and `alpha-beta-path.svg` (Figure 5.6).
 """
 
 import base64
@@ -76,40 +80,170 @@ def svg(name, width, height, parts):
     print(f"{out.relative_to(ROOT)}  {width}x{height}")
 
 
+FADED = "#b5b5b5"
+DASH = ' stroke-dasharray="6 6"'
+
 LEAVES = [[3, 12, 8], [2, 4, 6], [14, 5, 2]]
+ROWS = {"MAX": 58, "MIN": 198, "leaves": 345}
+XS = [300, 560, 820]
+SPREAD = 82
+
+
+def faded_triangle(x, y, up):
+    s = -1 if up else 1
+    apex, base = (x, y + s * TOP), y - s * BOTTOM
+    points = f"{apex[0]:g},{apex[1]:g} {x - HALF:g},{base:g} {x + HALF:g},{base:g}"
+    return (f'<polygon points="{points}" fill="white" stroke="{FADED}" stroke-width="{STROKE}" '
+            f'stroke-linejoin="round"{DASH}/>')
+
+
+def faded_leaf(x, y):
+    w, h = LEAF
+    return (f'<rect x="{x - w / 2:g}" y="{y - h / 2:g}" width="{w:g}" height="{h:g}" fill="white" '
+            f'stroke="{FADED}" stroke-width="{STROKE}"{DASH}/>')
+
+
+def faded_line(p, q):
+    return (f'<path d="M {p[0]:g} {p[1]:g} L {q[0]:g} {q[1]:g}" stroke="{FADED}" stroke-width="{STROKE}" '
+            f'fill="none"{DASH}/>')
+
+
+def two_ply(leaves, seen=None, values=None, intervals=None, best=None, labels=("MAX", "MIN", "utility"),
+            named=False):
+    """The two-ply tree of Russell and Norvig.
+
+    `leaves` gives the 9 leaf labels (a number, or a letter for an unknown value). Only the leaves
+    in `seen` (indices 0 to 8, all by default) are drawn solid; a MIN node is solid once one of its
+    leaves is seen, and the root once a MIN node is. `values` maps a node ("A", "B", "C", "D") to
+    the value written inside it, `intervals` to the interval of possible values written beside it.
+    `best` is the index of the move of MAX to highlight, and `named` writes the names of the nodes
+    A to D beside them.
+    """
+    seen = set(range(9)) if seen is None else set(seen)
+    values, intervals = values or {}, intervals or {}
+    root = (560, ROWS["MAX"])
+    names = "BCD"
+    parts = [text(110, y, label, size=24, fill=GREY, anchor="end")
+             for label, y in zip(labels, ROWS.values())]
+
+    open_min = [any(3 * i + j in seen for j in range(3)) for i in range(3)]
+
+    for i, x in enumerate(XS):
+        top, bottom = (root[0], root[1] + BOTTOM), (x, ROWS["MIN"] - BOTTOM)
+        if open_min[i]:
+            chosen = best == i
+            parts.append(line(top, bottom, colour=BLUE if chosen else INK, width=4 if chosen else STROKE))
+        else:
+            parts.append(faded_line(top, bottom))
+        mx, my = (root[0] + x) / 2, (root[1] + BOTTOM + ROWS["MIN"] - BOTTOM) / 2
+        dx, dy = {-1: (-30, -16), 0: (24, 0), 1: (30, -16)}[(x > root[0]) - (x < root[0])]
+        parts.append(action(mx + dx, my + dy, i + 1, BLUE if best == i else (GREY if open_min[i] else FADED)))
+        for j in range(3):
+            p, q = (x, ROWS["MIN"] + TOP), (x + (j - 1) * SPREAD, ROWS["leaves"] - LEAF[1] / 2)
+            parts.append(line(p, q) if 3 * i + j in seen else faded_line(p, q))
+
+    parts.append(triangle(*root, up=True, value=values.get("A")) if any(open_min)
+                 else faded_triangle(*root, up=True))
+    if named:
+        parts.append(text(root[0] + HALF + 10, root[1] + 4, "A", size=24, weight=900,
+                          fill=INK if any(open_min) else FADED, anchor="start"))
+    if "A" in intervals:
+        parts.append(text(root[0] - HALF - 12, root[1] + 4, intervals["A"], size=24, fill=BLUE, anchor="end"))
+    for i, x in enumerate(XS):
+        name = names[i]
+        parts.append(triangle(x, ROWS["MIN"], up=False, value=values.get(name)) if open_min[i]
+                     else faded_triangle(x, ROWS["MIN"], up=False))
+        if named:
+            parts.append(text(x + HALF + 10, ROWS["MIN"] - 6, name, size=24, weight=900,
+                              fill=INK if open_min[i] else FADED, anchor="start"))
+        if name in intervals:
+            parts.append(text(x - HALF - 12, ROWS["MIN"] - 6, intervals[name], size=24, fill=BLUE, anchor="end"))
+        for j in range(3):
+            k, lx = 3 * i + j, x + (j - 1) * SPREAD
+            if k not in seen:
+                parts.append(faded_leaf(lx, ROWS["leaves"]))
+            elif isinstance(leaves[k], str):
+                parts.append(leaf(lx, ROWS["leaves"], "")
+                             + text(lx, ROWS["leaves"], leaves[k], size=26, fill=GREY, style=' font-style="italic"'))
+            else:
+                parts.append(leaf(lx, ROWS["leaves"], leaves[k]))
+    return parts
 
 
 def minimax_tree(step):
-    """The two-ply tree after `step` levels are known: 1 the leaves, 2 the MIN nodes, 3 the root."""
-    rows = {"MAX": 58, "MIN": 198, "leaves": 345}
-    xs = [300, 560, 820]
-    root = (560, rows["MAX"])
-    parts = [text(110, y, label, size=24, fill=GREY, anchor="end") for label, y in
-             [("MAX", rows["MAX"]), ("MIN", rows["MIN"]), ("utility", rows["leaves"])]]
-
+    """The tree after `step` levels are known: 1 the leaves, 2 the MIN nodes, 3 the root and a1."""
+    flat = [v for row in LEAVES for v in row]
     mins = [min(v) for v in LEAVES]
-    best = max(range(3), key=lambda i: mins[i])
+    values = dict(zip("BCD", mins)) if step >= 2 else {}
+    if step >= 3:
+        values["A"] = max(mins)
+    return two_ply(flat, values=values, best=0 if step >= 3 else None)
 
-    # edges first, so that the nodes are drawn over them
-    for i, x in enumerate(xs):
-        chosen = step >= 3 and i == best
-        parts.append(line((root[0], root[1] + BOTTOM), (x, rows["MIN"] - BOTTOM),
-                          colour=BLUE if chosen else INK, width=4 if chosen else STROKE))
-        mx, my = (root[0] + x) / 2, (root[1] + BOTTOM + rows["MIN"] - BOTTOM) / 2
-        dx, dy = {-1: (-30, -16), 0: (24, 0), 1: (30, -16)}[(x > root[0]) - (x < root[0])]
-        parts.append(action(mx + dx, my + dy, i + 1, BLUE if chosen else GREY))
-        for j in range(3):
-            lx = x + (j - 1) * 82
-            parts.append(line((x, rows["MIN"] + TOP), (lx, rows["leaves"] - LEAF[1] / 2)))
 
-    parts.append(triangle(*root, up=True, value=mins[best] if step >= 3 else None))
-    for i, x in enumerate(xs):
-        parts.append(triangle(x, rows["MIN"], up=False, value=mins[i] if step >= 2 else None))
-        for j in range(3):
-            parts.append(leaf(x + (j - 1) * 82, rows["leaves"], LEAVES[i][j]))
+def pruned_tree():
+    """The tree with the two unknown leaves x and y of C, whose values do not matter."""
+    return two_ply([3, 12, 8, 2, "x", "y", 14, 5, 2], best=0, named=True)
+
+
+INF = "∞"
+ALPHA_BETA = [   # leaves seen, intervals, move of MAX, as in Figure 5.5 of Russell and Norvig
+    ({0}, {"A": f"[−{INF}, +{INF}]", "B": f"[−{INF}, 3]"}, None),
+    ({0, 1}, {"A": f"[−{INF}, +{INF}]", "B": f"[−{INF}, 3]"}, None),
+    ({0, 1, 2}, {"A": f"[3, +{INF}]", "B": "[3, 3]"}, None),
+    ({0, 1, 2, 3}, {"A": f"[3, +{INF}]", "B": "[3, 3]", "C": f"[−{INF}, 2]"}, None),
+    ({0, 1, 2, 3, 6}, {"A": "[3, 14]", "B": "[3, 3]", "C": f"[−{INF}, 2]", "D": f"[−{INF}, 14]"}, None),
+    ({0, 1, 2, 3, 6, 7, 8}, {"A": "[3, 3]", "B": "[3, 3]", "C": f"[−{INF}, 2]", "D": "[2, 2]"}, 0),
+]
+
+
+def alpha_beta_tree(step):
+    seen, intervals, best = ALPHA_BETA[step - 1]
+    flat = [3, 12, 8, 2, "x", "y", 14, 5, 2]
+    return two_ply(flat, seen=seen, intervals=intervals, best=best, named=True)
+
+
+def alpha_path():
+    """A MIN node n deep in the tree, and the value alpha of a MAX choice m higher on its path."""
+    rows = [60, 175, 360, 470]
+    parts = [text(125, y, label, size=32, fill=GREY, anchor="end")
+             for label, y in zip(["MAX", "MIN", "MAX", "MIN"], rows)]
+    top = (420, rows[0])
+    m = (250, rows[1])
+    low = (360, rows[2])
+    n = (470, rows[3])
+    parts.append(line((top[0] + 60, top[1] - 60), (top[0], top[1] - TOP)))
+    parts.append(line((top[0], top[1] + BOTTOM), (m[0], m[1] - BOTTOM)))
+    parts.append(line((top[0] + 20, top[1] + BOTTOM), (top[0] + 70, top[1] + 60)))
+    for dx in (-60, 0, 60):
+        parts.append(line((m[0], m[1] + TOP), (m[0] + dx, m[1] + 90)))
+    # the wavy path from the MAX node down to the lower MAX node
+    x0, y0, y1 = top[0], top[1] + BOTTOM, low[1] - TOP
+    d = f"M {x0} {y0}"
+    k = 4
+    for i in range(k):
+        ya, yb = y0 + (y1 - y0) * i / k, y0 + (y1 - y0) * (i + 1) / k
+        side = 30 if i % 2 == 0 else -30
+        d += f" Q {x0 + side} {(ya + yb) / 2:g} {x0 - (low[0] - x0) * 0 + (low[0] - x0) * (i + 1) / k:g} {yb:g}"
+    parts.append(f'<path d="{d}" stroke="{INK}" stroke-width="{STROKE}" fill="none" stroke-dasharray="7 6"/>')
+    parts.append(line((low[0] - 20, low[1] + BOTTOM), (low[0] - 70, low[1] + 60)))
+    parts.append(line((low[0] + 5, low[1] + BOTTOM), (n[0], n[1] - BOTTOM)))
+    for dx in (-50, 50):
+        parts.append(line((n[0], n[1] + TOP), (n[0] + dx, n[1] + 75)))
+    parts.append(triangle(*top, up=True))
+    parts.append(triangle(*m, up=False))
+    parts.append(triangle(*low, up=True))
+    parts.append(triangle(*n, up=False))
+    parts.append(text(m[0], m[1] - 6, "m", size=30, weight=900, fill=INK, style=' font-style="italic"'))
+    parts.append(text(n[0], n[1] - 6, "n", size=30, weight=900, fill=INK, style=' font-style="italic"'))
+    parts.append(text(m[0] + HALF + 14, m[1] - 4, "α", size=42, fill=BLUE, anchor="start"))
+    parts.append(text(95, (rows[1] + rows[2]) / 2, "⋮", size=40, fill=GREY, anchor="middle"))
     return parts
 
 
 if __name__ == "__main__":
     for step in (1, 2, 3):
         svg(f"minimax-tree-{step}", 960, 380, minimax_tree(step))
+    svg("minimax-pruned", 960, 380, pruned_tree())
+    for step in range(1, 7):
+        svg(f"alpha-beta-{step}", 960, 380, alpha_beta_tree(step))
+    svg("alpha-beta-path", 620, 560, alpha_path())
