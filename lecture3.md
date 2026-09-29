@@ -563,7 +563,7 @@ class: middle, black-slide
 
 # Multi-agent games
 
-What if the game is not zero-sum, or has .bold[more than two players]? Minimax generalizes by backing up a .bold[vector] of utilities ${v(s) \in \mathbb{R}^N}$, one per player, where the player to move maximizes its own component:
+For games that are not zero-sum, or have .bold[more than two players], minimax generalizes by backing up a .bold[vector] of utilities ${v(s) \in \mathbb{R}^N}$, one per player, where the player to move maximizes its own component:
 $$v(s) = \begin{cases}
 \left(\text{utility}(s, 1), \ldots, \text{utility}(s, N)\right) & \text{if } s \in T \\\\
 v(\text{result}(s, a^\*)) & \text{otherwise,}
