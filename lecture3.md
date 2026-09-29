@@ -252,6 +252,17 @@ class: middle
     - What if MIN is suboptimal and predictable?
         - Other strategies might do better than Minimax. However they may do worse on an optimal opponent.
 
+???
+
+On the perfect play tree: MAX plays ${a\_1}$, of value ${3}$. An optimal MIN answers with the leaf ${3}$; a suboptimal MIN picks ${12}$ or ${8}$, and MAX gets more. MAX never gets less than ${3}$, whatever MIN does.
+
+"Even better" means at least as well, not strictly better: if MIN errs where it does not matter (the other replies may be worth as much), or never errs, MAX gets exactly ${3}$.
+
+In general, MAX playing ${\pi^\*}$ from ${s}$ obtains at least ${\text{minimax}(s)}$, by induction from the leaves:
+- at a terminal state, it obtains ${\text{utility}(s) = \text{minimax}(s)}$;
+- at a MAX node, it plays the child of value ${\text{minimax}(s)}$;
+- at a MIN node, every child is worth at least ${\min = \text{minimax}(s)}$, whichever MIN picks.
+
 ---
 
 class: middle
