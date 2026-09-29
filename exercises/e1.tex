@@ -141,9 +141,9 @@ For a given grid
     \part The terrain is rugged at some places, where the robot slows down: a step into a rugged cell costs more than 1, the cost of a step on flat terrain. Propose an admissible heuristic, which estimates the remaining cost at any node.
 
     \begin{solution}
-        Ignoring the rugged terrain gives a relaxed problem, in which every step costs 1. Its exact cost is a lower bound on the true remaining cost, since the real steps cost at least 1, and is therefore admissible.
+        Consider the same problem on flat terrain, where every step costs 1. Its optimal cost never exceeds the true remaining cost, since real steps cost at least 1, so it is an admissible heuristic.
 
-        In the relaxed problem, the robot only walks between its position $X = (i, j)$, the pile $P$ and the container $C$, along shortest paths of length $d(X, Y) = |i_X - i_Y| + |j_X - j_Y|$ on the grid. For a node $n$ in state $s(n) = (i, j, w_G, L)$, $k = \ceil{w_G / w_{\text{max}}}$ loads are left on the pile. A loaded robot carries its load to $C$, then makes $k$ round trips from $C$ to $P$ and back. An unloaded robot walks to $P$, then makes $k$ trips from $P$ to $C$ and $k - 1$ trips back. Hence
+        On flat terrain, the robot only walks between its position $X = (i, j)$, the pile $P$ and the container $C$, along shortest paths of length $d(X, Y) = |i_X - i_Y| + |j_X - j_Y|$ on the grid. For a node $n$ in state $s(n) = (i, j, w_G, L)$, $k = \ceil{w_G / w_{\text{max}}}$ loads are left on the pile. A loaded robot carries its load to $C$, then makes $k$ round trips from $C$ to $P$ and back. An unloaded robot walks to $P$, then makes $k$ trips from $P$ to $C$ and $k - 1$ trips back. Hence
         \[
             h(n) = \begin{cases*}
                 0 & \text{if $\lnot L$ and $w_G = 0$} \\
