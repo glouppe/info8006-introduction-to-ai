@@ -90,7 +90,7 @@
         \end{cases}
         \qquad q(s, a) = \sum_{s'} P(s' \mid s, a) \, v(s'),
     \]
-    where $q(s, a)$ is the value of the chance node $(s, a)$; a deterministic action has \mbox{$P(\text{result}(s, a) \mid s, a) = 1$}.
+    where $q(s, a)$ is the value of the chance node $(s, a)$, and $P(\text{result}(s, a) \mid s, a) = 1$ for a deterministic action.
 
     \topic{Monte Carlo tree search}
     Each node $n$ keeps the wins $Q(n, p)$ of player $p$ over the random playouts through $n$ and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ that maximizes
