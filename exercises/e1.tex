@@ -157,9 +157,9 @@ In this particular case, the robot must pass through a series of partially flood
     \end{solution}
 \end{parts}
 
-\titledquestion{Graph search}
+\titledquestion{Route planning}
 
-For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm below to the undirected graph that follows it, and give the order in which the states are expanded, as well as the final path returned by the algorithm. Ties are broken by alphabetical order on the states and, between two nodes of the same state, in favour of the one inserted first in the fringe. The goal test is applied when a node leaves the fringe, so the goal state is returned without ever being expanded.
+A navigation app plans a route from junction S to junction G on the road network drawn below, whose edges are labelled with travel times in minutes. The heuristic value $h$ of each junction, on its vertex, is the travel time to G predicted by a learned model. For each of the following search algorithms, apply the \textsc{Graph-Search} algorithm below to the undirected graph that follows it, and give the order in which the states are expanded, as well as the final path returned by the algorithm. Ties are broken by alphabetical order on the states and, between two nodes of the same state, in favour of the one inserted first in the fringe. The goal test is applied when a node leaves the fringe, so the goal state is returned without ever being expanded.
 
 \begin{pseudocode}
     \kw{function} \proc{Graph-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
@@ -315,7 +315,7 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
         \subpart Is the heuristic admissible? If not, make it admissible.
 
         \begin{solution}
-            A heuristic $h$ is admissible if $0 \leq h(n) \leq h^*(n)$, where $h^*(n)$ is the true forward cost of $n$. In the graph, $h(\text{E}) = 19$ is larger than $h^*(\text{E}) = 11$, making $h$ non-admissible. This costs the optimal path: D is expanded before E and \Astar{} returns S, B, D, G, of cost 21, instead of S, B, E, D, G, of cost 20.
+            A heuristic $h$ is admissible if $0 \leq h(n) \leq h^*(n)$, where $h^*(n)$ is the true forward cost of $n$. In the graph, $h(\text{E}) = 19$ is larger than $h^*(\text{E}) = 11$: the model overestimates the travel time from E, making $h$ non-admissible. This costs the optimal path: D is expanded before E and \Astar{} returns S, B, D, G, of cost 21, instead of S, B, E, D, G, of cost 20.
 
             Setting $h(\text{E}) = 11$ is sufficient to make $h$ admissible.
         \end{solution}
@@ -358,9 +358,9 @@ For each of the following search algorithms, apply the \textsc{Graph-Search} alg
     \end{subparts}
 \end{parts}
 
-\titledquestion{Search algorithms}
+\titledquestion{Pathfinding in a video game}
 
-Apply the \textsc{Graph-Search} algorithm to the graph below, with the conventions of exercise 3 (plain \textsc{Graph-Search}, goal test on removal, same tie-breaking).
+A character of a video game, controlled by the game, moves from S to G between the waypoints of a level, drawn below with the lengths of the passages between them; the direct passage from S to G is a long one. Apply the \textsc{Graph-Search} algorithm to this graph, with the conventions of exercise 3 (plain \textsc{Graph-Search}, goal test on removal, same tie-breaking).
 
 \begin{center}
     \begin{tikzpicture}[graph diagram]
@@ -391,7 +391,7 @@ Apply the \textsc{Graph-Search} algorithm to the graph below, with the conventio
         Expansion: S. Path: S, G, of cost 12. It is not optimal, the cheapest path being S, A, C, G, of cost 4. Like breadth-first search, iterative deepening returns the shallowest goal, which is the cheapest one only when the path cost is non-decreasing with the depth.
     \end{solution}
 
-    \part Consider the following heuristics:
+    \part The designers of the level propose two estimates of the distance to G:
     \begin{center}
         \small
         \begin{tabular}{ccc}
@@ -432,9 +432,9 @@ Apply the \textsc{Graph-Search} algorithm to the graph below, with the conventio
     \end{solution}
 \end{parts}
 
-\titledquestion{Maze car \source{CS188, Spring 2014}}
+\titledquestion{Self-parking car \source{CS188, Spring 2014}}
 
-Consider a car agent which has to exit a maze. At all time-steps, the agent points at direction $d \in \cbk{\text{N}, \text{S}, \text{E}, \text{W}}$. With a single action, the agent can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the agent's direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the agent then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The agent's goal is to find a plan which parks it (stationary) on the exit square using as few actions (time steps) as possible.
+A self-parking car must reach a free parking spot in a car park, seen from above as a grid with walls. At all time-steps, the car points at direction $d \in \cbk{\text{N}, \text{S}, \text{E}, \text{W}}$. With a single action, the car can either move forward at an adjustable velocity $v \in [0, V]$ or turn. The turning actions are \texttt{left} and \texttt{right}, which change the car's direction by 90 degrees. Turning is only permitted when the velocity is zero (and leaves it at zero). The moving actions are \texttt{faster} and \texttt{slower}. The action \texttt{faster} increments the velocity by 1 and \texttt{slower} decrements the velocity by 1; in both cases the car then moves a number of squares equal to its \emph{new} velocity. Any action that would result in a collision with a wall is illegal. Any action that would reduce $v$ below 0 or above a maximum speed $V$ is also illegal. The goal is a plan which parks the car (stationary) on the free spot using as few actions (time steps) as possible.
 
 \begin{center}
     \begin{tikzpicture}[world diagram]
@@ -446,12 +446,12 @@ Consider a car agent which has to exit a maze. At all time-steps, the agent poin
         \draw[wall] (0, 2) -- (1, 2);
         \draw[wall] (0, 1) -- (1, 1);
         \draw[world border] (0, 0) rectangle (5, 5);
-        \pic at (0.5, 4.5) {exit};
+        \pic at (0.5, 4.5) {parking};
         \pic at (0.5, 0.5) {car};
     \end{tikzpicture}
 \end{center}
 
-As an example, in the maze above, if the agent is initially stationary, it might first turn to the east using \texttt{right}, then move one square east using \texttt{faster}, then two more squares east using \texttt{faster} again. However, the agent will have to slow to take the turn.
+As an example, in the car park above, if the car is initially stationary, it might first turn to the east using \texttt{right}, then move one square east using \texttt{faster}, then two more squares east using \texttt{faster} again. However, the car will have to slow to take the turn.
 
 \begin{parts}
     \part For a grid of size $M \times N$, what is the size of the state space? Assume that all configurations are reachable from the starting state.
@@ -463,13 +463,13 @@ As an example, in the maze above, if the agent is initially stationary, it might
     \part What is the maximum branching factor of this problem? Assume that illegal actions are simply not in $\text{actions}(s)$.
 
     \begin{solution}
-        The maximum branching factor is 3, and this happens when the agent is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
+        The maximum branching factor is 3, and this happens when the car is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
     \end{solution}
 
-    \part Is the Manhattan distance from the agent's location to the exit's location admissible?
+    \part Is the Manhattan distance from the car's location to the free spot admissible?
 
     \begin{solution}
-        No because it does not take the velocity of the agent into account. For instance, in a long straight path, the number of steps could be smaller than the number of squares.
+        No because it does not take the velocity of the car into account. For instance, in a long straight path, the number of steps could be smaller than the number of squares.
     \end{solution}
 
     \part If we used an inadmissible heuristic in \Astar{} tree search, could it change the completeness of the search? And the optimality?
@@ -483,9 +483,9 @@ As an example, in the maze above, if the agent is initially stationary, it might
     \begin{solution}
         Some examples of admissible heuristics are:
         \begin{itemize}
-            \item The Manhattan distance to the exit divided by the maximum speed $V$, since the agent covers at most $V$ squares per action.
-            \item The current velocity $v$, since the agent needs $v$ actions of \texttt{slower} to park on the exit.
-            \item The maximum of the two, $\max\cbk{\frac{\text{Manhattan}}{V}, v}$, which \emph{dominates} both and is still admissible, as both are lower bounds on the true forward cost. Their \emph{sum} is not admissible: two squares away from the exit at velocity $v = 2$, parking takes 2 actions (\texttt{slower} twice), while the sum gives $2/V + 2 > 2$.
+            \item The Manhattan distance to the free spot divided by the maximum speed $V$, since the car covers at most $V$ squares per action.
+            \item The current velocity $v$, since the car needs $v$ actions of \texttt{slower} to park on the free spot.
+            \item The maximum of the two, $\max\cbk{\frac{\text{Manhattan}}{V}, v}$, which \emph{dominates} both and is still admissible, as both are lower bounds on the true forward cost. Their \emph{sum} is not admissible: two squares away from the free spot at velocity $v = 2$, parking takes 2 actions (\texttt{slower} twice), while the sum gives $2/V + 2 > 2$.
         \end{itemize}
     \end{solution}
 
@@ -501,9 +501,9 @@ As an example, in the maze above, if the agent is initially stationary, it might
     \end{solution}
 \end{parts}
 
-\titledquestion{Imperfect heuristic \source{CS188, Spring 2019}}
+\titledquestion{Learned heuristic \source{CS188, Spring 2019}}
 
-Consider a graph search problem where all edges have a unit cost and the optimal solution has cost $C^*$. Let $h(n)$ be a heuristic which is $\max \cbk{h^*(n) - k, 0}$, where $h^*(n)$ is the true forward cost of $n$ and $k \leq C^*$ is a non-negative constant.
+Heuristics are increasingly learned: a neural network, trained on solved instances of a problem, predicts the remaining cost of a node. Consider a graph search problem where all edges have a unit cost and the optimal solution has cost $C^*$, and a network calibrated to never overestimate, which predicts $h(n) = \max \cbk{h^*(n) - k, 0}$, where $h^*(n)$ is the true forward cost of $n$ and $k \leq C^*$ is a non-negative constant.
 
 \begin{parts}
     \part Is $h$ admissible?
