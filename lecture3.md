@@ -83,22 +83,20 @@ class: middle
 
 ## The bar scene, formally
 
-.grid[
-.kol-3-5[
-.quote[If we all go for the blonde, we block each other. Not a single one of us is going to get her. So then we go for her friends, but they will all give us the cold shoulder, because nobody likes to be second choice. .author[John Nash, .italic[A Beautiful Mind]]]
-]
-.kol-2-5[
-- The .bold[players] are the ${N}$ friends.
-- ${\text{actions}(s)}$: approach the blonde, or approach a brunette.
-- A .bold[terminal state] ${s \in T}$ is how the evening ends.
-]
-]
+Let the ${N}$ friends choose in turn whom to approach, B (the blonde) or F (one of her friends):
+- a state ${s}$ is the sequence of choices made so far, and ${s\_1 = ()}$;
+- ${\text{actions}(s) = \\{\text{B}, \text{F}\\}}$ and ${\text{result}(s, a)}$ appends ${a}$ to ${s}$;
+- ${\text{player}(s) = |s| + 1}$, the friend whose turn it is;
+- the terminal states ${T}$ are the sequences of length ${N}$, when everyone has chosen;
+- ${\text{utility}(s, p)}$ is ${2}$ if ${p}$ is alone to choose B, ${0}$ if others chose B too, and ${1}$ if ${p}$ chose F.
 
-Every element of the definition is there. Nash evaluates .bold[outcomes], not moves: everyone for the blonde ends in a terminal state where ${\text{utility}(s, p) = 0}$ for every player ${p}$, nobody for the blonde in one where ${\text{utility}(s, p) = 1}$. What each player should do depends on what the others do, so the answer is a .bold[strategy] rather than a sequence of moves.
+Nash evaluates .bold[outcomes], not moves: everyone for the blonde gives ${0}$ to every player, nobody for the blonde gives ${1}$. What each friend should do depends on what the others do, so the answer is a .bold[strategy] rather than a sequence of moves.
 
 ???
 
 The scene is a game tree: the friends move, the outcome is scored at the leaves, and the reasoning backs those scores up to the decision at the root.
+
+The utilities are one reading of the scene: the blonde is worth more than her friends, but only to the one who approaches her alone. The film has the friends choose at once; letting them choose in turn makes it a turn-taking game.
 
 Strictly, the conclusion is not a Nash equilibrium: if nobody goes for the blonde, any single friend does better by deviating. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
 
