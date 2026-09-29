@@ -141,9 +141,7 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 
 - We assume a .bold[deterministic], .bold[turn-taking], .bold[two-player] .bold[zero-sum game] with .bold[perfect information].
     - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
-- We will call our two players .bold[MAX] and .bold[MIN]. .bold[MAX] moves first.
-
-Each assumption is relaxed later: .bold[stochastic games] bring in chance, .bold[multi-agent games] more players, and the last section games of .bold[imperfect information].
+- We will call our two players MAX and MIN. MAX moves first.
 
 .center.width-35[![](figures/lec3/tictactoe-cartoon.png)]
 
