@@ -138,26 +138,27 @@ For a given grid
         \textbf{Step cost}: Under the given assumptions, every step from one state to the next is equivalent. Then $c(s, a, s') = 1$ is relevant. Note that it could be any constant step cost.
     \end{solution}
 
-    \part Knowing that the terrain can be rugged at specific places, causing slow down of the robot, propose an admissible heuristic which estimates the remaining cost at any node.
+    \part The terrain is rugged at some places, where the robot slows down: a step into a rugged cell costs more than 1, the cost of a step on flat terrain. Propose an admissible heuristic, which estimates the remaining cost at any node.
 
     \begin{solution}
-        As usual in grid problems, the Manhattan or the Euclidean distance is admissible as long as every step costs at least 1. However, the robot can go back and forth if $w_G > w_{\text{max}}$. Then an admissible heuristic would be
+        Ignoring the rugged terrain gives a relaxed problem, in which every step costs 1. Its exact cost is a lower bound on the true remaining cost, since the real steps cost at least 1, and is therefore admissible.
+
+        In the relaxed problem, the robot only walks between its position $X = (i, j)$, the pile $P$ and the container $C$, along shortest paths of length $d(X, Y) = |i_X - i_Y| + |j_X - j_Y|$ on the grid. For a node $n$ in state $s(n) = (i, j, w_G, L)$, $k = \ceil{w_G / w_{\text{max}}}$ loads are left on the pile. A loaded robot carries its load to $C$, then makes $k$ round trips from $C$ to $P$ and back. An unloaded robot walks to $P$, then makes $k$ trips from $P$ to $C$ and $k - 1$ trips back. Hence
         \[
             h(n) = \begin{cases*}
-                0\ & \text{if $\lnot L$ and $w_G = 0$} \\
-                |i_c - i| + |j_c - j| + 2\ceil{\frac{w_G}{w_{\text{max}}}}\big(|i_c - i_p| + |j_c - j_p|\big)\ & \text{if $L$} \\
-                |i_p - i| + |j_p - j| + \big(2\ceil{\frac{w_G}{w_{\text{max}}}} - 1\big)\big(|i_c - i_p| + |j_c - j_p|\big)\ & \text{if $\lnot L$}
+                0 & \text{if $\lnot L$ and $w_G = 0$} \\
+                d(X, C) + 2k \, d(P, C) & \text{if $L$} \\
+                d(X, P) + (2k - 1) \, d(P, C) & \text{if $\lnot L$ and $w_G > 0$.}
             \end{cases*}
         \]
-        which would have been the true remaining cost if the terrain was not rugged.
     \end{solution}
 
     \part The robot can now also move diagonally, a diagonal step costing $\sqrt{2}$. Is your heuristic still admissible? If not, what should you change? What if the robot is twice as fast diagonally, so that a diagonal step costs $\sqrt{2}/2$?
 
     \begin{solution}
-        The Manhattan distance cannot be used anymore, only the Euclidean distance would be admissible (amongst the previous proposals) or any other function dominated by the Euclidean distance.
+        No: a diagonal step reduces the Manhattan distance by 2 at a cost of $\sqrt{2} < 2$, so $h$ can overestimate. Taking for $d$ the Euclidean distance makes it admissible again, since every step, straight or diagonal, costs at least the length it covers.
 
-        If the robot is twice as fast diagonally, a unit of length costs at least $1/2$, so the Euclidean distance divided by 2 is admissible. The most limiting case is a perfect diagonal going from $P$ to $C$.
+        If a diagonal step costs $\sqrt{2}/2$, half the length $\sqrt{2}$ it covers, a unit of length costs at least $1/2$, and $d$ must be the Euclidean distance divided by 2. The bound is reached on a perfect diagonal, such as a path from $P$ to $C$ along a diagonal of the grid.
     \end{solution}
 \end{parts}
 
