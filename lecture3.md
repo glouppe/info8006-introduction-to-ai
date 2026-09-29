@@ -143,7 +143,7 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
     - e.g., Tic-Tac-Toe, Chess, Checkers, Go, etc.
 - We will call our two players MAX and MIN. MAX moves first.
 
-.center.width-35[![](figures/lec3/tictactoe-cartoon.png)]
+.center.width-55[![](figures/lec3/tictactoe-cartoon.png)]
 
 .footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
