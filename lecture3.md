@@ -14,6 +14,16 @@ class: center, black-slide, middle
 
 <iframe width="600" height="450" src="https://www.youtube.com/embed/LJS7Igvk6ZM" frameborder="0" allowfullscreen></iframe>
 
+???
+
+Questions to ask after the video, each a preview of the lecture:
+- Who are the players, and what can each of them do? (the formal definition of a game)
+- What does Nash reason about, moves or outcomes? (utilities of terminal states)
+- Why can't a friend decide on his own, once and for all? (a strategy, not a fixed plan)
+- Are the interests of the friends opposed or shared? (zero-sum games, and beyond)
+- What does Nash assume the others will do? (an optimal opponent, as in minimax)
+- Would his plan hold if one friend changed his mind? (it would not: not an equilibrium, see the bar scene slide)
+
 ---
 
 # Today
