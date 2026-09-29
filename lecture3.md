@@ -858,7 +858,7 @@ Pacman wins partly because of the larger depth it uses.
 
 ```
 uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
-    --ghostagent cheeky --gdepth 2 --layout medium_adv
+    --ghostagent cheeky --gdepth 2 --layout EH2
 ```
 
 ---
@@ -881,7 +881,7 @@ Assumptions are incorrect. Has the ghost some masterplan?
 
 ```
 uv run python run.py --agentfile hminimax_ADV.py --pdepth 4 \
-    --ghostagent rightrandy --p 0 --layout medium_adv
+    --ghostagent rightrandy --p 0 --layout EH2
 ```
 
 ---
@@ -904,7 +904,7 @@ Assumptions are correct.
 
 ```
 uv run python run.py --agentfile expectimax.py --pdepth 4 \
-    --ghostagent rightrandy --p 0 --layout medium_adv
+    --ghostagent rightrandy --p 0 --layout EH2
 ```
 
 ---
@@ -927,7 +927,7 @@ Pacman is lucky!
 
 ```
 uv run python run.py --agentfile expectimax.py --pdepth 4 \
-    --ghostagent cheeky --gdepth 2 --layout medium_adv
+    --ghostagent cheeky --gdepth 2 --layout EH2
 ```
 
 ---
