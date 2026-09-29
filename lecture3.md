@@ -160,13 +160,13 @@ Games vary along three axes: .bold[chance], .bold[information] and the .bold[num
 # Adversarial search
 
 .grid[.kol-2-3[
-- In a search problem, the optimal solution is a sequence of actions ${a\_{1:T}}$ leading to a goal state.
-    - i.e., a terminal state where MAX wins.
-- In a game, the opponent (MIN) may react .bold[arbitrarily] to a move.
-- Therefore, a player (MAX) must define a contingent .bold[strategy] ${\pi\_\text{MAX}}$ which specifies
-    - its moves in the initial state,
-    - its moves in the states resulting from every possible response by MIN,
-    - its moves in the states resulting from every possible response by MIN in those states, ...
+- In a search problem, the solution ${a\_{1:T}}$ is a fixed plan.
+- In a game, MAX cannot know which move MIN will play, .bold[now or later]. It must anticipate .bold[every] reply of MIN, every reply to its own answers, and so on until the game ends.
+- A .bold[strategy] ${\pi\_\text{MAX}}$ therefore fixes, in advance,
+    - its move in the initial state,
+    - its move after each possible reply of MIN,
+    - its move after each possible reply of MIN to those moves, ...
+- In the game tree, it keeps .bold[one] move at each MAX node and .bold[all] moves at each MIN node.
 ]
 .kol-1-3.width-100[
 ![](figures/lec3/adversarial-search-cartoon.png)
