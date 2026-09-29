@@ -135,7 +135,9 @@ class: middle
 
 ---
 
-# Assumptions
+class: middle
+
+## Assumptions
 
 Games vary along three axes: .bold[chance], .bold[information] and the .bold[number of players]. We start with the simplest case of each.
 
