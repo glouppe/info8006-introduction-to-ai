@@ -53,7 +53,7 @@
     The \term{game tree} is defined by $s_1$, $\text{actions}$ and $\text{result}$. A solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
-    In a \term{zero-sum} game, the total payoff is constant. Below, the game is deterministic, turn-taking, two-player, zero-sum and of perfect information: MAX maximizes the utility, MIN minimizes it, and MAX moves first.
+    A game is \term{zero-sum} if the utilities of the players sum to the same constant $c$ in every terminal state, $\sum_{p=1}^N \text{utility}(s, p) = c$ for all $s \in T$. With two players, $\text{utility}(s, 2) = c - \text{utility}(s, 1)$: a single utility describes the game, which player 1 maximizes and player 2 minimizes. Below, the game is deterministic, turn-taking, two-player, zero-sum and of perfect information: MAX maximizes the utility, MIN minimizes it, and MAX moves first.
 
     \topic{Minimax}
     The \term{minimax value} of $s$ is the best payoff MAX can secure against an optimal MIN,
@@ -67,7 +67,7 @@
     over $a \in \text{actions}(s)$, and the optimal move is $\pi^*(s) = \arg\max_a \text{minimax}(\text{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
 
     \topic{$\alpha$-$\beta$ pruning}
-    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root: a MIN node stops as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. The minimax values are unchanged and, with a perfect move ordering, $O(b^{m/2})$ nodes are examined. A \term{transposition table} stores the values of the states already evaluated, which other move sequences reach again.
+    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root: a MIN node stops as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. The minimax values are unchanged and, with a perfect move ordering, $O(b^{m/2})$ nodes are examined. A \term{transposition table} stores $\text{minimax}(s)$ for every state $s$ already evaluated, so that a state reached again by another sequence of moves is looked up rather than searched again.
 
     \topic{H-Minimax}
     Under time constraints, an \term{evaluation function} $\text{eval}(s)$ replaces the utility and a \term{cutoff test} at depth $d$ replaces the terminal test,
@@ -78,7 +78,17 @@
             \min_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
         \end{cases}
     \]
-    The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}).
+    The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}). An inaccurate evaluation can be compensated by a deeper search, but not the converse.
+
+    \topic{Multi-player games}
+    Without the zero-sum assumption, or with $N > 2$ players, minimax backs up a vector of utilities $v(s) \in \mathbb{R}^N$, where the player to move maximizes its own component,
+    \[
+        v(s) = \begin{cases}
+            \left(\text{utility}(s, 1), \ldots, \text{utility}(s, N)\right) & \text{if } s \in T \\
+            v(\text{result}(s, a^*)) & \text{otherwise,}
+        \end{cases}
+        \qquad a^* = \arg\max_a v_{\text{player}(s)}(\text{result}(s, a)).
+    \]
 
     \topic{Expectiminimax}
     A \term{chance node} stands for a state-action pair $(s, a)$, from which the next state $s'$ follows with probability $P(s' \mid s, a)$. With $v(s) = \text{expectiminimax}(s)$,
@@ -90,13 +100,14 @@
         \end{cases}
         \qquad q(s, a) = \sum_{s'} P(s' \mid s, a) \, v(s'),
     \]
-    where $q(s, a)$ is the value of the chance node $(s, a)$, and $P(\text{result}(s, a) \mid s, a) = 1$ for a deterministic action.
+    where $q(s, a)$ is the value of the chance node $(s, a)$, and $P(\text{result}(s, a) \mid s, a) = 1$ for a deterministic action. With chance nodes, an evaluation function must be a positive linear transformation of the expected utility: preserving the order of states is not enough.
 
     \topic{Monte Carlo tree search}
-    Each node $n$ keeps the wins $Q(n, p)$ of player $p$ over the random playouts through $n$ and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ that maximizes
+    A \term{random playout} plays the game to its end with random moves; the proportion of playouts won evaluates a state. Each node $n$ of the search tree keeps the wins $Q(n, p)$, over the playouts through $n$, of the player $p$ who moved into $n$, and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
     \[
-        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.
+        \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}},
     \]
+    where $p$ is the player to move in $n$. The move played is the one leading to the most visited child of the root.
 \end{recap}
 
 \begin{exercises}[1, 2, 4 (b)--(d)]
