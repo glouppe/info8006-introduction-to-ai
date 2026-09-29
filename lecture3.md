@@ -641,7 +641,9 @@ class: middle
 
 # Expectiminimax
 
-Because of the uncertainty in the outcomes of actions, states no longer have a .bold[definite] $\text{minimax}$ value. The value of a chance node ${(s, a)}$ is instead the .bold[expected] value of the state that follows,
+Because of the uncertainty in the outcomes of actions, states no longer have a .bold[definite] $\text{minimax}$ value.
+
+The value of a chance node ${(s, a)}$ is instead the .bold[expected] value of the state that follows,
 $$q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s'),$$
 the average over the outcomes, weighted by their probabilities, where $\text{minimax}$ would assume the worst outcome. A deterministic action is the special case ${P(\text{result}(s, a) \mid s, a) = 1}$.
 
