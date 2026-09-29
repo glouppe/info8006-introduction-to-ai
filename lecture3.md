@@ -605,7 +605,7 @@ In real life, unpredictable external events can put an agent into unforeseen sit
 
 class: middle
 
-In a game tree, the random element is .bold[modeled] with .bold[chance nodes], which map a state-action pair ${(s, a)}$ to its possible outcomes ${r}$, each with its .bold[probability] ${P(r \mid s, a)}$.
+In a game tree, the random element is .bold[modeled] with .bold[chance nodes]. A chance node stands for a state-action pair ${(s, a)}$, from which the next state ${s'}$ follows with .bold[probability] ${P(s' \mid s, a)}$.
 
 This amounts to treating the environment as an extra .bold[random player], CHANCE, that moves after each of the other players.
 
@@ -637,10 +637,10 @@ Because of the uncertainty in the outcomes of actions, states no longer have a .
 Writing ${v(s) = \text{expectiminimax}(s)}$ for short,
 $$v(s) = \begin{cases}
 \text{utility}(s) & \text{if } s \in T \\\\
-\max\limits\_a v(\text{result}(s, a)) & \text{if MAX plays} \\\\
-\min\limits\_a v(\text{result}(s, a)) & \text{if MIN plays} \\\\
-\sum\limits\_r P(r) \, v(\text{result}(s, r)) & \text{if CHANCE plays.}
-\end{cases}$$
+\max\limits\_a q(s, a) & \text{if MAX plays} \\\\
+\min\limits\_a q(s, a) & \text{if MIN plays,}
+\end{cases} \qquad q(s, a) = \sum\_{s'} P(s' \mid s, a) \, v(s'),$$
+where ${q(s, a)}$ is the value of the chance node ${(s, a)}$. A deterministic action has ${P(\text{result}(s, a) \mid s, a) = 1}$.
 
 .question[Does taking the rational move mean the agent will be successful?]
 
