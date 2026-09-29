@@ -26,18 +26,28 @@
     The \term{state space} is the set of states reachable from $s_1$. A \term{solution} is an action sequence $a_{1:T}$ with $s_{t+1} = \text{result}(s_t, a_t)$ and $s_{T+1} \in G$; an \term{optimal} one minimizes the \term{path cost} $\sum_t c(s_t, a_t, s_{t+1})$.
 
     \topic{Search algorithms}
-    \proc{Graph-Search} expands the nodes of the \term{fringe} until a goal state leaves it, and keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles. \proc{Tree-Search} is the same algorithm without the lines in blue.
+    \proc{Tree-Search} expands the nodes of the \term{fringe} until a goal state leaves it. \proc{Graph-Search} also keeps the set of expanded states, the \term{closed} set, which avoids repeated states and cycles.
 
     \begin{pseudocode}
-        \kw{function} \proc{Graph-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
-        \> {\color{diagram-accent}\pvar{closed} $\gets$ an empty set} \\
+        \kw{function} \proc{Tree-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
         \> \pvar{fringe} $\gets$ \proc{Insert}(\proc{Make-Node}(\proc{Initial-State}[\pvar{problem}]), \pvar{fringe}) \\
         \> \kw{loop do} \\
         \> \> \kw{if} \pvar{fringe} is empty \kw{then return} failure \\
         \> \> \pvar{node} $\gets$ \proc{Remove-Front}(\pvar{fringe}) \\
         \> \> \kw{if} \proc{Goal-Test}(\pvar{problem}, \proc{State}[\pvar{node}]) \kw{then return} \pvar{node} \\
-        \> \> {\color{diagram-accent}\kw{if} \proc{State}[\pvar{node}] is not in \pvar{closed} \kw{then}} \\
-        \> \> \> {\color{diagram-accent}add \proc{State}[\pvar{node}] to \pvar{closed}} \\
+        \> \> \pvar{fringe} $\gets$ \proc{InsertAll}(\proc{Expand}(\pvar{node}, \pvar{problem}), \pvar{fringe})
+    \end{pseudocode}
+
+    \begin{pseudocode}
+        \kw{function} \proc{Graph-Search}(\pvar{problem}, \pvar{fringe}) \kw{returns} a solution, or failure \\
+        \> \pvar{closed} $\gets$ an empty set \\
+        \> \pvar{fringe} $\gets$ \proc{Insert}(\proc{Make-Node}(\proc{Initial-State}[\pvar{problem}]), \pvar{fringe}) \\
+        \> \kw{loop do} \\
+        \> \> \kw{if} \pvar{fringe} is empty \kw{then return} failure \\
+        \> \> \pvar{node} $\gets$ \proc{Remove-Front}(\pvar{fringe}) \\
+        \> \> \kw{if} \proc{Goal-Test}(\pvar{problem}, \proc{State}[\pvar{node}]) \kw{then return} \pvar{node} \\
+        \> \> \kw{if} \proc{State}[\pvar{node}] is not in \pvar{closed} \kw{then} \\
+        \> \> \> add \proc{State}[\pvar{node}] to \pvar{closed} \\
         \> \> \> \pvar{fringe} $\gets$ \proc{InsertAll}(\proc{Expand}(\pvar{node}, \pvar{problem}), \pvar{fringe}) \\
         \> \kw{end}
     \end{pseudocode}
