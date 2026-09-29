@@ -13,21 +13,21 @@
 
 \begin{recap}
     \topic{Games}
-    A \term{game} is the search problem of lecture 2, with two components added and one replaced:
+    A \term{game} is defined by
     \begin{itemize}
-        \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$, as before;
-        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ and the \term{transition model} $s' = \text{result}(s, a)$, as before;
-        \item \textit{new}: a function $\text{player}(s) \in \{1, \ldots, N\}$ that says whose turn it is in state $s$;
-        \item \textit{replaced}: the goal states $G$ become the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
-        \item \textit{new}: the path cost becomes a \term{utility} $\text{utility}(s, p)$, the payoff of player $p$ when the game ends in $s \in T$, \eg{} $1$, $0$ or $\frac{1}{2}$ for a win, a loss or a draw.
+        \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$;
+        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ and the \term{transition model} $s' = \text{result}(s, a)$;
+        \item a function $\text{player}(s) \in \{1, \ldots, N\}$ that says whose turn it is in state $s$;
+        \item the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$, \ie{} $s \in T$;
+        \item a \term{utility} $\text{utility}(s, p)$, the payoff of player $p$ when the game ends in $s \in T$.
     \end{itemize}
-    Together, $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}, whose nodes are states and whose edges are actions. The solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
+    The \term{game tree} is defined by $s_1$, $\text{actions}$ and $\text{result}$. A solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
-    In a \term{zero-sum} game, the total payoff to all players is constant. We assume a deterministic, turn-taking, two-player zero-sum game with perfect information, whose players MAX and MIN maximize and minimize the same $\text{utility}$; MAX moves first.
+    In a \term{zero-sum} game, the total payoff is constant. Below, the game is deterministic, turn-taking, two-player, zero-sum and of perfect information: MAX maximizes the utility, MIN minimizes it, and MAX moves first.
 
     \topic{Minimax}
-    The \term{minimax value} of $s$ is the largest payoff MAX can achieve against an optimal MIN,
+    The \term{minimax value} of $s$ is the best payoff MAX can secure against an optimal MIN,
     \[
         \text{minimax}(s) = \begin{cases}
             \text{utility}(s) & \text{if } s \in T \\
@@ -38,10 +38,10 @@
     over $a \in \text{actions}(s)$, and the optimal move is $\pi^*(s) = \arg\max_a \text{minimax}(\text{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
 
     \topic{$\alpha$-$\beta$ pruning}
-    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN along the path from the root. A MIN node stops expanding its children as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. Pruning leaves the minimax values unchanged; with a perfect ordering of the moves, it examines $O(b^{m/2})$ nodes.
+    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root: a MIN node stops as soon as its value $v \leq \alpha$, a MAX node as soon as $v \geq \beta$. The minimax values are unchanged and, with a perfect move ordering, $O(b^{m/2})$ nodes are examined.
 
     \topic{H-Minimax}
-    Under time constraints, the utility is replaced by an \term{evaluation function} $\text{eval}(s)$ and the terminal test by a \term{cutoff test} $\text{cutoff-test}(s, d)$ at depth $d$,
+    Under time constraints, an \term{evaluation function} $\text{eval}(s)$ replaces the utility and a \term{cutoff test} at depth $d$ replaces the terminal test,
     \[
         \text{h-minimax}(s, d) = \begin{cases}
             \text{eval}(s) & \text{if cutoff} \\
@@ -49,10 +49,10 @@
             \min_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
         \end{cases}
     \]
-    Ideally, $\text{eval}$ orders the states as their minimax values do. The cutoff applies to \term{quiescent} states; consequences beyond the depth limit are hidden by the \term{horizon effect}.
+    The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}).
 
     \topic{Expectiminimax}
-    In \term{stochastic games}, \term{chance nodes} map a state-action pair to its outcomes $r$, with probabilities $P(r)$. Writing $v(s) = \text{expectiminimax}(s)$,
+    \term{Chance nodes} map a state-action pair to its outcomes $r$, of probabilities $P(r)$. With $v(s) = \text{expectiminimax}(s)$,
     \[
         v(s) = \begin{cases}
             \text{utility}(s) & \text{if } s \in T \\
@@ -63,7 +63,7 @@
     \]
 
     \topic{Monte Carlo tree search}
-    Each node $n$ keeps the number of wins $Q(n, p)$ of player $p$ over the random playouts through $n$, and its number of visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
+    Each node $n$ keeps the wins $Q(n, p)$ of player $p$ over the random playouts through $n$ and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ that maximizes
     \[
         \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}}.
     \]
