@@ -725,7 +725,7 @@ Rounds are repeated for as long as the time budget allows. The move played is th
 <br>
 ## One round of MCTS
 
-.center.width-60[![](figures/lec3/mcts-1.svg)]
+.center.width-50[![](figures/lec3/mcts-1.svg)]
 
 .bold[Selection]: from the root, descend along the most promising children to a node that is not fully expanded.
 
@@ -737,7 +737,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-60[![](figures/lec3/mcts-2.svg)]
+.center.width-50[![](figures/lec3/mcts-2.svg)]
 
 .bold[Expansion]: add one of its children, not visited yet (0/0).
 
@@ -749,7 +749,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-60[![](figures/lec3/mcts-3.svg)]
+.center.width-50[![](figures/lec3/mcts-3.svg)]
 
 .bold[Simulation]: play a random playout from the new node. Here, the player who moved into it loses (0/1).
 
@@ -761,7 +761,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-60[![](figures/lec3/mcts-4.svg)]
+.center.width-50[![](figures/lec3/mcts-4.svg)]
 
 .bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node, and one more win for the nodes of the winner.
 
