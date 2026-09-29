@@ -50,9 +50,9 @@ class: middle
 # Games
 
 - A .bold[game] is a multi-agent environment where agents may have either .bold[conflicting] or .bold[common] interests.
-- Opponents may act .bold[arbitrarily], even if we assume a deterministic fully observable environment.
-    - The solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, the .bold[policy] of lecture 1: a move for every state the opponent can lead to.
+- The solution is a .bold[strategy] ${\pi\_p : \mathcal{S} \to \mathcal{A}}$, i.e. a .bold[policy]: a move for every state the opponent can lead to.
     - This is different from search, where a solution is a .bold[fixed sequence] ${a\_{1:T}}$.
+- Opponents may act .bold[arbitrarily], even if we assume a deterministic fully observable environment.
 - Time is often .bold[limited].
 
 ???
