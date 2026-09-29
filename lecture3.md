@@ -605,7 +605,7 @@ In real life, unpredictable external events can put an agent into unforeseen sit
 
 class: middle
 
-In a game tree, the random element is .bold[modeled] with .bold[chance nodes], which map a state-action pair to its possible outcomes ${r}$, each with its .bold[probability] ${P(r)}$.
+In a game tree, the random element is .bold[modeled] with .bold[chance nodes], which map a state-action pair ${(s, a)}$ to its possible outcomes ${r}$, each with its .bold[probability] ${P(r \mid s, a)}$.
 
 This amounts to treating the environment as an extra .bold[random player], CHANCE, that moves after each of the other players.
 
