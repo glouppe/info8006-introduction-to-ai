@@ -428,10 +428,10 @@ Finding the exact solution with Minimax remains .bold[intractable].
 
 # Transposition table
 
-- Repeated states occur frequently because of .bold[transpositions]: distinct permutations of the move sequence end in a same position.
-- Similarly to the `closed` set in graph search (Lecture 2), it is worth storing the evaluation of a state such that further occurrences of the state do not have to be recomputed.
+- Repeated states occur frequently because of .bold[transpositions]: distinct permutations of the move sequence end in the same state.
+- Like the closed set of graph search, a .bold[transposition table] stores ${\text{minimax}(s)}$ for every state ${s}$ already evaluated, so that a repeated state is looked up rather than searched again.
 
-.question[What data structure should be used to efficiently store and look-up values of positions?]
+.question[What data structure should be used to efficiently store and look up the values of states?]
 
 ---
 
