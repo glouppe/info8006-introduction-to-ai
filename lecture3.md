@@ -594,10 +594,7 @@ class: middle
 
 # Stochastic games
 
-- In real life, many unpredictable external events can put us into unforeseen situations.
-- Games that mirror this unpredictability are called .bold[stochastic games]. They include a random element, such as:
-    - explicit randomness: rolling a dice;
-    - actions may fail: when moving a robot, wheels might slip.
+In real life, unpredictable external events can put an agent into unforeseen situations. Games that mirror this unpredictability are called .bold[stochastic games]: they include a random element, such as explicit randomness (rolling dice) or actions that may fail (the wheels of a robot might slip).
 
 <br>
 .center.width-40[![](figures/lec3/random-opponent-cartoon.png)]
@@ -608,8 +605,9 @@ class: middle
 
 class: middle
 
-- In a game tree, this random element can be .bold[modeled] with .bold[chance nodes] that map a state-action pair to the set of possible outcomes, along with their respective .bold[probability].
-- This is equivalent to considering the environment as an extra  .bold[random agent] player that moves after each of the other players.
+In a game tree, the random element is .bold[modeled] with .bold[chance nodes], which map a state-action pair to its possible outcomes ${r}$, each with its .bold[probability] ${P(r)}$.
+
+This amounts to treating the environment as an extra .bold[random player], CHANCE, that moves after each of the other players.
 
 .center.width-30[![](figures/lec3/random-player.png)]
 
