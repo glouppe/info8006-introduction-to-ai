@@ -671,11 +671,10 @@ class: middle
 
 ## Random playout evaluation
 
-- To evaluate a state, have the algorithm play .bold[against itself] using .bold[random moves], thousands of times.
-- The sequence of random moves is called a .bold[random playout].
-- Use the proportion of wins as the state evaluation.
-- This strategy does .bold[not require domain knowledge]!
-    - The game engine is all that is needed.
+To evaluate a state ${s}$, let the algorithm play .bold[against itself] from ${s}$ with .bold[random moves], thousands of times. Each such game is a .bold[random playout], and the evaluation is the proportion of playouts won,
+$$\text{eval}(s) = \frac{1}{K} \sum\_{k=1}^K \mathbf{1}[\text{playout } k \text{ is won}].$$
+
+This evaluation requires .bold[no domain knowledge]: the game engine is all that is needed.
 
 ???
 
