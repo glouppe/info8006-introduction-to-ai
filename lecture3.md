@@ -23,6 +23,7 @@ Questions to ask after the video, each a preview of the lecture, with short answ
 - Are the interests of the friends opposed or shared? Both: they compete for the blonde, yet all lose if all go for her. (zero-sum games, and beyond)
 - What does Nash assume the others will do? That they reason as well as he does, each in his own interest. (an optimal opponent, as in minimax)
 - Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her. It is not an equilibrium. (see the bar scene slide)
+
 ---
 
 # Today
