@@ -727,6 +727,10 @@ where $p$ is the player to move in $n$. The first term encourages the .bold[expl
 
 With UCB1, the values in the tree converge to the minimax values as the number of rounds grows: the most promising moves end up visited far more often than the others, and their win rates approach their true values.
 
+The score is an upper confidence bound on the win rate of the child: optimism in the face of uncertainty. By Hoeffding's inequality, after ${N(n')}$ playouts the observed win rate is within ${\sqrt{\log(1/\delta) / 2N(n')}}$ of the true one with probability at least ${1 - \delta}$. Taking ${\delta = N(n)^{-4}}$ gives the bonus ${\sqrt{2 \log N(n) / N(n')}}$, i.e. ${c = \sqrt{2}}$.
+
+The bonus shrinks as a child is tried (${1/\sqrt{N(n')}}$), and grows slowly as the parent is visited (${\log N(n)}$), so a child that is neglected is eventually tried again. The log grows just fast enough: every child is tried infinitely often, but a worse child only about ${\log N(n)}$ times out of ${N(n)}$, the smallest possible cost of exploring (Auer, Cesa-Bianchi and Fischer, 2002). Without the log, the search would keep spreading its playouts evenly; with a constant, an unlucky child could be abandoned for good.
+
 ---
 
 <br>
