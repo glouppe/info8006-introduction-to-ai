@@ -78,7 +78,7 @@
             \min_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
         \end{cases}
     \]
-    The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}). An inaccurate evaluation can be compensated by a deeper search, but not the converse.
+    The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only; what lies beyond the depth limit is hidden (\term{horizon effect}). An inaccurate evaluation can be compensated by a deeper search, as long as it becomes more accurate closer to the end of the game, but not the converse.
 
     \topic{Multi-player games}
     Without the zero-sum assumption, or with $N > 2$ players, minimax backs up a vector of utilities $v(s) \in \mathbb{R}^N$, where the player to move maximizes its own component,

@@ -504,11 +504,13 @@ class: middle
 
 ## Depth versus evaluation
 
-An inaccurate $\text{eval}$ can be compensated by a .bold[deeper search]. The deeper the cutoff, the closer the evaluated states are to the end of the game: the search sees more consequences for itself, and the errors of $\text{eval}$ matter less. At the limit, the search reaches the terminal states and needs no evaluation at all.
+An inaccurate $\text{eval}$ can be compensated by a .bold[deeper search], as long as $\text{eval}$ becomes .bold[more accurate] closer to the end of the game. The deeper the cutoff, the later in the game the evaluated states: the search sees more consequences for itself, and the errors of $\text{eval}$ matter less. At the limit, the search reaches the terminal states and needs no evaluation at all.
 
 The converse does not hold: a better $\text{eval}$ cannot compensate a .bold[shallow search]. What lies beyond the horizon can only be estimated, and a perfect evaluation, ${\text{eval}(s) = \text{minimax}(s)}$ everywhere, would require solving the game.
 
 ???
+
+This is what happens in practice, in chess, checkers or Go, but not in every game: there exist pathological games where searching deeper with an imperfect evaluation makes decisions worse (Nau, 1983).
 
 The horizon effect goes both ways: a good move, such as a sacrifice that pays off only later, may look bad.
 
