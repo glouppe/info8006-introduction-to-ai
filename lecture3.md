@@ -705,7 +705,7 @@ Each node $n$ in the current search tree maintains two values:
 
 class: middle
 
-Each round of the search does four things: .bold[selection] down to a node that is not fully expanded, .bold[expansion] of one child, .bold[simulation] of a random playout from it, and .bold[backpropagation] of the result along the path back to the root.
+Each round of the search does four things: .bold[selection] down to a node $n$ that is not fully expanded, .bold[expansion] of one child $n'$ of $n$, .bold[simulation] of a random playout from $n'$, and .bold[backpropagation] of the result along the path back to the root.
 
 .width-100[![](figures/lec3/mcts.svg)]
 
