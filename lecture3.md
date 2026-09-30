@@ -22,7 +22,7 @@ Questions to ask after the video, each a preview of the lecture, with short answ
 - Why can't a friend decide on his own, once and for all? His best choice depends on what the others do, so he needs an answer for every situation they can create. (a strategy, not a fixed plan)
 - Are the interests of the friends opposed or shared? Both: they compete for the blonde, yet all lose if all go for her. (zero-sum games, and beyond)
 - What does Nash assume the others will do? That they reason as well as he does, each in his own interest. (an optimal opponent, as in minimax)
-- Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her. It is not an equilibrium. (see the bar scene slide)
+- Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her. (see the bar scene slide)
 
 ---
 
@@ -100,7 +100,7 @@ The utilities are one reading of the scene: the blonde is worth more than her fr
 
 In the film, the friends choose at once. Choosing in turn without seeing the earlier choices is the standard way to write such a simultaneous game as a tree. If the choices were visible, backward induction would settle the evening at once: the last friend takes the blonde if she is still free (2 > 1) and her friend otherwise (1 > 0), so every earlier friend takes her if she is free, and the first friend gets her. Hiding the choices is what makes the dilemma. It is also why the scene is a game of imperfect information, outside the games of this lecture until its last section.
 
-Strictly, the conclusion is not a Nash equilibrium: if nobody goes for the blonde, any single friend does better by deviating. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
+Strictly, the plan is fragile: if nobody goes for the blonde, any single friend does better by going for her. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
 
 ---
 
