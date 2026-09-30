@@ -83,7 +83,7 @@ class: middle
 
 ## The bar scene, formally
 
-Let the ${N}$ friends choose in turn whom to approach, B (the blonde) or F (one of her friends):
+Let the ${N}$ friends choose in turn, .bold[each without seeing the choices made before], whom to approach, B (the blonde) or F (one of her friends):
 - a state ${s}$ is the sequence of choices made so far, and ${s\_1 = ()}$;
 - ${\text{actions}(s) = \\{\text{B}, \text{F}\\}}$ and ${\text{result}(s, a)}$ appends ${a}$ to ${s}$;
 - ${\text{player}(s) = |s| + 1}$, the friend whose turn it is;
@@ -96,7 +96,9 @@ Nash evaluates .bold[outcomes], not moves: everyone for the blonde gives ${0}$ t
 
 The scene is a game tree: the friends move, the outcome is scored at the leaves, and the reasoning backs those scores up to the decision at the root.
 
-The utilities are one reading of the scene: the blonde is worth more than her friends, but only to the one who approaches her alone. The film has the friends choose at once; letting them choose in turn makes it a turn-taking game.
+The utilities are one reading of the scene: the blonde is worth more than her friends, but only to the one who approaches her alone.
+
+In the film, the friends choose at once. Choosing in turn without seeing the earlier choices is the standard way to write such a simultaneous game as a tree. If the choices were visible, backward induction would settle the evening at once: the last friend takes the blonde if she is still free (2 > 1) and her friend otherwise (1 > 0), so every earlier friend takes her if she is free, and the first friend gets her. Hiding the choices is what makes the dilemma. It is also why the scene is a game of imperfect information, outside the games of this lecture until its last section.
 
 Strictly, the conclusion is not a Nash equilibrium: if nobody goes for the blonde, any single friend does better by deviating. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
 
