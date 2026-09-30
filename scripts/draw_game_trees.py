@@ -498,15 +498,16 @@ def arrow(p, q, colour=BLUE, width=3.5):
 
 def mcts_tree(step):
     """One round of Monte Carlo tree search, after Wikipedia: 1 selection, 2 expansion, 3 simulation,
-    4 backpropagation. Nodes show the wins and visits of the player who moved into them; grey nodes
-    are the moves of one player, white nodes those of the other."""
+    4 backpropagation. As in the other trees, a node is coloured by the player to move in it, grey
+    for Black and white for White (Wikipedia colours it by the player who moved into it). Its label
+    counts the wins and visits of the player who made the move leading to it, the other colour."""
     y = [50, 160, 270, 380, 490]
     nodes = {   # name: (x, level, dark, label before, label after backpropagation)
-        "root": (560, 0, False, "11/21", "11/22"),
-        "a": (300, 1, True, "7/10", "8/11"), "b": (620, 1, True, "3/8", None), "c": (780, 1, True, "0/3", None),
-        "a1": (220, 2, False, "2/4", None), "a2": (380, 2, False, "1/6", "1/7"),
-        "b1": (520, 2, False, "1/2", None), "b2": (620, 2, False, "2/3", None), "b3": (720, 2, False, "2/3", None),
-        "a21": (300, 3, True, "2/3", None), "a22": (460, 3, True, "3/3", "4/4"),
+        "root": (560, 0, True, "11/21", "11/22"),
+        "a": (300, 1, False, "7/10", "8/11"), "b": (620, 1, False, "3/8", None), "c": (780, 1, False, "0/3", None),
+        "a1": (220, 2, True, "2/4", None), "a2": (380, 2, True, "1/6", "1/7"),
+        "b1": (520, 2, True, "1/2", None), "b2": (620, 2, True, "2/3", None), "b3": (720, 2, True, "2/3", None),
+        "a21": (300, 3, False, "2/3", None), "a22": (460, 3, False, "3/3", "4/4"),
     }
     parent = {"a": "root", "b": "root", "c": "root", "a1": "a", "a2": "a", "b1": "b", "b2": "b", "b3": "b",
               "a21": "a2", "a22": "a2"}
@@ -541,7 +542,7 @@ def mcts_tree(step):
         updated = step == 4 and after is not None
         parts.append(mcts_node(x, y[lvl], after if updated else before, dark, highlight=updated))
     if step >= 2:
-        parts.append(mcts_node(*new, "0/1" if step == 4 else "0/0", False, highlight=step in (2, 4)))
+        parts.append(mcts_node(*new, "0/1" if step == 4 else "0/0", True, highlight=step in (2, 4)))
     return ['<g transform="translate(-150, 0)">'] + parts + ["</g>"]
 
 

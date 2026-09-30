@@ -698,7 +698,7 @@ class: middle
 Evaluating every move with the same number of random playouts wastes most of them on bad moves. MCTS instead grows a search tree from the root and spends its playouts on the .bold[most promising moves].
 
 Each node $n$ in the current search tree maintains two values:
-- the number of wins $Q(n,p)$, over the playouts that passed through $n$, of the player $p$ who moved into $n$;
+- the number of wins $Q(n,p)$, over the playouts that passed through $n$, of the player $p$ who made the move leading to $n$;
 - the number $N(n)$ of times $n$ has been visited.
 
 ---
@@ -738,7 +738,7 @@ The bonus shrinks as a child is tried (${1/\sqrt{N(n')}}$), and grows slowly as 
 
 .center.width-50[![](figures/lec3/mcts-1.svg)]
 
-Each node shows ${Q(n, p) / N(n)}$ for the player who moved into it. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
+Grey nodes are Black's turns, white nodes White's; each shows ${Q(n, p) / N(n)}$ for the player who made the move leading to it. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
 
 
 ---
@@ -762,7 +762,7 @@ count: false
 
 .center.width-50[![](figures/lec3/mcts-3.svg)]
 
-.bold[Simulation]: play a random playout from the new node. Here, the player who moved into it loses (0/1).
+.bold[Simulation]: play a random playout from the new node. Here, White, who made the move leading to it, loses (0/1).
 
 
 ---
@@ -774,13 +774,13 @@ count: false
 
 .center.width-50[![](figures/lec3/mcts-4.svg)]
 
-.bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node, and one more win for the nodes of the winner.
+.bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node, and one more win for the nodes reached by a move of the winner.
 
 ???
 
-This graph shows the steps involved in one decision, with each node showing the ratio of wins to total playouts from that point in the game tree for the player that node represents. In the Selection diagram, black is about to move. The root node shows there are 11 wins out of 21 playouts for white from this position so far. It complements the total of 10/21 black wins shown along the three black nodes under it, each of which represents a possible black move.
+Nodes are coloured by the player to move, as in the other trees: grey for Black, white for White. Each node shows the wins and visits of the player who made the move leading to it, the other colour. At the root, Black is about to move; its 11/21 are White's wins so far, and the three white nodes under it, Black's possible moves, add up to Black's 10/21.
 
-If white loses the simulation, all nodes along the selection incremented their simulation count (the denominator), but among them only the black nodes were credited with wins (the numerator). If instead white wins, all nodes along the selection would still increment their simulation count, but among them only the white nodes would be credited with wins. In games where draws are possible, a draw causes the numerator for both black and white to be incremented by 0.5 and the denominator by 1. This ensures that during selection, each player's choices expand towards the most promising moves for that player, which mirrors the goal of each player to maximize the value of their move.
+If White loses the simulation, all nodes along the path increment their visits (the denominator), but only the nodes reached by a move of Black, the white nodes, are credited with a win (the numerator). If instead White wins, only the grey nodes are credited. In games where draws are possible, a draw adds 0.5 to the numerator of both. This ensures that during selection, each player expands towards the most promising moves for that player.
 
 Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
 
