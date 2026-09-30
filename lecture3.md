@@ -16,14 +16,13 @@ class: center, black-slide, middle
 
 ???
 
-Questions to ask after the video, each a preview of the lecture:
-- Who are the players, and what can each of them do? (the formal definition of a game)
-- What does Nash reason about, moves or outcomes? (utilities of terminal states)
-- Why can't a friend decide on his own, once and for all? (a strategy, not a fixed plan)
-- Are the interests of the friends opposed or shared? (zero-sum games, and beyond)
-- What does Nash assume the others will do? (an optimal opponent, as in minimax)
-- Would his plan hold if one friend changed his mind? (it would not: not an equilibrium, see the bar scene slide)
-
+Questions to ask after the video, each a preview of the lecture, with short answers:
+- Who are the agents, and what can each of them do? The friends; each chooses whom to approach, the blonde or one of her friends. (the formal definition of a game)
+- What does Nash reason about, moves or outcomes? Outcomes: he scores how the evening ends and reasons back from there. (utilities of terminal states, backed up)
+- Why can't a friend decide on his own, once and for all? His best choice depends on what the others do, so he needs an answer for every situation they can create. (a strategy, not a fixed plan)
+- Are the interests of the friends opposed or shared? Both: they compete for the blonde, yet all lose if all go for her. (zero-sum games, and beyond)
+- What does Nash assume the others will do? That they reason as well as he does, each in his own interest. (an optimal opponent, as in minimax)
+- Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her. It is not an equilibrium. (see the bar scene slide)
 ---
 
 # Today
