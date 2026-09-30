@@ -110,6 +110,18 @@ class: middle
 
 .question[What is an optimal strategy (or perfect play)? How do we find it?]
 
+???
+
+Play a game against the students. Perfect play by both sides is a draw, so the game is won only on a mistake.
+
+Play X and open in a corner: 7 of the 8 replies lose, and only the center holds the draw (after the center, the 4 edges lose; after an edge, 4 replies lose).
+
+On every move, in this order: win; block their line; fork (two threats at once); block their fork; center; the corner opposite theirs; any corner; any edge.
+
+If they open in a corner as X, take the center: any other reply loses.
+
+This rule set is a minimax strategy: it never does worse than a draw, and it wins only when the opponent errs.
+
 ---
 
 class: middle
