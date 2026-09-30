@@ -187,7 +187,7 @@ mcts = [
     (0, []),
     (0, [kw("function "), proc("Select"), txt("("), var("n"), txt(") "), kw("returns "), txt("a node to expand")]),
     (1, [kw("while "), var("n"), txt(" is fully expanded and not terminal "), kw("do")]),
-    (2, [var("n"), gets(), txt("the child of "), var("n"), txt(" maximising "), proc("UCB1")]),
+    (2, [var("n"), gets(), txt("the child "), var("n'"), txt(" of "), var("n"), txt(" maximising "), proc("UCB1")]),
     (1, [kw("end")]),
     (1, [kw("return "), var("n")]),
 ]
