@@ -192,7 +192,7 @@ What does MAX obtain from a state if .bold[both players play perfectly] from the
 
 ???
 
-This is backward induction, the reasoning of the bar scene made exact: the scores of the outcomes are backed up, one level at a time, to the decision at the root.
+This is backward induction: the scores of the outcomes are backed up, one level at a time, to the decision at the root.
 
 ---
 
