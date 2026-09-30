@@ -22,7 +22,7 @@ Questions to ask after the video, each a preview of the lecture, with short answ
 - Why can't a friend decide on his own, once and for all? His best choice depends on what the others do, so he needs an answer for every situation they can create. (a strategy, not a fixed plan)
 - Are the interests of the friends opposed or shared? Both: they compete for the blonde, yet all lose if all go for her. (zero-sum games, and beyond)
 - What does Nash assume the others will do? That they reason as well as he does, each in his own interest. (an optimal opponent, as in minimax)
-- Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her. (see the bar scene slide)
+- Would his plan hold if one friend changed his mind? No: if nobody goes for the blonde, a single friend does better by going for her.
 
 ---
 
@@ -81,29 +81,6 @@ A fixed sequence of actions ${a\_{1:T}}$, the solution of a search problem, is t
 
 class: middle
 
-## The bar scene, formally
-
-Let the ${N}$ friends choose in turn, .bold[each without seeing the choices made before], whom to approach, B (the blonde) or F (one of her friends):
-- a state ${s}$ is the sequence of choices made so far, and ${s\_1 = ()}$;
-- ${\text{actions}(s) = \\{\text{B}, \text{F}\\}}$ and ${\text{result}(s, a)}$ appends ${a}$ to ${s}$;
-- ${\text{player}(s) = |s| + 1}$, the friend whose turn it is;
-- the terminal states ${T}$ are the sequences of length ${N}$, when everyone has chosen;
-- ${\text{utility}(s, p)}$ is ${2}$ if ${p}$ is alone to choose B, ${0}$ if others chose B too, and ${1}$ if ${p}$ chose F.
-
-Nash evaluates .bold[outcomes], not moves: everyone for the blonde gives ${0}$ to every player, nobody for the blonde gives ${1}$. What each friend should do depends on what the others do, so the answer is a .bold[strategy] rather than a sequence of moves.
-
-???
-
-The scene is a game tree: the friends move, the outcome is scored at the leaves, and the reasoning backs those scores up to the decision at the root.
-
-The utilities are one reading of the scene: the blonde is worth more than her friends, but only to the one who approaches her alone.
-
-In the film, the friends choose at once. Choosing in turn without seeing the earlier choices is the standard way to write such a simultaneous game as a tree. If the choices were visible, backward induction would settle the evening at once: the last friend takes the blonde if she is still free (2 > 1) and her friend otherwise (1 > 0), so every earlier friend takes her if she is free, and the first friend gets her. Hiding the choices is what makes the dilemma. It is also why the scene is a game of imperfect information, outside the games of this lecture until its last section.
-
----
-
-class: middle
-
 ## Zero-sum games
 
 A game is .bold[zero-sum] if the utilities of the players sum to the same constant ${c}$ in every terminal state:
@@ -121,7 +98,7 @@ $$\sum\_{p=1}^N \text{utility}(s, p) = c \quad \text{for all } s \in T.$$
 
 The term 'zero-sum' is confusing but makes sense if you imagine each player is charged an entry of 1/2 (for chess). Constant-sum game would have been better.
 
-The bar scene is not zero-sum: everyone for the blonde sums to 0, nobody for the blonde to N.
+The bar scene is not zero-sum: the friends can all lose together, or all do well together.
 
 ---
 
