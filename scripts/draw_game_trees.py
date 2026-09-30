@@ -497,17 +497,17 @@ def arrow(p, q, colour=BLUE, width=3.5):
 
 
 def mcts_tree(step):
-    """One round of Monte Carlo tree search, after Wikipedia: 1 selection, 2 expansion, 3 simulation,
-    4 backpropagation. As in the other trees, a node is coloured by the player to move in it, grey
-    for Black and white for White (Wikipedia colours it by the player who moved into it). Its label
-    counts the wins and visits of the player who made the move leading to it, the other colour."""
+    """One round of Monte Carlo tree search: 1 selection, 2 expansion, 3 simulation, 4 backpropagation.
+    As in the other trees, a node is coloured by the player to move in it, grey for Black and white for
+    White, and every label counts Black's wins and visits, as minimax values are MAX's utility. The counts
+    are chosen so that UCB1 with c = sqrt(2) selects the path drawn (Wikipedia's example does not)."""
     y = [50, 160, 270, 380, 490]
     nodes = {   # name: (x, level, dark, label before, label after backpropagation)
-        "root": (560, 0, True, "11/21", "11/22"),
-        "a": (300, 1, False, "7/10", "8/11"), "b": (620, 1, False, "3/8", None), "c": (780, 1, False, "0/3", None),
-        "a1": (220, 2, True, "2/4", None), "a2": (380, 2, True, "1/6", "1/7"),
-        "b1": (520, 2, True, "1/2", None), "b2": (620, 2, True, "2/3", None), "b3": (720, 2, True, "2/3", None),
-        "a21": (300, 3, False, "2/3", None), "a22": (460, 3, False, "3/3", "4/4"),
+        "root": (560, 0, True, "11/21", "12/22"),
+        "a": (300, 1, False, "8/10", "9/11"), "b": (620, 1, False, "3/8", None), "c": (780, 1, False, "0/3", None),
+        "a1": (220, 2, True, "4/4", None), "a2": (380, 2, True, "4/6", "5/7"),
+        "b1": (520, 2, True, "1/2", None), "b2": (620, 2, True, "1/3", None), "b3": (720, 2, True, "1/3", None),
+        "a21": (300, 3, False, "1/3", None), "a22": (460, 3, False, "3/3", "4/4"),
     }
     parent = {"a": "root", "b": "root", "c": "root", "a1": "a", "a2": "a", "b1": "b", "b2": "b", "b3": "b",
               "a21": "a2", "a22": "a2"}
@@ -532,7 +532,7 @@ def mcts_tree(step):
             ya, yb = y0 + (y1 - y0) * i / k, y0 + (y1 - y0) * (i + 1) / k
             d += f" Q {x0 + (14 if i % 2 == 0 else -14)} {(ya + yb) / 2:g} {x0} {yb:g}"
         parts.append(f'<path d="{d}" stroke="{BLUE}" stroke-width="3" fill="none"/>')
-        parts.append(text(x0, y1 + 22, "0/1", size=22, weight=900, fill=BLUE))
+        parts.append(text(x0, y1 + 22, "Black wins", size=22, weight=900, fill=BLUE))
     if step == 4:
         parts.append(arrow(new, pos["a22"]))
         for a, b in zip(path, path[1:]):
@@ -542,7 +542,7 @@ def mcts_tree(step):
         updated = step == 4 and after is not None
         parts.append(mcts_node(x, y[lvl], after if updated else before, dark, highlight=updated))
     if step >= 2:
-        parts.append(mcts_node(*new, "0/1" if step == 4 else "0/0", True, highlight=step in (2, 4)))
+        parts.append(mcts_node(*new, "1/1" if step == 4 else "0/0", True, highlight=step in (2, 4)))
     return ['<g transform="translate(-150, 0)">'] + parts + ["</g>"]
 
 

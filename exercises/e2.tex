@@ -103,7 +103,7 @@
     where $q(s, a)$ is the value of the chance node $(s, a)$, and $P(\text{result}(s, a) \mid s, a) = 1$ for a deterministic action. With chance nodes, an evaluation function must be a positive linear transformation of the expected utility: preserving the order of states is not enough.
 
     \topic{Monte Carlo tree search}
-    A \term{random playout} plays the game to its end with random moves; the proportion of playouts won evaluates a state. Each node $n$ of the search tree keeps the wins $Q(n, p)$, over the playouts through $n$, of the player $p$ who moved into $n$, and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
+    A \term{random playout} plays the game to its end with random moves; the proportion of playouts won evaluates a state. Each node $n$ of the search tree keeps the wins $Q(n, p)$ of each player $p$ over the playouts through $n$, and its visits $N(n)$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
     \[
         \frac{Q(n', p)}{N(n')} + c \sqrt{\frac{\log N(n)}{N(n')}},
     \]

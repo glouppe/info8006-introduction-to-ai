@@ -698,7 +698,7 @@ class: middle
 Evaluating every move with the same number of random playouts wastes most of them on bad moves. MCTS instead grows a search tree from the root and spends its playouts on the .bold[most promising moves].
 
 Each node $n$ in the current search tree maintains two values:
-- the number of wins $Q(n,p)$, over the playouts that passed through $n$, of the player $p$ who made the move leading to $n$;
+- the number of wins $Q(n,p)$ of each player $p$, over the playouts that passed through $n$;
 - the number $N(n)$ of times $n$ has been visited.
 
 ---
@@ -738,7 +738,7 @@ The bonus shrinks as a child is tried (${1/\sqrt{N(n')}}$), and grows slowly as 
 
 .center.width-50[![](figures/lec3/mcts-1.svg)]
 
-Grey nodes are Black's turns, white nodes White's; each shows ${Q(n, p) / N(n)}$ for the player who made the move leading to it. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
+Grey nodes are Black's turns, white nodes White's; each shows Black's wins and visits. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
 
 
 ---
@@ -762,7 +762,7 @@ count: false
 
 .center.width-50[![](figures/lec3/mcts-3.svg)]
 
-.bold[Simulation]: play a random playout from the new node. Here, White, who made the move leading to it, loses (0/1).
+.bold[Simulation]: play a random playout from the new node. Here, Black wins.
 
 
 ---
@@ -774,13 +774,13 @@ count: false
 
 .center.width-50[![](figures/lec3/mcts-4.svg)]
 
-.bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node, and one more win for the nodes reached by a move of the winner.
+.bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node and, since Black won, one more win for Black.
 
 ???
 
-Nodes are coloured by the player to move, as in the other trees: grey for Black, white for White. Each node shows the wins and visits of the player who made the move leading to it, the other colour. At the root, Black is about to move; its 11/21 are White's wins so far, and the three white nodes under it, Black's possible moves, add up to Black's 10/21.
+Nodes are coloured by the player to move, as in the other trees: grey for Black, white for White. Every node shows Black's wins and visits, as minimax values are always MAX's utility; White's wins are the difference. At a grey node, Black picks the child with the best UCB1 score for Black (high win rate); at a white node, White does the same with its own win rate, ${1 - Q/N}$ for Black's ${Q/N}$. With ${c = \sqrt{2}}$, the scores along the path are 1.58 (against 1.25 and 1.42) at the root, 1.21 (against 1.07) for White at 8/10, and 2.09 (against 1.43) at 4/6.
 
-If White loses the simulation, all nodes along the path increment their visits (the denominator), but only the nodes reached by a move of Black, the white nodes, are credited with a win (the numerator). If instead White wins, only the grey nodes are credited. In games where draws are possible, a draw adds 0.5 to the numerator of both. This ensures that during selection, each player expands towards the most promising moves for that player.
+In games where draws are possible, a draw adds 0.5 to the wins of both players.
 
 Rounds of search are repeated as long as the time allotted to a move remains. Then the move with the most simulations made (i.e. the highest denominator) is chosen as the final answer.
 
