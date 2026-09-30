@@ -100,8 +100,6 @@ The utilities are one reading of the scene: the blonde is worth more than her fr
 
 In the film, the friends choose at once. Choosing in turn without seeing the earlier choices is the standard way to write such a simultaneous game as a tree. If the choices were visible, backward induction would settle the evening at once: the last friend takes the blonde if she is still free (2 > 1) and her friend otherwise (1 > 0), so every earlier friend takes her if she is free, and the first friend gets her. Hiding the choices is what makes the dilemma. It is also why the scene is a game of imperfect information, outside the games of this lecture until its last section.
 
-Strictly, the plan is fragile: if nobody goes for the blonde, any single friend does better by going for her. What the scene gets right, and what this lecture is about, is the reasoning itself, over outcomes and over the choices of the others.
-
 ---
 
 class: middle
