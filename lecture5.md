@@ -65,7 +65,7 @@ class: middle
 
 .center.width-40[![](figures/lec5/alarm.png)]
 
-## Example 1
+.italic[Example 1:]
 
 - Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
 - The network topology can be defined from domain knowledge:
@@ -108,7 +108,7 @@ $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid \text{parents}(X\_i)).$$
 
 class: middle
 
-## Example 1 (continued)
+.italic[Example 1 (continued):]
 
 $$
 \begin{aligned}
@@ -122,7 +122,7 @@ $$
 
 class: middle
 
-## Example 2
+.italic[Example 2:]
 
 .grid[
 .kol-1-2[.width-90[![](figures/lec5/tooth.png)]]
@@ -158,7 +158,7 @@ class: middle
 .kol-2-3[.width-80[![](figures/lec5/traffic2.png)]<br><br>]
 ]
 
-## Example 3
+.italic[Example 3:]
 
 Edges may correspond to causal relations.
 
@@ -196,7 +196,7 @@ class: middle
 
 .center.width-60[![](figures/lec5/traffic3.png)]
 
-## Example 3 (bis)
+.italic[Example 3 (bis):]
 
 ... but edges need not be causal!
 
@@ -279,7 +279,7 @@ class: middle
 .kol-1-2[
 Is $X$ independent of $Z$? No.
 
-Counter-example:
+.italic[Counter-example:]
 - Low pressure causes rain causes traffic, high pressure causes no rain causes no traffic.
 - In numbers:
     - $P(y \mid x)=1$,
@@ -336,7 +336,7 @@ class: middle
 
 Is $X$ independent of $Z$? No.
 
-Counter-example:
+.italic[Counter-example:]
 - Project due causes both forums busy and lab full.
 - In numbers:
     - $P(x \mid y)=1$,
@@ -460,7 +460,7 @@ class: middle
 
 .grid[
 .kol-1-2[
-## Example
+.italic[Example:]
 
 - $L \perp T' \mid T$?
 - $L \perp B$?
