@@ -525,8 +525,6 @@ Inference is the problem of computing the posterior distribution $\mathbf{P}(Q \
 
 class: middle
 
-## Kinds of queries
-
 Beyond the posterior of a single variable, the same machinery answers:
 
 .grid[
