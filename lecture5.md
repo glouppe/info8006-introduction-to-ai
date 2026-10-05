@@ -99,6 +99,14 @@ Blackboard: example of calculation, as in the next slide.
 The topology of a network asserts the .bold[local Markov property]: each variable is conditionally independent of its non-descendants, given its parents,
 $$X\_i \perp \text{non-descendants}(X\_i) \mid \text{parents}(X\_i).$$
 
+.center.width-50[![](figures/lec5/nondescendants.svg)]
+
+---
+
+class: middle
+
+## Factorization
+
 A Bayesian network therefore encodes the full joint distribution as a product of local distributions,
 $$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid \text{parents}(X\_i)).$$
 
@@ -484,21 +492,17 @@ class: middle
 
 class: middle
 
-## Local semantics
+## Markov blanket
 
-.center.width-60[![](figures/lec5/nondescendants.svg)]
-
-The local Markov property of the semantics slide, read on the graph: $X$ is conditionally independent of its non-descendants $Z\_{ij}$ given its parents $U\_i$.
-
----
-
-class: middle
-
-## Global semantics
-
-.center.width-60[![](figures/lec5/markov-blanket.svg)]
+.center.width-40[![](figures/lec5/markov-blanket.svg)]
 
 $X$ is conditionally independent of all the other nodes given its .bold[Markov blanket]: its parents, its children, and the other parents of its children.
+
+This follows from d-separation: every path from $X$ to another node is blocked by a node of the blanket. Once its blanket is known, the rest of the network says nothing more about $X$.
+
+???
+
+A path from $X$ leaves through a parent or a child, both observed. At a parent, or at a child the path goes through, the triple is inactive. At a child where two arrows meet, the triple is active, but the path continues to a co-parent, which is observed and blocks it.
 
 ---
 
