@@ -793,10 +793,9 @@ class: middle
 <tr><td>Event</td><td>$P(A) = \sum_{\omega \in A} P(\omega)$</td></tr>
 <tr><td>Complement</td><td>$P(\neg a) = 1 - P(a)$</td></tr>
 <tr><td>Union</td><td>$P(a \lor b) = P(a) + P(b) - P(a \land b)$</td></tr>
-<tr><td>Sum rule</td><td>$P(x) = \sum_y P(x, y)$</td></tr>
 <tr><td>Conditioning</td><td>$P(a \mid b) = P(a, b) / P(b)$</td></tr>
 <tr><td>Product rule</td><td>$P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$</td></tr>
-<tr><td>Total probability</td><td>$P(x) = \sum_y P(x \mid y) P(y)$</td></tr>
+<tr><td>Sum rule, total probability</td><td>$P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y)$</td></tr>
 <tr><td>Chain rule</td><td>$P(x_{1:n}) = \prod_i P(x_i \mid x_{1:i-1})$</td></tr>
 <tr><td>Bayes' rule</td><td>$P(a \mid b) = P(b \mid a) P(a) / P(b)$</td></tr>
 <tr><td>Independence, $X \perp Y$</td><td>$P(x, y) = P(x) P(y)$</td></tr>
