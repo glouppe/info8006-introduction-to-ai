@@ -989,8 +989,9 @@ class: middle
 
 .question[In case (a), if we unwrap 1 candy and get 1 cherry, what is the MLE? How confident are we in this estimate?]
 
-- With small datasets, maximum likelihood estimation can lead to overfitting. 
-- The MLE does not provide a measure of uncertainty about the parameters.
+???
+
+The MLE is ${\theta = 1}$: all candies are cherry. With small datasets, maximum likelihood estimation can lead to overfitting, and the MLE does not provide a measure of uncertainty about the parameters.
 
 ---
 
