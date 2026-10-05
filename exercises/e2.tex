@@ -53,7 +53,7 @@
     $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}. A solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
-    A game is \term{zero-sum} if $\sum_{p=1}^N \text{utility}(s, p) = c$ for all $s \in T$. With two players, $\text{utility}(s, 2) = c - \text{utility}(s, 1)$: MAX maximizes a single utility, MIN minimizes it. Below, games are deterministic, turn-taking, two-player, zero-sum and of perfect information, and MAX moves first.
+    A game is \term{zero-sum} if $\sum_{p=1}^N \text{utility}(s, p) = c$ for all $s \in T$. With two players, called MAX and MIN, $\text{utility}(s, \text{MIN}) = c - \text{utility}(s, \text{MAX})$; we write $\text{utility}(s)$ for $\text{utility}(s, \text{MAX})$, which MAX maximizes and MIN minimizes. Below, games are deterministic, turn-taking, two-player, zero-sum and of perfect information, and MAX moves first.
 
     \topic{Minimax}
     The \term{minimax value} of $s$ is the payoff MAX can secure against an optimal MIN,
@@ -233,7 +233,7 @@ The program plays X, the MAX player, and its opponent O, the MIN player. We defi
             \end{tikzpicture}
         \end{center}
 
-        This heuristic does not preserve the Minimax \emph{ordering} of intermediate states.
+        This heuristic does not preserve the minimax \emph{ordering} of intermediate states.
     \end{solution}
 \end{parts}
 
@@ -388,7 +388,7 @@ A game is \emph{solved} when the outcome of perfect play from its initial state 
 \begin{parts}
     \part Consider the 2-player game of \enquote{5}, which has the same rules as \enquote{21} except that the player who says 5 or larger loses. Show the whole game tree.
 
-    \part Using the Minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move. Who wins the game of \enquote{5} with perfect play?
+    \part Using the minimax algorithm, annotate your tree with the backed-up values, and use those values to choose the optimal starting move. Who wins the game of \enquote{5} with perfect play?
 
     \begin{solution}
         The tree below answers (a) and (b). The utility of MAX is 1 when MIN says 5 or larger, \ie{} in the terminal states $(v, \text{MAX})$, and 0 otherwise. A node $(5+, p)$ merges the terminal states that the moves of its parent reach with a counter of 5 or larger, which all have the same value. MAX starts by adding 3, and the root is worth 1: the first player wins with perfect play, and the game of \enquote{5} is solved.
@@ -566,7 +566,7 @@ Two delivery drones, $A$ and $B$, race in a narrow tunnel of four cells, shown b
             \end{tikzpicture}
         \end{center}
 
-        Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than Minimax must be used.
+        Our strategy is equivalent to replacing \enquote{?} by any value strictly between $-1$ and $+1$, which only works for this game tree. For other games, it is not clear how to compare \enquote{?} values with intermediate outcomes like draws, wins of different degrees (as in score games) or even other \enquote{?} values. In such cases, algorithms more complex than minimax must be used.
     \end{solution}
 
     \part This race can be generalized to a tunnel of $n$ cells for any $n > 2$. Prove that $A$ wins if $n$ is even and loses if $n$ is odd.
