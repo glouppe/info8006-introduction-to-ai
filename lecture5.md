@@ -541,7 +541,7 @@ Beyond the posterior of a single variable, the same machinery answers:
 ]
 .grid[
 .kol-1-3.center[Optimal decisions:]
-.kol-2-3[$\arg \max\\\_a \mathbb{E}\left[ V \mid \mathbf{e}, a \right]$ (Lectures 8 and 9)]
+.kol-2-3[$\arg \max\\\_a \sum\\\_{s'} P(s' \mid \mathbf{e}, a) V(s')$ (Lectures 8 and 9)]
 ]
 
 .center.width-30[![](figures/lec5/query-cartoon.png)]
