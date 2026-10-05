@@ -474,10 +474,11 @@ class: middle
 
 class: middle
 
-The joint distribution has $d^n$ entries, but the chain rule already writes it as a product of conditional distributions,
-$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1}).$$
+The joint distribution has $d^n$ entries. The chain rule writes it as a product of conditional distributions,
+$$P(x\_1, ..., x\_n) = \prod\_{i=1}^n P(x\_i \mid x\_1, ..., x\_{i-1}),$$
+but this alone saves nothing: the last factor, $P(x\_n \mid x\_1, ..., x\_{n-1})$, still has $d^n$ entries.
 
-.bold[Independence] and .bold[conditional independence] state that some of these factors do not depend on all their conditions. Each dropped variable divides the size of a factor by $d$, which is what makes probabilistic models .bold[scale up].
+.bold[Independence] and .bold[conditional independence] state that some of these factors do not depend on all their conditions. Each dropped condition divides the size of a factor by $d$, which is what makes probabilistic models .bold[scale up].
 
 ---
 
