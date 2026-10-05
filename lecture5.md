@@ -641,11 +641,11 @@ class: middle
 
 class: middle
 
-- Inference by enumeration can be used to answer probabilistic queries for .bold[discrete variables] (i.e., with a finite number of values).
-- However, enumeration .bold[does not scale]!
-    - Assume a domain described by $n$ variables taking at most $d$ values.
-    - Space complexity: $O(d^n)$
-    - Time complexity: $O(d^n)$
+Inference by enumeration can be used to answer probabilistic queries for .bold[discrete variables] (i.e., with a finite number of values).
+
+However, enumeration .bold[does not scale]! For a domain described by $n$ variables taking at most $d$ values:
+- space complexity: $O(d^n)$;
+- time complexity: $O(d^n)$.
 
 .question[Can we do better by exploiting the structure of the network?]
 
