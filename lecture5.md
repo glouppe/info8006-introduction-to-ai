@@ -882,6 +882,8 @@ When modeling a domain, we can choose a probabilistic model specified as a Bayes
 
 A workaround is to use a .bold[parameterized] family $\mathbf{P}(X \mid \theta)$ (sometimes also noted $\mathbf{P}\_\theta(X)$) of models, and .bold[estimate] the parameters $\theta$ from data.
 
+.success[The same principle trains .bold[neural networks] (Lecture 7): a network is a parameterized distribution $p\_\theta(y \mid \mathbf{x})$, whose parameters are estimated from data by maximum likelihood.]
+
 ???
 
 Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distributions $P_\theta$.
