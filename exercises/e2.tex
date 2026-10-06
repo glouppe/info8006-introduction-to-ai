@@ -91,7 +91,7 @@
     with $a^* = \arg\max_a v_{\texttt{player}(s)}(\texttt{result}(s, a))$.
 
     \topic{Expectiminimax}
-    A \term{chance node} $(s, a)$ leads to the next state $s'$ with probability $P(s' \mid s, a)$. With $v(s) = \texttt{expectiminimax}(s)$,
+    In a \term{stochastic game}, chance (dice, card draws) intervenes between the moves. A \term{chance node} $(s, a)$ leads to the next state $s'$ with probability $P(s' \mid s, a)$. With $v(s) = \texttt{expectiminimax}(s)$,
     \[
         v(s) = \begin{cases}
             \texttt{utility}(s) & \text{if } s \in T \\
