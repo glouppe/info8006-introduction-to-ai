@@ -145,7 +145,7 @@ The program plays X, the MAX player, and its opponent O, the MIN player. We defi
     \part Approximately how many possible game states of Tic-Tac-Toe are there?
 
     \begin{solution}
-        Every cell being empty, X or O, there are at most $3^{3 \times 3} = \num{19683}$ states, unreachable ones included, and at most $\fact{9} = \num{362880}$ games, as many games end before the grid is full. The exact counts are \num{5478} reachable states and \num{255168} games.
+        Every cell being empty, X or O, there are at most $3^{3 \times 3} = \num{19683}$ states. This bound includes \emph{unreachable} states, which no sequence of legal moves leads to from the empty grid, such as a grid with more Os than Xs, or with a line of three for both players. There are at most $\fact{9} = \num{362880}$ games, as many games end before the grid is full. The exact counts are \num{5478} reachable states and \num{255168} games.
     \end{solution}
 
     \part Show the whole game tree starting from an empty grid down to depth 2 (one X and one O on the board), taking symmetry into account.
