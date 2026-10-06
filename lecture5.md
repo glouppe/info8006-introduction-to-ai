@@ -33,7 +33,7 @@ class: middle
 
 class: middle
 
-An agent observes percepts $e$, not the state $s$. Its model of the environment is the joint distribution
+When the environment is only partially observable, the agent must reason about the state $s$ from its percepts $e$. Its model is the joint distribution
 $$P(s, e) = P(s) P(e \mid s),$$
 from which it infers the belief ${P(s \mid e)}$.
 
