@@ -33,11 +33,13 @@ class: middle
 
 class: middle
 
-An agent does not observe the state $s$ of its environment, only percepts $e$ that depend on it. Its model of the environment is the joint distribution
+An agent observes percepts $e$, not the state $s$. Its model of the environment is the joint distribution
 $$P(s, e) = P(s) P(e \mid s),$$
-a prior over the states and a sensor model. Bayes' rule turns it into the belief ${P(s \mid e)}$.
+from which it infers the belief ${P(s \mid e)}$.
 
-The state and the percepts are assignments of many random variables, and the table of their joint distribution grows exponentially with their number. .bold[Independence] and .bold[conditional independence] assumptions reduce the number of probabilities to specify. A .bold[Bayesian network] represents them explicitly.
+.center.width-40[![](figures/lec5/state-percepts.svg)]
+
+When $s$ and $e$ hold many variables, the table of $P(s, e)$ grows exponentially. A .bold[Bayesian network] factors it with conditional independence assumptions.
 
 ---
 
