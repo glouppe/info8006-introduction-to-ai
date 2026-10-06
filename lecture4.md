@@ -776,7 +776,7 @@ class: middle
 
 - Uncertainty is .bold[inescapable], and .bold[probability theory] is the framework we use to represent it: numbers attached to propositions, measuring the agent's beliefs rather than the world.
 - The joint distribution answers every query, by selecting, marginalizing and normalizing, but it holds $d^n$ entries.
-- .bold[Independence] and .bold[conditional independence] factor it into smaller tables. Naive Bayes goes from $O(2^n)$ down to $O(n)$.
+- .bold[Independence] and .bold[conditional independence] factor it into smaller tables.
 - .bold[Bayes' rule] turns a causal model into a diagnostic belief, and each posterior is the prior of the next observation.
 
 ???
@@ -787,20 +787,36 @@ Lecture 5 makes the computation scale with Bayesian networks, lecture 6 lets the
 
 class: middle
 
-## All the rules
+## Recap
 
 <table>
-<tr><td>Event</td><td>$P(A) = \sum_{\omega \in A} P(\omega)$</td></tr>
+<tr><td>Sample space</td><td>$\Omega$, of possible worlds $\omega$</td></tr>
+<tr><td>Axioms</td><td>$0 \leq P(\omega) \leq 1, \quad \sum_{\omega \in \Omega} P(\omega) = 1$</td></tr>
+<tr><td>Event</td><td>$A \subseteq \Omega, \quad P(A) = \sum_{\omega \in A} P(\omega)$</td></tr>
+<tr><td>Random variable</td><td>$X : \Omega \to D_X$, with $X = x$ the event $\{\omega : X(\omega) = x\}$</td></tr>
+<tr><td>Distribution</td><td>$\mathbf{P}(X)$, the numbers $P(x)$ for $x \in D_X$</td></tr>
+<tr><td>Joint distribution</td><td>$\mathbf{P}(X_1, \ldots, X_n)$, the numbers $P(x_1, \ldots, x_n)$</td></tr>
+<tr><td>Conditional probability</td><td>$P(a \mid b) = P(a, b) / P(b)$, for $P(b) > 0$</td></tr>
+<tr><td>Conditional distribution</td><td>$\mathbf{P}(X \mid Y)$, one $\mathbf{P}(X \mid y)$ for each $y \in D_Y$</td></tr>
+</table>
+
+???
+
+$\Omega$ is finite or countable. $P(x)$ is a number, $\mathbf{P}(X)$ a table.
+
+---
+
+class: middle
+
+<table>
 <tr><td>Complement</td><td>$P(\neg a) = 1 - P(a)$</td></tr>
 <tr><td>Union</td><td>$P(a \lor b) = P(a) + P(b) - P(a \land b)$</td></tr>
-<tr><td>Conditioning</td><td>$P(a \mid b) = P(a, b) / P(b)$</td></tr>
 <tr><td>Product rule</td><td>$P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$</td></tr>
 <tr><td>Sum rule, total probability</td><td>$P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y)$</td></tr>
 <tr><td>Chain rule</td><td>$P(x_{1:n}) = \prod_i P(x_i \mid x_{1:i-1})$</td></tr>
 <tr><td>Bayes' rule</td><td>$P(a \mid b) = P(b \mid a) P(a) / P(b)$</td></tr>
 <tr><td>Independence, $X \perp Y$</td><td>$P(x, y) = P(x) P(y)$</td></tr>
 <tr><td>Conditional independence, $X \perp Y \mid Z$</td><td>$P(x, y \mid z) = P(x \mid z) P(y \mid z)$</td></tr>
-<tr><td>Naive Bayes</td><td>$P(c, e_{1:n}) = P(c) \prod_i P(e_i \mid c)$</td></tr>
 </table>
 
 ???
