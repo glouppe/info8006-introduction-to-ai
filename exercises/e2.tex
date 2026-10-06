@@ -44,38 +44,38 @@
     A \term{game} is defined by
     \begin{itemize}
         \item the \term{states} $s \in \mathcal{S}$ and the \term{initial state} $s_1 \in \mathcal{S}$;
-        \item the \term{actions} $\text{actions}(s) \subseteq \mathcal{A}$ available in state $s$;
-        \item the \term{transition model} $s' = \text{result}(s, a)$, the state reached by taking $a$ in $s$;
-        \item the player to move, $\text{player}(s) \in \{1, \ldots, N\}$;
-        \item the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\text{terminal-test}(s)$;
-        \item the \term{utility} $\text{utility}(s, p)$ of player $p$ in $s \in T$.
+        \item the \term{actions} $\texttt{actions}(s) \subseteq \mathcal{A}$ available in state $s$;
+        \item the \term{transition model} $s' = \texttt{result}(s, a)$, the state reached by taking $a$ in $s$;
+        \item the player to move, $\texttt{player}(s) \in \{1, \ldots, N\}$;
+        \item the \term{terminal states} $T \subseteq \mathcal{S}$, tested by $\texttt{terminal-test}(s)$;
+        \item the \term{utility} $\texttt{utility}(s, p)$ of player $p$ in $s \in T$.
     \end{itemize}
-    $s_1$, $\text{actions}$ and $\text{result}$ define the \term{game tree}. A solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
+    $s_1$, $\texttt{actions}$ and $\texttt{result}$ define the \term{game tree}. A solution is a \term{strategy} $\pi_p : \mathcal{S} \to \mathcal{A}$, a move for every state the opponent can lead to.
 
     \topic{Zero-sum games}
-    A game is \term{zero-sum} if $\sum_{p=1}^N \text{utility}(s, p) = c$ for all $s \in T$. With two players, called MAX and MIN, $\text{utility}(s, \text{MIN}) = c - \text{utility}(s, \text{MAX})$; we write $\text{utility}(s)$ for $\text{utility}(s, \text{MAX})$, which MAX maximizes and MIN minimizes. Below, games are deterministic, turn-taking, two-player, zero-sum and of perfect information, and MAX moves first.
+    A game is \term{zero-sum} if $\sum_{p=1}^N \texttt{utility}(s, p) = c$ for all $s \in T$. With two players, called MAX and MIN, $\texttt{utility}(s, \text{MIN}) = c - \texttt{utility}(s, \text{MAX})$; we write $\texttt{utility}(s)$ for $\texttt{utility}(s, \text{MAX})$, which MAX maximizes and MIN minimizes. Below, games are deterministic, turn-taking, two-player, zero-sum and of perfect information, and MAX moves first.
 
     \topic{Minimax}
     The \term{minimax value} of $s$ is the payoff MAX can secure against an optimal MIN,
     \[
-        \text{minimax}(s) = \begin{cases}
-            \text{utility}(s) & \text{if } s \in T \\
-            \max_{a} \text{minimax}(\text{result}(s, a)) & \text{if MAX plays} \\
-            \min_{a} \text{minimax}(\text{result}(s, a)) & \text{if MIN plays,}
+        \texttt{minimax}(s) = \begin{cases}
+            \texttt{utility}(s) & \text{if } s \in T \\
+            \max_{a} \texttt{minimax}(\texttt{result}(s, a)) & \text{if MAX plays} \\
+            \min_{a} \texttt{minimax}(\texttt{result}(s, a)) & \text{if MIN plays,}
         \end{cases}
     \]
-    with $a \in \text{actions}(s)$. The optimal move is $\pi^*(s) = \arg\max_a \text{minimax}(\text{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
+    with $a \in \texttt{actions}(s)$. The optimal move is $\pi^*(s) = \arg\max_a \texttt{minimax}(\texttt{result}(s, a))$. Time $O(b^m)$, space $O(bm)$.
 
     \topic{$\alpha$-$\beta$ pruning}
-    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root; a MIN node stops once $v \leq \alpha$, a MAX node once $v \geq \beta$. Minimax values are unchanged. With a perfect move ordering, $O(b^{m/2})$ nodes are examined. A \term{transposition table} stores $\text{minimax}(s)$ for the states already evaluated.
+    $\alpha$ and $\beta$ are the best values found so far for MAX and MIN on the path from the root; a MIN node stops once $v \leq \alpha$, a MAX node once $v \geq \beta$. Minimax values are unchanged. With a perfect move ordering, $O(b^{m/2})$ nodes are examined. A \term{transposition table} stores $\texttt{minimax}(s)$ for the states already evaluated.
 
     \topic{H-Minimax}
-    An \term{evaluation function} $\text{eval}(s)$ replaces the utility, and a \term{cutoff test} at depth $d$ the terminal test,
+    An \term{evaluation function} $\texttt{eval}(s)$ replaces the utility, and a \term{cutoff test} at depth $d$ the terminal test,
     \[
-        \text{h-minimax}(s, d) = \begin{cases}
-            \text{eval}(s) & \text{if cutoff} \\
-            \max_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MAX plays} \\
-            \min_{a} \text{h-minimax}(\text{result}(s, a), d + 1) & \text{if MIN plays.}
+        \texttt{h-minimax}(s, d) = \begin{cases}
+            \texttt{eval}(s) & \text{if cutoff} \\
+            \max_{a} \texttt{h-minimax}(\texttt{result}(s, a), d + 1) & \text{if MAX plays} \\
+            \min_{a} \texttt{h-minimax}(\texttt{result}(s, a), d + 1) & \text{if MIN plays.}
         \end{cases}
     \]
     The evaluation should order states as their minimax values do, and the cutoff apply to \term{quiescent} states only. Beyond the cutoff, consequences are hidden (\term{horizon effect}). A deeper search compensates an inaccurate evaluation, if it is more accurate near the end of the game; the converse does not hold.
@@ -84,23 +84,23 @@
     With $N > 2$ players, or without the zero-sum assumption, minimax backs up a vector of utilities $v(s) \in \mathbb{R}^N$; the player to move maximizes its own component,
     \[
         v(s) = \begin{cases}
-            \left(\text{utility}(s, 1), \ldots, \text{utility}(s, N)\right) & \text{if } s \in T \\
-            v(\text{result}(s, a^*)) & \text{otherwise,}
+            \left(\texttt{utility}(s, 1), \ldots, \texttt{utility}(s, N)\right) & \text{if } s \in T \\
+            v(\texttt{result}(s, a^*)) & \text{otherwise,}
         \end{cases}
-        \qquad a^* = \arg\max_a v_{\text{player}(s)}(\text{result}(s, a)).
     \]
+    with $a^* = \arg\max_a v_{\texttt{player}(s)}(\texttt{result}(s, a))$.
 
     \topic{Expectiminimax}
-    A \term{chance node} $(s, a)$ leads to the next state $s'$ with probability $P(s' \mid s, a)$. With $v(s) = \text{expectiminimax}(s)$,
+    A \term{chance node} $(s, a)$ leads to the next state $s'$ with probability $P(s' \mid s, a)$. With $v(s) = \texttt{expectiminimax}(s)$,
     \[
         v(s) = \begin{cases}
-            \text{utility}(s) & \text{if } s \in T \\
+            \texttt{utility}(s) & \text{if } s \in T \\
             \max_a q(s, a) & \text{if MAX plays} \\
             \min_a q(s, a) & \text{if MIN plays,}
         \end{cases}
         \qquad q(s, a) = \sum_{s'} P(s' \mid s, a) \, v(s'),
     \]
-    where $q(s, a)$ is the value of the chance node; a deterministic action has $P(\text{result}(s, a) \mid s, a) = 1$. An evaluation function must then be a positive linear transformation of the expected utility; preserving the order of states is not enough.
+    where $q(s, a)$ is the value of the chance node; a deterministic action has $P(\texttt{result}(s, a) \mid s, a) = 1$. An evaluation function must then be a positive linear transformation of the expected utility; preserving the order of states is not enough.
 
     \topic{Monte Carlo tree search}
     A \term{random playout} plays the game to its end with random moves; the fraction of playouts won evaluates a state. Each node $n$ keeps its visits $N(n)$ and the wins $Q(n, p)$ of each player $p$ over the playouts through $n$. A round does \term{selection}, \term{expansion}, \term{simulation} and \term{backpropagation}; selection picks the child $n'$ of $n$ that maximizes
@@ -116,7 +116,7 @@
 
 You are writing the engine of a program that plays Tic-Tac-Toe against human players. Tic-Tac-Toe is a game for two players, X and O, who take turns marking the cells of a $3 \times 3$ grid, X moving first. The player who succeeds in placing three of their marks in a straight line (horizontal, vertical or diagonal) wins the game. If neither of the players wins before the grid is full, it is a draw.
 
-The program plays X, the MAX player, and its opponent O, the MIN player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\text{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
+The program plays X, the MAX player, and its opponent O, the MIN player. We define $X_n$ as the number of rows, columns or diagonals with exactly $n$ X's and no O's. Similarly, $O_n$ is the number of rows, columns, or diagonals with just $n$ O's. A position $s$ is terminal if $X_3(s) \geq 1$, $O_3(s) \geq 1$ or if the grid is full. The utility function assigns $+1$, $-1$ or $0$ to such position, respectively. For non-terminal positions, we use an evaluation function defined as $\texttt{eval}(s) = 3 X_2(s) + X_1(s) - 3 O_2(s) - O_1(s)$.
 
 \begin{parts}
     \part Define the search problem associated with the Tic-Tac-Toe game.
@@ -130,15 +130,15 @@ The program plays X, the MAX player, and its opponent O, the MIN player. We defi
             \end{equation*}
             \item[Player function] X moves when there are as many X's as O's on the grid, and O otherwise,
             \begin{equation*}
-                \text{player}(s) = \begin{cases}
+                \texttt{player}(s) = \begin{cases}
                     \text{MAX} & \text{if } \sum_{i, j} s_{ij} = 0 \\
                     \text{MIN} & \text{otherwise.}
                 \end{cases}
             \end{equation*}
-            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $\text{actions}(s) = \cbk{(i, j): s_{ij} = 0}$.
-            \item[Transition model] For an action $(i, j) \in \text{actions}(s)$, $\text{result}(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = 1$ if $\text{player}(s) = \text{MAX}$ and $-1$ otherwise.
-            \item[Terminal test] $\text{terminal-test}(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
-            \item[Utility function] $\text{utility}(s, \text{MAX}) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
+            \item[Actions] An action is represented by the position $(i, j)$ of an empty cell in the grid. Then, the set of possible actions is $\texttt{actions}(s) = \cbk{(i, j): s_{ij} = 0}$.
+            \item[Transition model] For an action $(i, j) \in \texttt{actions}(s)$, $\texttt{result}(s, (i, j)) = s'$ is the same as $s$ except that $s'_{ij} = 1$ if $\texttt{player}(s) = \text{MAX}$ and $-1$ otherwise.
+            \item[Terminal test] $\texttt{terminal-test}(s)$ is true if $X_3(s) + O_3(s) \geq 1$ or $\prod_{i,j} s_{ij} \neq 0$, false otherwise.
+            \item[Utility function] $\texttt{utility}(s, \text{MAX}) = 1$ if $X_3(s) \geq 1$, $-1$ if $O_3(s) \geq 1$ and $0$ otherwise.
         \end{description}
     \end{solution}
 
@@ -218,18 +218,18 @@ The program plays X, the MAX player, and its opponent O, the MIN player. We defi
         The faded nodes in the tree of (e). With the center first, $\alpha = +1$ at the root once its two children are evaluated. The corner and the edge then start with their worst child for X, of values $-1$ and $-2$, both $\leq \alpha$, and their four other children are pruned.
     \end{solution}
 
-    \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\text{eval}(s)$ is misleading.
+    \part Is this evaluation function a good heuristic? If not, provide one or more states $s$ for which $\texttt{eval}(s)$ is misleading.
 
     \begin{solution}
-        This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning. In the states below, X is to move on the left and wins at once, yet $\text{eval}(s) = 0$; O is to move on the right and wins at once, yet $\text{eval}(s) = 3$.
+        This is not a good heuristic, mainly because it does not take into account which player's turn it is. This results in states for which X is winning with lower evaluation than other states for which O is winning. In the states below, X is to move on the left and wins at once, yet $\texttt{eval}(s) = 0$; O is to move on the right and wins at once, yet $\texttt{eval}(s) = 3$.
 
         \begin{center}
             \begin{tikzpicture}[game diagram, x=1cm, y=1cm]
                 \renewcommand*{\tttcell}{0.45}
                 \tttboard{m1}{(0, 0)}{0/0, 1/0}{1/2, 2/2}
                 \tttboard{m2}{(4.5, 0)}{0/0, 0/1, 1/0}{1/2, 2/2}
-                \node[diagram caption] at (0, -1.1) {X to move, $\text{eval}(s) = 0$};
-                \node[diagram caption] at (4.5, -1.1) {O to move, $\text{eval}(s) = 3$};
+                \node[diagram caption] at (0, -1.1) {X to move, $\texttt{eval}(s) = 0$};
+                \node[diagram caption] at (4.5, -1.1) {O to move, $\texttt{eval}(s) = 3$};
             \end{tikzpicture}
         \end{center}
 
@@ -462,32 +462,32 @@ Two delivery drones, $A$ and $B$, race in a narrow tunnel of four cells, shown b
         Let a state of the game be a tuple $s = (i, j, p) \in \cbk{1, 2, 3, 4}^2 \times \cbk{A, B}$, where $i$ and $j$ are the respective positions of $A$ and $B$ and $p$ is the player whose turn it is.
         \begin{description}
             \item[Initial state] $s_1 = (1, 4, A)$.
-            \item[Player function] $\text{player}(s = (i, j, p)) = p$.
-            \item[Actions] $\text{actions}(s) \subseteq \cbk{\text{left}, \text{right}}$. For the player to move at $x$, with its opponent at $y$, \enquote{right} is available if $\text{next}(x, y) \leq 4$ and \enquote{left} if $\text{prev}(x, y) \geq 1$, where $\text{next}$ and $\text{prev}$, defined below, give the cell reached, jump included.
-            \item[Transition model] For an available action $a \in \text{actions}(s)$,
+            \item[Player function] $\texttt{player}(s = (i, j, p)) = p$.
+            \item[Actions] $\texttt{actions}(s) \subseteq \cbk{\texttt{left}, \texttt{right}}$. For the player to move at $x$, with its opponent at $y$, \texttt{right} is available if $\texttt{next}(x, y) \leq 4$ and \texttt{left} if $\texttt{prev}(x, y) \geq 1$, where $\texttt{next}$ and $\texttt{prev}$, defined below, give the cell reached, jump included.
+            \item[Transition model] For an available action $a \in \texttt{actions}(s)$,
             \begin{equation*}
-                \text{result}(s = (i, j, p), a) = \begin{cases}
-                    (\text{next}(i, j), j, B) & \text{if } p = A \text{ and } a = \text{right} \\
-                    (\text{prev}(i, j), j, B) & \text{if } p = A \text{ and } a = \text{left} \\
-                    (i, \text{next}(j, i), A) & \text{if } p = B \text{ and } a = \text{right} \\
-                    (i, \text{prev}(j, i), A) & \text{if } p = B \text{ and } a = \text{left}
+                \texttt{result}(s = (i, j, p), a) = \begin{cases}
+                    (\texttt{next}(i, j), j, B) & \text{if } p = A \text{ and } a = \texttt{right} \\
+                    (\texttt{prev}(i, j), j, B) & \text{if } p = A \text{ and } a = \texttt{left} \\
+                    (i, \texttt{next}(j, i), A) & \text{if } p = B \text{ and } a = \texttt{right} \\
+                    (i, \texttt{prev}(j, i), A) & \text{if } p = B \text{ and } a = \texttt{left}
                 \end{cases}
             \end{equation*}
             where
             \begin{align*}
-                \text{next}(x, y) & = \begin{cases}
+                \texttt{next}(x, y) & = \begin{cases}
                     y + 1 & \text{if } x + 1 = y \\
                     x + 1 & \text{otherwise}
                 \end{cases} \\
-                \text{prev}(x, y) & = \begin{cases}
+                \texttt{prev}(x, y) & = \begin{cases}
                     y - 1 & \text{if } x - 1 = y \\
                     x - 1 & \text{otherwise}
                 \end{cases} .
             \end{align*}
-            \item[Terminal test] $\text{terminal-test}(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
+            \item[Terminal test] $\texttt{terminal-test}(s = (i, j, p))$ is true if $i = 4$ or $j = 1$, false otherwise.
             \item[Utility function]
             \begin{equation*}
-                \text{utility}(s = (i, j, p), A) = \begin{cases}
+                \texttt{utility}(s = (i, j, p), A) = \begin{cases}
                     +1 & \text{if } i = 4 \\
                     -1 & \text{if } j = 1
                 \end{cases} .

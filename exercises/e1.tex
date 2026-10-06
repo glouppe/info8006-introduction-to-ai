@@ -109,7 +109,7 @@ For a given grid
 
         \textbf{Actions}: $a \in \{\mathit{LEFT}, \mathit{UP}, \mathit{RIGHT}, \mathit{DOWN}\}$
 
-        \textbf{Transition model}: $\text{result}(s, a) = (i', j', w_G', L')$, with
+        \textbf{Transition model}: $\texttt{result}(s, a) = (i', j', w_G', L')$, with
         \[
             (i', j') = \begin{cases*}
                 (i + 1, j)\ & \text{if $a = \mathit{RIGHT}$ and $i < W$} \\
@@ -483,7 +483,7 @@ As an example, in the car park above, if the car is initially stationary, it mig
         $N \times M \times 4 \times (V + 1)$
     \end{solution}
 
-    \part What is the maximum branching factor of this problem? Assume that illegal actions are simply not in $\text{actions}(s)$.
+    \part What is the maximum branching factor of this problem? Assume that illegal actions are simply not in $\texttt{actions}(s)$.
 
     \begin{solution}
         The maximum branching factor is 3, and this happens when the car is stationary. While stationary, it can take the following 3 actions: \texttt{faster}, \texttt{left}, \texttt{right}.
@@ -682,7 +682,7 @@ Suppose that Pacman has no friends ($P=1$).
     \begin{enumerate}[label=$\bigcirc$]
         \item $h(n) = 0 \ \forall n$ can speed up \Astar{} compared to UCS.
         \item If a heuristic is admissible, it is guaranteed to be consistent.
-        \item The average step cost $h(n) = \frac{1}{|\text{actions}(s)|} \sum_a c(s, a, \text{result}(s, a))$, with $s = s(n)$, is admissible.
+        \item The average step cost $h(n) = \frac{1}{|\texttt{actions}(s)|} \sum_a c(s, a, \texttt{result}(s, a))$, with $s = s(n)$, is admissible.
         \item \correct{The true remaining cost dominates all admissible heuristics.}
     \end{enumerate}
 
