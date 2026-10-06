@@ -33,9 +33,11 @@ class: middle
 
 class: middle
 
-The explicit representation of the joint probability distribution grows exponentially with the number of variables.
+An agent does not observe the state $s$ of its environment, only percepts $e$ that depend on it. Its model of the environment is the joint distribution
+$$P(s, e) = P(s) P(e \mid s),$$
+a prior over the states and a sensor model. Bayes' rule turns it into the belief ${P(s \mid e)}$.
 
-.bold[Independence] and .bold[conditional independence] assumptions reduce the number of probabilities that need to be specified. They can be represented explicitly in the form of a .bold[Bayesian network].
+The state and the percepts are assignments of many random variables, and the table of their joint distribution grows exponentially with their number. .bold[Independence] and .bold[conditional independence] assumptions reduce the number of probabilities to specify. A .bold[Bayesian network] represents them explicitly.
 
 ---
 
@@ -46,7 +48,7 @@ The explicit representation of the joint probability distribution grows exponent
 
 A Bayesian network is a .bold[directed acyclic graph] where
 - each .bold[node] corresponds to a random variable;
-    - observed or unobserved
+    - observed, in the percepts $e$, or unobserved, in the state $s$
     - discrete or continuous
 - each .bold[edge] is directed and indicates a direct probabilistic dependency between two variables;
 - each node $X_i$ is annotated with a .bold[conditional probability distribution] $$\mathbf{P}(X_i \mid \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
@@ -67,7 +69,8 @@ class: middle
 
 .italic[Example 1:]
 
-- Variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$, $\text{JohnCalls}$, $\text{MaryCalls}$.
+- State variables: $\text{Burglar}$, $\text{Earthquake}$, $\text{Alarm}$.
+- Percepts: $\text{JohnCalls}$, $\text{MaryCalls}$.
 - The network topology can be defined from domain knowledge:
     - A burglar can set the alarm off
     - An earthquake can set the alarm off
