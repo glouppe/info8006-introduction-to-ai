@@ -3,7 +3,6 @@
 \usepackage[english]{babel}
 \usepackage{exercises}
 
-\newcommand{\var}{\text{$\sigma^2$}}
 
 \title{\bfseries INFO8006 Introduction to Artificial Intelligence}
 \author{Exercise session 4: Probabilistic reasoning}
@@ -39,7 +38,7 @@
     \topic{Inference}
     For a \term{query} $Q$, \term{evidence} $\mathbf{E} = \mathbf{e}$ and \term{hidden} variables $\mathbf{H}$,
     \[
-        \mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum_q \sum_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}),
+        \mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum_q \sum_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}).
     \]
     \begin{itemize}
         \item \term{Enumeration} evaluates the sums depth-first: space $O(n)$, time $O(d^n)$ for $n$ variables of $d$ values.
@@ -91,9 +90,9 @@ A monitoring program supervises the core of a nuclear power station. An alarm so
     \begin{solution}
         The paths from $T$ to $F_A$ are ($T, F_G, G, A, F_A$) and ($T, G, A, F_A$).
 
-        Knowing $F_G$, the triple ($G, A, F_A$) is inactive (v-structure, $A$ unobserved). Since it is present in both paths, there is no active path, so $T \perp F_A \mid F_G$ is true.
+        Given $F_G$, the triple ($G, A, F_A$) is inactive (v-structure, $A$ unobserved and without descendants). It lies on both paths, so $T \perp F_A \mid F_G$.
 
-        For the second relation, the triple ($G, A, F_A$) becomes active as we observe $A$. The only way we can ensure conditional independence is by ensuring that at least one remaining triple is inactive in each path. For the first path, we have ($T, F_G, G$) which is inactive (cascade) which makes the path inactive. However, for the second path, ($T, G, A$) is active (cascade) which makes the path active. We have at least one active path from $T$ to $F_A$ which prevents us from concluding the conditional independence in this case.
+        Given $F_G$ and $A$, the triple ($G, A, F_A$) becomes active. The first path is still blocked by ($T, F_G, G$) (cascade, $F_G$ observed), but on the second path ($T, G, A$) (cascade, $G$ unobserved) and ($G, A, F_A$) are both active. We cannot conclude $T \perp F_A \mid F_G, A$.
     \end{solution}
 
     \part Suppose there are just two possible actual and measured temperatures: low ($l$) and high ($h$). The probability that the gauge gives the correct temperature is $x$ when it is working, but $y$ when it is faulty. Give the conditional probability table associated with $G$.
@@ -146,7 +145,7 @@ A monitoring program supervises the core of a nuclear power station. An alarm so
 
 \titledquestion{Energy of an inference server}
 
-A scheduling program manages a data center in which a GPU server answers the requests sent to a language model. To plan the power supply, the scheduler models the energy the server consumes as a function of its load, with the following network
+A scheduling program manages a data center in which a GPU server answers the requests sent to a language model. To plan the power supply, the scheduler models the energy the server consumes as a function of its load, with the following network.
 
 \begin{center}
     \begin{tikzpicture}[bn diagram]
@@ -156,16 +155,16 @@ A scheduling program manages a data center in which a GPU server answers the req
     \end{tikzpicture}
 \end{center}
 
-where $S$ is a random variable denoting the number of requests the server receives in an hour, and $H$ a random variable denoting the energy, in kilowatt-hours, that it consumes during that hour. The scheduler chooses the following relations for each variable
+where $S$ is a random variable denoting the number of requests the server receives in an hour, and $H$ a random variable denoting the energy, in kilowatt-hours, that it consumes during that hour. The scheduler chooses the following relations for each variable:
 \begin{equation}
     \label{P_S}
-    P(S = s) = \texttt{Poisson}(S = s; \lambda) = \dfrac{\lambda^s e^{-\lambda}}{s!}
+    P(S = s) = \texttt{Poisson}(s \mid \lambda) = \dfrac{\lambda^s e^{-\lambda}}{s!}
 \end{equation}
 \begin{equation}
     \label{P_H_g_S}
-    H = \omega S + H_0 + \mathcal{N}(0, \var)
+    H = \omega S + H_0 + \mathcal{N}(0, \sigma^2)
 \end{equation}
-where $H_0$ is the energy the server consumes when idle, which is known, and $\omega$ is the energy consumed per request. The term $\mathcal{N}(0, \var)$ is a Gaussian noise of mean 0 and variance $\var$, where the Gaussian density of mean $\mu$ and variance $\sigma^2$ is
+where $H_0$ is the energy the server consumes when idle, which is known, and $\omega$ is the energy consumed per request. The term $\mathcal{N}(0, \sigma^2)$ is a Gaussian noise of mean 0 and variance $\sigma^2$, where the Gaussian density of mean $\mu$ and variance $\sigma^2$ is
 \[
     \mathcal{N}(x \mid \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2 \sigma^2}\right).
 \]
@@ -176,23 +175,23 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
     \begin{solution}
         Given the topology of the network, we have to identify $P(S = s)$ and $P(H = h \mid S = s)$. The former is given by~(\ref{P_S}) whereas the latter can be deduced from~(\ref{P_H_g_S}). We have
         \begin{equation*}
-            P(S = s) = \texttt{Poisson}(S = s; \lambda)
+            P(S = s) = \texttt{Poisson}(s \mid \lambda)
         \end{equation*}
         and
         \begin{equation*}
-            p(h \mid s) = \mathcal{N}(h \mid \omega s + H_0, \var).
+            p(h \mid s) = \mathcal{N}(h \mid \omega s + H_0, \sigma^2).
         \end{equation*}
 
-        The parameters of those distributions are $\theta = [\lambda, \omega, \sigma]$.
+        The parameters of those distributions are $\theta = (\lambda, \omega, \sigma)$.
 
         The likelihood of a pair $(s_i, h_i)$ can be derived from the network. We have
         \begin{align*}
             p((s_i, h_i) \mid \theta) & = P(s_i) \, p(h_i \mid s_i) \\
-            & = \dfrac{\lambda^{s_i} e^{-\lambda}}{s_i!} \dfrac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(h_i - \omega s_i - H_0)^2}{2\var}}
+            & = \dfrac{\lambda^{s_i} e^{-\lambda}}{s_i!} \dfrac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(h_i - \omega s_i - H_0)^2}{2\sigma^2}}
         \end{align*}
         from which we derive the log-likelihood
         \begin{equation}
-            L((s_i, h_i); \theta) = s_i \log{\lambda} - \lambda - \log{s_i!} - \log{\sqrt{2\pi}\sigma} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}.
+            L((s_i, h_i); \theta) = s_i \log{\lambda} - \lambda - \log{s_i!} - \log{\sqrt{2\pi}\sigma} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\sigma^2}.
         \end{equation}
     \end{solution}
 
@@ -203,12 +202,12 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
         \[
             p(\mathbf{d} \mid \theta) = \prod_{i=1}^N p((s_i, h_i) \mid \theta)
         \]
-        Hence, deriving the log-likelihood
+        and the log-likelihood is
         \begin{align*}
             L(\mathbf{d}; \theta) & = \sum_i L((s_i, h_i); \theta) \\
-            & = -N(\lambda + \log{\sqrt{2\pi}\sigma}) + \sum_i \bigg(s_i \log{\lambda} - \log{s_i!} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}\bigg)
+            & = -N(\lambda + \log{\sqrt{2\pi}\sigma}) + \sum_i \bigg(s_i \log{\lambda} - \log{s_i!} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\sigma^2}\bigg)
         \end{align*}
-        The maximum likelihood parameters can be found by cancelling the derivative of the log-likelihood w.r.t. each parameter.
+        The maximum likelihood parameters can be found by setting to zero the derivative of the log-likelihood w.r.t. each parameter.
 
         For $\lambda$ we have
         \begin{align*}
@@ -219,7 +218,7 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
 
         For $\omega$, whose estimate does not depend on $\sigma$, we have
         \begin{align*}
-            \dfrac{\partial L}{\partial \omega} & = \sum_i \dfrac{s_i (h_i - \omega s_i - H_0)}{\var} \\
+            \dfrac{\partial L}{\partial \omega} & = \sum_i \dfrac{s_i (h_i - \omega s_i - H_0)}{\sigma^2} \\
             & \propto \bigg(\sum_i s_i (h_i - H_0)\bigg) - \omega \sum_i s_i^2 \\
             & = 0
         \end{align*}
@@ -227,11 +226,11 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
 
         For $\sigma$ we have
         \begin{align*}
-            \dfrac{\partial L}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg) \\
-            & \propto N - \dfrac{1}{\var} \sum_i (h_i - \omega s_i - H_0)^2 \\
+            \dfrac{\partial L}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\sigma^2}\bigg) \\
+            & \propto N - \dfrac{1}{\sigma^2} \sum_i (h_i - \omega s_i - H_0)^2 \\
             & = 0
         \end{align*}
-        which gives, with $\omega = \omega_{\text{MLE}}$, $\boxed{\var_{\text{MLE}} = \dfrac{1}{N} \sum_i (h_i - \omega_{\text{MLE}} s_i - H_0)^2}$.
+        which gives, with $\omega = \omega_{\text{MLE}}$, $\boxed{\sigma^2_{\text{MLE}} = \dfrac{1}{N} \sum_i (h_i - \omega_{\text{MLE}} s_i - H_0)^2}$.
     \end{solution}
 
     \part The scheduler has just started to collect observations, and maximum likelihood can overfit when they are few. It therefore treats the parameter $\lambda$, about which it has no strong knowledge, as uncertain. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $p(\lambda \mid \mathbf{s})$, with $\mathbf{s} = \{s_i\}_{i=1}^N$?
@@ -263,7 +262,11 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
         \[
             \lambda_{\text{MAP}} = \underset{\lambda}{\arg \max}\, p(\lambda \mid \mathbf{s}): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
         \]
-        The mode of the posterior is the MAP estimate $\lambda_{\text{MAP}}$. When $N = 0$, the prior and the posterior are identical, as expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (a number of requests), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the MAP estimate converge to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
+        The mode of the posterior is the MAP estimate $\lambda_{\text{MAP}}$. When $N = 0$, the prior and the posterior are identical, as expected. When $N \to \infty$, $\sum_i s_i \approx N \lambda$ grows linearly with $N$, so $\sum_i s_i \gg \alpha$ and $N \gg \beta$: the mean and the MAP estimate converge to $\lambda_{\text{MLE}} = \frac{1}{N} \sum_i s_i$, and the variance, about $\lambda_{\text{MLE}} / N$, goes to 0, so that the posterior concentrates on $\lambda_{\text{MLE}}$. The posterior mean
+        \[
+            \frac{\alpha + \sum_i s_i}{\beta + N} = \frac{\beta}{\beta + N} \frac{\alpha}{\beta} + \frac{N}{\beta + N} \lambda_{\text{MLE}}
+        \]
+        moves from the prior mean to the MLE as data accumulate.
     \end{solution}
 \end{parts}
 
@@ -288,7 +291,7 @@ Consider the following Bayesian network, which describes some features of a car'
 \end{center}
 
 \begin{parts}
-    \part Extend the network with the Boolean variables IcyWeather and StarterMotor.
+    \part Extend the network with the Boolean variables $\mathit{IcyWeather}$ and $\mathit{StarterMotor}$.
 
     \begin{solution}
         IcyWeather is not caused by any of the car-related variables, so needs no parents. It directly affects the battery and the starter motor. StarterMotor is an additional precondition for Starts.
@@ -351,7 +354,7 @@ Evolutionary model merging builds a new language model $M$ from two parent model
 Furthermore, $M$ copies the component from either parent with equal probability, and a random perturbation flips it with a small nonzero probability $m$.
 
 \begin{parts}
-    \part Which of the following networks claim that $\mathbf{P}(G_M \mid G_A, G_B) = \mathbf{P}(G_M)$? Shaded variables are observed.
+    \part Which of the following networks claim that $\mathbf{P}(G_M \mid G_A, G_B) = \mathbf{P}(G_M)$?
 
     \begin{center}
         \begin{tikzpicture}[bn diagram]
@@ -397,13 +400,13 @@ Furthermore, $M$ copies the component from either parent with equal probability,
     \end{center}
 
     \begin{solution}
-        The third one, as the node $G_M$ does not have any parents.
+        The third one: $G_M$ has no parents, so by the local Markov property it is independent of its non-descendants $G_A$ and $G_B$.
     \end{solution}
 
     \part Which of the networks make independence claims that are consistent with the hypothesis about the default language?
 
     \begin{solution}
-        The first and second ones. The second one is also valid as it makes \emph{fewer} assumptions about the dependencies between the variables, \ie{} it is more general than the first one.
+        The first and second ones. The second one is also valid as it makes \emph{fewer} assumptions about the dependencies between the variables, \ie{} it is more general than the first one. The third one makes $G_M$ independent of $G_A$ and $G_B$, which contradicts the copying of the component from a parent.
     \end{solution}
 
     \part Write down the CPT for the $G_M$ node in the first network, in terms of $s$ and $m$.
@@ -449,13 +452,13 @@ A self-driving car calibrates its new lidar against a reference target before dr
 
 The calibration program of the car records a calibration set $\mathcal{Y}_c$ of $C$ readings, and wants to predict the next reading $y$ of the lidar. We study how much $\mathcal{Y}_c$ reduces the uncertainty about this reading. Before the calibration, the reading is predicted by the \emph{prior predictive} distribution $p(y) = \int p(y \mid \mu_y) p(\mu_y) \, d\mu_y$; after it, by the \emph{posterior predictive} distribution $p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) \, d\mu_y$.
 
-You may use the following identities. If $p(x) = \N(x \mid m, P)$ and $p(z \mid x) = \N(z \mid h x + u, R)$, then $x$ and $z$ are jointly Gaussian,
+You may use the following identities. If $p(x) = \N(x \mid m, S)$ and $p(z \mid x) = \N(z \mid h x + u, R)$, then $x$ and $z$ are jointly Gaussian,
 \[
-    p(x, z) = \N\left(\mat{x \\ z} \,\middle|\, \mat{m \\ h m + u}, \mat{P & h P \\ h P & h^2 P + R}\right).
+    p(x, z) = \N\left(\mat{x \\ z} \,\middle|\, \mat{m \\ h m + u}, \mat{S & h S \\ h S & h^2 S + R}\right).
 \]
-If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B$, and covariance $C$, then
+If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B$, and covariance $K$, then
 \[
-    p(z) = \N(z \mid b, B), \qquad p(x \mid z) = \N\left(x \,\middle|\, a + \frac{C}{B} (z - b), A - \frac{C^2}{B}\right).
+    p(z) = \N(z \mid b, B), \qquad p(x \mid z) = \N\left(x \,\middle|\, a + \frac{K}{B} (z - b), A - \frac{K^2}{B}\right).
 \]
 
 \begin{parts}
@@ -474,11 +477,11 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
         \[
             p(y) = \int p(y \mid \mu_y) p(\mu_y) d\mu_y.
         \]
-        With the Gaussian identities, we identify the parameters as follows
+        We identify the parameters of the first identity as
         \begin{align*}
             x & = \mu_y \\
             m & = \mu_l \\
-            P & = \sigma_l^2 \\
+            S & = \sigma_l^2 \\
             z & = y \\
             h & = 1 \\
             u & = 0 \\
@@ -486,50 +489,16 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
         \end{align*}
         which corresponds to the joint
         \[
-            p(\mu_y, y) = \N
-            \begin{pmatrix}
-                \begin{pmatrix}
-                    \mu_l \\
-                    \mu_l \\
-                \end{pmatrix},
-                \begin{pmatrix}
-                    \sigma_l^2 & \sigma_l^2 \\
-                    \sigma_l^2 & \sigma_l^2 + \sigma^2 \\
-                \end{pmatrix}
-            \end{pmatrix}
+            p(\mu_y, y) = \N\left(\mat{\mu_y \\ y} \,\middle|\, \mat{\mu_l \\ \mu_l}, \mat{\sigma_l^2 & \sigma_l^2 \\ \sigma_l^2 & \sigma_l^2 + \sigma^2}\right),
         \]
-        from which we extract $p(y) = \N(y \mid \mu_l, \sigma^2 + \sigma_l^2)$.
+        from which the second identity gives $p(y) = \N(y \mid \mu_l, \sigma^2 + \sigma_l^2)$.
 
         \textbf{Posterior predictive}
         \[
             p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) d\mu_y.
         \]
 
-        We first have to identify the posterior $p(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $p(\mathcal{Y}_c \mid \mu_y)$ and $p(\mu_y)$, we identify the parameters as follows
-        \begin{align*}
-            x & = \mu_y \\
-            m & = \mu_l \\
-            P & = \sigma_l^2 \\
-            z & = y_o \\
-            h & = 1 \\
-            u & = 0 \\
-            R & = \sigma^2
-        \end{align*}
-        which corresponds to the joint
-        \[
-            p(\mu_y, y_o) = \N
-            \begin{pmatrix}
-                \begin{pmatrix}
-                    \mu_l \\
-                    \mu_l \\
-                \end{pmatrix},
-                \begin{pmatrix}
-                    \sigma_l^2 & \sigma_l^2 \\
-                    \sigma_l^2 & \sigma_l^2 + \sigma^2 \\
-                \end{pmatrix}
-            \end{pmatrix}
-        \]
-        from which we extract
+        We first need the posterior $p(\mu_y \mid \mathcal{Y}_c)$. The joint of $(\mu_y, y_o)$ is the same as above, with $z = y_o$; the second identity, with $a = b = \mu_l$, $A = \sigma_l^2$, $B = \sigma_l^2 + \sigma^2$ and $K = \sigma_l^2$, gives
         \begin{align*}
             p(\mu_y \mid y_o) & = \N(\mu_y \mid \mu_{\text{post}}, \sigma_{\text{post}}^2) \\
             & = \N\bigg(\mu_y \,\bigg|\, \mu_l + \dfrac{\sigma_l^2}{\sigma^2 + \sigma_l^2} (y_o - \mu_l), \sigma_l^2 - \dfrac{\sigma_l^4}{\sigma^2 + \sigma_l^2}\bigg).
@@ -562,9 +531,9 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
         \begin{equation*}
             \sigma_{\text{post}}^2 = \dfrac{\sigma^2}{\sigma^2 + \sigma_l^2} \sigma_l^2 \leq \sigma_l^2,
             \qquad \text{hence} \qquad
-            \sigma^2 + \sigma_{\text{post}}^2 \leq \sigma^2 + \sigma_l^2 :
+            \sigma^2 + \sigma_{\text{post}}^2 \leq \sigma^2 + \sigma_l^2 .
         \end{equation*}
-        the posterior predictive has a smaller or equal variance than the prior predictive. Incorporating the calibration set reduces the uncertainty about the next reading.
+        The posterior predictive has a smaller or equal variance than the prior predictive. Incorporating the calibration set reduces the uncertainty about the next reading.
 
         If we computed the variance for a calibration set of $C$ observations, we would have found a posterior variance
         \[
@@ -576,7 +545,7 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
 
 \titledquestion{Independence and variable elimination}
 
-Considering the Bayesian network below, which of the following statements are enforced by the network structure?
+Which of the following statements does the structure of the network below guarantee?
 
 \begin{center}
     \begin{tikzpicture}[bn diagram]
@@ -622,66 +591,54 @@ Considering the Bayesian network below, which of the following statements are en
     \part $\mathbf{P}(F \mid A, D, E) = \mathbf{P}(F \mid A, D)$
 
     \begin{solution}
-        This is true iff $F \perp E \mid A, D$. This time, the triples $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive (common parent, $A$ observed). In $(F, B, D, C, E)$, $(F, B, D)$ is active. Indeed, observing an extremity of a triple does not change whether it is active: only the center variable matters, and, for a v-structure, its descendants. Then we have $(B, D, C)$ which is active (v-structure, $D$ observed) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
+        This is true iff $F \perp E \mid A, D$. This time, the triples $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive (common parent, $A$ observed). In $(F, B, D, C, E)$, $(F, B, D)$ is active (cascade, $B$ unobserved). Indeed, observing an extremity of a triple does not change whether it is active: only the center variable matters, and, for a v-structure, its descendants. Then we have $(B, D, C)$ which is active (v-structure, $D$ observed) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
     \end{solution}
 
     \part $\mathbf{P}(B, E) = \sum_{a, c, d, f} P(a) \mathbf{P}(B \mid a) P(c \mid a) \mathbf{P}(d \mid B, c) \mathbf{P}(E \mid c) \mathbf{P}(f \mid a, B)$
 
     \begin{solution}
-        We notice that
+        The right-hand side is $\sum_{a, c, d, f} \mathbf{P}(a, B, c, d, E, f)$, with the joint distribution factored over the network as $\prod_i \mathbf{P}(X_i \mid \text{parents}(X_i))$. The statement always holds.
+    \end{solution}
+
+    \part Use inference by variable elimination to compute $\mathbf{P}(E \mid A = 1, B = 1)$.
+
+    \begin{solution}
+        The hidden variables are $C$, $D$ and $F$. We have
+        \begin{align*}
+            \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d, f} \mathbf{P}(A = 1, B = 1, c, d, E, f) \\
+            & = \frac{1}{Z} \sum_{c, d, f} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) \\
+            & \qquad P(d \mid B = 1, c) \mathbf{P}(E \mid c) P(f \mid A = 1, B = 1) \\
+            & = \frac{1}{Z} P(A = 1) P(B = 1 \mid A = 1) \sum_f P(f \mid A = 1, B = 1) \\
+            & \qquad \sum_{c} P(c \mid A = 1) \mathbf{P}(E \mid c) \sum_d P(d \mid B = 1, c) .
+        \end{align*}
+        We define the initial factors as
+        \begin{align*}
+            f_1 & = P(A = 1) \\
+            f_2 & = P(B = 1 \mid A = 1) \\
+            f_3(C) & = \mathbf{P}(C \mid A = 1) \\
+            f_4(C, E) & = \mathbf{P}(E \mid C) \\
+            f_5(C, D) & = \mathbf{P}(D \mid B = 1, C) \\
+            f_6(F) & = \mathbf{P}(F \mid A = 1, B = 1)
+        \end{align*}
+        and the composite factors as
+        \begin{align*}
+            f_7 & = \sum_f f_6(f) = 1 \\
+            f_8(C) & = \sum_d f_5(C, d) = 1 \\
+            f_9(C, E) & = f_3(C) \times f_4(C, E) \times f_8(C) \\
+            f_{10}(E) & = \sum_c f_9(c, E) \\
+            f_{11}(E) & = f_1 \times f_2 \times f_7 \times f_{10}(E) .
+        \end{align*}
+        Finally,
         \begin{equation*}
-            \mathbf{P}(A, B, C, D, E, F) = \mathbf{P}(A) \mathbf{P}(B \mid A) \mathbf{P}(C \mid A) \mathbf{P}(D \mid B, C) \mathbf{P}(E \mid C) \mathbf{P}(F \mid A, B)
+            \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_{11}(E) = \frac{f_{11}(E)}{\sum_e f_{11}(e)}.
         \end{equation*}
-        corresponds exactly to
+        Eliminating $F$ and $D$ gives factors equal to 1: a hidden variable that is not an ancestor of the query or the evidence sums out to 1 and can be removed from the network (the relevance theorem of lecture 5). The constant $f_1 f_2$ cancels in the normalization. What remains is
         \begin{equation*}
-            \mathbf{P}(X_1, \dots, X_n) = \prod_{i = 1}^n \mathbf{P}(X_i \mid \text{parents}(X_i)) ,
+            \mathbf{P}(E \mid A = 1, B = 1) = \sum_c P(c \mid A = 1) \mathbf{P}(E \mid c) = \mathbf{P}(E \mid A = 1),
         \end{equation*}
-        for the considered network, which we know is guaranteed. We also know that
-        \begin{equation*}
-            \mathbf{P}(B, E) = \sum_{a, c, d, f} \mathbf{P}(a, B, c, d, E, f)
-        \end{equation*}
-        Hence, the initial statement is always true.
+        already normalized. The evidence $B = 1$ does not matter: $E \perp B \mid A$ by d-separation, since every path from $B$ to $E$ reaches $C$ through $(B, A, C)$, $(B, D, C)$ or $(B, F, A, C)$, all inactive given $A$, as in (b).
     \end{solution}
 \end{parts}
-
-For the same network, use inference by variable elimination to compute $\mathbf{P}(E \mid A = 1, B = 1)$.
-
-\begin{solution}
-    The hidden variables are $C$, $D$ and $F$. We have
-    \begin{align*}
-        \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d, f} \mathbf{P}(A = 1, B = 1, c, d, E, f) \\
-        & = \frac{1}{Z} \sum_{c, d, f} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) \\
-        & \qquad P(d \mid B = 1, c) \mathbf{P}(E \mid c) P(f \mid A = 1, B = 1) \\
-        & = \frac{1}{Z} P(A = 1) P(B = 1 \mid A = 1) \sum_f P(f \mid A = 1, B = 1) \\
-        & \qquad \sum_{c} P(c \mid A = 1) \mathbf{P}(E \mid c) \sum_d P(d \mid B = 1, c) .
-    \end{align*}
-    We define the initial factors as
-    \begin{align*}
-        f_1 & = P(A = 1) \\
-        f_2 & = P(B = 1 \mid A = 1) \\
-        f_3(C) & = P(C \mid A = 1) \\
-        f_4(E, C) & = P(E \mid C) \\
-        f_5(C, D) & = P(D \mid B = 1, C) \\
-        f_6(F) & = P(F \mid A = 1, B = 1)
-    \end{align*}
-    and the composite factors as
-    \begin{align*}
-        f_7 & = \sum_f f_6(f) = 1 \\
-        f_8(C) & = \sum_d f_5(C, d) = 1 \\
-        f_9(C, E) & = f_3(C) \times f_4(E, C) \times f_8(C) \\
-        f_{10}(E) & = \sum_c f_9(c, E) \\
-        f_{11}(E) & = f_1 \times f_2 \times f_7 \times f_{10}(E) .
-    \end{align*}
-    Finally,
-    \begin{equation*}
-        \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_{11}(E) = \frac{f_{11}(E)}{\sum_e f_{11}(e)}.
-    \end{equation*}
-    Eliminating $F$ and $D$ gives factors equal to 1: a hidden variable that is not an ancestor of the query or the evidence sums out to 1 and can be removed from the network. The constant $f_1 f_2$ cancels in the normalization. What remains is
-    \begin{equation*}
-        \mathbf{P}(E \mid A = 1, B = 1) = \sum_c P(c \mid A = 1) \mathbf{P}(E \mid c) = \mathbf{P}(E \mid A = 1),
-    \end{equation*}
-    already normalized. The evidence $B = 1$ does not matter: $E \perp B \mid A$ by d-separation, since every path from $B$ to $E$ reaches $C$ through $(B, A, C)$, $(B, D, C)$ or $(B, F, A, C)$, all inactive given $A$, as in (b).
-\end{solution}
 
 \titledquestion{Recognizing Pacman \source{CS188, Spring 2014}}
 
@@ -762,14 +719,14 @@ Because the pictures are black and white, and were taken from various angles, th
             \renewcommand{\arraystretch}{1.5}
             \begin{tabular}{ccccc}
                 \toprule
-                $S$ & $P(S)$ & $P(B = 1 \mid S)$ & $P(H = 1 \mid S)$ & $P(M = 1 \mid S)$ \\
+                $s$ & $P(S = s)$ & $P(B = 1 \mid S = s)$ & $P(H = 1 \mid S = s)$ & $P(M = 1 \mid S = s)$ \\
                 \midrule
                 0 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{2}{3}$ & $\frac{0}{3}$ \\
                 1 & $\frac{3}{6}$ & $\frac{2}{3}$ & $\frac{1}{3}$ & $\frac{2}{3}$ \\
                 \bottomrule
             \end{tabular}
         \end{center}
-        The estimate $P(M = 1 \mid S = 0) = 0$ is a problem: no ghost of the six pictures has a mustache, so any picture with a mustache gets the posterior probability 0 of being a ghost, whatever its other features. With so few pictures, a prior on the parameters helps. With a $\text{Beta}(2, 2)$ prior on each, the MAP estimates are $(k + 1) / (n + 2)$ for $k$ occurrences among $n$ pictures (\emph{add-one smoothing}), \eg{} $P(M = 1 \mid S = 0) = 1/5$.
+        The estimate $P(M = 1 \mid S = 0) = 0$ is a problem: none of the three ghosts has a mustache, so any picture with a mustache gets the posterior probability 0 of being a ghost, whatever its other features. With so few pictures, a prior on the parameters helps. With a prior $\text{Beta}(\theta \mid 2, 2) = \frac{1}{Z} \theta (1 - \theta)$ on each parameter $\theta$, the MAP estimates are $(k + 1) / (n + 2)$ for $k$ occurrences among $n$ pictures (\emph{add-one smoothing}), \eg{} $P(M = 1 \mid S = 0) = 1/5$.
     \end{solution}
 
     \part Pacman eventually shows up in front of a camera wearing a bowtie, but no hat or mustache. Will the program recognize him?
@@ -822,7 +779,7 @@ Because the pictures are black and white, and were taken from various angles, th
         \item the maximum likelihood estimate of the positive probability is $\dfrac{T}{F}$.
         \item the maximum likelihood estimate of the positive probability is $\dfrac{T + F}{T}$.
         \item \correct{the maximum likelihood estimate of the positive probability is $\dfrac{T}{T + F}$.}
-        \item None of the above.
+        \item none of the above.
     \end{enumerate}
 \end{quiz}
 
