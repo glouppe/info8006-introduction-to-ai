@@ -468,7 +468,7 @@ Considering the Bayesian network below, which of the following statements are en
     \part $\mathbf{P}(B, C) = \mathbf{P}(B) \mathbf{P}(C)$
 
     \begin{solution}
-        This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The three paths that link $B$ and $C$ are $(B, A, C)$, $(B, D, C)$ and $(B, F, A, C)$. $(B, A, C)$ is active because $A$ is unobserved (common parent). We cannot guarantee that $B \perp C$.
+        This is true iff (if and only if) $B \perp C$ ($B$ is independent of $C$). The three paths that link $B$ and $C$ are $(B, A, C)$, $(B, D, C)$ and $(B, F, A, C)$. $(B, A, C)$ is active because $A$ is unobserved (common parent). We cannot guarantee that $B \perp C$.
     \end{solution}
 
     \part $\mathbf{P}(B, C \mid A) = \mathbf{P}(B \mid A) \mathbf{P}(C \mid A)$
@@ -569,7 +569,7 @@ The ghosts of the maze are controlled by a program that watches the maze through
     \end{tikzpicture}
 \end{center}
 
-Because the pictures are black and white, and were taken from various angles, the program identifies Pacman from salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
+Because the pictures are black and white, and were taken from various angles, the program identifies Pacman from salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes values in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
 
 \begin{center}
     \begin{tabular}{cccc}
@@ -611,7 +611,7 @@ Because the pictures are black and white, and were taken from various angles, th
             s^* & = \arg\max_{s} P(s \mid b, h, m) \\
             & = \arg\max_{s} P(b, h, m \mid s) P(s) .
         \end{align*}
-        Under the naive Bayes assumptions of the program, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $\mathbf{P}(B, H, M \mid S) = \mathbf{P}(B \mid S) \mathbf{P}(H \mid S) \mathbf{P}(M \mid S)$. Then, the formula becomes
+        Under the naive Bayes assumptions of the program, $B$, $H$ and $M$ are conditionally independent given $S$, \ie{} $\mathbf{P}(B, H, M \mid S) = \mathbf{P}(B \mid S) \mathbf{P}(H \mid S) \mathbf{P}(M \mid S)$. Then, the formula becomes
         \begin{align*}
             s^* & = \arg\max_{s} P(b \mid s) P(h \mid s) P(m \mid s) P(s) .
         \end{align*}

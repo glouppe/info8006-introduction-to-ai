@@ -299,7 +299,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
             & = \arg \max_h \sum_i - \frac{1}{2} \log (2 \pi \sigma^2) - \frac{(w^T x_i - y_i)^2}{2 \sigma^2} \\
             & = \arg \min_h \log \sigma^2 + \frac{1}{\sigma^2} \frac{1}{N} \sum_i (w^T x_i - y_i)^2 ,
         \end{align*}
-        where $x_i = \mat{x_{i,1} & x_{i,2} & 1}^T$ and $w = \mat{w_1 & w_2 & b}^T$. In the last expression, we observe that the summation term is independent from $\sigma$. Therefore,
+        where $x_i = \mat{x_{i,1} & x_{i,2} & 1}^T$ and $w = \mat{w_1 & w_2 & b}^T$. In the last expression, we observe that the minimizer of the summation term is independent of $\sigma$. Therefore,
         \begin{align*}
             w_{\text{MLE}} & = \arg \min_w \sum_i (w^T x_i - y_i)^2 ,
         \end{align*}
