@@ -49,7 +49,7 @@
     The rules hold for all values, and between distributions. Naive Bayes assumes the effects $e_{1:n}$ conditionally independent given the cause $c$. The joint distribution answers every query: select the entries consistent with the evidence, sum out the other variables, normalize.
 
     \topic{Bayes' rule}
-    A model is given in the \term{causal} direction, a \term{prior} $\mathbf{P}(A)$ and a \term{likelihood} $\mathbf{P}(B \mid A)$. The \term{diagnostic} question is answered by the \term{posterior} $\mathbf{P}(A \mid b) = \frac{1}{Z} \mathbf{P}(b \mid A) \mathbf{P}(A)$, normalized by the probability of the \term{evidence}, ${Z = P(b) = \sum_a P(b \mid a) P(a)}$. For observations conditionally independent given $A$, each posterior is the prior of the next, $\mathbf{P}(A \mid b_{1:k+1}) = \frac{1}{Z} \mathbf{P}(b_{k+1} \mid A) \mathbf{P}(A \mid b_{1:k})$.
+    A model is given in the \term{causal} direction, a \term{prior} $\mathbf{P}(A)$ and a \term{likelihood} $\mathbf{P}(B \mid A)$. The \term{diagnostic} question is answered by the \term{posterior} $\mathbf{P}(A \mid b) = \frac{1}{Z} \mathbf{P}(b \mid A) \mathbf{P}(A)$, normalized by the probability of the \term{evidence}, ${Z = P(b) = \sum_a P(b \mid a) P(a)}$.
 \end{recap}
 
 \begin{exercises}[1, 2, 3, 5]
