@@ -128,6 +128,17 @@ A monitoring program supervises the bearings of a wind turbine. A worn bearing (
             & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
         \end{align*}
     \end{solution}
+
+    \part Are $V$ and $A$ independent? Are they conditionally independent given $F$?
+
+    \begin{solution}
+        With $P(a) = 0.108 + 0.016 + 0.072 + 0.144 = 0.34$, $P(v, a) = 0.108 + 0.016 = 0.124 \neq P(v) P(a) = 0.2 \times 0.34 = 0.068$: $V$ and $A$ are not independent. Given $F$, for boolean variables it suffices to check one entry per value of $F$, the others following by complement:
+        \begin{align*}
+            P(v, a \mid f) & = \frac{0.108}{0.2} = 0.54 = P(v \mid f) P(a \mid f) = 0.6 \times 0.9, \\
+            P(v, a \mid \neg f) & = \frac{0.016}{0.8} = 0.02 = P(v \mid \neg f) P(a \mid \neg f) = 0.1 \times 0.2,
+        \end{align*}
+        so $V \perp A \mid F$. The table is a naive Bayes model, with the fault as the cause and the vibration and the alarm as its effects: $\mathbf{P}(V, A, F) = \mathbf{P}(F) \mathbf{P}(V \mid F) \mathbf{P}(A \mid F)$ needs $1 + 2 + 2 = 5$ numbers instead of 7. Vibration and alarm are dependent only through their common cause.
+    \end{solution}
 \end{parts}
 
 \titledquestion{Fraud detection \aima{12}}
