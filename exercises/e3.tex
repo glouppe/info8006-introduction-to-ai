@@ -65,6 +65,7 @@ Let $A, B \subseteq \Omega$ be two \emph{events}. An agent holds the beliefs $P(
             0.4 = \max \cbk{P(A), P(B)} & \leq P(A \cup B) && \leq \min \cbk{1, P(A) + P(B)} = 0.7 \\
             0 = \max \cbk{0, P(A) + P(B) - 1} & \leq P(A \cap B) && \leq \min \cbk{P(A), P(B)} = 0.3 .
         \end{alignat*}
+        The lower bound on $P(A \cup B)$ and the upper bound on $P(A \cap B)$ follow from monotonicity; the other two from the union rule, with $P(A \cap B) \geq 0$ and $P(A \cup B) \leq 1$.
         The two beliefs are not independent choices: by the union rule, $P(A \cup B) + P(A \cap B) = 0.7$. The extremes are $B \subseteq A$, with $P(A \cup B) = 0.4$ and $P(A \cap B) = 0.3$, and disjoint events, with $0.7$ and $0$.
 
         \item If the agent believes that $P(A \mid B) = 0.5$, it should also believe that
@@ -157,7 +158,7 @@ A fraud detection program screens card payments. It is \qty{99}{\percent} accura
 
 \titledquestion{Conditional independence \aima{12}}
 
-For each of the following statements, about values $a$, $b$, $c$ of the random variables $A$, $B$, $C$, either prove it is valid or give a counterexample.
+For each of the following statements, about values $a$, $b$, $c$ of the random variables $A$, $B$, $C$, either prove it is valid or give a counterexample. Conditional probabilities are only taken given events of positive probability, as their definition requires.
 
 \begin{parts}
     \part If $P(a, b, c) > 0$ and $P(a \mid b, c) = P(b \mid a, c)$, then $P(a \mid c) = P(b \mid c)$.
