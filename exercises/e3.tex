@@ -12,35 +12,51 @@
 \maketitle
 
 \begin{recap}
-    \topic{Kolmogorov's axioms}
-    A \term{probability space} is a \term{sample space} $\Omega$, whose elements $\omega$ are the \term{sample points}, equipped with a probability function $P$ such that $0 \leq P(\omega) \leq 1$ and $\sum_{\omega \in \Omega} P(\omega) = 1$. An \term{event} is a set of sample points $A \subseteq \Omega$, of probability $P(A) = \sum_{\omega \in A} P(\omega)$. Hence $P(\Omega) = 1$, $P(A \cup B) = P(A) + P(B)$ for disjoint events, $P(\neg a) = 1 - P(a)$ and $P(a \lor b) = P(a) + P(b) - P(a \land b)$.
+    \topic{Definitions}
+    A probability is a degree of belief in a proposition.
+    \begin{center}
+        \begin{tabular}{ll}
+            \toprule
+            Sample space & $\Omega$, of possible worlds $\omega$ \\
+            Axioms & $0 \leq P(\omega) \leq 1$, \quad $\sum_{\omega \in \Omega} P(\omega) = 1$ \\
+            Event & $A \subseteq \Omega$, \quad $P(A) = \sum_{\omega \in A} P(\omega)$ \\
+            Random variable & $X : \Omega \to D_X$, with $X = x$ the event $\{\omega \in \Omega : X(\omega) = x\}$ \\
+            Distribution & $\mathbf{P}(X)$, the numbers $P(x) = P(X = x)$ for $x \in D_X$ \\
+            Joint distribution & $\mathbf{P}(X_1, \ldots, X_n)$, the numbers $P(x_1, \ldots, x_n)$ \\
+            Conditional probability & $P(a \mid b) = P(a, b) / P(b)$, for $P(b) > 0$ \\
+            Conditional distribution & $\mathbf{P}(X \mid Y)$, one $\mathbf{P}(X \mid y)$ for each $y \in D_Y$ \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    Random variables are written in upper case and their values in lower case; a boolean variable $A$ takes the values $a$ and $\neg a$. $P(x)$ is a number, $\mathbf{P}(X)$ a table.
 
-    \topic{Random variables}
-    A \term{random variable} is a function $X : \Omega \to D_X$, with $P(X = x) = \sum_{\{\omega \,:\, X(\omega) = x\}} P(\omega)$. A number is written $P(x)$, short for $P(X = x)$; a whole \term{distribution} is written $\mathbf{P}(X)$, \ie{} the table of the values $P(X = x)$ for all $x \in D_X$.
-
-    \topic{Conditional probability, sum and product rules}
-    For $P(b) > 0$, the \term{conditional probability} of $a$ given $b$ is $P(a \mid b) = P(a, b) / P(b)$, hence the \term{product rule} $P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$. Summing a joint distribution over the values of a variable marginalizes it out (\term{sum rule}), $P(x) = \sum_y P(x, y)$, and with the product rule it gives the \term{law of total probability}, $P(x) = \sum_y P(x \mid y) P(y)$. Selecting the entries consistent with the evidence $\mathbf{e}$, marginalizing the hidden variables out and normalizing gives the posterior over a query variable $Q$, $\mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \mathbf{P}(Q, \mathbf{e})$ with $Z = \sum_q P(q, \mathbf{e})$, the constant $1/Z$ being also written $\alpha$.
+    \topic{Rules}
+    \begin{center}
+        \begin{tabular}{ll}
+            \toprule
+            Complement & $P(\neg a) = 1 - P(a)$ \\
+            Union & $P(a \lor b) = P(a) + P(b) - P(a \land b)$ \\
+            Product rule & $P(a, b) = P(a \mid b) P(b) = P(b \mid a) P(a)$ \\
+            Sum rule, total probability & $P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y)$ \\
+            Chain rule & $P(x_{1:n}) = \prod_i P(x_i \mid x_{1:i-1})$ \\
+            Bayes' rule & $P(a \mid b) = P(b \mid a) P(a) / P(b)$ \\
+            Independence, $X \perp Y$ & $P(x, y) = P(x) P(y)$ \\
+            Conditional independence, $X \perp Y \mid Z$ & $P(x, y \mid z) = P(x \mid z) P(y \mid z)$ \\
+            Naive Bayes & $P(c, e_{1:n}) = P(c) \prod_i P(e_i \mid c)$ \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    The rules hold for all values, and between distributions. Naive Bayes assumes the effects $e_{1:n}$ conditionally independent given the cause $c$. The joint distribution answers every query: select the entries consistent with the evidence, sum out the other variables, normalize.
 
     \topic{Bayes' rule}
-    From the two factorizations above,
-    \[
-        P(a \mid b) = \frac{P(b \mid a) P(a)}{P(b)},
-    \]
-    where $P(a)$ is the prior belief on $a$, $P(b)$ the probability of the evidence $b$, $P(a \mid b)$ the posterior belief on $a$ given $b$, and $P(b \mid a)$ the likelihood.
-
-    \topic{Chain rule}
-    Any joint distribution is an incremental product of conditional distributions, $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i \mid x_1, \ldots, x_{i-1})$.
-
-    \topic{Independence}
-    $A \perp B$ iff $P(a, b) = P(a) P(b)$, and $A \perp B \mid C$ iff $P(a, b \mid c) = P(a \mid c) P(b \mid c)$, for all values of the variables. Conditional independence factors a joint distribution into smaller tables, which is what makes probabilistic models scale.
-
+    A model is given in the \term{causal} direction, a \term{prior} $\mathbf{P}(A)$ and a \term{likelihood} $\mathbf{P}(B \mid A)$. The \term{diagnostic} question is answered by the \term{posterior} $\mathbf{P}(A \mid b) = \frac{1}{Z} \mathbf{P}(b \mid A) \mathbf{P}(A)$, with ${Z = P(b) = \sum_a P(b \mid a) P(a)}$ the probability of the \term{evidence}. For observations conditionally independent given $A$, each posterior is the prior of the next, $\mathbf{P}(A \mid b_{1:k+1}) = \frac{1}{Z} \mathbf{P}(b_{k+1} \mid A) \mathbf{P}(A \mid b_{1:k})$.
 \end{recap}
 
 \begin{exercises}[1, 2, 3, 5]
 
 \titledquestion{Rational beliefs \aima{12}}
 
-Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An agent holds the beliefs $P(A) = 0.4$ and $P(B) = 0.3$. What ranges of probabilities would it be rational for the agent to hold for the events $A \cup B$ and $A \cap B$? What if the agent also believes that $P(A \mid B) = 0.5$?
+Let $A, B \subseteq \Omega$ be two \emph{events}. An agent holds the beliefs $P(A) = 0.4$ and $P(B) = 0.3$. What ranges of probabilities would it be rational for the agent to hold for the events $A \cup B$ and $A \cap B$? What if the agent also believes that $P(A \mid B) = 0.5$?
 
 \begin{solution}
     \begin{enumerate}
@@ -64,57 +80,51 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
 
 \titledquestion{Full joint distribution \aima{12}}
 
-A monitoring program supervises the bearings of a wind turbine. A worn bearing (\emph{fault}) tends to make the turbine vibrate (\emph{vibration}) and to trigger the alarm of a diagnostic probe (\emph{alarm}). The program holds the joint probability table below. Compute the following probabilities.
+A monitoring program supervises the bearings of a wind turbine. A worn bearing (\emph{fault}) tends to make the turbine vibrate (\emph{vibration}) and to trigger the alarm of a diagnostic probe (\emph{alarm}). The program holds the joint distribution $\mathbf{P}(V, A, F)$ below, over the boolean random variables $V$ (vibration), $A$ (alarm) and $F$ (fault). Compute the following probabilities.
 
 \begin{center}
     \begin{tabular}{lcccc}
         \toprule
-        & \multicolumn{2}{c}{vibration} & \multicolumn{2}{c}{no vibration} \\
+        & \multicolumn{2}{c}{$v$} & \multicolumn{2}{c}{$\neg v$} \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-        & alarm & no alarm & alarm & no alarm \\
+        & $a$ & $\neg a$ & $a$ & $\neg a$ \\
         \midrule
-        fault & 0.108 & 0.012 & 0.072 & 0.008 \\
-        no fault & 0.016 & 0.064 & 0.144 & 0.576 \\
+        $f$ & 0.108 & 0.012 & 0.072 & 0.008 \\
+        $\neg f$ & 0.016 & 0.064 & 0.144 & 0.576 \\
         \bottomrule
     \end{tabular}
 \end{center}
 
-\begin{solution}
-    In the following, we represent the events $\mathit{vibration}$, $\mathit{alarm}$ and $\mathit{fault}$ by the random variables $V, A, F: \Omega \to \cbk{0, 1}$, respectively. The table above is then the joint probability distribution $\mathbf{P}(V, A, F)$. When clear from context, we abbreviate $P(V = v, A = a, F = f)$ as $P(v, a, f)$.
-\end{solution}
-
 \begin{parts}
-    \part $P(\mathit{vibration})$
+    \part $P(v)$
 
     \begin{solution}
         \begin{equation*}
-            P(V = 1) = \sum_{a} \sum_{f} P(V = 1, a, f) = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
+            P(v) = \sum_{a'} \sum_{f'} P(v, a', f') = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
         \end{equation*}
     \end{solution}
 
-    \part $P(\mathit{fault})$
+    \part $P(f)$
 
     \begin{solution}
         \begin{equation*}
-            P(F = 1) = \sum_{v} \sum_{a} P(v, a, F = 1) = 0.108 + 0.012 + 0.072 + 0.008 = 0.2
+            P(f) = \sum_{v'} \sum_{a'} P(v', a', f) = 0.108 + 0.012 + 0.072 + 0.008 = 0.2
         \end{equation*}
     \end{solution}
 
-    \part $P(\mathit{vibration} \mid \mathit{fault})$
+    \part $P(v \mid f)$
 
     \begin{solution}
-        \begin{align*}
-            P(V = 1 \mid F = 1) = \frac{P(V = 1, F = 1)}{P(F = 1)} & = \frac{\sum_{a} P(V = 1, a, F = 1)}{P(F = 1)} \\
-            & = \frac{0.108 + 0.012}{0.2} = 0.6
-        \end{align*}
+        \begin{equation*}
+            P(v \mid f) = \frac{P(v, f)}{P(f)} = \frac{\sum_{a'} P(v, a', f)}{P(f)} = \frac{0.108 + 0.012}{0.2} = 0.6
+        \end{equation*}
     \end{solution}
 
-    \part $P(\mathit{fault} \mid \mathit{vibration} \cup \mathit{alarm})$
+    \part $P(f \mid v \lor a)$
 
     \begin{solution}
         \begin{align*}
-            P(F = 1 \mid V = 1 \cup A = 1) & = \frac{P(V = 1 \cup A = 1, F = 1)}{P(V = 1 \cup A = 1)} \\
-            & = \frac{P(F = 1) - P(V = 0, A = 0, F = 1)}{1 - P(V = 0, A = 0)} \\
+            P(f \mid v \lor a) & = \frac{P(f, v \lor a)}{P(v \lor a)} = \frac{P(f) - P(\neg v, \neg a, f)}{1 - P(\neg v, \neg a)} \\
             & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
         \end{align*}
     \end{solution}
@@ -191,7 +201,7 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
                 \centering
                 \begin{tabular}{ccc}
                     \toprule
-                    $Y$ & $P(Y)$ & $P(X_i = h \mid Y)$ \\
+                    $y$ & $P(y)$ & $P(X_i = h \mid y)$ \\
                     \midrule
                     $a$ & $\frac{1}{3}$ & $0.2$ \\
                     $b$ & $\frac{1}{3}$ & $0.6$ \\
@@ -205,20 +215,20 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
     \part Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tails once.
 
     \begin{solution}
-        In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y \mid X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. By Bayes' rule, we have
+        In order to find the most likely coin, we have to calculate the posterior $\mathbf{P}(Y \mid X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. By Bayes' rule, we have
         \begin{equation*}
-            P(Y \mid X_1 = h, X_2 = h, X_3 = t) = \alpha P(X_1 = h, X_2 = h, X_3 = t \mid Y) P(Y).
+            \mathbf{P}(Y \mid X_1 = h, X_2 = h, X_3 = t) = \frac{1}{Z} \mathbf{P}(X_1 = h, X_2 = h, X_3 = t \mid Y) \mathbf{P}(Y).
         \end{equation*}
-        But we know that $X_1$, $X_2$ and $X_3$ are independent with respect to $Y$, meaning that
+        But $X_1$, $X_2$ and $X_3$ are conditionally independent given $Y$, meaning that
         \begin{equation*}
-            P(X_1, X_2, X_3 \mid Y) = P(X_1 \mid Y) P(X_2 \mid Y) P(X_3 \mid Y).
+            \mathbf{P}(X_1, X_2, X_3 \mid Y) = \mathbf{P}(X_1 \mid Y) \mathbf{P}(X_2 \mid Y) \mathbf{P}(X_3 \mid Y).
         \end{equation*}
         Then, we have
         \begin{equation*}
-            P(Y \mid X_1 = h, X_2 = h, X_3 = t) = \alpha \times \frac{1}{3} \times \begin{cases}
-                0.2 \times 0.2 \times 0.8 = \num{0.032} & \text{if } Y = a \\
-                0.6 \times 0.6 \times 0.4 = \num{0.144} & \text{if } Y = b \\
-                0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } Y = c \\
+            P(y \mid X_1 = h, X_2 = h, X_3 = t) = \frac{1}{Z} \times \frac{1}{3} \times \begin{cases}
+                0.2 \times 0.2 \times 0.8 = \num{0.032} & \text{if } y = a \\
+                0.6 \times 0.6 \times 0.4 = \num{0.144} & \text{if } y = b \\
+                0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } y = c \\
             \end{cases}
         \end{equation*}
         meaning that $b$ is the most likely coin to have been drawn. Interestingly, we don't need to normalize the distribution as we only care about the maximum.
@@ -232,7 +242,7 @@ Evolutionary model merging builds a new language model $M$ from two parent model
 Furthermore, $M$ copies the component from either parent with equal probability, and a random perturbation flips it with a small nonzero probability $m$.
 
 \begin{parts}
-    \part Which of the following networks claim that $P(G_M \mid G_A, G_B) = P(G_M)$? Shaded variables are observed.
+    \part Which of the following networks claim that $\mathbf{P}(G_M \mid G_A, G_B) = \mathbf{P}(G_M)$? Shaded variables are observed.
 
     \begin{center}
         \begin{tikzpicture}[bn diagram]
@@ -293,7 +303,7 @@ Furthermore, $M$ copies the component from either parent with equal probability,
         \begin{center}
             \begin{tabular}{ccc}
                 \toprule
-                $G_A$ & $G_B$ & $P(G_M = f \mid G_A, G_B)$ \\
+                $g_A$ & $g_B$ & $P(G_M = f \mid g_A, g_B)$ \\
                 \midrule
                 $f$ & $f$ & $1 - m$ \\
                 $f$ & $e$ & $0.5$ \\
