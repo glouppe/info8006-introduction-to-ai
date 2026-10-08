@@ -48,72 +48,11 @@
     \[
         \theta^*_{\text{MLE}} = \arg \max_\theta P(\mathbf{d} \mid \theta).
     \]
-    \term{Bayesian parameter learning} treats $\theta$ as a random variable with a \term{prior} $\mathbf{P}(\theta)$, updated into the \term{posterior} $\mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta)$. A new observation $x$ is then predicted by the \term{posterior predictive} $p(x \mid \mathbf{d}) = \int p(x \mid \theta) p(\theta \mid \mathbf{d}) \, d\theta$, and by the \term{prior predictive} $p(x) = \int p(x \mid \theta) p(\theta) \, d\theta$ before any data. When the posterior is intractable, the \term{maximum a posteriori} (MAP) estimate replaces it by its mode,
+    \term{Bayesian parameter learning} treats $\theta$ as a random variable with a \term{prior} $\mathbf{P}(\theta)$, updated into the \term{posterior} $\mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta)$. When the posterior is intractable, the \term{maximum a posteriori} (MAP) estimate replaces it by its mode,
     \[
         \theta^*_{\text{MAP}} = \arg \max_\theta P(\theta \mid \mathbf{d}) = \arg \max_\theta P(\mathbf{d} \mid \theta) P(\theta).
     \]
 
-    \topic{Cheat sheet for Gaussian distributions}
-    The Gaussian density of mean $\mu$ and variance $\sigma^2$ is
-    \[
-        \mathcal{N}(x \mid \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2 \sigma^2}\right).
-    \]
-    If $\mathbf{x}$ and $\mathbf{y}$ have the joint Gaussian distribution
-    \[
-        p\begin{pmatrix}
-            \mathbf{x} \\
-            \mathbf{y}
-        \end{pmatrix}
-        = \mathcal{N}\left(
-        \begin{pmatrix}
-            \mathbf{x} \\
-            \mathbf{y}
-        \end{pmatrix}
-        \,\middle|\,
-        \begin{pmatrix}
-            \mathbf{a} \\
-            \mathbf{b}
-        \end{pmatrix},
-        \begin{pmatrix}
-            \mathbf{A} & \mathbf{C} \\
-            \mathbf{C}^T & \mathbf{B}
-        \end{pmatrix}
-        \right),
-    \]
-    then the marginal and conditional distributions of $\mathbf{x}$ and $\mathbf{y}$ are given by
-    \begin{align*}
-        p(\mathbf{x}) & = \mathcal{N}(\mathbf{x} \mid \mathbf{a}, \mathbf{A}) \\
-        p(\mathbf{y}) & = \mathcal{N}(\mathbf{y} \mid \mathbf{b}, \mathbf{B}) \\
-        p(\mathbf{x} \mid \mathbf{y}) & = \mathcal{N}(\mathbf{x} \mid \mathbf{a} + \mathbf{C} \mathbf{B}^{-1} (\mathbf{y} - \mathbf{b}), \mathbf{A} - \mathbf{C} \mathbf{B}^{-1} \mathbf{C}^T) \\
-        p(\mathbf{y} \mid \mathbf{x}) & = \mathcal{N}(\mathbf{y} \mid \mathbf{b} + \mathbf{C}^T \mathbf{A}^{-1} (\mathbf{x} - \mathbf{a}), \mathbf{B} - \mathbf{C}^T \mathbf{A}^{-1} \mathbf{C}).
-    \end{align*}
-    Conversely, if $\mathbf{x}$ and $\mathbf{y}$ have the Gaussian distributions
-    \begin{align*}
-        p(\mathbf{x}) & = \mathcal{N}(\mathbf{x} \mid \mathbf{m}, \mathbf{P}) \\
-        p(\mathbf{y} \mid \mathbf{x}) & = \mathcal{N}(\mathbf{y} \mid \mathbf{H} \mathbf{x} + \mathbf{u}, \mathbf{R}),
-    \end{align*}
-    then their joint distribution is Gaussian with
-    \[
-        p\begin{pmatrix}
-            \mathbf{x} \\
-            \mathbf{y}
-        \end{pmatrix}
-        = \mathcal{N}\left(
-        \begin{pmatrix}
-            \mathbf{x} \\
-            \mathbf{y}
-        \end{pmatrix}
-        \,\middle|\,
-        \begin{pmatrix}
-            \mathbf{m} \\
-            \mathbf{H} \mathbf{m} + \mathbf{u}
-        \end{pmatrix},
-        \begin{pmatrix}
-            \mathbf{P} & \mathbf{P} \mathbf{H}^T \\
-            \mathbf{H} \mathbf{P} & \mathbf{H} \mathbf{P} \mathbf{H}^T + \mathbf{R}
-        \end{pmatrix}
-        \right).
-    \]
 \end{recap}
 
 \begin{exercises}[1, 2]
@@ -221,7 +160,10 @@ where $S$ is a random variable denoting the number of requests the server receiv
     \label{P_H_g_S}
     H = \omega S + H_0 + \mathcal{N}(0, \var)
 \end{equation}
-where $H_0$ is the energy the server consumes when idle, which is known, and $\omega$ is the energy consumed per request.
+where $H_0$ is the energy the server consumes when idle, which is known, and $\omega$ is the energy consumed per request. The term $\mathcal{N}(0, \var)$ is a Gaussian noise of mean 0 and variance $\var$, where the Gaussian density of mean $\mu$ and variance $\sigma^2$ is
+\[
+    \mathcal{N}(x \mid \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2 \sigma^2}\right).
+\]
 
 \begin{parts}
     \part Identify the parameters of the Bayesian network and give the joint log-likelihood of one pair $(s_i, h_i)$ given the model.
@@ -496,128 +438,6 @@ Furthermore, $M$ copies the component from either parent with equal probability,
     \end{solution}
 \end{parts}
 
-\titledquestion{Gaussian parameter learning with known $\var$}
-
-You have in your possession a high-tech laser that emits light of intensity $\mu_l$ with great precision. You want to use it to test a new light-intensity measurement device. You assume that your measurements $y_i$ follow a Gaussian distribution $\N(\mu_y, \var)$ with $\mu_y \sim \N(\mu_l, \sigma_l^2)$ corresponding to the model of your laser given in the manual. You assume that $\var$ is fixed and that you can determine it.
-
-You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and you want to predict a new measurement $y$ of your device. You want to study how much $\mathcal{Y}_c$ reduces your uncertainty about this measurement.
-
-\begin{parts}
-    \part Compute the prior and posterior predictive distributions $P(y)$ and $P(y \mid \mathcal{Y}_c)$ if you have access to one observation, \ie{} $\mathcal{Y}_c = \{y_o\}$.
-
-    \begin{solution}
-        The following exercise uses the Gaussian model identities (see the cheat sheet of the recap).
-
-        We first identify the components we have:
-        \begin{itemize}
-            \item $p(y \mid \mu_y) = \N(y \mid \mu_y, \var)$
-            \item $p(\mu_y) = \N(\mu_y \mid \mu_l, \sigma_l^2)$
-        \end{itemize}
-
-        \textbf{Prior predictive}
-        \[
-            P(y) = \int P(y \mid \mu_y) P(\mu_y) d\mu_y.
-        \]
-        From Gaussian identities, you can identify different parameters as follows
-        \begin{align*}
-            \mathbf{x} & = \mu_y \\
-            \mathbf{m} & = \mu_l \\
-            \mathbf{P} & = \sigma_l^2 \\
-            \mathbf{y} & = y \\
-            \mathbf{H} & = 1 \\
-            \mathbf{u} & = 0 \\
-            \mathbf{R} & = \var
-        \end{align*}
-        which corresponds to the joint
-        \[
-            P(\mu_y, y) = \N
-            \begin{pmatrix}
-                \begin{pmatrix}
-                    \mu_l \\
-                    \mu_l \\
-                \end{pmatrix},
-                \begin{pmatrix}
-                    \sigma_l^2 & \sigma_l^2 \\
-                    \sigma_l^2 & \sigma_l^2 + \var \\
-                \end{pmatrix}
-            \end{pmatrix}
-        \]
-        from which we extract $p(y) = \N(y \mid \mu_l, \var + \sigma_l^2)$.
-
-        \textbf{Posterior predictive}
-        \[
-            P(y \mid \mathcal{Y}_c) = \int P(y \mid \mu_y) P(\mu_y \mid \mathcal{Y}_c) d\mu_y.
-        \]
-
-        We first have to identify the posterior $P(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $P(\mathcal{Y}_c \mid \mu_y)$ and $P(\mu_y)$ you can identify different parameters as follows
-        \begin{align*}
-            \mathbf{x} & = \mu_y \\
-            \mathbf{m} & = \mu_l \\
-            \mathbf{P} & = \sigma_l^2 \\
-            \mathbf{y} & = y_o \\
-            \mathbf{H} & = 1 \\
-            \mathbf{u} & = 0 \\
-            \mathbf{R} & = \var
-        \end{align*}
-        which corresponds to the joint
-        \[
-            P(\mu_y, y_o) = \N
-            \begin{pmatrix}
-                \begin{pmatrix}
-                    \mu_l \\
-                    \mu_l \\
-                \end{pmatrix},
-                \begin{pmatrix}
-                    \sigma_l^2 & \sigma_l^2 \\
-                    \sigma_l^2 & \sigma_l^2 + \var \\
-                \end{pmatrix}
-            \end{pmatrix}
-        \]
-        from which we extract
-        \begin{align*}
-            p(\mu_y \mid y_o) & = \N(\mu_y \mid \mu_{\text{post}}, \sigma_{\text{post}}^2) \\
-            & = \N\bigg(\mu_y \,\bigg|\, \mu_l + \dfrac{\sigma_l^2}{\var + \sigma_l^2} (y_o - \mu_l), \sigma_l^2 - \dfrac{\sigma_l^4}{\var + \sigma_l^2}\bigg).
-        \end{align*}
-        After simplification, we identify the posterior parameters as
-        \[
-            \mu_{\text{post}} = \dfrac{\var}{\var + \sigma_l^2} \mu_l + \dfrac{\sigma_l^2}{\var + \sigma_l^2} y_o
-        \]
-        and
-        \[
-            \sigma_{\text{post}}^2 = \dfrac{\var}{\sigma_l^2 + \var} \sigma_l^2.
-        \]
-        Following the same development as for the prior predictive, we have
-        \[
-            p(y \mid \mathcal{Y}_c) = \N(y \mid \mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
-        \]
-    \end{solution}
-
-    \part Looking at your predictive uncertainty, what is the benefit of incorporating $\mathcal{Y}_c$?
-
-    \begin{solution}
-        As a reminder, we found
-        \[
-            p(y) = \N(y \mid \mu_l, \var + \sigma_l^2).
-        \]
-        \[
-            p(y \mid \mathcal{Y}_c) = \N(y \mid \mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
-        \]
-        Comparing the variances, since $\var / (\var + \sigma_l^2) \leq 1$,
-        \begin{equation*}
-            \sigma_{\text{post}}^2 = \dfrac{\var}{\var + \sigma_l^2} \sigma_l^2 \leq \sigma_l^2,
-            \qquad \text{hence} \qquad
-            \var + \sigma_{\text{post}}^2 \leq \var + \sigma_l^2 :
-        \end{equation*}
-        the posterior predictive has a smaller or equal variance than the prior predictive. Incorporating the calibration set reduces the uncertainty about the measurement.
-
-        If we computed the variance for a calibration set of $C$ observations, we would have found a posterior variance
-        \[
-            \sigma_{\text{post}}^2 = \dfrac{\var}{C\sigma_l^2 + \var} \sigma_l^2.
-        \]
-        Since $\var$ is fixed, including more observations reduces the posterior predictive variance further. In the limit case $C \to \infty$, the posterior predictive variance converges to $\var$ which corresponds to the uncertainty of the instrument (you can't reach a lower uncertainty, it is called the aleatoric uncertainty).
-    \end{solution}
-\end{parts}
-
 \titledquestion{Independence and variable elimination}
 
 Considering the Bayesian network below, which of the following statements are enforced by the network structure?
@@ -831,14 +651,6 @@ Because the pictures are black and white, and were taken from various angles, th
 \end{exercises}
 
 \begin{quiz}
-    \item The Normal distribution $\mathcal{N}(\mu, \sigma)$ is described by the density function
-    \begin{enumerate}[label=$\bigcirc$]
-        \item $p(x) = \frac{1}{\sigma} \exp\left(-(z + \exp(-z))\right)$, with $z = \frac{x - \mu}{\sigma}$.
-        \item $p(x) = \frac{1}{2\sigma} \exp\left(-\frac{|x - \mu|}{\sigma}\right)$.
-        \item \correct{$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$.}
-        \item $p(x) = 1 \,/\, \pi\sigma \left[1 + \left(\frac{x - \mu}{\sigma}\right)^2\right]$.
-    \end{enumerate}
-
     \item Consider the Bayesian network shown below. We want to infer $\mathbf{P}(A \mid b, e)$ where $A$ is the query variable, $B$ and $E$ are evidence variables, and $C$ and $D$ are hidden variables. Which of the following statements is true?
     \begin{center}
         \begin{tikzpicture}[bn diagram]
