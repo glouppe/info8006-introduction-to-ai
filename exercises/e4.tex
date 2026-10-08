@@ -15,42 +15,49 @@
 
 \begin{recap}
     \topic{Bayesian networks}
-    A \term{Bayesian network} is a directed acyclic graph where each node corresponds to a random variable, each edge indicates a direct probabilistic dependency between two variables, and each node $X_i$ is annotated with a conditional probability distribution $\mathbf{P}(X_i \mid \text{parents}(X_i))$. It encodes the full joint distribution as a product of local distributions,
+    With a partially observable environment, an agent reasons about the state $s$ from its percepts $e$ with the joint distribution $P(s, e) = P(s) P(e \mid s)$. When $s$ and $e$ are assignments of many random variables $X_1, \ldots, X_n$, a \term{Bayesian network} represents this distribution compactly. It is a directed acyclic graph with one node per variable, each node $X_i$ annotated with a conditional distribution $\mathbf{P}(X_i \mid \text{parents}(X_i))$, given as a \term{conditional probability table} (CPT) for discrete variables. The topology asserts the \term{local Markov property}, $X_i \perp \text{non-descendants}(X_i) \mid \text{parents}(X_i)$, hence the factorization
     \[
         P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i \mid \text{parents}(X_i)).
     \]
+    Naive Bayes is the network in which a cause $C$ is the only parent of each effect $E_i$.
 
     \topic{d-separation}
-    To know whether $X_i$ and $X_j$ are conditionally independent given evidence $Z_1 = z_1, \ldots, Z_m = z_m$, written $X_i \perp X_j \mid Z_1, \ldots, Z_m$, consider all (undirected) paths from $X_i$ to $X_j$. If one or more paths are \term{active}, independence is not guaranteed. Otherwise, \ie{} if all paths are \term{inactive}, independence is guaranteed.
-
+    $X_i \perp X_j \mid Z_1, \ldots, Z_m$ is guaranteed if every undirected path between $X_i$ and $X_j$ is \term{inactive}; if one path is \term{active}, independence is not guaranteed. A path is active iff each of its triples is active:
     \begin{center}
-        \includegraphics[width=0.9\linewidth]{figures/triplets.png}
+        \begin{tabular}{lll}
+            \toprule
+            Triple & & Active iff \\
+            \midrule
+            Cascade & $A \to B \to C$ or $A \leftarrow B \leftarrow C$ & $B$ unobserved \\
+            Common parent & $A \leftarrow B \to C$ & $B$ unobserved \\
+            v-structure & $A \to B \leftarrow C$ & $B$ or a descendant of $B$ observed \\
+            \bottomrule
+        \end{tabular}
     \end{center}
+    Given its \term{Markov blanket}, \ie{} its parents, its children and the other parents of its children, a variable is independent of all the others.
 
-    \topic{Maximum likelihood estimation}
-    The distributions of a Bayesian network can be chosen in a \term{parameterized} family $\mathbf{P}(X \mid \theta)$, whose parameters $\theta$ are estimated from data. Given a set of $N$ i.i.d.\ observations $\mathbf{d} = \{x_1, \ldots, x_N\}$, the \term{likelihood} of the parameters $\theta$ is the probability of the data given the parameters,
+    \topic{Inference}
+    Given \term{evidence} variables $\mathbf{E}$ observed as $\mathbf{e}$, a \term{query} variable $Q$ and \term{hidden} variables $\mathbf{H}$, inference computes
     \[
-        P(\mathbf{d} \mid \theta) = \prod_{j=1}^N P(x_j \mid \theta).
+        \mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum_q \sum_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}),
     \]
-    The \term{maximum likelihood estimate} (MLE) $\theta^*$ of the parameters is the value of $\theta$ that maximizes the likelihood,
-    \[
-        \theta^* = \arg \max_\theta P(\mathbf{d} \mid \theta).
-    \]
-    When possible analytically, $\theta^*$ is found by setting to zero the derivatives $\frac{\partial L}{\partial \theta}$ of the \term{log-likelihood} $L(\theta) = \log P(\mathbf{d} \mid \theta)$.
+    with the joint entries written as products of CPT entries. \term{Inference by enumeration} evaluates the sums depth-first, in $O(n)$ space and $O(d^n)$ time for $n$ variables with $d$ values. \term{Variable elimination} evaluates them right to left and stores the intermediate \term{factors}, multi-dimensional arrays initialized with the CPTs given the evidence. It alternates the \term{join} of factors, their pointwise product over the union of their variables, and the \term{elimination} of a hidden variable, summed out of the join of the factors that mention it. Its cost is that of the largest factor, which depends on the elimination ordering; finding the best ordering is NP-hard. A hidden variable $H$ is \term{irrelevant}, and can be removed, unless $H \in \text{ancestors}(\{Q\} \cup \mathbf{E})$.
 
-    \topic{Bayesian parameter learning}
-    Parameter learning can be treated as a Bayesian inference problem. The parameters $\theta$ are random variables, with a \term{prior} distribution $\mathbf{P}(\theta)$. As data arrives, the beliefs about the parameters are updated into the \term{posterior} distribution
+    \topic{Parameter learning}
+    The CPTs can be chosen in a \term{parameterized} family $\mathbf{P}(X \mid \theta)$, whose parameters are estimated from $N$ i.i.d.\ observations $\mathbf{d} = \{x_1, \ldots, x_N\}$. The \term{maximum likelihood estimate} (MLE) maximizes the \term{likelihood} $P(\mathbf{d} \mid \theta) = \prod_{j=1}^N P(x_j \mid \theta)$, or the \term{log-likelihood} $L(\theta) = \log P(\mathbf{d} \mid \theta)$, often by setting $\frac{\partial L}{\partial \theta} = 0$:
     \[
-        \mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta).
+        \theta^*_{\text{MLE}} = \arg \max_\theta P(\mathbf{d} \mid \theta).
     \]
-
-    \topic{Maximum a posteriori estimation}
-    When the posterior cannot be computed analytically, \term{maximum a posteriori} (MAP) estimation approximates it with the point estimate $\theta^*$ that maximizes the posterior distribution,
+    \term{Bayesian parameter learning} treats $\theta$ as a random variable with a \term{prior} $\mathbf{P}(\theta)$, updated into the \term{posterior} $\mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta)$. A new observation $x$ is then predicted by the \term{posterior predictive} $p(x \mid \mathbf{d}) = \int p(x \mid \theta) p(\theta \mid \mathbf{d}) \, d\theta$, and by the \term{prior predictive} $p(x) = \int p(x \mid \theta) p(\theta) \, d\theta$ before any data. When the posterior is intractable, the \term{maximum a posteriori} (MAP) estimate replaces it by its mode,
     \[
-        \theta^* = \arg \max_\theta P(\theta \mid \mathbf{d}) = \arg \max_\theta P(\mathbf{d} \mid \theta) P(\theta).
+        \theta^*_{\text{MAP}} = \arg \max_\theta P(\theta \mid \mathbf{d}) = \arg \max_\theta P(\mathbf{d} \mid \theta) P(\theta).
     \]
 
     \topic{Cheat sheet for Gaussian distributions}
+    The Gaussian density of mean $\mu$ and variance $\sigma^2$ is
+    \[
+        \mathcal{N}(x \mid \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2 \sigma^2}\right).
+    \]
     If $\mathbf{x}$ and $\mathbf{y}$ have the joint Gaussian distribution
     \[
         p\begin{pmatrix}
