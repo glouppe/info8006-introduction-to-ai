@@ -44,7 +44,6 @@
     \begin{itemize}
         \item \term{Enumeration} evaluates the sums depth-first: space $O(n)$, time $O(d^n)$ for $n$ variables of $d$ values.
         \item \term{Variable elimination} \term{joins} \term{factors}, initially the CPTs given $\mathbf{e}$, by pointwise products, and \term{eliminates} hidden variables by summing over their values. Its cost, that of the largest factor, depends on the ordering; the best one is NP-hard to find.
-        \item \term{Relevance}: $H \in \mathbf{H}$ can be removed unless $H \in \text{ancestors}(\{Q\} \cup \mathbf{E})$.
     \end{itemize}
 
     \topic{Parameter learning}
@@ -648,7 +647,7 @@ Considering the Bayesian network below, which of the following statements are en
 For the same network, use inference by variable elimination to compute $\mathbf{P}(E \mid A = 1, B = 1)$.
 
 \begin{solution}
-    The hidden variables are $C$, $D$ and $F$. By the relevance theorem, $D$ and $F$, which are not ancestors of $\cbk{E, A, B}$, could be removed from the network; we keep them to see why. We have
+    The hidden variables are $C$, $D$ and $F$. We have
     \begin{align*}
         \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d, f} \mathbf{P}(A = 1, B = 1, c, d, E, f) \\
         & = \frac{1}{Z} \sum_{c, d, f} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) \\
@@ -677,7 +676,7 @@ For the same network, use inference by variable elimination to compute $\mathbf{
     \begin{equation*}
         \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_{11}(E) = \frac{f_{11}(E)}{\sum_e f_{11}(e)}.
     \end{equation*}
-    Eliminating $F$ and $D$ gives factors equal to 1, as the relevance theorem predicts, and the constant $f_1 f_2$ cancels in the normalization. What remains is
+    Eliminating $F$ and $D$ gives factors equal to 1: a hidden variable that is not an ancestor of the query or the evidence sums out to 1 and can be removed from the network. The constant $f_1 f_2$ cancels in the normalization. What remains is
     \begin{equation*}
         \mathbf{P}(E \mid A = 1, B = 1) = \sum_c P(c \mid A = 1) \mathbf{P}(E \mid c) = \mathbf{P}(E \mid A = 1),
     \end{equation*}
