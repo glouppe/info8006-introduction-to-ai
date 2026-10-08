@@ -55,7 +55,7 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
         \begin{equation*}
             P(A \cap B) = P(A \mid B) P(B) = 0.5 \times 0.3 = 0.15,
         \end{equation*}
-        thanks to Bayes rule. Then, the agent should rationally believe that
+        by the product rule. Then, the agent should rationally believe that
         \begin{equation*}
             P(A \cup B) = P(A) + P(B) - P(A \cap B) = 0.4 + 0.3 - 0.15 = 0.55.
         \end{equation*}
@@ -64,71 +64,71 @@ Let $A$ and $B$ be two \emph{events} over the probability space $\Omega$. An age
 
 \titledquestion{Full joint distribution \aima{12}}
 
-Given the probability table below, compute the following probabilities.
+A monitoring program supervises the bearings of a wind turbine. A worn bearing (\emph{fault}) tends to make the turbine vibrate (\emph{vibration}) and to trigger the alarm of a diagnostic probe (\emph{alarm}). The program holds the joint probability table below. Compute the following probabilities.
 
 \begin{center}
     \begin{tabular}{lcccc}
         \toprule
-        & \multicolumn{2}{c}{toothache} & \multicolumn{2}{c}{no toothache} \\
+        & \multicolumn{2}{c}{vibration} & \multicolumn{2}{c}{no vibration} \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-        & catch & no catch & catch & no catch \\
+        & alarm & no alarm & alarm & no alarm \\
         \midrule
-        cavity & 0.108 & 0.012 & 0.072 & 0.008 \\
-        no cavity & 0.016 & 0.064 & 0.144 & 0.576 \\
+        fault & 0.108 & 0.012 & 0.072 & 0.008 \\
+        no fault & 0.016 & 0.064 & 0.144 & 0.576 \\
         \bottomrule
     \end{tabular}
 \end{center}
 
 \begin{solution}
-    In the following, we represent the events $\mathit{toothache}$, $\mathit{catch}$ and $\mathit{cavity}$ by the random variables $T, CT, CV: \Omega \mapsto \cbk{0, 1}$, respectively. Then, the hereabove table represents the joint probability distribution $P(T, CT, CV)$. When clear from context, we abbreviate the probability of a realization $(t, ct, cv)$ by $P(t, ct, cv)$ instead of $P(T = t, CT = ct, CV = cv)$.
+    In the following, we represent the events $\mathit{vibration}$, $\mathit{alarm}$ and $\mathit{fault}$ by the random variables $V, A, F: \Omega \to \cbk{0, 1}$, respectively. The table above is then the joint probability distribution $\mathbf{P}(V, A, F)$. When clear from context, we abbreviate $P(V = v, A = a, F = f)$ as $P(v, a, f)$.
 \end{solution}
 
 \begin{parts}
-    \part $P(\mathit{toothache})$
+    \part $P(\mathit{vibration})$
 
     \begin{solution}
         \begin{equation*}
-            P(T = 1) = \sum_{ct} \sum_{cv} P(T = 1, ct, cv) = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
+            P(V = 1) = \sum_{a} \sum_{f} P(V = 1, a, f) = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
         \end{equation*}
     \end{solution}
 
-    \part $P(\mathit{cavity})$
+    \part $P(\mathit{fault})$
 
     \begin{solution}
         \begin{equation*}
-            P(CV = 1) = \sum_{t} \sum_{ct} P(t, ct, CV = 1) = 0.108 + 0.012 + 0.072 + 0.008 = 0.2
+            P(F = 1) = \sum_{v} \sum_{a} P(v, a, F = 1) = 0.108 + 0.012 + 0.072 + 0.008 = 0.2
         \end{equation*}
     \end{solution}
 
-    \part $P(\mathit{toothache} \mid \mathit{cavity})$
+    \part $P(\mathit{vibration} \mid \mathit{fault})$
 
     \begin{solution}
         \begin{align*}
-            P(T = 1 \mid CV = 1) = \frac{P(T = 1, CV = 1)}{P(CV = 1)} & = \frac{\sum_{ct} P(T = 1, ct, CV = 1)}{P(CV = 1)} \\
+            P(V = 1 \mid F = 1) = \frac{P(V = 1, F = 1)}{P(F = 1)} & = \frac{\sum_{a} P(V = 1, a, F = 1)}{P(F = 1)} \\
             & = \frac{0.108 + 0.012}{0.2} = 0.6
         \end{align*}
     \end{solution}
 
-    \part $P(\mathit{cavity} \mid \mathit{toothache} \cup \mathit{catch})$
+    \part $P(\mathit{fault} \mid \mathit{vibration} \cup \mathit{alarm})$
 
     \begin{solution}
         \begin{align*}
-            P(CV = 1 \mid T = 1 \cup CT = 1) & = \frac{P(T = 1 \cup CT = 1, CV = 1)}{P(T = 1 \cup CT = 1)} \\
-            & = \frac{P(CV = 1) - P(T = 0, CT = 0, CV = 1)}{1 - P(T = 0, CT = 0)} \\
+            P(F = 1 \mid V = 1 \cup A = 1) & = \frac{P(V = 1 \cup A = 1, F = 1)}{P(V = 1 \cup A = 1)} \\
+            & = \frac{P(F = 1) - P(V = 0, A = 0, F = 1)}{1 - P(V = 0, A = 0)} \\
             & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
         \end{align*}
     \end{solution}
 \end{parts}
 
-\titledquestion{Rare disease \aima{12}}
+\titledquestion{Fraud detection \aima{12}}
 
-After your yearly checkup, the doctor has bad news and good news. The bad news is that you tested positive for a serious disease and that the test is \qty{99}{\percent} accurate, \ie{} the probability of testing positive when you do have the disease is \num{0.99} and the probability of testing positive when you don't is \num{0.01}. The good news is that this is a rare disease, striking only 1 in \num{10000} people of your age. Why is it good news that the disease is rare? What are the chances that you actually have the disease?
+A fraud detection program screens card payments. It is \qty{99}{\percent} accurate, \ie{} it flags a fraudulent payment with probability \num{0.99} and a legitimate payment with probability \num{0.01}. Fraud is rare: it strikes only 1 payment in \num{10000}. The program has just flagged your payment. Why is it good news, for you, that fraud is rare? What is the probability that the payment is actually fraudulent?
 
 \begin{solution}
-    It is a good news because the conditional probability will drop due to the weak prior value. Indeed,
+    Let $f$ be the event that the payment is fraudulent and $a$ the event that it is flagged. Rarity is good news because the prior $P(f)$ is small: most flagged payments are legitimate payments flagged by mistake. Indeed,
     \begin{align*}
-        P(d \mid t) & = \frac{P(t \mid d) P(d)}{P(t)} \\
-        & = \frac{P(t \mid d) P(d)}{P(t \mid d) P(d) + P(t \mid \neg d) P(\neg d)} \\
+        P(f \mid a) & = \frac{P(a \mid f) P(f)}{P(a)} \\
+        & = \frac{P(a \mid f) P(f)}{P(a \mid f) P(f) + P(a \mid \neg f) P(\neg f)} \\
         & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} = \num{0.0098} .
     \end{align*}
 \end{solution}
@@ -138,10 +138,10 @@ After your yearly checkup, the doctor has bad news and good news. The bad news i
 For each of the following statements, either prove it is valid or give a counterexample.
 
 \begin{parts}
-    \part If $P(a \mid b, c) = P(b \mid a, c)$, then $P(a \mid c) = P(b \mid c)$.
+    \part If $P(a, b, c) > 0$ and $P(a \mid b, c) = P(b \mid a, c)$, then $P(a \mid c) = P(b \mid c)$.
 
     \begin{solution}
-        True. By the conditional probability rule we have $P(a \mid b, c) P(b, c) = P(b \mid a, c) P(a, c)$, which by assumption reduces to $P(b, c) = P(a, c)$ and thereby $P(b \mid c) = P(a \mid c)$.
+        True. By the product rule, $P(a \mid b, c) P(b, c) = P(a, b, c) = P(b \mid a, c) P(a, c)$. Since $P(a, b, c) > 0$, $P(a \mid b, c) = P(b \mid a, c) > 0$, and dividing by it gives $P(b, c) = P(a, c)$ and thereby $P(b \mid c) = P(a \mid c)$.
     \end{solution}
 
     \part If $P(a \mid b, c) = P(a)$, then $P(b \mid c) = P(b)$.
@@ -159,7 +159,7 @@ For each of the following statements, either prove it is valid or give a counter
 
 \titledquestion{Bag of coins \aima{13}}
 
-We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of coming up heads of \qty{20}{\percent}, \qty{60}{\percent}, and \qty{80}{\percent}, respectively. One coin is drawn randomly from the bag (with equal probability of drawing each of the three coins), and then the coin is flipped three times to generate the outcomes $X_1$, $X_2$ and $X_3$ (heads or tail).
+We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of coming up heads of \qty{20}{\percent}, \qty{60}{\percent}, and \qty{80}{\percent}, respectively. One coin is drawn randomly from the bag (with equal probability of drawing each of the three coins), and then the coin is flipped three times to generate the outcomes $X_1$, $X_2$ and $X_3$ (heads or tails).
 
 \begin{parts}
     \part Draw the Bayesian network corresponding to this setup and define the corresponding conditional probability tables (CPTs).
@@ -202,10 +202,10 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
         \end{center}
     \end{solution}
 
-    \part Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tail once.
+    \part Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tails once.
 
     \begin{solution}
-        In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y \mid X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. Thanks to Bayes rule, we have
+        In order to find the most likely coin, we have to calculate the conditional probability distribution $P(Y \mid X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. By Bayes' rule, we have
         \begin{equation*}
             P(Y \mid X_1 = h, X_2 = h, X_3 = t) = \alpha P(X_1 = h, X_2 = h, X_3 = t \mid Y) P(Y).
         \end{equation*}
@@ -245,7 +245,7 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
     \part Which of the networks make independence claims that are consistent with the hypothesis about the inheritance of handedness?
 
     \begin{solution}
-        The first and second ones. It should be noted that the second one is also valid as it makes \emph{less} assumptions about the variables dependencies, \ie{} it is more general than the first one.
+        The first and second ones. It should be noted that the second one is also valid as it makes \emph{fewer} assumptions about the dependencies between the variables, \ie{} it is more general than the first one.
     \end{solution}
 
     \part Write down the CPT for the $G_{\text{child}}$ nodes in first network, in terms of $s$ and $m$.
@@ -279,7 +279,7 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
     \part Under conditions of genetic equilibrium, we expect the distribution of genes to be the same across generations. Use this to calculate the value of $q$, and, given what you know about handedness in humans, explain why the hypothesis described at the beginning of this question must be wrong.
 
     \begin{solution}
-        Under genetic equilibrium, we have $P(G_{\text{child}} = l) = P(G_{\text{parent}} = l) = q$. Therefore, $q = q + m - 2 q m$ meaning that $q = 0.5$. In practice, being left-handed is much more rare than being right-handed which invalidates the initial hypothesis.
+        Under genetic equilibrium, we have $P(G_{\text{child}} = l) = P(G_{\text{parent}} = l) = q$. Therefore, $q = q + m - 2 q m$ meaning that $q = 0.5$. In practice, being left-handed is much rarer than being right-handed, which invalidates the initial hypothesis.
     \end{solution}
 \end{parts}
 
@@ -288,18 +288,18 @@ Furthermore, the gene itself is equally likely to be inherited from either of th
 \begin{quiz}
     \item The Bayes' rule states that \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item $P(x \mid y) = \frac{P(y \mid x) P(y)}{P(x)}$.
-        \item \correct{$P(x \mid y) = \frac{P(y \mid x) P(x)}{P(y)}$.}
-        \item $P(y \mid x) = \frac{P(x \mid y) P(x)}{P(y)}$.
-        \item $P(x) = \frac{P(x \mid y) P(y)}{P(x)}$.
+        \item $P(x \mid y) = \dfrac{P(y \mid x) P(y)}{P(x)}$.
+        \item \correct{$P(x \mid y) = \dfrac{P(y \mid x) P(x)}{P(y)}$.}
+        \item $P(y \mid x) = \dfrac{P(x \mid y) P(x)}{P(y)}$.
+        \item $P(x) = \dfrac{P(x \mid y) P(y)}{P(x)}$.
     \end{enumerate}
 
     \item Which of the following is true?
     \begin{enumerate}[label=$\bigcirc$]
-        \item $P(x, y \mid z) = \frac{P(x \mid y, z)}{P(y, z \mid x)}$.
+        \item $P(x, y \mid z) = \dfrac{P(x \mid y, z)}{P(y, z \mid x)}$.
         \item $P(x, y, z) = P(x) P(y) P(z)$.
         \item \correct{$P(x, y \mid z) = P(y \mid x, z) P(x \mid z)$.}
-        \item $P(x \mid y, z) = \frac{P(x, y, z)}{P(y) P(z)}$.
+        \item $P(x \mid y, z) = \dfrac{P(x, y, z)}{P(y) P(z)}$.
     \end{enumerate}
 
     \item Naive Bayes model assumes \ldots
