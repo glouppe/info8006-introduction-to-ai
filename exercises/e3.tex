@@ -225,61 +225,100 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
     \end{solution}
 \end{parts}
 
-\titledquestion{Handedness \aima{13}}
+\titledquestion{Evolutionary model merging \aima{13}}
 
-Let $H_x$ be a random variable denoting the handedness of an individual $x$, with possible values $l$ or $r$. A common \emph{hypothesis} is that left or right-handedness is inherited by a simple mechanism; that is, there is a gene $G_x$, also with values $l$ or $r$, and $H_x$ turns out the same as $G_x$ with some probability $s$.
+Evolutionary model merging builds a new language model $M$ from two parent models $A$ and $B$: each component of $M$ is copied from one of the parents. Consider one component, and let $G_x$ be the language it was mostly trained on in model $x$, with possible values $e$ (English) or $f$ (French). A common \emph{hypothesis} is that the default language of a model follows from this component by a simple mechanism: the language $H_x$ in which model $x$ answers by default is the same as $G_x$ with some probability $s$.
 
-Furthermore, the gene itself is equally likely to be inherited from either of the individual's parents, with a small nonzero probability $m$ of a random mutation flipping the gene.
+Furthermore, $M$ copies the component from either parent with equal probability, and a random perturbation flips it with a small nonzero probability $m$.
 
 \begin{parts}
-    \part Which of the following networks claim that $P(G_{\text{child}} \mid G_{\text{mother}}, G_{\text{father}}) = P(G_{\text{child}})$?
+    \part Which of the following networks claim that $P(G_M \mid G_A, G_B) = P(G_M)$? Shaded variables are observed.
 
     \begin{center}
-        \includegraphics[width=0.9\linewidth]{figures/e3_handedness.pdf}
+        \begin{tikzpicture}[bn diagram]
+            \node[random variable] (GA1) at (0, 0) {$G_A$};
+            \node[random variable] (GB1) at (3.2, 0) {$G_B$};
+            \node[observed variable] (HA1) at (0, -1.4) {$H_A$};
+            \node[observed variable] (HB1) at (3.2, -1.4) {$H_B$};
+            \node[random variable] (GM1) at (1.6, -2) {$G_M$};
+            \node[observed variable] (HM1) at (1.6, -3.4) {$H_M$};
+            \draw[dependency] (GA1) -- (HA1);
+            \draw[dependency] (GB1) -- (HB1);
+            \draw[dependency] (GA1) -- (GM1);
+            \draw[dependency] (GB1) -- (GM1);
+            \draw[dependency] (GM1) -- (HM1);
+            \node[diagram caption] at (1.6, -4.3) {(1)};
+            \node[random variable] (GA2) at (5, 0) {$G_A$};
+            \node[random variable] (GB2) at (8.2, 0) {$G_B$};
+            \node[observed variable] (HA2) at (5, -1.4) {$H_A$};
+            \node[observed variable] (HB2) at (8.2, -1.4) {$H_B$};
+            \node[random variable] (GM2) at (6.6, -2) {$G_M$};
+            \node[observed variable] (HM2) at (6.6, -3.4) {$H_M$};
+            \draw[dependency] (GA2) -- (HA2);
+            \draw[dependency] (GB2) -- (HB2);
+            \draw[dependency] (GA2) -- (GM2);
+            \draw[dependency] (GB2) -- (GM2);
+            \draw[dependency] (HA2) -- (HM2);
+            \draw[dependency] (GM2) -- (HM2);
+            \draw[dependency] (HB2) -- (HM2);
+            \node[diagram caption] at (6.6, -4.3) {(2)};
+            \node[random variable] (GA3) at (10, 0) {$G_A$};
+            \node[random variable] (GB3) at (13.2, 0) {$G_B$};
+            \node[observed variable] (HA3) at (10, -1.4) {$H_A$};
+            \node[observed variable] (HB3) at (13.2, -1.4) {$H_B$};
+            \node[random variable] (GM3) at (11.6, -2) {$G_M$};
+            \node[observed variable] (HM3) at (11.6, -3.4) {$H_M$};
+            \draw[dependency] (GA3) -- (HA3);
+            \draw[dependency] (GB3) -- (HB3);
+            \draw[dependency] (HA3) -- (HM3);
+            \draw[dependency] (GM3) -- (HM3);
+            \draw[dependency] (HB3) -- (HM3);
+            \node[diagram caption] at (11.6, -4.3) {(3)};
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
-        The third one, as the node $G_{\text{child}}$ does not have any parents.
+        The third one, as the node $G_M$ does not have any parents.
     \end{solution}
 
-    \part Which of the networks make independence claims that are consistent with the hypothesis about the inheritance of handedness?
+    \part Which of the networks make independence claims that are consistent with the hypothesis about the default language?
 
     \begin{solution}
-        The first and second ones. It should be noted that the second one is also valid as it makes \emph{fewer} assumptions about the dependencies between the variables, \ie{} it is more general than the first one.
+        The first and second ones. The second one is also valid as it makes \emph{fewer} assumptions about the dependencies between the variables, \ie{} it is more general than the first one.
     \end{solution}
 
-    \part Write down the CPT for the $G_{\text{child}}$ nodes in first network, in terms of $s$ and $m$.
+    \part Write down the CPT for the $G_M$ node in the first network, in terms of $s$ and $m$.
 
     \begin{solution}
         \begin{center}
             \begin{tabular}{ccc}
                 \toprule
-                $G_{\text{mother}}$ & $G_{\text{father}}$ & $P(G_{\text{child}} = l \mid G_{\text{mother}}, G_{\text{father}})$ \\
+                $G_A$ & $G_B$ & $P(G_M = f \mid G_A, G_B)$ \\
                 \midrule
-                $l$ & $l$ & $1 - m$ \\
-                $l$ & $r$ & $0.5$ \\
-                $r$ & $l$ & $0.5$ \\
-                $r$ & $r$ & $m$ \\
+                $f$ & $f$ & $1 - m$ \\
+                $f$ & $e$ & $0.5$ \\
+                $e$ & $f$ & $0.5$ \\
+                $e$ & $e$ & $m$ \\
                 \bottomrule
             \end{tabular}
         \end{center}
     \end{solution}
 
-    \part Suppose that $P(G_{\text{mother}} = l) = P(G_{\text{father}} = l) = q$. In the first network, derive an expression for $P(G_{\text{child}} = l)$ in terms of $s$, $m$ and $q$.
+    \part Suppose that $P(G_A = f) = P(G_B = f) = q$. In the first network, derive an expression for $P(G_M = f)$ in terms of $s$, $m$ and $q$.
 
     \begin{solution}
         \begin{align*}
-            P(G_{\text{child}} = l) & = \sum_{g_m} \sum_{g_f} P(G_{\text{child}} = l, g_m, g_f) \\
-            & = \sum_{g_m} \sum_{g_f} P(G_{\text{child}} = l \mid g_m, g_f) P(g_m) P(g_f) \\
+            P(G_M = f) & = \sum_{g_A} \sum_{g_B} P(G_M = f, g_A, g_B) \\
+            & = \sum_{g_A} \sum_{g_B} P(G_M = f \mid g_A, g_B) P(g_A) P(g_B) \\
             & = (1 - m) q^2 + 0.5 (1 - q) q + 0.5 q (1 - q) + m (1 - q)^2 \\
             & = q + m - 2qm
         \end{align*}
     \end{solution}
 
-    \part Under conditions of genetic equilibrium, we expect the distribution of genes to be the same across generations. Use this to calculate the value of $q$, and, given what you know about handedness in humans, explain why the hypothesis described at the beginning of this question must be wrong.
+    \part Over many generations of merges, we expect the distribution of the component to be the same in the parents and in the merged models. Use this to calculate the value of $q$. Only about \qty{10}{\percent} of the merged models answer in French by default: explain why the hypothesis described at the beginning of this question must be wrong.
 
     \begin{solution}
-        Under genetic equilibrium, we have $P(G_{\text{child}} = l) = P(G_{\text{parent}} = l) = q$. Therefore, $q = q + m - 2 q m$ meaning that $q = 0.5$. In practice, being left-handed is much rarer than being right-handed, which invalidates the initial hypothesis.
+        At equilibrium, $P(G_M = f) = P(G_A = f) = q$. Therefore, $q = q + m - 2 q m$, meaning that $q = 0.5$. Answering in French is much rarer than answering in English, which invalidates the hypothesis.
     \end{solution}
 \end{parts}
 

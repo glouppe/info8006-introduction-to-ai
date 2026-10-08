@@ -175,6 +175,15 @@
 %   box labelled with a state, leaf a box (loop leaf a double box, for repeated states).
 %   Solutions write backed-up values with value, draw the optimal play with best link,
 %   and fade the nodes that alpha-beta pruning skips with pruned and pruned link.
+%
+%   Bayesian networks, 1 cm by 1 cm between grid points:
+%       \begin{tikzpicture}[bn diagram]
+%           \node[random variable] (S) at (0, 0) {$S$};
+%           \node[observed variable] (E) at (2, 0) {$E$};
+%           \draw[dependency] (S) -- (E);
+%       \end{tikzpicture}
+%   random variable is a white circle, observed variable a shaded one, as in the slides of
+%   lecture 5; dependency is an arrow from a parent to its child.
 
 \usetikzlibrary{arrows.meta}
 
@@ -263,6 +272,18 @@
     best link/.style={link, draw=diagram-accent, line width=1.6pt},
     pruned/.style={draw=diagram-grid, text=diagram-muted, fill=white},
     pruned link/.style={link, draw=diagram-grid, dashed},
+    % Bayesian networks
+    bn diagram/.style={diagram, x=1cm, y=1cm},
+    random variable/.style={
+        circle,
+        draw=diagram-ink,
+        fill=white,
+        line width=0.7pt,
+        minimum size=9mm,
+        inner sep=0pt,
+    },
+    observed variable/.style={random variable, fill=diagram-fill},
+    dependency/.style={link, ->},
     % Grid worlds
     world diagram/.style={diagram, x=0.62cm, y=0.62cm},
     grid lines/.style={draw=diagram-grid, line width=0.4pt, step=1},
