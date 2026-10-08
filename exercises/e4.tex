@@ -188,9 +188,9 @@ In your local nuclear power station, there is an alarm that senses when a temper
     \end{solution}
 \end{parts}
 
-\titledquestion{Student--TA relationship}
+\titledquestion{Energy of an inference server}
 
-The teaching assistant of the course is worried about the time he spends to prepare the exercise sessions. He wants to investigate the influence students can have on his schedule. To do so, he builds the following model
+A scheduling program manages a data center in which a GPU server answers the requests sent to a language model. To plan the power supply, the scheduler models the energy the server consumes as a function of its load, with the following network
 
 \begin{center}
     \begin{tikzpicture}[node distance = 2.5cm]
@@ -201,7 +201,7 @@ The teaching assistant of the course is worried about the time he spends to prep
     \end{tikzpicture}
 \end{center}
 
-where $S$ is a r.v. denoting the number of students leaving the room between a theoretical lecture and the practical session that follows, and $H$ is a r.v. representing the number of hours spent to prepare the next session. He chooses the following relations for each variable
+where $S$ is a random variable denoting the number of requests the server receives in an hour, and $H$ a random variable denoting the energy, in kilowatt-hours, that it consumes during that hour. The scheduler chooses the following relations for each variable
 \begin{equation}
     \label{P_S}
     P(S = s) = \texttt{Poisson}(S = s; \lambda) = \dfrac{\lambda^s e^{-\lambda}}{s!}
@@ -210,7 +210,7 @@ where $S$ is a r.v. denoting the number of students leaving the room between a t
     \label{P_H_g_S}
     H = \omega S + H_0 + \mathcal{N}(0, \var)
 \end{equation}
-where $H_0$ corresponds to the number of hours the TA should spend per session regarding its contract and $\omega$ is the influence weight of students over the TA.
+where $H_0$ is the energy the server consumes when idle, which is known, and $\omega$ is the energy consumed per request.
 
 \begin{parts}
     \part Identify the parameters of the Bayesian network and give the joint log-likelihood of one pair $(s_i, h_i)$ given the model.
@@ -238,7 +238,7 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         \end{equation}
     \end{solution}
 
-    \part The TA collects a set $\mathbf{d} = \{(s_i, h_i)\}_{i=1}^N$ of independent observations. Derive the maximum likelihood estimate of the parameters.
+    \part The scheduler collects a set $\mathbf{d} = \{(s_i, h_i)\}_{i=1}^N$ of independent observations. Derive the maximum likelihood estimate of the parameters.
 
     \begin{solution}
         We first have to define the joint likelihood of those observations. Since they are assumed i.i.d., we have
@@ -276,7 +276,7 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         which gives $\boxed{\omega_{\text{MLE}} = \dfrac{\sum_i s_i (h_i - H_0)}{\sum_i s_i^2}}$.
     \end{solution}
 
-    \part The TA has just started to collect observations of students leaving the classroom. Being an adept of the Bayes' school, he knows that using MLE can lead to overfitting. Hence, he decides to incorporate uncertainty in his analysis of the parameter $\lambda$ as he has no strong knowledge about it. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $p(\lambda \mid \mathbf{s})$, with $\mathbf{s} = \{s_i\}_{i=1}^N$?
+    \part The scheduler has just started to collect observations, and maximum likelihood can overfit when they are few. It therefore treats the parameter $\lambda$, about which it has no strong knowledge, as uncertain. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $p(\lambda \mid \mathbf{s})$, with $\mathbf{s} = \{s_i\}_{i=1}^N$?
 
     \textit{Hint:} $\texttt{Gamma}(x \mid \alpha, \beta) = \frac{1}{Z} x^{\alpha - 1} e^{-\beta x}$, with $Z$ a normalizing constant.
 
@@ -305,7 +305,7 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         \[
             \underset{\lambda}{\arg \max}\, p(\lambda \mid \mathbf{s}): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
         \]
-        When $N = 0$, the prior and the posterior are similar, which is expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (number of students leaving the room), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the mode converge to the same value corresponding to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
+        When $N = 0$, the prior and the posterior are similar, which is expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (a number of requests), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the mode converge to the same value corresponding to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
     \end{solution}
 \end{parts}
 
@@ -681,15 +681,15 @@ For the same network, use inference by variable elimination to compute $\mathbf{
     \end{equation*}
 \end{solution}
 
-\titledquestion{Pacbaby \source{CS188, Spring 2014}}
+\titledquestion{Recognizing Pacman \source{CS188, Spring 2014}}
 
-Pacman and Pacwoman have been searching for each other in the maze. Pacwoman has been pregnant with a baby, and just this morning she has given birth to Pacbaby\footnote{Congratulations!}. Because Pacbaby was born before Pacman and Pacwoman were reunited in the maze, he has never met his father. Naturally, Pacwoman wants to teach Pacbaby to recognize his father, using a set of pictures of Pacman. She also has several pictures of ghosts to use as negative examples.
+The ghosts of the maze are controlled by a program that watches the maze through cameras and must recognize Pacman in their pictures. It learns to do so from a set of pictures of Pacman, and of ghosts as negative examples.
 
 \begin{center}
     \includegraphics[width=0.5\linewidth]{figures/e5_pacbaby.jpg}
 \end{center}
 
-Because the pictures are black and white, and were taken from various angles, Pacwoman has decided to teach Pacbaby to identify Pacman based on salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
+Because the pictures are black and white, and were taken from various angles, the program identifies Pacman from salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
 
 \begin{center}
     \begin{tabular}{cccc}
@@ -707,7 +707,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
 \end{center}
 
 \begin{parts}
-    \part Suppose Pacbaby has a Naive Bayes based brain. Draw the Bayesian network that would represent the dependencies between $S$, $B$, $H$ and $M$ for Pacbaby.
+    \part Suppose the program is a naive Bayes classifier. Draw the Bayesian network that represents the dependencies between $S$, $B$, $H$ and $M$ for the program.
 
     \begin{solution}
         \begin{center}
@@ -724,7 +724,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
         \end{center}
     \end{solution}
 
-    \part Write the Bayesian classification rule for this problem, \ie{} the formula that given a data point $(b, h, m)$ returns the most likely subject. Write the formula in terms of conditional and prior probabilities. What does the formula become under the assumptions of Pacbaby?
+    \part Write the Bayesian classification rule for this problem, \ie{} the formula that given a data point $(b, h, m)$ returns the most likely subject. Write the formula in terms of conditional and prior probabilities. What does the formula become under the assumptions of the program?
 
     \begin{solution}
         Given $(b, h, m)$, the most likely subject is given by the \emph{maximum a posteriori} (MAP) estimation
@@ -732,13 +732,13 @@ Because the pictures are black and white, and were taken from various angles, Pa
             s_{\text{MAP}} & = \arg\max_{s} P(s \mid b, h, m) \\
             & = \arg\max_{s} P(b, h, m \mid s) P(s) .
         \end{align*}
-        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $\mathbf{P}(B, H, M \mid S) = \mathbf{P}(B \mid S) \mathbf{P}(H \mid S) \mathbf{P}(M \mid S)$. Then, the formula becomes
+        Under the naive Bayes assumptions of the program, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $\mathbf{P}(B, H, M \mid S) = \mathbf{P}(B \mid S) \mathbf{P}(H \mid S) \mathbf{P}(M \mid S)$. Then, the formula becomes
         \begin{align*}
             s_{\text{MAP}} & = \arg\max_{s} P(b \mid s) P(h \mid s) P(m \mid s) P(s) .
         \end{align*}
     \end{solution}
 
-    \part What are the parameters of this model? Give estimates of these parameters according to the pictures provided by Pacwoman.
+    \part What are the parameters of this model? Give estimates of these parameters according to the pictures of the table.
 
     \begin{solution}
         The parameters of the model are the elements of the prior vector $\mathbf{P}(S)$ and the (conditional) probability matrices $\mathbf{P}(B \mid S)$, $\mathbf{P}(H \mid S)$ and $\mathbf{P}(M \mid S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
@@ -756,21 +756,21 @@ Because the pictures are black and white, and were taken from various angles, Pa
         \end{center}
     \end{solution}
 
-    \part Pacman eventually shows up wearing a bowtie, but no hat or mustache. Will Pacbaby recognize his father?
+    \part Pacman eventually shows up in front of a camera wearing a bowtie, but no hat or mustache. Will the program recognize him?
 
     \begin{solution}
-        Pacbaby will recognize his father if $s_{\text{MAP}} = 1$ for $(b, h, m) = (1, 0, 0)$. Using the parameters estimated previously, we have
+        The program will recognize Pacman if $s_{\text{MAP}} = 1$ for $(b, h, m) = (1, 0, 0)$. Using the parameters estimated previously, we have
         \begin{align*}
             P(b \mid 0) P(h \mid 0) P(m \mid 0) P(0) & = \frac{2}{3} \times \rbk*{1 - \frac{2}{3}} \times \rbk*{1 - \frac{0}{3}} \times \frac{3}{6} \approx \num{0.111} \\
             P(b \mid 1) P(h \mid 1) P(m \mid 1) P(1) & = \frac{2}{3} \times \rbk*{1 - \frac{1}{3}} \times \rbk*{1 - \frac{2}{3}} \times \frac{3}{6} \approx \num{0.074} .
         \end{align*}
-        Therefore, $s_{\text{MAP}} = 0$, meaning that Pacbaby will \emph{not} recognize his father.
+        Therefore, $s_{\text{MAP}} = 0$, meaning that the program will \emph{not} recognize Pacman, who escapes.
     \end{solution}
 \end{parts}
 
-\titledquestion{Predict your grade}
+\titledquestion{Predict the leaderboard score}
 
-The Bayesian network below represents how the final grade of a class is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the grades obtained by a student at the homework, project and exam. The teaching assistant that grades the homework also grades the project and the exam, which introduces a slight bias in the corrections. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the final grade, which is a linear combination of the grades obtained by the student during the semester plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
+A leaderboard ranks language models by an overall score. The Bayesian network below represents how this score is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the scores obtained by a model on a validation set, on a public benchmark and on a held-out test set. The three evaluations share the same harness, and a model that does well on one tends to do well on the next. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the overall score, which is a linear combination of the three scores plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
 
 \begin{center}
     \begin{tikzpicture}[node distance = 2cm]
