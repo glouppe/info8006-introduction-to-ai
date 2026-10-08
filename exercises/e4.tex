@@ -438,11 +438,11 @@ Furthermore, $M$ copies the component from either parent with equal probability,
     \end{solution}
 \end{parts}
 
-\titledquestion{Gaussian parameter learning with known $\sigma^2$}
+\titledquestion{Lidar calibration}
 
-You have in your possession a high-tech laser that emits light of intensity $\mu_l$ with great precision. You want to use it to test a new light-intensity measurement device. You assume that your measurements $y_i$ follow a Gaussian distribution $\N(\mu_y, \sigma^2)$ with $\mu_y \sim \N(\mu_l, \sigma_l^2)$ corresponding to the model of your laser given in the manual. You assume that $\sigma^2$ is fixed and that you can determine it.
+A self-driving car calibrates its new lidar against a reference target before driving. The distance $\mu_y$ at which the lidar sees the target is uncertain: the specification of the calibration station gives the prior $\mu_y \sim \N(\mu_l, \sigma_l^2)$. Each reading $y_i$ of the lidar is Gaussian, $y_i \sim \N(\mu_y, \sigma^2)$, with a noise variance $\sigma^2$ known from its datasheet.
 
-You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and you want to predict a new measurement $y$ of your device. You want to study how much $\mathcal{Y}_c$ reduces your uncertainty about this measurement. Before the calibration, the measurement is predicted by the \emph{prior predictive} distribution $p(y) = \int p(y \mid \mu_y) p(\mu_y) \, d\mu_y$; after it, by the \emph{posterior predictive} distribution $p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) \, d\mu_y$.
+The calibration program of the car records a calibration set $\mathcal{Y}_c$ of $C$ readings, and wants to predict the next reading $y$ of the lidar. We study how much $\mathcal{Y}_c$ reduces the uncertainty about this reading. Before the calibration, the reading is predicted by the \emph{prior predictive} distribution $p(y) = \int p(y \mid \mu_y) p(\mu_y) \, d\mu_y$; after it, by the \emph{posterior predictive} distribution $p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) \, d\mu_y$.
 
 You may use the following identities. If $p(x) = \N(x \mid m, P)$ and $p(z \mid x) = \N(z \mid h x + u, R)$, then $x$ and $z$ are jointly Gaussian,
 \[
@@ -454,7 +454,7 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
 \]
 
 \begin{parts}
-    \part Compute the prior and posterior predictive distributions $p(y)$ and $p(y \mid \mathcal{Y}_c)$ if you have access to one observation, \ie{} $\mathcal{Y}_c = \{y_o\}$.
+    \part Compute the prior and posterior predictive distributions $p(y)$ and $p(y \mid \mathcal{Y}_c)$ if the calibration set holds one reading, \ie{} $\mathcal{Y}_c = \{y_o\}$.
 
     \begin{solution}
         We use the Gaussian identities of the statement.
@@ -469,7 +469,7 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
         \[
             p(y) = \int p(y \mid \mu_y) p(\mu_y) d\mu_y.
         \]
-        From Gaussian identities, you can identify different parameters as follows
+        With the Gaussian identities, we identify the parameters as follows
         \begin{align*}
             x & = \mu_y \\
             m & = \mu_l \\
@@ -500,7 +500,7 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
             p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) d\mu_y.
         \]
 
-        We first have to identify the posterior $p(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $p(\mathcal{Y}_c \mid \mu_y)$ and $p(\mu_y)$ you can identify different parameters as follows
+        We first have to identify the posterior $p(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $p(\mathcal{Y}_c \mid \mu_y)$ and $p(\mu_y)$, we identify the parameters as follows
         \begin{align*}
             x & = \mu_y \\
             m & = \mu_l \\
@@ -543,7 +543,7 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
         \]
     \end{solution}
 
-    \part Looking at your predictive uncertainty, what is the benefit of incorporating $\mathcal{Y}_c$?
+    \part Looking at the predictive uncertainty, what is the benefit of incorporating $\mathcal{Y}_c$?
 
     \begin{solution}
         As a reminder, we found
@@ -559,13 +559,13 @@ If $x$ and $z$ are jointly Gaussian with means $a$ and $b$, variances $A$ and $B
             \qquad \text{hence} \qquad
             \sigma^2 + \sigma_{\text{post}}^2 \leq \sigma^2 + \sigma_l^2 :
         \end{equation*}
-        the posterior predictive has a smaller or equal variance than the prior predictive. Incorporating the calibration set reduces the uncertainty about the measurement.
+        the posterior predictive has a smaller or equal variance than the prior predictive. Incorporating the calibration set reduces the uncertainty about the next reading.
 
         If we computed the variance for a calibration set of $C$ observations, we would have found a posterior variance
         \[
             \sigma_{\text{post}}^2 = \dfrac{\sigma^2}{C\sigma_l^2 + \sigma^2} \sigma_l^2.
         \]
-        Since $\sigma^2$ is fixed, including more observations reduces the posterior predictive variance further. In the limit case $C \to \infty$, the posterior predictive variance converges to $\sigma^2$ which corresponds to the uncertainty of the instrument (you can't reach a lower uncertainty, it is called the aleatoric uncertainty).
+        Since $\sigma^2$ is fixed, including more observations reduces the posterior predictive variance further. In the limit case $C \to \infty$, the posterior predictive variance converges to $\sigma^2$, the noise of the lidar itself, which no calibration can reduce (\emph{aleatoric} uncertainty), while the uncertainty about $\mu_y$ vanishes.
     \end{solution}
 \end{parts}
 
