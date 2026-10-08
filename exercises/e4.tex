@@ -182,7 +182,7 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
 
         The likelihood of a pair $(s_i, h_i)$ can be derived from the network. We have
         \begin{align*}
-            P((s_i, h_i) \mid \theta) & = P(s_i) P(h_i \mid s_i) \\
+            p((s_i, h_i) \mid \theta) & = P(s_i) \, p(h_i \mid s_i) \\
             & = \dfrac{\lambda^{s_i} e^{-\lambda}}{s_i!} \dfrac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(h_i - \omega s_i - H_0)^2}{2\var}}
         \end{align*}
         from which we derive the log-likelihood
@@ -196,7 +196,7 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
     \begin{solution}
         We first have to define the joint likelihood of those observations. Since they are assumed i.i.d., we have
         \[
-            P(\mathbf{d} \mid \theta) = \prod_{i=1}^N P((s_i, h_i) \mid \theta)
+            p(\mathbf{d} \mid \theta) = \prod_{i=1}^N p((s_i, h_i) \mid \theta)
         \]
         Hence, deriving the log-likelihood
         \begin{align*}

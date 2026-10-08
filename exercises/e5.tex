@@ -468,7 +468,7 @@ You have in your possession a high-tech laser that emits light of intensity $\mu
 You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and you want to predict a new measurement $y$ of your device. You want to study how much $\mathcal{Y}_c$ reduces your uncertainty about this measurement. Before the calibration, the measurement is predicted by the \emph{prior predictive} distribution $p(y) = \int p(y \mid \mu_y) p(\mu_y) \, d\mu_y$; after it, by the \emph{posterior predictive} distribution $p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) \, d\mu_y$.
 
 \begin{parts}
-    \part Compute the prior and posterior predictive distributions $P(y)$ and $P(y \mid \mathcal{Y}_c)$ if you have access to one observation, \ie{} $\mathcal{Y}_c = \{y_o\}$.
+    \part Compute the prior and posterior predictive distributions $p(y)$ and $p(y \mid \mathcal{Y}_c)$ if you have access to one observation, \ie{} $\mathcal{Y}_c = \{y_o\}$.
 
     \begin{solution}
         The following exercise uses the Gaussian model identities (see the cheat sheet of the recap).
@@ -481,7 +481,7 @@ You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and yo
 
         \textbf{Prior predictive}
         \[
-            P(y) = \int P(y \mid \mu_y) P(\mu_y) d\mu_y.
+            p(y) = \int p(y \mid \mu_y) p(\mu_y) d\mu_y.
         \]
         From Gaussian identities, you can identify different parameters as follows
         \begin{align*}
@@ -495,7 +495,7 @@ You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and yo
         \end{align*}
         which corresponds to the joint
         \[
-            P(\mu_y, y) = \N
+            p(\mu_y, y) = \N
             \begin{pmatrix}
                 \begin{pmatrix}
                     \mu_l \\
@@ -511,10 +511,10 @@ You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and yo
 
         \textbf{Posterior predictive}
         \[
-            P(y \mid \mathcal{Y}_c) = \int P(y \mid \mu_y) P(\mu_y \mid \mathcal{Y}_c) d\mu_y.
+            p(y \mid \mathcal{Y}_c) = \int p(y \mid \mu_y) p(\mu_y \mid \mathcal{Y}_c) d\mu_y.
         \]
 
-        We first have to identify the posterior $P(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $P(\mathcal{Y}_c \mid \mu_y)$ and $P(\mu_y)$ you can identify different parameters as follows
+        We first have to identify the posterior $p(\mu_y \mid \mathcal{Y}_c)$. Once again, from Gaussian identities, knowing $P(\mathcal{Y}_c \mid \mu_y)$ and $p(\mu_y)$ you can identify different parameters as follows
         \begin{align*}
             \mathbf{x} & = \mu_y \\
             \mathbf{m} & = \mu_l \\
@@ -526,7 +526,7 @@ You have access to a calibration set $\mathcal{Y}_c$ of $C$ observations, and yo
         \end{align*}
         which corresponds to the joint
         \[
-            P(\mu_y, y_o) = \N
+            p(\mu_y, y_o) = \N
             \begin{pmatrix}
                 \begin{pmatrix}
                     \mu_l \\
@@ -1099,12 +1099,12 @@ The professor asks you to answer the following questions:
 \end{exercises}
 
 \begin{quiz}
-    \item The Normal distribution $\mathcal{N}(\mu, \sigma)$ is described by the density function
+    \item The normal distribution $\mathcal{N}(\mu, \sigma^2)$ is described by the density function
     \begin{enumerate}[label=$\bigcirc$]
         \item $p(x) = \frac{1}{\sigma} \exp\left(-(z + \exp(-z))\right)$, with $z = \frac{x - \mu}{\sigma}$.
         \item $p(x) = \frac{1}{2\sigma} \exp\left(-\frac{|x - \mu|}{\sigma}\right)$.
         \item \correct{$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$.}
-        \item $p(x) = 1 \,/\, \pi\sigma \left[1 + \left(\frac{x - \mu}{\sigma}\right)^2\right]$.
+        \item $p(x) = \dfrac{1}{\pi \sigma \left[1 + \left(\frac{x - \mu}{\sigma}\right)^2\right]}$.
     \end{enumerate}
 
     \item The Kalman filter requires the specification of \ldots
