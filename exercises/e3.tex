@@ -49,7 +49,7 @@
     The rules hold for all values, and between distributions. Naive Bayes assumes the effects $e_{1:n}$ conditionally independent given the cause $c$. The joint distribution answers every query: select the entries consistent with the evidence, sum out the other variables, normalize.
 
     \topic{Bayes' rule}
-    A model is given in the \term{causal} direction, a \term{prior} $\mathbf{P}(A)$ and a \term{likelihood} $\mathbf{P}(B \mid A)$. The \term{diagnostic} question is answered by the \term{posterior} $\mathbf{P}(A \mid b) = \frac{1}{Z} \mathbf{P}(b \mid A) \mathbf{P}(A)$, normalized by the probability of the \term{evidence}, ${Z = P(b) = \sum_a P(b \mid a) P(a)}$.
+    A model is given in the \term{causal} direction: for an agent, a \term{prior} $\mathbf{P}(S)$ over the unobserved state and a \term{sensor model} (or \term{likelihood}) $\mathbf{P}(e \mid S)$ of its percepts. The \term{diagnostic} question is answered by the \term{belief}, or \term{posterior}, $\mathbf{P}(S \mid e) = \frac{1}{Z} \mathbf{P}(e \mid S) \mathbf{P}(S)$, where ${Z = P(e) = \sum_s P(e \mid s) P(s)}$ is the probability of the \term{evidence}. For percepts conditionally independent given the state, each belief is the prior of the next, $\mathbf{P}(S \mid e_{1:k+1}) = \frac{1}{Z} \mathbf{P}(e_{k+1} \mid S) \mathbf{P}(S \mid e_{1:k})$.
 \end{recap}
 
 \begin{exercises}[1, 2, 3, 5]
@@ -146,7 +146,7 @@ A monitoring program supervises the bearings of a wind turbine. A worn bearing (
 A fraud detection program screens card payments. It is \qty{99}{\percent} accurate, \ie{} it flags a fraudulent payment with probability \num{0.99} and a legitimate payment with probability \num{0.01}. Fraud is rare: it strikes only 1 payment in \num{10000}. The program has just flagged your payment. Why is it good news, for you, that fraud is rare? What is the probability that the payment is actually fraudulent?
 
 \begin{solution}
-    Let $F$ and $A$ be the boolean random variables telling whether the payment is fraudulent and whether it is flagged. By Bayes' rule,
+    Let $F$ and $A$ be the boolean random variables telling whether the payment is fraudulent and whether it is flagged. For the program, $F$ is the unobserved state and $A$ the percept, with the prior $P(f) = \num{e-4}$ and the sensor model $P(a \mid f) = 0.99$, $P(a \mid \neg f) = 0.01$. Its belief follows from Bayes' rule,
     \begin{align*}
         P(f \mid a) & = \frac{P(a \mid f) P(f)}{P(a)} \\
         & = \frac{P(a \mid f) P(f)}{P(a \mid f) P(f) + P(a \mid \neg f) P(\neg f)} \\
@@ -214,7 +214,7 @@ A self-driving car shares the highway with another car, whose driving style it d
     \part Determine the most likely driving style if the other car changed lanes during the first two minutes and kept its lane during the third.
 
     \begin{solution}
-        We compute the posterior $\mathbf{P}(Y \mid X_1 = l, X_2 = l, X_3 = k)$. By Bayes' rule,
+        The style $Y$ is the unobserved state and the $X_i$ are the percepts, with the prior $\mathbf{P}(Y)$ and the sensor model $\mathbf{P}(X_i \mid Y)$ of (a). The belief of the car is the posterior $\mathbf{P}(Y \mid X_1 = l, X_2 = l, X_3 = k)$. By Bayes' rule,
         \begin{equation*}
             \mathbf{P}(Y \mid X_1 = l, X_2 = l, X_3 = k) = \frac{1}{Z} \mathbf{P}(X_1 = l, X_2 = l, X_3 = k \mid Y) \mathbf{P}(Y).
         \end{equation*}
@@ -227,6 +227,18 @@ A self-driving car shares the highway with another car, whose driving style it d
             \end{cases}
         \end{equation*}
         with $Z = \frac{1}{3} (0.032 + 0.144 + 0.128)$. The posterior is $\langle 0.105, 0.474, 0.421 \rangle$: the normal style is the most likely, though the aggressive one is nearly as probable. Finding the most likely style only needs the unnormalized values. The order of the observations does not matter: any two lane changes and one lane keep have the same probability given each style.
+    \end{solution}
+
+    \part The car updates its belief after each minute, the belief after one minute being the prior of the next. Compute its belief after one, two and three minutes, and compare with (b).
+
+    \begin{solution}
+        Starting from the prior $\langle 1/3, 1/3, 1/3 \rangle$ over $\langle a, b, c \rangle$, each minute multiplies the belief by the sensor model and normalizes:
+        \begin{align*}
+            \mathbf{P}(Y \mid l) & = \tfrac{1}{Z} \langle 0.2, 0.6, 0.8 \rangle \times \langle 1/3, 1/3, 1/3 \rangle = \langle 0.125, 0.375, 0.5 \rangle, \\
+            \mathbf{P}(Y \mid l, l) & = \tfrac{1}{Z} \langle 0.2, 0.6, 0.8 \rangle \times \langle 0.125, 0.375, 0.5 \rangle = \langle 0.038, 0.346, 0.615 \rangle, \\
+            \mathbf{P}(Y \mid l, l, k) & = \tfrac{1}{Z} \langle 0.8, 0.4, 0.2 \rangle \times \langle 0.038, 0.346, 0.615 \rangle = \langle 0.105, 0.474, 0.421 \rangle,
+        \end{align*}
+        where $\times$ multiplies entry by entry. The last belief is the posterior of (b): since the percepts are conditionally independent given the style, updating minute by minute gives the same result as conditioning on the three percepts at once. After two lane changes, the aggressive style is the most likely; keeping the lane during the third minute makes the normal style overtake it.
     \end{solution}
 \end{parts}
 
