@@ -60,12 +60,12 @@ Let $A, B \subseteq \Omega$ be two \emph{events}. An agent holds the beliefs $P(
 
 \begin{solution}
     \begin{enumerate}
-        \item The agent's beliefs should satisfy
+        \item Since $P(E) = \sum_{\omega \in E} P(\omega)$ sums nonnegative terms, $E \subseteq F$ implies $P(E) \leq P(F)$. With $A, B \subseteq A \cup B$ and $A \cap B \subseteq A, B$, and the union rule $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, the agent's beliefs should satisfy
         \begin{alignat*}{2}
             0.4 = \max \cbk{P(A), P(B)} & \leq P(A \cup B) && \leq \min \cbk{1, P(A) + P(B)} = 0.7 \\
             0 = \max \cbk{0, P(A) + P(B) - 1} & \leq P(A \cap B) && \leq \min \cbk{P(A), P(B)} = 0.3 .
         \end{alignat*}
-        This can be illustrated with Venn diagrams.
+        The two beliefs are not independent choices: by the union rule, $P(A \cup B) + P(A \cap B) = 0.7$. The extremes are $B \subseteq A$, with $P(A \cup B) = 0.4$ and $P(A \cap B) = 0.3$, and disjoint events, with $0.7$ and $0$.
 
         \item If the agent believes that $P(A \mid B) = 0.5$, it should also believe that
         \begin{equation*}
@@ -167,9 +167,9 @@ For each of the following statements, either prove it is valid or give a counter
     \end{solution}
 \end{parts}
 
-\titledquestion{Bag of coins \aima{13}}
+\titledquestion{Driving styles \aima{13}}
 
-We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of coming up heads of \qty{20}{\percent}, \qty{60}{\percent}, and \qty{80}{\percent}, respectively. One coin is drawn randomly from the bag (with equal probability of drawing each of the three coins), and then the coin is flipped three times to generate the outcomes $X_1$, $X_2$ and $X_3$ (heads or tails).
+A self-driving car shares the highway with another car, whose driving style it does not know. It models three styles, cautious ($a$), normal ($b$) and aggressive ($c$), equally likely a priori, under which the other car changes lanes during a given minute with probabilities \num{0.2}, \num{0.6} and \num{0.8}, respectively. The self-driving car observes the other car for three minutes, recording whether it changes lanes ($l$) or keeps its lane ($k$) during each minute, as $X_1$, $X_2$ and $X_3$.
 
 \begin{parts}
     \part Draw the Bayesian network corresponding to this setup and define the corresponding conditional probability tables (CPTs).
@@ -177,23 +177,22 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
     \begin{solution}
         The process is described with the following random variables:
         \begin{itemize}
-            \item $Y \in \cbk{a, b, c}$, the coin drawn from the bag.
-            \item $X_i \in \cbk{h, t}$, the realization of the $i$-th coin toss.
+            \item $Y \in \cbk{a, b, c}$, the driving style of the other car;
+            \item $X_i \in \cbk{l, k}$, its behaviour during the $i$-th minute.
         \end{itemize}
-        The variable $Y$ is the parent of $X_i$, it should be put before in the network ordering.
+        The style $Y$ is the parent of each $X_i$: the observations are conditionally independent given the style.
 
         \begin{center}
             \begin{minipage}[c]{0.45\linewidth}
                 \centering
-                \begin{tikzpicture}[node distance = 2cm]
-                    \node[state] (Y) {$Y$};
-                    \node[state] (X1) [below left of=Y] {$X_1$};
-                    \node[state] (X2) [below of=Y] {$X_2$};
-                    \node[state] (X3) [below right of=Y] {$X_3$};
-
-                    \draw[arrow] (Y) to (X1);
-                    \draw[arrow] (Y) to (X2);
-                    \draw[arrow] (Y) to (X3);
+                \begin{tikzpicture}[bn diagram]
+                    \node[random variable] (Y) at (0, 0) {$Y$};
+                    \node[observed variable] (X1) at (-1.5, -1.5) {$X_1$};
+                    \node[observed variable] (X2) at (0, -1.5) {$X_2$};
+                    \node[observed variable] (X3) at (1.5, -1.5) {$X_3$};
+                    \draw[dependency] (Y) -- (X1);
+                    \draw[dependency] (Y) -- (X2);
+                    \draw[dependency] (Y) -- (X3);
                 \end{tikzpicture}
             \end{minipage}%
             \hfill
@@ -201,37 +200,37 @@ We have a bag of three biased coins $a$, $b$, and $c$ with probabilities of comi
                 \centering
                 \begin{tabular}{ccc}
                     \toprule
-                    $y$ & $P(y)$ & $P(X_i = h \mid y)$ \\
+                    $y$ & $P(y)$ & $P(X_i = l \mid y)$ \\
                     \midrule
-                    $a$ & $\frac{1}{3}$ & $0.2$ \\
-                    $b$ & $\frac{1}{3}$ & $0.6$ \\
-                    $c$ & $\frac{1}{3}$ & $0.8$ \\
+                    $a$ & $1/3$ & $0.2$ \\
+                    $b$ & $1/3$ & $0.6$ \\
+                    $c$ & $1/3$ & $0.8$ \\
                     \bottomrule
                 \end{tabular}
             \end{minipage}
         \end{center}
     \end{solution}
 
-    \part Determine which coin ($a$, $b$ or $c$) is most likely to have been drawn from the bag if the observed tosses came out heads twice and tails once.
+    \part Determine the most likely driving style if the other car changed lanes during the first two minutes and kept its lane during the third.
 
     \begin{solution}
-        In order to find the most likely coin, we have to calculate the posterior $\mathbf{P}(Y \mid X_1 = h, X_2 = h, X_3 = t)$\footnote{It should be noted that the order of the tosses is irrelevant as they are performed independently.}. By Bayes' rule, we have
+        We compute the posterior $\mathbf{P}(Y \mid X_1 = l, X_2 = l, X_3 = k)$. By Bayes' rule,
         \begin{equation*}
-            \mathbf{P}(Y \mid X_1 = h, X_2 = h, X_3 = t) = \frac{1}{Z} \mathbf{P}(X_1 = h, X_2 = h, X_3 = t \mid Y) \mathbf{P}(Y).
+            \mathbf{P}(Y \mid X_1 = l, X_2 = l, X_3 = k) = \frac{1}{Z} \mathbf{P}(X_1 = l, X_2 = l, X_3 = k \mid Y) \mathbf{P}(Y).
         \end{equation*}
-        But $X_1$, $X_2$ and $X_3$ are conditionally independent given $Y$, meaning that
+        Since $X_1$, $X_2$ and $X_3$ are conditionally independent given $Y$,
         \begin{equation*}
             \mathbf{P}(X_1, X_2, X_3 \mid Y) = \mathbf{P}(X_1 \mid Y) \mathbf{P}(X_2 \mid Y) \mathbf{P}(X_3 \mid Y).
         \end{equation*}
-        Then, we have
+        Then,
         \begin{equation*}
-            P(y \mid X_1 = h, X_2 = h, X_3 = t) = \frac{1}{Z} \times \frac{1}{3} \times \begin{cases}
+            P(y \mid X_1 = l, X_2 = l, X_3 = k) = \frac{1}{Z} \times \frac{1}{3} \times \begin{cases}
                 0.2 \times 0.2 \times 0.8 = \num{0.032} & \text{if } y = a \\
                 0.6 \times 0.6 \times 0.4 = \num{0.144} & \text{if } y = b \\
-                0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } y = c \\
+                0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } y = c,
             \end{cases}
         \end{equation*}
-        meaning that $b$ is the most likely coin to have been drawn. Interestingly, we don't need to normalize the distribution as we only care about the maximum.
+        with $Z = \frac{1}{3} (0.032 + 0.144 + 0.128)$. The posterior is $\langle 0.105, 0.474, 0.421 \rangle$: the normal style is the most likely, though the aggressive one is nearly as probable. Finding the most likely style only needs the unnormalized values. The order of the observations does not matter: any two lane changes and one lane keep have the same probability given each style.
     \end{solution}
 \end{parts}
 
@@ -312,6 +311,7 @@ Furthermore, $M$ copies the component from either parent with equal probability,
                 \bottomrule
             \end{tabular}
         \end{center}
+        The CPT does not depend on $s$, which only relates $G_M$ and $H_M$.
     \end{solution}
 
     \part Suppose that $P(G_A = f) = P(G_B = f) = q$. In the first network, derive an expression for $P(G_M = f)$ in terms of $s$, $m$ and $q$.
@@ -323,12 +323,13 @@ Furthermore, $M$ copies the component from either parent with equal probability,
             & = (1 - m) q^2 + 0.5 (1 - q) q + 0.5 q (1 - q) + m (1 - q)^2 \\
             & = q + m - 2qm
         \end{align*}
+        Again, $s$ does not appear.
     \end{solution}
 
     \part Over many generations of merges, we expect the distribution of the component to be the same in the parents and in the merged models. Use this to calculate the value of $q$. Only about \qty{10}{\percent} of the merged models answer in French by default: explain why the hypothesis described at the beginning of this question must be wrong.
 
     \begin{solution}
-        At equilibrium, $P(G_M = f) = P(G_A = f) = q$. Therefore, $q = q + m - 2 q m$, meaning that $q = 0.5$. Answering in French is much rarer than answering in English, which invalidates the hypothesis.
+        At equilibrium, $P(G_M = f) = P(G_A = f) = q$, so $q = q + m - 2qm$, \ie{} $m (1 - 2q) = 0$. Since $m > 0$, $q = 0.5$. Then $P(H_M = f) = s q + (1 - s)(1 - q) = 0.5$ whatever $s$: half of the merged models should answer in French, against about \qty{10}{\percent} observed, which invalidates the hypothesis.
     \end{solution}
 \end{parts}
 
