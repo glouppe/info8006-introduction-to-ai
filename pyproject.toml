@@ -4,7 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "einops>=0.8.2",
-    "jupyterlab>=4.6.3",
+    "jupyterlab>=4.6.4",
     "matplotlib>=3.11.2",
     "numpy>=2.5.3",
     "pandas>=3.0.5",
