@@ -156,7 +156,7 @@ A fraud detection program screens card payments. It is \qty{99}{\percent} accura
 
 \titledquestion{Conditional independence \aima{12}}
 
-For each of the following statements, either prove it is valid or give a counterexample.
+For each of the following statements, about values $a$, $b$, $c$ of the random variables $A$, $B$, $C$, either prove it is valid or give a counterexample.
 
 \begin{parts}
     \part If $P(a, b, c) > 0$ and $P(a \mid b, c) = P(b \mid a, c)$, then $P(a \mid c) = P(b \mid c)$.
@@ -168,13 +168,13 @@ For each of the following statements, either prove it is valid or give a counter
     \part If $P(a \mid b, c) = P(a)$, then $P(b \mid c) = P(b)$.
 
     \begin{solution}
-        False. The statement $P(a \mid b, c) = P(a)$ merely states that $a$ is independent of $b$ and $c$, it makes no claim regarding the dependence of $b$ and $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = b$.
+        False. The statement $P(a \mid b, c) = P(a)$ says that $A$ is independent of $B$ and $C$ jointly; it makes no claim about the dependence between $B$ and $C$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b, c) = P(a) = 1/2$, but $P(b \mid c) = 1 \neq P(b) = 1/2$.
     \end{solution}
 
     \part If $P(a \mid b) = P(a)$, then $P(a \mid b, c) = P(a \mid c)$.
 
     \begin{solution}
-        False. While the statement $P(a \mid b) = P(a)$ implies that $a$ is independent of $b$, it does not imply that $a$ is conditionally independent of $b$ given $c$. Counterexample: $a$ and $b$ record the results of two independent coin flips, and $c = a \vee b$.
+        False. The statement $P(a \mid b) = P(a)$ says that $A$ is independent of $B$, which does not imply that $A$ is conditionally independent of $B$ given $C$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = A \lor B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b) = P(a) = 1/2$, but $P(a \mid b, c) = P(a, b) / P(b) = 1/2 \neq P(a \mid c) = P(a) / P(c) = (1/2) / (3/4) = 2/3$.
     \end{solution}
 \end{parts}
 
