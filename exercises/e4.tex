@@ -201,7 +201,7 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
         Hence, deriving the log-likelihood
         \begin{align*}
             L(\mathbf{d}; \theta) & = \sum_i L((s_i, h_i); \theta) \\
-            & = -N(\lambda + \log{\sqrt{2\pi}\sigma}) + \sum_i s_i \log{\lambda} - \log{s_i!} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}
+            & = -N(\lambda + \log{\sqrt{2\pi}\sigma}) + \sum_i \bigg(s_i \log{\lambda} - \log{s_i!} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}\bigg)
         \end{align*}
         The maximum likelihood parameters can be found by cancelling the derivative of the log-likelihood w.r.t. each parameter.
 
@@ -212,21 +212,21 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
         \end{align*}
         which gives $\boxed{\lambda_{\text{MLE}} = \dfrac{1}{N} \sum_i s_i}$.
 
-        For $\sigma$ we have
-        \begin{align*}
-            \dfrac{\partial L}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg) \\
-            & \propto N - \dfrac{1}{\var} \sum_i (h_i - \omega s_i - H_0)^2 \\
-            & = 0
-        \end{align*}
-        which gives $\boxed{\var_{\text{MLE}} = \dfrac{1}{N} \sum_i (h_i - \omega s_i - H_0)^2}$.
-
-        For $\omega$ we have
+        For $\omega$, whose estimate does not depend on $\sigma$, we have
         \begin{align*}
             \dfrac{\partial L}{\partial \omega} & = \sum_i \dfrac{s_i (h_i - \omega s_i - H_0)}{\var} \\
             & \propto \bigg(\sum_i s_i (h_i - H_0)\bigg) - \omega \sum_i s_i^2 \\
             & = 0
         \end{align*}
         which gives $\boxed{\omega_{\text{MLE}} = \dfrac{\sum_i s_i (h_i - H_0)}{\sum_i s_i^2}}$.
+
+        For $\sigma$ we have
+        \begin{align*}
+            \dfrac{\partial L}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg) \\
+            & \propto N - \dfrac{1}{\var} \sum_i (h_i - \omega s_i - H_0)^2 \\
+            & = 0
+        \end{align*}
+        which gives, with $\omega = \omega_{\text{MLE}}$, $\boxed{\var_{\text{MLE}} = \dfrac{1}{N} \sum_i (h_i - \omega_{\text{MLE}} s_i - H_0)^2}$.
     \end{solution}
 
     \part The scheduler has just started to collect observations, and maximum likelihood can overfit when they are few. It therefore treats the parameter $\lambda$, about which it has no strong knowledge, as uncertain. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $p(\lambda \mid \mathbf{s})$, with $\mathbf{s} = \{s_i\}_{i=1}^N$?
@@ -241,7 +241,7 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
             & = \lambda^{\alpha - 1} e^{-\beta \lambda} \bigg(\dfrac{\lambda^{\sum_i s_i} e^{-N\lambda}}{\prod_i s_i!}\bigg) \\
             & \propto \lambda^{(\alpha + \sum_i s_i - 1)} e^{-(\beta + N) \lambda}
         \end{align*}
-        which corresponds to $\texttt{Gamma}(\alpha + \sum_i s_i,\ \beta + N)$, the posterior density. Note that $\propto$ stands for the normalizing constant of the posterior density. Everything that does not depend explicitly on the parameter $\lambda$ can be absorbed in the constant if it multiplies the whole.
+        which corresponds to $\texttt{Gamma}(\alpha + \sum_i s_i,\ \beta + N)$, the posterior density. The symbol $\propto$ means equality up to a normalizing constant: every factor that does not depend on $\lambda$ can be absorbed in it.
     \end{solution}
 
     \part Knowing that the mean, the variance and the mode of $\texttt{Gamma}(\alpha, \beta)$ are respectively $\dfrac{\alpha}{\beta}$, $\dfrac{\alpha}{\beta^2}$ and $\dfrac{\alpha - 1}{\beta}$, interpret how they evolve w.r.t. $N$ between the prior and the posterior.
@@ -256,9 +256,9 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
         \]
         and
         \[
-            \underset{\lambda}{\arg \max}\, p(\lambda \mid \mathbf{s}): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
+            \lambda_{\text{MAP}} = \underset{\lambda}{\arg \max}\, p(\lambda \mid \mathbf{s}): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
         \]
-        When $N = 0$, the prior and the posterior are similar, which is expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (a number of requests), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the mode converge to the same value corresponding to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
+        The mode of the posterior is the MAP estimate $\lambda_{\text{MAP}}$. When $N = 0$, the prior and the posterior are identical, as expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (a number of requests), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the MAP estimate converge to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
     \end{solution}
 \end{parts}
 
