@@ -134,11 +134,11 @@ In your local nuclear power station, there is an alarm that senses when a temper
     \part From your network topology, can you conclude $T \perp F_A \mid F_G$ and $T \perp F_A \mid F_G, A$?
 
     \begin{solution}
-        All the path from $T$ to $F_A$ are ($T, F_G, G, A, F_A$) and ($T, G, A, F_A$).
+        The paths from $T$ to $F_A$ are ($T, F_G, G, A, F_A$) and ($T, G, A, F_A$).
 
-        Knowing $F_G$, the triplet ($G, A, F_A$) is inactive (v-structure). Since it is present in both path, we can conclude that there are no active path, so $T \perp F_A \mid F_G$ is true.
+        Knowing $F_G$, the triple ($G, A, F_A$) is inactive (v-structure, $A$ unobserved). Since it is present in both paths, there is no active path, so $T \perp F_A \mid F_G$ is true.
 
-        For the second relation, the triplet ($G, A, F_A$) becomes active as we observe $A$. The only way we can ensure conditional independence is by ensuring that at least one remaining triplet is inactive in each path. For the first path, we have ($T, F_G, G$) which is inactive (cascade) which makes the path inactive. However, for the second path, ($T, G, A$) is active (cascade) which makes the path active. We have at least one active path from $T$ to $F_A$ which prevents us to conclude the conditional independence in this case.
+        For the second relation, the triple ($G, A, F_A$) becomes active as we observe $A$. The only way we can ensure conditional independence is by ensuring that at least one remaining triple is inactive in each path. For the first path, we have ($T, F_G, G$) which is inactive (cascade) which makes the path inactive. However, for the second path, ($T, G, A$) is active (cascade) which makes the path active. We have at least one active path from $T$ to $F_A$ which prevents us from concluding the conditional independence in this case.
     \end{solution}
 
     \part Suppose there are just two possible actual and measured temperatures: low ($l$) and high ($h$). The probability that the gauge gives the correct temperature is $x$ when it is working, but $y$ when it is faulty. Give the conditional probability table associated with $G$.
@@ -190,7 +190,7 @@ In your local nuclear power station, there is an alarm that senses when a temper
 
 \titledquestion{Student--TA relationship}
 
-The teaching assistant of the course is worried about the time he spends to prepare the exercise sessions. He wants to investigate the influence of students can have on his schedule. To do so, he builds the following model
+The teaching assistant of the course is worried about the time he spends to prepare the exercise sessions. He wants to investigate the influence students can have on his schedule. To do so, he builds the following model
 
 \begin{center}
     \begin{tikzpicture}[node distance = 2.5cm]
@@ -222,7 +222,7 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         \end{equation*}
         and
         \begin{equation*}
-            P(H = h \mid S = s) = \mathcal{N}(\omega s + H_0, \var).
+            p(h \mid s) = \mathcal{N}(h \mid \omega s + H_0, \var).
         \end{equation*}
 
         The parameters of those distributions are $\theta = [\lambda, \omega, \sigma]$.
@@ -234,34 +234,34 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         \end{align*}
         from which we derive the log-likelihood
         \begin{equation}
-            \mathit{LL}((s_i, h_i); \theta) = s_i \log{\lambda} - \lambda - \log{s_i!} - \log{\sqrt{2\pi}\sigma} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}.
+            L((s_i, h_i); \theta) = s_i \log{\lambda} - \lambda - \log{s_i!} - \log{\sqrt{2\pi}\sigma} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}.
         \end{equation}
     \end{solution}
 
-    \part The TA collects a set $\mathcal{D} = \{(s_i, h_i)\}_{i=1}^N$ of independent observations. Derive the maximum likelihood estimate of the parameters.
+    \part The TA collects a set $\mathbf{d} = \{(s_i, h_i)\}_{i=1}^N$ of independent observations. Derive the maximum likelihood estimate of the parameters.
 
     \begin{solution}
         We first have to define the joint likelihood of those observations. Since they are assumed i.i.d., we have
         \[
-            P(\mathcal{D} \mid \theta) = \prod_{i=1}^N P((s_i, h_i) \mid \theta)
+            P(\mathbf{d} \mid \theta) = \prod_{i=1}^N P((s_i, h_i) \mid \theta)
         \]
         Hence, deriving the log-likelihood
         \begin{align*}
-            \mathit{LL}(\mathcal{D}; \theta) & = \sum_i \mathit{LL}((s_i, h_i); \theta) \\
+            L(\mathbf{d}; \theta) & = \sum_i L((s_i, h_i); \theta) \\
             & = -N(\lambda + \log{\sqrt{2\pi}\sigma}) + \sum_i s_i \log{\lambda} - \log{s_i!} - \dfrac{(h_i - \omega s_i - H_0)^2}{2\var}
         \end{align*}
         The maximum likelihood parameters can be found by cancelling the derivative of the log-likelihood w.r.t. each parameter.
 
         For $\lambda$ we have
         \begin{align*}
-            \dfrac{\partial \mathit{LL}}{\partial \lambda} & = -N + \sum_i \dfrac{s_i}{\lambda} \\
+            \dfrac{\partial L}{\partial \lambda} & = -N + \sum_i \dfrac{s_i}{\lambda} \\
             & = 0
         \end{align*}
         which gives $\boxed{\lambda_{\text{MLE}} = \dfrac{1}{N} \sum_i s_i}$.
 
         For $\sigma$ we have
         \begin{align*}
-            \dfrac{\partial \mathit{LL}}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg) \\
+            \dfrac{\partial L}{\partial \sigma} & = -\dfrac{1}{\sigma} \bigg(N - \sum_i \dfrac{(h_i - \omega s_i - H_0)^2}{\var}\bigg) \\
             & \propto N - \dfrac{1}{\var} \sum_i (h_i - \omega s_i - H_0)^2 \\
             & = 0
         \end{align*}
@@ -269,26 +269,26 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
 
         For $\omega$ we have
         \begin{align*}
-            \dfrac{\partial \mathit{LL}}{\partial \omega} & = \sum_i \dfrac{s_i (h_i - \omega s_i - H_0)}{\var} \\
+            \dfrac{\partial L}{\partial \omega} & = \sum_i \dfrac{s_i (h_i - \omega s_i - H_0)}{\var} \\
             & \propto \bigg(\sum_i s_i (h_i - H_0)\bigg) - \omega \sum_i s_i^2 \\
             & = 0
         \end{align*}
         which gives $\boxed{\omega_{\text{MLE}} = \dfrac{\sum_i s_i (h_i - H_0)}{\sum_i s_i^2}}$.
     \end{solution}
 
-    \part The TA has just started to collect observations of students leaving the classroom. Being an adept of the Bayes' school, he knows that using MLE can lead to overfitting. Hence, he decides to incorporate uncertainty in his analysis of the parameter $\lambda$ as he has no strong knowledge about it. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $P(\lambda \mid \mathcal{S} = \{s_i\}_{i=1}^N)$?
+    \part The TA has just started to collect observations of students leaving the classroom. Being an adept of the Bayes' school, he knows that using MLE can lead to overfitting. Hence, he decides to incorporate uncertainty in his analysis of the parameter $\lambda$ as he has no strong knowledge about it. Using a prior $\lambda \sim \texttt{Gamma}(\alpha, \beta)$, what would be the posterior distribution $p(\lambda \mid \mathbf{s})$, with $\mathbf{s} = \{s_i\}_{i=1}^N$?
 
     \textit{Hint:} $\texttt{Gamma}(x \mid \alpha, \beta) = \frac{1}{Z} x^{\alpha - 1} e^{-\beta x}$, with $Z$ a normalizing constant.
 
     \begin{solution}
-        Using the Bayes' theorem
+        Using Bayes' rule
         \begin{align*}
-            P(\lambda \mid \mathcal{S}) & \propto P(\mathcal{S} \mid \lambda) P(\lambda) \\
+            p(\lambda \mid \mathbf{s}) & \propto P(\mathbf{s} \mid \lambda) p(\lambda) \\
             & \propto \lambda^{\alpha - 1} e^{-\beta \lambda} \prod_i \dfrac{\lambda^{s_i} e^{-\lambda}}{s_i!} \\
             & = \lambda^{\alpha - 1} e^{-\beta \lambda} \bigg(\dfrac{\lambda^{\sum_i s_i} e^{-N\lambda}}{\prod_i s_i!}\bigg) \\
             & \propto \lambda^{(\alpha + \sum_i s_i - 1)} e^{-(\beta + N) \lambda}
         \end{align*}
-        which corresponds to $\texttt{Gamma}(\alpha + \sum_i s_i,\ \beta + N)$, the posterior density. Note that $\propto$ stands for the normalizing constant of the posterior density. Everything that does not depends explicitly on the parameter $\lambda$ can be absorbed in the constant if it multiplies the whole.
+        which corresponds to $\texttt{Gamma}(\alpha + \sum_i s_i,\ \beta + N)$, the posterior density. Note that $\propto$ stands for the normalizing constant of the posterior density. Everything that does not depend explicitly on the parameter $\lambda$ can be absorbed in the constant if it multiplies the whole.
     \end{solution}
 
     \part Knowing that the mean, the variance and the mode of $\texttt{Gamma}(\alpha, \beta)$ are respectively $\dfrac{\alpha}{\beta}$, $\dfrac{\alpha}{\beta^2}$ and $\dfrac{\alpha - 1}{\beta}$, interpret how they evolve w.r.t. $N$ between the prior and the posterior.
@@ -303,7 +303,7 @@ where $H_0$ corresponds to the number of hours the TA should spend per session r
         \]
         and
         \[
-            \underset{\lambda}{\arg \max} P(\lambda \mid .): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
+            \underset{\lambda}{\arg \max}\, p(\lambda \mid \mathbf{s}): \dfrac{\alpha - 1}{\beta} \Rightarrow \dfrac{\alpha + \sum_i s_i - 1}{\beta + N}.
         \]
         When $N = 0$, the prior and the posterior are similar, which is expected. When $N \rightarrow \infty$, knowing that $s \in \mathbb{N}$ by definition (number of students leaving the room), we can assume that, for reasonable values of $\alpha, \beta$, we have $\sum_i s_i \gg \alpha$ and $N \gg \beta$. This implies that the mean and the mode converge to the same value corresponding to $\lambda_{\text{MLE}}$. The variance decreases towards 0, which suggests that $\lambda_{\text{MLE}}$ is the best and unique estimate of $\lambda$ for an infinite amount of observations. This illustrates the trade-off between likelihood and prior in a Bayesian parameter learning setting. As more data are observed, the uncertainty about a parameter decreases smoothly from the prior to the likelihood.
     \end{solution}
@@ -335,7 +335,7 @@ Let be the following Bayesian network describing some features of a car's electr
         \begin{itemize}
             \item A reasonable prior for IcyWeather might be $0.05$ (depending on location and season).
             \item $P(\mathit{Battery} \mid \mathit{IcyWeather}) = 0.95, P(\mathit{Battery} \mid \lnot \mathit{IcyWeather}) = 0.997$.
-            \item $P(\mathit{StarterMotor} \mid \mathit{IcyWeather}) = 0.98$, $P(\mathit{Battery} \mid \lnot \mathit{IcyWeather}) = 0.999$.
+            \item $P(\mathit{StarterMotor} \mid \mathit{IcyWeather}) = 0.98$, $P(\mathit{StarterMotor} \mid \lnot \mathit{IcyWeather}) = 0.999$.
             \item $P(\mathit{Radio} \mid \mathit{Battery}) = 0.9999, P(\mathit{Radio} \mid \lnot \mathit{Battery}) = 0.05$.
             \item $P(\mathit{Ignition} \mid \mathit{Battery}) = 0.998, P(\mathit{Ignition} \mid \lnot \mathit{Battery}) = 0.01$.
             \item $P(\mathit{Gas}) = 0.995$.
@@ -466,12 +466,12 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
     \part Compute the prior and posterior predictive distributions $P(y)$ and $P(y \mid \mathcal{Y}_c)$ if you have access to one observation, \ie{} $\mathcal{Y}_c = \{y_o\}$.
 
     \begin{solution}
-        The following exercise uses the Gaussian model identities (cfr. theoretical reminder of this session).
+        The following exercise uses the Gaussian model identities (see the cheat sheet of the recap).
 
         We first identify the components we have:
         \begin{itemize}
-            \item $P(y \mid \mu_y) = \N(\mu_y, \var)$
-            \item $P(\mu_y) = \N(\mu_l, \sigma_l^2)$
+            \item $p(y \mid \mu_y) = \N(y \mid \mu_y, \var)$
+            \item $p(\mu_y) = \N(\mu_y \mid \mu_l, \sigma_l^2)$
         \end{itemize}
 
         \textbf{Prior predictive}
@@ -502,7 +502,7 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
                 \end{pmatrix}
             \end{pmatrix}
         \]
-        from which we extract $P(y) = \N(\mu_l, \var + \sigma_l^2)$.
+        from which we extract $p(y) = \N(y \mid \mu_l, \var + \sigma_l^2)$.
 
         \textbf{Posterior predictive}
         \[
@@ -535,8 +535,8 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
         \]
         from which we extract
         \begin{align*}
-            P(\mu_y \mid y_o) & = \N(\mu_{\text{post}}, \sigma_{\text{post}}^2) \\
-            & = \N\bigg(\mu_l + \dfrac{\sigma_l^2}{\var + \sigma_l^2} (y_o - \mu_l), \sigma_l^2 - \dfrac{\sigma_l^4}{\var + \sigma_l^2}\bigg).
+            p(\mu_y \mid y_o) & = \N(\mu_y \mid \mu_{\text{post}}, \sigma_{\text{post}}^2) \\
+            & = \N\bigg(\mu_y \,\bigg|\, \mu_l + \dfrac{\sigma_l^2}{\var + \sigma_l^2} (y_o - \mu_l), \sigma_l^2 - \dfrac{\sigma_l^4}{\var + \sigma_l^2}\bigg).
         \end{align*}
         After simplification, we identify the posterior parameters as
         \[
@@ -546,45 +546,21 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
         \[
             \sigma_{\text{post}}^2 = \dfrac{\var}{\sigma_l^2 + \var} \sigma_l^2.
         \]
-        % We derive
-        % \begin{align*}
-        %     P(\mu_y \mid \mathcal{Y}_c) &\propto P(\mathcal{Y}_c \mid \mu_y)P(\mu_y)\\
-        %     &\propto e^{-\frac{(\mu_y - \mu_l)^2}{2\sigma_l^2}}\prod_{i=1}^C e^{-\frac{(y_i - \mu_y)^2}{2\var}}\\
-        %     &= e^{-\frac{(\mu_y - \mu_l)^2}{2\sigma_l^2} -\frac{\sum_i(y_i - \mu_y)^2}{2\var}}
-        % \end{align*}
-        % looking at the exponent
-        % \begin{align*}
-        %     -\frac{(\mu_y - \mu_l)^2}{2\sigma_l^2} -\frac{\sum_i(y_i - \mu_y)^2}{2\var} &= -\frac{1}{2}\bigg( \frac{\mu_y^2}{\sigma_l^2} + \frac{\mu_l^2}{\sigma_l^2} - \frac{2\mu_y\mu_l}{\sigma_l^2} + \frac{C\mu_y^2}{\var} + \frac{\sum_i y_i^2}{\var} - \frac{2\sum_i y_i\mu_y}{\var}\bigg)
-        % \end{align*}
-        % we can get rid of all elements not depending on $\mu_y$ as they will be absorbed in the normalizing constant when taking to the exponent. Furthermore, if we set $C\mu_{MLE}= C\bar{y} = \sum_i y_i$, the reduced exponent becomes
-        % \begin{align*}
-        %     \text{exponent} &= -\frac{1}{2}\bigg( \frac{\mu_y^2}{\sigma_l^2} - \frac{2\mu_y\mu_l}{\sigma_l^2} + \frac{C\mu_y^2}{\var} - \frac{2C \bar{y}\mu_y}{\var}\bigg)\\
-        %     &= -\frac{1}{2}\bigg[ \mu_y^2\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg) - 2\mu_y\bigg(\frac{\mu_l}{\sigma_l^2} + \frac{C\bar{y}}{\var}\bigg)\bigg]\\
-        %     &= -\frac{1}{2}\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)\bigg[\mu_y^2 - 2\mu_y\dfrac{\bigg(\frac{\mu_l}{\sigma_l^2} + \frac{C\bar{y}}{\var}\bigg)}{\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)}\bigg]\\
-        % \end{align*}
-        % we can add $\frac{\bigg(\frac{\mu_l}{\sigma_l^2} + \frac{C\bar{y}}{\var}\bigg)^2}{\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)^2} - \frac{\bigg(\frac{\mu_l}{\sigma_l^2} + \frac{C\bar{y}}{\var}\bigg)^2}{\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)^2}$ into the brackets to complete the square. However, we observe that this element does not depends on $\mu_y$. Hence, we use the addition to complete the square and the substraction is absorbed in the normalizing constant. We are left with
-        % \begin{align*}
-        %     \text{exponent} &= -\frac{1}{2}\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)\bigg[\mu_y - \dfrac{\bigg(\frac{\mu_l}{\sigma_l^2} + \frac{C\bar{y}}{\var}\bigg)}{\bigg(\frac{1}{\sigma_l^2} + \frac{C}{\var}\bigg)}\bigg]^2
-        % \end{align*}
-        % which gives \[\mu_{post} = \dfrac{\mu_l\var + C\bar{y}\sigma_l^2}{\var + C\sigma_l^2} = \dfrac{\var}{\var + C\sigma_l^2}\mu_l + \dfrac{C\sigma_l^2}{\var + C\sigma_l^2}\mu_{MLE}\]
-        % and
-        % \[\sigma_{post}^2 = \bigg(\dfrac{1}{\sigma_l^2} + \dfrac{C}{\var}\bigg)^{-1} = \dfrac{\var}{C\sigma_l^2 + \var} \sigma_l^2.\]
-
         Following the same development as for the prior predictive, we have
         \[
-            P(y \mid \mathcal{Y}_c) = \N(\mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
+            p(y \mid \mathcal{Y}_c) = \N(y \mid \mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
         \]
     \end{solution}
 
-    \part Looking at you predictive uncertainty, what is the benefit of incorporating $\mathcal{Y}_c$?
+    \part Looking at your predictive uncertainty, what is the benefit of incorporating $\mathcal{Y}_c$?
 
     \begin{solution}
         As a reminder, we found
         \[
-            P(y) = \N(\mu_l, \var + \sigma_l^2).
+            p(y) = \N(y \mid \mu_l, \var + \sigma_l^2).
         \]
         \[
-            P(y \mid \mathcal{Y}_c) = \N(\mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
+            p(y \mid \mathcal{Y}_c) = \N(y \mid \mu_{\text{post}}, \var + \sigma_{\text{post}}^2).
         \]
         Comparing only the variances, we have
         \begin{align*}
@@ -627,62 +603,62 @@ Considering the Bayesian network below, which of the following statements are en
 \end{center}
 
 \begin{solution}
-    We apply the d-separation algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triplets are active.
+    We apply the d-separation algorithm. To show that two variables $X$ and $Y$ could be dependent, it is sufficient to find a single \emph{active} (undirected) path from $X$ to $Y$. A path is active if all of its consecutive triples are active.
 \end{solution}
 
 \begin{parts}
-    \part $P(B, C) = P(B) P(C)$
+    \part $\mathbf{P}(B, C) = \mathbf{P}(B) \mathbf{P}(C)$
 
     \begin{solution}
-        This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The three paths that link $B$ and $C$ are $(B, A, C)$, $(B, D, C)$ and $(B, F, A, C)$. $(B, A, C)$ is active because $A$ is unknown ($\wedge$-structure). We cannot guarantee that $B \perp C$.
+        This is true iff (if and only if) $B \perp C$ ($B$ is independent from $C$). The three paths that link $B$ and $C$ are $(B, A, C)$, $(B, D, C)$ and $(B, F, A, C)$. $(B, A, C)$ is active because $A$ is unobserved (common parent). We cannot guarantee that $B \perp C$.
     \end{solution}
 
-    \part $P(B, C \mid A) = P(B \mid A) P(C \mid A)$
+    \part $\mathbf{P}(B, C \mid A) = \mathbf{P}(B \mid A) \mathbf{P}(C \mid A)$
 
     \begin{solution}
-        This is true iff $B \perp C \mid A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unknown ($\vee$-structure). In $(B, F, A, C)$, the triplet $(B, F, A)$ is not active ($\vee$-structure). $(F, A, C)$ is not active either. We can guarantee that $B \perp C \mid A$.
+        This is true iff $B \perp C \mid A$. This time, $(B, A, C)$ is not active because $A$ is known. $(B, D, C)$ is not active either because $D$ is unobserved (v-structure). In $(B, F, A, C)$, the triple $(B, F, A)$ is not active (v-structure). $(F, A, C)$ is not active either. We can guarantee that $B \perp C \mid A$.
     \end{solution}
 
-    \part $P(F, E) = P(F) P(E)$
+    \part $\mathbf{P}(F, E) = \mathbf{P}(F) \mathbf{P}(E)$
 
     \begin{solution}
-        This is true iff $F \perp E$. The four paths that link $F$ and $E$ are $(F, A, C, E)$, $(F, A, B, D, C, E)$, $(F, B, A, C, E)$ and $(F, B, D, C, E)$. In $(F, A, C, E)$, the triplets $(F, A, C)$ ($\wedge$-structure) and $(A, C, E)$ are both active. We cannot guarantee that $F \perp E$.
+        This is true iff $F \perp E$. The four paths that link $F$ and $E$ are $(F, A, C, E)$, $(F, A, B, D, C, E)$, $(F, B, A, C, E)$ and $(F, B, D, C, E)$. In $(F, A, C, E)$, the triples $(F, A, C)$ (common parent) and $(A, C, E)$ (cascade) are both active. We cannot guarantee that $F \perp E$.
     \end{solution}
 
-    \part $P(F \mid A, D, E) = P(F \mid A, D)$
+    \part $\mathbf{P}(F \mid A, D, E) = \mathbf{P}(F \mid A, D)$
 
     \begin{solution}
-        This is true iff $F \perp E \mid A, D$. This time, the triplets $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive ($\wedge$-structure, but $A$ is known). In $(F, B, D, C, E)$, $(F, B, D)$ is active. Indeed, knowing an extremity of a triplet does not impact whether it is active or not. Only the center variable is important. Then we have $(B, D, C)$ which is active ($\vee$-structure, but $D$ is known) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
+        This is true iff $F \perp E \mid A, D$. This time, the triples $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive (common parent, $A$ observed). In $(F, B, D, C, E)$, $(F, B, D)$ is active. Indeed, knowing an extremity of a triple does not impact whether it is active or not. Only the center variable is important. Then we have $(B, D, C)$ which is active (v-structure, $D$ observed) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
     \end{solution}
 
-    \part $P(B, E) = \sum_{a, c, d, f} P(a) P(B \mid a) P(c \mid a) P(d \mid B, c) P(E \mid c) P(f \mid a, B)$
+    \part $\mathbf{P}(B, E) = \sum_{a, c, d, f} P(a) \mathbf{P}(B \mid a) P(c \mid a) \mathbf{P}(d \mid B, c) \mathbf{P}(E \mid c) \mathbf{P}(f \mid a, B)$
 
     \begin{solution}
         We notice that
         \begin{equation*}
-            P(A, B, C, D, E, F) = P(A) P(B \mid A) P(C \mid A) P(D \mid B, C) P(E \mid C) P(F \mid A, B)
+            \mathbf{P}(A, B, C, D, E, F) = \mathbf{P}(A) \mathbf{P}(B \mid A) \mathbf{P}(C \mid A) \mathbf{P}(D \mid B, C) \mathbf{P}(E \mid C) \mathbf{P}(F \mid A, B)
         \end{equation*}
         corresponds exactly to
         \begin{equation*}
-            P(X_1, \dots, X_n) = \prod_{i = 1}^n P(X_i \mid \mathit{parents}(X_i)) ,
+            \mathbf{P}(X_1, \dots, X_n) = \prod_{i = 1}^n \mathbf{P}(X_i \mid \text{parents}(X_i)) ,
         \end{equation*}
-        for the considered network, which we know is guaranteed. We also known that
+        for the considered network, which we know is guaranteed. We also know that
         \begin{equation*}
-            P(B, E) = \sum_{a, c, d, f} P(a, B, c, d, E, f)
+            \mathbf{P}(B, E) = \sum_{a, c, d, f} \mathbf{P}(a, B, c, d, E, f)
         \end{equation*}
         Hence, the initial statement is always true.
     \end{solution}
 \end{parts}
 
-For the same network, use inference by variable elimination to compute $P(E \mid A = 1, B = 1)$.
+For the same network, use inference by variable elimination to compute $\mathbf{P}(E \mid A = 1, B = 1)$.
 
 \begin{solution}
     We have
     \begin{align*}
-        P(E \mid A = 1, B = 1) & = \alpha \sum_{c, d} P(A = 1, B = 1, c, d, E) \\
-        & = \alpha \sum_{c, d} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) P(d \mid B = 1, c) P(E \mid c) \\
-        & = \alpha P(A = 1) P(B = 1 \mid A = 1) \\
-        & \qquad \sum_{c} P(c \mid A = 1) P(E \mid c) \sum_d P(d \mid B = 1, c) .
+        \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d} \mathbf{P}(A = 1, B = 1, c, d, E) \\
+        & = \frac{1}{Z} \sum_{c, d} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) P(d \mid B = 1, c) \mathbf{P}(E \mid c) \\
+        & = \frac{1}{Z} P(A = 1) P(B = 1 \mid A = 1) \\
+        & \qquad \sum_{c} P(c \mid A = 1) \mathbf{P}(E \mid c) \sum_d P(d \mid B = 1, c) .
     \end{align*}
     We define the initial factors as
     \begin{align*}
@@ -701,7 +677,7 @@ For the same network, use inference by variable elimination to compute $P(E \mid
     \end{align*}
     Finally,
     \begin{equation*}
-        P(E \mid A = 1, B = 1) = \alpha f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
+        \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
     \end{equation*}
 \end{solution}
 
@@ -756,7 +732,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
             s_{\text{MAP}} & = \arg\max_{s} P(s \mid b, h, m) \\
             & = \arg\max_{s} P(b, h, m \mid s) P(s) .
         \end{align*}
-        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $P(B, H, M \mid S) = P(B \mid S) P(H \mid S) P(M \mid S)$. Then, the formula becomes
+        Under the naive Bayes assumptions of Pacbaby, $B$, $H$ and $M$ become independent conditionally to $S$, \ie{} $\mathbf{P}(B, H, M \mid S) = \mathbf{P}(B \mid S) \mathbf{P}(H \mid S) \mathbf{P}(M \mid S)$. Then, the formula becomes
         \begin{align*}
             s_{\text{MAP}} & = \arg\max_{s} P(b \mid s) P(h \mid s) P(m \mid s) P(s) .
         \end{align*}
@@ -765,7 +741,7 @@ Because the pictures are black and white, and were taken from various angles, Pa
     \part What are the parameters of this model? Give estimates of these parameters according to the pictures provided by Pacwoman.
 
     \begin{solution}
-        The parameters of the model are the elements of the prior vector $P(S)$ and the (conditional) probability matrices $P(B \mid S)$, $P(H \mid S)$ and $P(M \mid S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
+        The parameters of the model are the elements of the prior vector $\mathbf{P}(S)$ and the (conditional) probability matrices $\mathbf{P}(B \mid S)$, $\mathbf{P}(H \mid S)$ and $\mathbf{P}(M \mid S)$. An (unbiased) estimation of these elements can be computed as the frequency of their respective events within the learning set (of pictures).
 
         \begin{center}
             \renewcommand{\arraystretch}{1.5}
@@ -825,7 +801,7 @@ The Bayesian network below represents how the final grade of a class is computed
         \end{equation*}
         where $p(y \mid x_1, x_2, x_3)$ and $p(x_3 \mid x_1, x_2)$ are linear Gaussian distributions given in the statement. Therefore, we have
         \begin{equation*}
-            p(y \mid x_1, x_2) = \N\rbk*{a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
+            p(y \mid x_1, x_2) = \N\rbk*{y \mid a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
         \end{equation*}
         and, by definition of a Gaussian distribution,
         \begin{equation*}
@@ -837,9 +813,9 @@ The Bayesian network below represents how the final grade of a class is computed
 
     \begin{solution}
         \allowdisplaybreaks
-        We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
+        We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(y \mid w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
         \begin{align*}
-            h_{\text{MLE}} & = \arg \max_w p(d \mid h) \\
+            h_{\text{MLE}} & = \arg \max_h p(d \mid h) \\
             & = \arg \max_h \prod_i p(x_i, y_i \mid h) \\
             & = \arg \max_h \log \prod_i p(x_i, y_i \mid h) \\
             & = \arg \max_h \sum_i \log p(x_i, y_i \mid h) \\
@@ -880,7 +856,21 @@ The Bayesian network below represents how the final grade of a class is computed
 
 \titledquestion{Heteroscedastic linear regression}
 
-What becomes the expression of the weight vector $w$ in the solution of question 2.2 if the noise is different for each sample? In particular, $y_i \sim N(w^T x, \sigma_i^2)$ and we know the values $\sigma_i$.
+In linear regression with Gaussian noise of constant variance, $y_i \sim \N(w^T x_i, \sigma^2)$, the maximum likelihood estimate of the weights is $w_{\text{MLE}} = (X^T X)^{-1} X^T Y$, where the rows of $X$ are the inputs $x_i^T$ and $Y = (y_i)$. What does this estimate become if the noise is different for each sample, \ie{} $y_i \sim \N(w^T x_i, \sigma_i^2)$ with known variances $\sigma_i^2$?
+
+\begin{solution}
+    The log-likelihood of the weights is
+    \begin{equation*}
+        L(w) = \sum_i \log \N(y_i \mid w^T x_i, \sigma_i^2) = - \sum_i \frac{(w^T x_i - y_i)^2}{2 \sigma_i^2} + \text{const},
+    \end{equation*}
+    so that maximizing it minimizes a weighted sum of squares, each sample weighted by its precision $1 / \sigma_i^2$. With $W = \diag(1 / \sigma_1^2, \ldots, 1 / \sigma_N^2)$,
+    \begin{equation*}
+        \nabla_{\!w} L(w) = - X^T W (X w - Y) = 0
+        \quad \Leftrightarrow \quad
+        w_{\text{MLE}} = (X^T W X)^{-1} X^T W Y .
+    \end{equation*}
+    Noisy samples count less. With equal variances, $W$ is proportional to the identity and the estimate of the homoscedastic case is recovered.
+\end{solution}
 
 \end{exercises}
 
@@ -921,13 +911,13 @@ What becomes the expression of the weight vector $w$ in the solution of question
 
     \item In a Bayesian network
     \begin{enumerate}[label=$\bigcirc$]
-        \item \correct{Independence between two variables is guaranteed if all path connecting them are inactive.}
-        \item We can guarantee dependence between two variables using d-separation.
-        \item A path between two nodes is active if it contains at least one active triplet.
-        \item A cascade triplet is active if the center node is observed.
+        \item \correct{independence between two variables is guaranteed if all paths connecting them are inactive.}
+        \item dependence between two variables can be guaranteed using d-separation.
+        \item a path between two nodes is active if it contains at least one active triple.
+        \item a cascade triple is active if the center node is observed.
     \end{enumerate}
 
-    \item In a one node Bayesian network with a binary variable following a Bernoulli distribution. If we observe $T$ positive realizations and $F$ negative ones,
+    \item Consider a Bayesian network with a single binary variable, following a Bernoulli distribution. If we observe $T$ positive realizations and $F$ negative ones,
     \begin{enumerate}[label=$\bigcirc$]
         \item the maximum likelihood estimate of the positive probability is $\dfrac{T}{F}$.
         \item the maximum likelihood estimate of the positive probability is $\dfrac{T + F}{T}$.
