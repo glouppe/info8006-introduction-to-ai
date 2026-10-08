@@ -691,11 +691,12 @@ Considering the Bayesian network below, which of the following statements are en
 For the same network, use inference by variable elimination to compute $\mathbf{P}(E \mid A = 1, B = 1)$.
 
 \begin{solution}
-    We have
+    The hidden variables are $C$, $D$ and $F$. By the relevance theorem, $D$ and $F$, which are not ancestors of $\cbk{E, A, B}$, could be removed from the network; we keep them to see why. We have
     \begin{align*}
-        \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d} \mathbf{P}(A = 1, B = 1, c, d, E) \\
-        & = \frac{1}{Z} \sum_{c, d} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) P(d \mid B = 1, c) \mathbf{P}(E \mid c) \\
-        & = \frac{1}{Z} P(A = 1) P(B = 1 \mid A = 1) \\
+        \mathbf{P}(E \mid A = 1, B = 1) & = \frac{1}{Z} \sum_{c, d, f} \mathbf{P}(A = 1, B = 1, c, d, E, f) \\
+        & = \frac{1}{Z} \sum_{c, d, f} P(A = 1) P(B = 1 \mid A = 1) P(c \mid A = 1) \\
+        & \qquad P(d \mid B = 1, c) \mathbf{P}(E \mid c) P(f \mid A = 1, B = 1) \\
+        & = \frac{1}{Z} P(A = 1) P(B = 1 \mid A = 1) \sum_f P(f \mid A = 1, B = 1) \\
         & \qquad \sum_{c} P(c \mid A = 1) \mathbf{P}(E \mid c) \sum_d P(d \mid B = 1, c) .
     \end{align*}
     We define the initial factors as
@@ -704,19 +705,26 @@ For the same network, use inference by variable elimination to compute $\mathbf{
         f_2 & = P(B = 1 \mid A = 1) \\
         f_3(C) & = P(C \mid A = 1) \\
         f_4(E, C) & = P(E \mid C) \\
-        f_5(C, D) & = P(D \mid B = 1, C)
+        f_5(C, D) & = P(D \mid B = 1, C) \\
+        f_6(F) & = P(F \mid A = 1, B = 1)
     \end{align*}
     and the composite factors as
     \begin{align*}
-        f_6(C) & = \sum_d f_5(C, d) \\
-        f_7(C, E) & = f_3(C) \times f_4(E, C) \times f_6(C) \\
-        f_8(E) & = \sum_c f_7(c, E) \\
-        f_9(E) & = f_1 \times f_2 \times f_8(E) .
+        f_7 & = \sum_f f_6(f) = 1 \\
+        f_8(C) & = \sum_d f_5(C, d) = 1 \\
+        f_9(C, E) & = f_3(C) \times f_4(E, C) \times f_8(C) \\
+        f_{10}(E) & = \sum_c f_9(c, E) \\
+        f_{11}(E) & = f_1 \times f_2 \times f_7 \times f_{10}(E) .
     \end{align*}
     Finally,
     \begin{equation*}
-        \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_9(E) = \frac{f_9(E)}{\sum_e f_9(e)}.
+        \mathbf{P}(E \mid A = 1, B = 1) = \frac{1}{Z} f_{11}(E) = \frac{f_{11}(E)}{\sum_e f_{11}(e)}.
     \end{equation*}
+    Eliminating $F$ and $D$ gives factors equal to 1, as the relevance theorem predicts, and the constant $f_1 f_2$ cancels in the normalization. What remains is
+    \begin{equation*}
+        \mathbf{P}(E \mid A = 1, B = 1) = \sum_c P(c \mid A = 1) \mathbf{P}(E \mid c) = \mathbf{P}(E \mid A = 1),
+    \end{equation*}
+    already normalized. The evidence $B = 1$ does not matter: $E \perp B \mid A$ by d-separation, since every path from $B$ to $E$ reaches $C$ through $(B, A, C)$, $(B, D, C)$ or $(B, F, A, C)$, all inactive given $A$, as in (b).
 \end{solution}
 
 \titledquestion{Recognizing Pacman \source{CS188, Spring 2014}}
