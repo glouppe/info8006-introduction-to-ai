@@ -194,9 +194,9 @@ A monitoring program supervises the core of a nuclear power station. An alarm so
         \begin{align*}
             P(T = h \mid G = h, F_G = 0) & = \frac{P(T = h, G = h, F_G = 0)}{P(G = h, F_G = 0)} \\
             & = \frac{P(G = h \mid T = h, F_G = 0) P(F_G = 0 \mid T = h) P(T = h)}{\sum_t P(G = h \mid t, F_G = 0) P(F_G = 0 \mid t) P(t)} \\
-            & = \frac{x P(F_G = 0 \mid T = h) P(T = h)}{x P(F_G = 0 \mid T = h) P(T = h) + (1 - x) P(F_G = 0 \mid T = l) P(T = l)},
+            & = \frac{x \pi_h}{x \pi_h + (1 - x) \pi_l},
         \end{align*}
-        using the CPT of (c), $P(G = h \mid T = h, F_G = 0) = x$ and $P(G = h \mid T = l, F_G = 0) = 1 - x$. It cannot be developed further, as $P(T)$ and $P(F_G \mid T)$ are not given.
+        with $\pi_t = P(F_G = 0 \mid T = t) P(T = t)$, using the CPT of (c), $P(G = h \mid T = h, F_G = 0) = x$ and $P(G = h \mid T = l, F_G = 0) = 1 - x$. It cannot be developed further, as $P(T)$ and $P(F_G \mid T)$ are not given.
     \end{solution}
 \end{parts}
 
