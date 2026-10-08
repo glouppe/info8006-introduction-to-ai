@@ -15,14 +15,14 @@
 
 \begin{recap}
     \topic{Bayesian networks}
-    With a partially observable environment, an agent reasons about the state $s$ from its percepts $e$ with the joint distribution $P(s, e) = P(s) P(e \mid s)$. When $s$ and $e$ are assignments of many random variables $X_1, \ldots, X_n$, a \term{Bayesian network} represents this distribution compactly. It is a directed acyclic graph with one node per variable, each node $X_i$ annotated with a conditional distribution $\mathbf{P}(X_i \mid \text{parents}(X_i))$, given as a \term{conditional probability table} (CPT) for discrete variables. The topology asserts the \term{local Markov property}, $X_i \perp \text{non-descendants}(X_i) \mid \text{parents}(X_i)$, hence the factorization
+    The state $s$ and the percepts $e$ of an agent are assignments of random variables $X_1, \ldots, X_n$, with joint distribution $P(s, e) = P(s) P(e \mid s)$. A \term{Bayesian network} is a directed acyclic graph with one node per variable $X_i$, annotated with a \term{conditional probability table} (CPT) $\mathbf{P}(X_i \mid \text{parents}(X_i))$. It asserts the \term{local Markov property} $X_i \perp \text{non-descendants}(X_i) \mid \text{parents}(X_i)$, hence
     \[
         P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i \mid \text{parents}(X_i)).
     \]
-    Naive Bayes is the network in which a cause $C$ is the only parent of each effect $E_i$.
+    \term{Naive Bayes} is the network $C \to E_1, \ldots, E_n$.
 
     \topic{d-separation}
-    $X_i \perp X_j \mid Z_1, \ldots, Z_m$ is guaranteed if every undirected path between $X_i$ and $X_j$ is \term{inactive}; if one path is \term{active}, independence is not guaranteed. A path is active iff each of its triples is active:
+    $X \perp Y \mid \mathbf{Z}$ is guaranteed if every undirected path between $X$ and $Y$ is \term{inactive}; a path is \term{active} iff all its triples are:
     \begin{center}
         \begin{tabular}{lll}
             \toprule
@@ -34,25 +34,31 @@
             \bottomrule
         \end{tabular}
     \end{center}
-    Given its \term{Markov blanket}, \ie{} its parents, its children and the other parents of its children, a variable is independent of all the others.
+    Given its \term{Markov blanket} (parents, children, other parents of its children), a variable is independent of all others.
 
     \topic{Inference}
-    Given \term{evidence} variables $\mathbf{E}$ observed as $\mathbf{e}$, a \term{query} variable $Q$ and \term{hidden} variables $\mathbf{H}$, inference computes
+    For a \term{query} $Q$, \term{evidence} $\mathbf{E} = \mathbf{e}$ and \term{hidden} variables $\mathbf{H}$,
     \[
         \mathbf{P}(Q \mid \mathbf{e}) = \frac{1}{Z} \sum_{\mathbf{h}} \mathbf{P}(Q, \mathbf{h}, \mathbf{e}), \qquad Z = \sum_q \sum_{\mathbf{h}} P(q, \mathbf{h}, \mathbf{e}),
     \]
-    with the joint entries written as products of CPT entries. \term{Inference by enumeration} evaluates the sums depth-first, in $O(n)$ space and $O(d^n)$ time for $n$ variables with $d$ values. \term{Variable elimination} evaluates them right to left and stores the intermediate \term{factors}, multi-dimensional arrays initialized with the CPTs given the evidence. It alternates the \term{join} of factors, their pointwise product over the union of their variables, and the \term{elimination} of a hidden variable, summed out of the join of the factors that mention it. Its cost is that of the largest factor, which depends on the elimination ordering; finding the best ordering is NP-hard. A hidden variable $H$ is \term{irrelevant}, and can be removed, unless $H \in \text{ancestors}(\{Q\} \cup \mathbf{E})$.
+    \begin{itemize}
+        \item \term{Enumeration} evaluates the sums depth-first: space $O(n)$, time $O(d^n)$ for $n$ variables of $d$ values.
+        \item \term{Variable elimination} \term{joins} \term{factors}, initially the CPTs given $\mathbf{e}$, by pointwise products, and \term{eliminates} hidden variables by summing over their values. Its cost, that of the largest factor, depends on the ordering; the best one is NP-hard to find.
+        \item \term{Relevance}: $H \in \mathbf{H}$ can be removed unless $H \in \text{ancestors}(\{Q\} \cup \mathbf{E})$.
+    \end{itemize}
 
     \topic{Parameter learning}
-    The CPTs can be chosen in a \term{parameterized} family $\mathbf{P}(X \mid \theta)$, whose parameters are estimated from $N$ i.i.d.\ observations $\mathbf{d} = \{x_1, \ldots, x_N\}$. The \term{maximum likelihood estimate} (MLE) maximizes the \term{likelihood} $P(\mathbf{d} \mid \theta) = \prod_{j=1}^N P(x_j \mid \theta)$, or the \term{log-likelihood} $L(\theta) = \log P(\mathbf{d} \mid \theta)$, often by setting $\frac{\partial L}{\partial \theta} = 0$:
-    \[
-        \theta^*_{\text{MLE}} = \arg \max_\theta P(\mathbf{d} \mid \theta).
-    \]
-    \term{Bayesian parameter learning} treats $\theta$ as a random variable with a \term{prior} $\mathbf{P}(\theta)$, updated into the \term{posterior} $\mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta)$. When the posterior is intractable, the \term{maximum a posteriori} (MAP) estimate replaces it by its mode,
-    \[
-        \theta^*_{\text{MAP}} = \arg \max_\theta P(\theta \mid \mathbf{d}) = \arg \max_\theta P(\mathbf{d} \mid \theta) P(\theta).
-    \]
-
+    For a parameterized family $\mathbf{P}(X \mid \theta)$ and i.i.d.\ data $\mathbf{d} = \{x_1, \ldots, x_N\}$:
+    \begin{center}
+        \begin{tabular}{ll}
+            \toprule
+            Likelihood & $P(\mathbf{d} \mid \theta) = \prod_{j=1}^N P(x_j \mid \theta)$, \quad $L(\theta) = \log P(\mathbf{d} \mid \theta)$ \\
+            Maximum likelihood (MLE) & $\theta^*_{\text{MLE}} = \arg \max_\theta L(\theta)$, often from $\partial L / \partial \theta = 0$ \\
+            Posterior & $\mathbf{P}(\theta \mid \mathbf{d}) \propto \mathbf{P}(\mathbf{d} \mid \theta) \mathbf{P}(\theta)$, for a prior $\mathbf{P}(\theta)$ \\
+            Maximum a posteriori (MAP) & $\theta^*_{\text{MAP}} = \arg \max_\theta P(\mathbf{d} \mid \theta) P(\theta)$ \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
 \end{recap}
 
 \begin{exercises}[1, 2]
