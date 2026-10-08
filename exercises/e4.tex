@@ -190,12 +190,13 @@ A monitoring program supervises the core of a nuclear power station. An alarm so
     \part Suppose the gauge is not faulty and the alarm is triggered. Calculate an expression for the probability that the temperature of the core is too high, in terms of the various conditional probabilities in the network.
 
     \begin{solution}
-        The probability of interest here is $P(T = h \mid A = 1, F_G = 0)$. Because the alarm's behavior is deterministic, we can deduce that $G$ indicates high ($h$). Hence, $P(T = h \mid A = 1, F_G = 0) = P(T = h \mid A = 1, G = h, F_G = 0)$. We also see that $A \perp T \mid G$. Therefore, we only need to calculate
+        The probability of interest here is $P(T = h \mid A = 1, F_G = 0)$. Because the alarm's behavior is deterministic, we can deduce that $G$ indicates high ($h$). Hence, $P(T = h \mid A = 1, F_G = 0) = P(T = h \mid A = 1, G = h, F_G = 0)$. Every path from $A$ to $T$ goes through $G$, which is observed and is not the center of a v-structure on these paths, so $A \perp T \mid G, F_G$. Therefore, we only need to calculate
         \begin{align*}
             P(T = h \mid G = h, F_G = 0) & = \frac{P(T = h, G = h, F_G = 0)}{P(G = h, F_G = 0)} \\
-            & = \frac{P(G = h \mid T = h, F_G = 0) P(F_G = 0 \mid T = h) P(T = h)}{\sum_t P(G = h \mid t, F_G = 0) P(F_G = 0 \mid t) P(t)} ,
+            & = \frac{P(G = h \mid T = h, F_G = 0) P(F_G = 0 \mid T = h) P(T = h)}{\sum_t P(G = h \mid t, F_G = 0) P(F_G = 0 \mid t) P(t)} \\
+            & = \frac{x P(F_G = 0 \mid T = h) P(T = h)}{x P(F_G = 0 \mid T = h) P(T = h) + (1 - x) P(F_G = 0 \mid T = l) P(T = l)},
         \end{align*}
-        which we cannot develop more as we don't know $P(T)$ and $P(F_G \mid T)$.
+        using the CPT of (c), $P(G = h \mid T = h, F_G = 0) = x$ and $P(G = h \mid T = l, F_G = 0) = 1 - x$. It cannot be developed further, as $P(T)$ and $P(F_G \mid T)$ are not given.
     \end{solution}
 \end{parts}
 
