@@ -127,7 +127,18 @@ In your local nuclear power station, there is an alarm that senses when a temper
 
     \begin{solution}
         \begin{center}
-            \includegraphics[width=0.4\linewidth]{figures/e3_nuclear.png}
+            \begin{tikzpicture}[bn diagram]
+                \node[random variable] (T) at (0, 0) {$T$};
+                \node[random variable] (FG) at (1.5, 1.3) {$F_G$};
+                \node[random variable] (G) at (3, 0) {$G$};
+                \node[random variable] (FA) at (4.5, 1.3) {$F_A$};
+                \node[random variable] (A) at (4.5, 0) {$A$};
+                \draw[dependency] (T) -- (FG);
+                \draw[dependency] (T) -- (G);
+                \draw[dependency] (FG) -- (G);
+                \draw[dependency] (G) -- (A);
+                \draw[dependency] (FA) -- (A);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -193,11 +204,10 @@ In your local nuclear power station, there is an alarm that senses when a temper
 A scheduling program manages a data center in which a GPU server answers the requests sent to a language model. To plan the power supply, the scheduler models the energy the server consumes as a function of its load, with the following network
 
 \begin{center}
-    \begin{tikzpicture}[node distance = 2.5cm]
-        \node[state] (S) {$S$};
-        \node[state] (H) [right of=S] {$H$};
-
-        \draw[arrow] (S) to (H);
+    \begin{tikzpicture}[bn diagram]
+        \node[observed variable] (S) at (0, 0) {$S$};
+        \node[observed variable] (H) at (2.5, 0) {$H$};
+        \draw[dependency] (S) -- (H);
     \end{tikzpicture}
 \end{center}
 
@@ -314,7 +324,19 @@ where $H_0$ is the energy the server consumes when idle, which is known, and $\o
 Let be the following Bayesian network describing some features of a car's electrical system and engine. Each variable is Boolean, and the true value indicates that the corresponding aspect of the vehicle is in working order.
 
 \begin{center}
-    \includegraphics[width=0.6\linewidth]{figures/e3_car.pdf}
+    \begin{tikzpicture}[bn diagram]
+        \node[named variable] (Bat) at (1.5, 0) {$\mathit{Battery}$};
+        \node[named variable] (Rad) at (0, -1.5) {$\mathit{Radio}$};
+        \node[named variable] (Ign) at (3, -1.5) {$\mathit{Ignition}$};
+        \node[named variable] (Gas) at (6, -1.5) {$\mathit{Gas}$};
+        \node[named variable] (Sta) at (4.5, -3) {$\mathit{Starts}$};
+        \node[named variable] (Mov) at (4.5, -4.5) {$\mathit{Moves}$};
+        \draw[dependency] (Bat) -- (Rad);
+        \draw[dependency] (Bat) -- (Ign);
+        \draw[dependency] (Ign) -- (Sta);
+        \draw[dependency] (Gas) -- (Sta);
+        \draw[dependency] (Sta) -- (Mov);
+    \end{tikzpicture}
 \end{center}
 
 \begin{parts}
@@ -324,7 +346,24 @@ Let be the following Bayesian network describing some features of a car's electr
         IcyWeather is not caused by any of the car-related variables, so needs no parents. It directly affects the battery and the starter motor. StarterMotor is an additional precondition for Starts.
 
         \begin{center}
-            \includegraphics[width=0.6\linewidth]{figures/e3_car_full.png}
+            \begin{tikzpicture}[bn diagram]
+                \node[named variable, label={[tag]above:1}] (Icy) at (3, 1.5) {$\mathit{IcyWeather}$};
+                \node[named variable, label={[tag]above:2}] (Mot) at (4.5, 0) {$\mathit{StarterMotor}$};
+                \node[named variable, label={[tag]above:2}] (Bat) at (1.5, 0) {$\mathit{Battery}$};
+                \node[named variable, label={[tag]above:2}] (Rad) at (0, -1.5) {$\mathit{Radio}$};
+                \node[named variable, label={[tag]above:2}] (Ign) at (3, -1.5) {$\mathit{Ignition}$};
+                \node[named variable, label={[tag]above:1}] (Gas) at (6, -1.5) {$\mathit{Gas}$};
+                \node[named variable, label={[tag]above:8}] (Sta) at (4.5, -3) {$\mathit{Starts}$};
+                \node[named variable, label={[tag]above:2}] (Mov) at (4.5, -4.5) {$\mathit{Moves}$};
+                \draw[dependency] (Icy) -- (Bat);
+                \draw[dependency] (Icy) -- (Mot);
+                \draw[dependency] (Mot) -- (Sta);
+                \draw[dependency] (Bat) -- (Rad);
+                \draw[dependency] (Bat) -- (Ign);
+                \draw[dependency] (Ign) -- (Sta);
+                \draw[dependency] (Gas) -- (Sta);
+                \draw[dependency] (Sta) -- (Mov);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -584,21 +623,20 @@ You have access to $\mathcal{Y}_c$ a calibration set of $C$ observations and you
 Considering the Bayesian network below, which of the following statements are enforced by the network structure?
 
 \begin{center}
-    \begin{tikzpicture}[node distance = 2.5cm]
-        \node[state] (A) {$A$};
-        \node[state] (B) [below of=A] {$B$};
-        \node[state] (C) [right of=B] {$C$};
-        \node[state] (D) [below of=B] {$D$};
-        \node[state] (E) [below right of=C] {$E$};
-        \node[state] (F) [left of=B] {$F$};
-
-        \draw[arrow] (A) to (B);
-        \draw[arrow] (A) to (C);
-        \draw[arrow] (B) to (D);
-        \draw[arrow] (C) to (D);
-        \draw[arrow] (C) to (E);
-        \draw[arrow] (A) to (F);
-        \draw[arrow] (B) to (F);
+    \begin{tikzpicture}[bn diagram]
+        \node[random variable] (A) at (0, 0) {$A$};
+        \node[random variable] (F) at (-1.5, -1.5) {$F$};
+        \node[random variable] (B) at (0, -1.5) {$B$};
+        \node[random variable] (C) at (1.5, -1.5) {$C$};
+        \node[random variable] (D) at (0.75, -3) {$D$};
+        \node[random variable] (E) at (2.25, -3) {$E$};
+        \draw[dependency] (A) -- (B);
+        \draw[dependency] (A) -- (C);
+        \draw[dependency] (B) -- (D);
+        \draw[dependency] (C) -- (D);
+        \draw[dependency] (C) -- (E);
+        \draw[dependency] (A) -- (F);
+        \draw[dependency] (B) -- (F);
     \end{tikzpicture}
 \end{center}
 
@@ -686,7 +724,21 @@ For the same network, use inference by variable elimination to compute $\mathbf{
 The ghosts of the maze are controlled by a program that watches the maze through cameras and must recognize Pacman in their pictures. It learns to do so from a set of pictures of Pacman, and of ghosts as negative examples.
 
 \begin{center}
-    \includegraphics[width=0.5\linewidth]{figures/e5_pacbaby.jpg}
+    \begin{tikzpicture}[diagram, x=0.8cm, y=0.8cm]
+        % bowtie
+        \fill[diagram-ink] (0, 0) circle (0.9);
+        \fill[white] (-0.3, 0.25) circle (0.09) (0.3, 0.25) circle (0.09);
+        \fill[white] (0, -0.5) -- (-0.35, -0.3) -- (-0.35, -0.7) -- cycle (0, -0.5) -- (0.35, -0.3) -- (0.35, -0.7) -- cycle;
+        % Pacman with a top hat
+        \fill[diagram-ink] (2.6, 0) -- ++(30:0.9) arc (30:330:0.9) -- cycle;
+        \fill[white] (2.75, 0.45) circle (0.09);
+        \fill[diagram-ink] (1.95, 0.85) rectangle (3.05, 1.0) (2.2, 1.0) rectangle (2.8, 1.65);
+        % mustache
+        \fill[diagram-ink] (5.2, 0) circle (0.9);
+        \fill[white] (4.9, 0.25) circle (0.09) (5.5, 0.25) circle (0.09);
+        \fill[white] (5.2, -0.35) .. controls (5.0, -0.2) and (4.75, -0.3) .. (4.6, -0.5) .. controls (4.8, -0.45) and (5.0, -0.5) .. (5.2, -0.45)
+            .. controls (5.4, -0.5) and (5.6, -0.45) .. (5.8, -0.5) .. controls (5.65, -0.3) and (5.4, -0.2) .. (5.2, -0.35);
+    \end{tikzpicture}
 \end{center}
 
 Because the pictures are black and white, and were taken from various angles, the program identifies Pacman from salient features: the presence of a bowtie $B$, hat $H$ or mustache $M$. The following table summarizes the content of the pictures. Each feature takes realization in $\cbk{0, 1}$, where $0$ and $1$ mean the feature is respectively absent and present. The subject of the picture is described by a random variable $S \in \cbk{0, 1}$, where $0$ is a ghost and $1$ is Pacman.
@@ -711,16 +763,15 @@ Because the pictures are black and white, and were taken from various angles, th
 
     \begin{solution}
         \begin{center}
-            \begin{tikzpicture}[node distance = 2cm]
-                \node[state] (S) {$S$};
-                \node[state] (B) [below left of=S] {$B$};
-                \node[state] (H) [below of=S] {$H$};
-                \node[state] (M) [below right of=S] {$M$};
-
-                \draw[arrow] (S) to (B);
-                \draw[arrow] (S) to (H);
-                \draw[arrow] (S) to (M);
-            \end{tikzpicture}
+            \begin{tikzpicture}[bn diagram]
+                    \node[random variable] (S) at (0, 0) {$S$};
+                    \node[observed variable] (B) at (-1.5, -1.5) {$B$};
+                    \node[observed variable] (H) at (0, -1.5) {$H$};
+                    \node[observed variable] (M) at (1.5, -1.5) {$M$};
+                    \draw[dependency] (S) -- (B);
+                    \draw[dependency] (S) -- (H);
+                    \draw[dependency] (S) -- (M);
+                \end{tikzpicture}
         \end{center}
     \end{solution}
 
@@ -773,17 +824,16 @@ Because the pictures are black and white, and were taken from various angles, th
 A leaderboard ranks language models by an overall score. The Bayesian network below represents how this score is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the scores obtained by a model on a validation set, on a public benchmark and on a held-out test set. The three evaluations share the same harness, and a model that does well on one tends to do well on the next. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the overall score, which is a linear combination of the three scores plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
 
 \begin{center}
-    \begin{tikzpicture}[node distance = 2cm]
-        \node[state] (X1) {$x_1$};
-        \node[state] (X2) [right of=X1] {$x_2$};
-        \node[state] (X3) [right of=X2] {$x_3$};
-        \node[state] (Y) [below of=X2] {$y$};
-
-        \draw[arrow] (X1) to (X2);
-        \draw[arrow] (X2) to (X3);
-        \draw[arrow] (X1) to (Y);
-        \draw[arrow] (X2) to (Y);
-        \draw[arrow] (X3) to (Y);
+    \begin{tikzpicture}[bn diagram]
+        \node[random variable] (X1) at (0, 0) {$x_1$};
+        \node[random variable] (X2) at (2, 0) {$x_2$};
+        \node[random variable] (X3) at (4, 0) {$x_3$};
+        \node[random variable] (Y) at (2, -1.5) {$y$};
+        \draw[dependency] (X1) -- (X2);
+        \draw[dependency] (X2) -- (X3);
+        \draw[dependency] (X1) -- (Y);
+        \draw[dependency] (X2) -- (Y);
+        \draw[dependency] (X3) -- (Y);
     \end{tikzpicture}
 \end{center}
 
@@ -885,21 +935,17 @@ In linear regression with Gaussian noise of constant variance, $y_i \sim \N(w^T 
 
     \item Consider the Bayesian network shown below. We want to infer $\mathbf{P}(A \mid b, e)$ where $A$ is the query variable, $B$ and $E$ are evidence variables, and $C$ and $D$ are hidden variables. Which of the following statements is true?
     \begin{center}
-        \begin{tikzpicture}[
-            observed/.style={circle, draw=black!100, fill=gray!25, minimum size=8mm},
-            hidden/.style={circle, draw=black!100, fill=white, minimum size=8mm}]
-
-            \node[hidden] (A) at (0, 0) {$A$};
-            \node[observed] (B) at (2, 0) {$B$};
-            \node[hidden] (C) at (4, 0) {$C$};
-            \node[hidden] (D) at (-1, -2) {$D$};
-            \node[observed] (E) at (1, -2) {$E$};
-
-            \draw[->, thick] (A) -- (B);
-            \draw[->, thick] (B) -- (C);
-            \draw[->, thick] (D) -- (A);
-            \draw[->, thick] (D) -- (E);
-            \draw[->, thick] (E) -- (B);
+        \begin{tikzpicture}[bn diagram]
+            \node[random variable] (A) at (0, 0) {$A$};
+            \node[observed variable] (B) at (2, 0) {$B$};
+            \node[random variable] (C) at (4, 0) {$C$};
+            \node[random variable] (D) at (-1, -1.6) {$D$};
+            \node[observed variable] (E) at (1, -1.6) {$E$};
+            \draw[dependency] (A) -- (B);
+            \draw[dependency] (B) -- (C);
+            \draw[dependency] (D) -- (A);
+            \draw[dependency] (D) -- (E);
+            \draw[dependency] (E) -- (B);
         \end{tikzpicture}
     \end{center}
     \begin{enumerate}[label=$\bigcirc$]

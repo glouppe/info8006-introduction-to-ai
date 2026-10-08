@@ -183,7 +183,8 @@
 %           \draw[dependency] (S) -- (E);
 %       \end{tikzpicture}
 %   random variable is a white circle, observed variable a shaded one, as in the slides of
-%   lecture 5; dependency is an arrow from a parent to its child.
+%   lecture 5; named variable and observed named variable are ellipses, for long names;
+%   dependency is an arrow from a parent to its child.
 
 \usetikzlibrary{arrows.meta}
 
@@ -283,6 +284,8 @@
         inner sep=0pt,
     },
     observed variable/.style={random variable, fill=diagram-fill},
+    named variable/.style={random variable, ellipse, minimum width=0pt, minimum height=8mm, inner sep=2.5pt},
+    observed named variable/.style={named variable, fill=diagram-fill},
     dependency/.style={link, ->},
     % Grid worlds
     world diagram/.style={diagram, x=0.62cm, y=0.62cm},
