@@ -233,12 +233,12 @@ A self-driving car shares the highway with another car, whose driving style it d
 \end{exercises}
 
 \begin{quiz}
-    \item The Bayes' rule states that \ldots
+    \item Bayes' rule states that $P(y \mid x)$ is equal to \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item $P(x \mid y) = \dfrac{P(y \mid x) P(y)}{P(x)}$.
-        \item \correct{$P(x \mid y) = \dfrac{P(y \mid x) P(x)}{P(y)}$.}
-        \item $P(y \mid x) = \dfrac{P(x \mid y) P(x)}{P(y)}$.
-        \item $P(x) = \dfrac{P(x \mid y) P(y)}{P(x)}$.
+        \item $\dfrac{P(x \mid y) P(x)}{P(y)}$.
+        \item \correct{$\dfrac{P(x \mid y) P(y)}{P(x)}$.}
+        \item $\dfrac{P(x, y)}{P(y)}$.
+        \item $P(x \mid y) P(y)$.
     \end{enumerate}
 
     \item Which of the following is true?
@@ -257,12 +257,12 @@ A self-driving car shares the highway with another car, whose driving style it d
         \item conditional independence between each effect and the cause, given the other effects.
     \end{enumerate}
 
-    \item The Bayes' rule can be read as ``The posterior is equal to \ldots
+    \item With a uniform prior $\mathbf{P}(A)$, the posterior $\mathbf{P}(A \mid b)$ is proportional to \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item the product of the likelihood and the prior''.
-        \item the ratio between the posterior distribution and the evidence, times the prior''.
-        \item the likelihood to prior ratio multiplied by the evidence''.
-        \item \correct{the likelihood to evidence ratio multiplied by the prior''.}
+        \item the prior $\mathbf{P}(A)$.
+        \item \correct{the likelihood $\mathbf{P}(b \mid A)$.}
+        \item the evidence $P(b)$.
+        \item the joint distribution $\mathbf{P}(A, B)$.
     \end{enumerate}
 \end{quiz}
 
