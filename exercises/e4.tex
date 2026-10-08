@@ -120,7 +120,7 @@
 
 \titledquestion{Nuclear power plant \aima{13}}
 
-In your local nuclear power station, there is an alarm that senses when a temperature gauge exceeds a given threshold. The gauge measures the temperature of the core. Consider the Boolean variables $A$ (alarm sounds), $F_A$ (alarm is faulty), and $F_G$ (gauge is faulty) and the multi-valued nodes $G$ (gauge reading) and $T$ (actual core temperature).
+A monitoring program supervises the core of a nuclear power station. An alarm sounds when a temperature gauge, which measures the temperature of the core, exceeds a given threshold, and the program reasons about the actual temperature from the gauge and the alarm, either of which may be faulty. Consider the Boolean variables $A$ (alarm sounds), $F_A$ (alarm is faulty), and $F_G$ (gauge is faulty) and the multi-valued nodes $G$ (gauge reading) and $T$ (actual core temperature).
 
 \begin{parts}
     \part Draw a Bayesian network for this domain, given that the gauge is more likely to fail when the core temperature gets too high.
@@ -155,7 +155,7 @@ In your local nuclear power station, there is an alarm that senses when a temper
     \part Suppose there are just two possible actual and measured temperatures: low ($l$) and high ($h$). The probability that the gauge gives the correct temperature is $x$ when it is working, but $y$ when it is faulty. Give the conditional probability table associated with $G$.
 
     \begin{solution}
-        The CPT for $G$ is shown below. Students should pay careful attention to the semantics of $F_G$, which is true when the gauge is faulty, \ie{} not working properly.
+        The CPT for $G$ is shown below. Note the semantics of $F_G$, which is true when the gauge is faulty, \ie{} not working properly.
         \begin{center}
             \begin{tabular}{ccc}
                 \toprule
