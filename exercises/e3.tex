@@ -46,7 +46,7 @@
             \bottomrule
         \end{tabular}
     \end{center}
-    The rules hold for all values, and between distributions. Naive Bayes assumes the effects $e_{1:n}$ conditionally independent given the cause $c$. The joint distribution answers every query: select the entries consistent with the evidence, sum out the other variables, normalize.
+    The rules hold for all values, and between distributions. Naive Bayes assumes the effects $E_{1:n}$ to be conditionally independent given the cause $C$. The joint distribution answers every query: select the entries consistent with the evidence, sum out the other variables, normalize.
 
     \topic{Bayes' rule}
     A model is given in the \term{causal} direction: for an agent, a \term{prior} $\mathbf{P}(S)$ over the unobserved state and a \term{sensor model} (or \term{likelihood}) $\mathbf{P}(e \mid S)$ of its percepts. The \term{diagnostic} question is answered by the \term{belief}, or \term{posterior}, $\mathbf{P}(S \mid e) = \frac{1}{Z} \mathbf{P}(e \mid S) \mathbf{P}(S)$, where ${Z = P(e) = \sum_s P(e \mid s) P(s)}$ is the probability of the \term{evidence}. For percepts conditionally independent given the state, each belief is the prior of the next, $\mathbf{P}(S \mid e_{1:k+1}) = \frac{1}{Z} \mathbf{P}(e_{k+1} \mid S) \mathbf{P}(S \mid e_{1:k})$.
@@ -60,7 +60,7 @@ Let $A, B \subseteq \Omega$ be two \emph{events}. An agent holds the beliefs $P(
 
 \begin{solution}
     \begin{enumerate}
-        \item Since $P(E) = \sum_{\omega \in E} P(\omega)$ sums nonnegative terms, $E \subseteq F$ implies $P(E) \leq P(F)$. With $A, B \subseteq A \cup B$ and $A \cap B \subseteq A, B$, and the union rule $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, the agent's beliefs should satisfy
+        \item Since $P(E) = \sum_{\omega \in E} P(\omega)$ sums nonnegative terms, $E \subseteq F$ implies $P(E) \leq P(F)$. With $A, B \subseteq A \cup B$ and $A \cap B \subseteq A, B$, and the union rule, which for events reads $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, the agent's beliefs should satisfy
         \begin{alignat*}{2}
             0.4 = \max \cbk{P(A), P(B)} & \leq P(A \cup B) && \leq \min \cbk{1, P(A) + P(B)} = 0.7 \\
             0 = \max \cbk{0, P(A) + P(B) - 1} & \leq P(A \cap B) && \leq \min \cbk{P(A), P(B)} = 0.3 .
@@ -126,7 +126,7 @@ A monitoring program supervises the bearings of a wind turbine. A worn bearing (
     \begin{solution}
         \begin{align*}
             P(f \mid v \lor a) & = \frac{P(f, v \lor a)}{P(v \lor a)} = \frac{P(f) - P(\neg v, \neg a, f)}{1 - P(\neg v, \neg a)} \\
-            & = \frac{0.2 - 0.008}{1 - 0.584} = \num{0.4615}
+            & = \frac{0.2 - 0.008}{1 - 0.584} \approx \num{0.4615}
         \end{align*}
     \end{solution}
 
@@ -151,9 +151,9 @@ A fraud detection program screens card payments. It is \qty{99}{\percent} accura
     \begin{align*}
         P(f \mid a) & = \frac{P(a \mid f) P(f)}{P(a)} \\
         & = \frac{P(a \mid f) P(f)}{P(a \mid f) P(f) + P(a \mid \neg f) P(\neg f)} \\
-        & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} = \num{0.0098} .
+        & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} \approx \num{0.0098} .
     \end{align*}
-    Rarity is good news because the prior $P(f)$ is small. Out of \num{1000000} payments, \num{100} are fraudulent and \num{99} of them are flagged, while \num{999900} are legitimate and \num{9999} of them are flagged by mistake. Only \num{99} of the \num{10098} flagged payments, about \qty{1}{\percent}, are fraudulent.
+    Rarity is good news because the small prior outweighs the accurate detector: legitimate payments are so many that their false alarms far outnumber the flagged frauds. Out of \num{1000000} payments, \num{100} are fraudulent and \num{99} of them are flagged, while \num{999900} are legitimate and \num{9999} of them are flagged by mistake. Only \num{99} of the \num{10098} flagged payments, about \qty{1}{\percent}, are fraudulent.
 \end{solution}
 
 \titledquestion{Conditional independence \aima{12}}
@@ -164,35 +164,30 @@ For each of the following statements, about values $a$, $b$, $c$ of the random v
     \part If $P(a, b, c) > 0$ and $P(a \mid b, c) = P(b \mid a, c)$, then $P(a \mid c) = P(b \mid c)$.
 
     \begin{solution}
-        True. By the product rule, $P(a \mid b, c) P(b, c) = P(a, b, c) = P(b \mid a, c) P(a, c)$. Since $P(a, b, c) > 0$, $P(a \mid b, c) = P(b \mid a, c) > 0$, and dividing by it gives $P(b, c) = P(a, c)$ and thereby $P(b \mid c) = P(a \mid c)$.
+        True. By the product rule, $P(a \mid b, c) P(b, c) = P(a, b, c) = P(b \mid a, c) P(a, c)$. Since $P(a, b, c) > 0$, $P(a \mid b, c) = P(b \mid a, c) > 0$, and dividing by it gives $P(b, c) = P(a, c)$. Dividing by $P(c) \geq P(a, b, c) > 0$ gives $P(b \mid c) = P(a \mid c)$.
     \end{solution}
 
     \part If $P(a \mid b, c) = P(a)$, then $P(b \mid c) = P(b)$.
 
     \begin{solution}
-        False. The statement $P(a \mid b, c) = P(a)$ says that $A$ is independent of $B$ and $C$ jointly; it makes no claim about the dependence between $B$ and $C$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b, c) = P(a) = 1/2$, but $P(b \mid c) = 1 \neq P(b) = 1/2$.
+        False. The premise says that $a$ is independent of $b$ and $c$ jointly; it makes no claim about $b$ and $c$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b, c) = P(a) = 1/2$, but $P(b \mid c) = 1 \neq P(b) = 1/2$.
     \end{solution}
 
     \part If $P(a \mid b) = P(a)$, then $P(a \mid b, c) = P(a \mid c)$.
 
     \begin{solution}
-        False. The statement $P(a \mid b) = P(a)$ says that $A$ is independent of $B$, which does not imply that $A$ is conditionally independent of $B$ given $C$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = A \lor B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b) = P(a) = 1/2$, but $P(a \mid b, c) = P(a, b) / P(b) = 1/2 \neq P(a \mid c) = P(a) / P(c) = (1/2) / (3/4) = 2/3$.
+        False. The premise says that $a$ is independent of $b$, which does not make it conditionally independent of $b$ given $c$. Counterexample: $A$ and $B$ are two independent fair coin flips, and $C = A \lor B$. Taking the value true for $a$, $b$ and $c$, $P(a \mid b) = P(a) = 1/2$, but, since $a$ and $b$ each imply $c$, $P(a \mid b, c) = P(a, b) / P(b) = 1/2 \neq P(a \mid c) = P(a) / P(c) = (1/2) / (3/4) = 2/3$.
     \end{solution}
 \end{parts}
 
 \titledquestion{Driving styles \aima{13}}
 
-A self-driving car shares the highway with another car, whose driving style it does not know. It models three styles, cautious ($a$), normal ($b$) and aggressive ($c$), equally likely a priori, under which the other car changes lanes during a given minute with probabilities \num{0.2}, \num{0.6} and \num{0.8}, respectively. The self-driving car observes the other car for three minutes, recording whether it changes lanes ($l$) or keeps its lane ($k$) during each minute, as $X_1$, $X_2$ and $X_3$. Let $Y$ be the style of the other car.
+A self-driving car shares the highway with another car, whose driving style it does not know. It models three styles, cautious ($a$), normal ($b$) and aggressive ($c$), equally likely a priori, under which the other car changes lanes during a given minute with probabilities \num{0.2}, \num{0.6} and \num{0.8}, respectively, independently from one minute to the next given its style. The self-driving car observes the other car for three minutes. Let $Y \in \cbk{a, b, c}$ be the style of the other car, and $X_i \in \cbk{l, k}$ tell whether it changes lanes ($l$) or keeps its lane ($k$) during minute $i$.
 
 \begin{parts}
     \part Write the joint distribution $\mathbf{P}(Y, X_1, X_2, X_3)$ of this model as a product of smaller tables, and give these tables.
 
     \begin{solution}
-        The process is described with the following random variables:
-        \begin{itemize}
-            \item $Y \in \cbk{a, b, c}$, the driving style of the other car;
-            \item $X_i \in \cbk{l, k}$, its behaviour during the $i$-th minute.
-        \end{itemize}
         The observations are conditionally independent given the style, so the model is a naive Bayes model, with the style as the cause and the observations as its effects:
         \begin{equation*}
             \mathbf{P}(Y, X_1, X_2, X_3) = \mathbf{P}(Y) \mathbf{P}(X_1 \mid Y) \mathbf{P}(X_2 \mid Y) \mathbf{P}(X_3 \mid Y),
@@ -227,19 +222,19 @@ A self-driving car shares the highway with another car, whose driving style it d
                 0.8 \times 0.8 \times 0.2 = \num{0.128} & \text{if } y = c,
             \end{cases}
         \end{equation*}
-        with $Z = \frac{1}{3} (0.032 + 0.144 + 0.128)$. The posterior is $\langle 0.105, 0.474, 0.421 \rangle$: the normal style is the most likely, though the aggressive one is nearly as probable. Finding the most likely style only needs the unnormalized values. The order of the observations does not matter: any two lane changes and one lane keep have the same probability given each style.
+        with $Z = \frac{1}{3} (0.032 + 0.144 + 0.128)$. The posterior is $\langle 0.105, 0.474, 0.421 \rangle$ (rounded): the normal style is the most likely, though the aggressive one is nearly as probable. Finding the most likely style only needs the unnormalized values. The order of the observations does not matter: any two lane changes and one lane keep have the same probability given each style.
     \end{solution}
 
     \part The car updates its belief after each minute, the belief after one minute being the prior of the next. Compute its belief after one, two and three minutes, and compare with (b).
 
     \begin{solution}
-        Starting from the prior $\langle 1/3, 1/3, 1/3 \rangle$ over $\langle a, b, c \rangle$, each minute multiplies the belief by the sensor model and normalizes:
+        Starting from the prior $\langle 1/3, 1/3, 1/3 \rangle$ over $\langle a, b, c \rangle$, each minute multiplies the belief by the sensor model and normalizes, writing $l, l, k$ for $X_1 = l, X_2 = l, X_3 = k$:
         \begin{align*}
             \mathbf{P}(Y \mid l) & = \tfrac{1}{Z} \langle 0.2, 0.6, 0.8 \rangle \times \langle 1/3, 1/3, 1/3 \rangle = \langle 0.125, 0.375, 0.5 \rangle, \\
             \mathbf{P}(Y \mid l, l) & = \tfrac{1}{Z} \langle 0.2, 0.6, 0.8 \rangle \times \langle 0.125, 0.375, 0.5 \rangle = \langle 0.038, 0.346, 0.615 \rangle, \\
             \mathbf{P}(Y \mid l, l, k) & = \tfrac{1}{Z} \langle 0.8, 0.4, 0.2 \rangle \times \langle 0.038, 0.346, 0.615 \rangle = \langle 0.105, 0.474, 0.421 \rangle,
         \end{align*}
-        where $\times$ multiplies entry by entry. The last belief is the posterior of (b): since the percepts are conditionally independent given the style, updating minute by minute gives the same result as conditioning on the three percepts at once. After two lane changes, the aggressive style is the most likely; keeping the lane during the third minute makes the normal style overtake it.
+        where $\times$ multiplies entry by entry, with a different $Z$ on each line, and the beliefs are rounded. The last belief is the posterior of (b): since the percepts are conditionally independent given the style, updating minute by minute gives the same result as conditioning on the three percepts at once. After two lane changes, the aggressive style is the most likely; keeping the lane during the third minute makes the normal style overtake it.
     \end{solution}
 \end{parts}
 
@@ -275,7 +270,7 @@ A self-driving car shares the highway with another car, whose driving style it d
         \item the prior $\mathbf{P}(A)$.
         \item \correct{the likelihood $\mathbf{P}(b \mid A)$.}
         \item the evidence $P(b)$.
-        \item the joint distribution $\mathbf{P}(A, B)$.
+        \item the marginal $\mathbf{P}(B)$.
     \end{enumerate}
 \end{quiz}
 
