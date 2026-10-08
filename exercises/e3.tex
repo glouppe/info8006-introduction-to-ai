@@ -146,12 +146,13 @@ A monitoring program supervises the bearings of a wind turbine. A worn bearing (
 A fraud detection program screens card payments. It is \qty{99}{\percent} accurate, \ie{} it flags a fraudulent payment with probability \num{0.99} and a legitimate payment with probability \num{0.01}. Fraud is rare: it strikes only 1 payment in \num{10000}. The program has just flagged your payment. Why is it good news, for you, that fraud is rare? What is the probability that the payment is actually fraudulent?
 
 \begin{solution}
-    Let $f$ be the event that the payment is fraudulent and $a$ the event that it is flagged. Rarity is good news because the prior $P(f)$ is small: most flagged payments are legitimate payments flagged by mistake. Indeed,
+    Let $F$ and $A$ be the boolean random variables telling whether the payment is fraudulent and whether it is flagged. By Bayes' rule,
     \begin{align*}
         P(f \mid a) & = \frac{P(a \mid f) P(f)}{P(a)} \\
         & = \frac{P(a \mid f) P(f)}{P(a \mid f) P(f) + P(a \mid \neg f) P(\neg f)} \\
         & = \frac{0.99 \times \num{e-4}}{0.99 \times \num{e-4} + 0.01 \times (1 - \num{e-4})} = \num{0.0098} .
     \end{align*}
+    Rarity is good news because the prior $P(f)$ is small. Out of \num{1000000} payments, \num{100} are fraudulent and \num{99} of them are flagged, while \num{999900} are legitimate and \num{9999} of them are flagged by mistake. Only \num{99} of the \num{10098} flagged payments, about \qty{1}{\percent}, are fraudulent.
 \end{solution}
 
 \titledquestion{Conditional independence \aima{12}}
