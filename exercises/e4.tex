@@ -379,7 +379,7 @@ Let be the following Bayesian network describing some features of a car's electr
             \item $P(\mathit{Ignition} \mid \mathit{Battery}) = 0.998, P(\mathit{Ignition} \mid \lnot \mathit{Battery}) = 0.01$.
             \item $P(\mathit{Gas}) = 0.995$.
             \item $P(\mathit{Starts} \mid \mathit{Ignition}, \mathit{StarterMotor}, \mathit{Gas}) = 0.9999$, other entries $0.0$.
-            \item $P(\mathit{Moves} \mid \mathit{Starts}) = 0.998$.
+            \item $P(\mathit{Moves} \mid \mathit{Starts}) = 0.998$, $P(\mathit{Moves} \mid \lnot \mathit{Starts}) = 0$.
         \end{itemize}
     \end{solution}
 
@@ -666,7 +666,7 @@ Considering the Bayesian network below, which of the following statements are en
     \part $\mathbf{P}(F \mid A, D, E) = \mathbf{P}(F \mid A, D)$
 
     \begin{solution}
-        This is true iff $F \perp E \mid A, D$. This time, the triples $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive (common parent, $A$ observed). In $(F, B, D, C, E)$, $(F, B, D)$ is active. Indeed, knowing an extremity of a triple does not impact whether it is active or not. Only the center variable is important. Then we have $(B, D, C)$ which is active (v-structure, $D$ observed) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
+        This is true iff $F \perp E \mid A, D$. This time, the triples $(F, A, C)$, $(F, A, B)$ and $(B, A, C)$ are inactive (common parent, $A$ observed). In $(F, B, D, C, E)$, $(F, B, D)$ is active. Indeed, observing an extremity of a triple does not change whether it is active: only the center variable matters, and, for a v-structure, its descendants. Then we have $(B, D, C)$ which is active (v-structure, $D$ observed) and $(D, C, E)$ also. Hence, $(F, B, D, C, E)$ is active and we cannot guarantee that $F \perp E \mid A, D$.
     \end{solution}
 
     \part $\mathbf{P}(B, E) = \sum_{a, c, d, f} P(a) \mathbf{P}(B \mid a) P(c \mid a) \mathbf{P}(d \mid B, c) \mathbf{P}(E \mid c) \mathbf{P}(f \mid a, B)$
@@ -846,7 +846,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
 \end{center}
 
 \begin{parts}
-    \part Assuming the parameters of the model are known, what is the expected value of $y$ given $x_1$ and $x_2$.
+    \part Assuming the parameters of the model are known, what is the expected value of $y$ given $x_1$ and $x_2$?
 
     \begin{solution}
         Our task is to find the expectation
@@ -857,7 +857,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \begin{equation*}
             p(y \mid x_1, x_2) = \int p(y \mid x_1, x_2, x_3) \, p(x_3 \mid x_1, x_2) \d{x_3} ,
         \end{equation*}
-        where $p(y \mid x_1, x_2, x_3)$ and $p(x_3 \mid x_1, x_2)$ are linear Gaussian distributions given in the statement. Therefore, we have
+        where $p(y \mid x_1, x_2, x_3)$ is given in the statement and $p(x_3 \mid x_1, x_2) = p(x_3 \mid x_2)$, since $x_3 \perp x_1 \mid x_2$. Both are linear Gaussian distributions. Therefore, we have
         \begin{equation*}
             p(y \mid x_1, x_2) = \N\rbk*{y \mid a_3 x_1 + a_4 x_2 + a_5 (a_2 x_2 + \mu_3) + \mu_y, (a_5 \sigma_3)^2 + \sigma_y^2}
         \end{equation*}
@@ -867,7 +867,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \end{equation*}
     \end{solution}
 
-    \part Suppose now that the model's parameters are unknown. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, determine the model that best describes $d$.
+    \part Suppose now that the parameters are unknown, and that the scores $x_3$ on the held-out test set are not observed. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, derive the maximum likelihood estimate of the parameters of $p(y \mid x_1, x_2)$.
 
     \begin{solution}
         \allowdisplaybreaks
@@ -891,7 +891,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \begin{align*}
             0 & = \nabla_{\!w} \sum_i (w^T x_i - y_i)^2 \\
             & = \nabla_{\!w} \sum_i (w^T x_i - y_i) (w^T x_i - y_i) \\
-            & = \nabla_{\!w} \sum_i (w^T x_i)^2 + y_i^2 - 2 w^T x_i y_i \\
+            & = \nabla_{\!w} \sum_i \rbk*{(w^T x_i)^2 + y_i^2 - 2 w^T x_i y_i} \\
             & = \nabla_{\!w} \rbk*{w^T X^T X w + Y^T Y - 2 w^T X^T Y} \\
             & = 2 X^T X w - 2 X^T Y
         \end{align*}
@@ -909,6 +909,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \begin{equation*}
             \frac{1}{N} \sum_i ({w_{\text{MLE}}}^T x_i - y_i)^2 .
         \end{equation*}
+        By (a), the fitted parameters estimate combinations of those of the network, $w_1 = a_3$, $w_2 = a_4 + a_5 a_2$, $b = a_5 \mu_3 + \mu_y$ and $\sigma^2 = a_5^2 \sigma_3^2 + \sigma_y^2$. Without observations of $x_3$, the individual parameters $a_2, a_4, a_5, \mu_3, \mu_y, \sigma_3, \sigma_y$ cannot be recovered separately.
     \end{solution}
 \end{parts}
 
