@@ -305,48 +305,6 @@ As time passes, uncertainty (usually) increases in the absence of new evidence.
 
 ---
 
-# Stationary distributions
-
-What if $t \to \infty$?
-- For most chains, the influence of the initial distribution gets lesser and lesser over time.
-- Eventually, the distribution may converge to a fixed distribution, called a .bold[stationary distribution].
-- This distribution is such that
-$$\mathbf{P}(\mathbf{X}\_{t+1}) = \mathbf{P}(\mathbf{X}\_t) = \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t).$$
-
-???
-
-For a chain with finitely many states, a stationary distribution always exists: it is a fixed point of the transition model, an eigenvector of eigenvalue 1 of the transposed transition matrix (see the HMM slides).
-- It is .bold[unique] if the chain is .bold[irreducible]: every state can be reached from every other state.
-- The distribution .bold[converges] to it from any initial distribution if the chain is also .bold[aperiodic]: returns to a state are not restricted to multiples of some period larger than 1 (e.g., a self-transition of positive probability suffices). Such a chain is called ergodic.
-
-Counterexamples: two disconnected groups of states have one stationary distribution per group (not irreducible); a chain alternating deterministically between sun and rain never converges, although $(1/2, 1/2)$ is stationary (periodic). The weather chain of the next slide has positive transitions everywhere, so it is ergodic.
-
----
-
-class: middle
-
-| $\mathbf{X}\_{t-1}$ | $\mathbf{X}\_{t}$ | $P$ |
-| --- | --- | --- |
-| $\text{sun}$ | $\text{sun}$ | 0.9 |
-| $\text{sun}$ | $\text{rain}$ | 0.1 |
-| $\text{rain}$ | $\text{sun}$ | 0.3 |
-| $\text{rain}$ | $\text{rain}$ | 0.7 |
-
-## Example
-
-Writing $P(\text{sun})$ and $P(\text{rain})$ for the stationary probabilities,
-$$
-\begin{aligned}
-P(\text{sun}) =&\, P(\text{sun} \mid \text{sun}) P(\text{sun}) + P(\text{sun} \mid \text{rain}) P(\text{rain}) \\\\
-=&\, 0.9 P(\text{sun}) + 0.3 P(\text{rain}).
-\end{aligned}
-$$
-
-Therefore $P(\text{sun}) = 3 P(\text{rain})$, and since the two sum to 1,
-$P(\text{sun}) = \frac{3}{4}$ and $P(\text{rain}) = \frac{1}{4}$.
-
----
-
 # Filtering
 
 We want to compute the belief state $\mathbf{P}(\mathbf{X}\_{t} \mid \mathbf{e}\_{1:t})$ and maintain it as new evidence $\mathbf{e}\_{t+1}$ arrives.
@@ -659,16 +617,6 @@ $$
 $$
 
 See `demo/lec6/forward-backward.ipynb` for the execution.
-
----
-
-class: middle
-
-## Stationary distribution
-
-The stationary distribution $\mathbf{f}$ of a HMM is a distribution such that
-$$\mathbf{f} = \mathbf{T}^T \mathbf{f}.$$
-Therefore, the stationary distribution corresponds to a (normalized) eigenvector of the transposed transition matrix with an eigenvalue of $1$.
 
 ---
 
