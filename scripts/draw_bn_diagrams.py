@@ -92,7 +92,7 @@ def link(p, q, rp=(R, R), rq=(R, R)):
     dx, dy = q[0] - p[0], q[1] - p[1]
     sp = 1 / hypot(dx / rp[0], dy / rp[1])
     sq = 1 / hypot(dx / rq[0], dy / rq[1])
-    gap = 5 / hypot(dx, dy)
+    gap = 0   # the arrow tip ends on the outline of the node
     return arrow((p[0] + dx * sp, p[1] + dy * sp), (q[0] - dx * (sq + gap), q[1] - dy * (sq + gap)))
 
 
@@ -101,7 +101,7 @@ def stub(p, angle, inward, length=36):
     ux, uy = cos(radians(angle)), sin(radians(angle))
     far = (p[0] + ux * (R + length), p[1] + uy * (R + length))
     if inward:
-        return arrow(far, (p[0] + ux * (R + 5), p[1] + uy * (R + 5)))
+        return arrow(far, (p[0] + ux * R, p[1] + uy * R))
     return arrow((p[0] + ux * R, p[1] + uy * R), far)
 
 

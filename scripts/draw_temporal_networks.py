@@ -50,7 +50,7 @@ def svg(name, width, height, parts):
 def markov_process():
     y, xs, subs = 50, [110, 280, 450, 620, 790], ["t−2", "t−1", "t", "t+1", "t+2"]
     r = 36
-    parts = [arrow((10, y), (xs[0] - r - 5, y)), arrow((xs[-1] + r, y), (895, y))]
+    parts = [arrow((10, y), (xs[0] - r, y)), arrow((xs[-1] + r, y), (895, y))]
     for x, sub in zip(xs, subs):
         parts.append(node(x, y, "X", sub, r=r, bold=True))
     for a, b in zip(xs, xs[1:]):
@@ -64,8 +64,8 @@ def smoothing_dbn():
     parts = [node(x, yx, "X", s, r=r[0], bold=True) for s, x in xs.items()]
     parts += [node(xs[s], ye, "E", s, observed=True, r=r[0], bold=True) for s in "1kt"]
     parts += [link((xs["0"], yx), (xs["1"], yx), r, r),
-              dashed((xs["1"] + r[0], yx), (xs["k"] - r[0] - 5, yx)),
-              dashed((xs["k"] + r[0], yx), (xs["t"] - r[0] - 5, yx)),
+              dashed((xs["1"] + r[0], yx), (xs["k"] - r[0], yx)),
+              dashed((xs["k"] + r[0], yx), (xs["t"] - r[0], yx)),
               arrow((xs["t"] + r[0], yx), (830, yx))]
     parts += [link((xs[s], yx), (xs[s], ye), r, r) for s in "1kt"]
     return parts
@@ -86,7 +86,7 @@ def table(x, y, head, rows, w=(70, 90)):
 def weather_bn():
     yr, yu, r = 150, 320, (36, 36)
     xs, subs = [210, 480, 750], ["t−1", "t", "t+1"]
-    parts = [arrow((100, yr), (xs[0] - r[0] - 5, yr)), arrow((xs[-1] + r[0], yr), (880, yr)),
+    parts = [arrow((100, yr), (xs[0] - r[0], yr)), arrow((xs[-1] + r[0], yr), (880, yr)),
              text(10, yr, "rain", size=20, fill=GREY, anchor="start"),
              text(10, yu, "umbrella", size=20, fill=GREY, anchor="start")]
     for x, s in zip(xs, subs):
