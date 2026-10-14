@@ -98,7 +98,7 @@ Markov processes such that $$\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1}) 
 i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 
 <br>
-.center.width-100[![](figures/lec6/markov-process.png)]
+.center.width-100[![](figures/lec6/markov-process.svg)]
 
 ---
 
@@ -168,7 +168,7 @@ class: middle
 
 .grid[
 .kol-1-2.center[
-.width-80[![](figures/lec6/base-case2.png)]
+.width-80[![](figures/lec6/base-case-predict.svg)]
 
 $\begin{aligned}
 \mathbf{P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} \mathbf{P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
@@ -178,7 +178,7 @@ $\begin{aligned}
 (Predict) Push $\mathbf{P}(\mathbf{X}\_1)$ forward through the transition model.
 ]
 .kol-1-2.center[
-.width-80[![](figures/lec6/base-case1.png)]
+.width-80[![](figures/lec6/base-case-update.svg)]
 
 $\begin{aligned}
 \mathbf{P}(\mathbf{X}\_1 \mid \mathbf{e}\_1) &=\frac{ \mathbf{P}(\mathbf{e}\_1 \mid \mathbf{X}\_1) \mathbf{P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
@@ -373,7 +373,7 @@ class: middle
 
 ## Example
 
-.center.width-80[![](figures/lec6/filtering.png)]
+.center.width-80[![](figures/lec6/filtering.svg)]
 
 <br>
 
@@ -479,7 +479,7 @@ class: middle
 
 ## Example
 
-.center.width-80[![](figures/lec6/smoothing.png)]
+.center.width-80[![](figures/lec6/smoothing.svg)]
 
 ???
 
