@@ -169,9 +169,9 @@ def kalman():
     svg("kalman-transition", 240, 220, [
         node(40, 110, "X", "t", r=36, bold=True), node(200, 110, "X", "t+1", r=36, bold=True),
         link((40, 110), (200, 110), r, r)])
-    svg("kalman-sensor", 80, 220, [
-        node(40, 40, "X", "t", r=36, bold=True), node(40, 180, "E", "t", observed=True, r=36, bold=True),
-        link((40, 40), (40, 180), r, r)])
+    svg("kalman-sensor", 96, 220, [
+        node(48, 40, "X", "t", r=36, bold=True), node(48, 180, "E", "t", observed=True, r=36, bold=True),
+        link((48, 40), (48, 180), r, r)])
 
 
 if __name__ == "__main__":

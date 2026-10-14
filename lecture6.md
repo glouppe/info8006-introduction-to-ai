@@ -98,7 +98,7 @@ Markov processes such that $$\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1}) 
 i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 
 <br>
-.center.width-80[![](figures/lec6/markov-process.svg)]
+.center.width-95[![](figures/lec6/markov-process.svg)]
 
 ---
 
@@ -117,7 +117,7 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 # Joint distribution
 
 <br>
-.center.width-75[![](figures/lec6/smoothing-dbn.svg)]
+.center.width-90[![](figures/lec6/smoothing-dbn.svg)]
 <br>
 
 A Markov chain coupled with a sensor model can be represented as a .bold[growable] Bayesian network, unrolled infinitely through time.
@@ -132,7 +132,7 @@ class: middle
 ## Example: Will you take your umbrella today?
 
 
-.center.width-80[![](figures/lec6/weather-bn.svg)]
+.center.width-95[![](figures/lec6/weather-bn.svg)]
 
 .grid[
 .kol-1-2[
@@ -373,7 +373,7 @@ class: middle
 
 ## Example
 
-.center.width-85[![](figures/lec6/filtering.svg)]
+.center.width-100[![](figures/lec6/filtering.svg)]
 
 <br>
 
@@ -479,7 +479,7 @@ class: middle
 
 ## Example
 
-.center.width-85[![](figures/lec6/smoothing.svg)]
+.center.width-100[![](figures/lec6/smoothing.svg)]
 
 ???
 
@@ -811,8 +811,8 @@ The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
 - Linear Gaussian sensor model
 
 .grid[
-.kol-1-2.center[.width-45[![](figures/lec6/kalman-transition.svg)]]
-.kol-1-2.center[.width-15[![](figures/lec6/kalman-sensor.svg)]]
+.kol-1-2.center[.width-50[![](figures/lec6/kalman-transition.svg)]]
+.kol-1-2.center[.width-20[![](figures/lec6/kalman-sensor.svg)]]
 ]
 .grid[
 .kol-1-2.center[
