@@ -998,16 +998,6 @@ Again, results coincide with intuition.
 
 ---
 
-class: middle
-
-.question[In case (a), if we unwrap 1 candy and get 1 cherry, what is the MLE? How confident are we in this estimate?]
-
-???
-
-The MLE is ${\theta = 1}$: all candies are cherry. With small datasets, maximum likelihood estimation can lead to overfitting, and the MLE does not provide a measure of uncertainty about the parameters.
-
----
-
 # Bayesian parameter learning
 
 We can treat parameter learning as a .bold[Bayesian inference] problem:
