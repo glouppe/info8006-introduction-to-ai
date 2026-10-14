@@ -811,17 +811,16 @@ The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
 - Linear Gaussian sensor model
 
 .grid[
+.kol-1-2.center[.width-45[![](figures/lec6/kalman-transition.svg)]]
+.kol-1-2.center[.width-15[![](figures/lec6/kalman-sensor.svg)]]
+]
+.grid[
 .kol-1-2.center[
-.width-45[![](figures/lec6/kalman-transition.svg)]
-
 ${p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})}$
 
 Transition model
-
 ]
 .kol-1-2.center[
-.width-15[![](figures/lec6/kalman-sensor.svg)]
-
 $p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t \mid \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R})$
 
 Sensor model
