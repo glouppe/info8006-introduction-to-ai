@@ -815,7 +815,7 @@ class: middle
 
 # Graph search
 
-.center.width-75[![](figures/lec2/redundant.svg)]
+.center.width-90[![](figures/lec2/redundant.svg)]
 
 A state reached by several paths sits in as many nodes: two edges per level make ${2^3 = 8}$ paths from A to D, for 4 states. A linear problem becomes exponential, and a cycle makes the search endless.
 

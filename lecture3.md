@@ -171,7 +171,7 @@ Analogy with chess, checkers or belotte.
 
 What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
 
-.center.width-70[![](figures/lec3/minimax-tree-1.svg)]
+.center.width-80[![](figures/lec3/minimax-tree-1.svg)]
 
 - At the .bold[leaves], the game is over: the payoff is the utility.
 
@@ -183,7 +183,7 @@ count: false
 
 What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
 
-.center.width-70[![](figures/lec3/minimax-tree-2.svg)]
+.center.width-80[![](figures/lec3/minimax-tree-2.svg)]
 
 - At the .bold[leaves], the game is over: the payoff is the utility.
 - At a .bold[MIN node], MIN plays the move that is worst for MAX: the left node is worth ${\min(3, 12, 8) = 3}$, the other two ${2}$.
@@ -196,7 +196,7 @@ count: false
 
 What does MAX obtain from a state if .bold[both players play perfectly] from there on? Reason .bold[backwards], from the end of the game.
 
-.center.width-70[![](figures/lec3/minimax-tree-3.svg)]
+.center.width-80[![](figures/lec3/minimax-tree-3.svg)]
 
 - At the .bold[leaves], the game is over: the payoff is the utility.
 - At a .bold[MIN node], MIN plays the move that is worst for MAX: the left node is worth ${\min(3, 12, 8) = 3}$, the other two ${2}$.
@@ -482,7 +482,7 @@ The cutoff should only be applied to .bold[quiescent] states, whose value is unl
 
 H-Minimax sees the game only down to its cutoff depth, its .bold[horizon]. Below it, $\text{eval}(s)$ stands in for everything that may happen next, and evaluation functions are .bold[always imperfect].
 
-.center.width-70[![](figures/lec3/horizon-1.svg)]
+.center.width-80[![](figures/lec3/horizon-1.svg)]
 
 Searching to depth 2, ${a\_1}$ looks best: $\text{eval}$ rates it ${5}$, against ${0}$ for ${a\_2}$.
 
@@ -494,7 +494,7 @@ count: false
 
 H-Minimax sees the game only down to its cutoff depth, its .bold[horizon]. Below it, $\text{eval}(s)$ stands in for everything that may happen next, and evaluation functions are .bold[always imperfect].
 
-.center.width-70[![](figures/lec3/horizon-2.svg)]
+.center.width-80[![](figures/lec3/horizon-2.svg)]
 
 Beyond the horizon, ${a\_1}$ loses: what it seemed to gain is paid back later (${-9}$). The search took a .bold[bad move] for a .bold[good move], because its consequences were hidden beyond the horizon.
 
@@ -569,7 +569,7 @@ class: middle
 
 ## Cooperation and competition
 
-.center.width-80[![](figures/lec3/multi-agent-tree-1.svg)]
+.center.width-85[![](figures/lec3/multi-agent-tree-1.svg)]
 
 Without a zero-sum constraint, the interests of the players are no longer opposed: they may .bold[cooperate] or .bold[compete], depending on the state.
 
@@ -580,7 +580,7 @@ class: middle
 
 ## Cooperation and competition
 
-.center.width-80[![](figures/lec3/multi-agent-tree-2.svg)]
+.center.width-85[![](figures/lec3/multi-agent-tree-2.svg)]
 
 Without a zero-sum constraint, the interests of the players are no longer opposed: they may .bold[cooperate] or .bold[compete], depending on the state.
 
@@ -619,7 +619,7 @@ class: middle
 
 ## Stochastic game tree
 
-.center.width-80[![](figures/lec3/stochastic-game-tree.svg)]
+.center.width-85[![](figures/lec3/stochastic-game-tree.svg)]
 
 ???
 
@@ -663,7 +663,7 @@ As for $\text{minimax}(s)$, $\text{expectiminimax}(s)$ may be approximated by cu
 
 With chance nodes, preserving the order of states is .bold[not enough]: expectations add values, so $\text{eval}(s)$ must be a .bold[positive linear transformation] of the expected utility for the move to stay correct.
 
-.center.width-70[![](figures/lec3/chance-order-preserving.svg)]
+.center.width-80[![](figures/lec3/chance-order-preserving.svg)]
 .caption[An order-preserving transformation on leaf values changes the best move.]
 
 If the utilities are bounded, $\alpha$-$\beta$ search can be adapted to stochastic games.
@@ -736,7 +736,7 @@ The bonus shrinks as a child is tried (${1/\sqrt{N(n')}}$), and grows slowly as 
 <br>
 ## One round of MCTS
 
-.center.width-50[![](figures/lec3/mcts-1.svg)]
+.center.width-60[![](figures/lec3/mcts-1.svg)]
 
 Grey nodes are Black's turns, white nodes White's; each shows Black's wins and visits. .bold[Selection]: from the root, follow UCB1 down to a node that is not fully expanded.
 
@@ -748,7 +748,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-50[![](figures/lec3/mcts-2.svg)]
+.center.width-60[![](figures/lec3/mcts-2.svg)]
 
 .bold[Expansion]: add one of its children, not visited yet (0/0).
 
@@ -760,7 +760,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-50[![](figures/lec3/mcts-3.svg)]
+.center.width-60[![](figures/lec3/mcts-3.svg)]
 
 .bold[Simulation]: play a random playout from the new node. Here, Black wins.
 
@@ -772,7 +772,7 @@ count: false
 <br>
 ## One round of MCTS
 
-.center.width-50[![](figures/lec3/mcts-4.svg)]
+.center.width-60[![](figures/lec3/mcts-4.svg)]
 
 .bold[Backpropagation]: update the counts along the path back to the root: one more visit for every node and, since Black won, one more win for Black.
 

@@ -21,7 +21,6 @@ Writes to `figures/lec5/`:
 Helpers and fonts are those of `draw_game_trees.py`; `draw_temporal_networks.py` reuses these.
 """
 
-import base64
 from math import cos, hypot, radians, sin
 
 from draw_game_trees import BLUE, FILL, GREY, INK, ROOT, STROKE, text
@@ -33,13 +32,7 @@ MAIN = "KaTeX_Main"   # digits, operators, words and bold symbols, as LaTeX's ro
 
 def fonts():
     """Roboto for the captions, and the KaTeX fonts of the slides for the mathematics."""
-    faces = []
-    for family, weight, name in [(MATH, 400, "KaTeX_Math-Italic"), (MAIN, 400, "KaTeX_Main-Regular"),
-                                 (MAIN, 700, "KaTeX_Main-Bold")]:
-        data = base64.b64encode((ROOT / "assets" / "fonts" / f"{name}.woff2").read_bytes()).decode()
-        faces.append(f"@font-face {{ font-family: '{family}'; font-weight: {weight}; "
-                     f"src: url(data:font/woff2;base64,{data}) format('woff2'); }}")
-    return text_fonts() + "<style>" + " ".join(faces) + "</style>"
+    return text_fonts()
 
 
 def span(t, size=None, dy=None, bold=False):

@@ -37,23 +37,63 @@ LEAF = (60, 46)        # width and height of a terminal box
 
 
 def fonts():
+    """Roboto for words, and the KaTeX faces of the slides for mathematics."""
     faces = []
-    for family, weight, name in [("Roboto", 400, "Roboto-400-latin"), ("Roboto", 900, "Roboto-900-latin")]:
+    for family, weight, name in [("Roboto", 400, "Roboto-400-latin"), ("Roboto", 900, "Roboto-900-latin"),
+                                 ("KaTeX_Math", 400, "KaTeX_Math-Italic"), ("KaTeX_Math", 700, "KaTeX_Math-BoldItalic"),
+                                 ("KaTeX_Main", 400, "KaTeX_Main-Regular"), ("KaTeX_Main", 700, "KaTeX_Main-Bold")]:
         data = base64.b64encode((ROOT / "assets" / "fonts" / f"{name}.woff2").read_bytes()).decode()
         faces.append(f"@font-face {{ font-family: '{family}'; font-weight: {weight}; "
                      f"src: url(data:font/woff2;base64,{data}) format('woff2'); }}")
     return "<style>" + " ".join(faces) + "</style>"
 
 
+MATH_SIGNS = set("0123456789\u2212-+./,;[]()=<>\u2264\u2265\u221e? |:")
+GREEK = set("αβγδεθλμπρσφωΘΣΠΔΓΛΩ")
+
+
+def is_math(words):
+    """Numbers, single letters, Greek and operators are mathematics; words (two letters in a row) are not."""
+    if not words or any(c in "\u2026\u22ee" for c in words):
+        return False
+    run = 0
+    for c in words:
+        if c.isascii() and c.isalpha():
+            run += 1
+            if run > 1:
+                return False
+        else:
+            run = 0
+            if c not in MATH_SIGNS and c not in GREEK and c != "\u2032":
+                return False
+    return True
+
+
+def math_spans(words, bold=False):
+    """Each character in the face LaTeX would use: letters in math italic, the rest upright."""
+    weight = ' font-weight="700"' if bold else ""
+    out = ""
+    for c in words:
+        italic = (c.isascii() and c.isalpha()) or (c in GREEK and c.islower())
+        family = "KaTeX_Math" if italic else "KaTeX_Main"
+        out += f'<tspan font-family="{family}"{weight}>{escape(c)}</tspan>'
+    return out
+
+
 def text(x, y, words, size=24, weight=400, fill=INK, anchor="middle", style=""):
+    if is_math(words):
+        style = style.replace(' font-style="italic"', "")
+        return (f'<text x="{x:g}" y="{y + 0.33 * size:.1f}" font-size="{size * 1.05:g}" fill="{fill}" '
+                f'text-anchor="{anchor}"{style} xml:space="preserve">{math_spans(words, weight >= 700)}</text>')
     return (f'<text x="{x:g}" y="{y + 0.35 * size:.1f}" font-family="Roboto, sans-serif" font-weight="{weight}" '
             f'font-size="{size:g}" fill="{fill}" text-anchor="{anchor}"{style}>{escape(words)}</text>')
 
 
 def action(x, y, index, fill):
-    """The label a_i of an edge, in italics with a subscript."""
-    return (f'<text x="{x:g}" y="{y + 8:.1f}" font-family="Roboto, sans-serif" font-size="24" fill="{fill}" '
-            f'text-anchor="middle" font-style="italic">a<tspan font-size="17" dy="6">{index}</tspan></text>')
+    """The label a_i of an edge, as KaTeX sets it."""
+    return (f'<text x="{x:g}" y="{y + 8:.1f}" font-size="25" fill="{fill}" text-anchor="middle">'
+            f'<tspan font-family="KaTeX_Math">a</tspan>'
+            f'<tspan font-family="KaTeX_Main" font-size="17.5" dy="5">{index}</tspan></text>')
 
 
 def triangle(x, y, up, value=None):
@@ -150,7 +190,7 @@ def two_ply(leaves, seen=None, values=None, intervals=None, best=None, labels=("
     parts.append(triangle(*root, up=True, value=values.get("A")) if any(open_min)
                  else faded_triangle(*root, up=True))
     if named:
-        parts.append(text(root[0] + HALF + 10, root[1] + 4, "A", size=24, weight=900,
+        parts.append(text(root[0] + HALF + 10, root[1] + 4, "A", size=24, weight=400,
                           fill=INK if any(open_min) else FADED, anchor="start"))
     if "A" in intervals:
         parts.append(text(root[0] - HALF - 12, root[1] + 4, intervals["A"], size=24, fill=BLUE, anchor="end"))
@@ -159,7 +199,7 @@ def two_ply(leaves, seen=None, values=None, intervals=None, best=None, labels=("
         parts.append(triangle(x, ROWS["MIN"], up=False, value=values.get(name)) if open_min[i]
                      else faded_triangle(x, ROWS["MIN"], up=False))
         if named:
-            parts.append(text(x + HALF + 10, ROWS["MIN"] - 6, name, size=24, weight=900,
+            parts.append(text(x + HALF + 10, ROWS["MIN"] - 6, name, size=24, weight=400,
                               fill=INK if open_min[i] else FADED, anchor="start"))
         if name in intervals:
             parts.append(text(x - HALF - 12, ROWS["MIN"] - 6, intervals[name], size=24, fill=BLUE, anchor="end"))
@@ -238,8 +278,8 @@ def alpha_path():
     parts.append(triangle(*m, up=False))
     parts.append(triangle(*low, up=True))
     parts.append(triangle(*n, up=False))
-    parts.append(text(m[0], m[1] - 6, "m", size=30, weight=900, fill=INK, style=' font-style="italic"'))
-    parts.append(text(n[0], n[1] - 6, "n", size=30, weight=900, fill=INK, style=' font-style="italic"'))
+    parts.append(text(m[0], m[1] - 6, "m", size=30, weight=400, fill=INK, style=' font-style="italic"'))
+    parts.append(text(n[0], n[1] - 6, "n", size=30, weight=400, fill=INK, style=' font-style="italic"'))
     parts.append(text(m[0] + HALF + 14, m[1] - 4, "α", size=42, fill=BLUE, anchor="start"))
     parts.append(text(95, (rows[1] + rows[2]) / 2, "⋮", size=40, fill=GREY, anchor="middle"))
     return parts
@@ -418,8 +458,9 @@ def player(x, y, p):
 def vector(x, y, v, size=20, weight=400, anchor="middle"):
     """A utility vector, each component in the colour of its player."""
     spans = ", ".join(f'<tspan fill="{PLAYER_COLOURS[i]}">{c}</tspan>' for i, c in enumerate(v))
-    return (f'<text x="{x:g}" y="{y + 0.35 * size:.1f}" font-family="Roboto, sans-serif" font-weight="{weight}" '
-            f'font-size="{size:g}" fill="{INK}" text-anchor="{anchor}">({spans})</text>')
+    bold = ' font-weight="700"' if weight >= 700 else ""
+    return (f'<text x="{x:g}" y="{y + 0.33 * size:.1f}" font-family="KaTeX_Main"{bold} '
+            f'font-size="{size * 1.05:g}" fill="{INK}" text-anchor="{anchor}" xml:space="preserve">({spans})</text>')
 
 
 MULTI_LEAVES = [(1, 6, 6), (7, 1, 2), (6, 1, 2), (7, 2, 1), (5, 1, 7), (1, 5, 2), (7, 7, 1), (5, 2, 5)]
@@ -488,7 +529,7 @@ def arrow(p, q, colour=BLUE, width=3.5):
     dx, dy = q[0] - p[0], q[1] - p[1]
     d = (dx * dx + dy * dy) ** 0.5
     a = (p[0] + dx / d * MCTS_R, p[1] + dy / d * MCTS_R)
-    b = (q[0] - dx / d * (MCTS_R + 4), q[1] - dy / d * (MCTS_R + 4))
+    b = (q[0] - dx / d * MCTS_R, q[1] - dy / d * MCTS_R)
     ux, uy = dx / d, dy / d
     head = (f"{b[0]:g},{b[1]:g} {b[0] - 14 * ux + 7 * uy:g},{b[1] - 14 * uy - 7 * ux:g} "
             f"{b[0] - 14 * ux - 7 * uy:g},{b[1] - 14 * uy + 7 * ux:g}")

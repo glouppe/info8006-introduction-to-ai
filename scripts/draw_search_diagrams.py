@@ -25,23 +25,17 @@ R = 34          # node radius
 STROKE = 2.0
 
 
-def fonts():
-    faces = []
-    for family, weight, name in [("Roboto", 400, "Roboto-400-latin"), ("Roboto", 900, "Roboto-900-latin")]:
-        data = base64.b64encode((ROOT / "assets" / "fonts" / f"{name}.woff2").read_bytes()).decode()
-        faces.append(f"@font-face {{ font-family: '{family}'; font-weight: {weight}; "
-                     f"src: url(data:font/woff2;base64,{data}) format('woff2'); }}")
-    return "<style>" + " ".join(faces) + "</style>"
+from draw_game_trees import fonts, text as tree_text
 
 
 def text(x, y, words, size=21, weight=400, fill=INK, anchor="middle", style=""):
-    return (f'<text x="{x:g}" y="{y + 0.35 * size:.1f}" font-family="Roboto, sans-serif" font-weight="{weight}" '
-            f'font-size="{size:g}" fill="{fill}" text-anchor="{anchor}"{style}>{escape(words)}</text>')
+    """Words in Roboto, mathematics (state names, costs, h values) in the KaTeX faces."""
+    return tree_text(x, y, words, size=size, weight=weight, fill=fill, anchor=anchor, style=style)
 
 
 def node(x, y, name, r=R, fill=FILL):
     return (f'<circle cx="{x:g}" cy="{y:g}" r="{r:g}" fill="{fill}" stroke="{INK}" stroke-width="{STROKE}"/>'
-            + text(x, y, name, size=26, weight=900))
+            + text(x, y, name, size=26))
 
 
 def dot(x, y, r=16):
@@ -56,7 +50,7 @@ def shorten(p, q, d):
 
 
 def edge(p, q, label=None, colour=INK, dashed=False, gap=R, label_side=1, tip="tip"):
-    a, b = shorten(p, q, gap), shorten(q, p, gap + 6)
+    a, b = shorten(p, q, gap), shorten(q, p, gap)   # the arrow tip ends on the outline
     style = ' stroke-dasharray="4 7" stroke-linecap="round"' if dashed else ""
     out = (f'<path d="M {a[0]:g} {a[1]:g} L {b[0]:g} {b[1]:g}" stroke="{colour}" stroke-width="{STROKE}" '
            f'fill="none"{style} marker-end="url(#{tip})"/>')
