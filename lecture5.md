@@ -897,7 +897,7 @@ Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distr
 
 class: middle
 
-.center.width-100[![](figures/lec5/parameterized-bn.png)]
+.center.width-80[![](figures/lec5/parameterized-bn.svg)]
 
 ???
 
@@ -1041,7 +1041,7 @@ class: middle
 
 ## Case (b)
 
-.center.width-100[![](figures/lec5/caseb-bayesian.png)]
+.center.width-80[![](figures/lec5/caseb-bayesian.svg)]
 
 ---
 
