@@ -89,26 +89,43 @@ def joint_axes():
     return fig, ax, top, right
 
 
+ORANGE = "#d9822b"   # the surprise, or the noise
+
+
+def harrow(ax, x0, x1, y, colour, **kw):
+    ax.annotate("", xy=(x1, y), xytext=(x0, y), arrowprops=dict(arrowstyle="-|>", color=colour, lw=2.2, shrinkA=0, shrinkB=0), **kw)
+
+
+def varrow(ax, x, y0, y1, colour):
+    ax.annotate("", xy=(x, y1), xytext=(x, y0), arrowprops=dict(arrowstyle="-|>", color=colour, lw=2.2, shrinkA=0, shrinkB=0))
+
+
 def gaussian_conditioning():
-    """x = a + C/B (y - b) + e, with e independent of y: every slice has the same spread, only its centre moves."""
-    a, b, A, B, C = 0.0, 0.0, 1.0, 1.0, 0.8
+    """Guess a, surprise y - b, correction CB^-1 (y - b); uncertainty A shrinks to A - CB^-1 C^T."""
+    a, b, A, B, C, y0 = 0.0, 0.0, 1.0, 1.0, 0.8, 1.8
+    xhat, var = a + C / B * (y0 - b), A - C * C / B
     fig, ax, top, right = joint_axes()
     g = np.linspace(-3.5, 3.5, 401)
     X, Y = np.meshgrid(g, g)
     joint = multivariate_normal([a, b], [[A, C], [C, B]]).pdf(np.dstack([X, Y]))
-    levels = np.linspace(0.05, 1, 8) * joint.max()
-    ax.contourf(X, Y, joint, levels=levels, cmap=LIGHT, extend="max")
-    ax.contour(X, Y, joint, levels=levels, colors=INK, linewidths=0.4, alpha=0.4)
-    ax.plot(a + C / B * (g - b), g, color=GREY, linestyle=":", linewidth=1.5)
-    ax.text(-0.3, -3.25, r"$a + CB^{-1}(y - b)$", color=GREY, fontsize=15)
-    var = A - C * C / B
-    for y0 in (-1.6, 0.0, 1.6):
-        mean = a + C / B * (y0 - b)
-        bump = norm.pdf(g, mean, np.sqrt(var))
-        keep = bump > 0.01
-        ax.plot(g[keep], y0 + bump[keep], color=RED)
-        ax.plot([g[keep][0], g[keep][-1]], [y0, y0], color=RED, linewidth=1)
-    ax.text(1.75, 2.25, r"$p(x \mid y)$", color=RED, fontsize=16)
+    levels = np.linspace(0.05, 1, 7) * joint.max()
+    ax.contourf(X, Y, joint, levels=levels, cmap=LIGHT, extend="max", alpha=0.8)
+    ax.plot([a], [b], marker="x", color=INK, markersize=10, mew=2)
+    ax.text(a + 0.15, b - 0.45, r"$(a, b)$", color=INK, fontsize=16)
+    # the observation and the surprise
+    ax.axhline(y0, color=INK, linestyle="--", linewidth=1)
+    ax.text(-3.35, y0 + 0.15, "observed", color=GREY, fontsize=13, family="Roboto")
+    ax.plot([-3.5, 3.5], [b, b], color=GREY, linestyle=":", linewidth=1)
+    varrow(ax, -2.6, b, y0, ORANGE)
+    ax.text(-2.45, (b + y0) / 2, r"$y - b$", color=ORANGE, fontsize=17, va="center")
+    # the correction of the guess a, proportional to the surprise
+    ax.plot([a, a], [b, y0], color=GREY, linestyle=":", linewidth=1)
+    harrow(ax, a, xhat, y0 - 0.05, BLUE)
+    ax.text((a + xhat) / 2, y0 - 0.55, r"$CB^{-1}(y - b)$", color=BLUE, fontsize=16, ha="center")
+    bump = norm.pdf(g, xhat, np.sqrt(var))
+    keep = bump > 0.01
+    ax.plot(g[keep], y0 + 0.9 * bump[keep], color=RED)
+    ax.text(xhat + 0.5, y0 + 0.7, r"$p(x \mid y)$", color=RED, fontsize=16)
     ax.set_xlim(-3.5, 3.5)
     ax.set_ylim(-3.5, 3.5)
     ax.set_aspect("equal")
@@ -116,35 +133,35 @@ def gaussian_conditioning():
     ax.set_ylabel(r"$y$", fontsize=20)
     ax.set_xticks([])
     ax.set_yticks([])
-    # the marginal of x, wider than every conditional: it adds the spread of the centres
-    top.plot(g, norm.pdf(g, a, np.sqrt(A)), color=BLUE)
-    top.plot(g, norm.pdf(g, a, np.sqrt(var)) * 0.62, color=RED, linewidth=1.2, linestyle="--")
-    top.text(1.3, 0.3, r"$p(x) = \mathcal{N}(a, A)$", color=INK, fontsize=15)
-    top.text(-3.4, 0.3, r"$A - CB^{-1}C^T$", color=RED, fontsize=14)
-    top.set_ylim(0, 0.45)
-    right.plot(norm.pdf(g, b, np.sqrt(B)), g, color=BLUE)
-    right.text(0.03, -2.7, r"$p(y)$", color=INK, fontsize=15)
+    # the uncertainty about x, before and after observing y
+    top.plot(g, norm.pdf(g, a, np.sqrt(A)), color=INK, linewidth=1.6)
+    top.plot(g, norm.pdf(g, xhat, np.sqrt(var)), color=RED)
+    top.text(-3.4, 0.3, r"$\mathcal{N}(a, A)$", color=INK, fontsize=15)
+    top.text(xhat + 0.7, 0.5, r"$A - CB^{-1}C^T$", color=RED, fontsize=15)
+    top.set_ylim(0, 0.7)
+    right.plot(norm.pdf(g, b, np.sqrt(B)), g, color=INK, linewidth=1.6)
+    right.text(0.03, -3.0, r"$\mathcal{N}(b, B)$", color=INK, fontsize=14)
     right.set_xlim(0, 0.45)
     save(fig, "gaussian-conditioning")
 
 
 def linear_gaussian():
-    m, P, H, u, R = 0.0, 1.0, 1.0, 0.3, 1.0
+    """The mean of x carried through the line, its spread stretched by H, then widened by the noise R."""
+    mu, S, H, u, R = 0.0, 1.0, 1.0, 0.3, 1.0
+    s = np.sqrt(S)
     fig, ax, top, right = joint_axes()
     g = np.linspace(-3.5, 3.5, 401)
-    X, Y = np.meshgrid(g, g)
-    joint = multivariate_normal([m, H * m + u], [[P, P * H], [H * P, H * P * H + R]]).pdf(np.dstack([X, Y]))
-    levels = np.linspace(0.05, 1, 8) * joint.max()
-    ax.contourf(X, Y, joint, levels=levels, cmap=LIGHT, extend="max")
-    ax.contour(X, Y, joint, levels=levels, colors=INK, linewidths=0.4, alpha=0.4)
     ax.plot(g, H * g + u, color=GREY, linestyle=":", linewidth=1.5)
-    ax.text(-3.3, 3.0, r"$y = Hx + u$", color=GREY, fontsize=15)
-    for x0 in (-1.5, 0.0, 1.5):
-        bump = norm.pdf(g, H * x0 + u, np.sqrt(R))
-        keep = bump > 0.05
-        ax.plot(x0 + 1.1 * bump[keep], g[keep], color=RED)
-        ax.plot([x0, x0], [g[keep][0], g[keep][-1]], color=RED, linewidth=1)
-    ax.text(-3.3, 2.4, r"$p(y \mid x) = \mathcal{N}(Hx + u, R)$", color=RED, fontsize=15)
+    ax.text(0.9, 3.0, r"$y = Hx + u$", color=GREY, fontsize=15, ha="right")
+    # the mean, carried through the line
+    ym = H * mu + u
+    varrow(ax, mu, -3.5, ym, BLUE)
+    harrow(ax, mu, 3.5, ym, BLUE)
+    ax.text(2.0, ym + 0.2, r"$H\mu + u$", color=BLUE, fontsize=16)
+    # one standard deviation of x, stretched by H
+    for x0 in (mu - s, mu + s):
+        ax.plot([x0, x0], [-3.5, H * x0 + u], color=BLUE, linewidth=0.8, alpha=0.6)
+        ax.plot([x0, 3.5], [H * x0 + u] * 2, color=BLUE, linewidth=0.8, alpha=0.6)
     ax.set_xlim(-3.5, 3.5)
     ax.set_ylim(-3.5, 3.5)
     ax.set_aspect("equal")
@@ -152,14 +169,14 @@ def linear_gaussian():
     ax.set_ylabel(r"$y$", fontsize=20)
     ax.set_xticks([])
     ax.set_yticks([])
-    top.plot(g, norm.pdf(g, m, np.sqrt(P)), color=BLUE)
-    top.text(1.3, 0.3, r"$p(x) = \mathcal{N}(\mu, \Sigma)$", color=INK, fontsize=15)
+    top.plot(g, norm.pdf(g, mu, s), color=INK, linewidth=1.6)
+    top.text(1.3, 0.3, r"$\mathcal{N}(\mu, \Sigma)$", color=INK, fontsize=15)
     top.set_ylim(0, 0.45)
-    # p(x) pushed through the line, then widened by the independent noise
-    right.plot(norm.pdf(g, H * m + u, np.sqrt(H * P * H)), g, color=GREY, linestyle="--", linewidth=1.5)
-    right.plot(norm.pdf(g, H * m + u, np.sqrt(H * P * H + R)), g, color=BLUE)
-    right.text(0.02, 3.0, r"$H\Sigma H^T$", color=GREY, fontsize=14)
-    right.text(0.02, -3.2, r"$H\Sigma H^T + R$", color=BLUE, fontsize=14)
+    # the noise widens the stretched spread
+    right.plot(norm.pdf(g, ym, np.sqrt(H * S * H)), g, color=BLUE, linewidth=1.6, linestyle="--")
+    right.plot(norm.pdf(g, ym, np.sqrt(H * S * H + R)), g, color=ORANGE)
+    right.text(0.02, 2.9, r"$H\Sigma H^T$", color=BLUE, fontsize=14)
+    right.text(0.02, -3.2, r"$+\,R$", color=ORANGE, fontsize=16)
     right.set_xlim(0, 0.45)
     save(fig, "linear-gaussian")
 

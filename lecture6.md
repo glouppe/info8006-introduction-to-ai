@@ -736,7 +736,8 @@ class: middle
 
 .center.width-50[![](figures/lec6/gaussian-conditioning.svg)]
 
-.italic[Why?] Write $\mathbf{x} = \mathbf{a} + \mathbf{C}\mathbf{B}^{-1}(\mathbf{y} - \mathbf{b}) + \boldsymbol{\epsilon}$. The residual $\boldsymbol{\epsilon}$ is Gaussian and uncorrelated with $\mathbf{y}$, hence independent of it, with covariance $\mathbf{A} - \mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$. Knowing $\mathbf{y}$ fixes the first part only: every slice is centred on the line, and all share the spread of $\boldsymbol{\epsilon}$, narrower than the marginal.
+Before observing $\mathbf{y}$, the guess for $\mathbf{x}$ is $\mathbf{a}$, with uncertainty $\mathbf{A}$. The observation brings a .bold[surprise] $\textcolor{#d9822b}{\mathbf{y} - \mathbf{b}}$, which corrects the guess in proportion to how $\mathbf{x}$ and $\mathbf{y}$ covary, and removes part of the uncertainty:
+$$\mathbf{a} + \mathbf{C}\mathbf{B}^{-1}\textcolor{#d9822b}{(\mathbf{y} - \mathbf{b})}, \qquad \mathbf{A} - \textcolor{#c8463d}{\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T}.$$
 
 ???
 
@@ -780,7 +781,7 @@ class: middle
 
 .center.width-50[![](figures/lec6/linear-gaussian.svg)]
 
-.italic[Why?] Write $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \mathbf{v}$, with a noise $\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})$ independent of $\mathbf{x}$. The line maps the mean to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and stretches the spread into $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$; the independent noise adds its own, $\mathbf{R}$. The cross-covariance $\boldsymbol{\Sigma}\mathbf{H}^T$ comes from $\mathbf{H}\mathbf{x}$ alone.
+Write $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \textcolor{#d9822b}{\mathbf{v}}$, with a noise $\textcolor{#d9822b}{\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})}$ independent of $\mathbf{x}$. The line carries the mean of $\mathbf{x}$ to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and stretches its spread into $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$; the noise adds its own, $\textcolor{#d9822b}{\mathbf{R}}$.
 
 ???
 
