@@ -734,6 +734,20 @@ $$
 
 class: middle
 
+.center.width-50[![](figures/lec6/gaussian-conditioning.svg)]
+
+.italic[Why?] Write $\mathbf{x} = \mathbf{a} + \mathbf{C}\mathbf{B}^{-1}(\mathbf{y} - \mathbf{b}) + \boldsymbol{\epsilon}$. The residual $\boldsymbol{\epsilon}$ is Gaussian and uncorrelated with $\mathbf{y}$, hence independent of it, with covariance $\mathbf{A} - \mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$. Knowing $\mathbf{y}$ fixes the first part only: every slice is centred on the line, and all share the spread of $\boldsymbol{\epsilon}$, narrower than the marginal.
+
+???
+
+Check: $\text{Cov}(\boldsymbol{\epsilon}, \mathbf{y}) = \mathbf{C} - \mathbf{C}\mathbf{B}^{-1}\mathbf{B} = \mathbf{0}$, and $\text{Cov}(\boldsymbol{\epsilon}) = \mathbf{A} - 2\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T + \mathbf{C}\mathbf{B}^{-1}\mathbf{B}\mathbf{B}^{-1}\mathbf{C}^T = \mathbf{A} - \mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$. For Gaussians, uncorrelated means independent.
+
+The marginal $p(\mathbf{x})$ is wider than every conditional: it adds the spread of the centres, $\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$, to that of the residual. Observing $\mathbf{y}$ removes the first part; the more correlated $\mathbf{x}$ and $\mathbf{y}$, the more it removes.
+
+---
+
+class: middle
+
 If the random variables $\mathbf{x}$ and $\mathbf{y}$ have Gaussian probability distributions
 $$
 \begin{aligned}
@@ -759,6 +773,20 @@ p\left(\begin{matrix}
 \end{matrix}\right) \right).
 \end{aligned}
 $$
+
+---
+
+class: middle
+
+.center.width-50[![](figures/lec6/linear-gaussian.svg)]
+
+.italic[Why?] Write $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \mathbf{v}$, with a noise $\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})$ independent of $\mathbf{x}$. The line maps the mean to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and stretches the spread into $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$; the independent noise adds its own, $\mathbf{R}$. The cross-covariance $\boldsymbol{\Sigma}\mathbf{H}^T$ comes from $\mathbf{H}\mathbf{x}$ alone.
+
+???
+
+Covariances of independent terms add: $\text{Cov}(\mathbf{y}) = \text{Cov}(\mathbf{H}\mathbf{x}) + \text{Cov}(\mathbf{v}) = \mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T + \mathbf{R}$, and $\text{Cov}(\mathbf{x}, \mathbf{y}) = \text{Cov}(\mathbf{x}, \mathbf{H}\mathbf{x}) = \boldsymbol{\Sigma}\mathbf{H}^T$. A linear map of a Gaussian, plus an independent Gaussian, is Gaussian.
+
+This is the prediction step of the Kalman filter, with $\mathbf{H} = \mathbf{A}$ and $\mathbf{R} = \mathbf{Q}$, and the first half of its update step, before conditioning with the previous slides.
 
 ---
 
