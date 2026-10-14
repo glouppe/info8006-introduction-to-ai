@@ -883,11 +883,9 @@ class: middle
 
 class: middle
 
-When modeling a domain, we can choose a probabilistic model specified as a Bayesian network. However, specifying the individual probability values is often difficult. 
+The structure of a Bayesian network is often easy to specify, its probability values rarely. We instead choose a .bold[parameterized] family $\mathbf{P}(X \mid \theta)$, also written $\mathbf{P}\_\theta(X)$, and .bold[estimate] $\theta$ from data.
 
-A workaround is to use a .bold[parameterized] family $\mathbf{P}(X \mid \theta)$ (sometimes also noted $\mathbf{P}\_\theta(X)$) of models, and .bold[estimate] the parameters $\theta$ from data.
-
-.success[The same principle trains .bold[neural networks] (Lecture 7): a network is a parameterized distribution $p\_\theta(y \mid \mathbf{x})$, whose parameters are estimated from data by maximum likelihood.]
+.success[Neural networks are trained the same way (Lecture 7): a network is a parameterized distribution $p\_\theta(y \mid \mathbf{x})$, fitted to data by maximum likelihood.]
 
 ???
 
