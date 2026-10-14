@@ -1054,6 +1054,7 @@ $$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(
 
 ---
 
+exclude: true
 class: middle
 
 ## Step by step, in code
