@@ -147,7 +147,7 @@ def gaussian_conditioning():
 
 def linear_gaussian():
     """The mean of x carried through the line, its spread stretched by H, then widened by the noise R."""
-    mu, S, H, u, R = 0.0, 1.0, 1.0, 0.3, 1.0
+    mu, S, H, u, R = 0.0, 0.5, 2.0, 0.3, 1.2
     s = np.sqrt(S)
     fig, ax, top, right = joint_axes()
     g = np.linspace(-3.5, 3.5, 401)
@@ -171,13 +171,13 @@ def linear_gaussian():
     ax.set_yticks([])
     top.plot(g, norm.pdf(g, mu, s), color=INK, linewidth=1.6)
     top.text(1.3, 0.3, r"$\mathcal{N}(\mu, \Sigma)$", color=INK, fontsize=15)
-    top.set_ylim(0, 0.45)
+    top.set_ylim(0, 0.6)
     # the noise widens the stretched spread
     right.plot(norm.pdf(g, ym, np.sqrt(H * S * H)), g, color=BLUE, linewidth=1.6, linestyle="--")
     right.plot(norm.pdf(g, ym, np.sqrt(H * S * H + R)), g, color=ORANGE)
-    right.text(0.02, 2.9, r"$H\Sigma H^T$", color=BLUE, fontsize=14)
-    right.text(0.02, -3.2, r"$+\,R$", color=ORANGE, fontsize=16)
-    right.set_xlim(0, 0.45)
+    right.text(0.12, 2.6, r"$H\Sigma H^T$", color=BLUE, fontsize=14)
+    right.text(0.12, -2.8, r"$+\,R$", color=ORANGE, fontsize=16)
+    right.set_xlim(0, 0.32)
     save(fig, "linear-gaussian")
 
 
