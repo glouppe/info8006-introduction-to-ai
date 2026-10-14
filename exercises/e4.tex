@@ -276,12 +276,12 @@ Consider the following Bayesian network, which describes some features of a car'
 
 \begin{center}
     \begin{tikzpicture}[bn diagram]
-        \node[named variable] (Bat) at (1.5, 0) {$\mathit{Battery}$};
-        \node[named variable] (Rad) at (0, -1.5) {$\mathit{Radio}$};
-        \node[named variable] (Ign) at (3, -1.5) {$\mathit{Ignition}$};
-        \node[named variable] (Gas) at (6, -1.5) {$\mathit{Gas}$};
-        \node[named variable] (Sta) at (4.5, -3) {$\mathit{Starts}$};
-        \node[named variable] (Mov) at (4.5, -4.5) {$\mathit{Moves}$};
+        \node[random variable, label={[diagram caption]left:battery}] (Bat) at (1.5, 0) {$B$};
+        \node[random variable, label={[diagram caption]left:radio}] (Rad) at (0, -1.5) {$R$};
+        \node[random variable, label={[diagram caption]left:ignition}] (Ign) at (3, -1.5) {$I$};
+        \node[random variable, label={[diagram caption]right:gas}] (Gas) at (6, -1.5) {$G$};
+        \node[random variable, label={[diagram caption]left:starts}] (Sta) at (4.5, -3) {$S$};
+        \node[random variable, label={[diagram caption]left:moves}] (Mov) at (4.5, -4.5) {$M$};
         \draw[dependency] (Bat) -- (Rad);
         \draw[dependency] (Bat) -- (Ign);
         \draw[dependency] (Ign) -- (Sta);
@@ -298,14 +298,14 @@ Consider the following Bayesian network, which describes some features of a car'
 
         \begin{center}
             \begin{tikzpicture}[bn diagram]
-                \node[named variable, label={[tag]above:1}] (Icy) at (3, 1.5) {$\mathit{IcyWeather}$};
-                \node[named variable, label={[tag]above:2}] (Mot) at (4.5, 0) {$\mathit{StarterMotor}$};
-                \node[named variable, label={[tag]above:2}] (Bat) at (1.5, 0) {$\mathit{Battery}$};
-                \node[named variable, label={[tag]above:2}] (Rad) at (0, -1.5) {$\mathit{Radio}$};
-                \node[named variable, label={[tag]above:2}] (Ign) at (3, -1.5) {$\mathit{Ignition}$};
-                \node[named variable, label={[tag]above:1}] (Gas) at (6, -1.5) {$\mathit{Gas}$};
-                \node[named variable, label={[tag]above:8}] (Sta) at (4.5, -3) {$\mathit{Starts}$};
-                \node[named variable, label={[tag]above:2}] (Mov) at (4.5, -4.5) {$\mathit{Moves}$};
+                \node[random variable, label={[tag]above:1}, label={[diagram caption]left:icy weather}] (Icy) at (3, 1.5) {$W$};
+                \node[random variable, label={[tag]above:2}, label={[diagram caption]right:starter motor}] (Mot) at (4.5, 0) {$T$};
+                \node[random variable, label={[tag]above:2}, label={[diagram caption]left:battery}] (Bat) at (1.5, 0) {$B$};
+                \node[random variable, label={[tag]above:2}, label={[diagram caption]left:radio}] (Rad) at (0, -1.5) {$R$};
+                \node[random variable, label={[tag]above:2}, label={[diagram caption]left:ignition}] (Ign) at (3, -1.5) {$I$};
+                \node[random variable, label={[tag]above:1}, label={[diagram caption]right:gas}] (Gas) at (6, -1.5) {$G$};
+                \node[random variable, label={[tag]above:8}, label={[diagram caption]left:starts}] (Sta) at (4.5, -3) {$S$};
+                \node[random variable, label={[tag]above:2}, label={[diagram caption]left:moves}] (Mov) at (4.5, -4.5) {$M$};
                 \draw[dependency] (Icy) -- (Bat);
                 \draw[dependency] (Icy) -- (Mot);
                 \draw[dependency] (Mot) -- (Sta);
