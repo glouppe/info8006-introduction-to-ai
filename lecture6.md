@@ -65,20 +65,38 @@ class: middle
 
 class: middle
 
+## Stochastic, partially observable environments
+
+In most environments, the agent neither sees the state nor controls how it evolves:
+- the state moves at random, $s\_{t+1} \sim P(s\_{t+1} \mid s\_t, a\_t)$, following the .bold[transition model];
+- the agent only perceives $e\_t \sim P(e\_t \mid s\_t)$, following the .bold[sensor model].
+
+A model-based agent therefore acts on a .bold[belief state], the distribution of the current state given everything perceived and done so far,
+$$b\_t = P(s\_t \mid e\_{1:t}, a\_{1:t-1}),$$
+which it updates at every step, $b\_t = \text{update}(b\_{t-1}, a\_{t-1}, e\_t)$. This lecture derives $\text{update}$.
+
+???
+
+The actions are taken as given in this lecture, as when Pacman only listens to its sonar: we leave them out of the models. Lectures 8 and 9 bring them back, to decide what to do.
+
+---
+
+class: middle
+
 ## Modelling the passage of time
 
-We will consider the world as a .bold[discrete] series of time slices, each of which contains a set of random variables:
-- $\mathbf{X}\_t$ denotes the set of .bold[unobservable] state variables at time $t$.
-- $\mathbf{E}\_t$ denotes the set of .bold[observable] evidence variables at time $t$.
+We consider the world as a .bold[discrete] series of time slices, each of which contains sets of random variables:
+- $\mathbf{X}\_t$, the .bold[unobservable] state variables at time $t$, which make up the state $s\_t$;
+- $\mathbf{E}\_t$, the .bold[observable] evidence variables at time $t$, which make up the percept $e\_t$.
 
-These are the state $s\_t$ and the percept $e\_t$ of Lecture 1, written as sets of variables. The world starts at $\mathbf{X}\_0$, before any evidence, and the first observation is $\mathbf{E}\_1$.
+The world starts at $\mathbf{X}\_0$, before any evidence, and the first observation is $\mathbf{E}\_1$. The actions are taken as given and left out of the models.
 
 ---
 
 class: middle
 
 We specify
-- a prior $\mathbf{P}(\mathbf{X}\_0)$ that defines our inital belief state over hidden state variables,
+- a prior $\mathbf{P}(\mathbf{X}\_0)$ that defines our initial belief state over hidden state variables,
 - a .bold[transition model] $\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest state variables, given the previous (unobserved) values,
 - a .bold[sensor model] $\mathbf{P}(\mathbf{E}\_t \mid \mathbf{X}\_{0:t}, \mathbf{E}\_{0:t-1})$ (for $t > 0$) that defines the probability distribution over the latest evidence variables, given all previous (observed and unobserved) values.
 
