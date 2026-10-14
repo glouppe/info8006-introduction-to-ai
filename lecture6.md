@@ -313,6 +313,14 @@ What if $t \to \infty$?
 - This distribution is such that
 $$\mathbf{P}(\mathbf{X}\_{t+1}) = \mathbf{P}(\mathbf{X}\_t) = \sum\_{\mathbf{x}\_t} \mathbf{P}(\mathbf{X}\_{t+1} \mid \mathbf{x}\_t) P(\mathbf{x}\_t).$$
 
+???
+
+For a chain with finitely many states, a stationary distribution always exists: it is a fixed point of the transition model, an eigenvector of eigenvalue 1 of the transposed transition matrix (see the HMM slides).
+- It is .bold[unique] if the chain is .bold[irreducible]: every state can be reached from every other state.
+- The distribution .bold[converges] to it from any initial distribution if the chain is also .bold[aperiodic]: returns to a state are not restricted to multiples of some period larger than 1 (e.g., a self-transition of positive probability suffices). Such a chain is called ergodic.
+
+Counterexamples: two disconnected groups of states have one stationary distribution per group (not irreducible); a chain alternating deterministically between sun and rain never converges, although $(1/2, 1/2)$ is stationary (periodic). The weather chain of the next slide has positive transitions everywhere, so it is ergodic.
+
 ---
 
 class: middle
