@@ -957,6 +957,14 @@ Hence $\theta=\frac{c}{N}$.
 
 class: middle
 
+.center.width-70[![](figures/lec5/likelihood.svg)]
+
+The likelihood of $\theta$ after 1 cherry, 3 cherries out of 4 candies, and 30 out of 40. It peaks at the MLE $\frac{c}{N}$ and narrows as $N$ grows.
+
+---
+
+class: middle
+
 ## Case (b)
 
 Red and green wrappers depend probabilistically on flavor.
@@ -1031,6 +1039,14 @@ P(\theta \mid \text{cherry}) &\propto P(\text{cherry} \mid \theta) P(\theta) \\\
 &= \text{Beta}(\theta \mid a+1,b).
 \end{aligned}$$
 
+---
+
+class: middle
+
+.center.width-70[![](figures/lec5/beta-updates.svg)]
+
+Starting from the prior $\text{Beta}(\theta \mid 2, 2)$, the posterior after $c$ cherries and $l$ limes is $\text{Beta}(\theta \mid 2 + c, 2 + l)$. With 70% of cherries, it narrows around $0.7$ as $N$ grows.
+
 ???
 
 Intuition: a Beta prior encodes a belief on the fraction of cherry candies. Observing a cherry candy increases this, observing a lime candy decreases it.
@@ -1051,6 +1067,10 @@ class: middle
 
 When the posterior cannot be computed analytically, we can use .bold[maximum a posteriori] (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
 $$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(\mathbf{d} \mid \theta) P(\theta).$$
+
+.center.width-60[![](figures/lec5/map.svg)]
+
+After a single cherry, the MLE is $1$; with the prior $\text{Beta}(\theta \mid 2, 2)$, the MAP estimate is $\frac{2}{3}$.
 
 ---
 
