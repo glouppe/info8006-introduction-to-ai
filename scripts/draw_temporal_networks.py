@@ -21,22 +21,12 @@ are written R and U, as in their tables, with the names as captions. Helpers and
 
 import base64
 
-from draw_bn_diagrams import BLUE, FILL, GREY, INK, ROOT, STROKE, arrow, cell, fonts, link, math, text
+from draw_bn_diagrams import BLUE, FILL, GREY, INK, ROOT, STROKE, arrow, cell, fonts, label, link, math, text
 
 OUT = ROOT / "figures" / "lec6"
 
 
-def label(x, y, name, sub=None, size=26, bold=False):
-    """A variable name with an optional subscript: bold upright for sets, italic otherwise."""
-    style = ' font-weight="700"' if bold else ' font-style="italic"'
-    slant = "normal" if sub and sub.isdigit() else "italic"
-    tail = (f'<tspan font-size="{0.68 * size:g}" dy="{0.28 * size:g}" font-weight="400" '
-            f'font-style="{slant}">{sub}</tspan>') if sub else ""
-    return (f'<text x="{x:g}" y="{y + 0.35 * size:.1f}" font-family="Roboto, sans-serif" font-size="{size:g}" '
-            f'fill="{INK}" text-anchor="middle"{style}>{name}{tail}</text>')
-
-
-def node(x, y, name, sub=None, observed=False, r=36, bold=False, size=26):
+def node(x, y, name, sub=None, observed=False, r=36, bold=False, size=28):
     """A variable as a circle, shaded when observed."""
     fill = FILL if observed else "white"
     return (f'<circle cx="{x:g}" cy="{y:g}" r="{r}" fill="{fill}" stroke="{INK}" '

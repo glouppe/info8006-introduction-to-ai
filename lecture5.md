@@ -37,7 +37,7 @@ When the environment is only partially observable, the agent must reason about t
 $$P(s, e) = P(s) P(e \mid s),$$
 from which it infers the belief ${P(s \mid e)}$.
 
-.center.width-40[![](figures/lec5/state-percepts.svg)]
+.center.width-45[![](figures/lec5/state-percepts.svg)]
 
 When $s$ and $e$ hold many variables, the table of $P(s, e)$ grows exponentially. A .bold[Bayesian network] factors it with conditional independence assumptions.
 
@@ -56,7 +56,7 @@ A Bayesian network is a .bold[directed acyclic graph] where
 - each node $X_i$ is annotated with a .bold[conditional probability distribution] $$\mathbf{P}(X_i \mid \text{parents}(X_i))$$ that defines the distribution of $X_i$ given its parents in the network.
 
 ]
-.kol-1-4.width-100[![](figures/lec5/example-d.png)]
+.kol-1-4.width-100[![](figures/lec5/example-d.svg)]
 ]
 
 ???
@@ -91,7 +91,7 @@ Is there a burglar?
 
 class: middle
 
-.center.width-90[![](figures/lec5/burglary2.svg)]
+.center.width-60[![](figures/lec5/burglary.svg)]
 
 ???
 
@@ -104,7 +104,7 @@ Blackboard: example of calculation, as in the next slide.
 The topology of a network asserts the .bold[local Markov property]: each variable is conditionally independent of its non-descendants, given its parents,
 $$X\_i \perp \text{non-descendants}(X\_i) \mid \text{parents}(X\_i).$$
 
-.center.width-50[![](figures/lec5/nondescendants.svg)]
+.center.width-55[![](figures/lec5/nondescendants.svg)]
 
 ---
 
@@ -139,7 +139,7 @@ class: middle
 
 .grid[
 .kol-1-2[.width-90[![](figures/lec5/tooth.png)]]
-.kol-1-2[.width-100[![](figures/lec5/dentist-network.svg)]]
+.kol-1-2[.width-85[![](figures/lec5/dentist-network.svg)]]
 ]
 
 The dentist's scenario can be modeled as a Bayesian network with four variables, as shown on the right.
@@ -176,7 +176,7 @@ class: middle
 Edges may correspond to causal relations.
 
 .grid.center[
-.kol-1-5[.width-60[![](figures/lec5/traffic1-bn.png)]]
+.kol-1-5[.width-45[![](figures/lec5/traffic-causal.svg)]]
 .kol-2-5[
 $\mathbf{P}(R)$
 
@@ -214,7 +214,7 @@ class: middle
 ... but edges need not be causal!
 
 .grid.center[
-.kol-1-5[.width-60[![](figures/lec5/traffic2-bn.png)]]
+.kol-1-5[.width-45[![](figures/lec5/traffic-diagnostic.svg)]]
 .kol-2-5[
 $\mathbf{P}(T)$
 
@@ -253,8 +253,8 @@ Bayesian networks can be constructed in any order, provided that the conditional
 
 class: middle
 
-.center.width-100[
-![](figures/lec5/burglary-mess.svg)
+.center.width-75[
+![](figures/lec5/burglary-orders.svg)
 ]
 
 .question[Do these networks represent the same distribution? Are they as compact?]
@@ -278,7 +278,7 @@ Since the topology of a Bayesian network encodes conditional independence assert
 
 <br><br><br>
 
-.center.width-45[![](figures/lec5/xyz.png)]
+.center.width-35[![](figures/lec5/xyz.svg)]
 
 .center[Example: Are $X$ and $Z$ necessarily independent?]
 
@@ -453,19 +453,12 @@ Consider all (undirected) paths from $X\_i$ to $X\_j$:
 
 class: middle
 
-.grid[
-.kol-2-3[
-
 A path is .bold[active] if each triple along the path is active:
 - Cascade $A \to B \to C$ where $B$ is unobserved (either direction).
 - Common parent $A \leftarrow B \rightarrow C$ where $B$ is unobserved.
 - v-structure $A \rightarrow B \leftarrow C$ where $B$ or one of its descendants is observed.
 
-]
-.kol-1-3.width-100[![](figures/lec5/active-inactive.png)]
-]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.center.width-75[![](figures/lec5/active-inactive.svg)]
 
 ---
 
@@ -482,7 +475,7 @@ class: middle
 - $L \perp B \mid T, R$?
 
 ]
-.kol-1-2.width-80.center[![](figures/lec5/example-d.png)]
+.kol-1-2.width-55.center[![](figures/lec5/example-d.svg)]
 ]
 
 ???
@@ -499,7 +492,7 @@ class: middle
 
 ## Markov blanket
 
-.center.width-40[![](figures/lec5/markov-blanket.svg)]
+.center.width-55[![](figures/lec5/markov-blanket.svg)]
 
 $X$ is conditionally independent of all the other nodes given its .bold[Markov blanket]: its parents, its children, and the other parents of its children.
 
@@ -822,7 +815,7 @@ $$\begin{aligned}
 
 class: middle
 
-.center.width-35[![](figures/lec5/bn-alarm.svg)]
+.center.width-25[![](figures/lec5/bn-alarm.svg)]
 
 <br>
 
@@ -848,7 +841,7 @@ class: middle
 
 ## Complexity
 
-.center.width-50[![](figures/lec5/ve-ordering.png)]
+.center.width-55[![](figures/lec5/ve-ordering.svg)]
 
 Consider the query $\mathbf{P}(X\_n \mid y\_1,...,y\_n)$.
 
@@ -893,7 +886,7 @@ Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distr
 
 class: middle
 
-.center.width-80[![](figures/lec5/parameterized-bn.svg)]
+.center.width-65[![](figures/lec5/parameterized-bn.svg)]
 
 ???
 
@@ -1045,7 +1038,7 @@ class: middle
 
 ## Case (b)
 
-.center.width-80[![](figures/lec5/caseb-bayesian.svg)]
+.center.width-60[![](figures/lec5/caseb-bayesian.svg)]
 
 ---
 
