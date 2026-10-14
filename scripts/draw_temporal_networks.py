@@ -11,7 +11,9 @@ Writes to `figures/lec6/`:
   X_1 -> E_1, next to the CS188 cartoons cropped from the former `base-case2.png` and
   `base-case1.png` (`figures/lec6/base-case-ghosts.png`, `base-case-sensors.png`);
 - `filtering.svg` and `smoothing.svg`, the umbrella world over two days, with the predicted,
-  filtered, smoothed and backward messages for the evidence (true, true).
+  filtered, smoothed and backward messages for the evidence (true, true);
+- `kalman-transition.svg` and `kalman-sensor.svg`, the transition X_t -> X_{t+1} and the sensor
+  X_t -> E_t of the Kalman filter, at the same height so that they align side by side.
 
 Variables are circles, shaded when observed; the rain and umbrella of the umbrella world
 are written R and U, as in their tables, with the names as captions. Helpers and fonts are those of `draw_bn_diagrams.py`.
@@ -34,7 +36,7 @@ def label(x, y, name, sub=None, size=26, bold=False):
             f'fill="{INK}" text-anchor="middle"{style}>{name}{tail}</text>')
 
 
-def node(x, y, name, sub=None, observed=False, r=34, bold=False, size=26):
+def node(x, y, name, sub=None, observed=False, r=36, bold=False, size=26):
     """A variable as a circle, shaded when observed."""
     fill = FILL if observed else "white"
     return (f'<circle cx="{x:g}" cy="{y:g}" r="{r}" fill="{fill}" stroke="{INK}" '
@@ -57,7 +59,7 @@ def svg(name, width, height, parts):
 
 def markov_process():
     y, xs, subs = 50, [110, 280, 450, 620, 790], ["t−2", "t−1", "t", "t+1", "t+2"]
-    r = 40
+    r = 36
     parts = [arrow((10, y), (xs[0] - r - 5, y)), arrow((xs[-1] + r, y), (895, y))]
     for x, sub in zip(xs, subs):
         parts.append(node(x, y, "X", sub, r=r, bold=True))
@@ -67,7 +69,7 @@ def markov_process():
 
 
 def smoothing_dbn():
-    yx, ye, r = 45, 165, (32, 32)
+    yx, ye, r = 45, 165, (36, 36)
     xs = {"0": 60, "1": 190, "k": 460, "t": 730}
     parts = [node(x, yx, "X", s, r=r[0], bold=True) for s, x in xs.items()]
     parts += [node(xs[s], ye, "E", s, observed=True, r=r[0], bold=True) for s in "1kt"]
@@ -92,7 +94,7 @@ def table(x, y, head, rows, w=(70, 90)):
 
 
 def weather_bn():
-    yr, yu, r = 150, 320, (38, 38)
+    yr, yu, r = 150, 320, (36, 36)
     xs, subs = [210, 480, 750], ["t−1", "t", "t+1"]
     parts = [arrow((100, yr), (xs[0] - r[0] - 5, yr)), arrow((xs[-1] + r[0], yr), (880, yr)),
              text(10, yr, "rain", size=20, fill=GREY, anchor="start"),
@@ -117,7 +119,7 @@ def cartoon(name, x, y, w, h):
 
 
 def base_cases():
-    r = (40, 40)
+    r = (36, 36)
     svg("base-case-predict", 560, 292, [
         cartoon("base-case-ghosts", 0, 0, 300, 292),
         node(370, 146, "X", "1", r=r[0]), node(500, 146, "X", "2", r=r[0]),
@@ -133,7 +135,7 @@ def pair(x, y, values, fill=INK):
     return [math(x, y, [(values[0], "")], size=22, fill=fill), math(x, y + 28, [(values[1], "")], size=22, fill=fill)]
 
 
-def chain(xs, yr, yu, r=(34, 34)):
+def chain(xs, yr, yu, r=(36, 36)):
     parts = [text(40, yr, "rain", size=19, fill=GREY, anchor="start"),
              text(40, yu, "umbrella", size=19, fill=GREY, anchor="start")]
     for k, x in enumerate(xs):
@@ -172,6 +174,16 @@ def smoothing():
     return parts + chain(xs, 380, 500)
 
 
+def kalman():
+    r = (36, 36)
+    svg("kalman-transition", 240, 220, [
+        node(40, 110, "X", "t", r=36, bold=True), node(200, 110, "X", "t+1", r=36, bold=True),
+        link((40, 110), (200, 110), r, r)])
+    svg("kalman-sensor", 80, 220, [
+        node(40, 40, "X", "t", r=36, bold=True), node(40, 180, "E", "t", observed=True, r=36, bold=True),
+        link((40, 40), (40, 180), r, r)])
+
+
 if __name__ == "__main__":
     svg("markov-process", 900, 100, markov_process())
     svg("smoothing-dbn", 840, 210, smoothing_dbn())
@@ -179,3 +191,4 @@ if __name__ == "__main__":
     base_cases()
     svg("filtering", 940, 380, filtering())
     svg("smoothing", 940, 540, smoothing())
+    kalman()

@@ -98,7 +98,7 @@ Markov processes such that $$\mathbf{P}(\mathbf{X}\_t \mid \mathbf{X}\_{0:t-1}) 
 i.e., $\mathbf{X}\_t$ and $\mathbf{X}\_{0:t-2}$ are conditionally independent given $\mathbf{X}\_{t-1}$.
 
 <br>
-.center.width-100[![](figures/lec6/markov-process.svg)]
+.center.width-80[![](figures/lec6/markov-process.svg)]
 
 ---
 
@@ -117,7 +117,7 @@ The transition and the sensor models are the same for all $t$ (i.e., the laws of
 # Joint distribution
 
 <br>
-.center.width-100[![](figures/lec6/smoothing-dbn.svg)]
+.center.width-75[![](figures/lec6/smoothing-dbn.svg)]
 <br>
 
 A Markov chain coupled with a sensor model can be represented as a .bold[growable] Bayesian network, unrolled infinitely through time.
@@ -168,7 +168,7 @@ class: middle
 
 .grid[
 .kol-1-2.center[
-.width-80[![](figures/lec6/base-case-predict.svg)]
+.width-100[![](figures/lec6/base-case-predict.svg)]
 
 $\begin{aligned}
 \mathbf{P}(\mathbf{X}\_2) &= \sum\_{\mathbf{x}\_1} \mathbf{P}(\mathbf{X}\_2, \mathbf{x}\_1) \\\\
@@ -178,7 +178,7 @@ $\begin{aligned}
 (Predict) Push $\mathbf{P}(\mathbf{X}\_1)$ forward through the transition model.
 ]
 .kol-1-2.center[
-.width-80[![](figures/lec6/base-case-update.svg)]
+.width-100[![](figures/lec6/base-case-update.svg)]
 
 $\begin{aligned}
 \mathbf{P}(\mathbf{X}\_1 \mid \mathbf{e}\_1) &=\frac{ \mathbf{P}(\mathbf{e}\_1 \mid \mathbf{X}\_1) \mathbf{P}(\mathbf{X}\_1)}{P(\mathbf{e}\_1)} \\\\
@@ -373,7 +373,7 @@ class: middle
 
 ## Example
 
-.center.width-80[![](figures/lec6/filtering.svg)]
+.center.width-85[![](figures/lec6/filtering.svg)]
 
 <br>
 
@@ -479,7 +479,7 @@ class: middle
 
 ## Example
 
-.center.width-80[![](figures/lec6/smoothing.svg)]
+.center.width-85[![](figures/lec6/smoothing.svg)]
 
 ???
 
@@ -812,16 +812,15 @@ The .bold[Kalman filter] is a special case of the Bayes filter, which assumes:
 
 .grid[
 .kol-1-2.center[
-<br><br><br>
-![](figures/lec6/lg-model1.png)
+.width-45[![](figures/lec6/kalman-transition.svg)]
 
-$p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})$
+${p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q})}$
 
 Transition model
 
 ]
 .kol-1-2.center[
-![](figures/lec6/lg-model2.png)
+.width-15[![](figures/lec6/kalman-sensor.svg)]
 
 $p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) = \mathcal{N}(\mathbf{e}\_t \mid \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R})$
 
