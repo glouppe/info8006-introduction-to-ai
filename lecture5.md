@@ -885,8 +885,6 @@ class: middle
 
 The structure of a Bayesian network is often easy to specify, its probability values rarely. We instead choose a .bold[parameterized] family $\mathbf{P}(X \mid \theta)$, also written $\mathbf{P}\_\theta(X)$, and .bold[estimate] $\theta$ from data.
 
-.success[Neural networks are trained the same way (Lecture 7): a network is a parameterized distribution $p\_\theta(y \mid \mathbf{x})$, fitted to data by maximum likelihood.]
-
 ???
 
 Connect back to the Kolmogorov axioms: we have upgraded $P$ to a family of distributions $P_\theta$.
@@ -917,6 +915,8 @@ $$P(\mathbf{d} \mid \theta) = \prod\_{j=1}^N P(x\_j \mid \theta).$$
 
 The .bold[maximum likelihood estimate] (MLE) $\theta^\*$  of the parameters is the value of $\theta$ that maximizes the likelihood
 $$\theta^\* = \arg \max\_\theta P(\mathbf{d} \mid \theta).$$
+
+.success[Neural networks are trained the same way (Lecture 7): a network is a parameterized distribution $p\_\theta(y \mid \mathbf{x})$, fitted to data by maximum likelihood.]
 
 ---
 
