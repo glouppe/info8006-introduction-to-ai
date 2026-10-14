@@ -1056,9 +1056,9 @@ class: middle
 When the posterior cannot be computed analytically, we can use .bold[maximum a posteriori] (MAP) estimation, which consists in approximating the posterior with the point estimate $\theta^\*$ that maximizes the posterior distribution, i.e.,
 $$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(\mathbf{d} \mid \theta) P(\theta).$$
 
-.center.width-60[![](figures/lec5/map.svg)]
+.center.width-70[![](figures/lec5/map.svg)]
 
-After a single cherry, the MLE is $1$; with the prior $\text{Beta}(\theta \mid 2, 2)$, the MAP estimate is $\frac{2}{3}$.
+One cherry and a $\text{Beta}(\theta \mid 2, 2)$ prior: the MLE is $1$, the MAP estimate $2/3$.
 
 ---
 
