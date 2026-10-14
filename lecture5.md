@@ -943,7 +943,7 @@ class: middle
 
 .center.width-70[![](figures/lec5/likelihood.svg)]
 
-The likelihood of $\theta$ after 1 cherry, 3 cherries out of 4 candies, and 30 out of 40. It peaks at the MLE $\frac{c}{N}$ and narrows as $N$ grows.
+The likelihood $\theta^c (1-\theta)^l$, rescaled, after 1 cherry, 3 cherries out of 4 candies, and 30 out of 40. Its maximum is the MLE $c/N$. The more candies, the narrower the peak.
 
 ---
 
@@ -1019,7 +1019,7 @@ class: middle
 
 .center.width-70[![](figures/lec5/beta-updates.svg)]
 
-Starting from the prior $\text{Beta}(\theta \mid 2, 2)$, the posterior after $c$ cherries and $l$ limes is $\text{Beta}(\theta \mid 2 + c, 2 + l)$. With 70% of cherries, it narrows around $0.7$ as $N$ grows.
+The prior $\text{Beta}(\theta \mid 2, 2)$ and the posteriors $\text{Beta}(\theta \mid 2 + c, 2 + l)$ after 1 cherry, 7 cherries out of 10 candies, and 70 out of 100. As $N$ grows, the posterior concentrates around $0.7$.
 
 ???
 

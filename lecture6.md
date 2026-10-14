@@ -736,8 +736,9 @@ class: middle
 
 .center.width-50[![](figures/lec6/gaussian-conditioning.svg)]
 
-Before observing $\mathbf{y}$, the guess for $\mathbf{x}$ is $\mathbf{a}$, with uncertainty $\mathbf{A}$. The observation brings a .bold[surprise] $\textcolor{#d9822b}{\mathbf{y} - \mathbf{b}}$, which corrects the guess in proportion to how $\mathbf{x}$ and $\mathbf{y}$ covary, and removes part of the uncertainty:
+Before observing $\mathbf{y}$, our best guess for $\mathbf{x}$ is its mean $\mathbf{a}$, with covariance $\mathbf{A}$. The observation deviates from its expected value $\mathbf{b}$ by $\textcolor{#d9822b}{\mathbf{y} - \mathbf{b}}$. The guess is corrected in proportion to this deviation, and the covariance shrinks:
 $$\mathbf{a} + \mathbf{C}\mathbf{B}^{-1}\textcolor{#d9822b}{(\mathbf{y} - \mathbf{b})}, \qquad \mathbf{A} - \textcolor{#c8463d}{\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T}.$$
+The more $\mathbf{x}$ and $\mathbf{y}$ covary, the larger the correction and the smaller the remaining uncertainty.
 
 ???
 
@@ -781,7 +782,7 @@ class: middle
 
 .center.width-50[![](figures/lec6/linear-gaussian.svg)]
 
-Write $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \textcolor{#d9822b}{\mathbf{v}}$, with a noise $\textcolor{#d9822b}{\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})}$ independent of $\mathbf{x}$. The line carries the mean of $\mathbf{x}$ to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and stretches its spread into $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$; the noise adds its own, $\textcolor{#d9822b}{\mathbf{R}}$.
+Equivalently, $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \textcolor{#d9822b}{\mathbf{v}}$, with a noise $\textcolor{#d9822b}{\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})}$ independent of $\mathbf{x}$. The linear map sends the mean $\boldsymbol{\mu}$ to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and the covariance $\boldsymbol{\Sigma}$ to $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$. The noise being independent, its covariance $\textcolor{#d9822b}{\mathbf{R}}$ adds to it.
 
 ???
 

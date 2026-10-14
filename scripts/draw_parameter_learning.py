@@ -70,7 +70,7 @@ def save(fig, name):
 
 def likelihood():
     fig, ax = axes("likelihood (rescaled)")
-    labels = {1: (0.97, 1.06, "right"), 4: (0.45, 0.55, "right"), 40: (0.86, 0.1, "left")}
+    labels = {1: (0.97, 1.06, "right"), 4: (0.45, 0.55, "right"), 40: (0.885, 0.3, "left")}
     for (c, l), color in zip([(1, 0), (3, 1), (30, 10)], SHADES[:1] + SHADES[2:]):
         n = c + l
         like = theta ** c * (1 - theta) ** l
