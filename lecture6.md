@@ -656,7 +656,7 @@ class: middle
 
 ## Uniform
 
-.center.width-60[![](figures/lec6/uniform.png)]
+.center.width-70[![](figures/lec6/uniform.svg)]
 
 The uniform distribution $\mathcal{U}(a,b)$ is described by the density function
 $$
@@ -672,7 +672,7 @@ class: middle
 
 ## Gaussian
 
-.center.width-60[![](figures/lec6/normal.png)]
+.center.width-70[![](figures/lec6/normal.svg)]
 
 The Gaussian (or Normal) distribution $\mathcal{N}(\mu,\sigma^2)$ is described by the density function
 $$p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
@@ -690,7 +690,7 @@ class: middle
 
 ## Multivariate Gaussian
 
-.center.width-60[![](figures/lec6/mvn.png)]
+.center.width-40[![](figures/lec6/mvn.svg)]
 
 The multivariate Gaussian distribution generalizes to $n$ random variables. Its (joint) density function is defined as
 $$p(\mathbf{x}=x\_1, ..., x\_n) = \frac{1}{\sqrt{(2\pi)^n \lvert \boldsymbol{\Sigma} \rvert}} \exp\left(-\frac{1}{2} (\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu}) \right) $$
