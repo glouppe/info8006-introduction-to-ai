@@ -1044,7 +1044,7 @@ $$\theta^\* = \arg \max\_\theta P(\theta \mid \mathbf{d}) = \arg \max\_\theta P(
 
 .center.width-70[![](figures/lec5/map.svg)]
 
-One cherry and a $\text{Beta}(\theta \mid 2, 2)$ prior: the MLE is $1$, the MAP estimate $2/3$.
+For 1 cherry out of 1 candy and the prior $\text{Beta}(\theta \mid 2, 2)$: MLE $1$, MAP $2/3$.
 
 ---
 

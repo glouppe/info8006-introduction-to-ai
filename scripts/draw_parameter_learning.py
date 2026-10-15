@@ -95,7 +95,6 @@ def beta_updates():
         ax.text(x, y, f"$N = {n}$", ha=ha, color=INK, fontsize=17)
     ax.axvline(0.7, color=INK, linewidth=0.8, linestyle=":")
     ax.set_ylim(0, 10)
-    ax.set_yticks([])
     save(fig, "beta-updates")
 
 
