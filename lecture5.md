@@ -1019,7 +1019,7 @@ class: middle
 
 .center.width-70[![](figures/lec5/beta-updates.svg)]
 
-The prior $\text{Beta}(\theta \mid 2, 2)$ and the posteriors $\text{Beta}(\theta \mid 2 + c, 2 + l)$ after 1 cherry, 7 cherries out of 10 candies, and 70 out of 100. As $N$ grows, the posterior concentrates around $0.7$.
+The posterior $P(\theta \mid \mathbf{d}) = \text{Beta}(\theta \mid 1 + c, 1 + l)$ from the uniform prior $\text{Beta}(\theta \mid 1, 1)$, for 1 cherry out of 1 candy, 7 out of 10, and 70 out of 100. The more candies, the more the posterior concentrates around $0.7$.
 
 ???
 

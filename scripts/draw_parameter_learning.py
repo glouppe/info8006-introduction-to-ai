@@ -7,8 +7,8 @@ fraction of cherry candies:
 
 - `likelihood.svg`, the likelihood θ^c (1 - θ)^l after 1, 4 and 40 candies, rescaled to a maximum
   of 1, with the maximum likelihood estimate c / N;
-- `beta-updates.svg`, the prior Beta(θ | 2, 2) and the posteriors Beta(θ | 2 + c, 2 + l) after 1,
-  10 and 100 candies, 70% of them cherries;
+- `beta-updates.svg`, the uniform prior Beta(θ | 1, 1) and the posteriors Beta(θ | 1 + c, 1 + l) after 1
+  cherry, 7 out of 10 and 70 out of 100;
 - `map.svg`, one cherry: the prior Beta(θ | 2, 2), the likelihood θ normalized to a density, the
   posterior Beta(θ | 3, 2), with the MLE (1) and the MAP estimate (2/3).
 
@@ -85,16 +85,17 @@ def likelihood():
 
 def beta_updates():
     fig, ax = axes("density")
-    ax.plot(theta, beta.pdf(theta, 2, 2), color=GREY, linestyle="--")
-    ax.text(0.17, 1.25, "prior", ha="right", color=GREY, fontsize=15)
-    labels = {1: (0.93, 1.25, "left"), 10: (0.47, 2.6, "right"), 100: (0.64, 7.5, "right")}
+    ax.plot(theta, beta.pdf(theta, 1, 1), color=GREY, linestyle="--")
+    ax.text(0.03, 1.3, "prior", ha="left", color=GREY, fontsize=15)
+    labels = {1: (0.97, 2.35, "right"), 10: (0.47, 2.6, "right"), 100: (0.64, 7.5, "right")}
     for (c, l), color in zip([(1, 0), (7, 3), (70, 30)], SHADES[:1] + SHADES[2:]):
         n = c + l
-        ax.plot(theta, beta.pdf(theta, 2 + c, 2 + l), color=color)
+        ax.plot(theta, beta.pdf(theta, 1 + c, 1 + l), color=color)
         x, y, ha = labels[n]
         ax.text(x, y, f"$N = {n}$", ha=ha, color=INK, fontsize=17)
     ax.axvline(0.7, color=INK, linewidth=0.8, linestyle=":")
     ax.set_ylim(0, 10)
+    ax.set_yticks([])
     save(fig, "beta-updates")
 
 
