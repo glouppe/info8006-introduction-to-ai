@@ -943,7 +943,7 @@ class: middle
 
 .center.width-70[![](figures/lec5/likelihood.svg)]
 
-The likelihood $\theta^c (1-\theta)^l$, rescaled, after 1 cherry, 3 cherries out of 4 candies, and 30 out of 40. Its maximum is the MLE $c/N$. The more candies, the narrower the peak.
+The likelihood $P(\mathbf{d} \mid \theta)$ for 1 cherry out of 1 candy, 3 out of 4, and 30 out of 40, each curve scaled to the same height. Each peaks at the MLE $c/N$; the more candies, the narrower the peak.
 
 ---
 
