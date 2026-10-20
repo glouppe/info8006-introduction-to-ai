@@ -20,6 +20,7 @@
 %   \end{recap}
 %
 %   \begin{exercises}[1, 2, 3, 5]    % the exercises done in session, optional
+%   \begin{exercises}[1, 2][5]       % and those recommended before the next session
 %       \titledquestion{Bag of coins}
 %
 %       Statement ...
@@ -393,13 +394,18 @@
 % A term defined in the recap
 \newcommand*{\term}[1]{\emph{#1}}
 
-% Exercises, on a new page; the optional argument lists the exercises done in session
-\newenvironment{exercises}[1][]{%
+% Exercises, on a new page; the first optional argument lists the exercises done in session,
+% the second those recommended before the next session: \begin{exercises}[1, 2][5]
+\NewDocumentEnvironment{exercises}{O{} O{}}{%
     \clearpage
     \exercises@heading{Exercises}%
     \ifx\relax#1\relax\else
-        \noindent\textit{In session:} exercises #1.\par\medskip
+        \noindent\textit{In session:} exercises #1.\par
     \fi
+    \ifx\relax#2\relax\else
+        \noindent\textit{Recommended before the next session:} exercise #2.\par
+    \fi
+    \ifx\relax#1#2\relax\else\medskip\fi
     \begin{questions}%
 }{%
     \end{questions}%
