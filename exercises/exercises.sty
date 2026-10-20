@@ -15,6 +15,7 @@
 %
 %   \begin{recap}
 %       \topic{Chain rule}
+%       \topic[optional]{Inference}     % a grey tag after the title, optional
 %       Any joint distribution ... \term{defined term} ...
 %   \end{recap}
 %
@@ -382,10 +383,10 @@
     \par
 }
 
-% A topic of the recap
-\newcommand*{\topic}[1]{%
+% A topic of the recap, with an optional grey tag: \topic[optional]{Inference}
+\newcommand*{\topic}[2][]{%
     \par\medskip\needspace{4\baselineskip}%
-    {\bfseries #1\par}%
+    {\bfseries #2\if\relax\detokenize{#1}\relax\else\ {\normalfont\color{black!55}(#1)}\fi\par}%
     \nopagebreak
 }
 
