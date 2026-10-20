@@ -32,6 +32,50 @@
             \bottomrule
         \end{tabular}
     \end{center}
+    \begin{center}
+        \begin{tikzpicture}[bn diagram]
+            \node[text=diagram-accent] at (3.88, -0.225) {active};
+            \node[text=diagram-muted] at (10.1, -0.225) {inactive};
+            \draw[diagram-muted] (8.12, 0) -- (8.12, -7.38);
+            \node[random variable] (aA) at (0.5, -1) {};
+            \node[random variable] (aB) at (1.88, -1) {};
+            \node[random variable] (aC) at (3.25, -1) {};
+            \draw[dependency] (aA) -- (aB);
+            \draw[dependency] (aB) -- (aC);
+            \node[random variable] (bA) at (0.5, -3.19) {};
+            \node[random variable] (bB) at (1.88, -2.19) {};
+            \node[random variable] (bC) at (3.25, -3.19) {};
+            \draw[dependency] (bB) -- (bA);
+            \draw[dependency] (bB) -- (bC);
+            \node[random variable] (cA) at (0.5, -4.5) {};
+            \node[observed variable] (cB) at (1.88, -5.5) {};
+            \node[random variable] (cC) at (3.25, -4.5) {};
+            \draw[dependency] (cA) -- (cB);
+            \draw[dependency] (cC) -- (cB);
+            \node[random variable] (dA) at (4.5, -4.5) {};
+            \node[random variable] (dB) at (5.88, -5.5) {};
+            \node[random variable] (dC) at (7.25, -4.5) {};
+            \node[observed variable] (dD) at (5.88, -6.88) {};
+            \draw[dependency] (dA) -- (dB);
+            \draw[dependency] (dC) -- (dB);
+            \draw[dependency, dashed] (dB) -- (dD);
+            \node[random variable] (eA) at (8.75, -1) {};
+            \node[observed variable] (eB) at (10.1, -1) {};
+            \node[random variable] (eC) at (11.5, -1) {};
+            \draw[dependency] (eA) -- (eB);
+            \draw[dependency] (eB) -- (eC);
+            \node[random variable] (fA) at (8.75, -3.19) {};
+            \node[observed variable] (fB) at (10.1, -2.19) {};
+            \node[random variable] (fC) at (11.5, -3.19) {};
+            \draw[dependency] (fB) -- (fA);
+            \draw[dependency] (fB) -- (fC);
+            \node[random variable] (gA) at (8.75, -4.5) {};
+            \node[random variable] (gB) at (10.1, -5.5) {};
+            \node[random variable] (gC) at (11.5, -4.5) {};
+            \draw[dependency] (gA) -- (gB);
+            \draw[dependency] (gC) -- (gB);
+        \end{tikzpicture}
+    \end{center}
     Given its \term{Markov blanket} (parents, children, other parents of its children), a variable is independent of all others.
 
     \topic[optional]{Inference}
