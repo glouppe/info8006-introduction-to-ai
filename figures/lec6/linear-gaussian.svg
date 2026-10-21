@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-21T07:08:23.554124</dc:date>
+    <dc:date>2026-10-21T07:09:58.436511</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -180,27 +180,27 @@ z
     <path d="M 69.399914 349.864 
 L 244.831914 -1 
 L 244.831914 -1 
-" clip-path="url(#p433effef54)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.5"/>
+" clip-path="url(#p219bcbb26d)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.5"/>
    </g>
    <g id="line2d_2">
     <path d="M 125.983663 317.664 
 L 125.983663 236.696501 
-" clip-path="url(#p433effef54)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p219bcbb26d)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_3">
     <path d="M 125.983663 236.696501 
 L 268.762123 236.696501 
-" clip-path="url(#p433effef54)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p219bcbb26d)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_4">
     <path d="M 173.97846 317.664 
 L 173.97846 140.706908 
-" clip-path="url(#p433effef54)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p219bcbb26d)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
    </g>
    <g id="line2d_5">
     <path d="M 173.97846 140.706908 
 L 268.762123 140.706908 
-" clip-path="url(#p433effef54)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
+" clip-path="url(#p219bcbb26d)" style="fill: none; stroke: #356aaf; stroke-opacity: 0.6; stroke-width: 0.8; stroke-linecap: square"/>
    </g>
    <g id="patch_3">
     <path d="M 31.2 317.664 
@@ -533,7 +533,7 @@ L 254.503989 72.482277
 L 279.780775 72.528613 
 L 286.612339 72.52929 
 L 286.612339 72.52929 
-" clip-path="url(#p626ca0ded8)" style="fill: none; stroke: #2a2a2a; stroke-width: 1.6; stroke-linecap: square"/>
+" clip-path="url(#p83c1178818)" style="fill: none; stroke: #2a2a2a; stroke-width: 1.6; stroke-linecap: square"/>
    </g>
    <g id="text_5">
     <!-- $\mathcal{N}(\mu, \Sigma)$ -->
@@ -758,7 +758,7 @@ L 302.788623 88.416551
 L 301.363856 83.665308 
 L 300.443692 80.101877 
 L 300.443692 80.101877 
-" clip-path="url(#p6f0b91758a)" style="fill: none; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #356aaf; stroke-width: 1.6"/>
+" clip-path="url(#p55c7ae7a9f)" style="fill: none; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #356aaf; stroke-width: 1.6"/>
    </g>
    <g id="line2d_8">
     <path d="M 300.808143 317.664 
@@ -800,7 +800,7 @@ L 308.06682 86.634835
 L 306.08243 80.695782 
 L 305.896277 80.101877 
 L 305.896277 80.101877 
-" clip-path="url(#p6f0b91758a)" style="fill: none; stroke: #d9822b; stroke-width: 2.2; stroke-linecap: square"/>
+" clip-path="url(#p55c7ae7a9f)" style="fill: none; stroke: #d9822b; stroke-width: 2.2; stroke-linecap: square"/>
    </g>
    <g id="text_6">
     <!-- $H\Sigma H^T$ -->
@@ -940,13 +940,13 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p433effef54">
+  <clipPath id="p219bcbb26d">
    <rect x="31.2" y="80.101877" width="237.562123" height="237.562123"/>
   </clipPath>
-  <clipPath id="p626ca0ded8">
+  <clipPath id="p83c1178818">
    <rect x="13.349785" y="7.2" width="273.262554" height="65.329584"/>
   </clipPath>
-  <clipPath id="p6f0b91758a">
+  <clipPath id="p55c7ae7a9f">
    <rect x="295.322582" y="80.101877" width="75.147202" height="237.562123"/>
   </clipPath>
  </defs>

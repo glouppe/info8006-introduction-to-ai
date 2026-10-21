@@ -21,6 +21,7 @@ from draw_parameter_learning import BLUE, INK, ROOT
 
 RED = "#c8463d"
 x = np.linspace(-5, 5, 1001)
+LIGHT = LinearSegmentedColormap.from_list("light", ["#ffffff", "#c9d8ee", "#7ea0cf"])
 
 
 def axes():
@@ -78,23 +79,22 @@ def walk():
 
 def mvn():
     fig, ax = plt.subplots(figsize=(4.6, 3.6))
-    g = np.linspace(-4, 4, 401)
+    g = np.linspace(-3.5, 3.5, 401)   # the Gaussian of gaussian_conditioning(), drawn the same way
     X1, X2 = np.meshgrid(g, g)
-    density = multivariate_normal([0, 0], [[1.0, 0.6], [0.6, 1.5]]).pdf(np.dstack([X1, X2]))
-    blues = LinearSegmentedColormap.from_list("blues", ["#ffffff", "#c9d8ee", BLUE, "#1f3f6b"])
-    levels = np.linspace(0.02, 1, 10) * density.max()
-    ax.contourf(X1, X2, density, levels=levels, cmap=blues, extend="max")
-    ax.contour(X1, X2, density, levels=levels, colors=INK, linewidths=0.4, alpha=0.5)
+    density = multivariate_normal([0, 0], [[1.0, 0.8], [0.8, 1.0]]).pdf(np.dstack([X1, X2]))
+    levels = np.linspace(0.05, 1, 7) * density.max()
+    ax.contourf(X1, X2, density, levels=levels, cmap=LIGHT, extend="max", alpha=0.8)
+    ax.set_xlim(-3.5, 3.5)
+    ax.set_ylim(-3.5, 3.5)
     ax.set_xlabel(r"$x_1$", fontsize=20)
     ax.set_ylabel(r"$x_2$", fontsize=20)
     ax.set_aspect("equal")
-    ax.set_xticks([-4, -2, 0, 2, 4])
-    ax.set_yticks([-4, -2, 0, 2, 4])
+    ax.set_xticks([-2, 0, 2])
+    ax.set_yticks([-2, 0, 2])
     save(fig, "mvn")
 
 
 GREY = "#8a8a8a"
-LIGHT = LinearSegmentedColormap.from_list("light", ["#ffffff", "#c9d8ee", "#7ea0cf"])
 
 
 def joint_axes():
