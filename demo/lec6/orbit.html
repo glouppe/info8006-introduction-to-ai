@@ -56,8 +56,8 @@ h1 { font-size: 15px; font-weight: 500; margin: 0; }
         <label>speed <span id="speed-out"></span><input id="speed" type="range" min="1" max="8" step="1" value="2"></label>
         <div class="choice">
             <span style="color: var(--muted)">transition model of the filter</span>
-            <label style="color: var(--ink)"><input type="radio" name="model" value="cv" checked> constant velocity (Kalman filter)</label>
-            <label style="color: var(--ink)"><input type="radio" name="model" value="gravity"> gravity, linearized (extended KF)</label>
+            <label style="color: var(--ink)"><input type="radio" name="model" value="cv"> constant velocity (Kalman filter)</label>
+            <label style="color: var(--ink)"><input type="radio" name="model" value="gravity" checked> gravity, linearized (extended KF)</label>
         </div>
         <div class="row"><button id="pause">pause</button><button id="kick">kick</button><button id="reset">reset</button></div>
     </aside>

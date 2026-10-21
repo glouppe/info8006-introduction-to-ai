@@ -66,9 +66,10 @@ speaker notes of the two video slides.
 A page embedded in the lecture: an object orbits the Moon, its position is
 measured with Gaussian noise, and a Kalman filter tracks it, with the 2σ ellipse
 of its estimate. Sliders set the measurement noise, the process noise and the
-number of steps between measurements; the filter's transition model is either
-constant velocity (a Kalman filter, which lags on the curved orbit) or gravity,
-linearized at the estimate (an extended Kalman filter). "kick" pushes the object
+number of steps between measurements; the filter's transition model is gravity,
+linearized at the estimate (an extended Kalman filter, the default), or constant
+velocity (a Kalman filter, which lags outside the curved orbit: its model treats
+the persistent pull of the Moon as zero-mean noise). "kick" pushes the object
 with an impulse the filter does not know about. Plain JavaScript, no
 dependencies; it replaces a Wolfram demonstration that needed a plugin.
 
