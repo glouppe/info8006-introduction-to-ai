@@ -740,14 +740,6 @@ Observing $\mathbf{y}$ moves the guess $\mathbf{a}$ in proportion to the surpris
 $$\mathbf{a} + \mathbf{C}\mathbf{B}^{-1}\textcolor{#d9822b}{(\mathbf{y} - \mathbf{b})}, \qquad \mathbf{A} - \textcolor{#c8463d}{\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T}.$$
 The larger the covariance $\mathbf{C}$ between $\mathbf{x}$ and $\mathbf{y}$, the larger the move and the shrinkage.
 
-???
-
-Why it holds: write $\mathbf{x} = \mathbf{a} + \mathbf{C}\mathbf{B}^{-1}(\mathbf{y} - \mathbf{b}) + \boldsymbol{\epsilon}$. The residual $\boldsymbol{\epsilon}$ is Gaussian with mean $\mathbf{0}$, $\text{Cov}(\boldsymbol{\epsilon}, \mathbf{y}) = \mathbf{C} - \mathbf{C}\mathbf{B}^{-1}\mathbf{B} = \mathbf{0}$ and $\text{Cov}(\boldsymbol{\epsilon}) = \mathbf{A} - 2\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T + \mathbf{C}\mathbf{B}^{-1}\mathbf{B}\mathbf{B}^{-1}\mathbf{C}^T = \mathbf{A} - \mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$. For Gaussians, uncorrelated means independent: given $\mathbf{y}$, only $\boldsymbol{\epsilon}$ remains random.
-
-Why it shrinks: the marginal $p(\mathbf{x})$ adds the spread of the centres, $\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$, to that of the residual. Observing $\mathbf{y}$ removes the first part; the more correlated $\mathbf{x}$ and $\mathbf{y}$, the more it removes.
-
-In two steps: the standardized surprise $\mathbf{z} = \mathbf{B}^{-1/2}(\mathbf{y} - \mathbf{b})$ follows $\mathcal{N}(\mathbf{0}, \mathbf{I})$, and $\mathbf{K} = \mathbf{C}\mathbf{B}^{-1/2} = \text{Cov}(\mathbf{x}, \mathbf{z})$ converts it into the space of $\mathbf{x}$. The mean becomes $\mathbf{a} + \mathbf{K}\mathbf{z}$ and the covariance $\mathbf{A} - \mathbf{K}\mathbf{K}^T$. In one dimension, with $A = \sigma\_x^2$, $B = \sigma\_y^2$ and $C = \rho\sigma\_x\sigma\_y$, the move is $\sigma\_x \rho \frac{y - b}{\sigma\_y}$: the z-score of $y$, scaled by the correlation and by $\sigma\_x$.
-
 ---
 
 class: middle
