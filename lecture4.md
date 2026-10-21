@@ -253,7 +253,7 @@ For a discrete variable $X$, the probability distribution $\mathbf{P}(X)$ is the
 .center.kol-1-2[
 $\mathbf{P}(W)$
 
-| $W$ | $P$ |
+| $W$ | $P(w)$ |
 | --- | --- |
 | $\text{sun}$ | $0.6$ |
 | $\text{rain}$ | $0.1$ |
@@ -284,7 +284,7 @@ $$P(X\_1=x\_1, ..., X\_n=x\_n) = \sum\_{\\{\omega: X\_1(\omega)=x\_1, ..., X\_n(
 
 .center[$\mathbf{P}(T,W)$]
 
-| $T$ | $W$ | $P$ |
+| $T$ | $W$ | $P(t, w)$ |
 | --- | --- | --- |
 | $\text{hot}$ | $\text{sun}$ | $0.4$ |
 | $\text{hot}$ | $\text{rain}$ | $0.1$ |
@@ -315,7 +315,7 @@ $$P(x) = \sum\_y P(x, y), \qquad \mathbf{P}(X) = \sum\_y \mathbf{P}(X, Y=y).$$
 .kol-1-3[
 $\mathbf{P}(T,W)$
 
-| $T$ | $W$ | $P$ |
+| $T$ | $W$ | $P(t, w)$ |
 | --- | --- | --- |
 | $\text{hot}$ | $\text{sun}$ | $0.4$ |
 | $\text{hot}$ | $\text{rain}$ | $0.1$ |
@@ -325,7 +325,7 @@ $\mathbf{P}(T,W)$
 .kol-1-3[
 $\mathbf{P}(T)$
 
-| $T$ | $P$ |
+| $T$ | $P(t)$ |
 | --- | --- |
 | $\text{hot}$ | $0.5$ |
 | $\text{cold}$ | $0.5$ |
@@ -335,7 +335,7 @@ $P(t) = \sum_w P(t, w)$
 .kol-1-3[
 $\mathbf{P}(W)$
 
-| $W$ | $P$ |
+| $W$ | $P(w)$ |
 | --- | --- |
 | $\text{sun}$ | $0.6$ |
 | $\text{rain}$ | $0.4$ |
@@ -369,7 +369,7 @@ Conditional distributions are probability distributions over some variables, giv
 .kol-1-3[
 $\mathbf{P}(T,W)$
 
-| $T$ | $W$ | $P$ |
+| $T$ | $W$ | $P(t, w)$ |
 | --- | --- | --- |
 | $\text{hot}$ | $\text{sun}$ | $0.4$ |
 | $\text{hot}$ | $\text{rain}$ | $0.1$ |
@@ -379,7 +379,7 @@ $\mathbf{P}(T,W)$
 .kol-1-3[
 $\mathbf{P}(W \mid T=\text{hot})$
 
-| $W$ | $P$ |
+| $W$ | $P(w \mid \text{hot})$ |
 | --- | --- |
 | $\text{sun}$ | $0.8$ |
 | $\text{rain}$ | $0.2$ |
@@ -387,7 +387,7 @@ $\mathbf{P}(W \mid T=\text{hot})$
 .kol-1-3[
 $\mathbf{P}(W \mid T=\text{cold})$
 
-| $W$ | $P$ |
+| $W$ | $P(w \mid \text{cold})$ |
 | --- | --- |
 | $\text{sun}$ | $0.4$ |
 | $\text{rain}$ | $0.6$ |
@@ -419,7 +419,7 @@ class: middle
 .kol-1-3[
 $\mathbf{P}(W)$
 
-| $W$ | $P$ |
+| $W$ | $P(w)$ |
 | --- | --- |
 | $\text{sun}$ | $0.8$ |
 | $\text{rain}$ | $0.2$ |
@@ -427,7 +427,7 @@ $\mathbf{P}(W)$
 .kol-1-3[
 $\mathbf{P}(D \mid W)$
 
-| $D$ | $W$ | $P$ |
+| $D$ | $W$ | $P(d \mid w)$ |
 | --- | --- | --- |
 | $\text{wet}$ | $\text{sun}$ | $0.1$ |
 | $\text{dry}$ | $\text{sun}$ | $0.9$ |
@@ -438,7 +438,7 @@ $\mathbf{P}(D \mid W)$
 .kol-1-3[
 $\mathbf{P}(D,W)$
 
-| $D$ | $W$ | $P$ |
+| $D$ | $W$ | $P(d, w)$ |
 | --- | --- | --- |
 | $\text{wet}$ | $\text{sun}$ | ? |
 | $\text{dry}$ | $\text{sun}$ | ? |
