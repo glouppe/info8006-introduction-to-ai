@@ -362,18 +362,18 @@ class: middle
 <br>
 
 .grid[
-.kol-1-4[]
-.kol-1-4.center[
+.kol-1-6[]
+.kol-1-3.center[
 
-| $R\_{t-1}$ | $P(R\_t)$ |
+| $R\_{t-1}$ | $P(r\_t \mid R\_{t-1})$ |
 | ---------- | --------- |
 | $\text{true}$ | $0.7$ |
 | $\text{false}$ | $0.3$ |
 
 ]
-.kol-1-4.center[
+.kol-1-3.center[
 
-| $R\_{t}$ | $P(U\_t)$ |
+| $R\_{t}$ | $P(u\_t \mid R\_t)$ |
 | ---------- | --------- |
 | $\text{true}$ | $0.9$ |
 | $\text{false}$ | $0.2$ |
