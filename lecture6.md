@@ -746,6 +746,8 @@ Check: $\text{Cov}(\boldsymbol{\epsilon}, \mathbf{y}) = \mathbf{C} - \mathbf{C}\
 
 The marginal $p(\mathbf{x})$ is wider than every conditional: it adds the spread of the centres, $\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T$, to that of the residual. Observing $\mathbf{y}$ removes the first part; the more correlated $\mathbf{x}$ and $\mathbf{y}$, the more it removes.
 
+Splitting $\mathbf{B}^{-1} = \mathbf{B}^{-1/2}\mathbf{B}^{-1/2}$ reads the update in two steps. The standardized surprise $\mathbf{z} = \mathbf{B}^{-1/2}(\mathbf{y} - \mathbf{b})$ follows $\mathcal{N}(\mathbf{0}, \mathbf{I})$ under $p(\mathbf{y})$; the matrix $\mathbf{K} = \mathbf{C}\mathbf{B}^{-1/2} = \text{Cov}(\mathbf{x}, \mathbf{z})$ converts it into the space of $\mathbf{x}$. Then $\mathbf{a}' = \mathbf{a} + \mathbf{K}\mathbf{z}$ and $\mathbf{A}' = \mathbf{A} - \mathbf{K}\mathbf{K}^T$: the observation removes the part of $\mathbf{A}$ explained by $\mathbf{z}$. In one dimension, with $A = \sigma\_x^2$, $B = \sigma\_y^2$ and $C = \rho\sigma\_x\sigma\_y$, the move is $\sigma\_x \rho \frac{y - b}{\sigma\_y}$: the z-score of $y$, scaled by the correlation $\rho$ and by $\sigma\_x$.
+
 ---
 
 class: middle
