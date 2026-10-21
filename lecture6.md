@@ -1021,11 +1021,9 @@ The Apollo Guidance Computer used a Kalman filter to estimate the position of th
 
 ---
 
-class: middle, black-slide
+class: black-slide
 
-.center[<iframe src="demo/lec6/orbit.html" width="820" height="530" frameborder="0"></iframe>]
-
-.center[Demo: a Kalman filter tracking Apollo 11 in lunar orbit, from simulated measurements ([full page](demo/lec6/orbit.html)).]
+<iframe src="demo/lec6/orbit.html" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
 
 ---
 
