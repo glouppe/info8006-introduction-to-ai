@@ -63,21 +63,32 @@ speaker notes of the two video slides.
 
 ## Kalman filter in orbit
 
-A page embedded in the lecture: a spacecraft orbits the Moon, its position is
-measured with Gaussian noise, and a Kalman filter tracks it, with the 2σ ellipse
-of its estimate. The orbits are those of Apollo 11, drawn to scale: after the
-first lunar orbit insertion burn (60.9 × 169.9 nautical miles, 113 × 315 km) and
-after the circularization burn (about 54 × 66 nautical miles, 100 × 122 km),
-both taking about two hours; a third, eccentric orbit is illustrative. The
-measurements are simulated: Apollo was tracked from Earth by range and Doppler,
-and those raw data are not published. Sliders set the measurement noise, the
-process noise, the number of steps between measurements and the speed (minutes
-of flight per second). The filter's transition model is gravity, linearized at
-the estimate (an extended Kalman filter, the default), or constant velocity (a
-Kalman filter, which lags outside the curved orbit: its model treats the
-persistent pull of the Moon as zero-mean noise). "kick" pushes the spacecraft
-with an impulse the filter does not know about. Plain JavaScript, no
-dependencies; it replaces a Wolfram demonstration that needed a plugin.
+A page embedded in the lecture (slide 62): a spacecraft is tracked by a Kalman
+filter from simulated, noisy measurements of its position, with the 2σ ellipse
+of the estimate. Four scenarios, drawn to scale:
+
+- the orbits of Apollo 11 around the Moon, after the first lunar orbit
+  insertion burn (60.9 × 169.9 nautical miles, 113 × 315 km) and after the
+  circularization burn (about 54 × 66 nautical miles, 100 × 122 km), both taking
+  about two hours, plus an illustrative eccentric orbit;
+- the Apollo 12 third stage (S-IVB) from Earth to the Moon, from half an hour
+  after translunar injection (1969-11-14 19:40 UTC) to a day after its lunar
+  flyby at 7,400 km from the Moon's centre. This is real: the reconstruction by
+  D. R. Adamo for NASA (2012), served by JPL Horizons (object -399120), with the
+  Moon's positions. `scripts/fetch_apollo_trajectory.py` writes it to
+  `apollo12.json`. Horizons has no trajectory of the crewed spacecraft, and the
+  raw Apollo tracking data (range and Doppler from Earth) are not published.
+
+The filter works in 3D (position and velocity) and the view shows the plane of
+the Moon's orbit. Sliders set the measurement noise, the process noise, the
+number of steps between measurements and the speed. The filter's transition
+model is gravity, linearized at the estimate (an extended Kalman filter, the
+default), or constant velocity (a Kalman filter, which lags outside a curved
+path: its model treats the persistent pull of gravity as zero-mean noise).
+"kick" pushes the spacecraft with an impulse the filter does not know about
+(orbits only). Plain JavaScript, no dependencies; it replaces a Wolfram
+demonstration that needed a plugin.
 
 Open `demo/lec6/orbit.html` from the served repository
-(`uv run python -m http.server`), or from slide 62 of the deck.
+(`uv run python -m http.server`); the Apollo 12 scenario needs the server to
+load its data.

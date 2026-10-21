@@ -31,6 +31,7 @@ select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); backgro
 .row { display: flex; gap: 6px; }
 button { flex: 1; font: inherit; color: var(--ink); background: #222; border: 1px solid #444; border-radius: 4px; padding: 5px 0; cursor: pointer; }
 button:hover { background: #2c2c2c; }
+button:disabled { color: var(--muted); cursor: default; background: #181818; }
 .choice { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
 .choice label { color: var(--ink); }
 .choice input { accent-color: var(--accent); }
@@ -50,6 +51,7 @@ button:hover { background: #2c2c2c; }
             <option value="loi1">Apollo 11, first orbit: 113 × 315 km</option>
             <option value="loi2">Apollo 11, circularized: 100 × 122 km</option>
             <option value="high">eccentric orbit: 500 × 3500 km</option>
+            <option value="a12" id="a12" disabled>Apollo 12 third stage, Earth to Moon</option>
         </select>
         <div class="legend">
             <span></span><span></span><span class="head">RMS error</span>
@@ -74,18 +76,22 @@ button:hover { background: #2c2c2c; }
 <script>
 "use strict";
 
-// Units: lengths in Moon radii, times in units of sqrt(R^3 / GM), about 17 minutes, so that GM = 1.
-// The true motion is integrated with a small leapfrog step; the filter runs once every DT, with a
-// measurement every `every` filter steps. The orbits of Apollo 11 are those reported after the first
-// lunar orbit insertion burn (60.9 × 169.9 nautical miles) and after the circularization burn
-// (about 54 × 66 nautical miles); the measurements are simulated.
-const RADIUS_KM = 1737.4, GM_KM = 4902.8, TIME_S = Math.sqrt(RADIUS_KM ** 3 / GM_KM);
-const GM = 1, DT = 0.04, SUBSTEPS = 8, MEAS_KEPT = 60, ERR_KEPT = 300;
-const ORBITS = {   // periapsis and apoapsis altitudes, in km
-    loi1: [112.8, 314.7],
-    loi2: [100.0, 122.2],
-    high: [500, 3500],
+// Units: km and s. The filter tracks the state (x, y, z, vx, vy, vz) in 3D, from 3D measurements of the
+// position; the view draws the plane of the first two axes. A scenario is either a Keplerian orbit
+// around the Moon, whose true motion is integrated here, or the reconstructed path of the Apollo 12
+// third stage from the Earth to the Moon (JPL Horizons, `apollo12.json`, written by
+// `scripts/fetch_apollo_trajectory.py`). The orbits of Apollo 11 are those reported after the first
+// lunar orbit insertion burn (60.9 × 169.9 nautical miles) and after the circularization burn (about
+// 54 × 66 nautical miles). The measurements are always simulated.
+const MU = { earth: 398600.4, moon: 4902.8 }, RADIUS = { earth: 6371.0, moon: 1737.4 };
+const MEAS_KEPT = 60, ERR_KEPT = 300;
+const SCENARIOS = {   // time step dt (s), integration substeps, and the ranges [min, max, default, step] of the sliders
+    loi1: { kind: "orbit", altitudes: [112.8, 314.7], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
+    loi2: { kind: "orbit", altitudes: [100.0, 122.2], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
+    high: { kind: "orbit", altitudes: [500, 3500], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
+    a12: { kind: "data", dt: 600, substeps: 30, sigma: [500, 20000, 3000, 500], q: [-14, -6, -11, 0.5], speed: [30, 900, 300, 30] },
 };
+let apollo12 = null;
 
 // Random numbers, seeded so that reset replays the same run
 let seed = 1;
@@ -108,110 +114,162 @@ const mul = (A, B) => A.map(r => B[0].map((_, j) => r.reduce((s, a, k) => s + a 
 const add = (A, B) => A.map((r, i) => r.map((a, j) => a + B[i][j]));
 const sub = (A, B) => A.map((r, i) => r.map((a, j) => a - B[i][j]));
 const mulv = (A, x) => A.map(r => r.reduce((s, a, k) => s + a * x[k], 0));
-function inv2(A) {
-    const [[a, b], [c, d]] = A, det = a * d - b * c;
-    return [[d / det, -b / det], [-c / det, a / det]];
-}
-
-function gravity(x, y) {
-    const r2 = x * x + y * y, r3 = r2 * Math.sqrt(r2);
-    return [-GM * x / r3, -GM * y / r3];
-}
-
-// The true state (x, y, vx, vy), moved by gravity over one filter step
-function propagate(s, dt) {
-    let [x, y, vx, vy] = s;
-    const h = dt / SUBSTEPS;
-    for (let k = 0; k < SUBSTEPS; k++) {
-        let [ax, ay] = gravity(x, y);
-        vx += 0.5 * h * ax; vy += 0.5 * h * ay;
-        x += h * vx; y += h * vy;
-        [ax, ay] = gravity(x, y);
-        vx += 0.5 * h * ax; vy += 0.5 * h * ay;
+function inv(A) {   // Gauss-Jordan, for the 3x3 innovation covariance
+    const n = A.length, M = A.map((r, i) => [...r, ...eye(n)[i]]);
+    for (let c = 0; c < n; c++) {
+        let p = c;
+        for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+        [M[c], M[p]] = [M[p], M[c]];
+        const d = M[c][c];
+        M[c] = M[c].map(a => a / d);
+        for (let r = 0; r < n; r++) if (r !== c) { const f = M[r][c]; M[r] = M[r].map((a, j) => a - f * M[c][j]); }
     }
-    return [x, y, vx, vy];
+    return M.map(r => r.slice(n));
 }
-
-// Process noise of a white-noise acceleration of spectral density q, over dt
-function processNoise(q, dt) {
-    const a = q * dt ** 3 / 3, b = q * dt ** 2 / 2, c = q * dt;
-    return [[a, 0, b, 0], [0, a, 0, b], [b, 0, c, 0], [0, b, 0, c]];
-}
-
-// The transition of the filter: its mean and its Jacobian F
-function transition(m, model) {
-    if (model === "cv") {
-        const F = eye(4); F[0][2] = F[1][3] = DT;
-        return [mulv(F, m), F];
-    }
-    const [x, y] = m, r2 = x * x + y * y, r = Math.sqrt(r2), r5 = r2 * r2 * r;
-    const J = [[GM * (3 * x * x - r2) / r5, GM * 3 * x * y / r5], [GM * 3 * x * y / r5, GM * (3 * y * y - r2) / r5]];
-    const A = zeros(4, 4);
-    A[0][2] = A[1][3] = 1;
-    A[2][0] = J[0][0]; A[2][1] = J[0][1]; A[3][0] = J[1][0]; A[3][1] = J[1][1];
-    const F = add(eye(4), A.map(r => r.map(a => a * DT)));
-    return [propagate(m, DT), F];
-}
-
-const H = [[1, 0, 0, 0], [0, 1, 0, 0]];
+const norm3 = v => Math.hypot(v[0], v[1], v[2]);
 
 const $ = id => document.getElementById(id);
+let scenario = SCENARIOS.loi1;
 const controls = {
-    orbit: () => $("orbit").value,
-    sigma: () => +$("sigma").value / RADIUS_KM,
+    sigma: () => +$("sigma").value,
     q: () => 10 ** +$("q").value,
     every: () => +$("every").value,
     speed: () => +$("speed").value,   // minutes of flight per second
     model: () => document.querySelector("input[name=model]:checked").value,
 };
 
-let truth, mean, cov, step, trail, estTrail, measurements, errors, view, period, paused = false, pending = 0, last = null;
+// The bodies at time t, and the indirect acceleration of a geocentric frame pulled by the Moon
+function moonAt(t) {
+    if (scenario.kind === "orbit") return [0, 0, 0];
+    const f = Math.min(t / apollo12.step, apollo12.moon.length - 1.000001), i = Math.floor(f), u = f - i;
+    const a = apollo12.moon[i], b = apollo12.moon[i + 1];
+    return [0, 1, 2].map(k => a[k] + u * (b[k] - a[k]));
+}
+function bodies(t) {
+    if (scenario.kind === "orbit") return [[MU.moon, [0, 0, 0]]];
+    return [[MU.earth, [0, 0, 0]], [MU.moon, moonAt(t)]];
+}
+function acceleration(r, t) {
+    const a = [0, 0, 0];
+    for (const [mu, p] of bodies(t)) {
+        const d = [r[0] - p[0], r[1] - p[1], r[2] - p[2]], n3 = norm3(d) ** 3;
+        for (let k = 0; k < 3; k++) a[k] -= mu * d[k] / n3;
+    }
+    if (scenario.kind === "data") {
+        const m = moonAt(t), n3 = norm3(m) ** 3;
+        for (let k = 0; k < 3; k++) a[k] -= MU.moon * m[k] / n3;
+    }
+    return a;
+}
+function gradient(r, t) {   // the Jacobian of the acceleration with respect to the position
+    const J = zeros(3, 3);
+    for (const [mu, p] of bodies(t)) {
+        const d = [r[0] - p[0], r[1] - p[1], r[2] - p[2]], n = norm3(d), n3 = n ** 3, n5 = n ** 5;
+        for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) J[i][j] += mu * (3 * d[i] * d[j] / n5 - (i === j) / n3);
+    }
+    return J;
+}
+
+// Gravity over dt from time t, by leapfrog, with the Jacobian F of the map when asked
+function propagate(s, t, dt, jacobian = false) {
+    let r = s.slice(0, 3), v = s.slice(3);
+    let F = jacobian ? eye(6) : null;
+    const n = scenario.substeps, h = dt / n;
+    for (let k = 0; k < n; k++) {
+        if (jacobian) {
+            const J = gradient(r, t + k * h), A = eye(6);
+            for (let i = 0; i < 3; i++) { A[i][i + 3] = h; for (let j = 0; j < 3; j++) A[i + 3][j] += h * J[i][j]; }
+            F = mul(A, F);
+        }
+        let a = acceleration(r, t + k * h);
+        v = v.map((x, i) => x + 0.5 * h * a[i]);
+        r = r.map((x, i) => x + h * v[i]);
+        a = acceleration(r, t + (k + 1) * h);
+        v = v.map((x, i) => x + 0.5 * h * a[i]);
+    }
+    return [[...r, ...v], F];
+}
+
+// Process noise of a white-noise acceleration of spectral density q, over dt
+function processNoise(q, dt) {
+    const a = q * dt ** 3 / 3, b = q * dt ** 2 / 2, c = q * dt, Q = zeros(6, 6);
+    for (let i = 0; i < 3; i++) { Q[i][i] = a; Q[i][i + 3] = Q[i + 3][i] = b; Q[i + 3][i + 3] = c; }
+    return Q;
+}
+
+const H = [[1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0]];
+
+let truth, mean, cov, t, step, trail, estTrail, measurements, errors, view, period, done;
+let paused = false, pending = 0, last = null;
 
 function reset() {
     seed = 1;
-    const [hp, ha] = ORBITS[controls.orbit()], rp = 1 + hp / RADIUS_KM, ra = 1 + ha / RADIUS_KM;
-    const va = Math.sqrt(GM * 2 * rp / (ra * (ra + rp)));
-    truth = [-ra, 0, 0, va];   // from the apoapsis
-    period = 2 * Math.PI * Math.sqrt(((ra + rp) / 2) ** 3 / GM);
-    view = 1.12 * ra;
     const s = controls.sigma();
-    mean = [truth[0] + s * gaussian(), truth[1] + s * gaussian(), 0, va];
-    cov = [[s * s, 0, 0, 0], [0, s * s, 0, 0], [0, 0, 0.01, 0], [0, 0, 0, 0.01]];
-    step = 0; trail = []; estTrail = []; measurements = []; errors = [];
+    if (scenario.kind === "orbit") {
+        const [hp, ha] = scenario.altitudes, rp = RADIUS.moon + hp, ra = RADIUS.moon + ha;
+        const va = Math.sqrt(MU.moon * 2 * rp / (ra * (ra + rp)));
+        truth = [-ra, 0, 0, 0, va, 0];   // from the apoapsis
+        period = 2 * Math.PI * Math.sqrt(((ra + rp) / 2) ** 3 / MU.moon);
+        view = { cx: 0, cy: 0, half: 1.12 * ra };
+    } else {
+        truth = [...apollo12.craft[0], ...apollo12.velocity];
+        const xs = [...apollo12.craft, ...apollo12.moon].map(p => p[0]), ys = [...apollo12.craft, ...apollo12.moon].map(p => p[1]);
+        const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+        view = { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, half: 0.54 * Math.max(x1 - x0, y1 - y0) };
+        period = Infinity;
+    }
+    mean = [0, 1, 2].map(k => truth[k] + s * gaussian()).concat(truth.slice(3));
+    const vv = scenario.kind === "orbit" ? 0.1 ** 2 : 0.05 ** 2;
+    cov = zeros(6, 6);
+    for (let i = 0; i < 3; i++) { cov[i][i] = s * s; cov[i + 3][i + 3] = vv; }
+    t = 0; step = 0; trail = []; estTrail = []; measurements = []; errors = []; done = false;
 }
 
 function filterStep() {
+    if (done) return;
+    const dt = scenario.dt;
+
     // the world moves
-    truth = propagate(truth, DT);
-    const r = Math.hypot(truth[0], truth[1]);
-    if (r < 1 || r > 3 * view) { reset(); return; }   // crashed, or lost in space
-    step++;
+    if (scenario.kind === "orbit") {
+        truth = propagate(truth, t, dt)[0];
+        const r = norm3(truth);
+        if (r < RADIUS.moon || r > 3 * view.half) { reset(); return; }   // crashed, or lost in space
+    } else {
+        if (step + 1 >= apollo12.craft.length) { done = true; return; }
+        truth = [...apollo12.craft[step + 1], 0, 0, 0];
+    }
 
     // predict: p(x_{t+1} | e_{1:t})
-    const [m, F] = transition(mean, controls.model());
-    mean = m;
-    cov = add(mul(mul(F, cov), T(F)), processNoise(controls.q(), DT));
+    let F;
+    if (controls.model() === "gravity") [mean, F] = propagate(mean, t, dt, true);
+    else {
+        F = eye(6);
+        for (let i = 0; i < 3; i++) F[i][i + 3] = dt;
+        mean = mulv(F, mean);
+    }
+    cov = add(mul(mul(F, cov), T(F)), processNoise(controls.q(), dt));
+    t += dt; step++;
 
     // update: p(x_{t+1} | e_{1:t+1}), when a measurement arrives
     let measErr = null;
     if (step % controls.every() === 0) {
         const s = controls.sigma();
-        const e = [truth[0] + s * gaussian(), truth[1] + s * gaussian()];
+        const e = [0, 1, 2].map(k => truth[k] + s * gaussian());
         measurements.push(e);
         if (measurements.length > MEAS_KEPT) measurements.shift();
-        const S = add(mul(mul(H, cov), T(H)), [[s * s, 0], [0, s * s]]);
-        const K = mul(mul(cov, T(H)), inv2(S));
-        const innovation = [e[0] - mean[0], e[1] - mean[1]];
-        mean = mean.map((a, i) => a + K[i][0] * innovation[0] + K[i][1] * innovation[1]);
+        const S = add(mul(mul(H, cov), T(H)), eye(3).map(r => r.map(a => a * s * s)));
+        const K = mul(mul(cov, T(H)), inv(S));
+        const innovation = [0, 1, 2].map(k => e[k] - mean[k]);
+        mean = mean.map((a, i) => a + K[i][0] * innovation[0] + K[i][1] * innovation[1] + K[i][2] * innovation[2]);
         cov = sub(cov, mul(mul(K, H), cov));
         cov = cov.map((r, i) => r.map((a, j) => (a + cov[j][i]) / 2));   // keep it symmetric
-        measErr = Math.hypot(e[0] - truth[0], e[1] - truth[1]);
+        measErr = norm3([0, 1, 2].map(k => e[k] - truth[k]));
     }
 
-    trail.push([truth[0], truth[1]]);
-    estTrail.push([mean[0], mean[1]]);
-    if (trail.length > period / DT) { trail.shift(); estTrail.shift(); }   // one orbit
-    errors.push([Math.hypot(mean[0] - truth[0], mean[1] - truth[1]), measErr]);
+    trail.push(truth.slice(0, 3));
+    estTrail.push(mean.slice(0, 3));
+    if (trail.length > period / dt) { trail.shift(); estTrail.shift(); }   // one orbit
+    errors.push([norm3([0, 1, 2].map(k => mean[k] - truth[k])), measErr]);
     if (errors.length > ERR_KEPT) errors.shift();
 }
 
@@ -305,21 +363,58 @@ function moon(r) {
     return c;
 }
 
+// The Earth, painted once per size: oceans, a few soft continents and clouds, the same lighting as the Moon
+const earths = new Map();
+function earth(r) {
+    if (earths.has(r)) return earths.get(r);
+    let s = 11;
+    const rand = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const c = document.createElement("canvas");
+    c.width = c.height = 2 * r + 2 + 2 * Math.ceil(0.15 * r);
+    const m = c.getContext("2d"), o = c.width / 2;
+    const glow = m.createRadialGradient(o, o, r, o, o, 1.15 * r);
+    glow.addColorStop(0, "rgba(120, 170, 255, 0.35)"); glow.addColorStop(1, "rgba(120, 170, 255, 0)");
+    m.fillStyle = glow; m.fillRect(0, 0, c.width, c.height);
+    m.save();
+    m.beginPath(); m.arc(o, o, r, 0, 2 * Math.PI); m.clip();
+    m.fillStyle = "#1d4f91"; m.fillRect(0, 0, c.width, c.height);
+    m.filter = `blur(${Math.max(0.5, r * 0.04)}px)`;
+    m.fillStyle = "rgba(92, 128, 70, 0.9)";
+    for (const [x, y, a, b, angle] of [[-0.35, 0.3, 0.3, 0.42, 0.4], [-0.15, -0.45, 0.22, 0.35, -0.2], [0.4, 0.25, 0.35, 0.3, 0], [0.45, -0.35, 0.2, 0.28, 0.3]]) {
+        m.beginPath(); m.ellipse(o + x * r, o - y * r, a * r, b * r, angle, 0, 2 * Math.PI); m.fill();
+    }
+    m.fillStyle = "rgba(255, 255, 255, 0.55)";
+    for (let k = 0; k < 14; k++) {
+        m.beginPath(); m.ellipse(o + (2 * rand() - 1) * r, o + (2 * rand() - 1) * r, (0.15 + 0.3 * rand()) * r, 0.06 * r, 2 * rand(), 0, 2 * Math.PI); m.fill();
+    }
+    m.filter = "none";
+    const light = m.createRadialGradient(o - 0.35 * r, o - 0.35 * r, 0.1 * r, o, o, 1.05 * r);
+    light.addColorStop(0, "rgba(255, 255, 255, 0.15)"); light.addColorStop(0.55, "rgba(0, 0, 0, 0)"); light.addColorStop(1, "rgba(0, 0, 0, 0.6)");
+    m.fillStyle = light; m.fillRect(0, 0, c.width, c.height);
+    m.restore();
+    earths.clear(); earths.set(r, c);
+    return c;
+}
+
 function draw() {
-    const W = canvas.width, scale = W / (2 * view), dpr = window.devicePixelRatio || 1;
-    const px = ([x, y]) => [W / 2 + x * scale, W / 2 - y * scale];
+    const W = canvas.width, scale = W / (2 * view.half), dpr = window.devicePixelRatio || 1;
+    const px = p => [W / 2 + (p[0] - view.cx) * scale, W / 2 - (p[1] - view.cy) * scale];
     ctx.clearRect(0, 0, W, W);
-
-    // the Moon, to scale
-    const [cx, cy] = px([0, 0]), rm = scale, image = moon(Math.round(rm));
-    ctx.drawImage(image, cx - image.width / 2, cy - image.height / 2);
-
+    const sprite = (image, p) => { const [x, y] = px(p); ctx.drawImage(image, x - image.width / 2, y - image.height / 2); };
     const line = (points, colour, width) => {
         if (points.length < 2) return;
         ctx.strokeStyle = colour; ctx.lineWidth = width; ctx.beginPath();
         points.forEach((p, i) => { const [x, y] = px(p); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
         ctx.stroke();
     };
+
+    // the bodies, to scale, but never smaller than a few pixels
+    if (scenario.kind === "data") {
+        line(apollo12.moon.slice(0, step + 1), "rgba(255, 255, 255, 0.18)", 1 * dpr);   // the Moon's path so far
+        sprite(earth(Math.max(Math.round(RADIUS.earth * scale), Math.round(6 * dpr))), [0, 0]);
+    }
+    sprite(moon(Math.max(Math.round(RADIUS.moon * scale), Math.round(5 * dpr))), moonAt(t));
+
     line(trail, css("--truth"), 1.2 * dpr);
 
     // measurements, older ones fading
@@ -332,11 +427,11 @@ function draw() {
 
     line(estTrail, css("--est"), 1.8 * dpr);
 
-    // the 2σ ellipse of the position, from the eigen-decomposition of its 2x2 covariance
+    // the 2σ ellipse of the position in the plane of the view, from its 2x2 covariance
     const a = cov[0][0], b = cov[0][1], d = cov[1][1];
     const tr = (a + d) / 2, det = Math.sqrt(Math.max(0, ((a - d) / 2) ** 2 + b * b));
     const l1 = tr + det, l2 = Math.max(0, tr - det), angle = 0.5 * Math.atan2(2 * b, a - d);
-    const [ex, ey] = px([mean[0], mean[1]]);
+    const [ex, ey] = px(mean);
     ctx.save();
     ctx.translate(ex, ey); ctx.rotate(-angle);
     ctx.beginPath(); ctx.ellipse(0, 0, Math.max(2 * Math.sqrt(l1) * scale, 1), Math.max(2 * Math.sqrt(l2) * scale, 1), 0, 0, 2 * Math.PI);
@@ -348,9 +443,16 @@ function draw() {
     const [tx, ty] = px(truth);
     ctx.fillStyle = css("--truth"); ctx.beginPath(); ctx.arc(tx, ty, 3.5 * dpr, 0, 2 * Math.PI); ctx.fill();
 
-    const minutes = step * DT * TIME_S / 60;
-    $("clock").textContent = `t = ${Math.floor(minutes / 60)} h ${String(Math.floor(minutes % 60)).padStart(2, "0")} min`
-        + ` · one orbit takes ${(period * TIME_S / 60).toFixed(0)} min`;
+    const minutes = t / 60, thousands = v => Math.round(v / 1000).toLocaleString("en") + " 000 km";
+    if (scenario.kind === "orbit") {
+        $("clock").textContent = `t = ${Math.floor(minutes / 60)} h ${String(Math.floor(minutes % 60)).padStart(2, "0")} min`
+            + ` · one orbit takes ${(period / 60).toFixed(0)} min`;
+    } else {
+        const date = new Date(Date.UTC(1969, 10, 14, 19, 40) + 1000 * t);
+        const when = date.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
+        $("clock").textContent = `${when} UTC · ${thousands(norm3(truth))} from the Earth, `
+            + `${thousands(norm3([0, 1, 2].map(k => truth[k] - moonAt(t)[k])))} from the Moon` + (done ? " · end of the data" : "");
+    }
     drawErrors();
 }
 
@@ -366,7 +468,7 @@ function drawErrors() {
     ectx.stroke();
 
     const rms = values => values.length ? Math.sqrt(values.reduce((s, v) => s + v * v, 0) / values.length) : NaN;
-    const km = v => isNaN(v) ? "" : (v * RADIUS_KM).toFixed(0) + " km";
+    const km = v => isNaN(v) ? "" : Math.round(v).toLocaleString("en") + " km";
     const recent = errors.slice(-150);
     $("rmse-est").textContent = km(rms(recent.map(([e]) => e)));
     $("rmse-meas").textContent = km(rms(recent.map(([, m]) => m).filter(m => m !== null)));
@@ -376,7 +478,7 @@ function drawErrors() {
 function frame(now) {
     if (last !== null && !paused) {
         const elapsed = Math.min(now - last, 100) / 1000;   // seconds, capped after a hidden tab
-        pending += elapsed * controls.speed() * 60 / (DT * TIME_S);
+        pending += elapsed * controls.speed() * 60 / scenario.dt;
         while (pending >= 1) { filterStep(); pending -= 1; }
     }
     last = now;
@@ -385,24 +487,39 @@ function frame(now) {
 }
 
 function showValues() {
-    $("sigma-out").textContent = $("sigma").value + " km";
-    $("q-out").textContent = controls.q().toExponential(0);
+    $("sigma-out").textContent = controls.sigma().toLocaleString("en") + " km";
+    $("q-out").textContent = controls.q().toExponential(0) + " km²/s³";
     $("every-out").textContent = controls.every();
-    $("speed-out").textContent = controls.speed() + " min / s";
+    const speed = controls.speed();
+    $("speed-out").textContent = speed < 60 ? speed + " min / s" : (speed / 60).toFixed(1).replace(/\.0$/, "") + " h / s";
+}
+
+function choose() {
+    scenario = SCENARIOS[$("orbit").value];
+    for (const id of ["sigma", "q", "speed"]) {
+        const [min, max, value, stepSize] = scenario[id];
+        Object.assign($(id), { min, max, step: stepSize });
+        $(id).value = value;
+    }
+    $("kick").disabled = scenario.kind === "data";
+    showValues();
+    reset();
 }
 
 for (const id of ["sigma", "q", "every", "speed"]) $(id).addEventListener("input", showValues);
-$("orbit").addEventListener("change", reset);
+$("orbit").addEventListener("change", choose);
 $("pause").addEventListener("click", () => { paused = !paused; $("pause").textContent = paused ? "resume" : "pause"; });
 $("reset").addEventListener("click", reset);
 $("kick").addEventListener("click", () => {   // an impulse the filter does not know about: 2% of the speed, outwards
-    const [x, y, vx, vy] = truth, r = Math.hypot(x, y), v = Math.hypot(vx, vy);
-    truth = [x, y, vx + 0.02 * v * x / r, vy + 0.02 * v * y / r];
+    const r = norm3(truth), v = norm3(truth.slice(3));
+    truth = truth.map((a, i) => i < 3 ? a : a + 0.02 * v * truth[i - 3] / r);
 });
 window.addEventListener("resize", resize);
 
-showValues();
-reset();
+fetch("apollo12.json").then(r => r.json()).then(data => { apollo12 = data; $("a12").disabled = false; })
+    .catch(() => { $("a12").textContent += " (needs a web server)"; });
+
+choose();
 resize();
 requestAnimationFrame(frame);
 </script>
