@@ -736,9 +736,9 @@ class: middle
 
 .center.width-50[![](figures/lec6/gaussian-conditioning.svg)]
 
-Before observing $\mathbf{y}$, our best guess for $\mathbf{x}$ is its mean $\mathbf{a}$, with covariance $\mathbf{A}$. The observation deviates from its expected value $\mathbf{b}$ by $\textcolor{#d9822b}{\mathbf{y} - \mathbf{b}}$. The guess is corrected in proportion to this deviation, and the covariance shrinks:
+Observing $\mathbf{y}$ moves the guess $\mathbf{a}$ in proportion to the surprise $\textcolor{#d9822b}{\mathbf{y} - \mathbf{b}}$, and shrinks the covariance $\mathbf{A}$:
 $$\mathbf{a} + \mathbf{C}\mathbf{B}^{-1}\textcolor{#d9822b}{(\mathbf{y} - \mathbf{b})}, \qquad \mathbf{A} - \textcolor{#c8463d}{\mathbf{C}\mathbf{B}^{-1}\mathbf{C}^T}.$$
-The more $\mathbf{x}$ and $\mathbf{y}$ covary, the larger the correction and the smaller the remaining uncertainty.
+The larger the covariance $\mathbf{C}$ between $\mathbf{x}$ and $\mathbf{y}$, the larger the move and the shrinkage.
 
 ???
 
