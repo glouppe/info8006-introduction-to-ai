@@ -1021,11 +1021,11 @@ The Apollo Guidance Computer used a Kalman filter to estimate the position of th
 
 ---
 
-class: middle
+class: middle, black-slide
 
-.center.width-75[![](figures/lec6/moon.png)]
+.center[<iframe src="demo/lec6/orbit.html" width="820" height="530" frameborder="0"></iframe>]
 
-.center[Demo: [tracking an object in space using the Kalman Filter](https://demonstrations.wolfram.com/TrackingAnObjectInSpaceUsingTheKalmanFilter/).]
+.center[Demo: a Kalman filter tracking an object in orbit around the Moon ([full page](demo/lec6/orbit.html)).]
 
 ---
 

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalman filter in orbit</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<style>
+:root {
+    --bg: #000;
+    --panel: #111;
+    --ink: #e8e8e8;
+    --muted: #8a8a8a;
+    --truth: #ffffff;
+    --meas: #7ea0cf;
+    --est: #e0574c;
+    --accent: #356aaf;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
+main { display: flex; height: 100%; gap: 12px; padding: 6px 10px; }
+#space { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; justify-content: center; }
+#space canvas { background: var(--bg); max-width: 100%; max-height: 100%; }
+aside { flex: 0 0 230px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
+label { display: block; color: var(--muted); font-size: 13px; }
+label span { float: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; margin: 2px 0 0; accent-color: var(--accent); }
+.row { display: flex; gap: 6px; }
+button { flex: 1; font: inherit; color: var(--ink); background: #222; border: 1px solid #444; border-radius: 4px; padding: 5px 0; cursor: pointer; }
+button:hover { background: #2c2c2c; }
+.choice { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.choice input { accent-color: var(--accent); }
+.legend { font-size: 13px; display: grid; grid-template-columns: 18px 1fr auto; gap: 2px 6px; align-items: center; }
+.legend i { display: inline-block; width: 14px; height: 3px; }
+.legend b { font-weight: normal; font-variant-numeric: tabular-nums; color: var(--ink); }
+#errors { width: 100%; height: 64px; background: var(--panel); border-radius: 4px; }
+h1 { font-size: 15px; font-weight: 500; margin: 0; }
+@media (max-width: 640px) { main { flex-direction: column; } aside { flex: 0 0 auto; } }
+</style>
+</head>
+<body>
+<main>
+    <div id="space"><canvas id="canvas"></canvas></div>
+    <aside>
+        <h1>Kalman filter in orbit</h1>
+        <div class="legend">
+            <i style="background: var(--truth)"></i><span>true position</span><span></span>
+            <i style="background: var(--meas); height: 6px; width: 6px; border-radius: 3px"></i><span>measurements</span><b id="rmse-meas"></b>
+            <i style="background: var(--est)"></i><span>estimate, 2σ ellipse</span><b id="rmse-est"></b>
+        </div>
+        <canvas id="errors"></canvas>
+        <label>measurement noise σ<sub>e</sub> <span id="sigma-out"></span><input id="sigma" type="range" min="0.01" max="0.3" step="0.01" value="0.1"></label>
+        <label>process noise q <span id="q-out"></span><input id="q" type="range" min="-4" max="1" step="0.25" value="-2"></label>
+        <label>steps between measurements <span id="every-out"></span><input id="every" type="range" min="1" max="20" step="1" value="2"></label>
+        <label>speed <span id="speed-out"></span><input id="speed" type="range" min="1" max="8" step="1" value="2"></label>
+        <div class="choice">
+            <span style="color: var(--muted)">transition model of the filter</span>
+            <label style="color: var(--ink)"><input type="radio" name="model" value="cv" checked> constant velocity (Kalman filter)</label>
+            <label style="color: var(--ink)"><input type="radio" name="model" value="gravity"> gravity, linearized (extended KF)</label>
+        </div>
+        <div class="row"><button id="pause">pause</button><button id="kick">kick</button><button id="reset">reset</button></div>
+    </aside>
+</main>
+<script>
+"use strict";
+
+// Units: the moon's GM is 1 and the orbit has radius about 1. The true motion is integrated with a
+// small leapfrog step; the filter runs once every DT, with a measurement every `every` filter steps.
+const GM = 1, DT = 0.04, SUBSTEPS = 8, MOON = 0.18, VIEW = 1.6, TRAIL = 160, MEAS_KEPT = 60, ERR_KEPT = 300;
+
+// Random numbers, seeded so that reset replays the same run
+let seed = 1;
+function uniform() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+}
+function gaussian() {
+    const u = 1 - uniform(), v = uniform();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+// Small dense matrices, as arrays of rows
+const zeros = (n, m) => Array.from({ length: n }, () => new Array(m).fill(0));
+const eye = n => zeros(n, n).map((r, i) => (r[i] = 1, r));
+const T = A => A[0].map((_, j) => A.map(r => r[j]));
+const mul = (A, B) => A.map(r => B[0].map((_, j) => r.reduce((s, a, k) => s + a * B[k][j], 0)));
+const add = (A, B) => A.map((r, i) => r.map((a, j) => a + B[i][j]));
+const sub = (A, B) => A.map((r, i) => r.map((a, j) => a - B[i][j]));
+const mulv = (A, x) => A.map(r => r.reduce((s, a, k) => s + a * x[k], 0));
+function inv2(A) {
+    const [[a, b], [c, d]] = A, det = a * d - b * c;
+    return [[d / det, -b / det], [-c / det, a / det]];
+}
+
+function gravity(x, y) {
+    const r2 = x * x + y * y, r3 = r2 * Math.sqrt(r2);
+    return [-GM * x / r3, -GM * y / r3];
+}
+
+// The true state (x, y, vx, vy), moved by gravity over one filter step
+function propagate(s, dt) {
+    let [x, y, vx, vy] = s;
+    const h = dt / SUBSTEPS;
+    for (let k = 0; k < SUBSTEPS; k++) {
+        let [ax, ay] = gravity(x, y);
+        vx += 0.5 * h * ax; vy += 0.5 * h * ay;
+        x += h * vx; y += h * vy;
+        [ax, ay] = gravity(x, y);
+        vx += 0.5 * h * ax; vy += 0.5 * h * ay;
+    }
+    return [x, y, vx, vy];
+}
+
+// Process noise of a white-noise acceleration of spectral density q, over dt
+function processNoise(q, dt) {
+    const a = q * dt ** 3 / 3, b = q * dt ** 2 / 2, c = q * dt;
+    return [[a, 0, b, 0], [0, a, 0, b], [b, 0, c, 0], [0, b, 0, c]];
+}
+
+// The transition of the filter: its mean and its Jacobian F
+function transition(m, model) {
+    if (model === "cv") {
+        const F = eye(4); F[0][2] = F[1][3] = DT;
+        return [mulv(F, m), F];
+    }
+    const [x, y] = m, r2 = x * x + y * y, r = Math.sqrt(r2), r5 = r2 * r2 * r;
+    const J = [[GM * (3 * x * x - r2) / r5, GM * 3 * x * y / r5], [GM * 3 * x * y / r5, GM * (3 * y * y - r2) / r5]];
+    const A = zeros(4, 4);
+    A[0][2] = A[1][3] = 1;
+    A[2][0] = J[0][0]; A[2][1] = J[0][1]; A[3][0] = J[1][0]; A[3][1] = J[1][1];
+    const F = add(eye(4), A.map(r => r.map(a => a * DT)));
+    return [propagate(m, DT), F];
+}
+
+const H = [[1, 0, 0, 0], [0, 1, 0, 0]];
+
+const $ = id => document.getElementById(id);
+const controls = {
+    sigma: () => +$("sigma").value,
+    q: () => 10 ** +$("q").value,
+    every: () => +$("every").value,
+    speed: () => +$("speed").value,
+    model: () => document.querySelector("input[name=model]:checked").value,
+};
+
+let truth, mean, cov, step, trail, estTrail, measurements, errors, paused = false;
+
+function reset() {
+    seed = 1;
+    truth = [-1.4, 0, 0, -0.65];   // an ellipse around the moon, from its farthest point
+    const s = controls.sigma();
+    mean = [truth[0] + s * gaussian(), truth[1] + s * gaussian(), 0, -0.65];
+    cov = [[s * s, 0, 0, 0], [0, s * s, 0, 0], [0, 0, 0.25, 0], [0, 0, 0, 0.25]];
+    step = 0; trail = []; estTrail = []; measurements = []; errors = [];
+}
+
+function filterStep() {
+    // the world moves
+    truth = propagate(truth, DT);
+    const r = Math.hypot(truth[0], truth[1]);
+    if (r < MOON || r > 3 * VIEW) { reset(); return; }   // crashed, or lost in space
+    step++;
+
+    // predict: p(x_{t+1} | e_{1:t})
+    const [m, F] = transition(mean, controls.model());
+    mean = m;
+    cov = add(mul(mul(F, cov), T(F)), processNoise(controls.q(), DT));
+
+    // update: p(x_{t+1} | e_{1:t+1}), when a measurement arrives
+    let measErr = null;
+    if (step % controls.every() === 0) {
+        const s = controls.sigma();
+        const e = [truth[0] + s * gaussian(), truth[1] + s * gaussian()];
+        measurements.push(e);
+        if (measurements.length > MEAS_KEPT) measurements.shift();
+        const S = add(mul(mul(H, cov), T(H)), [[s * s, 0], [0, s * s]]);
+        const K = mul(mul(cov, T(H)), inv2(S));
+        const innovation = [e[0] - mean[0], e[1] - mean[1]];
+        mean = mean.map((a, i) => a + K[i][0] * innovation[0] + K[i][1] * innovation[1]);
+        cov = sub(cov, mul(mul(K, H), cov));
+        cov = mul(add(cov, T(cov)), [[0.5, 0, 0, 0], [0, 0.5, 0, 0], [0, 0, 0.5, 0], [0, 0, 0, 0.5]]);   // keep it symmetric
+        measErr = Math.hypot(e[0] - truth[0], e[1] - truth[1]);
+    }
+
+    trail.push([truth[0], truth[1]]);
+    estTrail.push([mean[0], mean[1]]);
+    if (trail.length > TRAIL) { trail.shift(); estTrail.shift(); }
+    errors.push([Math.hypot(mean[0] - truth[0], mean[1] - truth[1]), measErr]);
+    if (errors.length > ERR_KEPT) errors.shift();
+}
+
+// Drawing
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+const errCanvas = $("errors"), ectx = errCanvas.getContext("2d");
+const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+function resize() {
+    const box = $("space").getBoundingClientRect(), side = Math.max(100, Math.floor(Math.min(box.width, box.height)));
+    const dpr = window.devicePixelRatio || 1;
+    canvas.style.width = canvas.style.height = side + "px";
+    canvas.width = canvas.height = side * dpr;
+    const eb = errCanvas.getBoundingClientRect();
+    errCanvas.width = eb.width * dpr; errCanvas.height = eb.height * dpr;
+}
+
+function draw() {
+    const W = canvas.width, scale = W / (2 * VIEW);
+    const px = ([x, y]) => [W / 2 + x * scale, W / 2 - y * scale];
+    ctx.clearRect(0, 0, W, W);
+
+    // the moon
+    const [cx, cy] = px([0, 0]), rm = MOON * scale;
+    const g = ctx.createRadialGradient(cx - rm / 3, cy - rm / 3, rm / 6, cx, cy, rm);
+    g.addColorStop(0, "#d8d8d8"); g.addColorStop(1, "#6a6a6a");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rm, 0, 2 * Math.PI); ctx.fill();
+
+    const line = (points, colour, width) => {
+        if (points.length < 2) return;
+        ctx.strokeStyle = colour; ctx.lineWidth = width; ctx.beginPath();
+        points.forEach((p, i) => { const [x, y] = px(p); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+        ctx.stroke();
+    };
+    const dpr = window.devicePixelRatio || 1;
+    line(trail, css("--truth"), 1.2 * dpr);
+
+    // measurements, older ones fading
+    ctx.fillStyle = css("--meas");
+    measurements.forEach((e, i) => {
+        ctx.globalAlpha = 0.25 + 0.75 * (i + 1) / measurements.length;
+        const [x, y] = px(e); ctx.beginPath(); ctx.arc(x, y, 2.6 * dpr, 0, 2 * Math.PI); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    line(estTrail, css("--est"), 1.8 * dpr);
+
+    // the 2σ ellipse of the position, from the eigen-decomposition of its 2x2 covariance
+    const a = cov[0][0], b = cov[0][1], d = cov[1][1];
+    const tr = (a + d) / 2, det = Math.sqrt(Math.max(0, ((a - d) / 2) ** 2 + b * b));
+    const l1 = tr + det, l2 = Math.max(0, tr - det), angle = 0.5 * Math.atan2(2 * b, a - d);
+    const [ex, ey] = px([mean[0], mean[1]]);
+    ctx.save();
+    ctx.translate(ex, ey); ctx.rotate(-angle);
+    ctx.beginPath(); ctx.ellipse(0, 0, Math.max(2 * Math.sqrt(l1) * scale, 1), Math.max(2 * Math.sqrt(l2) * scale, 1), 0, 0, 2 * Math.PI);
+    ctx.fillStyle = css("--est"); ctx.globalAlpha = 0.25; ctx.fill();
+    ctx.globalAlpha = 1; ctx.strokeStyle = css("--est"); ctx.lineWidth = 1.2 * dpr; ctx.stroke();
+    ctx.restore();
+
+    // the object
+    const [tx, ty] = px(truth);
+    ctx.fillStyle = css("--truth"); ctx.beginPath(); ctx.arc(tx, ty, 3.5 * dpr, 0, 2 * Math.PI); ctx.fill();
+
+    drawErrors();
+}
+
+function drawErrors() {
+    const W = errCanvas.width, Hh = errCanvas.height, dpr = window.devicePixelRatio || 1;
+    ectx.clearRect(0, 0, W, Hh);
+    const ymax = Math.max(3 * controls.sigma(), ...errors.map(([e]) => e));
+    const x = i => (i / (ERR_KEPT - 1)) * W, y = v => Hh - 4 * dpr - (v / ymax) * (Hh - 10 * dpr);
+    ectx.fillStyle = css("--meas");
+    errors.forEach(([, m], i) => { if (m !== null) { ectx.beginPath(); ectx.arc(x(i), y(m), 1.8 * dpr, 0, 2 * Math.PI); ectx.fill(); } });
+    ectx.strokeStyle = css("--est"); ectx.lineWidth = 1.5 * dpr; ectx.beginPath();
+    errors.forEach(([e], i) => i ? ectx.lineTo(x(i), y(e)) : ectx.moveTo(x(i), y(e)));
+    ectx.stroke();
+    ectx.fillStyle = css("--muted"); ectx.font = `${11 * dpr}px Roboto, sans-serif`;
+    ectx.fillText("distance to the true position", 5 * dpr, 13 * dpr);
+
+    const rms = values => values.length ? Math.sqrt(values.reduce((s, v) => s + v * v, 0) / values.length) : NaN;
+    const recent = errors.slice(-150);
+    $("rmse-est").textContent = rms(recent.map(([e]) => e)).toFixed(3);
+    $("rmse-meas").textContent = rms(recent.map(([, m]) => m).filter(m => m !== null)).toFixed(3);
+}
+
+function frame() {
+    if (!paused) for (let k = 0; k < controls.speed(); k++) filterStep();
+    draw();
+    requestAnimationFrame(frame);
+}
+
+function showValues() {
+    $("sigma-out").textContent = controls.sigma().toFixed(2);
+    $("q-out").textContent = controls.q() < 0.1 ? controls.q().toExponential(0) : controls.q().toFixed(1);
+    $("every-out").textContent = controls.every();
+    $("speed-out").textContent = controls.speed() + "×";
+}
+
+for (const id of ["sigma", "q", "every", "speed"]) $(id).addEventListener("input", showValues);
+$("pause").addEventListener("click", () => { paused = !paused; $("pause").textContent = paused ? "resume" : "pause"; });
+$("reset").addEventListener("click", reset);
+$("kick").addEventListener("click", () => {   // an impulse the filter does not know about
+    const [x, y, vx, vy] = truth, r = Math.hypot(x, y);
+    truth = [x, y, vx + 0.15 * x / r, vy + 0.15 * y / r];
+});
+window.addEventListener("resize", resize);
+
+showValues();
+reset();
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

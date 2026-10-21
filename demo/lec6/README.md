@@ -1,6 +1,6 @@
 # Lecture 6 demos
 
-Two demos for the filtering part of the lecture, plus the Ghostbusters game of
+Three demos for the filtering part of the lecture, plus the Ghostbusters game of
 `demo/lec4/`, which plays the same story live.
 
 ## Forward-backward on the umbrella world
@@ -60,3 +60,17 @@ through noisy distances, is kept out of the repository: it is a worked Bayes
 filter, which is what project 1 asks students to write. It lives in
 `demo/lec6/pacman/`, ignored by git, and the commands to play it are in the
 speaker notes of the two video slides.
+
+## Kalman filter in orbit
+
+A page embedded in the lecture: an object orbits the Moon, its position is
+measured with Gaussian noise, and a Kalman filter tracks it, with the 2σ ellipse
+of its estimate. Sliders set the measurement noise, the process noise and the
+number of steps between measurements; the filter's transition model is either
+constant velocity (a Kalman filter, which lags on the curved orbit) or gravity,
+linearized at the estimate (an extended Kalman filter). "kick" pushes the object
+with an impulse the filter does not know about. Plain JavaScript, no
+dependencies; it replaces a Wolfram demonstration that needed a plugin.
+
+Open `demo/lec6/orbit.html` from the served repository
+(`uv run python -m http.server`), or from slide 62 of the deck.
