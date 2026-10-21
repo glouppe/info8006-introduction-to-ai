@@ -34,10 +34,11 @@ button:hover { background: #2c2c2c; }
 .choice { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
 .choice label { color: var(--ink); }
 .choice input { accent-color: var(--accent); }
-.legend { font-size: 13px; display: grid; grid-template-columns: 18px 1fr auto; gap: 2px 6px; align-items: center; }
+.legend { font-size: 14px; display: grid; grid-template-columns: 18px 1fr auto; gap: 4px 6px; align-items: center; margin: 4px 0 2px; }
+.legend .head { grid-column: 3; color: var(--muted); font-size: 12px; text-align: right; }
 .legend i { display: inline-block; width: 14px; height: 3px; }
-.legend b { font-weight: normal; font-variant-numeric: tabular-nums; color: var(--ink); }
-#errors { width: 100%; height: 64px; background: var(--panel); border-radius: 4px; }
+.legend b { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); text-align: right; }
+#errors { width: 100%; height: 120px; background: var(--panel); border-radius: 4px; }
 @media (max-width: 640px) { main { flex-direction: column; } aside { flex: 0 0 auto; } }
 </style>
 </head>
@@ -51,10 +52,12 @@ button:hover { background: #2c2c2c; }
             <option value="high">eccentric orbit: 500 × 3500 km</option>
         </select>
         <div class="legend">
+            <span></span><span></span><span class="head">RMS error</span>
             <i style="background: var(--truth)"></i><span>true position</span><span></span>
             <i style="background: var(--meas); height: 6px; width: 6px; border-radius: 3px"></i><span>measurements</span><b id="rmse-meas"></b>
             <i style="background: var(--est)"></i><span>estimate, 2σ ellipse</span><b id="rmse-est"></b>
         </div>
+        <label>distance to the true position</label>
         <canvas id="errors"></canvas>
         <label>measurement noise σ<sub>e</sub> <span id="sigma-out"></span><input id="sigma" type="range" min="5" max="200" step="5" value="40"></label>
         <label>process noise q <span id="q-out"></span><input id="q" type="range" min="-6" max="0" step="0.5" value="-3"></label>
@@ -355,14 +358,12 @@ function drawErrors() {
     const W = errCanvas.width, Hh = errCanvas.height, dpr = window.devicePixelRatio || 1;
     ectx.clearRect(0, 0, W, Hh);
     const ymax = Math.max(3 * controls.sigma(), ...errors.map(([e]) => e));
-    const x = i => (i / (ERR_KEPT - 1)) * W, y = v => Hh - 4 * dpr - (v / ymax) * (Hh - 18 * dpr);
+    const x = i => (i / (ERR_KEPT - 1)) * W, y = v => Hh - 4 * dpr - (v / ymax) * (Hh - 8 * dpr);
     ectx.fillStyle = css("--meas");
     errors.forEach(([, m], i) => { if (m !== null) { ectx.beginPath(); ectx.arc(x(i), y(m), 1.8 * dpr, 0, 2 * Math.PI); ectx.fill(); } });
     ectx.strokeStyle = css("--est"); ectx.lineWidth = 1.5 * dpr; ectx.beginPath();
     errors.forEach(([e], i) => i ? ectx.lineTo(x(i), y(e)) : ectx.moveTo(x(i), y(e)));
     ectx.stroke();
-    ectx.fillStyle = css("--muted"); ectx.font = `${11 * dpr}px Roboto, sans-serif`;
-    ectx.fillText("distance to the true position", 5 * dpr, 12 * dpr);
 
     const rms = values => values.length ? Math.sqrt(values.reduce((s, v) => s + v * v, 0) / values.length) : NaN;
     const km = v => isNaN(v) ? "" : (v * RADIUS_KM).toFixed(0) + " km";
