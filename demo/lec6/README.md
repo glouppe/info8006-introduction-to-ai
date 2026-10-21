@@ -65,12 +65,18 @@ speaker notes of the two video slides.
 
 A page embedded in the lecture (slide 62): a spacecraft is tracked by a Kalman
 filter from simulated, noisy measurements of its position, with the 2σ ellipse
-of the estimate. Four scenarios, drawn to scale:
+of the estimate. Five scenarios, drawn to scale:
 
 - the orbits of Apollo 11 around the Moon, after the first lunar orbit
   insertion burn (60.9 × 169.9 nautical miles, 113 × 315 km) and after the
   circularization burn (about 54 × 66 nautical miles, 100 × 122 km), both taking
   about two hours, plus an illustrative eccentric orbit;
+- a simulated free return like Apollo 13's: from 185 km above the Earth at
+  10.96 km/s, with the Moon on a circular orbit 132.36° ahead, the spacecraft
+  passes 254 km above the far side of the Moon (as Apollo 13 did) and comes back
+  to the atmosphere 5.8 days later, with no burn. The speed and the phase were
+  found offline with the page's own integrator (leapfrog, 10 s steps), so the
+  page flies the same path;
 - the Apollo 12 third stage (S-IVB) from Earth to the Moon, from half an hour
   after translunar injection (1969-11-14 19:40 UTC) to a day after its lunar
   flyby at 7,400 km from the Moon's centre. This is real: the reconstruction by

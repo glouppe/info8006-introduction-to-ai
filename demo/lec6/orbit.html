@@ -51,6 +51,7 @@ button:disabled { color: var(--muted); cursor: default; background: #181818; }
             <option value="loi1">Apollo 11, first orbit: 113 × 315 km</option>
             <option value="loi2">Apollo 11, circularized: 100 × 122 km</option>
             <option value="high">eccentric orbit: 500 × 3500 km</option>
+            <option value="free">free return like Apollo 13 (simulated)</option>
             <option value="a12" id="a12" disabled>Apollo 12 third stage, Earth to Moon</option>
         </select>
         <div class="legend">
@@ -80,15 +81,20 @@ button:disabled { color: var(--muted); cursor: default; background: #181818; }
 // position; the view draws the plane of the first two axes. A scenario is either a Keplerian orbit
 // around the Moon, whose true motion is integrated here, or the reconstructed path of the Apollo 12
 // third stage from the Earth to the Moon (JPL Horizons, `apollo12.json`, written by
-// `scripts/fetch_apollo_trajectory.py`). The orbits of Apollo 11 are those reported after the first
+// `scripts/fetch_apollo_trajectory.py`), or a simulated free return like Apollo 13's: the Moon on a
+// circular orbit in the plane of the view, and a speed after translunar injection and a phase of the
+// Moon found offline, with this integrator and step, so that the spacecraft passes 254 km above the
+// far side of the Moon (as Apollo 13 did) and comes back to the atmosphere after 5.8 days. The orbits of Apollo 11 are those reported after the first
 // lunar orbit insertion burn (60.9 × 169.9 nautical miles) and after the circularization burn (about
 // 54 × 66 nautical miles). The measurements are always simulated.
 const MU = { earth: 398600.4, moon: 4902.8 }, RADIUS = { earth: 6371.0, moon: 1737.4 };
+const MOON_DISTANCE = 384400, MOON_RATE = Math.sqrt((MU.earth + MU.moon) / MOON_DISTANCE ** 3), ATMOSPHERE = RADIUS.earth + 120;
 const MEAS_KEPT = 60, ERR_KEPT = 300;
 const SCENARIOS = {   // time step dt (s), integration substeps, and the ranges [min, max, default, step] of the sliders
     loi1: { kind: "orbit", altitudes: [112.8, 314.7], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
     loi2: { kind: "orbit", altitudes: [100.0, 122.2], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
     high: { kind: "orbit", altitudes: [500, 3500], dt: 40, substeps: 8, sigma: [5, 200, 40, 5], q: [-10, -3, -5.5, 0.5], speed: [2, 60, 12, 1] },
+    free: { kind: "free", altitude: 185, speed0: 10.96, phase: 132.36346331238747, dt: 300, substeps: 30, sigma: [500, 20000, 3000, 500], q: [-14, -6, -11, 0.5], speed: [30, 900, 300, 30] },
     a12: { kind: "data", dt: 600, substeps: 30, sigma: [500, 20000, 3000, 500], q: [-14, -6, -11, 0.5], speed: [30, 900, 300, 30] },
 };
 let apollo12 = null;
@@ -141,6 +147,10 @@ const controls = {
 // The bodies at time t, and the indirect acceleration of a geocentric frame pulled by the Moon
 function moonAt(t) {
     if (scenario.kind === "orbit") return [0, 0, 0];
+    if (scenario.kind === "free") {
+        const angle = scenario.phase * Math.PI / 180 + MOON_RATE * t;
+        return [MOON_DISTANCE * Math.cos(angle), MOON_DISTANCE * Math.sin(angle), 0];
+    }
     const f = Math.min(t / apollo12.step, apollo12.moon.length - 1.000001), i = Math.floor(f), u = f - i;
     const a = apollo12.moon[i], b = apollo12.moon[i + 1];
     return [0, 1, 2].map(k => a[k] + u * (b[k] - a[k]));
@@ -155,7 +165,7 @@ function acceleration(r, t) {
         const d = [r[0] - p[0], r[1] - p[1], r[2] - p[2]], n3 = norm3(d) ** 3;
         for (let k = 0; k < 3; k++) a[k] -= mu * d[k] / n3;
     }
-    if (scenario.kind === "data") {
+    if (scenario.kind !== "orbit") {
         const m = moonAt(t), n3 = norm3(m) ** 3;
         for (let k = 0; k < 3; k++) a[k] -= MU.moon * m[k] / n3;
     }
@@ -199,7 +209,7 @@ function processNoise(q, dt) {
 
 const H = [[1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0]];
 
-let truth, mean, cov, t, step, trail, estTrail, measurements, errors, view, period, done;
+let truth, mean, cov, t, step, trail, estTrail, moonTrail, measurements, errors, view, period, done, away;
 let paused = false, pending = 0, last = null;
 
 function reset() {
@@ -212,17 +222,33 @@ function reset() {
         period = 2 * Math.PI * Math.sqrt(((ra + rp) / 2) ** 3 / MU.moon);
         view = { cx: 0, cy: 0, half: 1.12 * ra };
     } else {
-        truth = [...apollo12.craft[0], ...apollo12.velocity];
-        const xs = [...apollo12.craft, ...apollo12.moon].map(p => p[0]), ys = [...apollo12.craft, ...apollo12.moon].map(p => p[1]);
+        let points;
+        if (scenario.kind === "data") {
+            truth = [...apollo12.craft[0], ...apollo12.velocity];
+            points = [...apollo12.craft, ...apollo12.moon];
+        } else {   // fly the free return once, to frame it
+            truth = [RADIUS.earth + scenario.altitude, 0, 0, 0, scenario.speed0, 0];
+            points = [];
+            let s = truth, tt = 0, out = false;
+            while (tt < 10 * 86400) {
+                s = propagate(s, tt, scenario.dt)[0]; tt += scenario.dt;
+                points.push(s, moonAt(tt));
+                out = out || norm3(s) > 1e5;
+                if (out && norm3(s) < ATMOSPHERE) break;
+            }
+        }
+        const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
         const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
         view = { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, half: 0.54 * Math.max(x1 - x0, y1 - y0) };
         period = Infinity;
     }
-    mean = [0, 1, 2].map(k => truth[k] + s * gaussian()).concat(truth.slice(3));
-    const vv = scenario.kind === "orbit" ? 0.1 ** 2 : 0.05 ** 2;
+    // the initial belief: around a first measurement in orbit, around the state known at injection
+    // otherwise (about 50 km and 10 m/s), which matters this close to the Earth
+    const [sp, sv] = scenario.kind === "orbit" ? [s, 0.1] : [50, 0.01];
+    mean = truth.map((a, k) => a + (k < 3 ? sp : sv) * gaussian());
     cov = zeros(6, 6);
-    for (let i = 0; i < 3; i++) { cov[i][i] = s * s; cov[i + 3][i + 3] = vv; }
-    t = 0; step = 0; trail = []; estTrail = []; measurements = []; errors = []; done = false;
+    for (let i = 0; i < 3; i++) { cov[i][i] = sp * sp; cov[i + 3][i + 3] = sv * sv; }
+    t = 0; step = 0; trail = []; estTrail = []; moonTrail = [moonAt(0)]; measurements = []; errors = []; done = false; away = false;
 }
 
 function filterStep() {
@@ -234,6 +260,10 @@ function filterStep() {
         truth = propagate(truth, t, dt)[0];
         const r = norm3(truth);
         if (r < RADIUS.moon || r > 3 * view.half) { reset(); return; }   // crashed, or lost in space
+    } else if (scenario.kind === "free") {
+        truth = propagate(truth, t, dt)[0];
+        away = away || norm3(truth) > 1e5;
+        if (away && norm3(truth) < ATMOSPHERE) done = true;   // back at the atmosphere: the last step
     } else {
         if (step + 1 >= apollo12.craft.length) { done = true; return; }
         truth = [...apollo12.craft[step + 1], 0, 0, 0];
@@ -267,6 +297,7 @@ function filterStep() {
     }
 
     trail.push(truth.slice(0, 3));
+    moonTrail.push(moonAt(t));
     estTrail.push(mean.slice(0, 3));
     if (trail.length > period / dt) { trail.shift(); estTrail.shift(); }   // one orbit
     errors.push([norm3([0, 1, 2].map(k => mean[k] - truth[k])), measErr]);
@@ -409,8 +440,8 @@ function draw() {
     };
 
     // the bodies, to scale, but never smaller than a few pixels
-    if (scenario.kind === "data") {
-        line(apollo12.moon.slice(0, step + 1), "rgba(255, 255, 255, 0.18)", 1 * dpr);   // the Moon's path so far
+    if (scenario.kind !== "orbit") {
+        line(moonTrail, "rgba(255, 255, 255, 0.18)", 1 * dpr);   // the Moon's path so far
         sprite(earth(Math.max(Math.round(RADIUS.earth * scale), Math.round(6 * dpr))), [0, 0]);
     }
     sprite(moon(Math.max(Math.round(RADIUS.moon * scale), Math.round(5 * dpr))), moonAt(t));
@@ -447,6 +478,11 @@ function draw() {
     if (scenario.kind === "orbit") {
         $("clock").textContent = `t = ${Math.floor(minutes / 60)} h ${String(Math.floor(minutes % 60)).padStart(2, "0")} min`
             + ` · one orbit takes ${(period / 60).toFixed(0)} min`;
+    } else if (scenario.kind === "free") {
+        const hours = t / 3600;
+        $("clock").textContent = `${Math.floor(hours / 24)} d ${Math.floor(hours % 24)} h after translunar injection · `
+            + `${thousands(norm3(truth))} from the Earth, ${thousands(norm3([0, 1, 2].map(k => truth[k] - moonAt(t)[k])))} from the Moon`
+            + (done ? " · back at the atmosphere" : "");
     } else {
         const date = new Date(Date.UTC(1969, 10, 14, 19, 40) + 1000 * t);
         const when = date.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
@@ -501,7 +537,7 @@ function choose() {
         Object.assign($(id), { min, max, step: stepSize });
         $(id).value = value;
     }
-    $("kick").disabled = scenario.kind === "data";
+    $("kick").disabled = scenario.kind !== "orbit";
     showValues();
     reset();
 }
