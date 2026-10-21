@@ -31,13 +31,13 @@ Your project will be evaluated based on the correctness of each of the component
 
 Your project will be evaluated as follow:
 
-- **transition_matrix function** (25%): We evaluate the correctness of the component.
-- **observation_matrix function** (25%): We evaluate the correctness of the component.
-- **update function** (25%): We evaluate the correctness of the component.
-- **Pacman controller** (20%): We evaluate whether your agent is able to eat 3 ghosts in a reasonable amount of time. For this test, your score for each layout and ghost type falls into one of the following four ranges:
+- **transition_matrix function** : We evaluate the correctness of the component.
+- **observation_matrix function** : We evaluate the correctness of the component.
+- **update function** : We evaluate the correctness of the component.
+- **Pacman controller** : We evaluate whether your agent is able to eat 3 ghosts in a reasonable amount of time. For this test, your score for each layout and ghost type falls into one of the following four ranges:
     - Below 500 → the score is far too low and incurs the full penalty.
     - 500-700 → the score is below expectations and receives a smaller, half penalty.
     - 700-900 → the remaining penalty decreases linearly as the score approaches 900.
     - 900 or higher → full credit is awarded with no penalty.
 
-- **Code style** (5%): You are awarded the maximal grade if your code is PEP-8 compliant and no points otherwise. This test is public.
+- **Code style** : You are awarded the maximal grade if your code is PEP-8 compliant and no points otherwise. This test is public.
