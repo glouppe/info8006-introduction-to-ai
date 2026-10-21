@@ -778,12 +778,6 @@ class: middle
 
 Equivalently, $\mathbf{y} = \mathbf{H}\mathbf{x} + \mathbf{u} + \textcolor{#d9822b}{\mathbf{v}}$, with a noise $\textcolor{#d9822b}{\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})}$ independent of $\mathbf{x}$. The linear map sends the mean $\boldsymbol{\mu}$ to $\mathbf{H}\boldsymbol{\mu} + \mathbf{u}$ and the covariance $\boldsymbol{\Sigma}$ to $\mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T$. The noise being independent, its covariance $\textcolor{#d9822b}{\mathbf{R}}$ adds to it.
 
-???
-
-Covariances of independent terms add: $\text{Cov}(\mathbf{y}) = \text{Cov}(\mathbf{H}\mathbf{x}) + \text{Cov}(\mathbf{v}) = \mathbf{H}\boldsymbol{\Sigma}\mathbf{H}^T + \mathbf{R}$, and $\text{Cov}(\mathbf{x}, \mathbf{y}) = \text{Cov}(\mathbf{x}, \mathbf{H}\mathbf{x}) = \boldsymbol{\Sigma}\mathbf{H}^T$. A linear map of a Gaussian, plus an independent Gaussian, is Gaussian.
-
-This is the prediction step of the Kalman filter, with $\mathbf{H} = \mathbf{A}$ and $\mathbf{R} = \mathbf{Q}$, and the first half of its update step, before conditioning with the previous slides.
-
 ---
 
 # Continuous Bayes filter
