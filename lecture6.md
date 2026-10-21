@@ -981,9 +981,7 @@ class: middle
 
 ## Update cycle
 
-.center.width-100[![](figures/lec6/particle-filter.png)]
-
-.footnote[Credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
+.center.width-100[![](figures/lec6/particle-filter.svg)]
 
 ???
 

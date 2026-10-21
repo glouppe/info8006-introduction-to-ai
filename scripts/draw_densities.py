@@ -76,6 +76,58 @@ def walk():
     save(fig, "walk")
 
 
+def particle_filter():
+    """One update cycle of a particle filter on the random walk of walk(): the particles x_0^i, moved by
+    the transition model (elapse), weighted by the likelihood of e_1 (weight), and drawn again in
+    proportion to their weights (resample). The exact densities of walk() are drawn faintly behind."""
+    mu0, s0, sx, se, e1, n = 0.0, 1.0, 2.0, 1.0, 2.0, 20
+    s1 = s0 + sx
+    mu, var = (s1 * e1 + se * mu0) / (s1 + se), s1 * se / (s1 + se)
+    rng = np.random.default_rng(3)
+    x0 = rng.normal(mu0, np.sqrt(s0), n)
+    x1 = x0 + rng.normal(0, np.sqrt(sx), n)
+    w = norm.pdf(e1, x1, np.sqrt(se))
+    w /= w.sum()
+    picks = np.sort(rng.choice(n, n, p=w))
+    rows = {"particles": 3, "elapse": 2, "weight": 1, "resample": 0}
+    h, dy = 0.75, 0.09   # height of a density, spacing of stacked copies
+    fig, ax = plt.subplots(figsize=(10, 5.6))
+    for y in rows.values():
+        ax.plot([-5, 5], [y, y], color=GREY, linewidth=0.8)
+    def density(y, pdf, colour, **kw):
+        ax.plot(x, y + h * pdf / 0.5, color=colour, linewidth=1.4, alpha=0.5, **kw)
+    density(3, norm.pdf(x, mu0, np.sqrt(s0)), INK)
+    density(2, norm.pdf(x, mu0, np.sqrt(s1)), BLUE, linestyle="--")
+    density(1, norm.pdf(x, e1, np.sqrt(se)), GREY)
+    density(0, norm.pdf(x, mu, np.sqrt(var)), RED)
+    ax.text(-4.9, 3 + 0.45, r"$p(x_0)$", color=INK, fontsize=16)
+    ax.text(-4.9, 2 + 0.45, r"$p(x_1)$", color=BLUE, fontsize=16)
+    ax.text(-4.9, 1 + 0.45, r"$p(e_1 \mid x_1)$", color=GREY, fontsize=16)
+    ax.text(-4.9, 0 + 0.45, r"$p(x_1 \mid e_1)$", color=RED, fontsize=16)
+    # elapse: each particle moves by a sample of the transition model
+    for a, b in zip(x0, x1):
+        ax.plot([a, b], [3, 2], color=GREY, linewidth=0.6, alpha=0.7)
+    # weight: the observation, and particles sized by their weights
+    ax.plot([e1, e1], [0.9, 1.9], color=INK, linestyle="--", linewidth=1)
+    ax.text(e1 + 0.1, 1.85, r"observed $e_1$", color=GREY, fontsize=13, family="Roboto", va="top")
+    # resample: copies of the heavy particles, stacked
+    count = {}
+    for k in picks:
+        c = count.get(k, 0)
+        count[k] = c + 1
+        ax.plot([x1[k], x1[k]], [1, dy * c], color=GREY, linewidth=0.6, alpha=0.7)
+        ax.plot([x1[k]], [dy * c], "o", color=BLUE, markersize=6, zorder=3)
+    ax.plot(x0, [3] * n, "o", color=BLUE, markersize=6, zorder=3, linestyle="none")
+    ax.plot(x1, [2] * n, "o", color=BLUE, markersize=6, zorder=3, linestyle="none")
+    ax.scatter(x1, [1] * n, s=1200 * w, color=BLUE, zorder=3)
+    for name, y in rows.items():
+        ax.text(-5.3, y + 0.05, name, ha="right", va="bottom", color=INK, fontsize=15, family="Roboto")
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-0.15, 3.85)
+    ax.axis("off")
+    save(fig, "particle-filter")
+
+
 def mvn():
     fig, ax = plt.subplots(figsize=(4.6, 3.6))
     g = np.linspace(-3.5, 3.5, 401)   # the Gaussian of gaussian_conditioning(), drawn the same way
@@ -204,6 +256,7 @@ if __name__ == "__main__":
     uniform()
     normal()
     walk()
+    particle_filter()
     mvn()
     gaussian_conditioning()
     linear_gaussian()
