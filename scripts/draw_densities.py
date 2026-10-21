@@ -70,9 +70,8 @@ def walk():
     ax.text(-1.15, 0.33, r"$p(x_0)$", ha="right", va="center", color=INK, fontsize=17)
     ax.text(-2.4, 0.16, r"$p(x_1)$", ha="right", va="center", color=BLUE, fontsize=17)
     ax.text(2.45, 0.33, r"$p(x_1 \mid e_1)$", ha="left", va="center", color=RED, fontsize=17)
-    ax.plot([e1, e1], [0, 0.47], color=ORANGE, linestyle=":", linewidth=1.5)
-    ax.plot([e1], [0], "o", color=ORANGE, markersize=9, zorder=3, clip_on=False)
-    ax.text(e1, 0.48, r"$e_1$", ha="center", va="bottom", color=ORANGE, fontsize=17)
+    ax.axvline(e1, color=INK, linestyle="--", linewidth=1)   # the observation, as in gaussian_conditioning()
+    ax.text(e1 + 0.1, 0.5, r"observed $e_1$", ha="left", va="center", color=GREY, fontsize=13, family="Roboto")
     ax.set_ylim(0, 0.52)
     save(fig, "walk")
 
@@ -134,7 +133,7 @@ def gaussian_conditioning():
     ax.text(a + 0.15, b - 0.45, r"$(a, b)$", color=INK, fontsize=16)
     # the observation and the surprise
     ax.axhline(y0, color=INK, linestyle="--", linewidth=1)
-    ax.text(-3.35, y0 + 0.15, "observed", color=GREY, fontsize=13, family="Roboto")
+    ax.text(-3.35, y0 + 0.15, r"observed $y$", color=GREY, fontsize=13, family="Roboto")
     ax.plot([-3.5, 3.5], [b, b], color=GREY, linestyle=":", linewidth=1)
     varrow(ax, -2.6, b, y0, ORANGE)
     ax.text(-2.45, (b + y0) / 2, r"$y - b$", color=ORANGE, fontsize=17, va="center")
