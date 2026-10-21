@@ -3,7 +3,8 @@
     uv run python scripts/draw_densities.py
 
 Writes to `figures/lec6/`: `uniform.svg`, the densities of U(0, 3) and U(-2, 2); `normal.svg`, those
-of N(0, 1) and N(1, 4), in the notation N(mu, sigma^2) of the slides; `mvn.svg`, the contours of a
+of N(0, 1) and N(1, 4), in the notation N(mu, sigma^2) of the slides; `walk.svg`, one step of the
+1d Gaussian random walk (prior, prediction, update on e_1); `mvn.svg`, the contours of a
 bivariate Gaussian density; `gaussian-conditioning.svg`, a joint Gaussian of (x, y) with its two
 marginals and the conditional p(x | y0) of a slice, to illustrate the Gaussian cheat sheet; and
 `linear-gaussian.svg`, a Gaussian p(x), the conditionals p(y | x) around the line y = Hx + u, and the
@@ -54,6 +55,25 @@ def normal():
         ax.text(lx, ly, rf"$\mathcal{{N}}({mu}, {var})$", ha=ha, va="center", color=INK, fontsize=17)
     ax.set_ylim(0, 0.45)
     save(fig, "normal")
+
+
+def walk():
+    """One step of the 1d Gaussian random walk: prior, prediction, and update on the evidence e_1."""
+    mu0, s0, sx, se, e1 = 0.0, 1.0, 2.0, 1.0, 2.0   # variances
+    s1 = s0 + sx
+    mu, var = (s1 * e1 + se * mu0) / (s1 + se), s1 * se / (s1 + se)
+    fig, ax = axes()
+    ax.plot(x, norm.pdf(x, mu0, np.sqrt(s0)), color=INK, linewidth=1.6)
+    ax.plot(x, norm.pdf(x, mu0, np.sqrt(s1)), color=BLUE, linestyle="--")
+    ax.plot(x, norm.pdf(x, mu, np.sqrt(var)), color=RED)
+    ax.text(-1.15, 0.33, r"$p(x_0)$", ha="right", va="center", color=INK, fontsize=17)
+    ax.text(-2.4, 0.16, r"$p(x_1)$", ha="right", va="center", color=BLUE, fontsize=17)
+    ax.text(2.45, 0.33, r"$p(x_1 \mid e_1)$", ha="left", va="center", color=RED, fontsize=17)
+    ax.plot([e1, e1], [0, 0.47], color=ORANGE, linestyle=":", linewidth=1.5)
+    ax.plot([e1], [0], "o", color=ORANGE, markersize=9, zorder=3, clip_on=False)
+    ax.text(e1, 0.48, r"$e_1$", ha="center", va="bottom", color=ORANGE, fontsize=17)
+    ax.set_ylim(0, 0.52)
+    save(fig, "walk")
 
 
 def mvn():
@@ -184,6 +204,7 @@ def linear_gaussian():
 if __name__ == "__main__":
     uniform()
     normal()
+    walk()
     mvn()
     gaussian_conditioning()
     linear_gaussian()

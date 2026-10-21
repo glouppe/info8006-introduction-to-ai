@@ -879,7 +879,7 @@ $$
 
 class: middle
 
-.center.width-70[![](figures/lec6/walk.png)]
+.center.width-70[![](figures/lec6/walk.svg)]
 
 In summary, the update equations given a new evidence $e\_{t+1}$ are:
 $$
