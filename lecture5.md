@@ -180,7 +180,7 @@ Edges may correspond to causal relations.
 .kol-2-5[
 $\mathbf{P}(R)$
 
-| $R$ | $P$ |
+| $R$ | $P(R)$ |
 | --- | --- |
 | $\text{r}$ | $0.25$ |
 | $\lnot\text{r}$ | $0.75$ |
@@ -188,7 +188,7 @@ $\mathbf{P}(R)$
 .kol-2-5[
 $\mathbf{P}(T \mid R)$
 
-| $R$ | $T$ | $P$ |
+| $R$ | $T$ | $P(T \mid R)$ |
 | --- | --- | --- |
 | $\text{r}$ | $\text{t}$ | $0.75$ |
 | $\text{r}$ | $\lnot\text{t}$ | $0.25$ |
@@ -218,7 +218,7 @@ class: middle
 .kol-2-5[
 $\mathbf{P}(T)$
 
-| $T$ | $P$ |
+| $T$ | $P(T)$ |
 | --- | --- |
 | $\text{t}$ | $9/16$ |
 | $\lnot\text{t}$ | $7/16$ |
@@ -226,7 +226,7 @@ $\mathbf{P}(T)$
 .kol-2-5[
 $\mathbf{P}(R \mid T)$
 
-| $T$ | $R$ | $P$ |
+| $T$ | $R$ | $P(R \mid T)$ |
 | --- | --- | --- |
 | $\text{t}$ | $\text{r}$ | $1/3$ |
 | $\text{t}$ | $\lnot\text{r}$ | $2/3$ |
@@ -561,7 +561,7 @@ class: middle
 .kol-1-3[
 $\mathbf{P}(T,W)$
 
-| $T$ | $W$ | $P$ |
+| $T$ | $W$ | $P(T, W)$ |
 | --- | --- | --- |
 | $\text{hot}$ | $\text{sun}$ | $0.4$ |
 | $\text{hot}$ | $\text{rain}$ | $0.1$ |
@@ -571,7 +571,7 @@ $\mathbf{P}(T,W)$
 .kol-1-3[
 $\rightarrow \mathbf{P}(T=\text{cold},W)$
 
-| $T$ | $W$ | $P$ |
+| $T$ | $W$ | $P(T, W)$ |
 | --- | --- | --- |
 | $\text{cold}$ | $\text{sun}$ | $0.2$ |
 | $\text{cold}$ | $\text{rain}$ | $0.3$ |
@@ -582,7 +582,7 @@ $\rightarrow \mathbf{P}(T=\text{cold},W)$
 .kol-1-3[
 $\rightarrow \mathbf{P}(W \mid T=\text{cold})$
 
-| $W$ | $P$ |
+| $W$ | $P(W \mid \text{cold})$ |
 | --- | --- |
 | $\text{sun}$ | $0.4$ |
 | $\text{rain}$ | $0.6$ |
@@ -619,7 +619,7 @@ class: middle
 ]
 .center.kol-1-2[
 
-| $S$ | $T$ | $W$ | $P$ |
+| $S$ | $T$ | $W$ | $P(S, T, W)$ |
 | --- | --- | --- | --- |
 | $\text{summer}$ | $\text{hot}$ | $\text{sun}$ | $0.3$ |
 | $\text{summer}$ | $\text{hot}$ | $\text{rain}$ | $0.05$ |
