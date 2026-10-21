@@ -227,16 +227,89 @@ function resize() {
     errCanvas.width = eb.width * dpr; errCanvas.height = eb.height * dpr;
 }
 
+// The near side of the Moon, painted once per size: maria roughly where they are, craters with a lit
+// rim and a shadow, and the shading of a sphere lit from the upper left. Its own random numbers, so
+// that the runs of the filter do not depend on it.
+const MARIA = [   // centre, radii (in Moon radii) and angle: Procellarum, Imbrium, Serenitatis,
+    [-0.55, 0.05, 0.32, 0.55, 0.3], [-0.25, 0.42, 0.3, 0.22, 0.2], [0.18, 0.4, 0.17, 0.15, 0],   // Tranquillitatis,
+    [0.32, 0.12, 0.25, 0.18, -0.3], [0.68, 0.32, 0.12, 0.1, 0], [0.45, -0.18, 0.18, 0.12, 0.4],   // Crisium, Fecunditatis,
+    [-0.2, -0.32, 0.2, 0.14, 0.1], [-0.5, -0.45, 0.16, 0.1, -0.3], [0.05, 0.62, 0.3, 0.06, 0],   // Nubium, Humorum, Frigoris
+];
+const moons = new Map();
+function moon(r) {
+    if (moons.has(r)) return moons.get(r);
+    let s = 7;
+    const rand = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const c = document.createElement("canvas");
+    c.width = c.height = 2 * r + 2;
+    const m = c.getContext("2d"), o = r + 1;
+    m.save();
+    m.beginPath(); m.arc(o, o, r, 0, 2 * Math.PI); m.clip();
+    m.fillStyle = "#b4b1aa"; m.fillRect(0, 0, c.width, c.height);
+    // highlands texture
+    for (let k = 0; k < 600; k++) {
+        const x = o + (2 * rand() - 1) * r, y = o + (2 * rand() - 1) * r, rr = (0.01 + 0.04 * rand()) * r;
+        m.fillStyle = rand() < 0.5 ? "rgba(255, 255, 250, 0.06)" : "rgba(60, 58, 55, 0.06)";
+        m.beginPath(); m.arc(x, y, rr, 0, 2 * Math.PI); m.fill();
+    }
+    // maria, soft-edged
+    m.filter = `blur(${Math.max(1, r * 0.03)}px)`;
+    m.fillStyle = "rgba(84, 84, 88, 0.55)";
+    for (const [x, y, a, b, angle] of MARIA) {
+        m.beginPath(); m.ellipse(o + x * r, o - y * r, a * r, b * r, angle, 0, 2 * Math.PI); m.fill();
+        for (let k = 0; k < 4; k++) {   // ragged shores
+            const t = 2 * Math.PI * rand();
+            m.beginPath(); m.ellipse(o + (x + 0.8 * a * Math.cos(t)) * r, o - (y + 0.8 * b * Math.sin(t)) * r,
+                                     0.45 * a * r, 0.45 * b * r, angle, 0, 2 * Math.PI); m.fill();
+        }
+    }
+    m.filter = "none";
+    // craters: a dark floor, a shadow on the lit side of the rim, a bright rim on the other
+    for (let k = 0; k < 260; k++) {
+        const radius = r * 0.004 / (0.05 + rand()) ** 0.9;
+        if (radius > 0.05 * r) continue;
+        const angle = 2 * Math.PI * rand(), d = Math.sqrt(rand()) * r, x = o + d * Math.cos(angle), y = o + d * Math.sin(angle);
+        const f = Math.sqrt(1 - (d / r) ** 2);   // foreshortened towards the limb
+        m.save(); m.translate(x, y); m.rotate(angle); m.scale(f, 1);
+        m.fillStyle = "rgba(70, 68, 64, 0.18)"; m.beginPath(); m.arc(0, 0, radius, 0, 2 * Math.PI); m.fill();
+        m.restore();
+        m.lineWidth = Math.max(0.5, radius * 0.2);
+        m.strokeStyle = "rgba(40, 38, 36, 0.22)";
+        m.beginPath(); m.arc(x, y, radius, 0.75 * Math.PI, 1.75 * Math.PI); m.stroke();
+        m.strokeStyle = "rgba(255, 255, 248, 0.25)";
+        m.beginPath(); m.arc(x, y, radius, 1.75 * Math.PI, 2.75 * Math.PI); m.stroke();
+    }
+    // a few bright young craters with rays (Tycho, Copernicus)
+    for (const [x, y, n] of [[-0.12, -0.68, 14], [-0.28, 0.16, 9]]) {
+        const X = o + x * r, Y = o - y * r;
+        m.strokeStyle = "rgba(255, 255, 250, 0.05)"; m.lineWidth = Math.max(1, r * 0.01);
+        for (let k = 0; k < n; k++) {
+            const t = 2 * Math.PI * rand(), l = (0.2 + 0.5 * rand()) * r;
+            m.beginPath(); m.moveTo(X, Y); m.lineTo(X + l * Math.cos(t), Y + l * Math.sin(t)); m.stroke();
+        }
+        const halo = m.createRadialGradient(X, Y, 0, X, Y, 0.06 * r);
+        halo.addColorStop(0, "rgba(255, 255, 250, 0.45)"); halo.addColorStop(1, "rgba(255, 255, 250, 0)");
+        m.fillStyle = halo; m.beginPath(); m.arc(X, Y, 0.06 * r, 0, 2 * Math.PI); m.fill();
+    }
+    // the sphere: lit from the upper left, darker towards the limb
+    const light = m.createRadialGradient(o - 0.35 * r, o - 0.35 * r, 0.1 * r, o, o, 1.05 * r);
+    light.addColorStop(0, "rgba(255, 255, 255, 0.12)");
+    light.addColorStop(0.55, "rgba(0, 0, 0, 0)");
+    light.addColorStop(1, "rgba(0, 0, 0, 0.6)");
+    m.fillStyle = light; m.fillRect(0, 0, c.width, c.height);
+    m.restore();
+    moons.clear(); moons.set(r, c);
+    return c;
+}
+
 function draw() {
     const W = canvas.width, scale = W / (2 * view), dpr = window.devicePixelRatio || 1;
     const px = ([x, y]) => [W / 2 + x * scale, W / 2 - y * scale];
     ctx.clearRect(0, 0, W, W);
 
     // the Moon, to scale
-    const [cx, cy] = px([0, 0]), rm = scale;
-    const g = ctx.createRadialGradient(cx - rm / 3, cy - rm / 3, rm / 6, cx, cy, rm);
-    g.addColorStop(0, "#9a9a9a"); g.addColorStop(1, "#3a3a3a");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rm, 0, 2 * Math.PI); ctx.fill();
+    const [cx, cy] = px([0, 0]), rm = scale, image = moon(Math.round(rm));
+    ctx.drawImage(image, cx - image.width / 2, cy - image.height / 2);
 
     const line = (points, colour, width) => {
         if (points.length < 2) return;
