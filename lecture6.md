@@ -1025,7 +1025,7 @@ class: middle, black-slide
 
 .center[<iframe src="demo/lec6/orbit.html" width="820" height="530" frameborder="0"></iframe>]
 
-.center[Demo: a Kalman filter tracking an object in orbit around the Moon ([full page](demo/lec6/orbit.html)).]
+.center[Demo: a Kalman filter tracking Apollo 11 in lunar orbit, from simulated measurements ([full page](demo/lec6/orbit.html)).]
 
 ---
 

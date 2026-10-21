@@ -63,13 +63,19 @@ speaker notes of the two video slides.
 
 ## Kalman filter in orbit
 
-A page embedded in the lecture: an object orbits the Moon, its position is
+A page embedded in the lecture: a spacecraft orbits the Moon, its position is
 measured with Gaussian noise, and a Kalman filter tracks it, with the 2σ ellipse
-of its estimate. Sliders set the measurement noise, the process noise and the
-number of steps between measurements; the filter's transition model is gravity,
-linearized at the estimate (an extended Kalman filter, the default), or constant
-velocity (a Kalman filter, which lags outside the curved orbit: its model treats
-the persistent pull of the Moon as zero-mean noise). "kick" pushes the object
+of its estimate. The orbits are those of Apollo 11, drawn to scale: after the
+first lunar orbit insertion burn (60.9 × 169.9 nautical miles, 113 × 315 km) and
+after the circularization burn (about 54 × 66 nautical miles, 100 × 122 km),
+both taking about two hours; a third, eccentric orbit is illustrative. The
+measurements are simulated: Apollo was tracked from Earth by range and Doppler,
+and those raw data are not published. Sliders set the measurement noise, the
+process noise, the number of steps between measurements and the speed (minutes
+of flight per second). The filter's transition model is gravity, linearized at
+the estimate (an extended Kalman filter, the default), or constant velocity (a
+Kalman filter, which lags outside the curved orbit: its model treats the
+persistent pull of the Moon as zero-mean noise). "kick" pushes the spacecraft
 with an impulse the filter does not know about. Plain JavaScript, no
 dependencies; it replaces a Wolfram demonstration that needed a plugin.
 

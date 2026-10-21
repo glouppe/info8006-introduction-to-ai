@@ -20,44 +20,50 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
 main { display: flex; height: 100%; gap: 12px; padding: 6px 10px; }
-#space { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; justify-content: center; }
+#space { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 #space canvas { background: var(--bg); max-width: 100%; max-height: 100%; }
-aside { flex: 0 0 230px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
+#clock { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; align-self: flex-start; }
+aside { flex: 0 0 236px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
 label { display: block; color: var(--muted); font-size: 13px; }
 label span { float: right; color: var(--ink); font-variant-numeric: tabular-nums; }
 input[type=range] { width: 100%; margin: 2px 0 0; accent-color: var(--accent); }
+select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); background: #222; border: 1px solid #444; border-radius: 4px; padding: 3px; }
 .row { display: flex; gap: 6px; }
 button { flex: 1; font: inherit; color: var(--ink); background: #222; border: 1px solid #444; border-radius: 4px; padding: 5px 0; cursor: pointer; }
 button:hover { background: #2c2c2c; }
 .choice { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.choice label { color: var(--ink); }
 .choice input { accent-color: var(--accent); }
 .legend { font-size: 13px; display: grid; grid-template-columns: 18px 1fr auto; gap: 2px 6px; align-items: center; }
 .legend i { display: inline-block; width: 14px; height: 3px; }
 .legend b { font-weight: normal; font-variant-numeric: tabular-nums; color: var(--ink); }
 #errors { width: 100%; height: 64px; background: var(--panel); border-radius: 4px; }
-h1 { font-size: 15px; font-weight: 500; margin: 0; }
 @media (max-width: 640px) { main { flex-direction: column; } aside { flex: 0 0 auto; } }
 </style>
 </head>
 <body>
 <main>
-    <div id="space"><canvas id="canvas"></canvas></div>
+    <div id="space"><canvas id="canvas"></canvas><div id="clock"></div></div>
     <aside>
-        <h1>Kalman filter in orbit</h1>
+        <select id="orbit">
+            <option value="loi1">Apollo 11, first orbit: 113 × 315 km</option>
+            <option value="loi2">Apollo 11, circularized: 100 × 122 km</option>
+            <option value="high">eccentric orbit: 500 × 3500 km</option>
+        </select>
         <div class="legend">
             <i style="background: var(--truth)"></i><span>true position</span><span></span>
             <i style="background: var(--meas); height: 6px; width: 6px; border-radius: 3px"></i><span>measurements</span><b id="rmse-meas"></b>
             <i style="background: var(--est)"></i><span>estimate, 2σ ellipse</span><b id="rmse-est"></b>
         </div>
         <canvas id="errors"></canvas>
-        <label>measurement noise σ<sub>e</sub> <span id="sigma-out"></span><input id="sigma" type="range" min="0.01" max="0.3" step="0.01" value="0.1"></label>
-        <label>process noise q <span id="q-out"></span><input id="q" type="range" min="-4" max="1" step="0.25" value="-2"></label>
+        <label>measurement noise σ<sub>e</sub> <span id="sigma-out"></span><input id="sigma" type="range" min="5" max="200" step="5" value="40"></label>
+        <label>process noise q <span id="q-out"></span><input id="q" type="range" min="-6" max="0" step="0.5" value="-3"></label>
         <label>steps between measurements <span id="every-out"></span><input id="every" type="range" min="1" max="20" step="1" value="2"></label>
-        <label>speed <span id="speed-out"></span><input id="speed" type="range" min="1" max="8" step="1" value="2"></label>
+        <label>speed <span id="speed-out"></span><input id="speed" type="range" min="2" max="60" step="1" value="12"></label>
         <div class="choice">
             <span style="color: var(--muted)">transition model of the filter</span>
-            <label style="color: var(--ink)"><input type="radio" name="model" value="cv"> constant velocity (Kalman filter)</label>
-            <label style="color: var(--ink)"><input type="radio" name="model" value="gravity" checked> gravity, linearized (extended KF)</label>
+            <label><input type="radio" name="model" value="cv"> constant velocity (Kalman filter)</label>
+            <label><input type="radio" name="model" value="gravity" checked> gravity, linearized (extended KF)</label>
         </div>
         <div class="row"><button id="pause">pause</button><button id="kick">kick</button><button id="reset">reset</button></div>
     </aside>
@@ -65,9 +71,18 @@ h1 { font-size: 15px; font-weight: 500; margin: 0; }
 <script>
 "use strict";
 
-// Units: the moon's GM is 1 and the orbit has radius about 1. The true motion is integrated with a
-// small leapfrog step; the filter runs once every DT, with a measurement every `every` filter steps.
-const GM = 1, DT = 0.04, SUBSTEPS = 8, MOON = 0.18, VIEW = 1.6, TRAIL = 160, MEAS_KEPT = 60, ERR_KEPT = 300;
+// Units: lengths in Moon radii, times in units of sqrt(R^3 / GM), about 17 minutes, so that GM = 1.
+// The true motion is integrated with a small leapfrog step; the filter runs once every DT, with a
+// measurement every `every` filter steps. The orbits of Apollo 11 are those reported after the first
+// lunar orbit insertion burn (60.9 × 169.9 nautical miles) and after the circularization burn
+// (about 54 × 66 nautical miles); the measurements are simulated.
+const RADIUS_KM = 1737.4, GM_KM = 4902.8, TIME_S = Math.sqrt(RADIUS_KM ** 3 / GM_KM);
+const GM = 1, DT = 0.04, SUBSTEPS = 8, MEAS_KEPT = 60, ERR_KEPT = 300;
+const ORBITS = {   // periapsis and apoapsis altitudes, in km
+    loi1: [112.8, 314.7],
+    loi2: [100.0, 122.2],
+    high: [500, 3500],
+};
 
 // Random numbers, seeded so that reset replays the same run
 let seed = 1;
@@ -139,21 +154,26 @@ const H = [[1, 0, 0, 0], [0, 1, 0, 0]];
 
 const $ = id => document.getElementById(id);
 const controls = {
-    sigma: () => +$("sigma").value,
+    orbit: () => $("orbit").value,
+    sigma: () => +$("sigma").value / RADIUS_KM,
     q: () => 10 ** +$("q").value,
     every: () => +$("every").value,
-    speed: () => +$("speed").value,
+    speed: () => +$("speed").value,   // minutes of flight per second
     model: () => document.querySelector("input[name=model]:checked").value,
 };
 
-let truth, mean, cov, step, trail, estTrail, measurements, errors, paused = false;
+let truth, mean, cov, step, trail, estTrail, measurements, errors, view, period, paused = false, pending = 0, last = null;
 
 function reset() {
     seed = 1;
-    truth = [-1.4, 0, 0, -0.65];   // an ellipse around the moon, from its farthest point
+    const [hp, ha] = ORBITS[controls.orbit()], rp = 1 + hp / RADIUS_KM, ra = 1 + ha / RADIUS_KM;
+    const va = Math.sqrt(GM * 2 * rp / (ra * (ra + rp)));
+    truth = [-ra, 0, 0, va];   // from the apoapsis
+    period = 2 * Math.PI * Math.sqrt(((ra + rp) / 2) ** 3 / GM);
+    view = 1.12 * ra;
     const s = controls.sigma();
-    mean = [truth[0] + s * gaussian(), truth[1] + s * gaussian(), 0, -0.65];
-    cov = [[s * s, 0, 0, 0], [0, s * s, 0, 0], [0, 0, 0.25, 0], [0, 0, 0, 0.25]];
+    mean = [truth[0] + s * gaussian(), truth[1] + s * gaussian(), 0, va];
+    cov = [[s * s, 0, 0, 0], [0, s * s, 0, 0], [0, 0, 0.01, 0], [0, 0, 0, 0.01]];
     step = 0; trail = []; estTrail = []; measurements = []; errors = [];
 }
 
@@ -161,7 +181,7 @@ function filterStep() {
     // the world moves
     truth = propagate(truth, DT);
     const r = Math.hypot(truth[0], truth[1]);
-    if (r < MOON || r > 3 * VIEW) { reset(); return; }   // crashed, or lost in space
+    if (r < 1 || r > 3 * view) { reset(); return; }   // crashed, or lost in space
     step++;
 
     // predict: p(x_{t+1} | e_{1:t})
@@ -181,13 +201,13 @@ function filterStep() {
         const innovation = [e[0] - mean[0], e[1] - mean[1]];
         mean = mean.map((a, i) => a + K[i][0] * innovation[0] + K[i][1] * innovation[1]);
         cov = sub(cov, mul(mul(K, H), cov));
-        cov = mul(add(cov, T(cov)), [[0.5, 0, 0, 0], [0, 0.5, 0, 0], [0, 0, 0.5, 0], [0, 0, 0, 0.5]]);   // keep it symmetric
+        cov = cov.map((r, i) => r.map((a, j) => (a + cov[j][i]) / 2));   // keep it symmetric
         measErr = Math.hypot(e[0] - truth[0], e[1] - truth[1]);
     }
 
     trail.push([truth[0], truth[1]]);
     estTrail.push([mean[0], mean[1]]);
-    if (trail.length > TRAIL) { trail.shift(); estTrail.shift(); }
+    if (trail.length > period / DT) { trail.shift(); estTrail.shift(); }   // one orbit
     errors.push([Math.hypot(mean[0] - truth[0], mean[1] - truth[1]), measErr]);
     if (errors.length > ERR_KEPT) errors.shift();
 }
@@ -198,7 +218,8 @@ const errCanvas = $("errors"), ectx = errCanvas.getContext("2d");
 const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 function resize() {
-    const box = $("space").getBoundingClientRect(), side = Math.max(100, Math.floor(Math.min(box.width, box.height)));
+    const box = $("space").getBoundingClientRect();
+    const side = Math.max(100, Math.floor(Math.min(box.width, box.height - 18)));
     const dpr = window.devicePixelRatio || 1;
     canvas.style.width = canvas.style.height = side + "px";
     canvas.width = canvas.height = side * dpr;
@@ -207,14 +228,14 @@ function resize() {
 }
 
 function draw() {
-    const W = canvas.width, scale = W / (2 * VIEW);
+    const W = canvas.width, scale = W / (2 * view), dpr = window.devicePixelRatio || 1;
     const px = ([x, y]) => [W / 2 + x * scale, W / 2 - y * scale];
     ctx.clearRect(0, 0, W, W);
 
-    // the moon
-    const [cx, cy] = px([0, 0]), rm = MOON * scale;
+    // the Moon, to scale
+    const [cx, cy] = px([0, 0]), rm = scale;
     const g = ctx.createRadialGradient(cx - rm / 3, cy - rm / 3, rm / 6, cx, cy, rm);
-    g.addColorStop(0, "#d8d8d8"); g.addColorStop(1, "#6a6a6a");
+    g.addColorStop(0, "#9a9a9a"); g.addColorStop(1, "#3a3a3a");
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rm, 0, 2 * Math.PI); ctx.fill();
 
     const line = (points, colour, width) => {
@@ -223,7 +244,6 @@ function draw() {
         points.forEach((p, i) => { const [x, y] = px(p); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
         ctx.stroke();
     };
-    const dpr = window.devicePixelRatio || 1;
     line(trail, css("--truth"), 1.2 * dpr);
 
     // measurements, older ones fading
@@ -248,10 +268,13 @@ function draw() {
     ctx.globalAlpha = 1; ctx.strokeStyle = css("--est"); ctx.lineWidth = 1.2 * dpr; ctx.stroke();
     ctx.restore();
 
-    // the object
+    // the spacecraft
     const [tx, ty] = px(truth);
     ctx.fillStyle = css("--truth"); ctx.beginPath(); ctx.arc(tx, ty, 3.5 * dpr, 0, 2 * Math.PI); ctx.fill();
 
+    const minutes = step * DT * TIME_S / 60;
+    $("clock").textContent = `t = ${Math.floor(minutes / 60)} h ${String(Math.floor(minutes % 60)).padStart(2, "0")} min`
+        + ` · one orbit takes ${(period * TIME_S / 60).toFixed(0)} min`;
     drawErrors();
 }
 
@@ -259,40 +282,48 @@ function drawErrors() {
     const W = errCanvas.width, Hh = errCanvas.height, dpr = window.devicePixelRatio || 1;
     ectx.clearRect(0, 0, W, Hh);
     const ymax = Math.max(3 * controls.sigma(), ...errors.map(([e]) => e));
-    const x = i => (i / (ERR_KEPT - 1)) * W, y = v => Hh - 4 * dpr - (v / ymax) * (Hh - 10 * dpr);
+    const x = i => (i / (ERR_KEPT - 1)) * W, y = v => Hh - 4 * dpr - (v / ymax) * (Hh - 18 * dpr);
     ectx.fillStyle = css("--meas");
     errors.forEach(([, m], i) => { if (m !== null) { ectx.beginPath(); ectx.arc(x(i), y(m), 1.8 * dpr, 0, 2 * Math.PI); ectx.fill(); } });
     ectx.strokeStyle = css("--est"); ectx.lineWidth = 1.5 * dpr; ectx.beginPath();
     errors.forEach(([e], i) => i ? ectx.lineTo(x(i), y(e)) : ectx.moveTo(x(i), y(e)));
     ectx.stroke();
     ectx.fillStyle = css("--muted"); ectx.font = `${11 * dpr}px Roboto, sans-serif`;
-    ectx.fillText("distance to the true position", 5 * dpr, 13 * dpr);
+    ectx.fillText("distance to the true position", 5 * dpr, 12 * dpr);
 
     const rms = values => values.length ? Math.sqrt(values.reduce((s, v) => s + v * v, 0) / values.length) : NaN;
+    const km = v => isNaN(v) ? "" : (v * RADIUS_KM).toFixed(0) + " km";
     const recent = errors.slice(-150);
-    $("rmse-est").textContent = rms(recent.map(([e]) => e)).toFixed(3);
-    $("rmse-meas").textContent = rms(recent.map(([, m]) => m).filter(m => m !== null)).toFixed(3);
+    $("rmse-est").textContent = km(rms(recent.map(([e]) => e)));
+    $("rmse-meas").textContent = km(rms(recent.map(([, m]) => m).filter(m => m !== null)));
 }
 
-function frame() {
-    if (!paused) for (let k = 0; k < controls.speed(); k++) filterStep();
+// Animation at a fixed rate of flight time per second, whatever the frame rate
+function frame(now) {
+    if (last !== null && !paused) {
+        const elapsed = Math.min(now - last, 100) / 1000;   // seconds, capped after a hidden tab
+        pending += elapsed * controls.speed() * 60 / (DT * TIME_S);
+        while (pending >= 1) { filterStep(); pending -= 1; }
+    }
+    last = now;
     draw();
     requestAnimationFrame(frame);
 }
 
 function showValues() {
-    $("sigma-out").textContent = controls.sigma().toFixed(2);
-    $("q-out").textContent = controls.q() < 0.1 ? controls.q().toExponential(0) : controls.q().toFixed(1);
+    $("sigma-out").textContent = $("sigma").value + " km";
+    $("q-out").textContent = controls.q().toExponential(0);
     $("every-out").textContent = controls.every();
-    $("speed-out").textContent = controls.speed() + "×";
+    $("speed-out").textContent = controls.speed() + " min / s";
 }
 
 for (const id of ["sigma", "q", "every", "speed"]) $(id).addEventListener("input", showValues);
+$("orbit").addEventListener("change", reset);
 $("pause").addEventListener("click", () => { paused = !paused; $("pause").textContent = paused ? "resume" : "pause"; });
 $("reset").addEventListener("click", reset);
-$("kick").addEventListener("click", () => {   // an impulse the filter does not know about
-    const [x, y, vx, vy] = truth, r = Math.hypot(x, y);
-    truth = [x, y, vx + 0.15 * x / r, vy + 0.15 * y / r];
+$("kick").addEventListener("click", () => {   // an impulse the filter does not know about: 2% of the speed, outwards
+    const [x, y, vx, vy] = truth, r = Math.hypot(x, y), v = Math.hypot(vx, vy);
+    truth = [x, y, vx + 0.02 * v * x / r, vy + 0.02 * v * y / r];
 });
 window.addEventListener("resize", resize);
 
