@@ -22,7 +22,7 @@ Your task is to design an intelligent agent based on the Bayes filter algorithm 
 
 To get started, download and extract the [archive](../project1.zip?raw=true) of the project in the directory of your choice. Use the following command to run your Bayes filter implementation against a single `afraid` ghost in the `large_filter` layout:
 ```console
-$ python run.py --ghost afraid --nghosts 1 --layout large_filter --seed 42
+$ uv run python run.py --ghost afraid --nghosts 1 --layout large_filter --seed 42
 ```
 When several ghosts are present in the maze, they all run the same policy (e.g. all `afraid`). The random seed of the game can be changed with the `--seed` option.
 
