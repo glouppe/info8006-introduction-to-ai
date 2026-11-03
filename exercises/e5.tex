@@ -398,7 +398,7 @@ The surveillance program of a casino watches a coin-tossing machine. The machine
         \end{align*}
     \end{solution}
 
-    \part What is the most likely sequence of tossed coins?
+    \part What is the most likely sequence of tossed coins? \optional
 
     \begin{solution}
         The Viterbi algorithm computes $\mathbf{m}_{1:t} = \max_{x_{1:t-1}} \mathbf{P}(x_{1:t-1}, X_t \mid e_{1:t})$, from $\mathbf{m}_{1:1} = \mathbf{f}_{1:1}$ and, for each state $j$,

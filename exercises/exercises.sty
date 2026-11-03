@@ -26,6 +26,7 @@
 %       Statement ...
 %       \begin{parts}
 %           \part Sub-question ...
+%           \part Harder sub-question? \optional   % a grey tag, as \topic[optional]
 %           \begin{solution} ... \end{solution}
 %       \end{parts}
 %
@@ -390,6 +391,9 @@
     {\bfseries #2\if\relax\detokenize{#1}\relax\else\ {\normalfont\color{black!55}(#1)}\fi\par}%
     \nopagebreak
 }
+
+% A grey "(optional)" tag for a part or an exercise, as \topic[optional] in the recap
+\newcommand*{\optional}{\unskip\ {\color{black!55}(optional)}}
 
 % A term defined in the recap
 \newcommand*{\term}[1]{\emph{#1}}
