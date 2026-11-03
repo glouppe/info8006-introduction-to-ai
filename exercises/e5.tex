@@ -104,15 +104,15 @@
 
 \begin{exercises}[1 and 3 (November 5), 4 and 5 with the Kalman notebook (November 12)][2 (d)--(e)]
 
-\titledquestion{Load of a shared server \source{Exam, January 2023}}
+\titledquestion{Traffic on a road \source{Exam, January 2023}}
 
-A scheduling program submits jobs to a shared compute server, whose load varies over time. Each job runs under either a heavy or a light load. From past logs, the program knows that if a job runs under a heavy load, there is a 40\% chance that the next job also runs under a heavy load. If a job runs under a light load, there is a 70\% chance that the next job also runs under a light load. The program cannot see the load, but it sees the response time of each job, which is either fast, normal or slow. If the load is heavy, the response time is fast with probability 20\% and slow with probability 60\%. If the load is light, it is fast with probability 50\% and slow with probability 30\%.
+A navigation app estimates the traffic on a road, minute by minute. Each minute, the road is either congested or fluid. From past data, the app knows that if the road is congested, there is a 40\% chance that it is still congested the next minute. If the road is fluid, there is a 70\% chance that it is still fluid the next minute. The app cannot see the traffic, but each minute it receives the speed of one car driving on the road, which is either fast, normal or slow. If the road is congested, the car is fast with probability 20\% and slow with probability 60\%. If the road is fluid, it is fast with probability 50\% and slow with probability 30\%.
 
 \begin{parts}
-    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{heavy}, \allowbreak \texttt{light}\}$ is the load under which the $t$-th job runs and the evidence $E_t \in \{\texttt{fast}, \allowbreak \texttt{normal}, \allowbreak \texttt{slow}\}$ is its response time. Before the first job, the program has no information about the load, so that the prior $\mathbf{P}(X_0)$ is uniform.
+    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{congested}, \allowbreak \texttt{fluid}\}$ is the traffic at minute $t$ and the evidence $E_t \in \{\texttt{fast}, \allowbreak \texttt{normal}, \allowbreak \texttt{slow}\}$ is the speed of the car received at minute $t$. At the start, the app has no information about the traffic, so that the prior $\mathbf{P}(X_0)$ is uniform.
 
     \begin{solution}
-        With the states in the order (\texttt{heavy}, \texttt{light}) and the evidence values in the order (\texttt{fast}, \texttt{normal}, \texttt{slow}), the prior vector, the transition matrix $\mathbf{T}_{ij} = P(X_t = j \mid X_{t-1} = i)$ and the sensor matrix $\mathbf{B}_{ij} = P(E_t = j \mid X_t = i)$ are
+        With the states in the order (\texttt{congested}, \texttt{fluid}) and the evidence values in the order (\texttt{fast}, \texttt{normal}, \texttt{slow}), the prior vector, the transition matrix $\mathbf{T}_{ij} = P(X_t = j \mid X_{t-1} = i)$ and the sensor matrix $\mathbf{B}_{ij} = P(E_t = j \mid X_t = i)$ are
         \[
             \mathbf{f}_0 = \mat{0.5 \\ 0.5}, \quad
             \mathbf{T} = \mat{0.4 & 0.6 \\ 0.3 & 0.7}, \quad
@@ -120,7 +120,7 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
         \]
     \end{solution}
 
-    \part At some point, the server stops reporting the response time of every other job (the 2nd, the 4th, \ldots), so that the program only observes the 1st, 3rd, 5th, \ldots{} jobs. Sketch a Bayesian network describing this new process.
+    \part At some point, the app only receives a speed every other minute (at minutes 1, 3, 5, \ldots, and none at minutes 2, 4, \ldots). Sketch a Bayesian network describing this new process.
 
     \begin{solution}
         \begin{center}
@@ -141,7 +141,7 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
         Keeping $E_2$, $E_4$, \ldots{} as unobserved (unshaded) nodes is equally valid: they sum out of every query.
     \end{solution}
 
-    \part Express, in terms of the HMM components, the distribution $\mathbf{P}(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
+    \part Express, in terms of the HMM components, the distribution $\mathbf{P}(X_t \mid e_{1:t:2})$ of the traffic at minute $t$ given the speeds $e_{1:t:2}$ received every other minute. Note that $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
 
     \begin{solution}
         Let $\mathbf{f}_{1:t} = \mathbf{P}(X_t \mid e_{1:t:2})$ be the forward message over the evidence observed up to $t$. Then
@@ -161,7 +161,7 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
         that is, $\mathbf{f}_{1:3, j} = \alpha \, \mathbf{B}_{j e_3} \sum_i \mathbf{T}_{ij} \mathbf{f}_{1:2, i}$ for every $j$, or $\mathbf{f}_{1:3} = \alpha \, \mathbf{O}_3 \mathbf{T}^T \mathbf{f}_{1:2}$, since the observation matrix $\mathbf{O}_3$ is diagonal with entries $\mathbf{B}_{j e_3}$.
     \end{solution}
 
-    \part Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{slow}, \texttt{fast})$, compute the probability that the 3rd job runs under a heavy load.
+    \part Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{slow}, \texttt{fast})$, compute the probability that the road is congested at minute 3.
 
     \begin{solution}
         \begin{align*}
@@ -169,13 +169,13 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
             \mathbf{f}_{1:2} & = \mathbf{T}^T \mathbf{f}_{1:1} = \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5185 \\ 0.4815} \approx \mat{0.3519 \\ 0.6481} \\
             \mathbf{f}_{1:3} & = \alpha \, \mathbf{O}_3 \mathbf{T}^T \mathbf{f}_{1:2} = \alpha \mat{0.2 & 0 \\ 0 & 0.5} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.3519 \\ 0.6481} \approx \mat{0.1678 \\ 0.8322}
         \end{align*}
-        Finally, $P(X_3 = \texttt{heavy} \mid e_{1:3:2}) \approx 0.1678$.
+        Finally, $P(X_3 = \texttt{congested} \mid e_{1:3:2}) \approx 0.1678$.
     \end{solution}
 
-    \part Without any observation, which fraction of the jobs runs under a heavy load in the long run?
+    \part Without any observation, which fraction of the time is the road congested in the long run?
 
     \begin{solution}
-        This is the stationary distribution $\mathbf{f} = \mathbf{T}^T \mathbf{f}$. With $\mathbf{f} = \mat{h & 1 - h}^T$, the first row reads $h = 0.4 \, h + 0.3 \, (1 - h)$, hence $h = 1/3$: in the long run, one job in three runs under a heavy load, whatever the load of the first job.
+        This is the stationary distribution $\mathbf{f} = \mathbf{T}^T \mathbf{f}$. With $\mathbf{f} = \mat{h & 1 - h}^T$, the first row reads $h = 0.4 \, h + 0.3 \, (1 - h)$, hence $h = 1/3$: in the long run, the road is congested one minute in three, whatever the traffic at the start.
     \end{solution}
 \end{parts}
 
