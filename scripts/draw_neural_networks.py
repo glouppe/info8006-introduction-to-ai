@@ -49,6 +49,7 @@ GREY = "#8a8a8a"
 LIGHT = "#d0d0d0"
 UNITS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"]   # the hidden units, as in the demo
 OUTPUTS = UNITS[:2]   # the two outputs of the network with two outputs
+OUT = OUTPUTS[0]      # the output of the single-output networks, node and curve
 STROKE = 2.6   # nodes and edges a little thicker than lecture 5's networks, at this smaller scale
 # Every network diagram of the deck, and the network of y given x of `draw_bn_diagrams.py`, has its
 # width and height scaled by SCALE, and the deck shows them at their natural size, without a width
@@ -126,7 +127,7 @@ def dots(x, y):
 
 def network(columns, edges=None, colors=None):
     """Columns of nodes as lists of (x, y, name, sub); consecutive columns fully connected by default."""
-    colors = colors or {}
+    colors = {("y", None): OUT, ("y′", None): OUT, **(colors or {})}
     parts = []
     if edges is None:
         edges = [(a, b) for i in range(len(columns) - 1) for a in columns[i] for b in columns[i + 1]]
@@ -158,7 +159,7 @@ def shallow_net():
     for j, h in enumerate(hs):
         parts += [link(x, h), link(one, h), link(h, y)]
     parts.append(link(one2, y))
-    parts += [unit_node(*x, "x"), unit_node(*y, "y")]
+    parts += [unit_node(*x, "x"), unit_node(*y, "y", None, OUT)]
     parts += [f'<circle cx="{one[0]}" cy="{one[1]}" r="{R}" fill="white" stroke="{GREY}" stroke-width="{STROKE:g}"/>',
               math(one[0], one[1], [("1", "")], size=28, fill=GREY),
               f'<circle cx="{one2[0]}" cy="{one2[1]}" r="{R}" fill="white" stroke="{GREY}" stroke-width="{STROKE:g}"/>',
@@ -179,7 +180,7 @@ def shallow_net():
     xb, hb, yb = (ox + 70, 310), [(ox + 260, 170), (ox + 260, 310), (ox + 260, 450)], (ox + 450, 310)
     for h in hb:
         parts += [link(xb, h), link(h, yb)]
-    parts += [unit_node(*xb, "x"), unit_node(*yb, "y")] + [unit_node(*h, "h", str(j), UNITS[j]) for j, h in enumerate(hb)]
+    parts += [unit_node(*xb, "x"), unit_node(*yb, "y", None, OUT)] + [unit_node(*h, "h", str(j), UNITS[j]) for j, h in enumerate(hb)]
     parts += [caption(ox + 10, 30, "b)", anchor="start")]
     return parts
 
@@ -271,7 +272,7 @@ def functions():
     for k, (ax, (params, c)) in enumerate(zip(axs, sets)):
         axes_1d(ax, (-1, 1), ylabel=r"$y$" if k == 0 else None)
         joints(ax, params)
-        ax.plot(X, shallow(params, c), color=INK)
+        ax.plot(X, shallow(params, c), color=OUT)
     fig.tight_layout()
     save(fig, "nn-functions")
 
@@ -371,7 +372,7 @@ def deep_buildup():
         axs[3, j].axis("off")
     ax = axs[3, 1]
     axes_1d(ax, (-1.2, 1.2))
-    ax.plot(X, y, color=INK)
+    ax.plot(X, y, color=OUT)
     ax.set_title(r"$y = v_0 h'_0 + v_1 h'_1 + v_2 h'_2 + c$", fontsize=15)
     for j in (0, 2):
         axs[2, j].set_xlabel(r"$x$", fontsize=19)
