@@ -939,21 +939,21 @@ z
   </g>
   <g id="patch_63">
    <path d="M 704.7072 99.568 
-Q 761.4288 137.008 816.844069 173.585736 
+Q 760.7736 136.2592 815.530282 172.093289 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
-   <path d="M 813.265549 167.389431 
-L 816.844069 173.585736 
-L 809.739913 172.730769 
+   <path d="M 811.927376 165.911132 
+L 815.530282 172.093289 
+L 808.422813 171.266319 
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
   <g id="patch_64">
    <path d="M 704.7072 256.816 
-Q 761.4288 215.632 816.883805 175.36764 
+Q 760.7736 225.7408 815.470973 195.424393 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
-   <path d="M 809.824823 176.53844 
-L 816.883805 175.36764 
-L 813.585056 181.717305 
+   <path d="M 808.322004 195.728107 
+L 815.470973 195.424393 
+L 811.424564 201.325796 
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>

@@ -615,7 +615,7 @@ def conv_pattern():
         stack.add_patch(Rectangle((0.1 + 0.12 * d, 0.1 + 0.12 * d), 0.55, 0.55, facecolor="white", edgecolor=INK, linewidth=1.1))
     stack.set_xlim(0, 1); stack.set_ylim(0, 1)
     for k, (a2, a3) in enumerate(pooled):
-        arrow(a3, stack, xb=0.12, yb=0.5)
+        arrow(a3, stack, xb=0.1, yb=0.52 if k == 0 else 0.23)   # two points of the front sheet, so the heads do not collide
     stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=18, color=INK)
 
     # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 8x8 patch
