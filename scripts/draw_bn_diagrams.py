@@ -18,6 +18,8 @@ Writes to `figures/lec5/`:
   and inactive triples), `bn-alarm.svg` and `ve-ordering.svg`;
 - `parameterized-bn.svg` and `caseb-bayesian.svg`, the candy networks with their parameters.
 
+It also writes lecture 7's `figures/lec7/latent.svg`, the model of y given x, at the same scale.
+
 Helpers and fonts are those of `draw_game_trees.py`; `draw_temporal_networks.py` reuses these.
 """
 
@@ -138,10 +140,10 @@ def P(*pieces):
     return [("P(", "")] + list(pieces) + [(")", "")]
 
 
-def svg(name, width, height, parts):
+def svg(name, width, height, parts, folder="lec5"):
     head = (f'<marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" '
             f'orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{INK}"/></marker>')
-    out = ROOT / "figures" / "lec5" / f"{name}.svg"
+    out = ROOT / "figures" / folder / f"{name}.svg"
     out.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" '
                    f'height="{height}"><defs>{fonts()}{head}</defs>{"".join(parts)}</svg>\n', encoding="utf-8")
     print(f"{out.relative_to(ROOT)}  {width}x{height}")
@@ -219,6 +221,14 @@ def dentist():
 
 def two(a, b):
     return network({a: (50, 45, a), b: (50, 185, b)}, [(a, b)])
+
+
+def supervised():
+    """Lecture 7's model p(y | x): the input x, given, and the output y."""
+    return [
+        f'<circle cx="50" cy="45" r="{R}" fill="{FILL}" stroke="{INK}" stroke-width="{STROKE:g}"/>',
+        label(50, 45, "x", bold=True), node(50, 185, "y"), link((50, 45), (50, 185)),
+    ]
 
 
 def burglary_orders():
@@ -337,3 +347,4 @@ if __name__ == "__main__":
     svg("ve-ordering", 600, 350, ve_ordering())
     svg("parameterized-bn", 720, 420, parameterized())
     svg("caseb-bayesian", 640, 445, bayesian_learning())
+    svg("latent", 100, 230, supervised(), folder="lec7")

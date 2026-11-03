@@ -26,9 +26,20 @@ class: middle
 
 ## Learning agents
 
-What if the environment is .bold[unknown]?
+.center.width-70[![](figures/lec7/learning-agent.svg)]
 
-A learning agent does not hardcode its program: it learns a part of it from data, with parameters $\theta$. This part can be a policy $\pi\_\theta$ (Lecture 1), a heuristic $h(n)$ (Lecture 2), an evaluation function $\text{eval}(s)$ (Lecture 3) or a probabilistic model $\mathbf{P}\_\theta(X)$ (Lecture 5).
+What if the environment is .bold[unknown], or the agent program too hard to write by hand?
+
+---
+
+class: middle
+
+A learning agent improves its performance element with experience (Lecture 1). Here, the performance element is a function with parameters $\theta$:
+- a policy $a\_t = \pi\_\theta(e\_t)$ (Lecture 1),
+- a heuristic $h(n)$ (Lecture 2) or an evaluation function $\text{eval}(s)$ (Lecture 3),
+- a model $\mathbf{P}\_\theta(X)$ (Lecture 5), such as the transition and sensor models of Lecture 6.
+
+The learning element adjusts $\theta$ from the feedback. In .bold[supervised learning] (today), the feedback is the correct output for each input, e.g. the action an expert takes. In .bold[reinforcement learning] (Lecture 9), it is only a reward $r\_t$.
 
 .success[Learning is useful whenever a task is hard to program but examples of the desired behavior are easy to obtain.]
 
@@ -99,8 +110,10 @@ with inputs $\mathbf{x}\_i \in \mathbb{R}^d$ and outputs $y\_i \in \mathcal{Y}$.
 
 From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \mathbf{x})$$ that best explains the data.
 
+As in Lectures 4 to 6, the model is a density $p$ for continuous $y$ and a probability $P$ for discrete $y$.
+
 ]
-.kol-1-3[<br><br>.center.width-80[![](figures/lec7/latent.svg)]]
+.kol-1-3[<br><br>.center.width-30[![](figures/lec7/latent.svg)]]
 ]
 
 ---
@@ -153,11 +166,11 @@ Do it on the blackboard.
 class: middle
 
 .grid[
-.kol-1-5[<br>.center.width-100[![](figures/lec7/latent.svg)]]
+.kol-1-5[<br>.center.width-50[![](figures/lec7/latent.svg)]]
 .kol-4-5[.center.width-50[![](figures/lec7/lr-gaussian.svg)]]
 ]
 
-Linear regression considers a parameterized linear Gaussian model for its parametric model of $p(y \mid \\mathbf{x})$, that is
+Linear regression models $p(y \mid \mathbf{x})$ as a linear Gaussian, as the sensor model of the Kalman filter (Lecture 6),
 $$p(y \mid \mathbf{x}) = \mathcal{N}(y \mid \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
 where $\mathbf{w}$ and $b$ are parameters to determine.
 
@@ -362,10 +375,10 @@ class: middle
 
 ## Example: imitation learning in Pacman
 
-Can we learn to play Pacman only from observations?
-- Feature vectors $\mathbf{x} = g(s)$ are extracted from the game states $s$. Output values $y$ correspond to actions $a$.
-- State-action pairs $(\mathbf{x}, y)$ are collected by observing an expert playing.
-- We want to learn the actions that the expert would take in a given situation, that is, a policy $\pi\_\theta(s) = f(g(s); \theta)$ with $f:\mathbb{R}^d \to \mathcal{A}$.
+Can we learn to play Pacman only by watching an expert, e.g. the minimax agent of Lecture 3?
+- At each step, the expert perceives $e\_t$ and acts $a\_t$. Pacman's world is fully observable, so $e\_t = s\_t$.
+- Each step gives a pair $(\mathbf{x}, y)$, with features $\mathbf{x} = g(e\_t)$ and the expert's action $y = a\_t$.
+- We learn a simple reflex agent (Lecture 1), $a\_t = \pi\_\theta(e\_t) = f(g(e\_t); \theta)$ with $f : \mathbb{R}^d \to \mathcal{A}$, whose condition-action rules are learned rather than written.
 - This is a multiclass classification problem.
 
 .center.width-70[![](figures/lec7/pacman.png)]
@@ -1027,7 +1040,7 @@ class: black-slide, middle
 .center[
 <iframe width="640" height="400" src="https://www.youtube.com/embed/zMNumQ45pJ8" frameborder="0" allowfullscreen></iframe>
 
-The policies learned from those demonstrations, about 50 per task,<br>as Pacman learns from an expert.
+The policies $\pi\_\theta$ learned from those demonstrations, about 50 per task,<br>as Pacman learns from an expert.
 ]
 
 ---
@@ -1047,7 +1060,7 @@ class: black-slide, middle
 .center[
 <iframe width="640" height="400" src="https://www.youtube.com/embed/YQwqoEm_xis" frameborder="0" allowfullscreen></iframe>
 
-WeatherNext 2 (Google DeepMind, 2025): a network trained on decades<br>of past weather to predict the next state of the atmosphere.
+WeatherNext 2 (Google DeepMind, 2025): a transition model $p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t)$<br>of the atmosphere (Lecture 6), learned from decades of past weather.
 ]
 
 ---
@@ -1058,6 +1071,7 @@ WeatherNext 2 (Google DeepMind, 2025): a network trained on decades<br>of past w
 - A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k^T \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
 - Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \alpha \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
 - Its performance is measured on pairs held out from training.
+- A learning agent learns part of its program this way, e.g. a policy $a\_t = \pi\_\theta(e\_t)$ fitted to the pairs $(e\_t, a\_t)$ of an expert.
 
 ---
 
