@@ -57,7 +57,8 @@ def save(fig, name, tight=True):
 
 def sigmoid():
     x = np.linspace(-10, 10, 801)
-    fig, ax = plt.subplots(figsize=(7.5, 3.6))
+    fig, ax = plt.subplots(figsize=(4.8, 4.8))
+    ax.set_box_aspect(1)
     ax.plot([-10, 0, 0, 10], [0, 0, 1, 1], color=GREY, linewidth=1.6, linestyle="--")
     ax.plot(x, 1 / (1 + np.exp(-x)), color=BLUE)
     ax.text(3.2, 0.8, r"$\sigma(x)$", color=BLUE, fontsize=20)

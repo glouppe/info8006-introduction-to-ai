@@ -239,8 +239,12 @@ def deep_net():
 # ---- one-dimensional plots
 
 def axes_1d(ax, ylim=(-1, 1), xlabel=True, ylabel=None):
+    ax.set_box_aspect(1)   # plots of a function of x are square
     ax.set_xlim(0, 1)
     ax.set_ylim(*ylim)
+    if ylim[0] < 0:
+        ticks = [-1, -0.5, 0, 0.5, 1] if ylim[1] <= 1 else [-1, 0, 1]
+        ax.set_yticks(ticks, [f"{v:g}" for v in ticks])
     ax.axhline(0, color=LIGHT, linewidth=1, zorder=0)
     ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
     if xlabel:
@@ -270,7 +274,7 @@ def functions():
         y = shallow(params, c)
         if np.abs(y).max() < 0.9 and np.ptp(y) > 0.9 and np.diff(np.sort(jts)).min() > 0.12 and np.abs(w).min() > 0.8:
             sets.append((params, c))
-    fig, axs = plt.subplots(1, 3, figsize=(11, 3.1), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(11, 4), sharey=True)
     for k, (ax, (params, c)) in enumerate(zip(axs, sets)):
         axes_1d(ax, (-1, 1), ylabel=r"$y$" if k == 0 else None)
         joints(ax, params)
@@ -281,7 +285,7 @@ def functions():
 
 def approximate():
     target = lambda x: 0.65 * np.cos(2 * np.pi * 1.1 * x) - 0.25 * np.exp(-((x - 0.42) ** 2) / 0.006)
-    fig, axs = plt.subplots(1, 3, figsize=(11, 3.1), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(11, 4), sharey=True)
     for k, (ax, regions) in enumerate(zip(axs, [5, 10, 20])):
         q = regions - 1
         jts = (np.arange(q) + 1) / regions
@@ -300,7 +304,7 @@ def approximate():
 def two_outputs():
     units = [(1.6, -0.55), (-2.0, 0.9), (2.5, -1.75), (1.2, -0.25)]
     v0, v1, c0, c1 = [0.9, 0.6, -1.4, -0.3], [-0.7, 0.8, 1.6, 0.4], 0.15, -0.35
-    fig, ax = plt.subplots(figsize=(6.8, 4.2))
+    fig, ax = plt.subplots(figsize=(4.8, 4.8))
     axes_1d(ax, (-1, 1), ylabel="outputs")
     for w, b in units:
         if 0 < -b / w < 1:
@@ -330,7 +334,7 @@ def colored(ax, x, y, pieces):
 
 
 def concat():
-    fig, axs = plt.subplots(1, 3, figsize=(11, 3.2))
+    fig, axs = plt.subplots(1, 3, figsize=(11, 4.2))
     axes_1d(axs[0], (0, 1), ylabel=r"$y$")
     colored(axs[0], X, f_(X), piece(X))
     axs[0].set_title(r"first network $y = f(x)$", fontsize=15)
@@ -357,7 +361,7 @@ V2, C2 = [1.0, -1.1, -1.0], -0.1   # found by a search: every panel within [-1.1
 def deep_buildup():
     h = np.stack([relu(w * X + b) for w, b, _ in SHALLOW])
     pre = [np.dot(ws, h) + b for ws, b in DEEP]
-    fig, axs = plt.subplots(4, 3, figsize=(11, 9.6), sharex=True)
+    fig, axs = plt.subplots(3, 4, figsize=(13, 10))
     titles = [[rf"$w'_{{{j}0}}h_0 + w'_{{{j}1}}h_1 + w'_{{{j}2}}h_2 + b'_{j}$" for j in range(3)],
               [rf"$h'_{j} = \mathrm{{ReLU}}(\cdot)$" for j in range(3)],
               [rf"$v_{j} h'_{j}$" for j in range(3)]]
@@ -365,20 +369,17 @@ def deep_buildup():
         rows = [pre[j], relu(pre[j]), V2[j] * relu(pre[j])]
         for r in range(3):
             ax = axs[r, j]
-            axes_1d(ax, (-1.2, 1.2), xlabel=False)
+            axes_1d(ax, (-1.2, 1.2), xlabel=r == 2)
             ax.plot(X, rows[r], color=UNITS[j])
-            ax.set_title(titles[r][j], fontsize=15)
+            ax.set_title(titles[r][j], fontsize=12.5)
     y = sum(V2[j] * relu(pre[j]) for j in range(3)) + C2
     assert np.abs(y).max() < 1.2, np.abs(y).max()
-    for j in (0, 2):
-        axs[3, j].axis("off")
-    ax = axs[3, 1]
+    for r in (0, 2):
+        axs[r, 3].axis("off")
+    ax = axs[1, 3]
     axes_1d(ax, (-1.2, 1.2))
     ax.plot(X, y, color=OUT)
-    ax.set_title(r"$y = v_0 h'_0 + v_1 h'_1 + v_2 h'_2 + c$", fontsize=15)
-    for j in (0, 2):
-        axs[2, j].set_xlabel(r"$x$", fontsize=19)
-        axs[2, j].tick_params(labelbottom=True)
+    ax.set_title(r"$y = v_0 h'_0 + v_1 h'_1 + v_2 h'_2 + c$", fontsize=12.5)
     fig.tight_layout()
     save(fig, "nn-deep-buildup")
 
@@ -402,7 +403,8 @@ def regions():
 
 def activations():
     z = np.linspace(-4, 4, 801)
-    fig, ax = plt.subplots(figsize=(6.5, 3.6))
+    fig, ax = plt.subplots(figsize=(4.8, 4.8))
+    ax.set_box_aspect(1)
     ax.axhline(0, color=LIGHT, linewidth=1, zorder=0)
     ax.axvline(0, color=LIGHT, linewidth=1, zorder=0)
     ax.plot(z, 1 / (1 + np.exp(-z)), color=BLUE)
@@ -470,16 +472,18 @@ def two_layer_2d():
     pre = [w[0] * X0 + w[1] * X1 + b for w, b in UNITS_2D]
     y = sum(V_2D[j] * relu(pre[j]) for j in range(3)) + C_2D
     g = lambda t: sum(v * relu(w[0] * t + b) for (w, b), v in zip(G2, V2_2D)) + C2_2D
-    fig, axs = plt.subplots(1, 3, figsize=(12, 3.8), gridspec_kw={"width_ratios": [1, 0.8, 1]})
+    fig, axs = plt.subplots(1, 3, figsize=(12, 4.2))
     field(axs[0], y, r"first network: $y$", [((w, b), INK) for w, b in UNITS_2D])
     axs[1].axhline(0, color=LIGHT, linewidth=1, zorder=0)
     t = np.linspace(-1, 1, 401)
     ax = axs[1]
+    ax.set_box_aspect(1)
     ax.plot(t, g(t), color=INK)
     for (w, b) in G2:
         ax.axvline(-b / w[0], color=GREY, linewidth=1, linestyle=":")
     ax.set_xlim(-1, 1)
     ax.set_xticks([-1, 0, 1])
+    ax.set_yticks([-1, 0, 1])
     ax.set_xlabel(r"$y$", fontsize=18)
     ax.set_title(r"second network: $y' = g(y)$", fontsize=15)
     yy = g(y)
@@ -508,7 +512,8 @@ def regression_data():
 def lr_gaussian():
     x, y, w, b = regression_data()
     s = np.std(y - (w * x + b))
-    fig, ax = plt.subplots(figsize=(7.5, 4.6))
+    fig, ax = plt.subplots(figsize=(5.2, 5.2))
+    ax.set_box_aspect(1)
     t = np.linspace(0, 2, 2)
     ax.plot(t, w * t + b, color=INK)
     ax.plot(x, y, "o", color=ORANGE, markersize=7)
@@ -527,7 +532,8 @@ def lr_gaussian():
 
 def lr_residuals():
     x, y, w, b = regression_data()
-    fig, ax = plt.subplots(figsize=(7.5, 4.6))
+    fig, ax = plt.subplots(figsize=(5.2, 5.2))
+    ax.set_box_aspect(1)
     t = np.linspace(0, 2, 2)
     for xi, yi in zip(x, y):
         ax.plot([xi, xi], [yi, w * xi + b], color=ORANGE, linewidth=1.4, linestyle=":")

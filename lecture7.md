@@ -165,7 +165,7 @@ class: middle
 
 .grid[
 .kol-1-5[<br>.center[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-60[![](figures/lec7/lr-gaussian-model.svg)]]
+.kol-4-5[.center.width-45[![](figures/lec7/lr-gaussian-model.svg)]]
 ]
 
 Linear regression models $p(y \mid \mathbf{x})$ as a linear Gaussian, as the sensor model of the Kalman filter (Lecture 6),
@@ -195,7 +195,7 @@ $$\mathcal{L}(\mathbf{w},b) = \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i 
 
 class: middle
 
-.center.width-60[![](figures/lec7/lr-residuals.svg)]
+.center.width-40[![](figures/lec7/lr-residuals.svg)]
 
 .center[
   
@@ -229,7 +229,7 @@ $$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
 looks like a soft Heaviside step:
-.center.width-60[![](figures/lec7/sigmoid.svg)]
+.center.width-35[![](figures/lec7/sigmoid.svg)]
 
 ???
 
@@ -712,7 +712,7 @@ The choice of the activation function $\sigma$ is crucial for the expressiveness
 
 class: middle
 
-.center.width-60[![](figures/lec7/nn-activations.svg)]
+.center.width-45[![](figures/lec7/nn-activations.svg)]
 
 ---
 
