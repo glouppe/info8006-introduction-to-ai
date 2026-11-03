@@ -233,7 +233,7 @@ $$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
 looks like a soft Heaviside step:
-.center.width-60[![](figures/lec7/activation-sigmoid.png)]
+.center.width-60[![](figures/lec7/sigmoid.svg)]
 
 ???
 
@@ -286,56 +286,56 @@ where $\alpha$ is the .bold[learning rate].
 
 class: center, middle
 
-![](figures/lec7/gd-good-0.png)
+.width-75[![](figures/lec7/gd-0.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-1.png)
+.width-75[![](figures/lec7/gd-1.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-2.png)
+.width-75[![](figures/lec7/gd-2.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-3.png)
+.width-75[![](figures/lec7/gd-3.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-4.png)
+.width-75[![](figures/lec7/gd-4.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-5.png)
+.width-75[![](figures/lec7/gd-5.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-6.png)
+.width-75[![](figures/lec7/gd-6.svg)]
 
 ---
 
 count: false
 class: center, middle
 
-![](figures/lec7/gd-good-7.png)
+.width-75[![](figures/lec7/gd-7.svg)]
 
 ---
 
