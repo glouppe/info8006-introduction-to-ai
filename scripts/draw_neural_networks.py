@@ -48,6 +48,7 @@ INK = "#2a2a2a"
 GREY = "#8a8a8a"
 LIGHT = "#d0d0d0"
 UNITS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"]   # the hidden units, as in the demo
+OUTPUTS = UNITS[:2]   # the two outputs of the network with two outputs
 STROKE = 2.6   # nodes and edges a little thicker than lecture 5's networks, at this smaller scale
 # Every network diagram of the deck, and the network of y given x of `draw_bn_diagrams.py`, has its
 # width and height scaled by SCALE, and the deck shows them at their natural size, without a width
@@ -187,7 +188,16 @@ def two_outputs_net():
     xs = [(70, 230, "x", None)]
     hs = column(300, [("h", str(j)) for j in range(4)], 65, 110)
     ys = column(530, [("y", "0"), ("y", "1")], 175, 110)
-    return network([xs, hs, ys], colors={("h", str(j)): UNITS[j] for j in range(4)})
+    # the two outputs are color coded, their nodes, incoming edges and curves; the hidden units in ink
+    parts = [f'<defs><marker id="head{k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" '
+             f'orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{OUTPUTS[k]}"/></marker></defs>' for k in range(2)]
+    parts += [link(xs[0][:2], h[:2]) for h in hs]
+    for k, yk in enumerate(ys):
+        parts += [link(h[:2], yk[:2]).replace(f'stroke="{INK}"', f'stroke="{OUTPUTS[k]}"').replace("url(#head)", f"url(#head{k})")
+                  for h in hs]
+    parts += [unit_node(*n[:2], n[2], n[3]) for n in xs + hs]
+    parts += [unit_node(*yk[:2], yk[2], yk[3], OUTPUTS[k]) for k, yk in enumerate(ys)]
+    return parts
 
 
 def two_inputs_net():
@@ -295,10 +305,10 @@ def two_outputs():
     h = [relu(w * X + b) for w, b in units]
     y0 = sum(v * hj for v, hj in zip(v0, h)) + c0
     y1 = sum(v * hj for v, hj in zip(v1, h)) + c1
-    ax.plot(X, y0, color=INK)
-    ax.plot(X, y1, color=GREY)
-    ax.text(0.02, y0[16] + 0.12, r"$y_0$", fontsize=19, color=INK)
-    ax.text(0.02, y1[16] - 0.28, r"$y_1$", fontsize=19, color=GREY)
+    ax.plot(X, y0, color=OUTPUTS[0])
+    ax.plot(X, y1, color=OUTPUTS[1])
+    ax.text(0.02, y0[16] + 0.12, r"$y_0$", fontsize=19, color=OUTPUTS[0])
+    ax.text(0.02, y1[16] - 0.28, r"$y_1$", fontsize=19, color=OUTPUTS[1])
     save(fig, "nn-two-outputs-plot")
 
 

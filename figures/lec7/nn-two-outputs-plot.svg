@@ -491,7 +491,7 @@ L 237.3105 104.101416
 L 332.1705 72.666936 
 L 446.0025 157.19076 
 L 446.0025 157.19076 
-" clip-path="url(#p89bc650503)" style="fill: none; stroke: #2a2a2a; stroke-width: 2.2; stroke-linecap: square"/>
+" clip-path="url(#p89bc650503)" style="fill: none; stroke: #356aaf; stroke-width: 2.2; stroke-linecap: square"/>
    </g>
    <g id="line2d_15">
     <path d="M 66.5625 86.17212 
@@ -501,7 +501,7 @@ L 237.3105 170.346672
 L 332.1705 188.974512 
 L 446.0025 71.61912 
 L 446.0025 71.61912 
-" clip-path="url(#p89bc650503)" style="fill: none; stroke: #8a8a8a; stroke-width: 2.2; stroke-linecap: square"/>
+" clip-path="url(#p89bc650503)" style="fill: none; stroke: #d9822b; stroke-width: 2.2; stroke-linecap: square"/>
    </g>
    <g id="patch_3">
     <path d="M 66.5625 245.673 
@@ -515,7 +515,7 @@ L 446.0025 245.673
    </g>
    <g id="text_11">
     <!-- $y_0$ -->
-    <g style="fill: #2a2a2a" transform="translate(74.1513 37.739736) scale(0.19 -0.19)">
+    <g style="fill: #356aaf" transform="translate(74.1513 37.739736) scale(0.19 -0.19)">
      <defs>
       <path id="Cmmi10-72" d="M 538 -916 
 Q 672 -1147 1006 -1147 
@@ -609,7 +609,7 @@ z
    </g>
    <g id="text_12">
     <!-- $y_1$ -->
-    <g style="fill: #8a8a8a" transform="translate(74.1513 122.496408) scale(0.19 -0.19)">
+    <g style="fill: #d9822b" transform="translate(74.1513 122.496408) scale(0.19 -0.19)">
      <defs>
       <path id="Cmr10-64" d="M 594 0 
 L 594 225 
