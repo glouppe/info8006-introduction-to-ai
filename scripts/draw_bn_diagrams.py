@@ -20,7 +20,7 @@ Writes to `figures/lec5/`:
 
 It also writes lecture 7's `figures/lec7/latent.svg`, the model of y given x. Lecture 7 shows it at its
 natural size, without a width class, so that it has the same size on every slide; its width and height
-are scaled by 0.55, the scale of the network diagrams of `draw_neural_networks.py`.
+are scaled by 1.0: with two nodes only, it reads too small at the 0.55 of the network diagrams of `draw_neural_networks.py`.
 
 Helpers and fonts are those of `draw_game_trees.py`; `draw_temporal_networks.py` reuses these.
 """
@@ -349,4 +349,4 @@ if __name__ == "__main__":
     svg("ve-ordering", 600, 350, ve_ordering())
     svg("parameterized-bn", 720, 420, parameterized())
     svg("caseb-bayesian", 640, 445, bayesian_learning())
-    svg("latent", 100, 230, supervised(), folder="lec7", scale=0.55)
+    svg("latent", 100, 230, supervised(), folder="lec7", scale=1.0)
