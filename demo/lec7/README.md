@@ -18,6 +18,16 @@ $y = \sum_j v_j h_j + c$, on $[0, 1]$.
 
 Open it on its own with the deck server running: `http://localhost:8000/demo/lec7/shallow.html`.
 
+## Shallow network with two inputs
+
+`shallow2d.html` follows the figure of the units of a network with two inputs: the same network, with
+inputs $x_0$, $x_1$, one to four ReLU units and sliders for $w_{j0}$, $w_{j1}$, $b_j$, $v_j$ and $c$,
+opening on the figure's parameters. It draws the network, each unit $h_j(x_0, x_1)$ and the output
+$y = \sum_j v_j h_j + c$ over $[-1, 1]^2$, on the figures' diverging scale (blue positive, orange
+negative, white at zero), with the joint of each unit dashed in its color, and counts the linear regions
+of $y$ as the distinct on/off patterns of the units (7 for the three units of the figure, at most
+$1 + q + q(q-1)/2$).
+
 ## Folding
 
 `fold.html` animates the slide on the composition of two shallow networks, in place of Prince's

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shallow network, two inputs</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/katex.min.css">
+<script src="../../assets/katex.min.js"></script>
+<style>
+:root {
+    --bg: #fff;
+    --ink: #2a2a2a;
+    --muted: #8a8a8a;
+    --panel: #f6f7f9;
+    --accent: #356aaf;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
+main { display: flex; height: 100%; gap: 14px; padding: 6px 10px; }
+#plots { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+#plots canvas { width: 100%; height: 100%; }
+aside { flex: 0 0 250px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; }
+.tabs { display: flex; gap: 6px; }
+.tabs button { flex: 1; font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 5px 0; cursor: pointer; }
+.unit { border-left: 4px solid; padding: 1px 0 1px 8px; }
+label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+label .n { flex: 0 0 34px; }
+label .v { flex: 0 0 36px; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+input[type=range] { flex: 1 1 auto; min-width: 0; margin: 0; accent-color: var(--accent); }
+.stat { font-size: 14px; display: flex; justify-content: space-between; }
+.stat b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.note { color: var(--muted); font-size: 12px; margin: 0; }
+.katex { font-size: 1.05em; }
+@media (max-width: 640px) { main { flex-direction: column; } aside { flex: 0 0 auto; } }
+</style>
+</head>
+<body>
+<main>
+    <div id="plots"><canvas id="canvas"></canvas></div>
+    <aside>
+        <div class="stat"><span>linear regions of <span class="m">y</span></span><b id="regions"></b></div>
+        <p class="note">Blue where the value is positive, orange where it is negative, white at zero. Each dashed line is the joint of a unit, where <span class="m">w_{j0} x_0 + w_{j1} x_1 + b_j = 0</span>.</p>
+        <label><span class="n"><i>q</i></span><input id="q" type="range" min="1" max="4" step="1" value="3"><span class="v" id="q-out"></span></label>
+        <div id="units"></div>
+        <label><span class="n m">c</span><input id="c" type="range" min="-1" max="1" step="0.05" value="0.05"><span class="v" id="c-out"></span></label>
+        <div class="tabs"><button id="random">random</button><button id="defaults">reset</button></div>
+    </aside>
+</main>
+<script>
+"use strict";
+
+// A shallow network with two inputs, one output and q ReLU hidden units, in the notation of lecture 7:
+// h_j = ReLU(w_j0 x_0 + w_j1 x_1 + b_j) for j = 0, ..., q-1, and y = sum_j v_j h_j + c, over [-1, 1]^2.
+// The defaults are those of the figure `nn-buildup-2d.svg` (`scripts/draw_neural_networks.py`).
+const INK = "#2a2a2a", MUTED = "#8a8a8a", OUT = "#356aaf";
+const COLORS = ["#d9822b", "#3f8f5a", "#8a5fb5", "#c2577f"];   // hidden units; blue is kept for the output
+const STOPS = ["#a5561a", "#d9822b", "#f3d2b1", "#ffffff", "#bcd0ea", "#356aaf", "#1f3f6b"];   // as the figures
+const DEFAULTS = [
+    { w0: 1.0, w1: 0.9, b: 0.35, v: 0.8 },
+    { w0: 2.2, w1: -0.35, b: -0.55, v: -0.9 },
+    { w0: -0.6, w1: 1.4, b: -0.1, v: 0.7 },
+    { w0: -1.2, w1: -0.8, b: 0.2, v: 0.6 },
+];
+const C0 = 0.05, RES = 160;
+const relu = z => Math.max(0, z);
+const tex = s => katex.renderToString(s, { throwOnError: false });
+const $ = id => document.getElementById(id);
+
+let units = DEFAULTS.slice(0, 3).map(u => ({ ...u }));
+let c = C0;
+
+// ---- controls
+document.querySelectorAll(".m").forEach(el => el.innerHTML = tex(el.textContent));
+
+function unitControls() {
+    const box = $("units");
+    box.innerHTML = "";
+    units.forEach((u, j) => {
+        const div = document.createElement("div");
+        div.className = "unit";
+        div.style.borderColor = COLORS[j];
+        for (const [key, name, min, max] of [["w0", `w_{${j}0}`, -3, 3], ["w1", `w_{${j}1}`, -3, 3], ["b", `b_${j}`, -2, 2], ["v", `v_${j}`, -2, 2]]) {
+            const label = document.createElement("label");
+            label.innerHTML = `<span class="n">${tex(name)}</span>`;
+            const input = document.createElement("input");
+            Object.assign(input, { type: "range", min, max, step: 0.05, value: u[key] });
+            input.addEventListener("input", () => { u[key] = +input.value; refresh(); });
+            label.appendChild(input);
+            label.insertAdjacentHTML("beforeend", '<span class="v"></span>');
+            div.appendChild(label);
+            u["out_" + key] = label.querySelector(".v");
+        }
+        box.appendChild(div);
+    });
+}
+
+function refresh() {
+    units.forEach(u => { for (const k of ["w0", "w1", "b", "v"]) u["out_" + k].textContent = u[k].toFixed(2); });
+    $("q-out").textContent = units.length;
+    $("c-out").textContent = c.toFixed(2);
+    draw();
+}
+
+$("q").addEventListener("input", () => {
+    const q = +$("q").value;
+    while (units.length < q) units.push({ ...DEFAULTS[units.length] });
+    units.length = q;
+    unitControls(); refresh();
+});
+$("c").addEventListener("input", () => { c = +$("c").value; refresh(); });
+$("random").addEventListener("click", () => {
+    const r = (a) => Math.round((Math.random() * 2 * a - a) / 0.05) * 0.05;
+    units.forEach(u => { u.w0 = r(3); u.w1 = r(3); u.b = r(1.5); u.v = r(2); });
+    unitControls(); refresh();
+});
+$("defaults").addEventListener("click", () => {
+    units = DEFAULTS.slice(0, +$("q").value).map(u => ({ ...u }));
+    c = C0; $("c").value = c;
+    unitControls(); refresh();
+});
+
+// ---- drawing
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+let W = 0, H = 0;
+function resize() {
+    const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+}
+
+function rich(tokens, x, y, size, color, align = "left") {
+    // words in Roboto; single letters in KaTeX_Math italic and the rest of the math in KaTeX_Main,
+    // with subscripts after "_", as LaTeX
+    const pieces = [];
+    for (const [kind, s] of tokens) {
+        if (kind === "t") { pieces.push([s, `${0.82 * size}px Roboto`, 0]); continue; }
+        const [head, sub] = s.split("_");
+        for (const ch of head) pieces.push([ch, /[a-zA-Z]/.test(ch) && kind === "m" ? `italic ${size}px KaTeX_Math` : `${size}px KaTeX_Main`, 0]);
+        if (sub) pieces.push([sub, (/[a-zA-Z]/.test(sub) ? "italic " : "") + `${0.7 * size}px ` + (/[a-zA-Z]/.test(sub) ? "KaTeX_Math" : "KaTeX_Main"), 0.28 * size]);
+    }
+    let total = 0;
+    for (const p of pieces) { ctx.font = p[1]; p.push(ctx.measureText(p[0]).width); total += p[3]; }
+    let cx = align === "center" ? x - total / 2 : align === "right" ? x - total : x;
+    ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (const [s, font, dy, wd] of pieces) { ctx.font = font; ctx.fillText(s, cx, y + dy); cx += wd; }
+}
+
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const RGB = STOPS.map(hex);
+function color(t) {   // t in [-1, 1]: orange for negative values, white at zero, blue for positive ones
+    const u = (Math.max(-1, Math.min(1, t)) + 1) / 2 * (RGB.length - 1), i = Math.min(RGB.length - 2, Math.floor(u)), f = u - i;
+    return RGB[i].map((a, k) => a + (RGB[i + 1][k] - a) * f);
+}
+
+const pre = (u, x0, x1) => u.w0 * x0 + u.w1 * x1 + u.b;
+const output = (x0, x1) => units.reduce((s, u) => s + u.v * relu(pre(u, x0, x1)), c);
+
+const off = document.createElement("canvas");
+off.width = off.height = RES;
+const octx = off.getContext("2d");
+function field(fn, box, lines) {
+    // the values of fn over [-1, 1]^2, on a symmetric color scale, with the joints of `lines` dashed
+    const vals = new Float32Array(RES * RES);
+    let lim = 1e-6;
+    for (let i = 0; i < RES; i++) for (let k = 0; k < RES; k++) {
+        const x0 = -1 + 2 * (k + 0.5) / RES, x1 = 1 - 2 * (i + 0.5) / RES, v = fn(x0, x1);
+        vals[i * RES + k] = v; lim = Math.max(lim, Math.abs(v));
+    }
+    const img = octx.createImageData(RES, RES);
+    for (let p = 0; p < RES * RES; p++) {
+        const [r, g, b] = color(vals[p] / lim);
+        img.data[4 * p] = r; img.data[4 * p + 1] = g; img.data[4 * p + 2] = b; img.data[4 * p + 3] = 255;
+    }
+    octx.putImageData(img, 0, 0);
+    const { x0, y0, s } = box;
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(off, x0, y0, s, s);
+    ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, s, s); ctx.clip();
+    for (const j of lines) joint(units[j], box, COLORS[j]);
+    ctx.restore();
+    ctx.strokeStyle = INK; ctx.lineWidth = 1; ctx.strokeRect(x0, y0, s, s);
+}
+
+function joint(u, box, col) {
+    // the line w0 x0 + w1 x1 + b = 0, clipped to the square
+    const { x0, y0, s } = box, X = a => x0 + (a + 1) / 2 * s, Y = a => y0 + (1 - a) / 2 * s;
+    let p, q;
+    if (Math.abs(u.w1) > 1e-9) { p = [-1, (u.w0 - u.b) / u.w1]; q = [1, (-u.w0 - u.b) / u.w1]; }
+    else if (Math.abs(u.w0) > 1e-9) { p = [-u.b / u.w0, -1]; q = [-u.b / u.w0, 1]; }
+    else return;
+    ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.setLineDash([7, 5]);
+    ctx.beginPath(); ctx.moveTo(X(p[0]), Y(p[1])); ctx.lineTo(X(q[0]), Y(q[1])); ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+function ticks(box, labels) {
+    const { x0, y0, s } = box;
+    ctx.fillStyle = MUTED; ctx.font = "12px Roboto";
+    for (const v of [-1, 0, 1]) {
+        ctx.textAlign = "center"; ctx.textBaseline = "top";
+        ctx.fillText(v, x0 + (v + 1) / 2 * s, y0 + s + 4);
+        if (labels) { ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(v, x0 - 5, y0 + (1 - v) / 2 * s); }
+    }
+    if (labels) {
+        rich([["m", "x_0"]], x0 + s / 2, y0 + s + 28, 17, INK, "center");
+        rich([["m", "x_1"]], x0 - 30, y0 + s / 2, 17, INK, "center");
+    }
+}
+
+function network(box) {
+    // x0 and x1 at the top, the hidden units in a row, y at the bottom; edge width grows with |weight|
+    const { x0, y0, w, h } = box, q = units.length, R = 17, r = Math.min(17, (w - 8) / (2.6 * q));
+    const xc = x0 + w / 2, yi = y0 + R, yh = y0 + h / 2, yo = y0 + h - R;
+    const xin = [xc - 0.25 * w, xc + 0.25 * w];
+    const hx = j => q === 1 ? xc : x0 + r + 4 + j * (w - 2 * r - 8) / (q - 1);
+    const edge = (xa, ya, ra, xb, yb, rb, weight, col) => {
+        const dx = xb - xa, dy = yb - ya, d = Math.hypot(dx, dy);
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.25 + 0.75 * Math.min(1, Math.abs(weight) / 3);
+        ctx.lineWidth = 0.8 + 2.2 * Math.min(1, Math.abs(weight) / 3);
+        ctx.setLineDash(weight < 0 ? [5, 4] : []);
+        ctx.beginPath(); ctx.moveTo(xa + dx / d * ra, ya + dy / d * ra); ctx.lineTo(xb - dx / d * rb, yb - dy / d * rb); ctx.stroke();
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
+    };
+    units.forEach((u, j) => {
+        edge(xin[0], yi, R, hx(j), yh, r, u.w0, COLORS[j]);
+        edge(xin[1], yi, R, hx(j), yh, r, u.w1, COLORS[j]);
+        edge(hx(j), yh, r, xc, yo, R, u.v, COLORS[j]);
+    });
+    const nodeAt = (x, y, rad, label, col) => {
+        ctx.fillStyle = "#fff"; ctx.strokeStyle = col; ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.arc(x, y, rad, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+        rich([["m", label]], x, y, Math.min(17, rad), INK, "center");
+    };
+    nodeAt(xin[0], yi, R, "x_0", INK);
+    nodeAt(xin[1], yi, R, "x_1", INK);
+    units.forEach((u, j) => nodeAt(hx(j), yh, r, `h_${j}`, COLORS[j]));
+    nodeAt(xc, yo, R, "y", OUT);
+    ctx.fillStyle = MUTED; ctx.font = "12px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
+    ctx.fillText("dashed: negative", xc, yo + R + 10);
+    ctx.fillText("weight", xc, yo + R + 25);
+}
+
+function regions() {
+    // the linear regions of y are the distinct on/off patterns of the units over the square
+    const seen = new Set(), n = 300;
+    for (let i = 0; i < n; i++) for (let k = 0; k < n; k++) {
+        const x0 = -1 + 2 * (k + 0.5) / n, x1 = -1 + 2 * (i + 0.5) / n;
+        let key = 0;
+        units.forEach((u, j) => { if (pre(u, x0, x1) > 0) key |= 1 << j; });
+        seen.add(key);
+    }
+    return seen.size;
+}
+
+function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    const q = units.length, left = Math.min(150, 0.18 * W);
+    network({ x0: 6, y0: 0.22 * H, w: left - 10, h: 0.5 * H });
+    // the hidden units in a column of small squares, the output in a large one
+    const top = 30, bottom = H - 50;
+    const hs = Math.min((bottom - top) / q - 26, 105), hx0 = left + 20;
+    units.forEach((u, j) => {
+        const box = { x0: hx0, y0: top + j * (hs + 26) + 4, s: hs };
+        field((a, b) => relu(pre(u, a, b)), box, [j]);
+        rich([["m", `h_${j}`]], box.x0 + box.s + 8, box.y0 + 10, 16, COLORS[j]);
+    });
+    const yx0 = hx0 + hs + 92, ys = Math.min(bottom - top - 10, W - yx0 - 12);
+    const ybox = { x0: yx0, y0: top + 8, s: ys };
+    field(output, ybox, units.map((_, j) => j));
+    ticks(ybox, true);
+    rich([["t", "output   "], ["m", "y"], ["u", " = Σ_j "], ["m", "v_j"], ["m", "h_j"], ["u", " + "], ["m", "c"]], yx0, top - 10, 17, INK);
+    rich([["t", "hidden units"]], hx0, top - 10, 17, INK);
+    $("regions").textContent = regions();
+}
+
+unitControls();
+window.addEventListener("resize", resize);
+document.fonts.ready.then(() => Promise.all([
+    document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),
+])).then(() => { resize(); refresh(); });
+resize(); refresh();
+</script>
+</body>
+</html>

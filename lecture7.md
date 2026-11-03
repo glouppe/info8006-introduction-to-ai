@@ -564,6 +564,15 @@ class: middle
 
 .center.width-95[![](figures/lec7/nn-buildup-2d.svg)]
 
+
+---
+
+<iframe src="demo/lec7/shallow2d.html" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
+
+???
+
+Move one joint by changing $b\_j$, then rotate it with $w\_{j0}$ and $w\_{j1}$; flip the sign of $v\_j$. With $q$ units, the joints cut the plane into at most $1 + q + q(q-1)/2$ regions.
+
 ---
 
 # Deep networks
