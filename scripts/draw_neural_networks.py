@@ -47,9 +47,11 @@ ROOT = Path(__file__).resolve().parent.parent
 INK = "#2a2a2a"
 GREY = "#8a8a8a"
 LIGHT = "#d0d0d0"
-UNITS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"]   # the hidden units, as in the demo
-OUTPUTS = UNITS[:2]   # the two outputs of the network with two outputs
-OUT = OUTPUTS[0]      # the output of the single-output networks, node and curve
+BLUE = "#356aaf"
+ORANGE = "#d9822b"
+UNITS = [ORANGE, "#3f8f5a", "#8a5fb5", "#c2577f"]   # the hidden units, as in the demo; blue is kept for outputs
+OUT = BLUE                 # the output of the single-output networks, node and curve
+OUTPUTS = [BLUE, ORANGE]   # the two outputs of the network with two outputs (its hidden units are in ink)
 STROKE = 2.6   # nodes and edges a little thicker than lecture 5's networks, at this smaller scale
 # Every network diagram of the deck, and the network of y given x of `draw_bn_diagrams.py`, has its
 # width and height scaled by SCALE, and the deck shows them at their natural size, without a width
@@ -289,7 +291,7 @@ def approximate():
         for j in jts:
             ax.axvline(j, color=LIGHT, linewidth=1, linestyle=":", zorder=0)
         ax.plot(X, target(X), color=GREY, linewidth=1.6, linestyle="--")
-        ax.plot(X, H @ coef, color=UNITS[0])
+        ax.plot(X, H @ coef, color=OUT)
         ax.set_title(f"{regions} linear regions", fontsize=15, color=INK)
     fig.tight_layout()
     save(fig, "nn-approximate")
@@ -403,12 +405,12 @@ def activations():
     fig, ax = plt.subplots(figsize=(6.5, 3.6))
     ax.axhline(0, color=LIGHT, linewidth=1, zorder=0)
     ax.axvline(0, color=LIGHT, linewidth=1, zorder=0)
-    ax.plot(z, 1 / (1 + np.exp(-z)), color=UNITS[0])
-    ax.plot(z, np.tanh(z), color=UNITS[1])
-    ax.plot(z, relu(z), color=UNITS[2])
-    ax.text(2.2, 0.72, "sigmoid", color=UNITS[0], fontsize=15)
-    ax.text(-3.9, -0.82, "tanh", color=UNITS[1], fontsize=15)
-    ax.text(2.6, 2.1, "ReLU", color=UNITS[2], fontsize=15)
+    ax.plot(z, 1 / (1 + np.exp(-z)), color=BLUE)
+    ax.plot(z, np.tanh(z), color=ORANGE)
+    ax.plot(z, relu(z), color="#3f8f5a")
+    ax.text(2.2, 0.72, "sigmoid", color=BLUE, fontsize=15)
+    ax.text(-3.9, -0.82, "tanh", color=ORANGE, fontsize=15)
+    ax.text(2.6, 2.1, "ReLU", color="#3f8f5a", fontsize=15)
     ax.set_xlim(-4, 4)
     ax.set_ylim(-1.3, 3)
     ax.set_xlabel(r"$x$", fontsize=19)
@@ -509,14 +511,14 @@ def lr_gaussian():
     fig, ax = plt.subplots(figsize=(7.5, 4.6))
     t = np.linspace(0, 2, 2)
     ax.plot(t, w * t + b, color=INK)
-    ax.plot(x, y, "o", color=UNITS[1], markersize=7)
+    ax.plot(x, y, "o", color=ORANGE, markersize=7)
     for x0 in (0.5, 1.45):
         yy = np.linspace(w * x0 + b - 3.5 * s, w * x0 + b + 3.5 * s, 200)
         dens = np.exp(-((yy - (w * x0 + b)) ** 2) / (2 * s ** 2))
-        ax.fill_betweenx(yy, x0, x0 + 0.28 * dens, color=UNITS[0], alpha=0.15, linewidth=0)
-        ax.plot(x0 + 0.28 * dens, yy, color=UNITS[0], linewidth=1.6)
+        ax.fill_betweenx(yy, x0, x0 + 0.28 * dens, color=BLUE, alpha=0.15, linewidth=0)
+        ax.plot(x0 + 0.28 * dens, yy, color=BLUE, linewidth=1.6)
         ax.axvline(x0, color=LIGHT, linewidth=1, zorder=0)
-    ax.text(1.55, w * 1.45 + b - 0.5, r"$\mathcal{N}(y \mid w x + b, \sigma^2)$", color=UNITS[0], fontsize=17)
+    ax.text(1.55, w * 1.45 + b - 0.5, r"$\mathcal{N}(y \mid w x + b, \sigma^2)$", color=BLUE, fontsize=17)
     ax.set_xlim(0, 2)
     ax.set_xlabel(r"$x$", fontsize=19)
     ax.set_ylabel(r"$y$", fontsize=19)
@@ -528,9 +530,9 @@ def lr_residuals():
     fig, ax = plt.subplots(figsize=(7.5, 4.6))
     t = np.linspace(0, 2, 2)
     for xi, yi in zip(x, y):
-        ax.plot([xi, xi], [yi, w * xi + b], color=UNITS[1], linewidth=1.4, linestyle=":")
+        ax.plot([xi, xi], [yi, w * xi + b], color=ORANGE, linewidth=1.4, linestyle=":")
     ax.plot(t, w * t + b, color=INK)
-    ax.plot(x, y, "o", color=UNITS[1], markersize=7)
+    ax.plot(x, y, "o", color=ORANGE, markersize=7)
     sse = np.sum((y - (w * x + b)) ** 2)
     ax.set_title(rf"$\sum_i (y_i - (w x_i + b))^2 = {sse:.2f}$", fontsize=17)
     ax.set_xlim(0, 2)

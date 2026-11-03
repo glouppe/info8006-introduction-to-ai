@@ -32,7 +32,7 @@ canvas { flex: 1 1 auto; width: 100%; min-height: 0; }
 // carries its values back to x, which reveals y' = g(f(x)): the pattern of g, repeated three times and
 // mirrored on the descending piece of f.
 const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6";
-const COLORS = ["#356aaf", "#d9822b", "#3f8f5a"];
+const COLORS = ["#d9822b", "#3f8f5a", "#8a5fb5"];   // the pieces of f, as the hidden units of the figures
 const A = 0.38, B = 0.62;                       // joints of f
 const f = x => x < A ? x / A : x < B ? 1 - (x - A) / (B - A) : (x - B) / (1 - B);
 const piece = x => x < A ? 0 : x < B ? 1 : 2;
