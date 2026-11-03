@@ -88,7 +88,7 @@ X = np.linspace(0, 1, 801)
 
 def save(fig, name):
     out = ROOT / "figures" / "lec7" / f"{name}.svg"
-    fig.savefig(out, bbox_inches="tight", transparent=True)
+    fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
     plt.close(fig)
     print(out.relative_to(ROOT))
 

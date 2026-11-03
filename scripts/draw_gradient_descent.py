@@ -50,7 +50,7 @@ plt.rcParams.update({
 
 def save(fig, name, tight=True):
     out = ROOT / "figures" / "lec7" / f"{name}.svg"
-    fig.savefig(out, bbox_inches="tight" if tight else None, transparent=True)
+    fig.savefig(out, bbox_inches="tight" if tight else None, transparent=True, metadata={"Date": None})
     plt.close(fig)
     print(out.relative_to(ROOT))
 
