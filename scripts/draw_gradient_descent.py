@@ -50,10 +50,11 @@ plt.rcParams.update({
 
 
 
-# Every plot of the deck is shown at its natural size, without a width class, and has its width and
-# height scaled by PLOT_SCALE: text and lines then have one size on every slide, the fonts being the same
-# in points in every figure. (The network diagrams use SCALE, for the same reason.)
-PLOT_SCALE = 0.6
+# Every plot of the deck has its width and height scaled by PLOT_SCALE and is shown at that natural size,
+# without a width class, so that text and lines have one size on every slide (the fonts are the same in
+# points in every figure); the plots that are then wider than a slide are shown with `.width-100`.
+# (The network diagrams use SCALE, for the same reason.)
+PLOT_SCALE = 0.8
 
 
 def rescale(path):

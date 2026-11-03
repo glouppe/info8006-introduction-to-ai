@@ -138,7 +138,7 @@ class: middle
 
 class: middle
 
-.center[![](figures/lec7/nn-next-token.svg)]
+.center.width-100[![](figures/lec7/nn-next-token.svg)]
 
 .center[Language models predict the next token, a classification over the vocabulary (illustrative probabilities).]
 
@@ -467,7 +467,7 @@ where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, 
 
 class: middle
 
-.center[![](figures/lec7/nn-functions.svg)]
+.center.width-100[![](figures/lec7/nn-functions.svg)]
 
 This shallow network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
 
@@ -498,7 +498,7 @@ Build a composition of \sum v_j ReLU(w_j x + b_j) to approximate any continuous 
 
 class: middle
 
-.center[![](figures/lec7/nn-approximate.svg)]
+.center.width-100[![](figures/lec7/nn-approximate.svg)]
 
 ---
 
@@ -560,7 +560,7 @@ h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
 
 class: middle
 
-.center[![](figures/lec7/nn-buildup-2d.svg)]
+.center.width-100[![](figures/lec7/nn-buildup-2d.svg)]
 
 
 ---
@@ -595,7 +595,7 @@ class: middle
 
 With $\text{ReLU}$ activation functions, this network also describes a family of piecewise linear functions. However, each linear region defined by the hidden units of the first network is further divided by the hidden units of the second network.
 
-.center[![](figures/lec7/nn-concat.svg)]
+.center.width-100[![](figures/lec7/nn-concat.svg)]
 
 ---
 
@@ -617,7 +617,7 @@ Similarly, composing a multivariate shallow network with a shallow network furth
 
 .center[![](figures/lec7/nn-two-layer-2d-net.svg)]
 
-.center[![](figures/lec7/nn-two-layer-2d-plot.svg)]
+.center.width-100[![](figures/lec7/nn-two-layer-2d-plot.svg)]
 
 
 ---
@@ -655,7 +655,7 @@ $$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
 
 class: middle
 
-.center[![](figures/lec7/nn-deep-buildup.svg)]
+.center.width-100[![](figures/lec7/nn-deep-buildup.svg)]
 
 ---
 
@@ -861,7 +861,7 @@ However, most machine learning libraries call it convolution.
 
 class: middle
 
-.center[![](figures/lec7/nn-conv1d.svg)]
+.center.width-100[![](figures/lec7/nn-conv1d.svg)]
 
 <br>
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
@@ -885,7 +885,7 @@ Draw: Explain the intuition behind the sum of element-wise products which reduce
 
 class: middle
 
-.center[![](figures/lec7/nn-conv2d.svg)]
+.center.width-100[![](figures/lec7/nn-conv2d.svg)]
 
 .center[2d convolution with a kernel $\omega  \in \mathbb{R}^{3 \times 3}$ applied to the input signal $\mathbf{x}$.]
 
@@ -904,7 +904,7 @@ $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{c=0}^{C-1}\sum\_{n=0}^{h-1} \sum
 
 class: middle
 
-.center[![](figures/lec7/nn-conv-channels.svg)]
+.center.width-100[![](figures/lec7/nn-conv-channels.svg)]
 
 .center[2d convolution applied to a color image with three channels (R, G, B).]
 
@@ -933,7 +933,7 @@ $$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.$$
 
 class: middle
 
-.center[![](figures/lec7/nn-pooling.svg)]
+.center.width-100[![](figures/lec7/nn-pooling.svg)]
 
 .center[Subsampling, max-pooling and average-pooling with a pooling area of size $2 \times 2$.]
 
@@ -953,7 +953,7 @@ A convolutional neural network (CNN) is a deep neural network that uses convolut
 
 class: middle
 
-.center[![](figures/lec7/nn-conv-pattern.svg)]
+.center.width-100[![](figures/lec7/nn-conv-pattern.svg)]
 
 .center[Interleaving convolutional and pooling layers enables the network to learn hierarchical features from local to global patterns.]
 
