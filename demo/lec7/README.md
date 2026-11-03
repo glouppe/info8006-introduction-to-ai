@@ -2,7 +2,9 @@
 
 ## Shallow network, interactive
 
-`shallow.html` is shown on a full slide after the universal approximation theorem. It is a plain
+`shallow.html` is shown on two full slides: `?mode=build` after the family of piecewise linear
+functions, `?mode=approximate` after the universal approximation theorem (without the parameter, both
+modes are available as tabs). It is a plain
 web page (no dependency beyond the KaTeX files of `assets/`), in the notation of the slides: a
 network with one input, one output and $q$ ReLU hidden units, $h_j = \text{ReLU}(w_j x + b_j)$ and
 $y = \sum_j v_j h_j + c$, on $[0, 1]$.

@@ -147,17 +147,16 @@ $("defaults").addEventListener("click", () => {
     c = 0.1; $("c").value = c;
     unitControls(); refresh();
 });
-for (const [id, m] of [["tab-build", "build"], ["tab-fit", "fit"]]) {
-    $(id).addEventListener("click", () => {
-        mode = m;
-        $("tab-build").classList.toggle("on", m === "build");
-        $("tab-fit").classList.toggle("on", m === "fit");
-        $("build").hidden = m !== "build";
-        $("fit").hidden = m !== "fit";
-        $("legend-target").hidden = $("legend-target-text").hidden = m !== "fit";
-        refresh();
-    });
+function setMode(m) {
+    mode = m;
+    $("tab-build").classList.toggle("on", m === "build");
+    $("tab-fit").classList.toggle("on", m === "fit");
+    $("build").hidden = m !== "build";
+    $("fit").hidden = m !== "fit";
+    $("legend-target").hidden = $("legend-target-text").hidden = m !== "fit";
+    refresh();
 }
+for (const [id, m] of [["tab-build", "build"], ["tab-fit", "fit"]]) $(id).addEventListener("click", () => setMode(m));
 for (const id of ["target", "n", "show-units"]) $(id).addEventListener("input", refresh);
 
 // ---- least squares for the approximation mode: joints at evenly spread points, slopes 1 or -1
@@ -347,6 +346,12 @@ function draw() {
 }
 
 unitControls();
+// shallow.html?mode=build or ?mode=approximate shows that mode alone, without the tabs
+const only = new URLSearchParams(location.search).get("mode");
+if (only === "build" || only === "approximate") {
+    document.querySelector(".tabs").hidden = true;
+    setMode(only === "build" ? "build" : "fit");
+}
 window.addEventListener("resize", resize);
 document.fonts.ready.then(() => Promise.all([
     document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),

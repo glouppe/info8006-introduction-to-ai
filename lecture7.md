@@ -491,6 +491,15 @@ This shallow network defines a family of piecewise linear functions where the po
 
 .footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
+
+---
+
+<iframe src="demo/lec7/shallow.html?mode=build" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
+
+???
+
+Move one joint, $x = -b\_j / w\_j$, then one slope; flip a sign of $v\_j$.
+
 ---
 
 class: middle
@@ -515,11 +524,11 @@ class: middle
 
 ---
 
-<iframe src="demo/lec7/shallow.html" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
+<iframe src="demo/lec7/shallow.html?mode=approximate" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
 
 ???
 
-Build: move one joint, $x = -b\_j / w\_j$, then one slope; flip a sign of $v\_j$. Approximate: add units one at a time on the bump.
+Add units one at a time on the bump, then try the wave.
 
 ---
 
