@@ -49,7 +49,7 @@ select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); backgro
     <aside>
         <div class="tabs"><button id="tab-build" class="on">build</button><button id="tab-fit">approximate</button></div>
         <div class="legend">
-            <i style="background: var(--ink); height: 3px"></i><span>output <span class="m">y(x)</span></span>
+            <i style="background: var(--accent); height: 3px"></i><span>output <span class="m">y(x)</span></span>
             <i style="border-top: 2px dashed var(--muted)"></i><span>weighted units <span class="m">v_j h_j(x)</span></span>
             <i id="legend-target" style="background: #b9b9b9; height: 6px" hidden></i><span id="legend-target-text" hidden>target</span>
         </div>
@@ -79,6 +79,7 @@ select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); backgro
 // h_j = ReLU(w_j x + b_j) for j = 0, ..., q-1, and y = sum_j v_j h_j + c, on the interval [0, 1].
 const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6", TARGET = "#b9b9b9";
 const COLORS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"];
+const OUT = "#356aaf";   // the output, node and curve, as in the figures of the deck
 const DEFAULTS = [
     { w: 1.0, b: -0.2, v: 1.2 },
     { w: -1.5, b: 0.75, v: 0.8 },
@@ -265,7 +266,7 @@ function network(us, box) {
     };
     nodeAt(xc, yi, R, "x", INK);
     us.forEach((u, j) => nodeAt(hx(j), yh, r, `h_${j}`, color(j)));
-    nodeAt(xc, yo, R, "y", INK);
+    nodeAt(xc, yo, R, "y", OUT);
     ctx.fillStyle = MUTED; ctx.font = "13px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
     ctx.fillText(q <= 4 ? "dashed: negative weight" : `${q} hidden units`, xc, yo + R + 10);
 }
@@ -342,7 +343,7 @@ function draw() {
     joints(us, bottom, B.Y, -lim, lim);
     if (f) curve(f, bottom, -lim, lim, TARGET, 6);
     if (showUnits) us.forEach((u, j) => curve(x => u.v * relu(u.w * x + u.b), bottom, -lim, lim, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? 1.6 : 1, [6, 4]));
-    curve(x => output(us, c0, x), bottom, -lim, lim, INK, 2.6);
+    curve(x => output(us, c0, x), bottom, -lim, lim, OUT, 2.6);
 }
 
 unitControls();
