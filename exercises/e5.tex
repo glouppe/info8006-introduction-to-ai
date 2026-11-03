@@ -102,7 +102,7 @@
     When the models are not linear Gaussian, a \term{particle filter} approximates $p(\mathbf{x}_t \mid \mathbf{e}_{1:t})$ with $N$ samples $\mathbf{x}_t^1, \ldots, \mathbf{x}_t^N$, the \term{particles}. Each step propagates every particle through the transition model, $\mathbf{x}_{t+1}^i \sim p(\mathbf{x}_{t+1} \mid \mathbf{x}_t^i)$, weights it by $w^i = p(\mathbf{e}_{t+1} \mid \mathbf{x}_{t+1}^i)$, then resamples $N$ particles with probabilities proportional to the weights.
 \end{recap}
 
-\begin{exercises}[1 and 3 (November 5), 4 and 5 with the Kalman notebook (November 12)][2 (d)--(e)]
+\begin{exercises}[1 and 3 (November 5), 4 and 5 with the Kalman notebook (November 12)][2 (a)--(c)]
 
 \titledquestion{Traffic on a road \source{Exam, January 2023}}
 
