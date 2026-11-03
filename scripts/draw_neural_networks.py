@@ -27,7 +27,7 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
 - `nn-activations.svg`, the sigmoid, tanh and ReLU activation functions;
 - `lr-gaussian-model.svg` and `lr-residuals.svg`, linear regression as a linear Gaussian model, and its
   squared residuals;
-- `nn-conv-pattern.svg`, the deck's cat through two 3x3 kernels, a ReLU and a 2x2 max-pooling, computed
+- `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed
   here, with the receptive field of one pooled value boxed back to the input.
 """
 
@@ -549,7 +549,7 @@ def lr_residuals():
 # ---- a convolutional and a pooling layer, computed on the deck's cat
 
 def conv_pattern():
-    """The cat of the opening slides through two 3x3 kernels, a ReLU and a 2x2 max-pooling, computed with
+    """The cat of the opening slides through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed with
     numpy, with the receptive field of one pooled value boxed back to the input."""
     from PIL import Image
     from matplotlib.patches import ConnectionPatch, Rectangle
@@ -557,8 +557,14 @@ def conv_pattern():
     # the photo inside its drawn frame, square, so that no border edge dominates the feature maps
     img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("L").crop((62, 52, 298, 288)).resize((48, 48), Image.LANCZOS)
     x = np.asarray(img, dtype=float) / 255
-    kernels = [np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], float),    # vertical edges
-               np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], float)]    # horizontal edges
+    # 7x7 edge detectors, derivatives of a Gaussian: vertical edges, then horizontal ones. A large kernel
+    # makes the receptive field visible: 8x8 input pixels after one stage, 22x22 after two
+    K = 7
+    u = np.arange(K) - K // 2
+    gauss = np.exp(-u ** 2 / (2 * 1.4 ** 2))
+    d = -u * gauss
+    vertical = np.outer(gauss, d) / np.abs(np.outer(gauss, d)).sum() * 8
+    kernels = [vertical, vertical.T]
     def conv(a, w):   # valid cross-correlation, as on the slides
         h, v = w.shape
         return np.array([[np.sum(a[j:j + h, i:i + v] * w) for i in range(a.shape[1] - v + 1)] for j in range(a.shape[0] - h + 1)])
@@ -596,9 +602,7 @@ def conv_pattern():
     for k, (w, z, r, o) in enumerate(rows):
         lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
         kax = panel(cols[1], ys[k], S * 0.42)
-        show(kax, w, 2.4)
-        for (j, i), v in np.ndenumerate(w):
-            kax.text(i, j, f"{v:g}", ha="center", va="center", fontsize=13, color=INK)
+        show(kax, w, np.abs(w).max())
         kax.set_title(rf"$\omega_{k}$", fontsize=21, pad=4)
         a1, a2, a3 = panel(cols[2], ys[k], S), panel(cols[3], ys[k], S), panel(cols[4], ys[k], S * 0.62)
         show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
@@ -614,16 +618,16 @@ def conv_pattern():
         arrow(a3, stack, xb=0.12, yb=0.5)
     stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=18, color=INK)
 
-    # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 4x4 patch
-    # of the input (3x3 kernel, 2x2 pooling), and the 10x10 patch a second such stage would see
-    pj, pi = 6, 9
+    # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 8x8 patch
+    # of the input (7x7 kernel, 2x2 pooling), and the 22x22 patch a second such stage would see
+    pj, pi = 7, 10
     a2, a3 = pooled[0]
     box = dict(fill=False, edgecolor=INK, linewidth=2.2)
     a3.add_patch(Rectangle((pi - 0.5, pj - 0.5), 1, 1, **box))
     a2.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 2, 2, **box))
-    inp.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 4, 4, **box))
-    inp.add_patch(Rectangle((2 * pi - 3.5, 2 * pj - 3.5), 10, 10, fill=False, edgecolor=INK, linewidth=1.6, linestyle="--"))
-    inp.text(2 * pi + 1.5, 2 * pj - 4.5, "receptive field", ha="center", va="bottom", fontsize=15, color=INK,
+    inp.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), K + 1, K + 1, **box))
+    inp.add_patch(Rectangle((2 * pi - 6.5, 2 * pj - 6.5), 22, 22, fill=False, edgecolor=INK, linewidth=1.6, linestyle="--"))
+    inp.text(2 * pi + 4.5, 2 * pj - 7.5, "receptive field", ha="center", va="bottom", fontsize=15, color=INK,
              bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.85))
 
     # column labels and layer brackets
