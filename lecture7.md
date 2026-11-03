@@ -165,14 +165,12 @@ class: middle
 
 .grid[
 .kol-1-5[<br>.center[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-50[![](figures/lec7/lr-gaussian.svg)]]
+.kol-4-5[.center.width-60[![](figures/lec7/lr-gaussian-model.svg)]]
 ]
 
 Linear regression models $p(y \mid \mathbf{x})$ as a linear Gaussian, as the sensor model of the Kalman filter (Lecture 6),
 $$p(y \mid \mathbf{x}) = \mathcal{N}(y \mid \mathbf{w}^T \mathbf{x} + b, \sigma^2),$$
 where $\mathbf{w}$ and $b$ are parameters to determine.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -197,13 +195,11 @@ $$\mathcal{L}(\mathbf{w},b) = \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i 
 
 class: middle
 
-.center.width-45[![](figures/lec7/lr-sum-squares.svg)]
+.center.width-60[![](figures/lec7/lr-residuals.svg)]
 
 .center[
   
 Minimizing the negative log-likelihood of a linear Gaussian model reduces to minimizing the sum of squared residuals.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -440,11 +436,9 @@ class: middle
 # Shallow networks
 
 <br>
-.center.width-100[![](figures/lec7/ShallowTerminology.svg)]
+.center.width-55[![](figures/lec7/nn-terminology.svg)]
 
 A shallow network is a function $$f : \mathbb{R}^{d\_\text{in}} \to \mathbb{R}^{d\_\text{out}}$$ that maps multi-dimensional inputs $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ to multi-dimensional outputs $\mathbf{y} \in \mathbb{R}^{d\_\text{out}}$ through a hidden layer $\mathbf{h} = [h\_0, h\_1, ..., h\_{q-1}] \in \mathbb{R}^q$.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -469,27 +463,15 @@ $$y = v\_{0} \sigma(w\_{0} x + b\_0) + v\_{1} \sigma(w\_{1} x + b\_1) + v\_{2} \
 where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$ are the model parameters and where the activation function $\sigma$ is $\text{ReLU}(\cdot) = \max(0, \cdot)$.
 
 <br>
-.center.width-100[![](figures/lec7/ShallowNet.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-90[![](figures/lec7/nn-shallow.svg)]
 
 ---
 
 class: middle
 
-.center.width-70[![](figures/lec7/ShallowBuildUp.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
----
-
-class: middle
-
-.center.width-100[![](figures/lec7/ShallowFunctions.svg)]
+.center.width-100[![](figures/lec7/nn-functions.svg)]
 
 This shallow network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 
 ---
@@ -518,9 +500,7 @@ Build a composition of \sum v_j ReLU(w_j x + b_j) to approximate any continuous 
 
 class: middle
 
-.center.width-100[![](figures/lec7/ShallowApproximate.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-100[![](figures/lec7/nn-approximate.svg)]
 
 ---
 
@@ -552,13 +532,14 @@ y\_1 &= v\_{10} h\_0 + v\_{11} h\_1 + v\_{12} h\_2 + v\_{13} h\_3 + c\_1
 
 class: middle
 
-.center.width-100[![](figures/lec7/ShallowNetTwoOutputs.svg)]
+.grid[
+.kol-1-2[.center.width-80[![](figures/lec7/nn-two-outputs-net.svg)]]
+.kol-1-2[<br>.center.width-100[![](figures/lec7/nn-two-outputs-plot.svg)]]
+]
 
 a) With two output units, the network can model two functions of the input $x$. 
 
 b) The four joints of these functions are constrained to be at the same positions, but the slopes and heights of the functions can vary independently.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -568,7 +549,7 @@ class: middle
 
 To extend the network to multivariate inputs $\mathbf{x} = [x\_0, x\_1, ..., x\_{d\_{\text{in}}-1}]$, we extend the linear relations between the input and the hidden units. 
 
-.center.width-50[![](figures/lec7/ShallowNetTwoInputs.svg)]
+.center.width-45[![](figures/lec7/nn-two-inputs.svg)]
 
 For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
 $$\begin{aligned}
@@ -577,15 +558,11 @@ h\_1 &= \sigma\left( w\_{10} x\_0 + w\_{11} x\_1 + b\_1 \right) \\\\
 h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
 \end{aligned}$$
 
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
-
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec7/ShallowBuildUp2D.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-95[![](figures/lec7/nn-buildup-2d.svg)]
 
 ---
 
@@ -603,9 +580,7 @@ h\_2' &= \sigma\left( w'\_{2} y + b'\_2 \right) \\\\
 y' &= v'\_{0} h\_0' + v'\_{1} h\_1' + v'\_{2} h\_2' + c'.
 \end{aligned}$$
 
-.center.width-85[![](figures/lec7/DeepConcat1.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-50[![](figures/lec7/nn-concat-net.svg)]
 
 ---
 
@@ -613,9 +588,7 @@ class: middle
 
 With $\text{ReLU}$ activation functions, this network also describes a family of piecewise linear functions. However, each linear region defined by the hidden units of the first network is further divided by the hidden units of the second network.
 
-.center.width-80[![](figures/lec7/DeepConcat2.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-90[![](figures/lec7/nn-concat.svg)]
 
 ---
 
@@ -635,9 +608,9 @@ class: middle
 
 Similarly, composing a multivariate shallow network with a shallow network further divides the input space into more linear regions.
 
-.center.width-100[![](figures/lec7/DeepTwoLayer2D.svg)]
+.center.width-60[![](figures/lec7/nn-two-layer-2d-net.svg)]
 
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-90[![](figures/lec7/nn-two-layer-2d-plot.svg)]
 
 
 ---
@@ -650,9 +623,7 @@ Since the operation from $[h\_0, h\_1, h\_2]$ to $y$ is linear and the operation
 
 It follows that the composition of the two shallow networks is a special case of a deep network with two hidden layers.
 
-.center.width-100[![](figures/lec7/DeepTwoLayer.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-70[![](figures/lec7/nn-deep.svg)]
 
 ---
 
@@ -677,9 +648,7 @@ $$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
 
 class: middle
 
-.center.width-70[![](figures/lec7/DeepBuildUp.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-90[![](figures/lec7/nn-deep-buildup.svg)]
 
 ---
 
@@ -722,9 +691,7 @@ A deep network with $K$ hidden layers, each with $q$ hidden units, can create up
 
 <br>
 
-.center.width-100[![](figures/lec7/DeepParams.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-70[![](figures/lec7/nn-regions.svg)]
 
 ---
 
@@ -745,9 +712,7 @@ The choice of the activation function $\sigma$ is crucial for the expressiveness
 
 class: middle
 
-.center.width-100[![](figures/lec7/ShallowActivations.svg)]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
+.center.width-60[![](figures/lec7/nn-activations.svg)]
 
 ---
 
