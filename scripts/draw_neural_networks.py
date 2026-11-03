@@ -26,7 +26,9 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
 - `nn-regions.svg`, the number of linear regions against the number of parameters;
 - `nn-activations.svg`, the sigmoid, tanh and ReLU activation functions;
 - `lr-gaussian-model.svg` and `lr-residuals.svg`, linear regression as a linear Gaussian model, and its
-  squared residuals.
+  squared residuals;
+- `nn-conv-pattern.svg`, the deck's cat through two 3x3 kernels, a ReLU and a 2x2 max-pooling, computed
+  here, with the receptive field of one pooled value boxed back to the input.
 """
 
 import sys
@@ -543,6 +545,106 @@ def lr_residuals():
     save(fig, "lr-residuals")
 
 
+
+# ---- a convolutional and a pooling layer, computed on the deck's cat
+
+def conv_pattern():
+    """The cat of the opening slides through two 3x3 kernels, a ReLU and a 2x2 max-pooling, computed with
+    numpy, with the receptive field of one pooled value boxed back to the input."""
+    from PIL import Image
+    from matplotlib.patches import ConnectionPatch, Rectangle
+
+    # the photo inside its drawn frame, square, so that no border edge dominates the feature maps
+    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("L").crop((62, 52, 298, 288)).resize((48, 48), Image.LANCZOS)
+    x = np.asarray(img, dtype=float) / 255
+    kernels = [np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], float),    # vertical edges
+               np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], float)]    # horizontal edges
+    def conv(a, w):   # valid cross-correlation, as on the slides
+        h, v = w.shape
+        return np.array([[np.sum(a[j:j + h, i:i + v] * w) for i in range(a.shape[1] - v + 1)] for j in range(a.shape[0] - h + 1)])
+    def pool(a):
+        n = a.shape[0] // 2
+        return a[:2 * n, :2 * n].reshape(n, 2, n, 2).max(axis=(1, 3))
+    rows = []
+    for w in kernels:
+        z = conv(x, w)
+        r = relu(z)
+        rows.append((w, z, r, pool(r)))
+
+    fig = plt.figure(figsize=(13, 5.2))
+    S = 0.3   # panel height, in figure fraction; widths follow so that panels are square
+    asp = 5.2 / 13
+    def panel(cx, cy, size):
+        return fig.add_axes([cx - size * asp / 2, cy - size / 2, size * asp, size])
+    def show(ax, a, lim=None, cmap=None):
+        if cmap == "gray":
+            ax.imshow(a, cmap="gray", vmin=0, vmax=1, interpolation="nearest")
+        else:
+            ax.imshow(a, cmap=DIV, vmin=-lim, vmax=lim, interpolation="nearest")
+        ax.set_xticks([]); ax.set_yticks([])
+        for sp in ax.spines.values():
+            sp.set_visible(True); sp.set_color(INK); sp.set_linewidth(1)
+    def arrow(a, b, xa=1, ya=0.5, xb=0, yb=0.5):
+        fig.add_artist(ConnectionPatch((xa, ya), (xb, yb), "axes fraction", "axes fraction", axesA=a, axesB=b,
+                                       arrowstyle="-|>", mutation_scale=16, color=INK, linewidth=1.4, shrinkA=0, shrinkB=0))
+
+    cols = [0.07, 0.235, 0.39, 0.555, 0.715, 0.9]   # input, kernel, convolution, ReLU, pooling, next layer
+    ys = [0.66, 0.24]
+    inp = panel(cols[0], 0.45, S * 1.05)
+    show(inp, x, cmap="gray")
+    pooled = []
+    for k, (w, z, r, o) in enumerate(rows):
+        lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
+        kax = panel(cols[1], ys[k], S * 0.42)
+        show(kax, w, 2.4)
+        for (j, i), v in np.ndenumerate(w):
+            kax.text(i, j, f"{v:g}", ha="center", va="center", fontsize=13, color=INK)
+        kax.set_title(rf"$\omega_{k}$", fontsize=21, pad=4)
+        a1, a2, a3 = panel(cols[2], ys[k], S), panel(cols[3], ys[k], S), panel(cols[4], ys[k], S * 0.62)
+        show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
+        arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
+        arrow(kax, a1); arrow(a1, a2); arrow(a2, a3)
+        pooled.append((a2, a3))
+    # the next layer: a stack of feature maps, fed by both pooled maps
+    stack = fig.add_axes([cols[5] - 0.035, 0.36, 0.07, 0.2]); stack.axis("off")
+    for d in range(3):
+        stack.add_patch(Rectangle((0.1 + 0.12 * d, 0.1 + 0.12 * d), 0.55, 0.55, facecolor="white", edgecolor=INK, linewidth=1.1))
+    stack.set_xlim(0, 1); stack.set_ylim(0, 1)
+    for k, (a2, a3) in enumerate(pooled):
+        arrow(a3, stack, xb=0.12, yb=0.5)
+    stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=18, color=INK)
+
+    # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 4x4 patch
+    # of the input (3x3 kernel, 2x2 pooling), and the 10x10 patch a second such stage would see
+    pj, pi = 6, 9
+    a2, a3 = pooled[0]
+    box = dict(fill=False, edgecolor=INK, linewidth=2.2)
+    a3.add_patch(Rectangle((pi - 0.5, pj - 0.5), 1, 1, **box))
+    a2.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 2, 2, **box))
+    inp.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 4, 4, **box))
+    inp.add_patch(Rectangle((2 * pi - 3.5, 2 * pj - 3.5), 10, 10, fill=False, edgecolor=INK, linewidth=1.6, linestyle="--"))
+    inp.text(2 * pi + 1.5, 2 * pj - 4.5, "receptive field", ha="center", va="bottom", fontsize=15, color=INK,
+             bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.85))
+
+    # column labels and layer brackets
+    labels = [(cols[0], r"input $\mathbf{x}$"), (cols[2], r"convolution $\mathbf{x} \circledast \omega_k$"),
+              (cols[3], "ReLU"), (cols[4], r"max-pooling $\mathbf{o}_k$")]
+    for cx, s in labels:
+        fig.text(cx, ys[0] + S / 2 + 0.07, s, ha="center", va="center", fontsize=20, color=INK)
+    def bracket(x0, x1, text):
+        y = 0.035
+        fig.add_artist(matplotlib.lines.Line2D([x0, x1], [y, y], color=GREY, linewidth=1.4))
+        for xx in (x0, x1):
+            fig.add_artist(matplotlib.lines.Line2D([xx, xx], [y, y + 0.025], color=GREY, linewidth=1.4))
+        fig.text((x0 + x1) / 2, y - 0.012, text, ha="center", va="top", fontsize=18, color=GREY)
+    half = S * asp / 2
+    bracket(cols[1] - 0.04, cols[3] + half, "convolutional layer")
+    bracket(cols[4] - S * 0.62 * asp / 2, cols[4] + S * 0.62 * asp / 2 + 0.02, "pooling layer")
+    out = ROOT / "figures" / "lec7" / "nn-conv-pattern.svg"
+    fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
+    plt.close(fig)
+    print(out.relative_to(ROOT))
+
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
     svg("nn-shallow", 1210, 500, shallow_net(), folder="lec7", scale=SCALE)
@@ -562,3 +664,4 @@ if __name__ == "__main__":
     two_layer_2d()
     lr_gaussian()
     lr_residuals()
+    conv_pattern()
