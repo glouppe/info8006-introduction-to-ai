@@ -28,7 +28,7 @@ class: middle
 
 .center.width-70[![](figures/lec7/learning-agent.svg)]
 
-What if the environment is .bold[unknown], or the agent program too hard to write by hand?
+.alert[What if the environment is .bold[unknown], or the agent program too hard to write by hand?]
 
 ---
 
@@ -39,9 +39,7 @@ A learning agent improves its performance element with experience (Lecture 1). H
 - a heuristic $h(n)$ (Lecture 2) or an evaluation function $\text{eval}(s)$ (Lecture 3),
 - a model $\mathbf{P}\_\theta(X)$ (Lecture 5), such as the transition and sensor models of Lecture 6.
 
-The learning element adjusts $\theta$ from the feedback. In .bold[supervised learning] (today), the feedback is the correct output for each input, e.g. the action an expert takes. In .bold[reinforcement learning] (Lecture 9), it is only a reward $r\_t$.
-
-.success[Learning is useful whenever a task is hard to program but examples of the desired behavior are easy to obtain.]
+The learning element adjusts $\theta$ from the feedback.
 
 ---
 
