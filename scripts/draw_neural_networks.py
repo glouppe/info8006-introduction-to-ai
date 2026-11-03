@@ -28,7 +28,10 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
 - `lr-gaussian-model.svg` and `lr-residuals.svg`, linear regression as a linear Gaussian model, and its
   squared residuals;
 - `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed
-  here, with the receptive field of one pooled value boxed back to the input.
+  here, with the receptive field of one pooled value boxed back to the input;
+- `nn-conv1d.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg` and `nn-pooling.svg`, a 1d and a 2d
+  convolution at two positions of the window, a 3x3x3 kernel on the cat's three channels, and
+  subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed.
 """
 
 import sys
@@ -649,6 +652,152 @@ def conv_pattern():
     plt.close(fig)
     print(out.relative_to(ROOT))
 
+
+# ---- convolution and pooling, cell by cell, in the style of `nn-conv-pattern.svg`
+
+def cells(ax, a, lim, fmt="{:g}", fontsize=15, cmap=None):
+    """A grid of values: each cell colored on the diverging scale (or `cmap`), its value written in it."""
+    a = np.atleast_2d(a)
+    if cmap is None:
+        ax.imshow(a, cmap=DIV, vmin=-lim, vmax=lim)
+    else:
+        ax.imshow(a, cmap=cmap, vmin=0, vmax=lim)
+    for (j, i), v in np.ndenumerate(a):
+        if fmt:   # white on the darkest cells, ink elsewhere
+            dark = abs(v) / lim > 0.62 if cmap is None else v / lim > 0.62
+            ax.text(i, j, fmt.format(v), ha="center", va="center", fontsize=fontsize, color="white" if dark else INK)
+    ax.set_xticks(np.arange(-0.5, a.shape[1], 1), minor=True)
+    ax.set_yticks(np.arange(-0.5, a.shape[0], 1), minor=True)
+    ax.grid(which="minor", color="white", linewidth=1.5)
+    ax.tick_params(which="both", length=0)
+    ax.set_xticks([]); ax.set_yticks([])
+    for sp in ax.spines.values():
+        sp.set_visible(True); sp.set_color(INK); sp.set_linewidth(1)
+
+
+def window(ax, j, i, h, w, style="-"):
+    from matplotlib.patches import Rectangle
+    ax.add_patch(Rectangle((i - 0.5, j - 0.5), w, h, fill=False, edgecolor=INK, linewidth=2.6, linestyle=style,
+                           clip_on=False, zorder=5))
+
+
+def place(fig, x, y, w, h):
+    """Axes from figure fractions of the canvas, so that cells of all grids have one size."""
+    return fig.add_axes([x, y, w, h])
+
+
+def conv_1d():
+    xv = np.array([1, 3, 2, 0, -1, 2, 4, 1], float)
+    wv = np.array([1, 0, -1], float)
+    zv = np.array([np.dot(xv[i:i + 3], wv) for i in range(len(xv) - 2)])
+    fig = plt.figure(figsize=(13, 2.9))
+    c = 0.032   # one cell, in figure width; heights follow the aspect of the canvas
+    ch = c * 13 / 2.9
+    rows = [0.72, 0.4, 0.08]
+    for i0, x0 in [(1, 0.06), (4, 0.56)]:
+        ax_x = place(fig, x0, rows[0], 8 * c, ch); cells(ax_x, xv, 5)
+        ax_w = place(fig, x0 + i0 * c, rows[1], 3 * c, ch); cells(ax_w, wv, 5)
+        ax_z = place(fig, x0 + c, rows[2], 6 * c, ch); cells(ax_z, zv, 5)
+        window(ax_x, 0, i0, 1, 3)
+        window(ax_z, 0, i0, 1, 1)
+        fig.text(x0 - 0.008, rows[0] + ch / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=20)
+        fig.text(x0 + i0 * c - 0.008, rows[1] + ch / 2, r"$\omega$", ha="right", va="center", fontsize=20)
+        fig.text(x0 + c - 0.008, rows[2] + ch / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=20)
+        terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
+        fig.text(x0 + 4 * c, rows[2] - 0.1, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
+                 ha="center", va="top", fontsize=15, color=INK)
+    save(fig, "nn-conv1d")
+
+
+def conv_2d():
+    xv = np.array([[2, 0, 1, 3, 1, 0], [1, 3, 2, 0, 2, 1], [0, 2, 4, 1, 0, 3],
+                   [3, 1, 0, 2, 4, 1], [1, 0, 2, 3, 1, 2], [0, 2, 1, 0, 3, 1]], float)
+    wv = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]], float)
+    zv = np.array([[np.sum(xv[j:j + 3, i:i + 3] * wv) for i in range(4)] for j in range(4)])
+    fig = plt.figure(figsize=(13, 4.6))
+    c = 0.027
+    ch = c * 13 / 4.6
+    lim = np.abs(zv).max()
+    for k, ((j0, i0), x0) in enumerate([((0, 0), 0.03), ((2, 3), 0.53)]):
+        ax_x = place(fig, x0, 0.08, 6 * c, 6 * ch); cells(ax_x, xv, lim, fontsize=13)
+        ax_w = place(fig, x0 + 6 * c + 0.05, 0.08 + 1.5 * ch, 3 * c, 3 * ch); cells(ax_w, wv, lim, fontsize=13)
+        ax_z = place(fig, x0 + 9 * c + 0.1, 0.08 + 1 * ch, 4 * c, 4 * ch); cells(ax_z, zv, lim, fontsize=13)
+        window(ax_x, j0, i0, 3, 3)
+        window(ax_z, j0, i0, 1, 1)
+        fig.text(x0 + 6 * c + 0.025, 0.08 + 3 * ch, r"$\circledast$", ha="center", va="center", fontsize=24)
+        fig.text(x0 + 9 * c + 0.075, 0.08 + 3 * ch, r"$=$", ha="center", va="center", fontsize=24)
+        fig.text(x0 + 3 * c, 0.08 + 6 * ch + 0.05, r"$\mathbf{x}$", ha="center", va="bottom", fontsize=20)
+        fig.text(x0 + 7.5 * c + 0.05, 0.08 + 4.5 * ch + 0.05, r"$\omega$", ha="center", va="bottom", fontsize=20)
+        fig.text(x0 + 11 * c + 0.1, 0.08 + 5 * ch + 0.05, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=20)
+    save(fig, "nn-conv2d")
+
+
+def conv_channels():
+    """The cat in its three channels, a 3x3x3 kernel, and the map it gives: one value sums over the
+    channels and the window."""
+    from PIL import Image
+    from matplotlib.patches import ConnectionPatch
+    from matplotlib.colors import LinearSegmentedColormap as LSC
+    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("RGB").crop((62, 52, 298, 288)).resize((16, 16), Image.LANCZOS)
+    x = np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
+    rng = np.random.default_rng(2)
+    w = np.round(rng.normal(0, 1, (3, 3, 3)), 1)
+    z = np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)])
+    fig = plt.figure(figsize=(13, 4.6))
+    asp = 4.6 / 13
+    hues = ["#c8463d", "#3f8f5a", "#356aaf"]
+    names = ["R", "G", "B"]
+    j0, i0 = 5, 6
+    big, off = 0.62, 0.05
+    for cidx in range(3):   # the channels as a stack, red at the back
+        d = 2 - cidx
+        ax = fig.add_axes([0.03 + d * off * asp, 0.12 + d * off, big * asp, big])
+        cmap = LSC.from_list(names[cidx], ["#ffffff", hues[cidx]])
+        cells(ax, x[cidx], 1, fmt=None, cmap=cmap)
+        window(ax, j0, i0, 3, 3)
+        ax.text(15.6, -0.9, names[cidx], ha="right", va="bottom", fontsize=15, color=hues[cidx])
+    fig.text(0.03 + big * asp / 2 + off * asp, 0.92, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$", ha="center", fontsize=18)
+    ks = 0.22
+    lim = np.abs(w).max()
+    for cidx in range(3):
+        d = 2 - cidx
+        ax = fig.add_axes([0.41 + d * 0.03 * asp, 0.3 + d * 0.03, ks * asp, ks])
+        cells(ax, w[cidx], lim, fmt="{:g}", fontsize=10)
+    fig.text(0.41 + ks * asp / 2 + 0.03 * asp, 0.68, r"kernel $\omega \in \mathbb{R}^{3 \times 3 \times 3}$", ha="center", fontsize=18)
+    fig.text(0.36, 0.42, r"$\circledast$", ha="center", va="center", fontsize=28)
+    fig.text(0.58, 0.42, r"$=$", ha="center", va="center", fontsize=28)
+    ax_z = fig.add_axes([0.63, 0.12 + 0.05, 0.56 * asp, 0.56])
+    cells(ax_z, z, np.abs(z).max(), fmt=None)
+    window(ax_z, j0, i0, 1, 1)
+    fig.text(0.63 + 0.28 * asp, 0.82, r"$\mathbf{x} \circledast \omega$", ha="center", fontsize=18)
+    fig.text(0.86, 0.42, "one value sums\nover the 3 channels\nof the 3 × 3 window", ha="left", va="center", fontsize=14, color=GREY)
+    save(fig, "nn-conv-channels")
+
+
+def pooling():
+    xv = np.array([[1, 3, 5, 3], [6, 2, 0, 8], [4, 6, 1, 4], [2, 8, 0, 3]], float)
+    blocks = [(0, 0), (0, 2), (2, 0), (2, 2)]
+    sub = np.array([[xv[j, i] for (j, i) in blocks[:2]], [xv[j, i] for (j, i) in blocks[2:]]])
+    mx = np.array([[xv[j:j + 2, i:i + 2].max() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
+    av = np.array([[xv[j:j + 2, i:i + 2].mean() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
+    fig = plt.figure(figsize=(13, 4))
+    c = 0.034
+    ch = c * 13 / 4
+    lim = 9
+    for k, (title, out, picks, fmt) in enumerate([
+            ("subsampling", sub, [(j, i) for (j, i) in blocks], "{:g}"),
+            ("max-pooling", mx, [tuple(np.add((j, i), np.unravel_index(np.argmax(xv[j:j + 2, i:i + 2]), (2, 2)))) for (j, i) in blocks], "{:g}"),
+            ("average-pooling", av, [], "{:g}")]):
+        x0 = 0.03 + k * 0.335
+        ax_x = place(fig, x0, 0.1, 4 * c, 4 * ch); cells(ax_x, xv, lim, fontsize=14)
+        ax_o = place(fig, x0 + 4 * c + 0.07, 0.1 + ch, 2 * c, 2 * ch); cells(ax_o, out, lim, fmt=fmt, fontsize=14)
+        ax_x.axhline(1.5, color=INK, linewidth=1.4, linestyle="--"); ax_x.axvline(1.5, color=INK, linewidth=1.4, linestyle="--")
+        for (j, i) in picks:
+            window(ax_x, j, i, 1, 1)
+        fig.text(x0 + 4 * c + 0.035, 0.1 + 2 * ch, r"$\rightarrow$", ha="center", va="center", fontsize=24)
+        fig.text(x0 + (4 * c + 0.07 + 2 * c) / 2, 0.1 + 4 * ch + 0.06, title, ha="center", va="bottom", fontsize=17)
+    save(fig, "nn-pooling")
+
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
     svg("nn-shallow", 1210, 500, shallow_net(), folder="lec7", scale=SCALE)
@@ -669,3 +818,7 @@ if __name__ == "__main__":
     lr_gaussian()
     lr_residuals()
     conv_pattern()
+    conv_1d()
+    conv_2d()
+    conv_channels()
+    pooling()

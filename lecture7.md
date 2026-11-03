@@ -863,13 +863,11 @@ However, most machine learning libraries call it convolution.
 
 class: middle
 
-.center.width-100[![](figures/lec7/Conv1.svg)]
+.center.width-100[![](figures/lec7/nn-conv1d.svg)]
 
 <br>
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
 The output is obtained by sliding the kernel over the input and computing the inner product at each position.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -889,11 +887,9 @@ Draw: Explain the intuition behind the sum of element-wise products which reduce
 
 class: middle
 
-.center.width-100[![](figures/lec7/Conv2D.svg)]
+.center.width-100[![](figures/lec7/nn-conv2d.svg)]
 
 .center[2d convolution with a kernel $\omega  \in \mathbb{R}^{3 \times 3}$ applied to the input signal $\mathbf{x}$.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -910,11 +906,9 @@ $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{c=0}^{C-1}\sum\_{n=0}^{h-1} \sum
 
 class: middle
 
-.center.width-100[![](figures/lec7/ConvImage.svg)]
+.center.width-100[![](figures/lec7/nn-conv-channels.svg)]
 
 .center[2d convolution applied to a color image with three channels (R, G, B).]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
@@ -941,11 +935,9 @@ $$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.$$
 
 class: middle
 
-.center.width-100[![](figures/lec7/ConvDown.svg)]
+.center.width-100[![](figures/lec7/nn-pooling.svg)]
 
 .center[Subsampling, max-pooling and average-pooling with a pooling area of size $2 \times 2$.]
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 
