@@ -898,8 +898,8 @@ The same derivations generalize to multivariate Gaussian distributions.
 Assuming the transition and sensor models
 $$
 \begin{aligned}
-p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t, \mathbf{Q}) \\\\
-p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} \mid \mathbf{H} \mathbf{x}\_t, \mathbf{R}),
+p(\mathbf{x}\_{t+1} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{x}\_{t+1} \mid \mathbf{A} \mathbf{x}\_t + \mathbf{b}, \mathbf{Q}) \\\\
+p(\mathbf{e}\_{t} \mid \mathbf{x}\_t) &= \mathcal{N}(\mathbf{e}\_{t} \mid \mathbf{H} \mathbf{x}\_t + \mathbf{d}, \mathbf{R}),
 \end{aligned}
 $$
 the prediction step yields
@@ -912,7 +912,7 @@ $$
 where
 $$
 \begin{aligned}
-\boldsymbol{\mu}\_{t+1}^- &= \mathbf{A} \boldsymbol{\mu}\_t \\\\
+\boldsymbol{\mu}\_{t+1}^- &= \mathbf{A} \boldsymbol{\mu}\_t + \mathbf{b} \\\\
 \boldsymbol{\Sigma}\_{t+1}^- &= \mathbf{A} \boldsymbol{\Sigma}\_t \mathbf{A}^T + \mathbf{Q}.
 \end{aligned}
 $$
@@ -930,7 +930,7 @@ $$
 where
 $$
 \begin{aligned}
-\boldsymbol{\mu}\_{t+1} &= \boldsymbol{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \boldsymbol{\mu}\_{t+1}^-) \\\\
+\boldsymbol{\mu}\_{t+1} &= \boldsymbol{\mu}\_{t+1}^- + \mathbf{K}\_{t+1} (\mathbf{e}\_{t+1} - \mathbf{H} \boldsymbol{\mu}\_{t+1}^- - \mathbf{d}) \\\\
 \boldsymbol{\Sigma}\_{t+1} &= (\mathbf{I} - \mathbf{K}\_{t+1} \mathbf{H}) \boldsymbol{\Sigma}\_{t+1}^- \\\\
 \mathbf{K}\_{t+1} &= \boldsymbol{\Sigma}\_{t+1}^- \mathbf{H}^T (\mathbf{H} \boldsymbol{\Sigma}\_{t+1}^- \mathbf{H}^T + \mathbf{R})^{-1}
 \end{aligned}
