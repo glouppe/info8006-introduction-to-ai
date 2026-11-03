@@ -38,10 +38,7 @@
     \[
         \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{e}_{1:t}) = \sum_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) P(\mathbf{x}_t \mid \mathbf{e}_{1:t}),
     \]
-    and this is repeated up to $t + k$. Eventually, the distribution may converge to a \term{stationary distribution}
-    \[
-        \mathbf{P}(\mathbf{X}_\infty) = \mathbf{P}(\mathbf{X}_{\infty+1}) = \sum_{\mathbf{x}_\infty} \mathbf{P}(\mathbf{X}_{\infty+1} \mid \mathbf{x}_\infty) P(\mathbf{x}_\infty).
-    \]
+    and this is repeated up to $t + k$.
 
     \topic{Filtering}
     The \term{Bayes filter} maintains the belief state $\mathbf{P}(\mathbf{X}_t \mid \mathbf{e}_{1:t})$ as time passes and new evidence $\mathbf{e}_{t+1}$ is collected. It alternates between a predict step, which projects the current belief state forward from $t$ to $t+1$ through the transition model, and an update step, which updates this new state using the evidence $\mathbf{e}_{t+1}$:
@@ -79,7 +76,10 @@
         \mathbf{f}_{1:t+1} & = \alpha \mathbf{O}_{t+1} \mathbf{T}^T \mathbf{f}_{1:t}, \\
         \mathbf{b}_{k+1:t} & = \mathbf{T} \mathbf{O}_{k+1} \mathbf{b}_{k+2:t},
     \end{align*}
-    where $\mathbf{b}_{t+1:t}$ is an all-one vector of size $S$. The stationary distribution $\mathbf{f}$ of a HMM is such that $\mathbf{f} = \mathbf{T}^T \mathbf{f}$.
+    where $\mathbf{b}_{t+1:t}$ is an all-one vector of size $S$.
+
+    \topic[optional]{Stationary distribution}
+    Without new evidence, the predicted distribution may converge, as $k$ grows, to a \term{stationary distribution}: a fixed point $\mathbf{P}(\mathbf{X}_{t+1}) = \mathbf{P}(\mathbf{X}_t)$ of the predict step $\mathbf{P}(\mathbf{X}_{t+1}) = \sum_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) P(\mathbf{x}_t)$. For an HMM, it is a vector $\mathbf{f}$ such that $\mathbf{f} = \mathbf{T}^T \mathbf{f}$.
 
     \topic{Matrix multiplication}
     In index notation,
@@ -116,12 +116,12 @@
 
 \begin{exercises}[1, 2]
 
-\titledquestion{Oral exam \source{Exam, January 2023}}
+\titledquestion{Load of a shared server \source{Exam, January 2023}}
 
-You are waiting for an oral exam for which the professor is known to be moody. Some students have difficult questions while others have easy ones. You learned from your seniors that if a student has difficult questions, there is a 40\% chance that the next student will also have difficult ones. If a student has easy questions, there is 70\% chance that the next student will also have easy ones. You observe the students that come out of the professor's office. They either look happy, neutral or sad. You assume that, if their questions were difficult, there are 20\% and 60\% chance that they look respectively happy and sad. If their questions were easy, there are 50\% and 30\% chance that they look respectively happy and sad.
+A scheduling program submits jobs to a shared compute server, whose load varies over time. Each job runs under either a heavy or a light load. From past logs, the program knows that if a job runs under a heavy load, there is a 40\% chance that the next job also runs under a heavy load. If a job runs under a light load, there is a 70\% chance that the next job also runs under a light load. The program cannot see the load, but it sees the response time of each job, which is either fast, normal or slow. If the load is heavy, the response time is fast with probability 20\% and slow with probability 60\%. If the load is light, it is fast with probability 50\% and slow with probability 30\%.
 
 \begin{parts}
-    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{difficult}, \allowbreak \texttt{easy}\}$ is the difficulty of the questions for the $t$-th student and the evidence $E_t \in \{\texttt{happy}, \allowbreak \texttt{neutral}, \allowbreak \texttt{sad}\}$ is the emotion you observe.
+    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{heavy}, \allowbreak \texttt{light}\}$ is the load under which the $t$-th job runs and the evidence $E_t \in \{\texttt{fast}, \allowbreak \texttt{normal}, \allowbreak \texttt{slow}\}$ is its response time.
 
     \begin{solution}
         \begin{align*}
@@ -131,42 +131,27 @@ You are waiting for an oral exam for which the professor is known to be moody. S
         \end{align*}
     \end{solution}
 
-    \part At some point, the professor decides that one in two students will come out of their office by another exit, which prevents you from observing them. Sketch a Bayesian network describing this new process.
+    \part At some point, the server stops reporting the response time of every other job (the 2nd, the 4th, \ldots), so that the program only observes the 1st, 3rd, 5th, \ldots{} jobs. Sketch a Bayesian network describing this new process.
 
     \begin{solution}
         \begin{center}
-            \begin{tikzpicture}[
-                node distance=1.5cm,
-                hidden/.style={state},
-                observed/.style={state, fill=gray!20},
-            ]
-                \node[hidden] (X0) {$X_0$};
-                \node[hidden] (X1) [right of=X0] {$X_1$};
-                \node[hidden] (X2) [right of=X1] {$X_2$};
-                \node[hidden] (X3) [right of=X2]  {$X_3$};
-                \node[hidden] (X4) [right of=X3]  {$X_4$};
-                \node[hidden] (X5) [right of=X4]  {$X_5$};
-                \node[circle] (X6) [right of=X5] {$\dots$};
-
-                \draw[arrow] (X0) to (X1);
-                \draw[arrow] (X1) to (X2);
-                \draw[arrow] (X2) to (X3);
-                \draw[arrow] (X3) to (X4);
-                \draw[arrow] (X4) to (X5);
-                \draw[arrow] (X5) to (X6);
-
-                \node[observed] (E1) [below of=X1] {$E_1$};
-                \node[observed] (E3) [below of=X3] {$E_3$};
-                \node[observed] (E5) [below of=X5] {$E_5$};
-
-                \draw[arrow] (X1) to (E1);
-                \draw[arrow] (X3) to (E3);
-                \draw[arrow] (X5) to (E5);
+            \begin{tikzpicture}[bn diagram, every node/.append style={font=\small}]
+                \foreach \t in {0, ..., 5} {
+                    \node[random variable] (X\t) at (1.5 * \t, 0) {$X_\t$};
+                }
+                \node (X6) at (9, 0) {$\cdots$};
+                \foreach \t in {1, 3, 5} {
+                    \node[observed variable] (E\t) at (1.5 * \t, -1.5) {$E_\t$};
+                    \draw[dependency] (X\t) -- (E\t);
+                }
+                \foreach \s/\t in {0/1, 1/2, 2/3, 3/4, 4/5, 5/6} {
+                    \draw[dependency] (X\s) -- (X\t);
+                }
             \end{tikzpicture}
         \end{center}
     \end{solution}
 
-    \part Express, in terms of the HMM components, the distribution $P(X_t \mid e_{1:t:2})$ of the difficulty for $t$-th student given your observations $e_{1:t:2}$ of half of the previous students. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
+    \part Express, in terms of the HMM components, the distribution $P(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
 
     \begin{solution}
         Denoting $f_t = P(X_t \mid e_{1:t:2})$,
@@ -201,7 +186,7 @@ You are waiting for an oral exam for which the professor is known to be moody. S
         \end{align*}
     \end{solution}
 
-    \part Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{sad}, \texttt{happy})$, compute the probability that the 3rd student has difficult questions.
+    \part Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{slow}, \texttt{fast})$, compute the probability that the 3rd job runs under a heavy load.
 
     \begin{solution}
         \begin{align*}
@@ -209,18 +194,18 @@ You are waiting for an oral exam for which the professor is known to be moody. S
             f_2 & = T^T f_1 = \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5185 \\ 0.4815} \approx \mat{0.3519 \\ 0.6481} \\
             f_3 & = \alpha_3 \, O_3 \, T^T f_2 = \alpha_3 \mat{0.2 & 0 \\ 0 & 0.5} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.3519 \\ 0.6481} \approx \mat{0.1678 \\ 0.8322}
         \end{align*}
-        Finally, $P(X_3 = \texttt{difficult} \mid e_{1:3:2}) \approx 0.1678$.
+        Finally, $P(X_3 = \texttt{heavy} \mid e_{1:3:2}) \approx 0.1678$.
     \end{solution}
 \end{parts}
 
 \titledquestion{Umbrella world \aima{14}}
 
-You are a security guard stationed at a secret underground installation. You want to know whether it is raining today, but your only access to the outside world occurs each morning when you see the director coming in with, or without, an umbrella. For each day $t$, the evidence is a single variable $\mathit{Umbrella}_t \in \cbk{1, 0}$, \ie{} whether the umbrella appears or not, and the (hidden) state is a single variable $\mathit{Rain}_t \in \cbk{1, 0}$, \ie{} whether it is raining or not.
+A security robot guards a secret underground installation. It would like to know whether it is raining today, but its only access to the outside world occurs each morning, when it sees the director coming in with, or without, an umbrella. For each day $t$, the evidence is a single variable $\mathit{Umbrella}_t \in \cbk{1, 0}$, \ie{} whether the umbrella appears or not, and the (hidden) state is a single variable $\mathit{Rain}_t \in \cbk{1, 0}$, \ie{} whether it is raining or not.
 
-You believe that from one day $t - 1$ to the next $t$, the chances that the weather stays the same are \qty{70}{\percent}. You also believe that the director brings his umbrella \qty{90}{\percent} of the time when it is raining, and \qty{20}{\percent} of the time otherwise.
+The robot's model assumes that from one day $t - 1$ to the next $t$, the chances that the weather stays the same are \qty{70}{\percent}. It also assumes that the director brings an umbrella \qty{90}{\percent} of the time when it is raining, and \qty{20}{\percent} of the time otherwise.
 
 \begin{parts}
-    \part You would like to represent your umbrella world as a Markov model. What formal assumptions correspond to your beliefs?
+    \part The robot represents the umbrella world as a Markov model. What formal assumptions correspond to these beliefs?
 
     \begin{solution}
         The first belief describes the umbrella world as a \emph{first-order Markov process}, such that
@@ -237,7 +222,21 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
 
     \begin{solution}
         \begin{center}
-            \includegraphics[width=0.6\linewidth]{figures/e4_umbrella.pdf}
+            \begin{tikzpicture}[bn diagram, every node/.append style={font=\small}]
+                \node[diagram caption, anchor=east] at (-1.4, 0) {rain};
+                \node[diagram caption, anchor=east] at (-1.4, -1.5) {umbrella};
+                \node (R0) at (-1, 0) {$\cdots$};
+                \node[random variable] (R1) at (0.5, 0) {$R_{t-1}$};
+                \node[random variable] (R2) at (2.5, 0) {$R_t$};
+                \node[random variable] (R3) at (4.5, 0) {$R_{t+1}$};
+                \node (R4) at (6, 0) {$\cdots$};
+                \node[observed variable] (U1) at (0.5, -1.5) {$U_{t-1}$};
+                \node[observed variable] (U2) at (2.5, -1.5) {$U_t$};
+                \node[observed variable] (U3) at (4.5, -1.5) {$U_{t+1}$};
+                \foreach \s/\t in {R0/R1, R1/R2, R2/R3, R3/R4, R1/U1, R2/U2, R3/U3} {
+                    \draw[dependency] (\s) -- (\t);
+                }
+            \end{tikzpicture}
         \end{center}
 
         \begin{center}
@@ -287,7 +286,7 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
         \end{align*}
     \end{solution}
 
-    \part Suppose you observe an unending sequence of days on which the umbrella appears. Show that, as the days go by, the probability of rain on the current day tends monotonically towards a fixed point. Calculate this fixed point.
+    \part Suppose the robot observes an unending sequence of days on which the umbrella appears. Show that, as the days go by, the probability of rain on the current day tends monotonically towards a fixed point. Calculate this fixed point.
 
     \begin{solution}
         We are asked to prove that $x_t = P(R_t = 1 \mid U_{1:t} = 1)$ tends monotonically (with respect to $t$) towards a fixed point $x^*$. To do so, we need to find the value of $x_t$, which corresponds to apply \emph{filtering} on the Markov model defined by the umbrella world. On this basis, we have
@@ -325,11 +324,9 @@ You believe that from one day $t - 1$ to the next $t$, the chances that the weat
     \end{solution}
 \end{parts}
 
-\titledquestion{Gold coins}
+\titledquestion{Coin-tossing machine}
 
-You are in a room containing 3 precious biased gold coins $a$, $b$ and $c$. You inspect the coins and notice that the coins $a$, $b$ and $c$ have a head probability of \qty{80}{\percent}, \qty{50}{\percent} and \qty{20}{\percent}, respectively.
-
-Another person enters the room, takes the coins and put them into a bag. They draw a coin from the bag and tell you that they will repeat 4 times the same routine: hide their hand in the bag and either keep the current coin with probability $\frac{2}{3}$ or replace it by another, then toss it and show you the result. They proceed and the sequence of results are heads, heads, tail, heads. If you answer right to the following questions they will give you the coins.
+The surveillance program of a casino watches a coin-tossing machine. The machine holds 3 biased coins $a$, $b$ and $c$, whose probabilities of heads are \qty{80}{\percent}, \qty{50}{\percent} and \qty{20}{\percent}, respectively. It first picks one of the coins at random. Then, 4 times, it either keeps the current coin with probability $\frac{2}{3}$ or replaces it by one of the two other coins, chosen at random, then tosses the coin and shows the result. The program only sees the results: heads, heads, tails, heads.
 
 \begin{parts}
     \part Provide a hidden Markov model (HMM) that describes the process.
@@ -365,7 +362,7 @@ Another person enters the room, takes the coins and put them into a bag. They dr
         \end{itemize}
     \end{solution}
 
-    \part What are the probabilities of the last coin given the sequence of evidences?
+    \part What are the probabilities of the last coin given the sequence of results?
 
     \begin{solution}
         We are asked to calculate the distribution $f_t = P(X_t \mid e_{1:t})$ for $t = 4$. Applying Bayes filter, we have
@@ -392,7 +389,7 @@ Another person enters the room, takes the coins and put them into a bag. They dr
         \end{align*}
     \end{solution}
 
-    \part What are the probabilities of the first coin given the sequence of evidences? And of the first coin tossed?
+    \part What are the probabilities of the coin picked first given the sequence of results? And of the first coin tossed?
 
     \begin{solution}
         We are asked to calculate the distribution $P(X_k \mid e_{1:t})$ for $t = 4$ and $k = 0$. As $k < t$ this corresponds to \emph{smoothing} our belief of the past. We have
@@ -695,27 +692,21 @@ where $p_t$, $\dot{p}_t$ and $\ddot{p}_t$ are respectively the position, velocit
 
     \begin{solution}
         \begin{center}
-            \begin{tikzpicture}[node distance = 2cm]
-                \node[state] (p) {$p_{t-1}$};
-                \node[state] (dp) [below of=p] {$\dot{p}_{t-1}$};
-                \node[state] (ddp) [below of=dp] {$\ddot{p}_{t-1}$};
-                \node[state] (w) [below of=ddp] {$w_{t-1}$};
-                \node[state] (pb) [right of=p] {$p_t$};
-                \node[state] (dpb) [right of=dp] {$\dot{p}_t$};
-                \node[state] (ddpb) [right of=ddp] {$\ddot{p}_t$};
-                \node[state] (wb) [right of=w] {$w_t$};
-                \node[state] (e) [right of=ddpb] {$e_t$};
-
-                \draw[arrow] (p) to (pb);
-                \draw[arrow] (p) to (ddpb);
-                \draw[arrow] (dp) to (pb);
-                \draw[arrow] (dp) to (dpb);
-                \draw[arrow] (dp) to (ddpb);
-                \draw[arrow] (ddp) to (pb);
-                \draw[arrow] (ddp) to (dpb);
-                \draw[arrow] (w) to (ddpb);
-                \draw[arrow] (w) to (wb);
-                \draw[arrow] (ddpb) to (e);
+            \begin{tikzpicture}[bn diagram, every node/.append style={font=\small}]
+                \node[diagram caption] at (0, 1) {$t - 1$};
+                \node[diagram caption] at (2.5, 1) {$t$};
+                \node[random variable] (p) at (0, 0) {$p_{t-1}$};
+                \node[random variable] (dp) at (0, -1.5) {$\dot{p}_{t-1}$};
+                \node[random variable] (ddp) at (0, -3) {$\ddot{p}_{t-1}$};
+                \node[random variable] (w) at (0, -4.5) {$w_{t-1}$};
+                \node[random variable] (pb) at (2.5, 0) {$p_t$};
+                \node[random variable] (dpb) at (2.5, -1.5) {$\dot{p}_t$};
+                \node[random variable] (ddpb) at (2.5, -3) {$\ddot{p}_t$};
+                \node[random variable] (wb) at (2.5, -4.5) {$w_t$};
+                \node[observed variable] (e) at (4.5, -3) {$e_t$};
+                \foreach \s/\t in {p/pb, p/ddpb, dp/pb, dp/dpb, dp/ddpb, ddp/pb, ddp/dpb, w/ddpb, w/wb, ddpb/e} {
+                    \draw[dependency] (\s) -- (\t);
+                }
             \end{tikzpicture}
         \end{center}
     \end{solution}
@@ -874,46 +865,20 @@ Do the update equations make sense in the following limiting cases? Use your phy
 In the near future, autonomous robots will live among us. Therefore, the robots need to know how to act appropriately in the presence of humans. In this question, we explore a simplified model of this interaction. We assume that we can observe the robot's actions at time $t$, $R_t$, and an evidence observation, $E_t$, directly caused by the (hidden) human state, $H_t$. Robot actions from the current time-step affect the human state in the next-time step, as illustrated in the Bayesian network given below.
 
 \begin{center}
-    \begin{tikzpicture}[
-        node distance=2cm,
-        hidden/.style={state},
-        observed/.style={state, fill=gray!20},
-    ]
-        \node[circle] (H0) {$\dots$};
-        \node[hidden] (H1) [right of=H0] {$H_{t-1}$};
-        \node[hidden] (H2) [right of=H1]  {$H_{t}$};
-        \node[hidden] (H3) [right of=H2]  {$H_{t+1}$};
-        \node[circle] (H4) [right of=H3] {$\dots$};
-
-        \draw[arrow] (H0) to (H1);
-        \draw[arrow] (H1) to (H2);
-        \draw[arrow] (H2) to (H3);
-        \draw[arrow] (H3) to (H4);
-
-        \node[circle] (E0) [below of=H0] {$\dots$};
-        \node[observed] (E1) [right of=E0] {$E_{t-1}$};
-        \node[observed] (E2) [right of=E1] {$E_{t}$};
-        \node[observed] (E3) [right of=E2] {$E_{t+1}$};
-        \node[circle] (E4) [right of=E3] {$\dots$};
-
-        \draw[arrow] (H1) to (E1);
-        \draw[arrow] (H2) to (E2);
-        \draw[arrow] (H3) to (E3);
-
-        \node[circle] (R0) [below of=E0] {$\dots$};
-        \node[observed] (R1) [right of=R0] {$R_{t-1}$};
-        \node[observed] (R2) [right of=R1] {$R_{t}$};
-        \node[observed] (R3) [right of=R2] {$R_{t+1}$};
-        \node[circle] (R4) [right of=R3] {$\dots$};
-
-        \draw[arrow] (E1) to (R1);
-        \draw[arrow] (E2) to (R2);
-        \draw[arrow] (E3) to (R3);
-
-        \draw[arrow] (R0) to (H1);
-        \draw[arrow] (R1) to (H2);
-        \draw[arrow] (R2) to (H3);
-        \draw[arrow] (R3) to (H4);
+    \begin{tikzpicture}[bn diagram, every node/.append style={font=\small}]
+        \node (H0) at (-1.5, 0) {$\cdots$};
+        \node (H4) at (6, 0) {$\cdots$};
+        \node (R0) at (-1.5, -3) {$\cdots$};
+        \foreach \i/\x/\t in {1/0/{t-1}, 2/2.25/t, 3/4.5/{t+1}} {
+            \node[random variable] (H\i) at (\x, 0) {$H_{\t}$};
+            \node[observed variable] (E\i) at (\x, -1.5) {$E_{\t}$};
+            \node[observed variable] (R\i) at (\x, -3) {$R_{\t}$};
+            \draw[dependency] (H\i) -- (E\i);
+            \draw[dependency] (E\i) -- (R\i);
+        }
+        \foreach \s/\t in {H0/H1, H1/H2, H2/H3, H3/H4, R0/H1, R1/H2, R2/H3, R3/H4} {
+            \draw[dependency] (\s) -- (\t);
+        }
     \end{tikzpicture}
 \end{center}
 
@@ -955,23 +920,22 @@ Assuming discrete random variables and given the probability tables $P(H_0)$, $P
     \end{solution}
 \end{parts}
 
-\titledquestion{Sleep deprivation \source{Exam, August 2019} \aima{14}}
+\titledquestion{Server cooling \source{Exam, August 2019} \aima{14}}
 
-A professor wants to know if students are getting enough sleep. Each day, the professor observes whether the students sleep in class, and whether they have red eyes. The professor has the following hypotheses:
+A monitoring program wants to know whether a server is cooled enough. Each day, the program checks whether the server raised a temperature alert, and whether it throttled its processors. The program makes the following hypotheses:
 \begin{itemize}
-    \item The prior probability of getting enough sleep, with no observations, is \num{0.7}.
-    \item The probability of getting enough sleep on night $t$ is \num{0.8} given that the student got enough sleep the previous night, and \num{0.3} otherwise.
-    \item The probability of having red eyes is \num{0.2} if the student got enough sleep, and \num{0.7} otherwise.
-    \item The probability of sleeping in class is \num{0.1} if the student got enough sleep, and \num{0.3} otherwise.
+    \item The prior probability that the cooling is enough, with no observations, is \num{0.7}.
+    \item The probability that the cooling is enough on day $t$ is \num{0.8} given that it was enough on the previous day, and \num{0.3} otherwise.
+    \item The probability of a temperature alert is \num{0.2} if the cooling is enough, and \num{0.7} otherwise.
+    \item The probability of throttling is \num{0.1} if the cooling is enough, and \num{0.3} otherwise.
 \end{itemize}
-The professor asks you to answer the following questions:
 
 \begin{parts}
-    \part Formulate the environment and hypotheses as a dynamic Bayesian network that the professor could use to detect sleep deprived students, from a sequence of observations. Provide the associated probability tables.
+    \part Formulate the environment and hypotheses as a dynamic Bayesian network that the program could use to detect insufficient cooling from a sequence of observations. Provide the associated probability tables.
 
     \part Reformulate the dynamic Bayesian network as a hidden Markov model that has only a single observation variable. Give the complete probability tables for the model.
 
-    \part For the sequence $e_{1:3}$ of observations \enquote{no red eyes, not sleeping in class}, \enquote{red eyes, not sleeping in class} and \enquote{red eyes, sleeping in class}, calculate the distributions $P(\mathit{EnoughSleep}_t \mid e_{1:t})$ and $P(\mathit{EnoughSleep}_t \mid e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
+    \part For the sequence $e_{1:3}$ of observations \enquote{no alert, no throttling}, \enquote{alert, no throttling} and \enquote{alert, throttling}, calculate the distributions $P(\mathit{Cooled}_t \mid e_{1:t})$ and $P(\mathit{Cooled}_t \mid e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
 \end{parts}
 
 \end{exercises}
