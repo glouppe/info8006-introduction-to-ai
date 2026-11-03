@@ -28,7 +28,7 @@ class: middle
 
 .center.width-70[![](figures/lec7/learning-agent.svg)]
 
-.alert[What if the environment is .bold[unknown], or the agent program too hard to write by hand?]
+.alert[What if the environment is .bold[unknown], or too hard to program by hand?]
 
 ---
 
