@@ -843,14 +843,19 @@ def next_token():
             ax.text(bx - 0.1, yy, tok, ha="right", va="center", fontsize=13, color=INK)
             ax.add_patch(plt.Rectangle((bx, yy - 0.12), 3.2 * pr, 0.24, color=OUT if tok == chosen else LIGHT))
             ax.text(bx + 3.2 * pr + 0.08, yy, f"{pr:.2f}", ha="left", va="center", fontsize=12, color=GREY)
-            if k == 0 and tok == chosen:   # the arrow back starts next to the chosen token
-                anchors["chosen"] = (bx - 0.18 - 0.115 * len(tok), yy)
+            if k == 0 and tok == chosen:   # the arrow back starts right of the chosen token's bar and value
+                anchors["chosen"] = (bx + 3.2 * pr + 0.6, yy)
         ax.text(bx - 0.1, top - 5 * 0.34, "…", ha="right", va="center", fontsize=13, color=GREY)
     # the chosen token is appended to the sentence, and the model is applied again
-    # from the chosen token, left above the first model, then down into the appended token
-    arrow(anchors["chosen"], anchors["new"], ls="--", color=GREY, conn="angle,angleA=180,angleB=90,rad=8")
-    ax.text((anchors["chosen"][0] + anchors["new"][0]) / 2, anchors["chosen"][1] + 0.2,
-            "append the chosen token, then predict again", ha="center", va="center", fontsize=13, color=GREY)
+    # from the right of the chosen token: right, down into the gap between the rows, left, then down into
+    # the appended token, crossing neither bars nor arrows
+    from matplotlib.path import Path
+    (sx, sy), (nx, ny) = anchors["chosen"], anchors["new"]
+    xr, gap = sx + 0.3, (rows[0] + rows[1] + 1.95) / 2
+    ax.add_patch(FancyArrowPatch(path=Path([(sx, sy), (xr, sy), (xr, gap), (nx, gap), (nx, ny)]), arrowstyle="-|>",
+                                 mutation_scale=16, lw=1.4, color=GREY, linestyle="--", clip_on=False))
+    ax.text((xr + nx) / 2, gap + 0.2, "append the chosen token, then predict again", ha="center", va="center",
+            fontsize=13, color=GREY)
     out = ROOT / "figures" / "lec7" / "nn-next-token.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
     plt.close(fig)

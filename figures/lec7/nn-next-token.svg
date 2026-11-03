@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="979.2pt" height="460.8pt" viewBox="0 0 979.2 460.8" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="992.448pt" height="460.8pt" viewBox="0 0 992.448 460.8" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -21,8 +21,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 460.8 
-L 979.2 460.8 
-L 979.2 0 
+L 992.448 460.8 
+L 992.448 0 
 L 0 0 
 L 0 460.8 
 z
@@ -319,16 +319,17 @@ z
 " clip-path="url(#p322aa53df7)" style="fill: #d0d0d0; stroke: #d0d0d0; stroke-linejoin: miter"/>
    </g>
    <g id="patch_29">
-    <path d="M 746.28 74.16 
-L 441.8 74.16 
-Q 433.8 74.16 433.8 82.16 
+    <path d="M 963.648 74.16 
+L 985.248 74.16 
+L 985.248 239.4 
+L 433.8 239.4 
 L 433.8 329.634752 
-" clip-path="url(#p322aa53df7)" style="fill: none; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: round"/>
+" style="fill: none; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: round"/>
     <path d="M 437 323.234752 
 L 433.8 329.634752 
 L 430.6 323.234752 
 z
-" clip-path="url(#p322aa53df7)" style="fill: #8a8a8a; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: round"/>
+" style="fill: #8a8a8a; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <!-- a) -->
@@ -2154,7 +2155,7 @@ z
    </g>
    <g id="text_51">
     <!-- append the chosen token, then predict again -->
-    <g style="fill: #8a8a8a" transform="translate(462.723281 63.01) scale(0.13 -0.13)">
+    <g style="fill: #8a8a8a" transform="translate(582.207281 228.25) scale(0.13 -0.13)">
      <use xlink:href="#Roboto-Regular-45"/>
      <use xlink:href="#Roboto-Regular-54" transform="translate(54.390625 0)"/>
      <use xlink:href="#Roboto-Regular-54" transform="translate(110.5 0)"/>
