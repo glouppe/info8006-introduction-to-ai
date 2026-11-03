@@ -191,13 +191,9 @@ def two_outputs_net():
     xs = [(70, 230, "x", None)]
     hs = column(300, [("h", str(j)) for j in range(4)], 65, 110)
     ys = column(530, [("y", "0"), ("y", "1")], 175, 110)
-    # the two outputs are color coded, their nodes, incoming edges and curves; the hidden units in ink
-    parts = [f'<defs><marker id="head{k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" '
-             f'orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{OUTPUTS[k]}"/></marker></defs>' for k in range(2)]
-    parts += [link(xs[0][:2], h[:2]) for h in hs]
-    for k, yk in enumerate(ys):
-        parts += [link(h[:2], yk[:2]).replace(f'stroke="{INK}"', f'stroke="{OUTPUTS[k]}"').replace("url(#head)", f"url(#head{k})")
-                  for h in hs]
+    # the two outputs are color coded, their nodes and curves; the edges and hidden units in ink
+    parts = [link(xs[0][:2], h[:2]) for h in hs]
+    parts += [link(h[:2], yk[:2]) for yk in ys for h in hs]
     parts += [unit_node(*n[:2], n[2], n[3]) for n in xs + hs]
     parts += [unit_node(*yk[:2], yk[2], yk[3], OUTPUTS[k]) for k, yk in enumerate(ys)]
     return parts
