@@ -113,7 +113,7 @@ function draw() {
     ctx.clearRect(0, 0, W, H);
 
     // the three networks, small, at the top
-    const mw = Math.min(170, W / 5.5), mh = Math.min(70, H * 0.17), gap = (W - 3 * mw) / 4;
+    const mh = Math.min(76, H * 0.2), mw = mh, gap = (W - 3 * mw) / 4;   // square plots
     const my = 26;
     mini({ x0: gap, y0: my, w: mw, h: mh }, f, true, [["t", "first network  "], ["m", "y = f(x)"]]);
     mini({ x0: 2 * gap + mw, y0: my, w: mw, h: mh }, g, false, [["t", "second network  "], ["m", "y′ = g(y)"]]);

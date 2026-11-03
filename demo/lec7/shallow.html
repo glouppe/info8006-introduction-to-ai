@@ -300,8 +300,9 @@ function network(us, box) {
         hits.push({ x: hx(j), y: yh, r: Math.max(r, 12), j });
     });
     nodeAt(xc, yo, R, "y", OUT);
-    ctx.fillStyle = MUTED; ctx.font = "13px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
-    ctx.fillText(q <= 4 ? "dashed: negative weight" : `${q} hidden units`, xc, yo + R + 10);
+    ctx.fillStyle = MUTED; ctx.font = "12px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
+    if (q <= 4) { ctx.fillText("dashed: negative", xc, yo + R + 10); ctx.fillText("weight", xc, yo + R + 25); }
+    else ctx.fillText(`${q} hidden units`, xc, yo + R + 10);
 }
 
 function axes(box, ymin, ymax, title) {
@@ -319,7 +320,8 @@ function axes(box, ymin, ymax, title) {
         ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(+v.toFixed(1), x0 - 6, Y(v));
     }
     ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(x0, Y(0)); ctx.lineTo(x0 + w, Y(0)); ctx.stroke();
-    rich(title, x0, y0 - 14, 17, INK);
+    rich([["t", title[0]]], x0, y0 - 38, 17, INK);   // a word, then the formula below it
+    rich(title[1], x0, y0 - 14, 17, INK);
     rich([["m", "x"]], x0 + w + 10, Y(0), 17, INK);
     return { X, Y };
 }
@@ -356,25 +358,27 @@ function draw() {
     if (mode === "build") { us = units; c0 = c; }
     else { const fit = fitted(); us = fit.units; c0 = fit.c; f = fit.f; $("rmse").textContent = fit.rmse.toFixed(3); }
     const showUnits = mode === "build" || $("show-units").checked;
-    const left = Math.min(200, 0.24 * W), pad = 44;
-    const plotX = left + pad + 20, plotW = W - plotX - 30;
+    const left = Math.min(140, 0.17 * W);
+    // two square panels side by side, hidden units then output, centered vertically
+    const plotX = left + 44, gap = 70, s = Math.max(120, Math.min((W - plotX - 26 - gap) / 2, H - 150));
+    const py = (H - s) / 2 + 14;
     network(us, { x0: 8, y0: 0.225 * H, w: left - 10, h: 0.55 * H });
 
     // hidden units, top
-    const top = { x0: plotX, y0: 34, w: plotW, h: 0.36 * H - 34 };
+    const top = { x0: plotX, y0: py, w: s, h: s };
     const hmax = Math.max(1, ...us.map(u => Math.max(relu(u.b), relu(u.w + u.b))));
     const hTop = Math.min(3, Math.ceil(hmax * 2) / 2);
-    const A = axes(top, -0.15 * hTop, hTop, [["t", "hidden units   "], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") = "], ["t", "ReLU"], ["u", "("], ["m", "w_j"], ["m", "x"], ["u", " + "], ["m", "b_j"], ["u", ")"]]);
+    const A = axes(top, -0.15 * hTop, hTop, ["hidden units", [["m", "h_j"], ["u", " = "], ["t", "ReLU"], ["u", "("], ["m", "w_j"], ["m", "x"], ["u", " + "], ["m", "b_j"], ["u", ")"]]]);
     const fade = j => { ctx.globalAlpha = mode === "build" && j !== sel ? 0.3 : 1; };
     if (showUnits) us.forEach((u, j) => { fade(j); curve(x => relu(u.w * x + u.b), top, -0.15 * hTop, hTop, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? (mode === "build" && j === sel ? 3 : 2.2) : 1.2); });
     ctx.globalAlpha = 1;
     joints(us, top, A.Y, -0.15 * hTop, hTop);
 
     // output, bottom
-    const bottom = { x0: plotX, y0: 0.36 * H + 66, w: plotW, h: H - (0.36 * H + 66) - 30 };
+    const bottom = { x0: plotX + s + gap, y0: py, w: s, h: s };
     const ys = Array.from({ length: 101 }, (_, i) => output(us, c0, i / 100));
     const lim = Math.min(4, Math.max(1, Math.ceil(Math.max(...ys.map(Math.abs), ...(f ? [1] : [])) * 2) / 2));
-    const B = axes(bottom, -lim, lim, [["t", "output   "], ["m", "y"], ["u", "("], ["m", "x"], ["u", ") = Σ_j "], ["m", "v_j"], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") + "], ["m", "c"]]);
+    const B = axes(bottom, -lim, lim, ["output", [["m", "y"], ["u", " = Σ_j "], ["m", "v_j"], ["m", "h_j"], ["u", " + "], ["m", "c"]]]);
     joints(us, bottom, B.Y, -lim, lim);
     if (f) curve(f, bottom, -lim, lim, TARGET, 6);
     if (showUnits) us.forEach((u, j) => { fade(j); curve(x => u.v * relu(u.w * x + u.b), bottom, -lim, lim, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? (mode === "build" && j === sel ? 2.4 : 1.6) : 1, [6, 4]); });
