@@ -31,7 +31,9 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
   here, with the receptive field of one pooled value boxed back to the input;
 - `nn-conv1d.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg` and `nn-pooling.svg`, a 1d and a 2d
   convolution at two positions of the window, a 3x3x3 kernel on the cat's three channels, and
-  subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed.
+  subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed;
+- `nn-next-token.svg`, a language model predicting the next token twice on a sentence about Pacman,
+  with illustrative probabilities (no model is run).
 """
 
 import sys
@@ -798,6 +800,62 @@ def pooling():
         fig.text(x0 + (4 * c + 0.07 + 2 * c) / 2, 0.1 + 4 * ch + 0.06, title, ha="center", va="bottom", fontsize=17)
     save(fig, "nn-pooling")
 
+
+def next_token():
+    """A language model predicting the next token, twice, on a sentence of the course's world.
+    The probabilities are illustrative: no model is run."""
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+    steps = [(["Pacman", "runs", "away", "from", "the"], [("ghost", 0.52), ("ghosts", 0.21), ("wall", 0.08), ("maze", 0.05), ("power pellet", 0.03)], "ghost"),
+             (["Pacman", "runs", "away", "from", "the", "ghost"], [(".", 0.38), (",", 0.17), ("and", 0.14), ("Blinky", 0.09), ("who", 0.05)], ".")]
+    W, H = 13.4, 6.2
+    fig = plt.figure(figsize=(W, H))
+    ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, W); ax.set_ylim(0, H); ax.axis("off")
+    def box(x, y, w, h, fc="white", ec=INK, lw=1.4, r=0.12):
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad=0,rounding_size={r}", fc=fc, ec=ec, lw=lw))
+    def arrow(p, q, ls="-", color=INK, conn="arc3"):
+        ax.add_patch(FancyArrowPatch(p, q, arrowstyle="-|>", mutation_scale=16, lw=1.4, color=color, linestyle=ls,
+                                     shrinkA=0, shrinkB=0, connectionstyle=conn))
+    width = lambda tok: 0.13 * len(tok) + 0.34
+    row_end = 0.5 + sum(width(tok) + 0.1 for tok in steps[1][0])   # the longer sentence sets the layout
+    mx = row_end + 0.45
+    rows = [3.55, 0.45]
+    anchors = {}
+    for k, ((tokens, probs, chosen), y) in enumerate(zip(steps, rows)):
+        ax.text(0.05, y + 1.0, "ab"[k] + ")", fontsize=16, color=INK, va="center")
+        x = 0.5   # the tokens w_1, ..., w_{t-1}
+        for m, tok in enumerate(tokens):
+            w = width(tok)
+            new = k == 1 and m == len(tokens) - 1
+            box(x, y + 0.75, w, 0.5, fc="#eef3fa" if new else "white", ec=OUT if new else INK, lw=2 if new else 1.4)
+            ax.text(x + w / 2, y + 1.0, tok, ha="center", va="center", fontsize=14, color=INK)
+            ax.text(x + w / 2, y + 0.48, rf"$w_{{{m + 1}}}$", ha="center", va="center", fontsize=15, color=GREY)
+            if new:
+                anchors["new"] = (x + w / 2, y + 1.25)
+            x += w + 0.1
+        arrow((x, y + 1.0), (mx, y + 1.0))   # into the model
+        box(mx, y + 0.45, 2.35, 1.1, fc="#f4f7fb", ec=INK, lw=1.6)
+        ax.text(mx + 1.175, y + 1.22, "language model", ha="center", va="center", fontsize=14, color=INK)
+        ax.text(mx + 1.175, y + 0.78, rf"$P_\theta(w_{{{len(tokens) + 1}}} \mid w_{{1:{len(tokens)}}})$", ha="center", va="center", fontsize=15, color=INK)
+        arrow((mx + 2.35, y + 1.0), (mx + 2.8, y + 1.0))
+        bx, top = mx + 4.05, y + 1.72   # the distribution over the vocabulary: a classification
+        for n, (tok, pr) in enumerate(probs):
+            yy = top - n * 0.34
+            ax.text(bx - 0.1, yy, tok, ha="right", va="center", fontsize=13, color=INK)
+            ax.add_patch(plt.Rectangle((bx, yy - 0.12), 3.2 * pr, 0.24, color=OUT if tok == chosen else LIGHT))
+            ax.text(bx + 3.2 * pr + 0.08, yy, f"{pr:.2f}", ha="left", va="center", fontsize=12, color=GREY)
+            if k == 0:   # the arrow back starts below the list, so that it crosses nothing
+                anchors["chosen"] = (bx - 0.5, top - 5 * 0.34 - 0.2)
+        ax.text(bx - 0.1, top - 5 * 0.34, "…", ha="right", va="center", fontsize=13, color=GREY)
+    # the chosen token is appended to the sentence, and the model is applied again
+    # left along the gap between the two rows, then down into the appended token: it crosses no box
+    arrow(anchors["chosen"], anchors["new"], ls="--", color=GREY, conn="angle,angleA=180,angleB=90,rad=8")
+    ax.text((anchors["chosen"][0] + anchors["new"][0]) / 2, anchors["chosen"][1] - 0.22,
+            "append the chosen token, then predict again", ha="center", va="center", fontsize=13, color=GREY)
+    out = ROOT / "figures" / "lec7" / "nn-next-token.svg"
+    fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
+    plt.close(fig)
+    print(out.relative_to(ROOT))
+
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
     svg("nn-shallow", 1210, 500, shallow_net(), folder="lec7", scale=SCALE)
@@ -822,3 +880,4 @@ if __name__ == "__main__":
     conv_2d()
     conv_channels()
     pooling()
+    next_token()
