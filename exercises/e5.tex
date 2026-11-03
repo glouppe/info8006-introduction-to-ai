@@ -66,7 +66,7 @@
     \]
     where $\times$ is a pointwise multiplication of vectors and the \term{backward message} $\mathbf{b}_{k+1:t} = \mathbf{P}(\mathbf{e}_{k+1:t} \mid \mathbf{X}_k)$ is computed by backwards recursion, $\mathbf{b}_{k+1:t} = \text{backward}(\mathbf{b}_{k+2:t}, \mathbf{e}_{k+1})$. For an HMM, $\mathbf{b}_{k+1:t} = \mathbf{T} \mathbf{O}_{k+1} \mathbf{b}_{k+2:t}$, from the all-one vector $\mathbf{b}_{t+1:t}$ of size $S$.
 
-    \topic{Most likely explanation}
+    \topic[optional]{Most likely explanation}
     The \term{Viterbi algorithm} replaces the forward message with $\mathbf{m}_{1:t} = \max_{\mathbf{x}_{1:t-1}} \mathbf{P}(\mathbf{x}_{1:t-1}, \mathbf{X}_t \mid \mathbf{e}_{1:t})$, the probability of the most likely path to each state, computed from $\mathbf{m}_{1:1} = \mathbf{f}_{1:1}$ as
     \[
         \mathbf{m}_{1:t+1} \propto \mathbf{P}(\mathbf{e}_{t+1} \mid \mathbf{X}_{t+1}) \max_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) \mathbf{m}_{1:t}.
