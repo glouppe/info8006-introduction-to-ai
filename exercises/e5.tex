@@ -45,7 +45,7 @@
     \[
         \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{e}_{1:t+1}) \propto \mathbf{P}(\mathbf{e}_{t+1} \mid \mathbf{X}_{t+1}) \sum_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) P(\mathbf{x}_t \mid \mathbf{e}_{1:t}).
     \]
-    The proportionality hides the normalization constant $\alpha = 1/Z$, with $Z = P(\mathbf{e}_{t+1} \mid \mathbf{e}_{1:t})$. The belief state is a \term{forward message} $\mathbf{f}_{1:t}$, with $\mathbf{f}_{1:t+1} \propto \text{forward}(\mathbf{f}_{1:t}, \mathbf{e}_{t+1})$. For continuous variables, sums are replaced with integrals and probability mass functions with densities:
+    The proportionality hides a normalization constant, written $\alpha = 1/Z$, here with $Z = P(\mathbf{e}_{t+1} \mid \mathbf{e}_{1:t})$. The belief state is a \term{forward message} $\mathbf{f}_{1:t}$, with $\mathbf{f}_{1:t+1} \propto \text{forward}(\mathbf{f}_{1:t}, \mathbf{e}_{t+1})$. For continuous variables, sums are replaced with integrals and probability mass functions with densities:
     \[
         p(\mathbf{x}_{t+1} \mid \mathbf{e}_{1:t+1}) \propto p(\mathbf{e}_{t+1} \mid \mathbf{x}_{t+1}) \int p(\mathbf{x}_{t+1} \mid \mathbf{x}_t) p(\mathbf{x}_t \mid \mathbf{e}_{1:t}) \d{\mathbf{x}_t}.
     \]
@@ -65,7 +65,7 @@
     For each value $\mathbf{x}_{t+1}$, it records the maximizing predecessor $\psi_{t+1}(\mathbf{x}_{t+1}) = \arg \max_{\mathbf{x}_t} P(\mathbf{x}_{t+1} \mid \mathbf{x}_t) \mathbf{m}_{1:t}(\mathbf{x}_t)$. The most likely path ends in $\mathbf{x}_t^* = \arg \max_{\mathbf{x}_t} \mathbf{m}_{1:t}(\mathbf{x}_t)$ and is recovered backwards, $\mathbf{x}_k^* = \psi_{k+1}(\mathbf{x}_{k+1}^*)$.
 
     \topic{Hidden Markov models}
-    A Markov process with several state or evidence variables per time slice is a \term{dynamic Bayesian network}: the same slice of variables and the same arrows, repeated over time. A \term{hidden Markov model} (HMM) is a Markov process in which the state $\mathbf{X}_t = X_t$ and the evidence $\mathbf{E}_t = E_t$ are both single discrete random variables, with domains $D_{X_t} = \cbk{1, \ldots, S}$ and $D_{E_t} = \cbk{1, \ldots, R}$. The forward-backward algorithm then reduces to matrix-vector operations:
+    A Markov process unrolled over time as a Bayesian network, the same slice of variables and arrows repeated at every $t$, is a \term{dynamic Bayesian network}; a slice may hold several state and evidence variables. A \term{hidden Markov model} (HMM) is a Markov process in which the state $\mathbf{X}_t = X_t$ and the evidence $\mathbf{E}_t = E_t$ are both single discrete random variables, with domains $D_{X_t} = \cbk{1, \ldots, S}$ and $D_{E_t} = \cbk{1, \ldots, R}$. The forward-backward algorithm then reduces to matrix-vector operations:
     \begin{itemize}
         \item the prior $\mathbf{P}(X_0)$ becomes a column vector $\mathbf{f}_0 \in \mathbb{R}_+^S$;
         \item the transition model $\mathbf{P}(X_t \mid X_{t-1})$ becomes an $S \times S$ \term{transition matrix} $\mathbf{T}$ such that $\mathbf{T}_{ij} = P(X_t = j \mid X_{t-1} = i)$;
@@ -157,7 +157,7 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
         Keeping $E_2$, $E_4$, \ldots{} as unobserved (unshaded) nodes is equally valid: they sum out of every query.
     \end{solution}
 
-    \part Express, in terms of the HMM components, the distribution $\mathbf{P}(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
+    \part Express, in terms of the HMM components, the distribution $\mathbf{P}(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
 
     \begin{solution}
         Let $\mathbf{f}_{1:t} = \mathbf{P}(X_t \mid e_{1:t:2})$ be the forward message over the evidence observed up to $t$. Then
@@ -845,7 +845,7 @@ A monitoring program wants to know whether a server is cooled enough. Each day, 
     \item Let us assume a Markov process with hidden state variables $\mathbf{X}_t$, evidence variables $\mathbf{E}_t$, transition model $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{X}_t)$ and sensor model $\mathbf{P}(\mathbf{E}_{t} \mid \mathbf{X}_t)$. Which of the following is true?
     \begin{enumerate}[label=$\bigcirc$]
         \item The Bayes filter estimates $\mathbf{P}(\mathbf{X}_{1:t} \mid \mathbf{e}_{1:t})$.
-        \item Smoothing consists in computing $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{e}_{1:t+1})$ by pushing the belief state $\mathbf{P}(\mathbf{X}_t \mid \mathbf{e}_{1:t})$ forward through the transition model and then updating this new belief state with the evidence $\mathbf{e}_{t+1}$.
+        \item Smoothing consists of computing $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{e}_{1:t+1})$ by pushing the belief state $\mathbf{P}(\mathbf{X}_t \mid \mathbf{e}_{1:t})$ forward through the transition model and then updating this new belief state with the evidence $\mathbf{e}_{t+1}$.
         \item The Kalman filter computes the belief state exactly for non-linear transition models.
         \item \correct{The Viterbi algorithm computes the most likely sequence of state values $\mathbf{x}_{1:t}$ given the evidence $\mathbf{e}_{1:t}$.}
     \end{enumerate}
