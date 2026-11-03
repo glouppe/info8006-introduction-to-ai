@@ -436,7 +436,7 @@ class: middle
 # Shallow networks
 
 <br>
-.center.width-55[![](figures/lec7/nn-terminology.svg)]
+.center[![](figures/lec7/nn-terminology.svg)]
 
 A shallow network is a function $$f : \mathbb{R}^{d\_\text{in}} \to \mathbb{R}^{d\_\text{out}}$$ that maps multi-dimensional inputs $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ to multi-dimensional outputs $\mathbf{y} \in \mathbb{R}^{d\_\text{out}}$ through a hidden layer $\mathbf{h} = [h\_0, h\_1, ..., h\_{q-1}] \in \mathbb{R}^q$.
 
@@ -463,7 +463,7 @@ $$y = v\_{0} \sigma(w\_{0} x + b\_0) + v\_{1} \sigma(w\_{1} x + b\_1) + v\_{2} \
 where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$ are the model parameters and where the activation function $\sigma$ is $\text{ReLU}(\cdot) = \max(0, \cdot)$.
 
 <br>
-.center.width-90[![](figures/lec7/nn-shallow.svg)]
+.center[![](figures/lec7/nn-shallow.svg)]
 
 ---
 
@@ -533,7 +533,7 @@ y\_1 &= v\_{10} h\_0 + v\_{11} h\_1 + v\_{12} h\_2 + v\_{13} h\_3 + c\_1
 class: middle
 
 .grid[
-.kol-1-2[.center.width-80[![](figures/lec7/nn-two-outputs-net.svg)]]
+.kol-1-2[.center[![](figures/lec7/nn-two-outputs-net.svg)]]
 .kol-1-2[<br>.center.width-100[![](figures/lec7/nn-two-outputs-plot.svg)]]
 ]
 
@@ -549,7 +549,7 @@ class: middle
 
 To extend the network to multivariate inputs $\mathbf{x} = [x\_0, x\_1, ..., x\_{d\_{\text{in}}-1}]$, we extend the linear relations between the input and the hidden units. 
 
-.center.width-45[![](figures/lec7/nn-two-inputs.svg)]
+.center[![](figures/lec7/nn-two-inputs.svg)]
 
 For example, a network with two inputs $\mathbf{x} = [x\_0, x\_1]$ might have three hidden units $h\_0$, $h\_1$ and $h\_2$ defined as
 $$\begin{aligned}
@@ -580,7 +580,7 @@ h\_2' &= \sigma\left( w'\_{2} y + b'\_2 \right) \\\\
 y' &= v'\_{0} h\_0' + v'\_{1} h\_1' + v'\_{2} h\_2' + c'.
 \end{aligned}$$
 
-.center.width-50[![](figures/lec7/nn-concat-net.svg)]
+.center[![](figures/lec7/nn-concat-net.svg)]
 
 ---
 
@@ -608,7 +608,7 @@ class: middle
 
 Similarly, composing a multivariate shallow network with a shallow network further divides the input space into more linear regions.
 
-.center.width-60[![](figures/lec7/nn-two-layer-2d-net.svg)]
+.center[![](figures/lec7/nn-two-layer-2d-net.svg)]
 
 .center.width-90[![](figures/lec7/nn-two-layer-2d-plot.svg)]
 
@@ -623,7 +623,7 @@ Since the operation from $[h\_0, h\_1, h\_2]$ to $y$ is linear and the operation
 
 It follows that the composition of the two shallow networks is a special case of a deep network with two hidden layers.
 
-.center.width-70[![](figures/lec7/nn-deep.svg)]
+.center[![](figures/lec7/nn-deep.svg)]
 
 ---
 

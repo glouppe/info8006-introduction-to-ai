@@ -40,14 +40,19 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from draw_bn_diagrams import R, caption, label, link, math, svg   # noqa: E402
+from draw_bn_diagrams import R, caption, label, math, svg   # noqa: E402
+from draw_bn_diagrams import link as bn_link   # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 INK = "#2a2a2a"
 GREY = "#8a8a8a"
 LIGHT = "#d0d0d0"
 UNITS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"]   # the hidden units, as in the demo
-STROKE = 2.0
+STROKE = 2.6   # nodes and edges a little thicker than lecture 5's networks, at this smaller scale
+# Every network diagram of the deck, and the network of y given x of `draw_bn_diagrams.py`, has its
+# width and height scaled by SCALE, and the deck shows them at their natural size, without a width
+# class: nodes, labels and strokes then have one size on every slide (one unit shows as about 0.78 px).
+SCALE = 0.55
 DIV = LinearSegmentedColormap.from_list("div", ["#a5561a", "#d9822b", "#f3d2b1", "#ffffff", "#bcd0ea", "#356aaf", "#1f3f6b"])
 
 plt.rcParams.update({
@@ -69,6 +74,11 @@ plt.rcParams.update({
 })
 
 relu = lambda z: np.maximum(0, z)
+
+
+def link(p, q):
+    """An arrow from node to node, its tip on the outline, with the thicker stroke of these figures."""
+    return bn_link(p, q).replace('stroke-width="2"', f'stroke-width="{STROKE:g}"')
 
 # The shallow network of the demo: three units (w_j, b_j, v_j) and the offset c, on [0, 1].
 SHALLOW = [(1.0, -0.2, 1.2), (-1.5, 0.75, 0.8), (2.0, -1.6, -1.5)]
@@ -519,13 +529,13 @@ def lr_residuals():
 
 
 if __name__ == "__main__":
-    svg("nn-terminology", 660, 450, terminology(), folder="lec7")
-    svg("nn-shallow", 1210, 460, shallow_net(), folder="lec7")
-    svg("nn-two-outputs-net", 600, 460, two_outputs_net(), folder="lec7")
-    svg("nn-two-inputs", 620, 360, two_inputs_net(), folder="lec7")
-    svg("nn-concat-net", 800, 320, concat_net(), folder="lec7")
-    svg("nn-two-layer-2d-net", 800, 320, two_layer_2d_net(), folder="lec7")
-    svg("nn-deep", 720, 320, deep_net(), folder="lec7")
+    svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
+    svg("nn-shallow", 1210, 460, shallow_net(), folder="lec7", scale=SCALE)
+    svg("nn-two-outputs-net", 600, 460, two_outputs_net(), folder="lec7", scale=SCALE)
+    svg("nn-two-inputs", 620, 360, two_inputs_net(), folder="lec7", scale=SCALE)
+    svg("nn-concat-net", 800, 320, concat_net(), folder="lec7", scale=SCALE)
+    svg("nn-two-layer-2d-net", 800, 320, two_layer_2d_net(), folder="lec7", scale=SCALE)
+    svg("nn-deep", 720, 320, deep_net(), folder="lec7", scale=SCALE)
     functions()
     approximate()
     two_outputs()
