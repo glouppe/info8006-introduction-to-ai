@@ -138,7 +138,7 @@ class: middle
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-next-token.svg)]
+.center[![](figures/lec7/nn-next-token.svg)]
 
 .center[Language models predict the next token, a classification over the vocabulary (illustrative probabilities).]
 
@@ -163,7 +163,7 @@ class: middle
 
 .grid[
 .kol-1-5[<br>.center[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-70[![](figures/lec7/lr-gaussian-model.svg)]]
+.kol-4-5[.center[![](figures/lec7/lr-gaussian-model.svg)]]
 ]
 
 Linear regression models $p(y \mid \mathbf{x})$ as a linear Gaussian, as the sensor model of the Kalman filter (Lecture 6),
@@ -193,7 +193,7 @@ $$\mathcal{L}(\mathbf{w},b) = \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i 
 
 class: middle
 
-.center.width-40[![](figures/lec7/lr-residuals.svg)]
+.center[![](figures/lec7/lr-residuals.svg)]
 
 .center[
   
@@ -227,7 +227,7 @@ $$P(Y=1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x}+b),$$
 where the sigmoid activation function
 $\sigma(x) = \frac{1}{1 + \exp(-x)}$
 looks like a soft Heaviside step:
-.center.width-35[![](figures/lec7/sigmoid.svg)]
+.center[![](figures/lec7/sigmoid.svg)]
 
 ???
 
@@ -280,56 +280,56 @@ where $\alpha$ is the .bold[learning rate].
 
 class: center, middle
 
-.width-75[![](figures/lec7/gd-0.svg)]
+![](figures/lec7/gd-0.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-1.svg)]
+![](figures/lec7/gd-1.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-2.svg)]
+![](figures/lec7/gd-2.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-3.svg)]
+![](figures/lec7/gd-3.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-4.svg)]
+![](figures/lec7/gd-4.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-5.svg)]
+![](figures/lec7/gd-5.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-6.svg)]
+![](figures/lec7/gd-6.svg)
 
 ---
 
 count: false
 class: center, middle
 
-.width-75[![](figures/lec7/gd-7.svg)]
+![](figures/lec7/gd-7.svg)
 
 ---
 
@@ -467,7 +467,7 @@ where $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, 
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-functions.svg)]
+.center[![](figures/lec7/nn-functions.svg)]
 
 This shallow network defines a family of piecewise linear functions where the positions of the joints, the slopes and the heights of the functions are determined by the 10 parameters $w\_{0}$, $w\_{1}$, $w\_{2}$, $b\_0$, $b\_1$, $b\_2$, $v\_{0}$, $v\_{1}$, $v\_{2}$ and $c$.
 
@@ -498,7 +498,7 @@ Build a composition of \sum v_j ReLU(w_j x + b_j) to approximate any continuous 
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-approximate.svg)]
+.center[![](figures/lec7/nn-approximate.svg)]
 
 ---
 
@@ -532,7 +532,7 @@ class: middle
 
 .grid[
 .kol-1-2[.center[![](figures/lec7/nn-two-outputs-net.svg)]]
-.kol-1-2[<br>.center.width-100[![](figures/lec7/nn-two-outputs-plot.svg)]]
+.kol-1-2[<br>.center[![](figures/lec7/nn-two-outputs-plot.svg)]]
 ]
 
 a) With two output units, the network can model two functions of the input $x$. 
@@ -560,7 +560,7 @@ h\_2 &= \sigma\left( w\_{20} x\_0 + w\_{21} x\_1 + b\_2 \right).
 
 class: middle
 
-.center.width-95[![](figures/lec7/nn-buildup-2d.svg)]
+.center[![](figures/lec7/nn-buildup-2d.svg)]
 
 
 ---
@@ -595,7 +595,7 @@ class: middle
 
 With $\text{ReLU}$ activation functions, this network also describes a family of piecewise linear functions. However, each linear region defined by the hidden units of the first network is further divided by the hidden units of the second network.
 
-.center.width-90[![](figures/lec7/nn-concat.svg)]
+.center[![](figures/lec7/nn-concat.svg)]
 
 ---
 
@@ -617,7 +617,7 @@ Similarly, composing a multivariate shallow network with a shallow network furth
 
 .center[![](figures/lec7/nn-two-layer-2d-net.svg)]
 
-.center.width-90[![](figures/lec7/nn-two-layer-2d-plot.svg)]
+.center[![](figures/lec7/nn-two-layer-2d-plot.svg)]
 
 
 ---
@@ -655,7 +655,7 @@ $$y = v\_0 h\_0' + v\_1 h\_1' + v\_2 h\_2' + c.$$
 
 class: middle
 
-.center.width-90[![](figures/lec7/nn-deep-buildup.svg)]
+.center[![](figures/lec7/nn-deep-buildup.svg)]
 
 ---
 
@@ -698,7 +698,7 @@ A deep network with $K$ hidden layers, each with $q$ hidden units, can create up
 
 <br>
 
-.center.width-70[![](figures/lec7/nn-regions.svg)]
+.center[![](figures/lec7/nn-regions.svg)]
 
 ---
 
@@ -719,7 +719,7 @@ The choice of the activation function $\sigma$ is crucial for the expressiveness
 
 class: middle
 
-.center.width-45[![](figures/lec7/nn-activations.svg)]
+.center[![](figures/lec7/nn-activations.svg)]
 
 ---
 
@@ -861,7 +861,7 @@ However, most machine learning libraries call it convolution.
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv1d.svg)]
+.center[![](figures/lec7/nn-conv1d.svg)]
 
 <br>
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
@@ -885,7 +885,7 @@ Draw: Explain the intuition behind the sum of element-wise products which reduce
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv2d.svg)]
+.center[![](figures/lec7/nn-conv2d.svg)]
 
 .center[2d convolution with a kernel $\omega  \in \mathbb{R}^{3 \times 3}$ applied to the input signal $\mathbf{x}$.]
 
@@ -904,7 +904,7 @@ $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{c=0}^{C-1}\sum\_{n=0}^{h-1} \sum
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv-channels.svg)]
+.center[![](figures/lec7/nn-conv-channels.svg)]
 
 .center[2d convolution applied to a color image with three channels (R, G, B).]
 
@@ -933,7 +933,7 @@ $$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.$$
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-pooling.svg)]
+.center[![](figures/lec7/nn-pooling.svg)]
 
 .center[Subsampling, max-pooling and average-pooling with a pooling area of size $2 \times 2$.]
 
@@ -953,7 +953,7 @@ A convolutional neural network (CNN) is a deep neural network that uses convolut
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv-pattern.svg)]
+.center[![](figures/lec7/nn-conv-pattern.svg)]
 
 .center[Interleaving convolutional and pooling layers enables the network to learn hierarchical features from local to global patterns.]
 

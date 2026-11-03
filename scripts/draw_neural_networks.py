@@ -36,6 +36,7 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
   with illustrative probabilities (no model is run).
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -97,9 +98,26 @@ C = 0.1
 X = np.linspace(0, 1, 801)
 
 
+
+# Every plot of the deck is shown at its natural size, without a width class, and has its width and
+# height scaled by PLOT_SCALE: text and lines then have one size on every slide, the fonts being the same
+# in points in every figure. (The network diagrams use SCALE, for the same reason.)
+PLOT_SCALE = 0.6
+
+
+def rescale(path):
+    svg_text = path.read_text(encoding="utf-8")
+    def fix(m):
+        return f'{m.group(1)}="{float(m.group(2)) * PLOT_SCALE:.2f}pt"'
+    i = svg_text.index("<svg")
+    j = svg_text.index(">", i)
+    tag = re.sub(r'(width|height)="([\d.]+)pt"', fix, svg_text[i:j])
+    path.write_text(svg_text[:i] + tag + svg_text[j:], encoding="utf-8")
+
 def save(fig, name):
     out = ROOT / "figures" / "lec7" / f"{name}.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
+    rescale(out)
     plt.close(fig)
     print(out.relative_to(ROOT))
 
@@ -651,6 +669,7 @@ def conv_pattern():
     bracket(cols[4] - S * 0.62 * asp / 2, cols[4] + S * 0.62 * asp / 2 + 0.02, "pooling layer")
     out = ROOT / "figures" / "lec7" / "nn-conv-pattern.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
+    rescale(out)
     plt.close(fig)
     print(out.relative_to(ROOT))
 
@@ -808,7 +827,7 @@ def next_token():
     steps = [(["Pacman", "runs", "away", "from", "the"], [("ghost", 0.52), ("ghosts", 0.21), ("wall", 0.08), ("maze", 0.05), ("power pellet", 0.03)], "ghost"),
              (["Pacman", "runs", "away", "from", "the", "ghost"], [(".", 0.38), (",", 0.17), ("and", 0.14), ("Blinky", 0.09), ("who", 0.05)], ".")]
     W, H = 13.4, 6.2
-    fig = plt.figure(figsize=(W, H))
+    fig = plt.figure(figsize=(0.92 * W, 0.92 * H))   # drawn a little smaller, to fit the slide at PLOT_SCALE
     ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, W); ax.set_ylim(0, H); ax.axis("off")
     def box(x, y, w, h, fc="white", ec=INK, lw=1.4, r=0.12):
         ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad=0,rounding_size={r}", fc=fc, ec=ec, lw=lw))
@@ -858,6 +877,7 @@ def next_token():
             fontsize=13, color=GREY)
     out = ROOT / "figures" / "lec7" / "nn-next-token.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
+    rescale(out)
     plt.close(fig)
     print(out.relative_to(ROOT))
 

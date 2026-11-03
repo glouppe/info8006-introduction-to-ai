@@ -14,6 +14,7 @@ paths, so the SVGs need no font. The frames share their axes and size, so that t
 through them.
 """
 
+import re
 from pathlib import Path
 
 import matplotlib
@@ -48,9 +49,26 @@ plt.rcParams.update({
 })
 
 
+
+# Every plot of the deck is shown at its natural size, without a width class, and has its width and
+# height scaled by PLOT_SCALE: text and lines then have one size on every slide, the fonts being the same
+# in points in every figure. (The network diagrams use SCALE, for the same reason.)
+PLOT_SCALE = 0.6
+
+
+def rescale(path):
+    svg_text = path.read_text(encoding="utf-8")
+    def fix(m):
+        return f'{m.group(1)}="{float(m.group(2)) * PLOT_SCALE:.2f}pt"'
+    i = svg_text.index("<svg")
+    j = svg_text.index(">", i)
+    tag = re.sub(r'(width|height)="([\d.]+)pt"', fix, svg_text[i:j])
+    path.write_text(svg_text[:i] + tag + svg_text[j:], encoding="utf-8")
+
 def save(fig, name, tight=True):
     out = ROOT / "figures" / "lec7" / f"{name}.svg"
     fig.savefig(out, bbox_inches="tight" if tight else None, transparent=True, metadata={"Date": None})
+    rescale(out)
     plt.close(fig)
     print(out.relative_to(ROOT))
 
