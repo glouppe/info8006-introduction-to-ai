@@ -111,7 +111,7 @@ From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \ma
 As in Lectures 4 to 6, the model is a density $p$ for continuous $y$ and a probability $P$ for discrete $y$.
 
 ]
-.kol-1-3[<br><br>.center.width-30[![](figures/lec7/latent.svg)]]
+.kol-1-3[<br><br>.center[![](figures/lec7/latent.svg)]]
 ]
 
 ---
@@ -164,7 +164,7 @@ Do it on the blackboard.
 class: middle
 
 .grid[
-.kol-1-5[<br>.center.width-50[![](figures/lec7/latent.svg)]]
+.kol-1-5[<br>.center[![](figures/lec7/latent.svg)]]
 .kol-4-5[.center.width-50[![](figures/lec7/lr-gaussian.svg)]]
 ]
 

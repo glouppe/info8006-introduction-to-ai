@@ -18,7 +18,9 @@ Writes to `figures/lec5/`:
   and inactive triples), `bn-alarm.svg` and `ve-ordering.svg`;
 - `parameterized-bn.svg` and `caseb-bayesian.svg`, the candy networks with their parameters.
 
-It also writes lecture 7's `figures/lec7/latent.svg`, the model of y given x, at the same scale.
+It also writes lecture 7's `figures/lec7/latent.svg`, the model of y given x. Lecture 7 shows it at its
+natural size, without a width class, so that it has the same size on every slide; its width and height
+are scaled by 0.68 to match the scale of lecture 5.
 
 Helpers and fonts are those of `draw_game_trees.py`; `draw_temporal_networks.py` reuses these.
 """
@@ -140,12 +142,12 @@ def P(*pieces):
     return [("P(", "")] + list(pieces) + [(")", "")]
 
 
-def svg(name, width, height, parts, folder="lec5"):
+def svg(name, width, height, parts, folder="lec5", scale=1):
     head = (f'<marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" '
             f'orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{INK}"/></marker>')
     out = ROOT / "figures" / folder / f"{name}.svg"
-    out.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" '
-                   f'height="{height}"><defs>{fonts()}{head}</defs>{"".join(parts)}</svg>\n', encoding="utf-8")
+    out.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{scale * width:g}" '
+                   f'height="{scale * height:g}"><defs>{fonts()}{head}</defs>{"".join(parts)}</svg>\n', encoding="utf-8")
     print(f"{out.relative_to(ROOT)}  {width}x{height}")
 
 
@@ -347,4 +349,4 @@ if __name__ == "__main__":
     svg("ve-ordering", 600, 350, ve_ordering())
     svg("parameterized-bn", 720, 420, parameterized())
     svg("caseb-bayesian", 640, 445, bayesian_learning())
-    svg("latent", 100, 230, supervised(), folder="lec7")
+    svg("latent", 100, 230, supervised(), folder="lec7", scale=0.68)
