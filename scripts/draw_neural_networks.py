@@ -843,13 +843,13 @@ def next_token():
             ax.text(bx - 0.1, yy, tok, ha="right", va="center", fontsize=13, color=INK)
             ax.add_patch(plt.Rectangle((bx, yy - 0.12), 3.2 * pr, 0.24, color=OUT if tok == chosen else LIGHT))
             ax.text(bx + 3.2 * pr + 0.08, yy, f"{pr:.2f}", ha="left", va="center", fontsize=12, color=GREY)
-            if k == 0:   # the arrow back starts below the list, so that it crosses nothing
-                anchors["chosen"] = (bx - 0.5, top - 5 * 0.34 - 0.2)
+            if k == 0 and tok == chosen:   # the arrow back starts next to the chosen token
+                anchors["chosen"] = (bx - 0.18 - 0.115 * len(tok), yy)
         ax.text(bx - 0.1, top - 5 * 0.34, "…", ha="right", va="center", fontsize=13, color=GREY)
     # the chosen token is appended to the sentence, and the model is applied again
-    # left along the gap between the two rows, then down into the appended token: it crosses no box
+    # from the chosen token, left above the first model, then down into the appended token
     arrow(anchors["chosen"], anchors["new"], ls="--", color=GREY, conn="angle,angleA=180,angleB=90,rad=8")
-    ax.text((anchors["chosen"][0] + anchors["new"][0]) / 2, anchors["chosen"][1] - 0.22,
+    ax.text((anchors["chosen"][0] + anchors["new"][0]) / 2, anchors["chosen"][1] + 0.2,
             "append the chosen token, then predict again", ha="center", va="center", fontsize=13, color=GREY)
     out = ROOT / "figures" / "lec7" / "nn-next-token.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
