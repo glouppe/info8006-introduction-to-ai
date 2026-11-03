@@ -58,13 +58,14 @@
     where $\times$ is a pointwise multiplication of vectors and the \term{backward message} $\mathbf{b}_{k+1:t} = \mathbf{P}(\mathbf{e}_{k+1:t} \mid \mathbf{X}_k)$ is computed by backwards recursion, $\mathbf{b}_{k+1:t} = \text{backward}(\mathbf{b}_{k+2:t}, \mathbf{e}_{k+1})$.
 
     \topic{Most likely explanation}
-    The \term{Viterbi algorithm} replaces the forward message with $\mathbf{m}_{1:t} = \max_{\mathbf{x}_{1:t-1}} \mathbf{P}(\mathbf{x}_{1:t-1}, \mathbf{X}_t \mid \mathbf{e}_{1:t})$, the probability of the most likely path to each state, computed as
+    The \term{Viterbi algorithm} replaces the forward message with $\mathbf{m}_{1:t} = \max_{\mathbf{x}_{1:t-1}} \mathbf{P}(\mathbf{x}_{1:t-1}, \mathbf{X}_t \mid \mathbf{e}_{1:t})$, the probability of the most likely path to each state, computed from $\mathbf{m}_{1:1} = \mathbf{f}_{1:1}$ as
     \[
         \mathbf{m}_{1:t+1} \propto \mathbf{P}(\mathbf{e}_{t+1} \mid \mathbf{X}_{t+1}) \max_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) \mathbf{m}_{1:t}.
     \]
+    For each value $\mathbf{x}_{t+1}$, it records the maximizing predecessor $\psi_{t+1}(\mathbf{x}_{t+1}) = \arg \max_{\mathbf{x}_t} P(\mathbf{x}_{t+1} \mid \mathbf{x}_t) \mathbf{m}_{1:t}(\mathbf{x}_t)$. The most likely path ends in $\mathbf{x}_t^* = \arg \max_{\mathbf{x}_t} \mathbf{m}_{1:t}(\mathbf{x}_t)$ and is recovered backwards, $\mathbf{x}_k^* = \psi_{k+1}(\mathbf{x}_{k+1}^*)$.
 
     \topic{Hidden Markov models}
-    A \term{hidden Markov model} (HMM) is a Markov process in which the state $\mathbf{X}_t = X_t$ and the evidence $\mathbf{E}_t = E_t$ are both single discrete random variables, with domains $D_{X_t} = \cbk{1, \ldots, S}$ and $D_{E_t} = \cbk{1, \ldots, R}$. The forward-backward algorithm then reduces to matrix-vector operations:
+    A Markov process with several state or evidence variables per time slice is a \term{dynamic Bayesian network}: the same slice of variables and the same arrows, repeated over time. A \term{hidden Markov model} (HMM) is a Markov process in which the state $\mathbf{X}_t = X_t$ and the evidence $\mathbf{E}_t = E_t$ are both single discrete random variables, with domains $D_{X_t} = \cbk{1, \ldots, S}$ and $D_{E_t} = \cbk{1, \ldots, R}$. The forward-backward algorithm then reduces to matrix-vector operations:
     \begin{itemize}
         \item the prior $\mathbf{P}(X_0)$ becomes a column vector $\mathbf{f}_0 \in \mathbb{R}_+^S$;
         \item the transition model $\mathbf{P}(X_t \mid X_{t-1})$ becomes an $S \times S$ \term{transition matrix} $\mathbf{T}$ such that $\mathbf{T}_{ij} = P(X_t = j \mid X_{t-1} = i)$;
@@ -76,7 +77,7 @@
         \mathbf{f}_{1:t+1} & = \alpha \mathbf{O}_{t+1} \mathbf{T}^T \mathbf{f}_{1:t}, \\
         \mathbf{b}_{k+1:t} & = \mathbf{T} \mathbf{O}_{k+1} \mathbf{b}_{k+2:t},
     \end{align*}
-    where $\mathbf{b}_{t+1:t}$ is an all-one vector of size $S$.
+    where $\mathbf{b}_{t+1:t}$ is an all-one vector of size $S$. Several evidence variables, conditionally independent given the state, merge into one evidence variable whose values are their combinations, with probabilities the products of theirs.
 
     \topic[optional]{Stationary distribution}
     Without new evidence, the predicted distribution may converge, as $k$ grows, to a \term{stationary distribution}: a fixed point $\mathbf{P}(\mathbf{X}_{t+1}) = \mathbf{P}(\mathbf{X}_t)$ of the predict step $\mathbf{P}(\mathbf{X}_{t+1}) = \sum_{\mathbf{x}_t} \mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t) P(\mathbf{x}_t)$. For an HMM, it is a vector $\mathbf{f}$ such that $\mathbf{f} = \mathbf{T}^T \mathbf{f}$.
@@ -93,7 +94,7 @@
     \[
         p\mat{\mathbf{x} \\ \mathbf{y}} = \N\left(\mat{\mathbf{x} \\ \mathbf{y}} \,\middle|\, \mat{\mathbf{a} \\ \mathbf{b}}, \mat{\mathbf{A} & \mathbf{C} \\ \mathbf{C}^T & \mathbf{B}}\right),
     \]
-    then the marginal and conditional distributions of $\mathbf{x}$ and $\mathbf{y}$ are given by
+    then the marginal and conditional distributions of $\mathbf{x}$ and $\mathbf{y}$ are given by the following identities, whose letters are generic (they are not the matrices of the HMM or of the Kalman filter):
     \begin{align*}
         p(\mathbf{x}) & = \N(\mathbf{x} \mid \mathbf{a}, \mathbf{A}), \\
         p(\mathbf{y}) & = \N(\mathbf{y} \mid \mathbf{b}, \mathbf{B}), \\
@@ -112,23 +113,27 @@
         p(\mathbf{e}_t \mid \mathbf{x}_t) & = \N(\mathbf{e}_t \mid \mathbf{H} \mathbf{x}_t + \mathbf{d}, \mathbf{R}).
     \end{align*}
     Under these assumptions, the predict and update steps both yield Gaussian distributions, $p(\mathbf{x}_{t+1} \mid \mathbf{e}_{1:t}) = \N(\mathbf{x}_{t+1} \mid \bm{\mu}_{t+1}^-, \bm{\Sigma}_{t+1}^-)$ and $p(\mathbf{x}_{t+1} \mid \mathbf{e}_{1:t+1}) = \N(\mathbf{x}_{t+1} \mid \bm{\mu}_{t+1}, \bm{\Sigma}_{t+1})$, whose parameters are derived in closed form with the Gaussian identities above.
+
+    \topic{Particle filter}
+    When the models are not linear Gaussian, a \term{particle filter} approximates $p(\mathbf{x}_t \mid \mathbf{e}_{1:t})$ with $N$ samples $\mathbf{x}_t^1, \ldots, \mathbf{x}_t^N$, the \term{particles}. Each step propagates every particle through the transition model, $\mathbf{x}_{t+1}^i \sim p(\mathbf{x}_{t+1} \mid \mathbf{x}_t^i)$, weights it by $w^i = p(\mathbf{e}_{t+1} \mid \mathbf{x}_{t+1}^i)$, then resamples $N$ particles with probabilities proportional to the weights.
 \end{recap}
 
-\begin{exercises}[1, 2]
+\begin{exercises}[1 and 3 (November 5), 4 and 5 with the Kalman notebook (November 12)][2 (d)--(e)]
 
 \titledquestion{Load of a shared server \source{Exam, January 2023}}
 
 A scheduling program submits jobs to a shared compute server, whose load varies over time. Each job runs under either a heavy or a light load. From past logs, the program knows that if a job runs under a heavy load, there is a 40\% chance that the next job also runs under a heavy load. If a job runs under a light load, there is a 70\% chance that the next job also runs under a light load. The program cannot see the load, but it sees the response time of each job, which is either fast, normal or slow. If the load is heavy, the response time is fast with probability 20\% and slow with probability 60\%. If the load is light, it is fast with probability 50\% and slow with probability 30\%.
 
 \begin{parts}
-    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{heavy}, \allowbreak \texttt{light}\}$ is the load under which the $t$-th job runs and the evidence $E_t \in \{\texttt{fast}, \allowbreak \texttt{normal}, \allowbreak \texttt{slow}\}$ is its response time.
+    \part Define the components of a hidden Markov model (HMM), where the state $X_t \in \{\texttt{heavy}, \allowbreak \texttt{light}\}$ is the load under which the $t$-th job runs and the evidence $E_t \in \{\texttt{fast}, \allowbreak \texttt{normal}, \allowbreak \texttt{slow}\}$ is its response time. Before the first job, the program has no information about the load, so that the prior $\mathbf{P}(X_0)$ is uniform.
 
     \begin{solution}
-        \begin{align*}
-            f_0 = P(X_0) & = \mat{0.5 \\ 0.5} \\
-            T = P(X_t \mid X_{t-1}) & = \mat{0.4 & 0.6 \\ 0.3 & 0.7} \\
-            B = P(E_t \mid X_t) & = \mat{0.2 & 0.2 & 0.6 \\ 0.5 & 0.2 & 0.3}
-        \end{align*}
+        With the states in the order (\texttt{heavy}, \texttt{light}) and the evidence values in the order (\texttt{fast}, \texttt{normal}, \texttt{slow}), the prior vector, the transition matrix $\mathbf{T}_{ij} = P(X_t = j \mid X_{t-1} = i)$ and the sensor matrix $\mathbf{B}_{ij} = P(E_t = j \mid X_t = i)$ are
+        \[
+            \mathbf{f}_0 = \mat{0.5 \\ 0.5}, \quad
+            \mathbf{T} = \mat{0.4 & 0.6 \\ 0.3 & 0.7}, \quad
+            \mathbf{B} = \mat{0.2 & 0.2 & 0.6 \\ 0.5 & 0.2 & 0.3}.
+        \]
     \end{solution}
 
     \part At some point, the server stops reporting the response time of every other job (the 2nd, the 4th, \ldots), so that the program only observes the 1st, 3rd, 5th, \ldots{} jobs. Sketch a Bayesian network describing this new process.
@@ -149,52 +154,44 @@ A scheduling program submits jobs to a shared compute server, whose load varies 
                 }
             \end{tikzpicture}
         \end{center}
+        Keeping $E_2$, $E_4$, \ldots{} as unobserved (unshaded) nodes is equally valid: they sum out of every query.
     \end{solution}
 
-    \part Express, in terms of the HMM components, the distribution $P(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
+    \part Express, in terms of the HMM components, the distribution $\mathbf{P}(X_t \mid e_{1:t:2})$ of the load for the $t$-th job given the observations $e_{1:t:2}$ of every other job. Note that, $e_{1:6:2} = (e_1, e_3, e_5)$ and $e_{1:7:2} = (e_1, e_3, e_5, e_7)$. Separate the cases where $t$ is even and odd.
 
     \begin{solution}
-        Denoting $f_t = P(X_t \mid e_{1:t:2})$,
+        Let $\mathbf{f}_{1:t} = \mathbf{P}(X_t \mid e_{1:t:2})$ be the forward message over the evidence observed up to $t$. Then
         \begin{align*}
-            f_{2n} & = T^T \, f_{2n-1} \\
-            f_{2n + 1} & = \alpha \, O_{2n+1} \, T^T \, f_{2n}
+            \mathbf{f}_{1:2n} & = \mathbf{T}^T \mathbf{f}_{1:2n-1}, \\
+            \mathbf{f}_{1:2n+1} & = \alpha \, \mathbf{O}_{2n+1} \mathbf{T}^T \mathbf{f}_{1:2n}:
         \end{align*}
-        The two formulae above can be readily derived from an example. For $2n = 4$:
+        at even $t$, there is no evidence and only the predict step remains. Both follow from the Bayes filter. For $t = 4$, by the Markov assumption,
+        \[
+            \mathbf{P}(X_4 \mid e_1, e_3) = \sum_{x_3} \mathbf{P}(X_4 \mid x_3, e_1, e_3) P(x_3 \mid e_1, e_3) = \sum_{x_3} \mathbf{P}(X_4 \mid x_3) P(x_3 \mid e_1, e_3),
+        \]
+        that is, $\mathbf{f}_{1:4, j} = \sum_i \mathbf{T}_{ij} \mathbf{f}_{1:3, i}$ for every $j$, or $\mathbf{f}_{1:4} = \mathbf{T}^T \mathbf{f}_{1:3}$. For $t = 3$, by Bayes' rule, then the sensor Markov and the Markov assumptions,
         \begin{align*}
-            \forall x_4:\, P(X_4 = x_4 \mid e_{1,3}) & = \sum_{x_3} P(X_4 = x_4 \mid X_3 = x_3, e_{1,3}) P(X_3 = x_3 \mid e_{1,3}) \\
-            & = \sum_{x_3} P(X_4 = x_4 \mid X_3 = x_3) P(X_3 = x_3 \mid e_{1,3}) \\
-            & \qquad \text{(Under the Markov assumption)} \\
-            \Leftrightarrow \forall j: f_{4,j} & = \sum_u T_{u,j} f_{3,u} \\
-            & = \sum_u (T^T)_{j,u} f_{3,u} \\
-            \Leftrightarrow f_4 = T^T f_3
+            \mathbf{P}(X_3 \mid e_1, e_3) & = \alpha \, \mathbf{P}(e_3 \mid X_3, e_1) \mathbf{P}(X_3 \mid e_1) \\
+            & = \alpha \, \mathbf{P}(e_3 \mid X_3) \sum_{x_2} \mathbf{P}(X_3 \mid x_2) P(x_2 \mid e_1),
         \end{align*}
-
-        For $2n+1 = 3$:
-        \begin{align*}
-            \forall x_3:\, P(X_3 = x_3 \mid e_{1,3}) & = \alpha P(e_3 \mid X_3 = x_3, e_1) P(X_3 = x_3 \mid e_1) \\
-            & \qquad \text{(As $P(A \mid B,C) P(B \mid C) = P(B \mid A,C) P(A \mid C)$)} \\
-            & = \alpha P(e_3 \mid X_3 = x_3) P(X_3 = x_3 \mid e_1) \\
-            & \qquad \text{(Under the Markov assumption)} \\
-            & = \alpha P(e_3 \mid X_3 = x_3) \sum_{x_2} P(X_3 = x_3 \mid X_2 = x_2, e_1) P(X_2 = x_2 \mid e_1) \\
-            & = \alpha P(e_3 \mid X_3 = x_3) \sum_{x_2} P(X_3 = x_3 \mid X_2 = x_2) P(X_2 = x_2 \mid e_1) \\
-            & \qquad \text{(Markov assumption)} \\
-            \Leftrightarrow \forall i: \, f_{3,i} & = \alpha B_{i,e_3} \sum_u T_{u,i} f_{2,u} \\
-            & = \alpha B_{i,e_3} \sum_u (T^T)_{i,u} f_{2,u} \\
-            & = \alpha \sum_j O_{3,i,j} \sum_u (T^T)_{j,u} f_{2,u} \\
-            & \qquad \text{(As $O_3$ is a diagonal matrix )} \\
-            \Leftrightarrow f_3 = \alpha O_3 T^T f_2
-        \end{align*}
+        that is, $\mathbf{f}_{1:3, j} = \alpha \, \mathbf{B}_{j e_3} \sum_i \mathbf{T}_{ij} \mathbf{f}_{1:2, i}$ for every $j$, or $\mathbf{f}_{1:3} = \alpha \, \mathbf{O}_3 \mathbf{T}^T \mathbf{f}_{1:2}$, since the observation matrix $\mathbf{O}_3$ is diagonal with entries $\mathbf{B}_{j e_3}$.
     \end{solution}
 
     \part Given the observations $e_{1:3:2} = (e_1, e_3) = (\texttt{slow}, \texttt{fast})$, compute the probability that the 3rd job runs under a heavy load.
 
     \begin{solution}
         \begin{align*}
-            f_1 & = \alpha_1 \, O_1 \, T^T f_0 = \alpha_1 \mat{0.6 & 0 \\ 0 & 0.3} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5 \\ 0.5} \approx \mat{0.5185 \\ 0.4815} \\
-            f_2 & = T^T f_1 = \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5185 \\ 0.4815} \approx \mat{0.3519 \\ 0.6481} \\
-            f_3 & = \alpha_3 \, O_3 \, T^T f_2 = \alpha_3 \mat{0.2 & 0 \\ 0 & 0.5} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.3519 \\ 0.6481} \approx \mat{0.1678 \\ 0.8322}
+            \mathbf{f}_{1:1} & = \alpha \, \mathbf{O}_1 \mathbf{T}^T \mathbf{f}_0 = \alpha \mat{0.6 & 0 \\ 0 & 0.3} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5 \\ 0.5} \approx \mat{0.5185 \\ 0.4815} \\
+            \mathbf{f}_{1:2} & = \mathbf{T}^T \mathbf{f}_{1:1} = \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.5185 \\ 0.4815} \approx \mat{0.3519 \\ 0.6481} \\
+            \mathbf{f}_{1:3} & = \alpha \, \mathbf{O}_3 \mathbf{T}^T \mathbf{f}_{1:2} = \alpha \mat{0.2 & 0 \\ 0 & 0.5} \mat{0.4 & 0.3 \\ 0.6 & 0.7} \mat{0.3519 \\ 0.6481} \approx \mat{0.1678 \\ 0.8322}
         \end{align*}
         Finally, $P(X_3 = \texttt{heavy} \mid e_{1:3:2}) \approx 0.1678$.
+    \end{solution}
+
+    \part Without any observation, which fraction of the jobs runs under a heavy load in the long run?
+
+    \begin{solution}
+        This is the stationary distribution $\mathbf{f} = \mathbf{T}^T \mathbf{f}$. With $\mathbf{f} = \mat{h & 1 - h}^T$, the first row reads $h = 0.4 \, h + 0.3 \, (1 - h)$, hence $h = 1/3$: in the long run, one job in three runs under a heavy load, whatever the load of the first job.
     \end{solution}
 \end{parts}
 
@@ -208,14 +205,15 @@ The robot's model assumes that from one day $t - 1$ to the next $t$, the chances
     \part The robot represents the umbrella world as a Markov model. What formal assumptions correspond to these beliefs?
 
     \begin{solution}
-        The first belief describes the umbrella world as a \emph{first-order Markov process}, such that
-        \begin{equation*}
-            P(R_t \mid R_{1:t-1}) = P(R_t \mid R_{t-1}),
-        \end{equation*}
-        \ie{} $R_t$ is independent from $R_{1:t - 2}$ given $R_{t-1}$. The second belief is equivalent to a \emph{first-order sensor Markov assumption}, implying that
-        \begin{equation*}
-            P(U_t \mid R_{1:t}, U_{1:t-1}) = P(U_t \mid R_{t}).
-        \end{equation*}
+        The first belief describes the umbrella world as a \emph{first-order Markov process},
+        \[
+            \mathbf{P}(R_t \mid R_{0:t-1}) = \mathbf{P}(R_t \mid R_{t-1}),
+        \]
+        \ie{} $R_t$ is independent of $R_{0:t-2}$ given $R_{t-1}$. The second belief is the \emph{sensor Markov assumption},
+        \[
+            \mathbf{P}(U_t \mid R_{0:t}, U_{1:t-1}) = \mathbf{P}(U_t \mid R_t).
+        \]
+        Both beliefs hold with the same numbers for every day $t$: this is the \emph{stationarity assumption}.
     \end{solution}
 
     \part Sketch a Bayesian network structure describing the umbrella world and provide the transition and sensor models.
@@ -264,63 +262,76 @@ The robot's model assumes that from one day $t - 1$ to the next $t$, the chances
                 \end{tabular}
             \end{minipage}
         \end{center}
-        This corresponds to the following transition and sensor matrices
+        With the states and the evidence values in the order (true, false), the transition and sensor matrices are
         \[
-            T = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \ \ B = \mat{0.9 & 0.1 \\ 0.2 & 0.8} .
+            \mathbf{T} = \mat{0.7 & 0.3 \\ 0.3 & 0.7}, \quad \mathbf{B} = \mat{0.9 & 0.1 \\ 0.2 & 0.8}.
         \]
     \end{solution}
 
-    \part Express the distributions $P(R_{t + 1} \mid R_{t-1})$, $P(U_t \mid R_{t-1})$ and $P(R_t \mid R_{t-1}, U_t)$ in terms of the transition and sensor models.
+    \part Express the distributions $\mathbf{P}(R_{t + 1} \mid R_{t-1})$, $\mathbf{P}(U_t \mid R_{t-1})$ and $\mathbf{P}(R_t \mid R_{t-1}, U_t)$ in terms of the transition and sensor models.
 
     \begin{solution}
+        Summing over $r_t$, and with the sensor Markov assumption for the second,
         \begin{align*}
-            P(R_{t + 1} \mid R_{t-1}) & = \sum_{r_t} P(R_{t + 1} \mid r_t) P(r_t \mid R_{t-1}) \\
-            & = T T \\
-            & = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{0.7 & 0.3 \\ 0.3 & 0.7} = \mat{0.58 & 0.42 \\ 0.42 & 0.58} \\
-            P(U_t \mid R_{t-1}) & = \sum_{r_t} P(U_t \mid R_{t-1}, r_t) P(r_t \mid R_{t-1}) \\
-            & = \sum_{r_t} P(U_t \mid r_t) P(r_t \mid R_{t-1}) \\
-            & = T B \\
-            & = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{0.9 & 0.1 \\ 0.2 & 0.8} = \mat{0.69 & 0.31 \\ 0.41 & 0.59} \\
-            P(R_t \mid R_{t-1}, U_t) & = \frac{P(U_t \mid R_{t-1}, R_t) P(R_t \mid R_{t-1})}{P(U_t \mid R_{t-1})} \\
-            & = \frac{P(U_t \mid R_t) P(R_t \mid R_{t-1})}{P(U_t \mid R_{t-1})}
+            \mathbf{P}(R_{t + 1} \mid R_{t-1}) & = \sum_{r_t} \mathbf{P}(R_{t + 1} \mid r_t) P(r_t \mid R_{t-1}), \\
+            \mathbf{P}(U_t \mid R_{t-1}) & = \sum_{r_t} \mathbf{P}(U_t \mid r_t) P(r_t \mid R_{t-1}).
         \end{align*}
+        In matrix form, their entries $(i, j)$ are $\sum_k \mathbf{T}_{ik} \mathbf{T}_{kj}$ and $\sum_k \mathbf{T}_{ik} \mathbf{B}_{kj}$:
+        \[
+            \mathbf{T} \mathbf{T} = \mat{0.58 & 0.42 \\ 0.42 & 0.58}, \quad
+            \mathbf{T} \mathbf{B} = \mat{0.69 & 0.31 \\ 0.41 & 0.59}.
+        \]
+        By Bayes' rule and the sensor Markov assumption,
+        \[
+            \mathbf{P}(R_t \mid R_{t-1}, U_t) = \frac{\mathbf{P}(U_t \mid R_t) \mathbf{P}(R_t \mid R_{t-1})}{\mathbf{P}(U_t \mid R_{t-1})},
+        \]
+        which gives
+        \begin{center}
+            \begin{tabular}{ccc}
+                \toprule
+                $R_{t-1}$ & $U_t$ & $P(r_t \mid R_{t-1}, U_t)$ \\
+                \midrule
+                true & true & 0.913 \\
+                true & false & 0.226 \\
+                false & true & 0.659 \\
+                false & false & 0.051 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+        For instance, $P(r_t \mid r_{t-1}, u_t) = 0.9 \times 0.7 / 0.69 \approx 0.913$.
     \end{solution}
 
     \part Suppose the robot observes an unending sequence of days on which the umbrella appears. Show that, as the days go by, the probability of rain on the current day tends monotonically towards a fixed point. Calculate this fixed point.
 
     \begin{solution}
-        We are asked to prove that $\pi_t = P(r_t \mid u_{1:t})$ tends monotonically (with respect to $t$) towards a fixed point $\pi^*$. To do so, we need to find the value of $\pi_t$, which corresponds to applying \emph{filtering} on the Markov model defined by the umbrella world. On this basis, we have
-        \begin{alignat*}{2}
-            && P(R_t \mid u_{1:t}) & = \alpha P(u_t \mid R_t) \sum_{r_{t-1}} P(R_t \mid r_{t-1}) P(r_{t-1} \mid u_{1:t-1}) \\
-            &&& = \alpha \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t-1} \mid u_{1:t-1}) \\
-            \Leftrightarrow \quad && \mat{\pi_{t} \\ 1 - \pi_{t}} & = \alpha \mat{0.63 & 0.27 \\ 0.06 & 0.14} \mat{\pi_{t-1} \\ 1 - \pi_{t-1}} \\
-            &&& = \alpha \mat{0.27 + (0.63 - 0.27) \, \pi_{t-1} \\ 0.14 + (0.06 - 0.14) \, \pi_{t-1}} \\
-            &&& = \frac{1}{0.41 + 0.28 \, \pi_{t-1}} \mat{0.27 + 0.36 \, \pi_{t-1} \\ 0.14 - 0.08 \, \pi_{t-1}} .
-        \end{alignat*}
-        Then, if there is a fixed point $\pi^* \in [0, 1]$, it satisfies
-        \begin{alignat*}{2}
-            && \pi^* & = \frac{0.27 + 0.36 \, \pi^*}{0.41 + 0.28 \, \pi^*} \\
-            \Leftrightarrow \quad && 0.41 \, \pi^* + 0.28 \, {\pi^*}^2 & = 0.27 + 0.36 \, \pi^* \\
-            \Leftrightarrow \quad && 0 & = 0.28 \, {\pi^*}^2 + 0.05 \, \pi^* - 0.27 \\
-            \Rightarrow \quad && \pi^* & = \frac{-0.05 + \sqrt{0.05^2 + 4 \times 0.27 \times 0.28}}{2 \times 0.28} \approx \num{0.897} .
-        \end{alignat*}
-        To show that $\pi_t$ tends monotonically towards $\pi^*$, it is sufficient to prove that $\pi_t$ is always between $\pi^*$ and $\pi_{t-1}$, \ie{}
-        \begin{equation*}
-            (\pi^* - \pi_t) (\pi_t - \pi_{t-1}) > 0,
-        \end{equation*}
-        when $\pi_{t-1} \neq \pi^*$, which is left as an exercise to the motivated reader.
+        Let $\pi_t = P(r_t \mid u_{1:t})$, the filtered probability of rain. By the Bayes filter, $\mathbf{f}_{1:t} = \alpha \, \mathbf{O} \mathbf{T}^T \mathbf{f}_{1:t-1}$, with the observation matrix $\mathbf{O} = \diag(0.9, 0.2)$ of an umbrella day, and $\mathbf{T}^T = \mathbf{T}$ (symmetric here):
+        \begin{align*}
+            \mat{\pi_t \\ 1 - \pi_t} & = \alpha \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{\pi_{t-1} \\ 1 - \pi_{t-1}} = \alpha \mat{0.27 + 0.36 \, \pi_{t-1} \\ 0.14 - 0.08 \, \pi_{t-1}},
+        \end{align*}
+        hence $\pi_t = g(\pi_{t-1})$ with
+        \[
+            g(\pi) = \frac{0.27 + 0.36 \, \pi}{0.41 + 0.28 \, \pi}.
+        \]
+        A fixed point $\pi^* = g(\pi^*)$ satisfies $0.28 \, {\pi^*}^2 + 0.05 \, \pi^* - 0.27 = 0$, whose root in $[0, 1]$ is
+        \[
+            \pi^* = \frac{-0.05 + \sqrt{0.05^2 + 4 \times 0.27 \times 0.28}}{2 \times 0.28} \approx \num{0.897}.
+        \]
+        The other root, $\pi^- \approx -1.075$, is negative. Monotonicity follows from two facts on $[0, 1]$.
+        \begin{itemize}
+            \item $g$ is increasing: $g'(\pi) = \frac{0.36 \times 0.41 - 0.27 \times 0.28}{(0.41 + 0.28 \, \pi)^2} = \frac{0.072}{(0.41 + 0.28 \, \pi)^2} > 0$.
+            \item $g(\pi) - \pi = \frac{-0.28 \, (\pi - \pi^*)(\pi - \pi^-)}{0.41 + 0.28 \, \pi}$ has the sign of $\pi^* - \pi$, since $\pi - \pi^- > 0$.
+        \end{itemize}
+        If $\pi_{t-1} < \pi^*$, the second fact gives $\pi_t > \pi_{t-1}$, and the first $\pi_t = g(\pi_{t-1}) < g(\pi^*) = \pi^*$. The sequence is increasing and bounded by $\pi^*$, so it converges, to a fixed point of $g$ by continuity, which can only be $\pi^*$. The case $\pi_{t-1} > \pi^*$ is symmetric, with a decreasing sequence.
     \end{solution}
 
     \part Now consider forecasting further and further into the future, given $t$ umbrella observations. Is there a fixed point? If yes, compute its exact value.
 
     \begin{solution}
-        We are asked to forecast the rain probability $\pi_k = P(r_{t + k} \mid u_{1:t})$, \ie{} to perform \emph{prediction}. We have
-        \begin{alignat*}{2}
-            && P(R_{t+k} \mid u_{1:t}) & = \sum_{r_{t+k-1}} P(R_{t+k} \mid r_{t+k-1}) P(r_{t+k-1} \mid u_{1:t}) \\
-            &&& = \mat{0.7 & 0.3 \\ 0.3 & 0.7} P(R_{t+k-1} \mid u_{1:t}) \\
-            \Leftrightarrow \quad && \mat{\pi_k \\ 1 - \pi_k} & = \mat{0.7 & 0.3 \\ 0.3 & 0.7} \mat{\pi_{k - 1} \\ 1 - \pi_{k - 1}} .
-        \end{alignat*}
-        By symmetry, we find the fixed point $\pi^* = 0.5$, which highlights the fact that, without new evidence, uncertainty about the states accumulates.
+        Let $\pi_k = P(r_{t+k} \mid u_{1:t})$. This is prediction, $\mathbf{P}(R_{t+k} \mid u_{1:t}) = \mathbf{T}^T \mathbf{P}(R_{t+k-1} \mid u_{1:t})$, so that
+        \[
+            \pi_k = 0.7 \, \pi_{k-1} + 0.3 \, (1 - \pi_{k-1}) = 0.3 + 0.4 \, \pi_{k-1}, \quad \text{\ie{}} \quad \pi_k - 0.5 = 0.4 \, (\pi_{k-1} - 0.5).
+        \]
+        The distance to $0.5$ shrinks by a factor $0.4$ at each step, and $\pi_k$ tends to the fixed point $\pi^* = 0.5$, the stationary distribution of the chain: without new evidence, uncertainty about the state accumulates.
     \end{solution}
 \end{parts}
 
@@ -332,129 +343,198 @@ The surveillance program of a casino watches a coin-tossing machine. The machine
     \part Provide a hidden Markov model (HMM) that describes the process.
 
     \begin{solution}
-        \begin{itemize}
-            \item The hidden state at time $t$ is $X_t \in \cbk{a, b, c}$ and represents the tossed coin.
-
-            \item The evidence at time $t$ is $E_t \in \cbk{0, 1}$ and represents the result (heads or tail) of the toss. We have $e_1 = e_2 = e_4 = 0$ and $e_3 = 1$.
-
-            \item The prior vector
-            \begin{equation*}
-                f_0 = P(X_0) = \mat{\frac{1}{3} & \frac{1}{3} & \frac{1}{3}}^T
-            \end{equation*}
-
-            \item The transition matrix
-            \begin{equation*}
-                T = P(X_t \mid X_{t-1}) = \mat{
-                    \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
-                    \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
-                    \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
-                }
-            \end{equation*}
-
-            \item The sensor matrix
-            \begin{equation*}
-                B = P(E_t \mid X_t) = \mat{
-                    0.8 & 0.2 \\
-                    0.5 & 0.5 \\
-                    0.2 & 0.8
-                }
-            \end{equation*}
-        \end{itemize}
+        The state $X_t \in \cbk{a, b, c}$ is the coin tossed at time $t$, and $X_0$ the coin picked first. The evidence $E_t \in \cbk{\text{heads}, \text{tails}}$ is the result of the toss: $e_1 = e_2 = e_4 = \text{heads}$ and $e_3 = \text{tails}$. With the states in the order $(a, b, c)$ and the results in the order (heads, tails),
+        \[
+            \mathbf{f}_0 = \mat{\frac{1}{3} \\ \frac{1}{3} \\ \frac{1}{3}}, \quad
+            \mathbf{T} = \mat{
+                \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
+                \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
+                \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
+            }, \quad
+            \mathbf{B} = \mat{
+                0.8 & 0.2 \\
+                0.5 & 0.5 \\
+                0.2 & 0.8
+            }.
+        \]
     \end{solution}
 
     \part What are the probabilities of the last coin given the sequence of results?
 
     \begin{solution}
-        We are asked to calculate the distribution $f_t = P(X_t \mid e_{1:t})$ for $t = 4$. Applying Bayes filter, we have
-        \begin{alignat*}{2}
-            && P(X_t \mid e_{1:t}) & = \alpha P(e_t \mid X_t, e_{1:t-1}) P(X_t \mid e_{1:t-1}) \\
-            &&& = \alpha P(e_t \mid X_t, e_{1:t-1}) \sum_{x_{t-1}} P(X_t \mid x_{t-1}, e_{1:t-1}) P(x_{t-1} \mid e_{1:t-1}) \\
-            &&& = \alpha P(e_t \mid X_t) \sum_{x_{t-1}} P(X_t \mid x_{t-1}) P(x_{t-1} \mid e_{1:t-1}) \\
-            \Leftrightarrow \quad && f_t & = \alpha \, O_t \, T^T \, f_{t-1}
-        \end{alignat*}
-        where $O_t = \diag(P(e_t \mid X_t))$ is the observation matrix. By substitution,
-        \begin{equation*}
-            O_1 = O_2 = O_4 = \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \quad \text{and} \quad O_3 = \mat{0.2 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.8} .
-        \end{equation*}
-        Then, to calculate $f_4$, we first need $f_1$, $f_2$ and $f_3$.
+        This is filtering, $\mathbf{f}_{1:4} = \mathbf{P}(X_4 \mid e_{1:4})$. The Bayes filter gives
         \begin{align*}
-            f_1 & = \alpha_1 \, O_1 \, T^T \, f_0 = \alpha_1 \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{
+            \mathbf{P}(X_t \mid e_{1:t}) & = \alpha \, \mathbf{P}(e_t \mid X_t, e_{1:t-1}) \sum_{x_{t-1}} \mathbf{P}(X_t \mid x_{t-1}, e_{1:t-1}) P(x_{t-1} \mid e_{1:t-1}) \\
+            & = \alpha \, \mathbf{P}(e_t \mid X_t) \sum_{x_{t-1}} \mathbf{P}(X_t \mid x_{t-1}) P(x_{t-1} \mid e_{1:t-1}),
+        \end{align*}
+        \ie{} $\mathbf{f}_{1:t} = \alpha \, \mathbf{O}_t \mathbf{T}^T \mathbf{f}_{1:t-1}$, where the observation matrix $\mathbf{O}_t$ is the diagonal matrix of the column $e_t$ of $\mathbf{B}$:
+        \[
+            \mathbf{O}_1 = \mathbf{O}_2 = \mathbf{O}_4 = \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2}, \quad \mathbf{O}_3 = \mat{0.2 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.8}.
+        \]
+        Then
+        \begin{align*}
+            \mathbf{f}_{1:1} & = \alpha \, \mathbf{O}_1 \mathbf{T}^T \mathbf{f}_0 = \alpha \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{
                 \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
-            } \mat{\frac{1}{3} \\ \frac{1}{3} \\ \frac{1}{3}} = \alpha_1 \mat{\frac{4}{15} \\ \frac{1}{6} \\ \frac{1}{15}} = \mat{\frac{8}{15} \\ \frac{1}{3} \\ \frac{2}{15}} \\
-            f_2 & = \alpha_2 \, O_2 \, T^T \, f_1 = \dots \\
-            f_3 & = \alpha_3 \, O_3 \, T^T \, f_2 = \dots \\
-            f_4 & = \alpha_4 \, O_4 \, T^T \, f_3 = \dots \approx \mat{0.472 & 0.374 & 0.154}^T
+            } \mat{\frac{1}{3} \\ \frac{1}{3} \\ \frac{1}{3}} = \alpha \mat{\frac{4}{15} \\ \frac{1}{6} \\ \frac{1}{15}} = \mat{\frac{8}{15} \\ \frac{1}{3} \\ \frac{2}{15}}, \\
+            \mathbf{f}_{1:2} & = \alpha \, \mathbf{O}_2 \mathbf{T}^T \mathbf{f}_{1:1} \approx \mat{0.619 & 0.298 & 0.083}^T, \\
+            \mathbf{f}_{1:3} & = \alpha \, \mathbf{O}_3 \mathbf{T}^T \mathbf{f}_{1:2} \approx \mat{0.227 & 0.376 & 0.397}^T, \\
+            \mathbf{f}_{1:4} & = \alpha \, \mathbf{O}_4 \mathbf{T}^T \mathbf{f}_{1:3} \approx \mat{0.472 & 0.374 & 0.154}^T.
         \end{align*}
     \end{solution}
 
     \part What are the probabilities of the coin picked first given the sequence of results? And of the first coin tossed?
 
     \begin{solution}
-        We are asked to calculate the distribution $P(X_k \mid e_{1:t})$ for $t = 4$ and $k = 0$. As $k < t$ this corresponds to \emph{smoothing} our belief of the past. We have
+        This is smoothing, $\mathbf{P}(X_k \mid e_{1:4})$ for $k = 0$ and $k = 1$:
+        \[
+            \mathbf{P}(X_k \mid e_{1:t}) = \alpha \, \mathbf{P}(X_k \mid e_{1:k}) \mathbf{P}(e_{k+1:t} \mid X_k) = \alpha \, \mathbf{f}_{1:k} \times \mathbf{b}_{k+1:t},
+        \]
+        with $\mathbf{f}_{1:0} = \mathbf{f}_0$. The backward message satisfies
         \begin{align*}
-            P(X_k \mid e_{1:t}) & = \alpha P(X_k, e_{k + 1:t} \mid e_{1:k}) \\
-            & = \alpha P(e_{k + 1:t} \mid X_k, e_{1:k}) P(X_k \mid e_{1:k}) \\
-            & = \alpha P(e_{k + 1:t} \mid X_k) P(X_k \mid e_{1:k})
+            \mathbf{P}(e_{k+1:t} \mid X_k) & = \sum_{x_{k+1}} P(e_{k+1:t} \mid x_{k+1}) \mathbf{P}(x_{k+1} \mid X_k) \\
+            & = \sum_{x_{k+1}} P(e_{k+1} \mid x_{k+1}) P(e_{k+2:t} \mid x_{k+1}) \mathbf{P}(x_{k+1} \mid X_k),
         \end{align*}
-        As we already know $f_k = P(X_k \mid e_{1:k})$, we only need to compute $b_k = P(e_{k + 1:t} \mid X_k)$. We have
-        \begin{alignat*}{2}
-            && P(e_{k + 1:t} \mid X_k) & = \sum_{x_{k + 1}} P(x_{k + 1} \mid X_k) P(e_{k + 1:t} \mid X_k, x_{k + 1}) \\
-            &&& = \sum_{x_{k + 1}} P(x_{k + 1} \mid X_k) P(e_{k + 1} \mid x_{k + 1}) P(e_{k + 2:t} \mid x_{k + 1}) \\
-            \Leftrightarrow \quad && b_k & = T \, O_{k + 1} \, b_{k + 1}
-        \end{alignat*}
-        where $b_t = b_4 = P(\mathit{anything} \mid X_4) = \mat{1 & 1 & 1}^T$. Therefore, to calculate $b_0$, we first need $b_3$, $b_2$ and $b_1$.
+        \ie{} $\mathbf{b}_{k+1:t} = \mathbf{T} \mathbf{O}_{k+1} \mathbf{b}_{k+2:t}$, starting from the all-one vector $\mathbf{b}_{5:4} = \mat{1 & 1 & 1}^T$. Then
         \begin{align*}
-            b_3 & = T \, O_{4} \, b_4 = \mat{
+            \mathbf{b}_{4:4} & = \mathbf{T} \mathbf{O}_4 \mathbf{b}_{5:4} = \mat{
                 \frac{2}{3} & \frac{1}{6} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{2}{3} & \frac{1}{6} \\
                 \frac{1}{6} & \frac{1}{6} & \frac{2}{3}
-            } \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{1 \\ 1 \\ 1} = \mat{0.65 \\ 0.5 \\ 0.35} \\
-            b_2 & = T \, O_{3} \, b_3 = \dots \\
-            b_1 & = T \, O_{2} \, b_2 = \dots \\
-            b_0 & = T \, O_{1} \, b_1 = \dots \approx \mat{0.076 & 0.055 & 0.035}^T
+            } \mat{0.8 & 0 & 0 \\ 0 & 0.5 & 0 \\ 0 & 0 & 0.2} \mat{1 \\ 1 \\ 1} = \mat{0.65 \\ 0.5 \\ 0.35}, \\
+            \mathbf{b}_{3:4} & = \mathbf{T} \mathbf{O}_3 \mathbf{b}_{4:4} = \mat{0.175 & 0.235 & 0.250}^T, \\
+            \mathbf{b}_{2:4} & = \mathbf{T} \mathbf{O}_2 \mathbf{b}_{3:4} \approx \mat{0.121 & 0.110 & 0.076}^T, \\
+            \mathbf{b}_{1:4} & = \mathbf{T} \mathbf{O}_1 \mathbf{b}_{2:4} \approx \mat{0.076 & 0.055 & 0.035}^T.
         \end{align*}
         Eventually,
         \begin{align*}
-            P(X_0 \mid e_{1:4}) & = \alpha b_0 \times f_0 \approx \mat{0.457 & 0.331 & 0.212}^T \\
-            P(X_1 \mid e_{1:4}) & = \alpha b_1 \times f_1 \approx \mat{0.580 & 0.329 & 0.091}^T
+            \mathbf{P}(X_0 \mid e_{1:4}) & = \alpha \, \mathbf{f}_0 \times \mathbf{b}_{1:4} \approx \mat{0.457 & 0.331 & 0.212}^T, \\
+            \mathbf{P}(X_1 \mid e_{1:4}) & = \alpha \, \mathbf{f}_{1:1} \times \mathbf{b}_{2:4} \approx \mat{0.580 & 0.329 & 0.091}^T.
         \end{align*}
     \end{solution}
 
     \part What is the most likely sequence of tossed coins?
 
     \begin{solution}
-        The most likely sequence $x_{1:t}^*$ given the sequence of evidences $e_{1:t}$ is the one that satisfies
-        \begin{equation*}
-            x_{1:t}^* = \arg \max_{x_{1:t}} P(x_{1:t} \mid e_{1:t})
-        \end{equation*}
-        or, equivalently,
+        The Viterbi algorithm computes $\mathbf{m}_{1:t} = \max_{x_{1:t-1}} \mathbf{P}(x_{1:t-1}, X_t \mid e_{1:t})$, from $\mathbf{m}_{1:1} = \mathbf{f}_{1:1}$ and, for each state $j$,
+        \[
+            \mathbf{m}_{1:t+1}(j) = \alpha \, \mathbf{B}_{j e_{t+1}} \max_i \mathbf{T}_{ij} \, \mathbf{m}_{1:t}(i),
+        \]
+        while it records the maximizing predecessor $\psi_{t+1}(j) = \arg \max_i \mathbf{T}_{ij} \, \mathbf{m}_{1:t}(i)$. With the states in the order $(a, b, c)$,
         \begin{align*}
-            x_k^* & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} P(x_{1:k}, x^*_{k+1:t} \mid e_{1:t}) } \\
-            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(x_{1:k}, x^*_{k+1:t}, e_{k+1:t} \mid e_{1:k}) } \\
-            & = \arg \max_{x_k} \sbk*{ \max_{x_{1:k-1}} \alpha P(e_{k+1:t} \mid x_{1:k}, x^*_{k+1:t}, e_{1:k}) P(x^*_{k+1:t} \mid x_{1:k}, e_{1:k}) P(x_{1:k} \mid e_{1:k}) } \\
-            & = \arg \max_{x_k} \sbk[\bigg]{ \max_{x_{1:k-1}} \underbrace{\alpha P(e_{k+1:t} \mid x^*_{k+1:t}) P(x^*_{k+2:t} \mid x^*_{k+1})}_{\text{constant}} P(x^*_{k+1} \mid x_{k}) P(x_{1:k} \mid e_{1:k}) } \\
-            & = \arg \max_{x_k} P(x^*_{k+1} \mid x_{k}) \sbk*{ \max_{x_{1:k-1}} P(x_{1:k} \mid e_{1:k}) } \\
-            & = \arg \max_{x_k} P(x^*_{k+1} \mid x_{k}) \, m_k(x_k)
+            \mathbf{m}_{1:1} & \approx \mat{0.533 & 0.333 & 0.133}^T, \\
+            \mathbf{m}_{1:2} & \approx \mat{0.688 & 0.269 & 0.043}^T, & \psi_2 & = (a, b, a), \\
+            \mathbf{m}_{1:3} & \approx \mat{0.336 & 0.328 & 0.336}^T, & \psi_3 & = (a, b, a), \\
+            \mathbf{m}_{1:4} & \approx \mat{0.538 & 0.328 & 0.134}^T, & \psi_4 & = (a, b, c).
         \end{align*}
-        where
+        The normalization does not change the maximizers. The most likely last coin is $x_4^* = \arg \max_j \mathbf{m}_{1:4}(j) = a$, and backtracking, $x_k^* = \psi_{k+1}(x_{k+1}^*)$, gives $x_3^* = \psi_4(a) = a$, $x_2^* = \psi_3(a) = a$ and $x_1^* = \psi_2(a) = a$. The most likely sequence is $(a, a, a, a)$, with posterior probability $\approx 0.181$; the next one is $(b, b, b, b)$, $\approx 0.111$. The tie between $a$ and $c$ in $\mathbf{m}_{1:3}$ does not matter, since no path through $c$ at $t = 3$ is the best one into $a$ at $t = 4$.
+
+        Smoothing gives the most likely coin at each step, $(a, a, b, a)$, which is a different sequence: the most likely sequence is not the sequence of the most likely states.
+    \end{solution}
+\end{parts}
+
+\titledquestion{Robot state estimation \source{Exam, January 2024}}
+
+Let us consider a continuous first-order Markov process describing the motion of a robot in a one-dimensional world. On average, the robot moves forward by a distance $b$ at each timestep. The robot's position $x_t$ at time $t$ is not directly observable, but can be estimated using a sensor that measures the position of the robot relative to the sensor. Assuming
+\begin{itemize}
+    \item the sensor is fixed at position 0,
+    \item a Gaussian prior $\N(x_0 \mid \mu_0, \sigma^2_0)$ on the initial position of the robot,
+    \item a Gaussian transition model $\N(x_{t+1} \mid x_t + b, \sigma^2_x)$,
+    \item a Gaussian sensor model $\N(e_t \mid x_t, \sigma^2_e)$,
+\end{itemize}
+answer the following questions.
+
+\begin{parts}
+    \part Derive the update equations of the Bayes filter. More specifically, since the belief distribution is Gaussian, derive the update equations of its mean $\mu_{t+1}$ and variance $\sigma^2_{t+1}$.
+
+    \begin{solution}
+        This is a Kalman filter with a scalar state $x_t$ and evidence $e_t$, whose components are $\mathbf{A} = 1$, $\mathbf{b} = b$, $\mathbf{Q} = \sigma_x^2$, $\mathbf{H} = 1$, $\mathbf{d} = 0$ and $\mathbf{R} = \sigma_e^2$; without the drift ($b = 0$), it is the 1d Gaussian random walk. Let $p(x_t \mid e_{1:t}) = \N(x_t \mid \mu_t, \sigma_t^2)$.
+
+        \emph{Predict step.} The second identity of the cheat sheet, with $x_t$ as $\mathbf{x}$ and $x_{t+1}$ as $\mathbf{y}$, gives a joint Gaussian whose marginal is
+        \[
+            p(x_{t+1} \mid e_{1:t}) = \N(x_{t+1} \mid \mu_t + b, s_{t+1}), \quad s_{t+1} = \sigma_t^2 + \sigma_x^2:
+        \]
+        the drift moves the mean and the transition noise adds its variance.
+
+        \emph{Update step.} The same identity, with $x_{t+1}$ as $\mathbf{x}$ and $e_{t+1}$ as $\mathbf{y}$, gives
+        \[
+            p\rbk*{ \mat{x_{t+1} \\ e_{t+1}} \Bigg| \, e_{1:t} } = \N\rbk*{ \mat{x_{t+1} \\ e_{t+1}} \Bigg| \mat{\mu_t + b \\ \mu_t + b}, \mat{ s_{t+1} & s_{t+1} \\ s_{t+1} & s_{t+1} + \sigma_e^2 } },
+        \]
+        and the identity for $p(\mathbf{x} \mid \mathbf{y})$ conditions on $e_{t+1}$. With the Kalman gain
+        \[
+            k_{t+1} = \frac{s_{t+1}}{s_{t+1} + \sigma_e^2} = \frac{\sigma_t^2 + \sigma_x^2}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2},
+        \]
+        the update equations are
         \begin{align*}
-            m_k & = \max_{x_{1:k-1}} P(x_{1:k-1}, X_k \mid e_{1:k}) \\
-            & = \max_{x_{1:k-1}} \alpha P(x_{1:k-1}, X_k, e_k \mid e_{1:k-1}) \\
-            & = \max_{x_{1:k-1}} \alpha P(e_t \mid x_{1:k-1}, X_t, e_{1:k-1}) P(X_k \mid x_{1:k-1}, e_{1:k-1}) P(x_{1:k-1} \mid e_{1:k-1}) \\
-            & = \max_{x_{1:k-1}} \alpha P(e_k \mid X_k) P(X_k \mid x_{k-1}) P(x_{1:k-1} \mid e_{1:k-1}) \\
-            & = \alpha P(e_k \mid X_k) \max_{x_{k-1}} P(X_k \mid x_{k-1}) \max_{x_{1:k - 2}} P(x_{1:k-1} \mid e_{1:k-1}) \\
-            & = \alpha P(e_k \mid X_k) \max_{x_{k-1}} P(X_k \mid x_{k-1}) \, m_{k-1}(x_{k-1})
+            \mu_{t+1} & = \mu_t + b + k_{t+1} \rbk{e_{t+1} - (\mu_t + b)} = \frac{(\sigma_t^2 + \sigma_x^2) e_{t+1} + \sigma_e^2 (\mu_t + b)}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2}, \\
+            \sigma_{t+1}^2 & = (1 - k_{t+1}) (\sigma_t^2 + \sigma_x^2) = \frac{(\sigma_t^2 + \sigma_x^2) \sigma_e^2}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2}.
         \end{align*}
-        and $m_1 = P(X_1 \mid e_1) = f_1$. Therefore, we can iteratively build the vectors $m_1$, $m_2$, \dots, $m_t$ to find the most likely last state
-        \begin{equation*}
-            x_t^* = \arg \max_{x_t} m_t(x_t)
-        \end{equation*}
-        and, then, the most likely sequence with
-        \begin{equation*}
-            x_k^* = \arg \max_{x_k} P(x^*_{k + 1} \mid x_k) \, m_k(x_k) .
-        \end{equation*}
+        The new mean is a weighted average of the observation $e_{t+1}$ and of the predicted mean $\mu_t + b$.
+    \end{solution}
+
+    \part Do the update equations make sense in the following limiting cases? Use your physical intuition.
+    \begin{itemize}
+        \item The sensor is extremely noisy.
+        \item The sensor is perfect.
+        \item The transition model is extremely noisy.
+        \item The transition model is perfect.
+    \end{itemize}
+
+    \begin{solution}
+        \begin{itemize}
+            \item \underline{The sensor is extremely noisy.}
+
+            With $\sigma^2_e \rightarrow + \infty$, $k_{t+1} \rightarrow 0$ and the update equations become
+            \begin{align*}
+                \mu_{t+1} & = \mu_t + b, \\
+                \sigma^2_{t+1} & = \sigma^2_t + \sigma^2_x.
+            \end{align*}
+            As expected, the optimal strategy is to completely ignore the observations and rely solely on the initial belief and the transition model. The uncertainty is indeed the combination of the uncertainty in the transition model and the uncertainty of the previous state, which ultimately originates from the uncertainty in the initial belief.
+
+            \item \underline{The sensor is perfect.}
+
+            With $\sigma^2_e \rightarrow 0$, $k_{t+1} \rightarrow 1$ and the update equations become
+            \begin{align*}
+                \mu_{t+1} & = e_{t+1}, \\
+                \sigma^2_{t+1} & = 0.
+            \end{align*}
+            As expected, the optimal strategy is to rely solely on the observations. Consequently, no uncertainty arises when estimating the robot's position.
+
+            \item \underline{The transition model is extremely noisy.}
+
+            With $\sigma^2_x \rightarrow + \infty$, $k_{t+1} \rightarrow 1$ and the update equations become
+            \begin{align*}
+                \mu_{t+1} & = e_{t+1}, \\
+                \sigma^2_{t+1} & = \sigma^2_e.
+            \end{align*}
+            As expected, the optimal strategy is to rely solely on the observations, since nothing reliable can be obtained after applying the transition model. Consequently, the uncertainty in the estimation is that of the sensor model.
+
+            \item \underline{The transition model is perfect.}
+
+            With $\sigma^2_x \rightarrow 0$, $k_{t+1} \rightarrow \frac{\sigma^2_t}{\sigma^2_t + \sigma^2_e}$ and the update equations become
+            \begin{align*}
+                \mu_{t+1} & = \mu_t + b + \frac{\sigma^2_t}{\sigma^2_t + \sigma^2_e} \rbk{e_{t+1} - (\mu_t + b)}, \\
+                \sigma^2_{t+1} & = \frac{\sigma^2_t \sigma^2_e}{\sigma^2_t + \sigma^2_e}.
+            \end{align*}
+            Although it may seem surprising to still observe the effect of the observations on the estimation, the result is actually perfectly sensible when recalling that an uncertainty $\sigma^2_0$ is associated with the first estimate. If the initial position of the robot is known ($\sigma^2_0 \rightarrow 0$), then the update equations with the perfect transition model become
+            \begin{align*}
+                \mu_{t+1} & = \mu_t + b, \\
+                \sigma^2_{t+1} & = 0.
+            \end{align*}
+            As expected, the optimal strategy is to rely solely on the initial position and the transition model and no uncertainty is associated with the estimation.
+        \end{itemize}
+    \end{solution}
+
+    \part Describe one step of a particle filter for this model, from $N$ particles $x_t^1, \ldots, x_t^N$ that represent $p(x_t \mid e_{1:t})$ to particles that represent $p(x_{t+1} \mid e_{1:t+1})$. What do the particles approximate, and when is a particle filter preferable to the update equations of (a)?
+
+    \begin{solution}
+        \begin{enumerate}
+            \item \emph{Propagate:} move each particle through the transition model, $x_{t+1}^i \sim \N(x_t^i + b, \sigma_x^2)$. The particles now represent the predicted belief $p(x_{t+1} \mid e_{1:t})$.
+            \item \emph{Weight:} give each particle the likelihood of the new evidence, $w^i = \N(e_{t+1} \mid x_{t+1}^i, \sigma_e^2)$.
+            \item \emph{Resample:} draw $N$ new particles among the $x_{t+1}^i$, with probabilities proportional to the weights $w^i$, so that unlikely particles disappear and likely ones are duplicated.
+        \end{enumerate}
+        The resampled particles approximate the Gaussian $\N(x_{t+1} \mid \mu_{t+1}, \sigma_{t+1}^2)$ of (a): their mean and variance tend to $\mu_{t+1}$ and $\sigma_{t+1}^2$ as $N$ grows. Here the update equations are exact and cheaper. A particle filter is preferable when the transition or the sensor model is not linear Gaussian, for instance if the sensor measured the distance $\abs{x_t}$ to the robot rather than its position, since then no closed form exists.
     \end{solution}
 \end{parts}
 
@@ -566,87 +646,6 @@ where $z_t$, $\dot{z}_t$ and $\ddot{z}_t$ are respectively the position, velocit
     \end{solution}
 \end{parts}
 
-\titledquestion{Robot state estimation \source{Exam, January 2024}}
-
-Let us consider a continuous first-order Markov process describing the motion of a robot in a one-dimensional world. On average, the robot moves forward by a distance $b$ at each timestep. The robot's position $x_t$ at time $t$ is not directly observable, but can be estimated using a sensor that measures the distance between the robot and the sensor. Assuming,
-\begin{itemize}
-    \item the sensor is fixed at position 0,
-    \item a Gaussian prior $\N(x_0 \mid \mu_0, \sigma^2_0)$ on the initial position of the robot,
-    \item a Gaussian transition model $\N(x_{t+1} \mid x_t + b, \sigma^2_x)$,
-    \item a Gaussian sensor model $\N(e_t \mid x_t, \sigma^2_e)$,
-\end{itemize}
-derive the update equations of the Bayes filter. More specifically, since the belief distribution is Gaussian, derive the update equations of its mean $\mu_{t+1}$ and variance $\sigma^2_{t+1}$.
-
-Do the update equations make sense in the following limiting cases? Use your physical intuition.
-\begin{itemize}
-    \item The sensor is extremely noisy.
-    \item The sensor is perfect.
-    \item The transition model is extremely noisy.
-    \item The transition model is perfect.
-\end{itemize}
-
-\begin{solution}
-    This is a Kalman filter with a scalar state $x_t$ and evidence $e_t$, and components $\mathbf{A} = 1$, $\mathbf{b} = b$, $\mathbf{Q} = \sigma_x^2$, $\mathbf{H} = 1$, $\mathbf{d} = 0$ and $\mathbf{R} = \sigma_e^2$; without the drift ($b = 0$), it is the 1d Gaussian random walk. Let $p(x_t \mid e_{1:t}) = \N(x_t \mid \mu_t, \sigma_t^2)$.
-
-    The predict step moves the mean by the drift and adds the variance of the transition noise:
-    \[
-        p(x_{t+1} \mid e_{1:t}) = \N(x_{t+1} \mid \mu_t + b, \sigma_t^2 + \sigma_x^2).
-    \]
-    The update step conditions on $e_{t+1}$. The equations of the previous exercise, with scalars, give the Kalman gain
-    \[
-        k_{t+1} = \frac{\sigma_t^2 + \sigma_x^2}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2}
-    \]
-    and the update equations
-    \begin{align*}
-        \mu_{t+1} & = \mu_t + b + k_{t+1} \rbk{e_{t+1} - (\mu_t + b)} = \frac{(\sigma_t^2 + \sigma_x^2) e_{t+1} + \sigma_e^2 (\mu_t + b)}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2}, \\
-        \sigma_{t+1}^2 & = (1 - k_{t+1}) (\sigma_t^2 + \sigma_x^2) = \frac{(\sigma_t^2 + \sigma_x^2) \sigma_e^2}{\sigma_t^2 + \sigma_x^2 + \sigma_e^2}.
-    \end{align*}
-    The new mean is a weighted average of the observation $e_{t+1}$ and of the predicted mean $\mu_t + b$.
-
-    \begin{itemize}
-        \item \underline{The sensor is extremely noisy.}
-
-        With $\sigma^2_e \rightarrow + \infty$, $k_{t+1} \rightarrow 0$ and the update equations become
-        \begin{align*}
-            \mu_{t+1} & = \mu_t + b, \\
-            \sigma^2_{t+1} & = \sigma^2_t + \sigma^2_x.
-        \end{align*}
-        As expected, the optimal strategy is to completely ignore the observations and rely solely on the initial belief and the transition model. The uncertainty is indeed the combination of the uncertainty in the transition model and the uncertainty of the previous state, which ultimately originates from the uncertainty in the initial belief.
-
-        \item \underline{The sensor is perfect.}
-
-        With $\sigma^2_e \rightarrow 0$, $k_{t+1} \rightarrow 1$ and the update equations become
-        \begin{align*}
-            \mu_{t+1} & = e_{t+1}, \\
-            \sigma^2_{t+1} & = 0.
-        \end{align*}
-        As expected, the optimal strategy is to rely solely on the observations. Consequently, no uncertainty arises when estimating the robot's position.
-
-        \item \underline{The transition model is extremely noisy.}
-
-        With $\sigma^2_x \rightarrow + \infty$, $k_{t+1} \rightarrow 1$ and the update equations become
-        \begin{align*}
-            \mu_{t+1} & = e_{t+1}, \\
-            \sigma^2_{t+1} & = \sigma^2_e.
-        \end{align*}
-        As expected, the optimal strategy is to rely solely on the observations, since nothing reliable can be obtained after applying the transition model. Consequently, the uncertainty in the estimation is that of the sensor model.
-
-        \item \underline{The transition model is perfect.}
-
-        With $\sigma^2_x \rightarrow 0$, $k_{t+1} \rightarrow \frac{\sigma^2_t}{\sigma^2_t + \sigma^2_e}$ and the update equations become
-        \begin{align*}
-            \mu_{t+1} & = \mu_t + b + \frac{\sigma^2_t}{\sigma^2_t + \sigma^2_e} \rbk{e_{t+1} - (\mu_t + b)}, \\
-            \sigma^2_{t+1} & = \frac{\sigma^2_t \sigma^2_e}{\sigma^2_t + \sigma^2_e}.
-        \end{align*}
-        Although it may seem surprising to still observe the effect of the observations on the estimation, the result is actually perfectly sensible when recalling that an uncertainty $\sigma^2_0$ is associated with the first estimate. If the initial position of the robot is known ($\sigma^2_0 \rightarrow 0$), then the update equations with the perfect transition model become
-        \begin{align*}
-            \mu_{t+1} & = \mu_t + b, \\
-            \sigma^2_{t+1} & = 0.
-        \end{align*}
-        As expected, the optimal strategy is to rely solely on the initial position and the transition model and no uncertainty is associated with the estimation.
-    \end{itemize}
-\end{solution}
-
 \titledquestion{Human-robot interaction \source{CS188, Fall 2017}}
 
 In the near future, autonomous robots will live among us. Therefore, the robots need to know how to act appropriately in the presence of humans. In this question, we explore a simplified model of this interaction. We assume that we can observe the robot's actions at time $t$, $R_t$, and an evidence observation, $E_t$, directly caused by the (hidden) human state, $H_t$. Robot actions from the current time-step affect the human state in the next-time step, as illustrated in the Bayesian network given below.
@@ -704,13 +703,13 @@ Assuming discrete random variables and given the probability tables $\mathbf{P}(
     \part Let us now assume that all variables are continuous. Discuss how you would compute or approximate the belief state on a computer.
 
     \begin{solution}
-        If all variables are continuous, unless the prior, transition model and sensor model are strictly constrained (\eg{} Gaussian), it is not possible to express and update the belief states in closed form. Instead, we can use approximate filtering algorithms, such as extended Kalman filters or particle filters.
+        If the prior is Gaussian and the transition and sensor models are linear Gaussian, the belief stays Gaussian and the Kalman filter updates its mean and covariance in closed form, with the observed action $r_t$ entering the transition model as a known input. Otherwise, the belief has no closed form in general, and a particle filter approximates it with samples: propagate each particle $h_t^i$ through $p(h_{t+1} \mid h_t^i, r_t)$, weight it by $p(e_{t+1} \mid h_{t+1}^i)$, then resample.
     \end{solution}
 \end{parts}
 
-\titledquestion{Server cooling \source{Exam, August 2019} \aima{14}}
+\titledquestion{Server cooling \source{Exam, August 2019; AIMA ch.~14}}
 
-A monitoring program wants to know whether a server is cooled enough. Each day, the program checks whether the server raised a temperature alert, and whether it throttled its processors. The program makes the following hypotheses:
+A monitoring program wants to know whether a server is cooled enough. Each day, the program checks whether the server raised a temperature alert, and whether it slowed down (throttled) its processors. The program makes the following hypotheses:
 \begin{itemize}
     \item The prior probability that the cooling is enough, with no observations, is \num{0.7}.
     \item The probability that the cooling is enough on day $t$ is \num{0.8} given that it was enough on the previous day, and \num{0.3} otherwise.
@@ -721,9 +720,99 @@ A monitoring program wants to know whether a server is cooled enough. Each day, 
 \begin{parts}
     \part Formulate the environment and hypotheses as a dynamic Bayesian network that the program could use to detect insufficient cooling from a sequence of observations. Provide the associated probability tables.
 
+    \begin{solution}
+        Each day $t$ has a hidden state $C_t$ (the cooling is enough) and two evidence variables, $A_t$ (a temperature alert) and $S_t$ (a slowdown), all Boolean:
+        \begin{center}
+            \begin{tikzpicture}[bn diagram, every node/.append style={font=\small}]
+                \node[diagram caption, anchor=east] at (-1.6, 0) {cooled};
+                \node[diagram caption, anchor=east] at (-1.6, -1.5) {alert, slowdown};
+                \node (C0) at (-1, 0) {$\cdots$};
+                \node[random variable] (C1) at (0.75, 0) {$C_{t-1}$};
+                \node[random variable] (C2) at (3.75, 0) {$C_t$};
+                \node (C3) at (5.5, 0) {$\cdots$};
+                \node[observed variable] (A1) at (0, -1.5) {$A_{t-1}$};
+                \node[observed variable] (S1) at (1.5, -1.5) {$S_{t-1}$};
+                \node[observed variable] (A2) at (3, -1.5) {$A_t$};
+                \node[observed variable] (S2) at (4.5, -1.5) {$S_t$};
+                \foreach \s/\t in {C0/C1, C1/C2, C2/C3, C1/A1, C1/S1, C2/A2, C2/S2} {
+                    \draw[dependency] (\s) -- (\t);
+                }
+            \end{tikzpicture}
+        \end{center}
+        The prior is $P(c_0) = 0.7$, and
+        \begin{center}
+            \begin{tabular}{cc}
+                \toprule
+                $C_{t-1}$ & $P(c_t \mid C_{t-1})$ \\
+                \midrule
+                true & 0.8 \\
+                false & 0.3 \\
+                \bottomrule
+            \end{tabular}
+            \hspace{2em}
+            \begin{tabular}{cc}
+                \toprule
+                $C_t$ & $P(a_t \mid C_t)$ \\
+                \midrule
+                true & 0.2 \\
+                false & 0.7 \\
+                \bottomrule
+            \end{tabular}
+            \hspace{2em}
+            \begin{tabular}{cc}
+                \toprule
+                $C_t$ & $P(s_t \mid C_t)$ \\
+                \midrule
+                true & 0.1 \\
+                false & 0.3 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+    \end{solution}
+
     \part Reformulate the dynamic Bayesian network as a hidden Markov model that has only a single observation variable. Give the complete probability tables for the model.
 
-    \part For the sequence $e_{1:3}$ of observations \enquote{no alert, no throttling}, \enquote{alert, no throttling} and \enquote{alert, throttling}, calculate the distributions $P(\mathit{Cooled}_t \mid e_{1:t})$ and $P(\mathit{Cooled}_t \mid e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
+    \begin{solution}
+        The two evidence variables merge into one, $E_t = (A_t, S_t)$, with four values. Since $A_t$ and $S_t$ are independent given $C_t$, $P(a, s \mid C_t) = P(a \mid C_t) P(s \mid C_t)$:
+        \begin{center}
+            \begin{tabular}{ccccc}
+                \toprule
+                $C_t$ & $\lnot a, \lnot s$ & $\lnot a, s$ & $a, \lnot s$ & $a, s$ \\
+                \midrule
+                true & 0.72 & 0.08 & 0.18 & 0.02 \\
+                false & 0.21 & 0.09 & 0.49 & 0.21 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+        With the states in the order (true, false) and the evidence values in the order of the table,
+        \[
+            \mathbf{f}_0 = \mat{0.7 \\ 0.3}, \quad
+            \mathbf{T} = \mat{0.8 & 0.2 \\ 0.3 & 0.7}, \quad
+            \mathbf{B} = \mat{0.72 & 0.08 & 0.18 & 0.02 \\ 0.21 & 0.09 & 0.49 & 0.21}.
+        \]
+    \end{solution}
+
+    \part For the sequence $e_{1:3}$ of observations \enquote{no alert, no throttling}, \enquote{alert, no throttling} and \enquote{alert, throttling}, calculate the distributions $\mathbf{P}(C_t \mid e_{1:t})$ and $\mathbf{P}(C_t \mid e_{1:3})$ for $t \in \cbk{1, 2, 3}$.
+
+    \begin{solution}
+        The observations are $e_1 = (\lnot a, \lnot s)$, $e_2 = (a, \lnot s)$ and $e_3 = (a, s)$, so that $\mathbf{O}_1 = \diag(0.72, 0.21)$, $\mathbf{O}_2 = \diag(0.18, 0.49)$ and $\mathbf{O}_3 = \diag(0.02, 0.21)$. Filtering, $\mathbf{f}_{1:t} = \alpha \, \mathbf{O}_t \mathbf{T}^T \mathbf{f}_{1:t-1}$, gives
+        \begin{align*}
+            \mathbf{f}_{1:1} & = \alpha \, \mathbf{O}_1 \mat{0.65 & 0.35}^T \approx \mat{0.864 & 0.136}^T, \\
+            \mathbf{f}_{1:2} & = \alpha \, \mathbf{O}_2 \mat{0.732 & 0.268}^T \approx \mat{0.501 & 0.499}^T, \\
+            \mathbf{f}_{1:3} & = \alpha \, \mathbf{O}_3 \mat{0.551 & 0.449}^T \approx \mat{0.104 & 0.896}^T,
+        \end{align*}
+        where each vector is the prediction $\mathbf{T}^T \mathbf{f}_{1:t-1}$. Smoothing, $\mathbf{P}(C_k \mid e_{1:3}) = \alpha \, \mathbf{f}_{1:k} \times \mathbf{b}_{k+1:3}$ with $\mathbf{b}_{k+1:3} = \mathbf{T} \mathbf{O}_{k+1} \mathbf{b}_{k+2:3}$ and $\mathbf{b}_{4:3} = \mat{1 & 1}^T$, uses
+        \[
+            \mathbf{b}_{3:3} = \mat{0.058 \\ 0.153}, \quad \mathbf{b}_{2:3} \approx \mat{0.0233 \\ 0.0556},
+        \]
+        and gives
+        \begin{align*}
+            \mathbf{P}(C_1 \mid e_{1:3}) & \approx \mat{0.728 & 0.272}^T, \\
+            \mathbf{P}(C_2 \mid e_{1:3}) & \approx \mat{0.276 & 0.724}^T, \\
+            \mathbf{P}(C_3 \mid e_{1:3}) & = \mathbf{f}_{1:3} \approx \mat{0.104 & 0.896}^T.
+        \end{align*}
+        The alerts of days 2 and 3 make insufficient cooling likely, and lower in hindsight the probability that the cooling was enough on day 1 (from 0.864 to 0.728) and on day 2 (from 0.501 to 0.276).
+    \end{solution}
 \end{parts}
 
 \end{exercises}
@@ -739,10 +828,10 @@ A monitoring program wants to know whether a server is cooled enough. Each day, 
 
     \item The Kalman filter requires the specification of \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item a prior $\mathbf{P}(\mathbf{X}_0)$ and a transition model $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t)$.
-        \item a transition model $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{x}_t)$ and an sensor model $\mathbf{P}(\mathbf{E}_t \mid \mathbf{x}_t)$.
-        \item \correct{a prior $\mathbf{P}(\mathbf{X}_0)$, a transition model $P(\mathbf{X}_{t+1} \mid \mathbf{x}_t)$, and an sensor model $P(\mathbf{E}_t \mid \mathbf{x}_t)$.} %%% (None of the others ?)
-        \item a prior $\mathbf{P}(\mathbf{X}_0)$, a prior $\mathbf{P}(\mathbf{E}_0)$, a transition model $P(\mathbf{X}_{t+1} \mid \mathbf{x}_t)$, and an sensor model $P(\mathbf{E}_t \mid \mathbf{x}_t)$.
+        \item a prior $p(\mathbf{x}_0)$ and a transition model $p(\mathbf{x}_{t+1} \mid \mathbf{x}_t)$.
+        \item a transition model $p(\mathbf{x}_{t+1} \mid \mathbf{x}_t)$ and a sensor model $p(\mathbf{e}_t \mid \mathbf{x}_t)$.
+        \item \correct{a prior $p(\mathbf{x}_0)$, a transition model $p(\mathbf{x}_{t+1} \mid \mathbf{x}_t)$, and a sensor model $p(\mathbf{e}_t \mid \mathbf{x}_t)$.}
+        \item a prior $p(\mathbf{x}_0)$, a prior $p(\mathbf{e}_0)$, a transition model $p(\mathbf{x}_{t+1} \mid \mathbf{x}_t)$, and a sensor model $p(\mathbf{e}_t \mid \mathbf{x}_t)$.
     \end{enumerate}
 
     \item In filtering, the belief state is updated at each timestep using \ldots
@@ -757,7 +846,7 @@ A monitoring program wants to know whether a server is cooled enough. Each day, 
     \begin{enumerate}[label=$\bigcirc$]
         \item The Bayes filter estimates $\mathbf{P}(\mathbf{X}_{1:t} \mid \mathbf{e}_{1:t})$.
         \item Smoothing consists in computing $\mathbf{P}(\mathbf{X}_{t+1} \mid \mathbf{e}_{1:t+1})$ by pushing the belief state $\mathbf{P}(\mathbf{X}_t \mid \mathbf{e}_{1:t})$ forward through the transition model and then updating this new belief state with the evidence $\mathbf{e}_{t+1}$.
-        \item The Kalman filter computes $\mathbf{P}(\mathbf{X}_{t+k} \mid \mathbf{e}_{1:t})$ by pushing the belief state $\mathbf{P}(\mathbf{X}_t \mid \mathbf{e}_{1:t})$ forward $k$ times through the transition model.
+        \item The Kalman filter computes the belief state exactly for non-linear transition models.
         \item \correct{The Viterbi algorithm computes the most likely sequence of state values $\mathbf{x}_{1:t}$ given the evidence $\mathbf{e}_{1:t}$.}
     \end{enumerate}
 \end{quiz}
