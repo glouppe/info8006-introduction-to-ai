@@ -515,6 +515,14 @@ class: middle
 
 ---
 
+<iframe src="demo/lec7/shallow.html" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
+
+???
+
+Build: move one joint, $x = -b\_j / w\_j$, then one slope; flip a sign of $v\_j$. Approximate: add units one at a time on the bump.
+
+---
+
 class: middle
 
 ## Multivariate outputs

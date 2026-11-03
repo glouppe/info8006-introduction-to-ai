@@ -1,5 +1,23 @@
 # Lecture 7 demos
 
+## Shallow network, interactive
+
+`shallow.html` is shown on a full slide after the universal approximation theorem. It is a plain
+web page (no dependency beyond the KaTeX files of `assets/`), in the notation of the slides: a
+network with one input, one output and $q$ ReLU hidden units, $h_j = \text{ReLU}(w_j x + b_j)$ and
+$y = \sum_j v_j h_j + c$, on $[0, 1]$.
+
+- *build*: one to four units, each with sliders for $w_j$, $b_j$ and $v_j$, plus $c$. It draws the
+  network (edge width with the weight, dashed when negative), the hidden units with their joints
+  at $x = -b_j / w_j$, and the output as the sum of the weighted units.
+- *approximate*: up to 40 units, whose joints are spread evenly over the interval; the output
+  weights and $c$ are fitted by least squares to a target (a bump, a wave, or a ramp and a dip),
+  and the RMS error falls as $q$ grows, which is the universal approximation theorem at work.
+
+Open it on its own with the deck server running: `http://localhost:8000/demo/lec7/shallow.html`.
+
+## Notebooks
+
 The two notebooks of the live coding sessions, adapted from
 [Deep Learning (with PyTorch)](https://github.com/Atcold/pytorch-Deep-Learning)
 by Alfredo Canziani.
@@ -10,7 +28,7 @@ Both need PyTorch, which is an extra of the course environment:
 uv sync --extra torch
 ```
 
-## Logistic regression and MLPs on a spiral
+### Logistic regression and MLPs on a spiral
 
 Two classes of points in the plane, wound into a spiral. The notebook trains,
 in turn, logistic regression, its multiclass version with a softmax output,
@@ -31,7 +49,7 @@ uv run jupyter lab demo/lec7/spiral.ipynb
 No linear model does better than chance here. The last cell lists what to vary
 live: the non-linearity, the width, the depth and the activation function.
 
-## MLP against ConvNet on MNIST
+### MLP against ConvNet on MNIST
 
 An MLP and a convolutional network with the same number of parameters (about
 6,400), trained for one epoch on MNIST, then again with the pixels of every

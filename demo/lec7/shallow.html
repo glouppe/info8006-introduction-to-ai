@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shallow network</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/katex.min.css">
+<script src="../../assets/katex.min.js"></script>
+<style>
+:root {
+    --bg: #fff;
+    --ink: #2a2a2a;
+    --muted: #8a8a8a;
+    --grid: #e6e6e6;
+    --panel: #f6f7f9;
+    --accent: #356aaf;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
+main { display: flex; height: 100%; gap: 14px; padding: 6px 10px; }
+#plots { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+#plots canvas { width: 100%; height: 100%; }
+aside { flex: 0 0 250px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
+.tabs { display: flex; gap: 6px; }
+.tabs button { flex: 1; font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 5px 0; cursor: pointer; }
+.tabs button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.unit { border-left: 4px solid; padding: 2px 0 2px 8px; }
+label { display: block; color: var(--muted); font-size: 13px; }
+label .v { float: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; margin: 1px 0 0; accent-color: var(--accent); }
+select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 3px; }
+.check { color: var(--ink); }
+.check input { accent-color: var(--accent); }
+.stat { font-size: 14px; display: flex; justify-content: space-between; }
+.stat b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.note { color: var(--muted); font-size: 12px; }
+.legend { display: grid; grid-template-columns: 22px 1fr; gap: 3px 8px; align-items: center; font-size: 13px; margin: 2px 0 4px; }
+.legend i { display: block; width: 22px; height: 0; }
+.katex { font-size: 1.05em; }
+[hidden] { display: none !important; }
+@media (max-width: 640px) { main { flex-direction: column; } aside { flex: 0 0 auto; } }
+</style>
+</head>
+<body>
+<main>
+    <div id="plots"><canvas id="canvas"></canvas></div>
+    <aside>
+        <div class="tabs"><button id="tab-build" class="on">build</button><button id="tab-fit">approximate</button></div>
+        <div class="legend">
+            <i style="background: var(--ink); height: 3px"></i><span>output <span class="m">y(x)</span></span>
+            <i style="border-top: 2px dashed var(--muted)"></i><span>weighted units <span class="m">v_j h_j(x)</span></span>
+            <i id="legend-target" style="background: #b9b9b9; height: 6px" hidden></i><span id="legend-target-text" hidden>target</span>
+        </div>
+        <div id="build">
+            <label>hidden units <i>q</i> <span class="v" id="q-out"></span><input id="q" type="range" min="1" max="4" step="1" value="3"></label>
+            <div id="units"></div>
+            <label><span class="m">c</span> <span class="v" id="c-out"></span><input id="c" type="range" min="-1" max="1" step="0.05" value="0.1"></label>
+            <div class="tabs"><button id="random">random</button><button id="defaults">reset</button></div>
+        </div>
+        <div id="fit" hidden>
+            <select id="target">
+                <option value="bump">a smooth bump</option>
+                <option value="wave">a wave</option>
+                <option value="kink">a ramp and a dip</option>
+            </select>
+            <label>hidden units <i>q</i> <span class="v" id="n-out"></span><input id="n" type="range" min="1" max="40" step="1" value="3"></label>
+            <label class="check"><input id="show-units" type="checkbox" checked> show the weighted units</label>
+            <div class="stat"><span>RMS error</span><b id="rmse"></b></div>
+            <p class="note">The joints are spread evenly over the interval, and the output weights <span class="m">v_j</span> and <span class="m">c</span> are fitted by least squares. With enough units, any continuous function on the interval is approximated arbitrarily well.</p>
+        </div>
+    </aside>
+</main>
+<script>
+"use strict";
+
+// A shallow network with one input, one output and q ReLU hidden units, in the notation of lecture 7:
+// h_j = ReLU(w_j x + b_j) for j = 0, ..., q-1, and y = sum_j v_j h_j + c, on the interval [0, 1].
+const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6", TARGET = "#b9b9b9";
+const COLORS = ["#356aaf", "#d9822b", "#3f8f5a", "#8a5fb5"];
+const DEFAULTS = [
+    { w: 1.0, b: -0.2, v: 1.2 },
+    { w: -1.5, b: 0.75, v: 0.8 },
+    { w: 2.0, b: -1.6, v: -1.5 },
+    { w: 1.0, b: -0.5, v: 0.0 },
+];
+const TARGETS = {
+    bump: x => 0.9 * Math.exp(-((x - 0.45) ** 2) / 0.02) - 0.2,
+    wave: x => 0.6 * Math.sin(2 * Math.PI * 1.5 * x) + 0.3 * x,
+    kink: x => (x < 0.35 ? 1.4 * x - 0.3 : 0.19) - 0.7 * Math.exp(-((x - 0.72) ** 2) / 0.004),
+};
+const relu = z => Math.max(0, z);
+const tex = s => katex.renderToString(s, { throwOnError: false });
+
+let mode = "build";
+let units = DEFAULTS.slice(0, 3).map(u => ({ ...u }));
+let c = 0.1;
+
+// ---- controls
+const $ = id => document.getElementById(id);
+document.querySelectorAll(".m").forEach(el => el.innerHTML = tex(el.textContent));
+
+function unitControls() {
+    const box = $("units");
+    box.innerHTML = "";
+    units.forEach((u, j) => {
+        const div = document.createElement("div");
+        div.className = "unit";
+        div.style.borderColor = COLORS[j];
+        for (const [key, min, max] of [["w", -3, 3], ["b", -3, 3], ["v", -3, 3]]) {
+            const label = document.createElement("label");
+            label.innerHTML = `${tex(`${key}_${j}`)} <span class="v"></span>`;
+            const input = document.createElement("input");
+            Object.assign(input, { type: "range", min, max, step: 0.05, value: u[key] });
+            input.addEventListener("input", () => { u[key] = +input.value; refresh(); });
+            label.appendChild(input);
+            div.appendChild(label);
+            u["out_" + key] = label.querySelector(".v");
+        }
+        box.appendChild(div);
+    });
+}
+
+function refresh() {
+    units.forEach(u => { for (const k of ["w", "b", "v"]) u["out_" + k].textContent = u[k].toFixed(2); });
+    $("q-out").textContent = units.length;
+    $("c-out").textContent = c.toFixed(2);
+    $("n-out").textContent = $("n").value;
+    draw();
+}
+
+$("q").addEventListener("input", () => {
+    const q = +$("q").value;
+    while (units.length < q) units.push({ ...DEFAULTS[units.length] });
+    units.length = q;
+    unitControls(); refresh();
+});
+$("c").addEventListener("input", () => { c = +$("c").value; refresh(); });
+$("random").addEventListener("click", () => {
+    const r = () => Math.round((Math.random() * 6 - 3) / 0.05) * 0.05;
+    units.forEach(u => { u.w = r(); u.v = r(); u.b = Math.round(-u.w * Math.random() / 0.05) * 0.05; });
+    unitControls(); refresh();
+});
+$("defaults").addEventListener("click", () => {
+    units = DEFAULTS.slice(0, +$("q").value).map(u => ({ ...u }));
+    c = 0.1; $("c").value = c;
+    unitControls(); refresh();
+});
+for (const [id, m] of [["tab-build", "build"], ["tab-fit", "fit"]]) {
+    $(id).addEventListener("click", () => {
+        mode = m;
+        $("tab-build").classList.toggle("on", m === "build");
+        $("tab-fit").classList.toggle("on", m === "fit");
+        $("build").hidden = m !== "build";
+        $("fit").hidden = m !== "fit";
+        $("legend-target").hidden = $("legend-target-text").hidden = m !== "fit";
+        refresh();
+    });
+}
+for (const id of ["target", "n", "show-units"]) $(id).addEventListener("input", refresh);
+
+// ---- least squares for the approximation mode: joints at evenly spread points, slopes 1 or -1
+// alternately (any non-zero slope gives the same fit), output weights and c fitted on a fine grid
+function fitted() {
+    const q = +$("n").value, f = TARGETS[$("target").value];
+    const fitUnits = [];
+    for (let j = 0; j < q; j++) {
+        const joint = (j + 0.5) / q, w = j % 2 ? -1 : 1;
+        fitUnits.push({ w, b: -w * joint });
+    }
+    const xs = Array.from({ length: 401 }, (_, i) => i / 400);
+    // normal equations of [h_0(x), ..., h_{q-1}(x), 1] v = f(x), with a tiny ridge for stability
+    const n = q + 1, A = Array.from({ length: n }, () => new Array(n).fill(0)), rhs = new Array(n).fill(0);
+    for (const x of xs) {
+        const row = fitUnits.map(u => relu(u.w * x + u.b)).concat([1]);
+        for (let i = 0; i < n; i++) {
+            rhs[i] += row[i] * f(x);
+            for (let k = 0; k < n; k++) A[i][k] += row[i] * row[k];
+        }
+    }
+    for (let i = 0; i < n; i++) A[i][i] += 1e-9;
+    const sol = solve(A, rhs);
+    fitUnits.forEach((u, j) => u.v = sol[j]);
+    const offset = sol[q];
+    let se = 0;
+    for (const x of xs) se += (output(fitUnits, offset, x) - f(x)) ** 2;
+    return { units: fitUnits, c: offset, f, rmse: Math.sqrt(se / xs.length) };
+}
+
+function solve(A, b) {   // Gaussian elimination with partial pivoting
+    const n = b.length, M = A.map((r, i) => r.concat([b[i]]));
+    for (let i = 0; i < n; i++) {
+        let p = i;
+        for (let k = i + 1; k < n; k++) if (Math.abs(M[k][i]) > Math.abs(M[p][i])) p = k;
+        [M[i], M[p]] = [M[p], M[i]];
+        for (let k = i + 1; k < n; k++) {
+            const f = M[k][i] / M[i][i];
+            for (let m = i; m <= n; m++) M[k][m] -= f * M[i][m];
+        }
+    }
+    const x = new Array(n).fill(0);
+    for (let i = n - 1; i >= 0; i--) {
+        let s = M[i][n];
+        for (let k = i + 1; k < n; k++) s -= M[i][k] * x[k];
+        x[i] = s / M[i][i];
+    }
+    return x;
+}
+
+const output = (us, c0, x) => us.reduce((s, u) => s + u.v * relu(u.w * x + u.b), c0);
+
+// ---- drawing
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+let W = 0, H = 0;
+
+function resize() {
+    const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+}
+
+function rich(tokens, x, y, size, color, align = "left") {
+    // words in Roboto; single letters in KaTeX_Math italic and the rest of the math in KaTeX_Main,
+    // with subscripts after "_", as LaTeX
+    const pieces = [];
+    for (const [kind, s] of tokens) {
+        if (kind === "t") { pieces.push([s, `${0.82 * size}px Roboto`, 0]); continue; }
+        const [head, sub] = s.split("_");
+        for (const ch of head) pieces.push([ch, /[a-zA-Z]/.test(ch) && kind === "m" ? `italic ${size}px KaTeX_Math` : `${size}px KaTeX_Main`, 0]);
+        if (sub) pieces.push([sub, (/[a-zA-Z]/.test(sub) ? "italic " : "") + `${0.7 * size}px ` + (/[a-zA-Z]/.test(sub) ? "KaTeX_Math" : "KaTeX_Main"), 0.28 * size]);
+    }
+    let total = 0;
+    for (const p of pieces) { ctx.font = p[1]; p.push(ctx.measureText(p[0]).width); total += p[3]; }
+    let cx = align === "center" ? x - total / 2 : align === "right" ? x - total : x;
+    ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (const [s, font, dy, wd] of pieces) { ctx.font = font; ctx.fillText(s, cx, y + dy); cx += wd; }
+}
+
+function network(us, box) {
+    // x at the top, the hidden units in a row, y at the bottom; edge width grows with |weight|
+    const { x0, y0, w, h } = box, q = us.length;
+    const r = Math.max(2.5, Math.min(18, (w - 8) / (2.6 * q)));
+    const xc = x0 + w / 2, yi = y0 + 20, yh = y0 + h / 2, yo = y0 + h - 20;
+    const hx = j => q === 1 ? xc : x0 + r + 4 + j * (w - 2 * r - 8) / (q - 1);
+    const color = j => q <= 4 ? COLORS[j] : MUTED;
+    const edge = (xa, ya, ra, xb, yb, rb, weight, col) => {
+        const dx = xb - xa, dy = yb - ya, d = Math.hypot(dx, dy);
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.25 + 0.75 * Math.min(1, Math.abs(weight) / 3);
+        ctx.lineWidth = (q <= 4 ? 0.8 : 0.4) + (q <= 4 ? 2.2 : 1.0) * Math.min(1, Math.abs(weight) / 3);
+        ctx.setLineDash(weight < 0 ? [5, 4] : []);
+        ctx.beginPath(); ctx.moveTo(xa + dx / d * ra, ya + dy / d * ra); ctx.lineTo(xb - dx / d * rb, yb - dy / d * rb); ctx.stroke();
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
+    };
+    const R = 18;
+    us.forEach((u, j) => {
+        edge(xc, yi, R, hx(j), yh, r, u.w, color(j));
+        edge(hx(j), yh, r, xc, yo, R, u.v, color(j));
+    });
+    const nodeAt = (x, y, rad, label, col) => {
+        ctx.fillStyle = "#fff"; ctx.strokeStyle = col; ctx.lineWidth = rad < 6 ? 1 : 1.6;
+        ctx.beginPath(); ctx.arc(x, y, rad, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+        if (rad >= 12) rich([["m", label]], x, y, Math.min(17, rad), INK, "center");
+    };
+    nodeAt(xc, yi, R, "x", INK);
+    us.forEach((u, j) => nodeAt(hx(j), yh, r, `h_${j}`, color(j)));
+    nodeAt(xc, yo, R, "y", INK);
+    ctx.fillStyle = MUTED; ctx.font = "13px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
+    ctx.fillText(q <= 4 ? "dashed: negative weight" : `${q} hidden units`, xc, yo + R + 10);
+}
+
+function axes(box, ymin, ymax, title) {
+    const { x0, y0, w, h } = box;
+    const X = x => x0 + x * w, Y = y => y0 + (ymax - y) / (ymax - ymin) * h;
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+    ctx.fillStyle = MUTED; ctx.font = "12px Roboto";
+    for (let t = 0; t <= 1.0001; t += 0.25) {
+        ctx.beginPath(); ctx.moveTo(X(t), y0); ctx.lineTo(X(t), y0 + h); ctx.stroke();
+        ctx.textAlign = "center"; ctx.textBaseline = "top"; ctx.fillText(+t.toFixed(2), X(t), y0 + h + 4);
+    }
+    const step = (ymax - ymin) > 2.5 ? 1 : 0.5;
+    for (let v = Math.ceil(ymin / step) * step; v <= ymax + 1e-9; v += step) {
+        ctx.beginPath(); ctx.moveTo(x0, Y(v)); ctx.lineTo(x0 + w, Y(v)); ctx.stroke();
+        ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(+v.toFixed(1), x0 - 6, Y(v));
+    }
+    ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(x0, Y(0)); ctx.lineTo(x0 + w, Y(0)); ctx.stroke();
+    rich(title, x0, y0 - 14, 17, INK);
+    rich([["m", "x"]], x0 + w + 10, Y(0), 17, INK);
+    return { X, Y };
+}
+
+function curve(f, box, ymin, ymax, color, width, dash = []) {
+    const { x0, y0, w, h } = box;
+    ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, w, h); ctx.clip();
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash);
+    ctx.beginPath();
+    for (let i = 0; i <= 400; i++) {
+        const x = i / 400, px = x0 + x * w, py = y0 + (ymax - f(x)) / (ymax - ymin) * h;
+        i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.stroke(); ctx.restore();
+}
+
+function joints(us, box, Y, ymin, ymax) {
+    const { x0, w } = box;
+    us.forEach((u, j) => {
+        if (u.w === 0) return;
+        const xj = -u.b / u.w;
+        if (xj <= 0 || xj >= 1) return;
+        ctx.strokeStyle = us.length <= 4 ? COLORS[j] : MUTED; ctx.globalAlpha = 0.5; ctx.lineWidth = 1;
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(x0 + xj * w, Y(ymax)); ctx.lineTo(x0 + xj * w, Y(ymin)); ctx.stroke();
+        ctx.setLineDash([]); ctx.globalAlpha = 1;
+    });
+}
+
+function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    let us, c0, f = null;
+    if (mode === "build") { us = units; c0 = c; }
+    else { const fit = fitted(); us = fit.units; c0 = fit.c; f = fit.f; $("rmse").textContent = fit.rmse.toFixed(3); }
+    const showUnits = mode === "build" || $("show-units").checked;
+    const left = Math.min(200, 0.24 * W), pad = 44;
+    const plotX = left + pad + 20, plotW = W - plotX - 30;
+    network(us, { x0: 8, y0: 0.2 * H, w: left - 10, h: 0.55 * H });
+
+    // hidden units, top
+    const top = { x0: plotX, y0: 34, w: plotW, h: 0.36 * H - 34 };
+    const hmax = Math.max(1, ...us.map(u => Math.max(relu(u.b), relu(u.w + u.b))));
+    const hTop = Math.min(3, Math.ceil(hmax * 2) / 2);
+    const A = axes(top, -0.15 * hTop, hTop, [["t", "hidden units   "], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") = "], ["t", "ReLU"], ["u", "("], ["m", "w_j"], ["m", "x"], ["u", " + "], ["m", "b_j"], ["u", ")"]]);
+    if (showUnits) us.forEach((u, j) => curve(x => relu(u.w * x + u.b), top, -0.15 * hTop, hTop, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? 2.2 : 1.2));
+    joints(us, top, A.Y, -0.15 * hTop, hTop);
+
+    // output, bottom
+    const bottom = { x0: plotX, y0: 0.36 * H + 66, w: plotW, h: H - (0.36 * H + 66) - 30 };
+    const ys = Array.from({ length: 101 }, (_, i) => output(us, c0, i / 100));
+    const lim = Math.min(4, Math.max(1, Math.ceil(Math.max(...ys.map(Math.abs), ...(f ? [1] : [])) * 2) / 2));
+    const B = axes(bottom, -lim, lim, [["t", "output   "], ["m", "y"], ["u", "("], ["m", "x"], ["u", ") = Σ_j "], ["m", "v_j"], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") + "], ["m", "c"]]);
+    joints(us, bottom, B.Y, -lim, lim);
+    if (f) curve(f, bottom, -lim, lim, TARGET, 6);
+    if (showUnits) us.forEach((u, j) => curve(x => u.v * relu(u.w * x + u.b), bottom, -lim, lim, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? 1.6 : 1, [6, 4]));
+    curve(x => output(us, c0, x), bottom, -lim, lim, INK, 2.6);
+}
+
+unitControls();
+window.addEventListener("resize", resize);
+document.fonts.ready.then(() => Promise.all([
+    document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),
+])).then(() => { resize(); refresh(); });
+resize(); refresh();
+</script>
+</body>
+</html>
