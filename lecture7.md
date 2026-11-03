@@ -163,7 +163,7 @@ class: middle
 
 .grid[
 .kol-1-5[<br>.center[![](figures/lec7/latent.svg)]]
-.kol-4-5[.center.width-45[![](figures/lec7/lr-gaussian-model.svg)]]
+.kol-4-5[.center.width-70[![](figures/lec7/lr-gaussian-model.svg)]]
 ]
 
 Linear regression models $p(y \mid \mathbf{x})$ as a linear Gaussian, as the sensor model of the Kalman filter (Lecture 6),
