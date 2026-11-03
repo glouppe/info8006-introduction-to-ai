@@ -22,11 +22,17 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); 
 main { display: flex; height: 100%; gap: 14px; padding: 6px 10px; }
 #plots { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 #plots canvas { width: 100%; height: 100%; }
-aside { flex: 0 0 250px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
+aside { flex: 0 0 250px; display: flex; flex-direction: column; justify-content: center; gap: 6px; overflow-y: auto; }
 .tabs { display: flex; gap: 6px; }
 .tabs button { flex: 1; font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 5px 0; cursor: pointer; }
 .tabs button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .unit { border-left: 4px solid; padding: 2px 0 2px 8px; }
+.chips { display: flex; gap: 5px; align-items: center; margin: 2px 0; }
+.chips button { font: inherit; font-size: 14px; min-width: 38px; height: 30px; border-radius: 15px; border: 2px solid; background: #fff; color: var(--ink); cursor: pointer; padding: 0 6px; }
+.chips button.on { color: #fff; }
+.chips button.pm { min-width: 30px; border-color: #ccd; color: var(--muted); font-size: 16px; line-height: 1; }
+.chips button:disabled { opacity: 0.35; cursor: default; }
+.hint { color: var(--muted); font-size: 12px; margin: 0 0 2px; }
 label { display: block; color: var(--muted); font-size: 13px; }
 label .v { float: right; color: var(--ink); font-variant-numeric: tabular-nums; }
 input[type=range] { width: 100%; margin: 1px 0 0; accent-color: var(--accent); }
@@ -54,7 +60,8 @@ select { width: 100%; font: inherit; font-size: 13px; color: var(--ink); backgro
             <i id="legend-target" style="background: #b9b9b9; height: 6px" hidden></i><span id="legend-target-text" hidden>target</span>
         </div>
         <div id="build">
-            <label>hidden units <i>q</i> <span class="v" id="q-out"></span><input id="q" type="range" min="1" max="4" step="1" value="3"></label>
+            <div class="chips" id="chips"></div>
+            <p class="hint">Pick a hidden unit, here or on the network, to set its parameters.</p>
             <div id="units"></div>
             <label><span class="m">c</span> <span class="v" id="c-out"></span><input id="c" type="range" min="-1" max="1" step="0.05" value="0.1"></label>
             <div class="tabs"><button id="random">random</button><button id="defaults">reset</button></div>
@@ -102,10 +109,37 @@ let c = 0.1;
 const $ = id => document.getElementById(id);
 document.querySelectorAll(".m").forEach(el => el.innerHTML = tex(el.textContent));
 
+let sel = 0;   // the hidden unit whose sliders are shown
+
 function unitControls() {
+    // one chip per hidden unit, + and - to add or remove one, and the sliders of the selected unit only
+    const chips = $("chips");
+    chips.innerHTML = "";
+    units.forEach((u, j) => {
+        const b = document.createElement("button");
+        b.innerHTML = tex(`h_${j}`);
+        b.style.borderColor = COLORS[j];
+        if (j === sel) { b.classList.add("on"); b.style.background = COLORS[j]; }
+        b.addEventListener("click", () => { sel = j; unitControls(); refresh(); });
+        chips.appendChild(b);
+    });
+    for (const [sym, delta] of [["−", -1], ["+", 1]]) {
+        const b = document.createElement("button");
+        b.className = "pm"; b.textContent = sym;
+        b.disabled = units.length + delta < 1 || units.length + delta > 4;
+        b.title = delta > 0 ? "add a hidden unit" : "remove the last hidden unit";
+        b.addEventListener("click", () => {
+            if (delta > 0) { units.push({ ...DEFAULTS[units.length] }); sel = units.length - 1; }
+            else { units.pop(); sel = Math.min(sel, units.length - 1); }
+            unitControls(); refresh();
+        });
+        chips.appendChild(b);
+    }
     const box = $("units");
     box.innerHTML = "";
+    units.forEach(u => { delete u.out_w; delete u.out_b; delete u.out_v; });
     units.forEach((u, j) => {
+        if (j !== sel) return;
         const div = document.createElement("div");
         div.className = "unit";
         div.style.borderColor = COLORS[j];
@@ -124,19 +158,12 @@ function unitControls() {
 }
 
 function refresh() {
-    units.forEach(u => { for (const k of ["w", "b", "v"]) u["out_" + k].textContent = u[k].toFixed(2); });
-    $("q-out").textContent = units.length;
+    units.forEach(u => { for (const k of ["w", "b", "v"]) if (u["out_" + k]) u["out_" + k].textContent = u[k].toFixed(2); });
     $("c-out").textContent = c.toFixed(2);
     $("n-out").textContent = $("n").value;
     draw();
 }
 
-$("q").addEventListener("input", () => {
-    const q = +$("q").value;
-    while (units.length < q) units.push({ ...DEFAULTS[units.length] });
-    units.length = q;
-    unitControls(); refresh();
-});
 $("c").addEventListener("input", () => { c = +$("c").value; refresh(); });
 $("random").addEventListener("click", () => {
     const r = () => Math.round((Math.random() * 6 - 3) / 0.05) * 0.05;
@@ -144,7 +171,7 @@ $("random").addEventListener("click", () => {
     unitControls(); refresh();
 });
 $("defaults").addEventListener("click", () => {
-    units = DEFAULTS.slice(0, +$("q").value).map(u => ({ ...u }));
+    units = DEFAULTS.slice(0, units.length).map(u => ({ ...u }));
     c = 0.1; $("c").value = c;
     unitControls(); refresh();
 });
@@ -259,13 +286,19 @@ function network(us, box) {
         edge(xc, yi, R, hx(j), yh, r, u.w, color(j));
         edge(hx(j), yh, r, xc, yo, R, u.v, color(j));
     });
-    const nodeAt = (x, y, rad, label, col) => {
-        ctx.fillStyle = "#fff"; ctx.strokeStyle = col; ctx.lineWidth = rad < 6 ? 1 : 1.6;
+    const nodeAt = (x, y, rad, label, col, on = false) => {
+        ctx.fillStyle = on ? col + "22" : "#fff"; ctx.strokeStyle = col; ctx.lineWidth = rad < 6 ? 1 : on ? 3.2 : 1.6;
+        if (on) { ctx.beginPath(); ctx.arc(x, y, rad, 0, 2 * Math.PI); ctx.fillStyle = "#fff"; ctx.fill(); ctx.fillStyle = col + "22"; }
         ctx.beginPath(); ctx.arc(x, y, rad, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
-        if (rad >= 12) rich([["m", label]], x, y, Math.min(17, rad), INK, "center");
+        if (rad >= 9) rich([["m", label]], x, y, Math.min(17, Math.max(12, rad)), INK, "center");
     };
     nodeAt(xc, yi, R, "x", INK);
-    us.forEach((u, j) => nodeAt(hx(j), yh, r, `h_${j}`, color(j)));
+    hits = [];
+    us.forEach((u, j) => {
+        const on = mode === "build" && j === sel;
+        nodeAt(hx(j), yh, r, `h_${j}`, color(j), on);
+        hits.push({ x: hx(j), y: yh, r: Math.max(r, 12), j });
+    });
     nodeAt(xc, yo, R, "y", OUT);
     ctx.fillStyle = MUTED; ctx.font = "13px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
     ctx.fillText(q <= 4 ? "dashed: negative weight" : `${q} hidden units`, xc, yo + R + 10);
@@ -325,14 +358,16 @@ function draw() {
     const showUnits = mode === "build" || $("show-units").checked;
     const left = Math.min(200, 0.24 * W), pad = 44;
     const plotX = left + pad + 20, plotW = W - plotX - 30;
-    network(us, { x0: 8, y0: 0.2 * H, w: left - 10, h: 0.55 * H });
+    network(us, { x0: 8, y0: 0.225 * H, w: left - 10, h: 0.55 * H });
 
     // hidden units, top
     const top = { x0: plotX, y0: 34, w: plotW, h: 0.36 * H - 34 };
     const hmax = Math.max(1, ...us.map(u => Math.max(relu(u.b), relu(u.w + u.b))));
     const hTop = Math.min(3, Math.ceil(hmax * 2) / 2);
     const A = axes(top, -0.15 * hTop, hTop, [["t", "hidden units   "], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") = "], ["t", "ReLU"], ["u", "("], ["m", "w_j"], ["m", "x"], ["u", " + "], ["m", "b_j"], ["u", ")"]]);
-    if (showUnits) us.forEach((u, j) => curve(x => relu(u.w * x + u.b), top, -0.15 * hTop, hTop, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? 2.2 : 1.2));
+    const fade = j => { ctx.globalAlpha = mode === "build" && j !== sel ? 0.3 : 1; };
+    if (showUnits) us.forEach((u, j) => { fade(j); curve(x => relu(u.w * x + u.b), top, -0.15 * hTop, hTop, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? (mode === "build" && j === sel ? 3 : 2.2) : 1.2); });
+    ctx.globalAlpha = 1;
     joints(us, top, A.Y, -0.15 * hTop, hTop);
 
     // output, bottom
@@ -342,9 +377,18 @@ function draw() {
     const B = axes(bottom, -lim, lim, [["t", "output   "], ["m", "y"], ["u", "("], ["m", "x"], ["u", ") = Σ_j "], ["m", "v_j"], ["m", "h_j"], ["u", "("], ["m", "x"], ["u", ") + "], ["m", "c"]]);
     joints(us, bottom, B.Y, -lim, lim);
     if (f) curve(f, bottom, -lim, lim, TARGET, 6);
-    if (showUnits) us.forEach((u, j) => curve(x => u.v * relu(u.w * x + u.b), bottom, -lim, lim, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? 1.6 : 1, [6, 4]));
+    if (showUnits) us.forEach((u, j) => { fade(j); curve(x => u.v * relu(u.w * x + u.b), bottom, -lim, lim, us.length <= 4 ? COLORS[j] : TARGET, us.length <= 4 ? (mode === "build" && j === sel ? 2.4 : 1.6) : 1, [6, 4]); });
+    ctx.globalAlpha = 1;
     curve(x => output(us, c0, x), bottom, -lim, lim, OUT, 2.6);
 }
+
+let hits = [];
+const hitAt = e => {
+    const r = canvas.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    return mode === "build" ? hits.find(h => Math.hypot(h.x - x, h.y - y) <= h.r + 4) : undefined;
+};
+canvas.addEventListener("click", e => { const h = hitAt(e); if (h) { sel = h.j; unitControls(); refresh(); } });
+canvas.addEventListener("mousemove", e => { canvas.style.cursor = hitAt(e) ? "pointer" : "default"; });
 
 unitControls();
 // shallow.html?mode=build or ?mode=approximate shows that mode alone, without the tabs
