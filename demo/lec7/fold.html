@@ -119,57 +119,71 @@ function draw() {
     mini({ x0: 2 * gap + mw, y0: my, w: mw, h: mh }, g, false, [["t", "second network  "], ["m", "y′ = g(y)"]]);
     mini({ x0: 3 * gap + 2 * mw, y0: my, w: mw, h: mh }, x => g(f(x)), true, [["t", "composition  "], ["m", "y′ = g(f(x))"]]);
 
-    // the strip, folding and unfolding below
-    const left = W * 0.12, width = W * 0.76, base = H - 46, layer = 12, gh = Math.max(40, base - (my + mh + 70));
-    const pos = x => [left + ((1 - s) * x + s * f(x)) * width, base - s * layer * (2 - piece(x))];
-
-    // axis line and its label
-    ctx.strokeStyle = GRID; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(left, base + 6); ctx.lineTo(left + width, base + 6); ctx.stroke();
-    if (s < 0.5) rich([["t", "input  "], ["m", "x"]], left + width / 2, base + 24, 17, MUTED, "center");
-    else rich([["t", "folded input  "], ["m", "y = f(x)"]], left + width / 2, base + 24, 17, MUTED, "center");
-
-    // values of g carried by the strip, drawn up to gfrac of the folded interval
-    ctx.lineWidth = 2.2;
+    // the input space as a sheet of paper, in oblique projection: one panel per piece of f, folded at
+    // the joints like an accordion. The middle panel turns by s (pi - EPS) about its first crease, so
+    // that, folded, the third panel lies just behind the first and the layers stay visible. Each
+    // panel stretches from its width in x to the full range of y, so that folded points meet at f(x).
+    const EPS = 0.07 * Math.PI, starts = [0, A, B], widths = [A, B - A, 1 - B];
+    const angles = [0, s * (Math.PI - EPS), 0];
+    const unit = W * 0.42, zh = Math.max(50, H - (my + mh + 70) - 70), depth = 0.55, tilt = Math.PI / 6;
+    const panels = [];
+    let X = 0, D = 0;
     for (let k = 0; k < 3; k++) {
-        let prev = null;
-        for (const x of XS) {
-            if (piece(x) !== k) { prev = null; continue; }
-            if (f(x) > gfrac + 1e-9) { prev = null; continue; }
-            const [px, py] = pos(x), qy = py - 14 - g(f(x)) * gh;
-            if (prev) {
-                ctx.strokeStyle = COLORS[k]; ctx.globalAlpha = s > 0.95 && k < 2 ? 0.55 : 1;
-                ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(px, qy); ctx.stroke();
-                ctx.globalAlpha = 1;
+        const L = (1 - s) * widths[k] + s * 1, u = [Math.cos(angles[k]), Math.sin(angles[k])];
+        panels.push({ k, X, D, u, L });
+        X += u[0] * L; D += u[1] * L;
+    }
+    // centre the drawing horizontally on its current extent
+    const xsOf = p => [p.X, p.X + p.u[0] * p.L];
+    const minX = Math.min(...panels.flatMap(xsOf)), maxX = Math.max(...panels.flatMap(xsOf));
+    const ox = W / 2 - (minX + maxX) / 2 * unit - 0.25 * unit * depth * Math.cos(tilt), oy = H - 58;
+    const proj = (X3, D3, Z3) => [ox + X3 * unit + D3 * unit * depth * Math.cos(tilt), oy - Z3 * zh - D3 * unit * depth * Math.sin(tilt)];
+    const at = (pnl, lam, z) => proj(pnl.X + pnl.u[0] * pnl.L * lam, pnl.D + pnl.u[1] * pnl.L * lam, z);
+    const ZTOP = 1.08;
+
+    // painter's order: farther panels first (larger depth)
+    const order = panels.slice().sort((a, b) => (b.D + b.u[1] * b.L / 2) - (a.D + a.u[1] * a.L / 2));
+    for (const pnl of order) {
+        const c = [at(pnl, 0, 0), at(pnl, 1, 0), at(pnl, 1, ZTOP), at(pnl, 0, ZTOP)];
+        ctx.beginPath(); c.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath();
+        ctx.fillStyle = "#ffffff"; ctx.globalAlpha = 0.86; ctx.fill(); ctx.globalAlpha = 1;
+        ctx.fillStyle = COLORS[pnl.k]; ctx.globalAlpha = 0.07; ctx.fill(); ctx.globalAlpha = 1;
+        // faint grid: lines of equal y = f(x), so that the stretching shows
+        ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+        for (let v = 0.125; v < 1; v += 0.125) {
+            const lam = pnl.k === 1 ? 1 - v : v, a0 = at(pnl, lam, 0), a1 = at(pnl, lam, ZTOP);
+            ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(a1[0], a1[1]); ctx.stroke();
+        }
+        ctx.strokeStyle = "#9a9a9a"; ctx.lineWidth = 1.2;
+        ctx.beginPath(); c.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath(); ctx.stroke();
+        // the bottom edge, coloured by piece: the input axis
+        ctx.strokeStyle = COLORS[pnl.k]; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); ctx.lineTo(c[1][0], c[1][1]); ctx.stroke();
+        // the values of g carried by the sheet, drawn up to gfrac of the folded interval
+        if (gfrac > 0) {
+            ctx.strokeStyle = COLORS[pnl.k]; ctx.lineWidth = 2.4;
+            ctx.beginPath();
+            let first = true;
+            for (const x of XS) {
+                if (piece(x) !== pnl.k || f(x) > gfrac + 1e-9) continue;
+                const q = at(pnl, (x - starts[pnl.k]) / widths[pnl.k], 0.06 + 0.94 * g(f(x)));
+                first ? ctx.moveTo(q[0], q[1]) : ctx.lineTo(q[0], q[1]);
+                first = false;
             }
-            prev = [px, qy];
+            ctx.stroke();
         }
     }
 
-    // the strip itself, a thick band coloured by the piece of f
-    ctx.lineWidth = 7; ctx.lineCap = "round";
-    for (let k = 0; k < 3; k++) {
-        ctx.strokeStyle = COLORS[k];
-        ctx.beginPath();
-        let first = true;
-        for (const x of XS) {
-            if (piece(x) !== k) continue;
-            const [px, py] = pos(x);
-            first ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-            first = false;
-        }
-        ctx.stroke();
-    }
-    ctx.lineCap = "butt";
+    // label of the bottom edge
+    if (s < 0.5) rich([["t", "input  "], ["m", "x"]], W / 2, oy + 26, 17, MUTED, "center");
+    else rich([["t", "folded input  "], ["m", "y = f(x)"]], W / 2, oy + 26, 17, MUTED, "center");
 
     // caption of the current step
-    const captions = {
-        a: "a) The first network folds the input space back on itself.",
-        b: "b) The second network applies its function to the folded space.",
-        c: "c) Unfolding reveals the output: the pattern of g, three times.",
-    };
-    ctx.fillStyle = INK; ctx.font = "15px Roboto"; ctx.textAlign = "left"; ctx.textBaseline = "top";
-    if (step) ctx.fillText(captions[step], left, my + mh + 26);
+    // the current step, as on the slide: a) fold, b) apply g, c) unfold
+    if (step) {
+        const label = { a: [["t", "a) fold"]], b: [["t", "b) apply  "], ["m", "g"]], c: [["t", "c) unfold"]] }[step];
+        rich(label, W * 0.015, oy - zh / 2, 19, INK);
+    }
 }
 
 // playback
