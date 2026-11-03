@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Folding</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/katex.min.css">
+<style>
+:root { --ink: #2a2a2a; --muted: #8a8a8a; --accent: #356aaf; --panel: #f6f7f9; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #fff; color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
+main { display: flex; flex-direction: column; height: 100%; padding: 2px 6px; }
+canvas { flex: 1 1 auto; width: 100%; min-height: 0; }
+.bar { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
+.bar button { font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 3px 12px; cursor: pointer; }
+.bar input { flex: 1; accent-color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+    <canvas id="canvas"></canvas>
+    <div class="bar"><button id="play">pause</button><button id="restart">restart</button><input id="time" type="range" min="0" max="1" step="0.001" value="0"></div>
+</main>
+<script>
+"use strict";
+
+// Composition of two shallow networks with three ReLU units each, as on the folding slide of lecture 7.
+// The first network y = f(x) is a zigzag whose three pieces each cover [0, 1]: it folds the input interval
+// onto itself in three layers. The second network y' = g(y) is applied to the folded interval, and unfolding
+// carries its values back to x, which reveals y' = g(f(x)): the pattern of g, repeated three times and
+// mirrored on the descending piece of f.
+const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6";
+const COLORS = ["#356aaf", "#d9822b", "#3f8f5a"];
+const A = 0.38, B = 0.62;                       // joints of f
+const f = x => x < A ? x / A : x < B ? 1 - (x - A) / (B - A) : (x - B) / (1 - B);
+const piece = x => x < A ? 0 : x < B ? 1 : 2;
+const G = [[0, 0.15], [0.3, 0.9], [0.62, 0.25], [1, 0.75]];   // joints of g
+const g = y => {
+    for (let i = 1; i < G.length; i++) if (y <= G[i][0]) {
+        const [x0, y0] = G[i - 1], [x1, y1] = G[i];
+        return y0 + (y1 - y0) * (y - x0) / (x1 - x0);
+    }
+    return G[G.length - 1][1];
+};
+const N = 900, XS = Array.from({ length: N + 1 }, (_, i) => i / N);
+
+// timeline, in seconds: hold, fold, apply g, hold, unfold, hold
+const PHASES = [["hold", 1.2], ["fold", 2.6], ["apply", 2.0], ["hold2", 0.8], ["unfold", 2.8], ["end", 2.2]];
+const TOTAL = PHASES.reduce((s, p) => s + p[1], 0);
+const ease = u => u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) ** 2;
+function state(t) {   // fold amount s in [0, 1], fraction of g drawn, and the caption
+    let acc = 0;
+    for (const [name, d] of PHASES) {
+        if (t <= acc + d) {
+            const u = (t - acc) / d;
+            if (name === "hold") return { s: 0, gfrac: 0, step: "" };
+            if (name === "fold") return { s: ease(u), gfrac: 0, step: "a" };
+            if (name === "apply") return { s: 1, gfrac: ease(u), step: "b" };
+            if (name === "hold2") return { s: 1, gfrac: 1, step: "b" };
+            if (name === "unfold") return { s: 1 - ease(u), gfrac: 1, step: "c" };
+            return { s: 0, gfrac: 1, step: "c" };
+        }
+        acc += d;
+    }
+    return { s: 0, gfrac: 1, step: "c" };
+}
+
+const canvas = document.getElementById("canvas"), ctx = canvas.getContext("2d");
+let W = 0, H = 0;
+function resize() {
+    const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+}
+
+function rich(tokens, x, y, size, color, align = "left") {
+    // words in Roboto, letters in KaTeX_Math italic, the rest of the math in KaTeX_Main
+    const pieces = [];
+    for (const [kind, s] of tokens) {
+        if (kind === "t") { pieces.push([s, `${0.82 * size}px Roboto`]); continue; }
+        for (const ch of s) pieces.push([ch, /[a-zA-Z]/.test(ch) ? `italic ${size}px KaTeX_Math` : `${size}px KaTeX_Main`]);
+    }
+    let total = 0;
+    for (const p of pieces) { ctx.font = p[1]; p.push(ctx.measureText(p[0]).width); total += p[2]; }
+    let cx = align === "center" ? x - total / 2 : align === "right" ? x - total : x;
+    ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (const [s, font, wd] of pieces) { ctx.font = font; ctx.fillText(s, cx, y); cx += wd; }
+}
+
+function mini(box, fn, colored, title) {
+    const { x0, y0, w, h } = box;
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1; ctx.strokeRect(x0, y0, w, h);
+    ctx.lineWidth = 2.2;
+    let prev = null;
+    for (const x of XS) {
+        const px = x0 + x * w, py = y0 + h - fn(x) * h, k = colored ? piece(x) : -1;
+        if (prev && prev[2] === k) {
+            ctx.strokeStyle = k < 0 ? INK : COLORS[k];
+            ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(px, py); ctx.stroke();
+        }
+        prev = [px, py, k];
+    }
+    rich(title, x0 + w / 2, y0 - 12, 16, INK, "center");
+}
+
+function draw() {
+    if (!W) return;
+    const t = +document.getElementById("time").value * TOTAL, { s, gfrac, step } = state(t);
+    ctx.clearRect(0, 0, W, H);
+
+    // the three networks, small, at the top
+    const mw = Math.min(170, W / 5.5), mh = Math.min(70, H * 0.17), gap = (W - 3 * mw) / 4;
+    const my = 26;
+    mini({ x0: gap, y0: my, w: mw, h: mh }, f, true, [["t", "first network  "], ["m", "y = f(x)"]]);
+    mini({ x0: 2 * gap + mw, y0: my, w: mw, h: mh }, g, false, [["t", "second network  "], ["m", "y′ = g(y)"]]);
+    mini({ x0: 3 * gap + 2 * mw, y0: my, w: mw, h: mh }, x => g(f(x)), true, [["t", "composition  "], ["m", "y′ = g(f(x))"]]);
+
+    // the strip, folding and unfolding below
+    const left = W * 0.12, width = W * 0.76, base = H - 46, layer = 12, gh = Math.max(40, base - (my + mh + 70));
+    const pos = x => [left + ((1 - s) * x + s * f(x)) * width, base - s * layer * (2 - piece(x))];
+
+    // axis line and its label
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(left, base + 6); ctx.lineTo(left + width, base + 6); ctx.stroke();
+    if (s < 0.5) rich([["t", "input  "], ["m", "x"]], left + width / 2, base + 24, 17, MUTED, "center");
+    else rich([["t", "folded input  "], ["m", "y = f(x)"]], left + width / 2, base + 24, 17, MUTED, "center");
+
+    // values of g carried by the strip, drawn up to gfrac of the folded interval
+    ctx.lineWidth = 2.2;
+    for (let k = 0; k < 3; k++) {
+        let prev = null;
+        for (const x of XS) {
+            if (piece(x) !== k) { prev = null; continue; }
+            if (f(x) > gfrac + 1e-9) { prev = null; continue; }
+            const [px, py] = pos(x), qy = py - 14 - g(f(x)) * gh;
+            if (prev) {
+                ctx.strokeStyle = COLORS[k]; ctx.globalAlpha = s > 0.95 && k < 2 ? 0.55 : 1;
+                ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(px, qy); ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+            prev = [px, qy];
+        }
+    }
+
+    // the strip itself, a thick band coloured by the piece of f
+    ctx.lineWidth = 7; ctx.lineCap = "round";
+    for (let k = 0; k < 3; k++) {
+        ctx.strokeStyle = COLORS[k];
+        ctx.beginPath();
+        let first = true;
+        for (const x of XS) {
+            if (piece(x) !== k) continue;
+            const [px, py] = pos(x);
+            first ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            first = false;
+        }
+        ctx.stroke();
+    }
+    ctx.lineCap = "butt";
+
+    // caption of the current step
+    const captions = {
+        a: "a) The first network folds the input space back on itself.",
+        b: "b) The second network applies its function to the folded space.",
+        c: "c) Unfolding reveals the output: the pattern of g, three times.",
+    };
+    ctx.fillStyle = INK; ctx.font = "15px Roboto"; ctx.textAlign = "left"; ctx.textBaseline = "top";
+    if (step) ctx.fillText(captions[step], left, my + mh + 26);
+}
+
+// playback
+let playing = true, last = null;
+const slider = document.getElementById("time"), button = document.getElementById("play");
+function tick(now) {
+    if (playing) {
+        if (last !== null) {
+            let v = +slider.value + (now - last) / 1000 / TOTAL;
+            if (v > 1) v = 0;
+            slider.value = v;
+        }
+        last = now;
+        draw();
+    } else last = null;
+    requestAnimationFrame(tick);
+}
+button.addEventListener("click", () => { playing = !playing; button.textContent = playing ? "pause" : "play"; });
+document.getElementById("restart").addEventListener("click", () => { slider.value = 0; draw(); });
+slider.addEventListener("input", () => { playing = false; button.textContent = "play"; draw(); });
+window.addEventListener("resize", resize);
+document.fonts.ready.then(() => Promise.all([document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main")])).then(resize);
+resize();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

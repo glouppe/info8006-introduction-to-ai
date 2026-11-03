@@ -621,15 +621,13 @@ With $\text{ReLU}$ activation functions, this network also describes a family of
 
 class: middle
 
-.center.width-100[![](figures/lec7/DeepFold.svg)]
+<iframe src="demo/lec7/fold.html" frameborder="0" style="width: 100%; height: 320px;"></iframe>
 
 The composition of two shallow networks can be interpreted as a folding operation in three steps:
 
 a) The first network folds the input space back on itself.<br>
 b) The second network applies its function to the folded space.<br>
 c) The final output is revealed by unfolding the folded space.
-
-.footnote[Credits: [Simon J.D. Prince](https://udlbook.github.io/udlbook/), 2023.]
 
 ---
 

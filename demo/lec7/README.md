@@ -18,6 +18,16 @@ $y = \sum_j v_j h_j + c$, on $[0, 1]$.
 
 Open it on its own with the deck server running: `http://localhost:8000/demo/lec7/shallow.html`.
 
+## Folding
+
+`fold.html` animates the slide on the composition of two shallow networks, in place of Prince's
+figure. The first network $y = f(x)$, three ReLU units, is a zigzag whose three pieces each cover the
+whole range, so that it folds the input interval onto itself in three layers; the second, $y' = g(y)$,
+is another three-unit network. The animation loops through the slide's three steps on an input strip
+coloured by piece of $f$: a) the strip folds, b) $g$ is drawn on the folded strip, c) the strip unfolds
+and reveals $g(f(x))$, the pattern of $g$ three times, mirrored on the descending piece. Small plots of
+$f$, $g$ and $g \circ f$ sit above it; the slider scrubs through the animation.
+
 ## Notebooks
 
 The two notebooks of the live coding sessions, adapted from
