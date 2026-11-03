@@ -153,7 +153,7 @@ def terminology():
 def shallow_net():
     # a) every parameter on its edge, with the constant input 1 for the biases; b) the compact form
     parts = []
-    x, one, hs, y, one2 = (70, 300), (70, 110), [(330, 130), (330, 270), (330, 410)], (590, 270), (480, 60)
+    x, one, hs, y, one2 = (70, 340), (70, 150), [(330, 170), (330, 310), (330, 450)], (590, 310), (330, 40)
     for j, h in enumerate(hs):
         parts += [link(x, h), link(one, h), link(h, y)]
     parts.append(link(one2, y))
@@ -175,7 +175,7 @@ def shallow_net():
     parts += [caption(10, 30, "a)", anchor="start")]
     # b) compact
     ox = 700
-    xb, hb, yb = (ox + 70, 270), [(ox + 260, 130), (ox + 260, 270), (ox + 260, 410)], (ox + 450, 270)
+    xb, hb, yb = (ox + 70, 310), [(ox + 260, 170), (ox + 260, 310), (ox + 260, 450)], (ox + 450, 310)
     for h in hb:
         parts += [link(xb, h), link(h, yb)]
     parts += [unit_node(*xb, "x"), unit_node(*yb, "y")] + [unit_node(*h, "h", str(j), UNITS[j]) for j, h in enumerate(hb)]
@@ -530,7 +530,7 @@ def lr_residuals():
 
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
-    svg("nn-shallow", 1210, 460, shallow_net(), folder="lec7", scale=SCALE)
+    svg("nn-shallow", 1210, 500, shallow_net(), folder="lec7", scale=SCALE)
     svg("nn-two-outputs-net", 600, 460, two_outputs_net(), folder="lec7", scale=SCALE)
     svg("nn-two-inputs", 620, 360, two_inputs_net(), folder="lec7", scale=SCALE)
     svg("nn-concat-net", 800, 320, concat_net(), folder="lec7", scale=SCALE)
