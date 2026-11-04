@@ -458,7 +458,10 @@
         \noindent\textit{In session:} exercises #1.\par
     \fi
     \ifx\relax#2\relax\else
-        \noindent\textit{Recommended before the next session:} exercise #2.\par
+        \in@{,}{#2}\ifin@\def\exercises@noun{exercises}\else
+            \in@{ and }{#2}\ifin@\def\exercises@noun{exercises}\else\def\exercises@noun{exercise}\fi
+        \fi
+        \noindent\textit{Recommended before the next session:} \exercises@noun{} #2.\par
     \fi
     \ifx\relax#1#2\relax\else\medskip\fi
     \begin{questions}%
