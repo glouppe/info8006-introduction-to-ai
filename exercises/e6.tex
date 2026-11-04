@@ -71,13 +71,6 @@
     \end{align*}
     where $\mathbf{W}_k \in \mathbb{R}^{q_k \times q_{k-1}}$ is the weight matrix and $\mathbf{b}_k \in \mathbb{R}^{q_k}$ is the bias vector of the $k$-th layer. The resulting function $f(\mathbf{x}; \theta)$, where $\theta$ denotes the set of all model parameters, is a \term{multilayer perceptron}. With ReLU units, it is piecewise linear: a shallow network with one input has at most $q + 1$ linear regions, a deep network with $K$ layers of $q$ units up to $(q + 1)^K$.
 
-    \topic{Universal approximation theorem}
-    Let $\sigma : \mathbb{R} \to \mathbb{R}$ be continuous and not a polynomial. For every compact set $K \subset \mathbb{R}^{d_\text{in}}$, every continuous function $f : K \to \mathbb{R}$ and every $\epsilon > 0$, there exist $q$, $w_{ji}$, $b_j$, $v_j$ and $c$ such that
-    \[
-        \sup_{\mathbf{x} \in K} \Big| f(\mathbf{x}) - \Big( \sum_{j=0}^{q-1} v_j \, \sigma\Big( \sum_{i=0}^{d_\text{in}-1} w_{ji} x_i + b_j \Big) + c \Big) \Big| < \epsilon:
-    \]
-    a shallow network with enough hidden units approximates any continuous function on a closed and bounded domain arbitrarily well.
-
     \topic{Activation functions}
     Activation functions $\sigma : \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network. Common activation functions include
     \begin{itemize}
