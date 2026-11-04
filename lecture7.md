@@ -874,7 +874,6 @@ class: middle
 
 .center[![](figures/lec7/nn-conv1d.svg)]
 
-<br>
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
 The output is obtained by sliding the kernel over the input and computing the inner product at each position.]
 
@@ -915,7 +914,7 @@ $$(\mathbf{x} \circledast \omega)[j,i] = \sum\_{c=0}^{C-1}\sum\_{n=0}^{h-1} \sum
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv-channels.svg)]
+.center[![](figures/lec7/nn-conv-channels.svg)]
 
 .center[2d convolution applied to a color image with three channels (R, G, B).]
 
@@ -929,7 +928,7 @@ A convolutional layer is defined by a set of $K$ kernels $\omega_k$ of size $C \
 
 Each kernel $\omega_k$ acts as a feature detector that scans the input tensor and produces a feature map $\mathbf{o}\_k$ specific to that feature. 
 
-.center.width-100[![](figures/lec7/nn-conv-layer.svg)]
+.center[![](figures/lec7/nn-conv-layer.svg)]
 
 ---
 
@@ -946,7 +945,7 @@ $$\mathbf{o}\_{c,j,i} = \max\_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.$$
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-pooling.svg)]
+.center[![](figures/lec7/nn-pooling.svg)]
 
 .center[Subsampling, max-pooling and average-pooling with a pooling area of size $2 \times 2$.]
 
@@ -966,7 +965,7 @@ A convolutional neural network (CNN) is a deep neural network that uses convolut
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv-pattern.svg)]
+.center[![](figures/lec7/nn-conv-pattern.svg)]
 
 .center[Interleaving convolutional and pooling layers enables the network to learn hierarchical features from local to global patterns.]
 

@@ -603,6 +603,15 @@ def lr_residuals():
 
 # ---- a convolutional and a pooling layer, computed on the deck's cat
 
+# The convolution figures share one layout in inches, so that a cell, a pixel and a label have the same
+# size on every slide: all are shown at their natural size (PLOT_SCALE), none wider than a slide.
+CELL = 0.36    # a cell with a value: inputs, kernels, outputs, pooling
+PIX = 0.13     # a pixel of the cat and of its feature maps
+STK = 0.18     # the offset between stacked slices of an image or of feature maps
+KSTK = 0.1     # the offset between the slices of a kernel
+F_NUM, F_SYM, F_TITLE, F_OP, F_NOTE = 13, 20, 18, 26, 14   # values in cells, symbols, titles, operators, notes
+
+
 def conv_pattern():
     """The cat of the opening slides through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed with
     numpy, with the receptive field of one pooled value boxed back to the input."""
@@ -632,9 +641,9 @@ def conv_pattern():
         r = relu(z)
         rows.append((w, z, r, pool(r)))
 
-    fig = plt.figure(figsize=(13, 5.2))
+    fig = plt.figure(figsize=(9.6, 4.2))   # as wide as a slide at PLOT_SCALE, as the other convolution figures
     S = 0.3   # panel height, in figure fraction; widths follow so that panels are square
-    asp = 5.2 / 13
+    asp = 4.2 / 9.6
     def panel(cx, cy, size):
         return fig.add_axes([cx - size * asp / 2, cy - size / 2, size * asp, size])
     def show(ax, a, lim=None, cmap=None):
@@ -658,7 +667,7 @@ def conv_pattern():
         lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
         kax = panel(cols[1], ys[k], S * 0.42)
         show(kax, w, np.abs(w).max())
-        kax.set_title(rf"$\omega_{k}$", fontsize=21, pad=4)
+        kax.set_title(rf"$\omega_{k}$", fontsize=F_SYM, pad=4)
         a1, a2, a3 = panel(cols[2], ys[k], S), panel(cols[3], ys[k], S), panel(cols[4], ys[k], S * 0.62)
         show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
         arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
@@ -671,7 +680,7 @@ def conv_pattern():
     stack.set_xlim(0, 1); stack.set_ylim(0, 1)
     for k, (a2, a3) in enumerate(pooled):
         arrow(a3, stack, xb=0.1, yb=0.52 if k == 0 else 0.23)   # two points of the front sheet, so the heads do not collide
-    stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=18, color=INK)
+    stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=F_TITLE, color=INK)
 
     # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 8x8 patch
     # of the input (7x7 kernel, 2x2 pooling), and the 22x22 patch a second such stage would see
@@ -682,20 +691,20 @@ def conv_pattern():
     a2.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 2, 2, **box))
     inp.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), K + 1, K + 1, **box))
     inp.add_patch(Rectangle((2 * pi - 6.5, 2 * pj - 6.5), 22, 22, fill=False, edgecolor=INK, linewidth=1.6, linestyle="--"))
-    inp.text(2 * pi + 4.5, 2 * pj - 7.5, "receptive field", ha="center", va="bottom", fontsize=15, color=INK,
+    inp.text(2 * pi + 4.5, 2 * pj - 7.5, "receptive field", ha="center", va="bottom", fontsize=F_NOTE, color=INK,
              bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.85))
 
     # column labels and layer brackets
     labels = [(cols[0], r"input $\mathbf{x}$"), (cols[2], r"convolution $\mathbf{x} \circledast \omega_k$"),
               (cols[3], "ReLU"), (cols[4], r"max-pooling $\mathbf{o}_k$")]
     for cx, s in labels:
-        fig.text(cx, ys[0] + S / 2 + 0.07, s, ha="center", va="center", fontsize=20, color=INK)
+        fig.text(cx, ys[0] + S / 2 + 0.07, s, ha="center", va="center", fontsize=F_TITLE, color=INK)
     def bracket(x0, x1, text):
         y = 0.035
         fig.add_artist(matplotlib.lines.Line2D([x0, x1], [y, y], color=GREY, linewidth=1.4))
         for xx in (x0, x1):
             fig.add_artist(matplotlib.lines.Line2D([xx, xx], [y, y + 0.025], color=GREY, linewidth=1.4))
-        fig.text((x0 + x1) / 2, y - 0.012, text, ha="center", va="top", fontsize=18, color=GREY)
+        fig.text((x0 + x1) / 2, y - 0.012, text, ha="center", va="top", fontsize=F_TITLE, color=GREY)
     half = S * asp / 2
     bracket(cols[1] - 0.04, cols[3] + half, "convolutional layer")
     bracket(cols[4] - S * 0.62 * asp / 2, cols[4] + S * 0.62 * asp / 2 + 0.02, "pooling layer")
@@ -739,27 +748,38 @@ def place(fig, x, y, w, h):
     return fig.add_axes([x, y, w, h])
 
 
+def inches(fig):
+    W, H = fig.get_size_inches()
+    def ax(x, y, w, h):
+        return fig.add_axes([x / W, y / H, w / W, h / H])
+    def text(x, y, s, **kw):
+        return fig.text(x / W, y / H, s, **kw)
+    return ax, text
+
+
+def frame(ax, color, width=2.6):
+    for sp in ax.spines.values():
+        sp.set_color(color); sp.set_linewidth(width)
+
+
 def conv_1d():
     xv = np.array([1, 3, 2, 0, -1, 2, 4, 1], float)
     wv = np.array([1, 0, -1], float)
     zv = np.array([np.dot(xv[i:i + 3], wv) for i in range(len(xv) - 2)])
-    # one position of the kernel; cells keep the size they had when two positions sat side by side
-    fig = plt.figure(figsize=(6.5, 2.9))
-    c = 0.064   # one cell, in figure width; heights follow the aspect of the canvas
-    ch = c * 6.5 / 2.9
-    rows = [0.72, 0.4, 0.08]
-    for i0, x0 in [(1, 0.12)]:
-        ax_x = place(fig, x0, rows[0], 8 * c, ch); cells(ax_x, xv, 5)
-        ax_w = place(fig, x0 + i0 * c, rows[1], 3 * c, ch); cells(ax_w, wv, 5)
-        ax_z = place(fig, x0 + c, rows[2], 6 * c, ch); cells(ax_z, zv, 5)
-        window(ax_x, 0, i0, 1, 3)
-        window(ax_z, 0, i0, 1, 1)
-        fig.text(x0 - 0.016, rows[0] + ch / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=20)
-        fig.text(x0 + i0 * c - 0.016, rows[1] + ch / 2, r"$\omega$", ha="right", va="center", fontsize=20)
-        fig.text(x0 + c - 0.016, rows[2] + ch / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=20)
-        terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
-        fig.text(x0 + 4 * c, rows[2] - 0.1, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
-                 ha="center", va="top", fontsize=15, color=INK)
+    fig = plt.figure(figsize=(4.6, 3.0))
+    ax, text = inches(fig)
+    x0, i0, rows = 0.9, 1, [2.3, 1.4, 0.5]
+    ax_x = ax(x0, rows[0], 8 * CELL, CELL); cells(ax_x, xv, 5, fontsize=F_NUM)
+    ax_w = ax(x0 + i0 * CELL, rows[1], 3 * CELL, CELL); cells(ax_w, wv, 5, fontsize=F_NUM)
+    ax_z = ax(x0 + CELL, rows[2], 6 * CELL, CELL); cells(ax_z, zv, 5, fontsize=F_NUM)
+    window(ax_x, 0, i0, 1, 3)
+    window(ax_z, 0, i0, 1, 1)
+    text(x0 - 0.1, rows[0] + CELL / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=F_SYM)
+    text(x0 + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega$", ha="right", va="center", fontsize=F_SYM)
+    text(x0 + CELL - 0.1, rows[2] + CELL / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=F_SYM)
+    terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
+    text(x0 + 4 * CELL, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
+         ha="center", va="top", fontsize=F_TITLE, color=INK)
     save(fig, "nn-conv1d")
 
 
@@ -768,128 +788,129 @@ def conv_2d():
                    [3, 1, 0, 2, 4, 1], [1, 0, 2, 3, 1, 2], [0, 2, 1, 0, 3, 1]], float)
     wv = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]], float)
     zv = np.array([[np.sum(xv[j:j + 3, i:i + 3] * wv) for i in range(4)] for j in range(4)])
-    fig = plt.figure(figsize=(6.5, 4.6))
-    c = 0.054
-    ch = c * 6.5 / 4.6
+    fig = plt.figure(figsize=(6.6, 3.0))
+    ax, text = inches(fig)
     lim = np.abs(zv).max()
-    for k, ((j0, i0), x0) in enumerate([((0, 0), 0.06)]):
-        ax_x = place(fig, x0, 0.08, 6 * c, 6 * ch); cells(ax_x, xv, lim, fontsize=13)
-        ax_w = place(fig, x0 + 6 * c + 0.1, 0.08 + 1.5 * ch, 3 * c, 3 * ch); cells(ax_w, wv, lim, fontsize=13)
-        ax_z = place(fig, x0 + 9 * c + 0.2, 0.08 + 1 * ch, 4 * c, 4 * ch); cells(ax_z, zv, lim, fontsize=13)
-        window(ax_x, j0, i0, 3, 3)
-        window(ax_z, j0, i0, 1, 1)
-        fig.text(x0 + 6 * c + 0.05, 0.08 + 3 * ch, r"$\circledast$", ha="center", va="center", fontsize=24)
-        fig.text(x0 + 9 * c + 0.15, 0.08 + 3 * ch, r"$=$", ha="center", va="center", fontsize=24)
-        fig.text(x0 + 3 * c, 0.08 + 6 * ch + 0.05, r"$\mathbf{x}$", ha="center", va="bottom", fontsize=20)
-        fig.text(x0 + 7.5 * c + 0.1, 0.08 + 4.5 * ch + 0.05, r"$\omega$", ha="center", va="bottom", fontsize=20)
-        fig.text(x0 + 11 * c + 0.2, 0.08 + 5 * ch + 0.05, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=20)
+    y0, cy = 0.2, 0.2 + 3 * CELL
+    xx, xw, xz = 0.1, 0.1 + 6 * CELL + 0.6, 0.1 + 9 * CELL + 1.2
+    ax_x = ax(xx, y0, 6 * CELL, 6 * CELL); cells(ax_x, xv, lim, fontsize=F_NUM)
+    ax_w = ax(xw, cy - 1.5 * CELL, 3 * CELL, 3 * CELL); cells(ax_w, wv, lim, fontsize=F_NUM)
+    ax_z = ax(xz, cy - 2 * CELL, 4 * CELL, 4 * CELL); cells(ax_z, zv, lim, fontsize=F_NUM)
+    window(ax_x, 0, 0, 3, 3)
+    window(ax_z, 0, 0, 1, 1)
+    text(xx + 6 * CELL + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
+    text(xw + 3 * CELL + 0.3, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
+    text(xx + 3 * CELL, y0 + 6 * CELL + 0.1, r"$\mathbf{x}$", ha="center", va="bottom", fontsize=F_SYM)
+    text(xw + 1.5 * CELL, cy + 1.5 * CELL + 0.1, r"$\omega$", ha="center", va="bottom", fontsize=F_SYM)
+    text(xz + 2 * CELL, cy + 2 * CELL + 0.1, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=F_SYM)
     save(fig, "nn-conv2d")
+
+
+def the_cat():
+    from PIL import Image
+    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("RGB").crop((62, 52, 298, 288)).resize((16, 16), Image.LANCZOS)
+    return np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
+
+
+def rgb_stack(ax, text, x, j0, i0, y0):
+    """The cat as a stack of its R, G and B slices, red at the back, from (0.4, y0) in inches; the name of
+    each slice left of it, in the strip where it shows above the slice in front."""
+    from matplotlib.colors import LinearSegmentedColormap as LSC
+    hues, names = ["#c8463d", "#3f8f5a", "#356aaf"], ["R", "G", "B"]
+    n = x.shape[1] * PIX
+    for cidx in range(3):
+        d = 2 - cidx
+        a = ax(0.4 + d * STK, y0 + d * STK, n, n)
+        cells(a, x[cidx], 1, fmt=None, cmap=LSC.from_list(names[cidx], ["#ffffff", hues[cidx]]))
+        window(a, j0, i0, 3, 3)
+        text(0.4 + d * STK - 0.06, y0 + d * STK + n - STK / 2, names[cidx], ha="right", va="center",
+             fontsize=F_NOTE, color=hues[cidx])
+    text(0.4 + n / 2 + STK, y0 + n + 2 * STK + 0.12, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$",
+         ha="center", va="bottom", fontsize=F_TITLE)
+    return 0.4 + n + 2 * STK   # the right edge of the stack
+
+
+def kernel_stack(ax, w, x0, y0, color=None, fmt=None):
+    """A 3 x 3 x 3 kernel as three slices, at the cell size of every kernel of the deck."""
+    lim = np.abs(w).max()
+    for cidx in range(3):
+        d = 2 - cidx
+        a = ax(x0 + d * KSTK, y0 + d * KSTK, 3 * CELL, 3 * CELL)
+        cells(a, w[cidx], lim, fmt=fmt, fontsize=F_NUM - 2)
+        if color:
+            frame(a, color, 2.0)
+    return 3 * CELL + 2 * KSTK
 
 
 def conv_channels():
     """The cat in its three channels, a 3x3x3 kernel, and the map it gives: one value sums over the
     channels and the window."""
-    from PIL import Image
-    from matplotlib.patches import ConnectionPatch
-    from matplotlib.colors import LinearSegmentedColormap as LSC
-    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("RGB").crop((62, 52, 298, 288)).resize((16, 16), Image.LANCZOS)
-    x = np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
+    x = the_cat()
     rng = np.random.default_rng(2)
     w = np.round(rng.normal(0, 1, (3, 3, 3)), 1)
     z = np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)])
-    fig = plt.figure(figsize=(13, 4.6))
-    asp = 4.6 / 13
-    hues = ["#c8463d", "#3f8f5a", "#356aaf"]
-    names = ["R", "G", "B"]
-    j0, i0 = 5, 6
-    big, off = 0.62, 0.05
-    for cidx in range(3):   # the channels as a stack, red at the back
-        d = 2 - cidx
-        ax = fig.add_axes([0.03 + d * off * asp, 0.12 + d * off, big * asp, big])
-        cmap = LSC.from_list(names[cidx], ["#ffffff", hues[cidx]])
-        cells(ax, x[cidx], 1, fmt=None, cmap=cmap)
-        window(ax, j0, i0, 3, 3)
-        # each name left of its own slice, in the strip where that slice shows above the one in front
-        fig.text(0.03 + d * off * asp - 0.006, 0.12 + d * off + big - off / 2, names[cidx], ha="right", va="center",
-                 fontsize=15, color=hues[cidx])
-    fig.text(0.03 + big * asp / 2 + off * asp, 0.92, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$", ha="center", fontsize=18)
-    ks = 0.22
-    lim = np.abs(w).max()
-    for cidx in range(3):
-        d = 2 - cidx
-        ax = fig.add_axes([0.41 + d * 0.03 * asp, 0.3 + d * 0.03, ks * asp, ks])
-        cells(ax, w[cidx], lim, fmt="{:g}", fontsize=10)
-    fig.text(0.41 + ks * asp / 2 + 0.03 * asp, 0.68, r"kernel $\omega \in \mathbb{R}^{3 \times 3 \times 3}$", ha="center", fontsize=18)
-    fig.text(0.36, 0.42, r"$\circledast$", ha="center", va="center", fontsize=28)
-    fig.text(0.58, 0.42, r"$=$", ha="center", va="center", fontsize=28)
-    ax_z = fig.add_axes([0.63, 0.12 + 0.05, 0.56 * asp, 0.56])
-    cells(ax_z, z, np.abs(z).max(), fmt=None)
-    window(ax_z, j0, i0, 1, 1)
-    fig.text(0.63 + 0.28 * asp, 0.82, r"$\mathbf{x} \circledast \omega$", ha="center", fontsize=18)
-    fig.text(0.86, 0.42, "one value sums\nover the 3 channels\nof the 3 × 3 window", ha="left", va="center", fontsize=14, color=GREY)
+    fig = plt.figure(figsize=(9.6, 3.2))
+    ax, text = inches(fig)
+    j0, i0, y0 = 5, 6, 0.2
+    n = 16 * PIX
+    cy = y0 + (n + 2 * STK) / 2
+    right = rgb_stack(ax, text, x, j0, i0, y0)
+    text(right + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
+    kx = right + 0.6
+    size = kernel_stack(ax, w, kx, cy - (3 * CELL + 2 * KSTK) / 2, fmt="{:g}")
+    text(kx + size / 2, cy + size / 2 + 0.12, r"kernel $\omega \in \mathbb{R}^{3 \times 3 \times 3}$", ha="center", va="bottom", fontsize=F_TITLE)
+    text(kx + size + 0.3, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
+    zx, m = kx + size + 0.6, 14 * PIX
+    a = ax(zx, cy - m / 2, m, m)
+    cells(a, z, np.abs(z).max(), fmt=None)
+    window(a, j0, i0, 1, 1)
+    text(zx + m / 2, cy + m / 2 + 0.12, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=F_SYM)
+    text(zx + m + 0.2, cy, "one value sums\nover the 3 channels\nof the 3 × 3 window", ha="left", va="center", fontsize=F_NOTE, color=GREY)
     save(fig, "nn-conv-channels")
 
 
 def conv_layer():
     """A convolutional layer: the cat in its three channels, K = 4 kernels of size 3 x 3 x 3 in parallel,
     and the K feature maps they give, stacked as the output channels; kernel k and map o_k share a color."""
-    from PIL import Image
-    from matplotlib.colors import LinearSegmentedColormap as LSC
-    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("RGB").crop((62, 52, 298, 288)).resize((16, 16), Image.LANCZOS)
-    x = np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
+    x = the_cat()
     rng = np.random.default_rng(5)
     K = 4
     ws = rng.normal(0, 1, (K, 3, 3, 3))
     ws = np.round(ws - ws.mean(axis=(1, 2, 3), keepdims=True), 1)   # zero mean: the maps show edges, not brightness
     zs = [np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)]) for w in ws]
-    fig = plt.figure(figsize=(13, 5.2))
-    asp = 5.2 / 13
-    hues = ["#c8463d", "#3f8f5a", "#356aaf"]
-    names = ["R", "G", "B"]
-    j0, i0 = 5, 6
-
-    def frame(ax, color, width=2.6):
-        for sp in ax.spines.values():
-            sp.set_color(color); sp.set_linewidth(width)
-
-    # the input, as on the previous slide
-    big, off = 0.56, 0.05
-    for cidx in range(3):
-        d = 2 - cidx
-        ax = fig.add_axes([0.02 + d * off * asp, 0.1 + d * off, big * asp, big])
-        cells(ax, x[cidx], 1, fmt=None, cmap=LSC.from_list(names[cidx], ["#ffffff", hues[cidx]]))
-        window(ax, j0, i0, 3, 3)
-        # each name left of its own slice, in the strip where that slice shows above the one in front
-        fig.text(0.02 + d * off * asp - 0.006, 0.1 + d * off + big - off / 2, names[cidx], ha="right", va="center",
-                 fontsize=15, color=hues[cidx])
-    fig.text(0.02 + big * asp / 2 + off * asp, 0.95, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$", ha="center", fontsize=18)
-    fig.text(0.335, 0.42, r"$\circledast$", ha="center", va="center", fontsize=28)
-
-    # the K kernels, in a column, each a small stack of three 3 x 3 slices
-    ks, koff = 0.14, 0.022
+    fig = plt.figure(figsize=(9.6, 3.6))
+    ax, text = inches(fig)
+    j0, i0, y0 = 5, 6, 0.2
+    n = 16 * PIX
+    cy = y0 + (n + 2 * STK) / 2
+    right = rgb_stack(ax, text, x, j0, i0, y0)
+    text(right + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
+    # the K kernels in a 2 x 2 grid, each named above it
+    size, gap = 3 * CELL + 2 * KSTK, 0.35
+    kx = right + 0.6
     for k in range(K):
-        y0 = 0.68 - k * 0.2
-        lim = np.abs(ws[k]).max()
-        for cidx in range(3):
-            d = 2 - cidx
-            ax = fig.add_axes([0.4 + d * koff * asp, y0 + d * koff, ks * asp, ks])
-            cells(ax, ws[k, cidx], lim, fmt=None)
-            frame(ax, UNITS[k], 2.0)
-        fig.text(0.39, y0 + ks / 2 + koff, rf"$\omega_{k}$", ha="right", va="center", fontsize=20, color=INK)
-    fig.text(0.4 + ks * asp / 2 + koff * asp, 0.95, r"$K$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$", ha="center", fontsize=18)
-    fig.text(0.53, 0.42, r"$=$", ha="center", va="center", fontsize=28)
-
+        col, row = k % 2, k // 2
+        x0 = kx + col * (size + 0.25)
+        yk = cy + gap / 2 if row == 0 else cy - gap / 2 - size
+        kernel_stack(ax, ws[k], x0, yk, color=UNITS[k])
+        text(x0 + size / 2, yk + size + 0.04, rf"$\omega_{k}$", ha="center", va="bottom", fontsize=F_SYM)
+    text(kx + size + 0.125, cy + size + gap / 2 + 0.38, r"$K$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$",
+         ha="center", va="bottom", fontsize=F_TITLE)
+    ox = kx + 2 * size + 0.25 + 0.3
+    text(ox, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
     # the K feature maps, stacked as the K channels of the output, o_0 in front
-    big2, off2 = 0.5, 0.065
+    m, ostk = 14 * PIX, 0.22
+    zx = ox + 0.6
+    my = cy - (m + (K - 1) * ostk) / 2
     for k in reversed(range(K)):
-        ax = fig.add_axes([0.58 + k * off2 * asp, 0.1 + k * off2, big2 * asp, big2])
-        cells(ax, zs[k], np.abs(zs[k]).max(), fmt=None)
-        frame(ax, UNITS[k])
-        window(ax, j0, i0, 1, 1)
-    for k in range(K):   # the labels o_k, on the right edge of each map
-        fig.text(0.58 + k * off2 * asp - 0.006, 0.1 + k * off2 + big2 - off2 / 2, rf"$\mathbf{{o}}_{k}$",
-                 ha="right", va="center", fontsize=17, color=UNITS[k])
-    fig.text(0.58 + big2 * asp / 2 + 1.5 * off2 * asp, 0.95, r"output $\mathbf{o} \in \mathbb{R}^{K \times H' \times W'}$", ha="center", fontsize=18)
+        a = ax(zx + k * ostk, my + k * ostk, m, m)
+        cells(a, zs[k], np.abs(zs[k]).max(), fmt=None)
+        frame(a, UNITS[k])
+        window(a, j0, i0, 1, 1)
+        text(zx + k * ostk - 0.06, my + k * ostk + m - ostk / 2, rf"$\mathbf{{o}}_{k}$", ha="right", va="center",
+             fontsize=F_NOTE + 1, color=UNITS[k])
+    text(zx + m / 2 + 1.5 * ostk, my + m + (K - 1) * ostk + 0.12, r"output $\mathbf{o} \in \mathbb{R}^{K \times H' \times W'}$",
+         ha="center", va="bottom", fontsize=F_TITLE)
     save(fig, "nn-conv-layer")
 
 
@@ -899,24 +920,22 @@ def pooling():
     sub = np.array([[xv[j, i] for (j, i) in blocks[:2]], [xv[j, i] for (j, i) in blocks[2:]]])
     mx = np.array([[xv[j:j + 2, i:i + 2].max() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
     av = np.array([[xv[j:j + 2, i:i + 2].mean() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
-    fig = plt.figure(figsize=(13, 4))
-    c = 0.034
-    ch = c * 13 / 4
+    fig = plt.figure(figsize=(9.6, 2.4))
+    ax, text = inches(fig)
     lim = 9
     for k, (title, out, picks, fmt) in enumerate([
             ("subsampling", sub, [(j, i) for (j, i) in blocks], "{:g}"),
             ("max-pooling", mx, [tuple(np.add((j, i), np.unravel_index(np.argmax(xv[j:j + 2, i:i + 2]), (2, 2)))) for (j, i) in blocks], "{:g}"),
             ("average-pooling", av, [], "{:g}")]):
-        x0 = 0.03 + k * 0.335
-        ax_x = place(fig, x0, 0.1, 4 * c, 4 * ch); cells(ax_x, xv, lim, fontsize=14)
-        ax_o = place(fig, x0 + 4 * c + 0.07, 0.1 + ch, 2 * c, 2 * ch); cells(ax_o, out, lim, fmt=fmt, fontsize=14)
+        x0, y0 = 0.1 + k * 3.25, 0.2
+        ax_x = ax(x0, y0, 4 * CELL, 4 * CELL); cells(ax_x, xv, lim, fontsize=F_NUM)
+        ax_o = ax(x0 + 4 * CELL + 0.6, y0 + CELL, 2 * CELL, 2 * CELL); cells(ax_o, out, lim, fmt=fmt, fontsize=F_NUM)
         ax_x.axhline(1.5, color=INK, linewidth=1.4, linestyle="--"); ax_x.axvline(1.5, color=INK, linewidth=1.4, linestyle="--")
         for (j, i) in picks:
             window(ax_x, j, i, 1, 1)
-        fig.text(x0 + 4 * c + 0.035, 0.1 + 2 * ch, r"$\rightarrow$", ha="center", va="center", fontsize=24)
-        fig.text(x0 + (4 * c + 0.07 + 2 * c) / 2, 0.1 + 4 * ch + 0.06, title, ha="center", va="bottom", fontsize=17)
+        text(x0 + 4 * CELL + 0.3, y0 + 2 * CELL, r"$\rightarrow$", ha="center", va="center", fontsize=F_OP)
+        text(x0 + (6 * CELL + 0.6) / 2, y0 + 4 * CELL + 0.12, title, ha="center", va="bottom", fontsize=F_TITLE)
     save(fig, "nn-pooling")
-
 
 def next_token():
     """A language model predicting the next token, twice, on a sentence of the course's world.
