@@ -127,7 +127,7 @@ def save(fig, name):
 
 def primed(x, y, name, sub=None, size=28):
     """h' or h'_0 as LaTeX sets them: the prime raised and smaller, the subscript under it."""
-    head = f'<tspan font-family="KaTeX_Math" font-style="italic">{name}</tspan>'
+    head = f'<tspan font-family="KaTeX_Math">{name}</tspan>'
     prime = f'<tspan font-family="KaTeX_Main" font-size="{0.75 * size:g}" dy="{-0.38 * size:g}">′</tspan>'
     tail = ""
     if sub:
