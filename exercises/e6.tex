@@ -991,275 +991,75 @@ with each of the following convolution kernels $\omega$.
 \titledquestion{2d convolution}
 
 \begin{parts}
-    \part Represent the 2D convolution $x \circledast \omega$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
-
+    \part Represent the 2D convolution $x \circledast \omega$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel, with the following convolution kernel $\omega$ (the box marks the window of the first output value).
     \begin{center}
-        \begin{tikzpicture}
-            \matrix[
-                matrix of nodes,
-                nodes={
-                    draw,
-                    minimum width=8mm,
-                    minimum height=8mm,
-                    inner sep=0pt,
-                    anchor=center
-                },
-                row sep=-\pgflinewidth,
-                column sep=-\pgflinewidth,
-            ] {
-                |[fill=gray!10]| 0.1 & |[fill=gray!30]| 0.3 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!40]| 0.4 \\
-                |[fill=gray!20]| 0.2 & |[fill=gray!50]| 0.5 & |[fill=gray!80]| 0.8 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
-                |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!100]| 1.0 & |[fill=gray!80]| 0.8 & |[fill=gray!50]| 0.5 \\
-                |[fill=gray!20]| 0.2 & |[fill=gray!60]| 0.6 & |[fill=gray!90]| 0.9 & |[fill=gray!70]| 0.7 & |[fill=gray!30]| 0.3 \\
-                |[fill=gray!10]| 0.1 & |[fill=gray!40]| 0.4 & |[fill=gray!70]| 0.7 & |[fill=gray!50]| 0.5 & |[fill=gray!20]| 0.2 \\
-            };
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (2.0, 0.6) {$x \in \mathbb{R}^{5 \times 5}$};
+            \cells[black]{1}{{0.1, 0.3, 0.6, 0.9, 0.4}, {0.2, 0.5, 0.8, 0.7, 0.3}, {0.4, 0.7, 1.0, 0.8, 0.5}, {0.2, 0.6, 0.9, 0.7, 0.3}, {0.1, 0.4, 0.7, 0.5, 0.2}}
+            \draw[window] (-0.5, 0.5) rectangle (2.5, -1.5);
+        \end{tikzpicture}
+        \hspace{1.5cm}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.0, 0.6) {$\omega \in \mathbb{R}^{2 \times 3}$};
+            \cells{1}{{0.2, 0.6, 0.9}, {0.4, 0.8, 0.3}}
         \end{tikzpicture}
     \end{center}
-
-    with the following convolution kernel $\omega$
-
-    \begin{center}
-        \begin{tikzpicture}
-            \matrix[
-                matrix of nodes,
-                nodes={
-                    draw,
-                    minimum width=8mm,
-                    minimum height=8mm,
-                    inner sep=0pt,
-                    anchor=center
-                },
-                row sep=-\pgflinewidth,
-                column sep=-\pgflinewidth,
-            ] {
-                0.2 &
-                0.6 &
-                0.9 \\
-                0.4 &
-                0.8 &
-                0.3 \\
-            };
-        \end{tikzpicture}
-    \end{center}
-
     Is the result dependent on the choice of coordinate system (\ie{} on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $\omega[j,i]$)?
 
     \begin{solution}
         The result is equivariant to the choice of coordinate system. The resulting feature map, as drawn on the sheet of paper, remains the same. Only the interpretation of which pixel is represented by $(x \circledast \omega)[j,i]$ changes.
-
         \begin{center}
-            \begin{tikzpicture}
-                \foreach \i in {0,1,2} {
-                    \foreach \j in {0,1,2,3} {
-                        \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
-                    }
-                }
-
-                \node at (0.7,-0.4)  {1.46};
-                \node at (2.1,-0.4)  {2.28};
-                \node at (3.5,-0.4)  {1.99};
-
-                \node at (0.7,-1.2)  {2.08};
-                \node at (2.1,-1.2)  {2.53};
-                \node at (3.5,-1.2)  {2.04};
-
-                \node at (0.7,-2.0)  {2.23};
-                \node at (2.1,-2.0)  {2.63};
-                \node at (3.5,-2.0)  {2.14};
-
-                \node at (0.7,-2.8)  {1.78};
-                \node at (2.1,-2.8)  {2.16};
-                \node at (3.5,-2.8)  {1.61};
-            \end{tikzpicture}
+        \begin{tikzpicture}[diagram, x=9mm, y=9mm, cell/.default=9mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.0, 0.6) {$x \circledast \omega \in \mathbb{R}^{4 \times 3}$};
+            \cells{3}{{1.46, 2.28, 1.99}, {2.08, 2.53, 2.04}, {2.23, 2.63, 2.14}, {1.78, 2.16, 1.61}}
+            \draw[window] (-0.5, 0.5) rectangle (0.5, -0.5);
+        \end{tikzpicture}
         \end{center}
     \end{solution}
 
-    \part The image $x$ now is a coloured image and has three channels (one for the red colour, one for the green colour and one for the blue colour):
-
+    \part The image $x$ is now a colour image, $x \in \mathbb{R}^{3 \times 4 \times 4}$, with three channels (one for the red colour, one for the green colour and one for the blue colour):
     \begin{center}
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $x[0,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    |[fill=red!10]| 0.1 & |[fill=red!30]| 0.3 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9  \\
-                    |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 \\
-                    |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 \\
-                    |[fill=red!20]| 0.2 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9 & |[fill=red!70]| 0.7 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $x[1,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
-                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2& |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
-                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
-                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $x[2,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
-                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2& |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
-                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
-                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.5, 0.6) {$x[0,:,:]$ (red)};
+            \cells[diagram-robot]{1}{{0.1, 0.3, 0.6, 0.9}, {0.2, 0.5, 0.8, 0.7}, {0.4, 0.7, 1.0, 0.8}, {0.2, 0.6, 0.9, 0.7}}
+        \end{tikzpicture}
+        \hspace{5mm}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.5, 0.6) {$x[1,:,:]$ (green)};
+            \cells[diagram-unit1]{1}{{0.2, 0.2, 0.2, 1.0}, {0.2, 0.2, 0.2, 1.0}, {0.2, 0.2, 0.2, 1.0}, {0.2, 0.2, 0.2, 1.0}}
+        \end{tikzpicture}
+        \hspace{5mm}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.5, 0.6) {$x[2,:,:]$ (blue)};
+            \cells[diagram-accent]{1}{{0.2, 0.2, 0.2, 0.1}, {0.2, 0.2, 0.2, 0.1}, {0.2, 0.2, 0.2, 0.1}, {0.2, 0.2, 0.2, 0.1}}
+        \end{tikzpicture}
     \end{center}
-
-    Represent the 2D convolution $x \circledast \omega$ with the following convolution kernel $\omega$
-
+    Represent the 2D convolution $x \circledast \omega$ with the following convolution kernel $\omega \in \mathbb{R}^{3 \times 2 \times 3}$:
     \begin{center}
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $\omega[0,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    0.2 &
-                    0.6 &
-                    0.9 \\
-                    0.4 &
-                    0.8 &
-                    0.3 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $\omega[1,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    0.1 &
-                    0.1 &
-                    0.1 \\
-                    0.1 &
-                    0.1 &
-                    0.1 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.30\linewidth}
-            \centering
-            $\omega[2,:,:]$
-
-            \begin{tikzpicture}
-                \matrix[
-                    matrix of nodes,
-                    nodes={
-                        draw,
-                        minimum width=8mm,
-                        minimum height=8mm,
-                        inner sep=0pt,
-                        anchor=center
-                    },
-                    row sep=-\pgflinewidth,
-                    column sep=-\pgflinewidth,
-                ] {
-                    0.2 &
-                    0.2 &
-                    0.2 \\
-                    0.2 &
-                    0.2 &
-                    0.2 \\
-                };
-            \end{tikzpicture}
-        \end{minipage}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.0, 0.6) {$\omega[0,:,:]$};
+            \cells{1}{{0.2, 0.6, 0.9}, {0.4, 0.8, 0.3}}
+        \end{tikzpicture}
+        \hspace{5mm}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.0, 0.6) {$\omega[1,:,:]$};
+            \cells{1}{{0.1, 0.1, 0.1}, {0.1, 0.1, 0.1}}
+        \end{tikzpicture}
+        \hspace{5mm}
+        \begin{tikzpicture}[diagram, x=6mm, y=6mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (1.0, 0.6) {$\omega[2,:,:]$};
+            \cells{1}{{0.2, 0.2, 0.2}, {0.2, 0.2, 0.2}}
+        \end{tikzpicture}
     \end{center}
-
     Is the result dependent on the choice of coordinate system? What happens if the channels of $x$ are shuffled?
 
     \begin{solution}
-        The dimension corresponding to the channels cannot be interchanged with those corresponding to the height or width of the image while preserving the validity and correctness of the operation. This result makes sense, since the operation is a 2D convolution applied to a three-dimensional tensor. Changing the order of the channels in $x$ will also lead to a different convolution result. For the 2D coordinate system used to describe the spatial dimensions of the images at each channel (width and height), the same result as in the previous point holds.
-
+        The dimension corresponding to the channels cannot be interchanged with those corresponding to the height or width of the image while preserving the validity and correctness of the operation: the operation is a 2D convolution applied to a three-dimensional tensor, which sums over the channels. Shuffling the channels of $x$ alone changes the result, since each channel then meets another slice of the kernel; permuting the channels of $x$ and of $\omega$ in the same way leaves it unchanged, since it only reorders the sum over $c$. For the 2D coordinate system used to describe the spatial dimensions of the images at each channel (width and height), the same result as in (a) holds.
         \begin{center}
-            \begin{tikzpicture}
-                \foreach \i in {0,1} {
-                    \foreach \j in {0,1,2} {
-                        \draw (\i*1.4,-\j*0.8) rectangle ++(1.4,-0.8);
-                    }
-                }
-
-                \node at (0.7,-0.4) {1.82};
-                \node at (2.1,-0.4) {2.76};
-
-                \node at (0.7,-1.2) {2.44};
-                \node at (2.1,-1.2) {3.01};
-
-                \node at (0.7,-2.0) {2.59};
-                \node at (2.1,-2.0) {3.11};
-            \end{tikzpicture}
+        \begin{tikzpicture}[diagram, x=9mm, y=9mm, cell/.default=9mm, baseline=(current bounding box.north)]
+            \node[anchor=south] at (0.5, 0.6) {$x \circledast \omega \in \mathbb{R}^{3 \times 2}$};
+            \cells{4}{{1.82, 2.76}, {2.44, 3.01}, {2.59, 3.11}}
+        \end{tikzpicture}
         \end{center}
     \end{solution}
 \end{parts}
