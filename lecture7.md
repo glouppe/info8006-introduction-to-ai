@@ -929,6 +929,8 @@ A convolutional layer is defined by a set of $K$ kernels $\omega_k$ of size $C \
 
 Each kernel $\omega_k$ acts as a feature detector that scans the input tensor and produces a feature map $\mathbf{o}\_k$ specific to that feature. 
 
+.center.width-100[![](figures/lec7/nn-conv-layer.svg)]
+
 ---
 
 class: middle

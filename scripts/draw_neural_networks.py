@@ -828,6 +828,69 @@ def conv_channels():
     save(fig, "nn-conv-channels")
 
 
+def conv_layer():
+    """A convolutional layer: the cat in its three channels, K = 4 kernels of size 3 x 3 x 3 in parallel,
+    and the K feature maps they give, stacked as the output channels; kernel k and map o_k share a color."""
+    from PIL import Image
+    from matplotlib.colors import LinearSegmentedColormap as LSC
+    img = Image.open(ROOT / "figures" / "lec7" / "cat.jpg").convert("RGB").crop((62, 52, 298, 288)).resize((16, 16), Image.LANCZOS)
+    x = np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
+    rng = np.random.default_rng(5)
+    K = 4
+    ws = rng.normal(0, 1, (K, 3, 3, 3))
+    ws = np.round(ws - ws.mean(axis=(1, 2, 3), keepdims=True), 1)   # zero mean: the maps show edges, not brightness
+    zs = [np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)]) for w in ws]
+    fig = plt.figure(figsize=(13, 5.2))
+    asp = 5.2 / 13
+    hues = ["#c8463d", "#3f8f5a", "#356aaf"]
+    names = ["R", "G", "B"]
+    j0, i0 = 5, 6
+
+    def frame(ax, color, width=2.6):
+        for sp in ax.spines.values():
+            sp.set_color(color); sp.set_linewidth(width)
+
+    # the input, as on the previous slide
+    big, off = 0.56, 0.05
+    for cidx in range(3):
+        d = 2 - cidx
+        ax = fig.add_axes([0.02 + d * off * asp, 0.1 + d * off, big * asp, big])
+        cells(ax, x[cidx], 1, fmt=None, cmap=LSC.from_list(names[cidx], ["#ffffff", hues[cidx]]))
+        window(ax, j0, i0, 3, 3)
+        # each name left of its own slice, in the strip where that slice shows above the one in front
+        fig.text(0.02 + d * off * asp - 0.006, 0.1 + d * off + big - off / 2, names[cidx], ha="right", va="center",
+                 fontsize=15, color=hues[cidx])
+    fig.text(0.02 + big * asp / 2 + off * asp, 0.95, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$", ha="center", fontsize=18)
+    fig.text(0.335, 0.42, r"$\circledast$", ha="center", va="center", fontsize=28)
+
+    # the K kernels, in a column, each a small stack of three 3 x 3 slices
+    ks, koff = 0.14, 0.022
+    for k in range(K):
+        y0 = 0.68 - k * 0.2
+        lim = np.abs(ws[k]).max()
+        for cidx in range(3):
+            d = 2 - cidx
+            ax = fig.add_axes([0.4 + d * koff * asp, y0 + d * koff, ks * asp, ks])
+            cells(ax, ws[k, cidx], lim, fmt=None)
+            frame(ax, UNITS[k], 2.0)
+        fig.text(0.39, y0 + ks / 2 + koff, rf"$\omega_{k}$", ha="right", va="center", fontsize=20, color=INK)
+    fig.text(0.4 + ks * asp / 2 + koff * asp, 0.95, r"$K$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$", ha="center", fontsize=18)
+    fig.text(0.53, 0.42, r"$=$", ha="center", va="center", fontsize=28)
+
+    # the K feature maps, stacked as the K channels of the output, o_0 in front
+    big2, off2 = 0.5, 0.065
+    for k in reversed(range(K)):
+        ax = fig.add_axes([0.58 + k * off2 * asp, 0.1 + k * off2, big2 * asp, big2])
+        cells(ax, zs[k], np.abs(zs[k]).max(), fmt=None)
+        frame(ax, UNITS[k])
+        window(ax, j0, i0, 1, 1)
+    for k in range(K):   # the labels o_k, on the right edge of each map
+        fig.text(0.58 + k * off2 * asp - 0.006, 0.1 + k * off2 + big2 - off2 / 2, rf"$\mathbf{{o}}_{k}$",
+                 ha="right", va="center", fontsize=17, color=UNITS[k])
+    fig.text(0.58 + big2 * asp / 2 + 1.5 * off2 * asp, 0.95, r"output $\mathbf{o} \in \mathbb{R}^{K \times H' \times W'}$", ha="center", fontsize=18)
+    save(fig, "nn-conv-layer")
+
+
 def pooling():
     xv = np.array([[1, 3, 5, 3], [6, 2, 0, 8], [4, 6, 1, 4], [2, 8, 0, 3]], float)
     blocks = [(0, 0), (0, 2), (2, 0), (2, 2)]
@@ -938,5 +1001,6 @@ if __name__ == "__main__":
     conv_1d()
     conv_2d()
     conv_channels()
+    conv_layer()
     pooling()
     next_token()
