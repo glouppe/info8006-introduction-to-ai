@@ -84,7 +84,7 @@
     \[
         (\mathbf{x} \circledast \omega)[i] = \sum_{m=0}^{w-1} \mathbf{x}_{m+i} \omega_m.
     \]
-    Technically, $\circledast$ is the cross-correlation: the kernel is not flipped. Padding the input with $p$ zeros on each side results in an output of size $W - w + 1 + 2p$. For the 3d input tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$ with $C$ channels and the 3d convolutional kernel $\omega \in \mathbb{R}^{C \times h \times w}$, the 2d convolution $\mathbf{x} \circledast \omega$ is a 2d tensor of size $(H - h + 1) \times (W - w + 1)$ such that
+    Padding the input with $p$ zeros on each side results in an output of size $W - w + 1 + 2p$. For the 3d input tensor $\mathbf{x} \in \mathbb{R}^{C \times H \times W}$ with $C$ channels and the 3d convolutional kernel $\omega \in \mathbb{R}^{C \times h \times w}$, the 2d convolution $\mathbf{x} \circledast \omega$ is a 2d tensor of size $(H - h + 1) \times (W - w + 1)$ such that
     \[
         (\mathbf{x} \circledast \omega)[j, i] = \sum_{c=0}^{C-1} \sum_{n=0}^{h-1} \sum_{m=0}^{w-1} \mathbf{x}_{c, n+j, m+i} \omega_{c, n, m}.
     \]
