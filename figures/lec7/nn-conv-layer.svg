@@ -3484,8 +3484,8 @@ z
    </g>
   </g>
   <g id="text_4">
-   <!-- input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$ -->
-   <g transform="translate(34.095 58.68) scale(0.18 -0.18)">
+   <!-- input $\mathbf{x} \in \mathbb{R}^{3 \times 16 \times 16}$ -->
+   <g transform="translate(32.655 58.68) scale(0.18 -0.18)">
     <defs>
      <path id="Roboto-Regular-4d" d="M 1066 0 
 L 488 0 
@@ -3778,137 +3778,94 @@ Q 1016 56 978 97
 Q 941 138 941 184 
 z
 " transform="scale(0.015625)"/>
-     <path id="Cmmi10-49" d="M 300 0 
-Q 238 0 238 84 
-Q 241 100 250 139 
-Q 259 178 276 201 
-Q 294 225 319 225 
-Q 709 225 863 269 
-Q 947 297 984 441 
-L 1863 3956 
-Q 1875 4019 1875 4044 
-Q 1875 4113 1797 4122 
-Q 1678 4147 1338 4147 
-Q 1275 4147 1275 4231 
-Q 1297 4313 1309 4342 
-Q 1322 4372 1381 4372 
-L 3103 4372 
-Q 3169 4372 3169 4288 
-Q 3166 4272 3156 4234 
-Q 3147 4197 3131 4172 
-Q 3116 4147 3084 4147 
-Q 2694 4147 2541 4103 
-Q 2456 4072 2419 3928 
-L 2034 2388 
-L 3956 2388 
-L 4347 3956 
-Q 4359 4019 4359 4044 
-Q 4359 4113 4281 4122 
-Q 4159 4147 3822 4147 
-Q 3756 4147 3756 4231 
-Q 3778 4313 3790 4342 
-Q 3803 4372 3866 4372 
-L 5588 4372 
-Q 5650 4372 5650 4288 
-Q 5647 4272 5637 4233 
-Q 5628 4194 5611 4170 
-Q 5594 4147 5569 4147 
-Q 5178 4147 5025 4103 
-Q 4941 4075 4903 3928 
-L 4025 416 
-Q 4013 353 4013 325 
-Q 4013 259 4091 250 
-Q 4213 225 4550 225 
-Q 4616 225 4616 141 
-Q 4597 66 4578 33 
-Q 4559 0 4506 0 
-L 2784 0 
-Q 2719 0 2719 84 
-Q 2731 131 2737 153 
-Q 2744 175 2761 200 
-Q 2778 225 2803 225 
-Q 3194 225 3347 269 
-Q 3431 297 3469 441 
-L 3897 2163 
-L 1978 2163 
-L 1544 416 
-Q 1528 338 1528 325 
-Q 1528 259 1606 250 
-Q 1728 225 2069 225 
-Q 2131 225 2131 141 
-Q 2109 56 2095 28 
-Q 2081 0 2022 0 
-L 300 0 
+     <path id="Cmr10-64" d="M 594 0 
+L 594 225 
+Q 1394 225 1394 428 
+L 1394 3788 
+Q 1063 3628 556 3628 
+L 556 3853 
+Q 1341 3853 1741 4263 
+L 1831 4263 
+Q 1853 4263 1873 4245 
+Q 1894 4228 1894 4206 
+L 1894 428 
+Q 1894 225 2694 225 
+L 2694 0 
+L 594 0 
 z
 " transform="scale(0.015625)"/>
-     <path id="Cmmi10-50" d="M 1141 -72 
-L 844 4006 
-Q 822 4100 703 4123 
-Q 584 4147 409 4147 
-Q 347 4147 347 4231 
-Q 369 4313 381 4342 
-Q 394 4372 453 4372 
-L 1978 4372 
-Q 2041 4372 2041 4288 
-Q 2016 4147 1959 4147 
-Q 1447 4147 1416 3969 
-L 1644 738 
-L 3244 3525 
-L 3213 4006 
-Q 3191 4100 3072 4123 
-Q 2953 4147 2778 4147 
-Q 2713 4147 2713 4231 
-Q 2734 4313 2746 4342 
-Q 2759 4372 2822 4372 
-L 4347 4372 
-Q 4409 4372 4409 4288 
-Q 4406 4272 4397 4234 
-Q 4388 4197 4372 4172 
-Q 4356 4147 4325 4147 
-Q 3809 4147 3781 3969 
-L 3781 3922 
-L 4013 738 
-L 5753 3775 
-Q 5791 3844 5791 3909 
-Q 5791 4041 5662 4094 
-Q 5534 4147 5375 4147 
-Q 5313 4147 5313 4231 
-Q 5325 4281 5333 4309 
-Q 5341 4338 5361 4355 
-Q 5381 4372 5422 4372 
-L 6644 4372 
-Q 6706 4372 6706 4288 
-Q 6703 4272 6693 4233 
-Q 6684 4194 6667 4170 
-Q 6650 4147 6625 4147 
-Q 6169 4147 5931 3731 
-Q 5913 3713 5913 3713 
-L 3744 -72 
-Q 3709 -141 3634 -141 
-L 3584 -141 
-Q 3506 -141 3506 -72 
-L 3263 3225 
-L 1381 -72 
-Q 1334 -141 1269 -141 
-L 1216 -141 
-Q 1141 -141 1141 -72 
+     <path id="Cmr10-45" d="M 1600 -141 
+Q 1203 -141 937 70 
+Q 672 281 526 617 
+Q 381 953 325 1322 
+Q 269 1691 269 2069 
+Q 269 2575 466 3084 
+Q 663 3594 1045 3928 
+Q 1428 4263 1953 4263 
+Q 2172 4263 2361 4180 
+Q 2550 4097 2658 3936 
+Q 2766 3775 2766 3547 
+Q 2766 3416 2677 3327 
+Q 2588 3238 2456 3238 
+Q 2331 3238 2240 3328 
+Q 2150 3419 2150 3547 
+Q 2150 3672 2240 3762 
+Q 2331 3853 2456 3853 
+L 2491 3853 
+Q 2409 3969 2261 4023 
+Q 2113 4078 1953 4078 
+Q 1759 4078 1595 3993 
+Q 1431 3909 1300 3765 
+Q 1169 3622 1081 3448 
+Q 994 3275 945 3053 
+Q 897 2831 884 2637 
+Q 872 2444 872 2150 
+Q 984 2413 1190 2580 
+Q 1397 2747 1656 2747 
+Q 1941 2747 2175 2631 
+Q 2409 2516 2578 2311 
+Q 2747 2106 2836 1843 
+Q 2925 1581 2925 1313 
+Q 2925 938 2758 598 
+Q 2591 259 2287 59 
+Q 1984 -141 1600 -141 
+z
+M 1600 63 
+Q 1847 63 1997 175 
+Q 2147 288 2217 473 
+Q 2288 659 2305 848 
+Q 2322 1038 2322 1313 
+Q 2322 1675 2287 1931 
+Q 2253 2188 2100 2383 
+Q 1947 2578 1631 2578 
+Q 1372 2578 1205 2403 
+Q 1038 2228 961 1961 
+Q 884 1694 884 1447 
+Q 884 1363 891 1319 
+Q 891 1309 889 1303 
+Q 888 1297 884 1288 
+Q 884 1013 940 731 
+Q 997 450 1156 256 
+Q 1316 63 1600 63 
 z
 " transform="scale(0.015625)"/>
     </defs>
-    <use xlink:href="#Roboto-Regular-4d" transform="translate(0 0.892016)"/>
-    <use xlink:href="#Roboto-Regular-52" transform="translate(24.267578 0.892016)"/>
-    <use xlink:href="#Roboto-Regular-54" transform="translate(79.443359 0.892016)"/>
-    <use xlink:href="#Roboto-Regular-59" transform="translate(135.546875 0.892016)"/>
-    <use xlink:href="#Roboto-Regular-58" transform="translate(190.673828 0.892016)"/>
-    <use xlink:href="#Roboto-Regular-4" transform="translate(223.339844 0.892016)"/>
-    <use xlink:href="#Cmb10-2d" transform="translate(248.095703 0.892016)"/>
-    <use xlink:href="#Cmsy10-3b" transform="translate(320.781307 0.892016)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(407.382927 0.892016)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(491.776013 42.18125) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(540.776054 42.18125) scale(0.7)"/>
-    <use xlink:href="#Cmmi10-49" transform="translate(609.155976 42.18125) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(681.329845 42.18125) scale(0.7)"/>
-    <use xlink:href="#Cmmi10-50" transform="translate(749.709767 42.18125) scale(0.7)"/>
+    <use xlink:href="#Roboto-Regular-4d" transform="translate(0 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-52" transform="translate(24.267578 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-54" transform="translate(79.443359 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-59" transform="translate(135.546875 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-58" transform="translate(190.673828 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-4" transform="translate(223.339844 0.084203)"/>
+    <use xlink:href="#Cmb10-2d" transform="translate(248.095703 0.084203)"/>
+    <use xlink:href="#Cmsy10-3b" transform="translate(320.781307 0.084203)"/>
+    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(407.382927 0.084203)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(491.776013 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(540.776054 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(609.155976 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(644.155976 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(693.156016 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(761.535939 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(796.535939 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_5">
@@ -4075,24 +4032,6 @@ z
   <g id="text_7">
    <!-- $\omega_1$ -->
    <g transform="translate(385.055 47.02) scale(0.2 -0.2)">
-    <defs>
-     <path id="Cmr10-64" d="M 594 0 
-L 594 225 
-Q 1394 225 1394 428 
-L 1394 3788 
-Q 1063 3628 556 3628 
-L 556 3853 
-Q 1341 3853 1741 4263 
-L 1831 4263 
-Q 1853 4263 1873 4245 
-Q 1894 4228 1894 4206 
-L 1894 428 
-Q 1894 225 2694 225 
-L 2694 0 
-L 594 0 
-z
-" transform="scale(0.015625)"/>
-    </defs>
     <use xlink:href="#Cmmi10-1d" transform="translate(0 0.71875)"/>
     <use xlink:href="#Cmr10-64" transform="translate(62.207031 -14.281212) scale(0.7)"/>
    </g>
@@ -4155,8 +4094,8 @@ z
    </g>
   </g>
   <g id="text_10">
-   <!-- $K$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$ -->
-   <g transform="translate(247.845 23.04) scale(0.18 -0.18)">
+   <!-- $K = 4$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$ -->
+   <g transform="translate(232.725 23.04) scale(0.18 -0.18)">
     <defs>
      <path id="Cmmi10-81" d="M 300 0 
 Q 238 0 238 84 
@@ -4222,6 +4161,58 @@ Q 2131 225 2131 141
 Q 2109 50 2096 25 
 Q 2084 0 2022 0 
 L 300 0 
+z
+" transform="scale(0.015625)"/>
+     <path id="Cmr10-29" d="M 481 850 
+Q 428 850 393 890 
+Q 359 931 359 978 
+Q 359 1031 393 1068 
+Q 428 1106 481 1106 
+L 4500 1106 
+Q 4547 1106 4581 1068 
+Q 4616 1031 4616 978 
+Q 4616 931 4581 890 
+Q 4547 850 4500 850 
+L 481 850 
+z
+M 481 2094 
+Q 428 2094 393 2131 
+Q 359 2169 359 2222 
+Q 359 2269 393 2309 
+Q 428 2350 481 2350 
+L 4500 2350 
+Q 4547 2350 4581 2309 
+Q 4616 2269 4616 2222 
+Q 4616 2169 4581 2131 
+Q 4547 2094 4500 2094 
+L 481 2094 
+z
+" transform="scale(0.015625)"/>
+     <path id="Cmr10-3b" d="M 178 1056 
+L 178 1281 
+L 2156 4231 
+Q 2178 4263 2222 4263 
+L 2316 4263 
+Q 2388 4263 2388 4191 
+L 2388 1281 
+L 3016 1281 
+L 3016 1056 
+L 2388 1056 
+L 2388 428 
+Q 2388 297 2575 261 
+Q 2763 225 3009 225 
+L 3009 0 
+L 1247 0 
+L 1247 225 
+Q 1494 225 1681 261 
+Q 1869 297 1869 428 
+L 1869 1056 
+L 178 1056 
+z
+M 391 1281 
+L 1906 1281 
+L 1906 3547 
+L 391 1281 
 z
 " transform="scale(0.015625)"/>
      <path id="Roboto-Regular-4f" d="M 1381 1566 
@@ -4380,56 +4371,31 @@ z
 " transform="scale(0.015625)"/>
     </defs>
     <use xlink:href="#Cmmi10-81" transform="translate(0 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-4" transform="translate(84.912109 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-4f" transform="translate(109.667969 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-49" transform="translate(160.351562 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-56" transform="translate(213.330078 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-52" transform="translate(247.167969 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-49" transform="translate(302.34375 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-50" transform="translate(355.322266 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-57" transform="translate(379.589844 0.084203)"/>
-    <use xlink:href="#Roboto-Regular-4" transform="translate(431.152344 0.084203)"/>
-    <use xlink:href="#Cmmi10-1d" transform="translate(455.908203 0.084203)"/>
-    <use xlink:href="#Cmmi10-3e" transform="translate(518.115234 -14.915759) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-3b" transform="translate(580.237074 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(666.838694 0.084203)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(751.231781 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(800.231821 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(868.611743 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(917.611783 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(985.991706 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-29" transform="translate(104.912167 0.084203)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(202.597771 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-4" transform="translate(252.597771 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-4f" transform="translate(277.35363 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-49" transform="translate(328.037224 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-56" transform="translate(381.015739 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-52" transform="translate(414.85363 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-49" transform="translate(470.029411 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-50" transform="translate(523.007927 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-57" transform="translate(547.275505 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-4" transform="translate(598.838005 0.084203)"/>
+    <use xlink:href="#Cmmi10-1d" transform="translate(623.593864 0.084203)"/>
+    <use xlink:href="#Cmmi10-3e" transform="translate(685.800896 -14.915759) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-3b" transform="translate(747.922736 0.084203)"/>
+    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(834.524355 0.084203)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(918.917442 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(967.917482 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(1036.297405 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(1085.297445 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(1153.677368 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_11">
    <!-- $=$ -->
    <g transform="translate(447.695 166.16) scale(0.26 -0.26)">
-    <defs>
-     <path id="Cmr10-29" d="M 481 850 
-Q 428 850 393 890 
-Q 359 931 359 978 
-Q 359 1031 393 1068 
-Q 428 1106 481 1106 
-L 4500 1106 
-Q 4547 1106 4581 1068 
-Q 4616 1031 4616 978 
-Q 4616 931 4581 890 
-Q 4547 850 4500 850 
-L 481 850 
-z
-M 481 2094 
-Q 428 2094 393 2131 
-Q 359 2169 359 2222 
-Q 359 2269 393 2309 
-Q 428 2350 481 2350 
-L 4500 2350 
-Q 4547 2350 4581 2309 
-Q 4616 2269 4616 2222 
-Q 4616 2169 4581 2131 
-Q 4547 2094 4500 2094 
-L 481 2094 
-z
-" transform="scale(0.015625)"/>
-    </defs>
     <use xlink:href="#Cmr10-29" transform="translate(20.000057 0.28125)"/>
    </g>
   </g>
@@ -4496,8 +4462,8 @@ z
    </g>
   </g>
   <g id="text_16">
-   <!-- output $\mathbf{o} \in \mathbb{R}^{K \times H' \times W'}$ -->
-   <g transform="translate(508.485 57.24) scale(0.18 -0.18)">
+   <!-- output $\mathbf{o} \in \mathbb{R}^{4 \times 14 \times 14}$ -->
+   <g transform="translate(514.515 57.24) scale(0.18 -0.18)">
     <defs>
      <path id="Roboto-Regular-53" d="M 284 1722 
 Q 284 2219 479 2616 
@@ -4524,38 +4490,24 @@ Q 1391 2969 1128 2628
 Q 866 2288 866 1653 
 z
 " transform="scale(0.015625)"/>
-     <path id="Cmsy10-49" d="M 225 347 
-Q 184 359 184 409 
-L 966 3316 
-Q 1003 3434 1093 3506 
-Q 1184 3578 1300 3578 
-Q 1450 3578 1564 3479 
-Q 1678 3381 1678 3231 
-Q 1678 3166 1644 3084 
-L 488 319 
-Q 466 275 428 275 
-Q 394 275 320 306 
-Q 247 338 225 347 
-z
-" transform="scale(0.015625)"/>
     </defs>
-    <use xlink:href="#Roboto-Regular-53" transform="translate(0 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-59" transform="translate(57.03125 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-58" transform="translate(112.158203 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-54" transform="translate(144.824219 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-59" transform="translate(200.927734 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-58" transform="translate(256.054688 0.414239)"/>
-    <use xlink:href="#Roboto-Regular-4" transform="translate(288.720703 0.414239)"/>
-    <use xlink:href="#Cmb10-42" transform="translate(313.476562 0.414239)"/>
-    <use xlink:href="#Cmsy10-3b" transform="translate(383.47662 0.414239)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(470.078239 0.414239)"/>
-    <use xlink:href="#Cmmi10-81" transform="translate(554.471326 41.703474) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(627.909843 41.703474) scale(0.7)"/>
-    <use xlink:href="#Cmmi10-49" transform="translate(696.289765 41.703474) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-49" transform="translate(765.892096 70.605938) scale(0.49)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(797.366642 41.703474) scale(0.7)"/>
-    <use xlink:href="#Cmmi10-50" transform="translate(865.746564 41.703474) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-49" transform="translate(943.244403 70.605938) scale(0.49)"/>
+    <use xlink:href="#Roboto-Regular-53" transform="translate(0 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-59" transform="translate(57.03125 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-58" transform="translate(112.158203 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-54" transform="translate(144.824219 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-59" transform="translate(200.927734 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-58" transform="translate(256.054688 0.084203)"/>
+    <use xlink:href="#Roboto-Regular-4" transform="translate(288.720703 0.084203)"/>
+    <use xlink:href="#Cmb10-42" transform="translate(313.476562 0.084203)"/>
+    <use xlink:href="#Cmsy10-3b" transform="translate(383.47662 0.084203)"/>
+    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(470.078239 0.084203)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(554.471326 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(603.471366 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(671.851289 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(706.851289 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(755.851329 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(824.231252 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(859.231252 41.373437) scale(0.7)"/>
    </g>
   </g>
  </g>

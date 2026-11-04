@@ -738,21 +738,21 @@ def conv_pattern():
     cone(pools[0], pj, pi, 1, maps[0], 2 * pj, 2 * pi, 2)
     cone(maps[0], 2 * pj, 2 * pi, 2, convs[0], 2 * pj, 2 * pi, 2)
     cone(convs[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
-    def tag(ax, s):   # under a panel, in red
-        ax.text(0.5, -0.06, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
-    tag(out2, "1 value")
-    tag(pools[0], "1 value\n7 × 7")
-    tag(pools[1], "7 × 7")
-    tag(maps[0], "2 × 2")
-    tag(convs[0], "2 × 2")
-    tag(inp, "1 pooled value: 8 × 8\n1 value of layer 2: 20 × 20")
 
     # column labels and layer brackets
-    top = ys[0] + sz[2] / 2 + 0.55
+    top = ys[0] + sz[2] / 2 + 0.75
     for c, s_ in [(cx[0], "input\n" + r"$\mathbf{x}$"), (cx[2], "convolution\n" + r"$\mathbf{x} \circledast \omega_k$"),
                   (cx[3], "ReLU\n"), (cx[4], "max-pooling\n" + r"$\mathbf{o}_k$"),
                   (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega^{\prime}_k$"), (cx[7], "ReLU\n")]:
         fig.text(c / W, top / H, s_, ha="center", va="center", fontsize=F_TITLE, color=INK)
+    def shape(c, y, dims, va="bottom"):
+        fig.text(c / W, y / H, r"$\mathbb{R}^{" + r" \times ".join(map(str, dims)) + "}$", ha="center", va=va,
+                 fontsize=F_NOTE + 2, color=GREY)
+    shape(cx[0], ym + sz[0] / 2 + 0.06, (1, 48, 48))
+    for c, n_, d in [(cx[2], 42, sz[2]), (cx[3], 42, sz[3]), (cx[4], 21, sz[4]), (cx[6], 15, sz[6]), (cx[7], 15, sz[7])]:
+        shape(c, ys[0] + d / 2 + 0.06, (2, n_, n_))
+    shape(cx[1], ys[1] - sz[1] / 2 - 0.08, (1, K, K), va="top")
+    shape(cx[5] + 0.03, ys[1] - sz[5] / 2 - 0.08, (2, K, K), va="top")
     def bracket(x0, x1, text):
         y = 0.25
         fig.add_artist(matplotlib.lines.Line2D([x0 / W, x1 / W], [y / H, y / H], color=GREY, linewidth=1.4))
@@ -820,17 +820,17 @@ def conv_1d():
     xv = np.array([1, 3, 2, 0, -1, 2, 4, 1], float)
     wv = np.array([1, 0, -1], float)
     zv = np.array([np.dot(xv[i:i + 3], wv) for i in range(len(xv) - 2)])
-    fig = plt.figure(figsize=(4.6, 3.0))
+    fig = plt.figure(figsize=(5.4, 3.0))
     ax, text = inches(fig)
-    x0, i0, rows = 0.9, 1, [2.3, 1.4, 0.5]
+    x0, i0, rows = 1.7, 1, [2.3, 1.4, 0.5]
     ax_x = ax(x0, rows[0], 8 * CELL, CELL); cells(ax_x, xv, 5, fontsize=F_NUM)
     ax_w = ax(x0 + i0 * CELL, rows[1], 3 * CELL, CELL); cells(ax_w, wv, 5, fontsize=F_NUM)
     ax_z = ax(x0 + CELL, rows[2], 6 * CELL, CELL); cells(ax_z, zv, 5, fontsize=F_NUM)
     window(ax_x, 0, i0, 1, 3)
     window(ax_z, 0, i0, 1, 1)
-    text(x0 - 0.1, rows[0] + CELL / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=F_SYM)
-    text(x0 + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega$", ha="right", va="center", fontsize=F_SYM)
-    text(x0 + CELL - 0.1, rows[2] + CELL / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=F_SYM)
+    text(x0 - 0.1, rows[0] + CELL / 2, r"$\mathbf{x} \in \mathbb{R}^{8}$", ha="right", va="center", fontsize=F_SYM)
+    text(x0 + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega \in \mathbb{R}^{3}$", ha="right", va="center", fontsize=F_SYM)
+    text(x0 + CELL - 0.1, rows[2] + CELL / 2, r"$\mathbf{x} \circledast \omega \in \mathbb{R}^{6}$", ha="right", va="center", fontsize=F_SYM)
     terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
     text(x0 + 4 * CELL, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
          ha="center", va="top", fontsize=F_TITLE, color=INK)
@@ -854,9 +854,9 @@ def conv_2d():
     window(ax_z, 0, 0, 1, 1)
     text(xx + 6 * CELL + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
     text(xw + 3 * CELL + 0.3, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
-    text(xx + 3 * CELL, y0 + 6 * CELL + 0.1, r"$\mathbf{x}$", ha="center", va="bottom", fontsize=F_SYM)
-    text(xw + 1.5 * CELL, cy + 1.5 * CELL + 0.1, r"$\omega$", ha="center", va="bottom", fontsize=F_SYM)
-    text(xz + 2 * CELL, cy + 2 * CELL + 0.1, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=F_SYM)
+    text(xx + 3 * CELL, y0 + 6 * CELL + 0.1, r"$\mathbf{x} \in \mathbb{R}^{6 \times 6}$", ha="center", va="bottom", fontsize=F_SYM)
+    text(xw + 1.5 * CELL, cy + 1.5 * CELL + 0.1, r"$\omega \in \mathbb{R}^{3 \times 3}$", ha="center", va="bottom", fontsize=F_SYM)
+    text(xz + 2 * CELL, cy + 2 * CELL + 0.1, r"$\mathbf{x} \circledast \omega \in \mathbb{R}^{4 \times 4}$", ha="center", va="bottom", fontsize=F_SYM)
     save(fig, "nn-conv2d")
 
 
@@ -879,7 +879,7 @@ def rgb_stack(ax, text, x, j0, i0, y0):
         window(a, j0, i0, 3, 3)
         text(0.4 + d * STK - 0.06, y0 + d * STK + n - STK / 2, names[cidx], ha="right", va="center",
              fontsize=F_NOTE, color=hues[cidx])
-    text(0.4 + n / 2 + STK, y0 + n + 2 * STK + 0.12, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$",
+    text(0.4 + n / 2 + STK, y0 + n + 2 * STK + 0.12, r"input $\mathbf{x} \in \mathbb{R}^{3 \times 16 \times 16}$",
          ha="center", va="bottom", fontsize=F_TITLE)
     return 0.4 + n + 2 * STK   # the right edge of the stack
 
@@ -918,7 +918,7 @@ def conv_channels():
     a = ax(zx, cy - m / 2, m, m)
     cells(a, z, np.abs(z).max(), fmt=None)
     window(a, j0, i0, 1, 1)
-    text(zx + m / 2, cy + m / 2 + 0.12, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=F_SYM)
+    text(zx + m / 2, cy + m / 2 + 0.12, r"$\mathbf{x} \circledast \omega \in \mathbb{R}^{14 \times 14}$", ha="center", va="bottom", fontsize=F_SYM)
     text(zx + m + 0.2, cy, "one value sums\nover the 3 channels\nof the 3 × 3 window", ha="left", va="center", fontsize=F_NOTE, color=GREY)
     save(fig, "nn-conv-channels")
 
@@ -948,7 +948,7 @@ def conv_layer():
         yk = cy + gap / 2 if row == 0 else cy - gap / 2 - size
         kernel_stack(ax, ws[k], x0, yk, color=UNITS[k])
         text(x0 + size / 2, yk + size + 0.04, rf"$\omega_{k}$", ha="center", va="bottom", fontsize=F_SYM)
-    text(kx + size + 0.125, cy + size + gap / 2 + 0.38, r"$K$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$",
+    text(kx + size + 0.125, cy + size + gap / 2 + 0.38, r"$K = 4$ kernels $\omega_k \in \mathbb{R}^{3 \times 3 \times 3}$",
          ha="center", va="bottom", fontsize=F_TITLE)
     ox = kx + 2 * size + 0.25 + 0.3
     text(ox, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
@@ -963,7 +963,7 @@ def conv_layer():
         window(a, j0, i0, 1, 1)
         text(zx + k * ostk - 0.06, my + k * ostk + m - ostk / 2, rf"$\mathbf{{o}}_{k}$", ha="right", va="center",
              fontsize=F_NOTE + 1, color=UNITS[k])
-    text(zx + m / 2 + 1.5 * ostk, my + m + (K - 1) * ostk + 0.12, r"output $\mathbf{o} \in \mathbb{R}^{K \times H' \times W'}$",
+    text(zx + m / 2 + 1.5 * ostk, my + m + (K - 1) * ostk + 0.12, r"output $\mathbf{o} \in \mathbb{R}^{4 \times 14 \times 14}$",
          ha="center", va="bottom", fontsize=F_TITLE)
     save(fig, "nn-conv-layer")
 
@@ -974,14 +974,14 @@ def pooling():
     sub = np.array([[xv[j, i] for (j, i) in blocks[:2]], [xv[j, i] for (j, i) in blocks[2:]]])
     mx = np.array([[xv[j:j + 2, i:i + 2].max() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
     av = np.array([[xv[j:j + 2, i:i + 2].mean() for (j, i) in blocks[r * 2:r * 2 + 2]] for r in range(2)])
-    fig = plt.figure(figsize=(9.6, 2.4))
+    fig = plt.figure(figsize=(9.6, 2.7))
     ax, text = inches(fig)
     lim = 9
     for k, (title, out, picks, fmt) in enumerate([
             ("subsampling", sub, [(j, i) for (j, i) in blocks], "{:g}"),
             ("max-pooling", mx, [tuple(np.add((j, i), np.unravel_index(np.argmax(xv[j:j + 2, i:i + 2]), (2, 2)))) for (j, i) in blocks], "{:g}"),
             ("average-pooling", av, [], "{:g}")]):
-        x0, y0 = 0.1 + k * 3.25, 0.2
+        x0, y0 = 0.1 + k * 3.25, 0.5
         ax_x = ax(x0, y0, 4 * CELL, 4 * CELL); cells(ax_x, xv, lim, fontsize=F_NUM)
         ax_o = ax(x0 + 4 * CELL + 0.6, y0 + CELL, 2 * CELL, 2 * CELL); cells(ax_o, out, lim, fmt=fmt, fontsize=F_NUM)
         ax_x.axhline(1.5, color=INK, linewidth=1.4, linestyle="--"); ax_x.axvline(1.5, color=INK, linewidth=1.4, linestyle="--")
@@ -989,6 +989,8 @@ def pooling():
             window(ax_x, j, i, 1, 1)
         text(x0 + 4 * CELL + 0.3, y0 + 2 * CELL, r"$\rightarrow$", ha="center", va="center", fontsize=F_OP)
         text(x0 + (6 * CELL + 0.6) / 2, y0 + 4 * CELL + 0.12, title, ha="center", va="bottom", fontsize=F_TITLE)
+        text(x0 + 2 * CELL, y0 - 0.1, r"$\mathbb{R}^{4 \times 4}$", ha="center", va="top", fontsize=F_NOTE + 2, color=GREY)
+        text(x0 + 5 * CELL + 0.6, y0 + CELL - 0.1, r"$\mathbb{R}^{2 \times 2}$", ha="center", va="top", fontsize=F_NOTE + 2, color=GREY)
     save(fig, "nn-pooling")
 
 def next_token():
