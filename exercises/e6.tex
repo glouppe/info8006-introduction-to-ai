@@ -1774,7 +1774,14 @@ The dimensions of the different layers of team A's encoder are given below:
         \item Nothing changes neither for the linear layer nor the convolution one.
     \end{enumerate}
 
-    \item Which expression is equal to $|x| + 1$ for every $x \in \mathbb{R}$?
+    \item Which expression is equal to the function $|x| + 1$ below, for every $x \in \mathbb{R}$?
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{axis}[diagram plot, width=4.4cm, height=4.4cm, xmin=-4, xmax=4, ymin=-4, ymax=4, xtick={-4, -2, 0, 2, 4}, ytick={-4, -2, 0, 2, 4}, xlabel={$x$}]
+                \addplot+[domain=-4:4, samples=3] {abs(x) + 1};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
     \begin{enumerate}[label=$\bigcirc$]
         \item $\ReLU(x) - \ReLU(-x) + 1$.
         \item $\ReLU(x + 1) + \ReLU(-x + 1)$.
@@ -1782,12 +1789,19 @@ The dimensions of the different layers of team A's encoder are given below:
         \item \correct{$\ReLU(x) + \ReLU(-x) + 1$.}
     \end{enumerate}
 
-    \item The function $y = \ReLU(x - 2) - \ReLU(-x - 2)$ is \ldots
+    \item Which expression is equal to the function plotted below?
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{axis}[diagram plot, width=4.4cm, height=4.4cm, xmin=-4, xmax=4, ymin=-4, ymax=4, xtick={-4, -2, 0, 2, 4}, ytick={-4, -2, 0, 2, 4}, xlabel={$x$}]
+                \addplot+[domain=-4:4, samples=5] {x > 2 ? x - 2 : (x < -2 ? x + 2 : 0)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
     \begin{enumerate}[label=$\bigcirc$]
-        \item \correct{$0$ on $[-2, 2]$, $x - 2$ for $x > 2$ and $x + 2$ for $x < -2$.}
-        \item $0$ on $[-2, 2]$, $x - 2$ for $x > 2$ and $-x - 2$ for $x < -2$.
-        \item $x$ for every $x$, since the two units cancel.
-        \item $0$ for $x \leq 2$ and $x - 2$ for $x > 2$.
+        \item \correct{$\ReLU(x - 2) - \ReLU(-x - 2)$.}
+        \item $\ReLU(x - 2) + \ReLU(-x - 2)$.
+        \item $\ReLU(x) - \ReLU(-x)$.
+        \item $\ReLU(x - 2)$.
     \end{enumerate}
 
     \item In deep learning, a layer in a multi-layer perceptron is defined as \ldots
@@ -1798,7 +1812,17 @@ The dimensions of the different layers of team A's encoder are given below:
         \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
     \end{enumerate}
 
-    \item A network is trained for a growing number of epochs. After 20 epochs, its training loss is $0.22$ and its validation loss $0.44$; after 80 epochs, they are $0.02$ and $0.71$. After 80 epochs, the network \ldots
+    \item A network is trained for a growing number of epochs, and its loss is measured on the training set and on a validation set (below). After 80 epochs, the network \ldots
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{semilogxaxis}[diagram plot, axis lines=left, width=6.5cm, height=4.6cm, xmin=1, xmax=80, ymin=0, ymax=1, xtick={1, 5, 10, 20, 40, 80}, xticklabels={1, 5, 10, 20, 40, 80}, ytick={0, 0.5, 1}, xlabel={epochs}, ylabel={loss}, xlabel style={at={(axis description cs:0.5, -0.14)}, anchor=north}, ylabel style={at={(axis description cs:-0.14, 0.5)}, anchor=south, rotate=90}]
+                \addplot+[mark=*, mark size=1.3pt] coordinates {(1, 0.92) (5, 0.55) (10, 0.38) (20, 0.22) (40, 0.09) (80, 0.02)};
+                \addplot+[mark=*, mark size=1.3pt] coordinates {(1, 0.95) (5, 0.60) (10, 0.47) (20, 0.44) (40, 0.52) (80, 0.71)};
+                \node[font=\footnotesize, text=diagram-accent, anchor=south] at (axis cs:40, 0.16) {training};
+                \node[font=\footnotesize, text=diagram-unit0, anchor=south east] at (axis cs:80, 0.74) {validation};
+            \end{semilogxaxis}
+        \end{tikzpicture}
+    \end{center}
     \begin{enumerate}[label=$\bigcirc$]
         \item \correct{overfits: it fits its training pairs better and new pairs worse.}
         \item underfits, since its validation loss is high.
@@ -1806,7 +1830,7 @@ The dimensions of the different layers of team A's encoder are given below:
         \item has converged, since its training loss is close to $0$.
     \end{enumerate}
 
-    \item The number of epochs of the previous question is chosen as the one with the lowest validation loss, $0.44$. To estimate the loss of the chosen network on new data, \ldots
+    \item The number of epochs of the previous question is chosen as the one with the lowest validation loss, $0.44$ after 20 epochs. To estimate the loss of the chosen network on new data, \ldots
     \begin{enumerate}[label=$\bigcirc$]
         \item report $0.44$, since the validation pairs were not used for training.
         \item report the training loss after 20 epochs.
@@ -1842,7 +1866,14 @@ The dimensions of the different layers of team A's encoder are given below:
         \item $23$.
     \end{enumerate}
 
-    \item Which kernel responds most strongly to the jumps of a square wave (a signal alternating between $+1$ and $-1$ every five samples)?
+    \item Which kernel responds most strongly to the jumps of the square wave below, a signal alternating between $+1$ and $-1$ every five samples?
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{axis}[diagram plot, grid=none, width=7cm, height=2.6cm, xmin=-1, xmax=20, ymin=-1.3, ymax=1.3, xtick=\empty, ytick={-1, 1}]
+                \addplot+[ycomb, mark=*, mark size=1.2pt, mark options={fill=white}, line width=0.8pt, domain=0:19, samples=20] {2 * (mod(x, 10) < 5) - 1};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
     \begin{enumerate}[label=$\bigcirc$]
         \item $(\frac{1}{4}, \frac{1}{4}, \frac{1}{4}, \frac{1}{4})$.
         \item $(0, 1, 0, 0)$.
