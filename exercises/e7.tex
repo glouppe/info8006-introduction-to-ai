@@ -397,14 +397,13 @@ Assuming a discount factor $\gamma = 1$,
         \begin{equation*}
             \nabla L = 2 \underset{s' \mid s}{\E} \sbk*{V^\pi(s) - R(s) - \gamma V^\pi(s')}
         \end{equation*}
-        with respect to $V^\pi(s)$, \ie{} to perform \emph{gradient descent}. Unfortunately, due to the expectation, we don't have access to the true gradient. Instead, we use a \emph{stochastic} approximation of the gradient from observed\footnotemark{} tuples $(s, r, a, s')$ and update $V^\pi(s)$ as
+        with respect to $V^\pi(s)$, \ie{} to perform \emph{gradient descent}. Unfortunately, due to the expectation, we don't have access to the true gradient. Instead, we use a \emph{stochastic} approximation of the gradient from observed tuples $(s, r, a, s')$ and update $V^\pi(s)$ as
         \begin{align*}
             V^\pi(s) & \leftarrow V^\pi(s) - \alpha \rbk*{V^\pi(s) - r - \gamma V^\pi(s')} \\
             & \leftarrow (1 - \alpha) V^\pi(s) + \alpha \rbk*{r + \gamma V^\pi(s')}
         \end{align*}
         where $\alpha$ is the learning rate. For a fixed learning rate, the average of $V^\pi(s)$ converges towards (oscillates around) the true expected utility $V^\pi(s)$. For a (slowly) decreasing learning rate, $V^\pi(s)$ itself converges to $V^\pi(s)$. For historical reasons, this algorithm is called temporal-difference (TD) learning.
 
-        \footnotetext{We are not limited to one update for each tuple $(s, r, a, s')$. Indeed, as we assume the policy to be stationary, past trials are as likely to happen again as more recent ones. Therefore, reusing tuples several times (in other orders) is a good way to improve estimates while generating fewer trials.}
 
         Following the trajectory of the fifth trial, we perform the updates
         \begin{align*}
@@ -495,7 +494,7 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
         \begin{equation*}
             L = \underset{s' \mid s, a}{\E} \sbk*{\rbk*{R(s, a, s') + \gamma \max_{a'} Q(s', a') - Q(s, a)}^2} .
         \end{equation*}
-        To reach this objective we follow the opposite of its gradient with respect to the weights\footnotemark{} $\mathbf{w} = (w_0, w_1)$ of $Q(s, a)$. Due to the expectation, we use a stochastic approximation of the gradient from each observed transition $(s, a, r, s')$, and update the weights as
+        To reach this objective we follow the opposite of its gradient with respect to the weights $\mathbf{w} = (w_0, w_1)$ of $Q(s, a)$. Due to the expectation, we use a stochastic approximation of the gradient from each observed transition $(s, a, r, s')$, and update the weights as
         \begin{equation*}
             \mathbf{w} \leftarrow \mathbf{w} + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a') - Q(s, a)} \nabla_{\mathbf{w}} Q(s, a),
         \end{equation*}
@@ -522,7 +521,6 @@ Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
             \end{tabular}
         \end{center}
 
-        \footnotetext{The target $r + \gamma \max_{a'} Q(s', a')$ is treated as a constant when taking the gradient. In practice, it is not, since modifying the weights of a parametric function $Q$ modifies all state-action pairs $(s, a)$ at once, which can make approximate Q-Learning unstable.}
     \end{solution}
 
     \part Why can this estimator not represent the Q-values of (a)?
@@ -812,7 +810,7 @@ Apply value iteration for this world for each value of $r$ below, with a discoun
     \part $r = +3$
 
     \begin{solution}
-        Staying in the upper left square forever earns $3$ at every step, worth about $3 / (1 - 0.99) = 300$, much more than the $+10$ of the goal: the agent heads for the upper left square and stays there by bumping into the walls (north or west), and moves away from the goal wherever it might slip into it.
+        Staying in the upper left square forever earns $3$ at every step, worth up to $3 / (1 - 0.99) = 300$ (about $250$ here, since the agent sometimes slips out), much more than the $+10$ of the goal: the agent heads for the upper left square and stays there by bumping into the walls (north or west), and moves away from the goal wherever it might slip into it.
         \begin{center}
             \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
                 \fill[diagram-fill] (2, 2) rectangle (3, 3);
