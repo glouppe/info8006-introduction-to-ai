@@ -76,17 +76,17 @@
     \topic{Multilayer perceptron}
     A hidden layer with $q$ hidden units computes
     \[
-        \mathbf{h} = \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b}),
+        \mathbf{h} = \sigma(\mathbf{W} \mathbf{x} + \mathbf{b}),
     \]
-    where $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{d_{\text{in}} \times q}$ is the \term{weight matrix}, $\mathbf{b} \in \mathbb{R}^q$ is the \term{bias vector} and $\sigma$ is an activation function. A network with a single hidden layer is a \term{shallow network}. Layers composed in series form a deep network with $K$ hidden layers,
+    where $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{q \times d_{\text{in}}}$ is the \term{weight matrix}, $\mathbf{b} \in \mathbb{R}^q$ is the \term{bias vector} and $\sigma$ is an activation function. A network with a single hidden layer is a \term{shallow network}. Layers composed in series form a deep network with $K$ hidden layers,
     \begin{align*}
         \mathbf{h}_0 & = \mathbf{x} \\
-        \mathbf{h}_1 & = \sigma(\mathbf{W}_1^T \mathbf{h}_0 + \mathbf{b}_1) \\
+        \mathbf{h}_1 & = \sigma(\mathbf{W}_1 \mathbf{h}_0 + \mathbf{b}_1) \\
         & \vdots \\
-        \mathbf{h}_K & = \sigma(\mathbf{W}_K^T \mathbf{h}_{K-1} + \mathbf{b}_K) \\
-        \mathbf{y} & = \sigma(\mathbf{W}_y^T \mathbf{h}_K + \mathbf{b}_y),
+        \mathbf{h}_K & = \sigma(\mathbf{W}_K \mathbf{h}_{K-1} + \mathbf{b}_K) \\
+        \mathbf{y} & = \sigma(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y),
     \end{align*}
-    where $\mathbf{W}_k \in \mathbb{R}^{q_{k-1} \times q_k}$ is the weight matrix and $\mathbf{b}_k \in \mathbb{R}^{q_k}$ is the bias vector of the $k$-th layer. The resulting function $f(\mathbf{x}; \theta)$, where $\theta$ denotes the set of all model parameters, is a \term{multilayer perceptron}.
+    where $\mathbf{W}_k \in \mathbb{R}^{q_k \times q_{k-1}}$ is the weight matrix and $\mathbf{b}_k \in \mathbb{R}^{q_k}$ is the bias vector of the $k$-th layer. The resulting function $f(\mathbf{x}; \theta)$, where $\theta$ denotes the set of all model parameters, is a \term{multilayer perceptron}.
 
     \topic{Activation functions}
     Activation functions $\sigma : \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network. Common activation functions include
@@ -97,7 +97,7 @@
     \end{itemize}
 
     \topic{Output layers}
-    The output layer $\mathbf{y} = \sigma(\mathbf{W}_y^T \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
+    The output layer $\mathbf{y} = \sigma(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
     \begin{itemize}
         \item for regression, its width is the dimensionality $d_{\text{out}}$ of the output and its activation function is the identity $\sigma(\cdot) = \cdot$;
         \item for binary classification, its width is $1$ and its activation function is the sigmoid, which models the probability $p(y = 1 \mid \mathbf{x})$;
@@ -1974,10 +1974,10 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 
     \item In deep learning, a layer in a multi-layer perceptron is defined as \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item $\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
-        \item \correct{$\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.}
-        \item $\mathbf{h} = \sigma(\mathbf{W}^T + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{d \times q}$ is matrix of weights.
-        \item $\mathbf{h} = \sigma(\mathbf{W}^T\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
+        \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
+        \item \correct{$\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.}
+        \item $\mathbf{h} = \sigma(\mathbf{W} + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{q \times d}$ is matrix of weights.
+        \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
     \end{enumerate}
 
     \item Arnaud is trying to perform gradient descent on a function $f(x)$ using the update

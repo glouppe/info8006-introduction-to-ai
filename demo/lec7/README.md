@@ -41,7 +41,7 @@ $f$, $g$ and $g \circ f$ sit above it; the slider scrubs through the animation.
 ## Deep network
 
 `deep.html` follows the build-up of a network with two hidden layers: one input, one output and one to
-four hidden layers of one to four ReLU units each, $h_{k,j} = \text{ReLU}(\sum_i w_{k,ij} h_{k-1,i} + b_{k,j})$
+four hidden layers of one to four ReLU units each, $h_{k,j} = \text{ReLU}(\sum_i w_{k,ji} h_{k-1,i} + b_{k,j})$
 with $h_0 = x$, and $y = \sum_j v_j h_{K,j} + c$, on $[0, 1]$. It opens on two layers of three units.
 Chips select a layer (or the output) and a unit, whose sliders are shown alone; nodes can be clicked too.
 Under each layer, a panel draws its units against $x$ with the joints of the network up to that layer

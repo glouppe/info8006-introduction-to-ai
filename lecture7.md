@@ -671,9 +671,9 @@ We first note that the computation of a hidden layer with $q$ hidden units can b
 $$\small
 \begin{aligned}
 \mathbf{h} &= \begin{bmatrix} h\_0 \\\\ h\_1 \\\\ \vdots \\\\ h\_{q-1} \end{bmatrix} = \sigma\left( \begin{bmatrix} w\_{00} & w\_{01} & \cdots & w\_{0(d\_\text{in}-1)} \\\\ w\_{10} & w\_{11} & \cdots & w\_{1(d\_\text{in}-1)} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ w\_{(q-1)0} & w\_{(q-1)1} & \cdots & w\_{(q-1)(d\_\text{in}-1)} \end{bmatrix} \begin{bmatrix} x\_0 \\\\ x\_1 \\\\ \vdots \\\\ x\_{d\_\text{in}-1} \end{bmatrix} + \begin{bmatrix} b\_0 \\\\ b\_1 \\\\ \vdots \\\\ b\_{q-1} \end{bmatrix} \right) \\\\
-&= \sigma(\mathbf{W}^T \mathbf{x} + \mathbf{b})
+&= \sigma(\mathbf{W} \mathbf{x} + \mathbf{b})
 \end{aligned}$$
-where $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{d\_\text{in} \times q}$ is the weight matrix of the hidden layer and $\mathbf{b} \in \mathbb{R}^{q}$ is the bias vector.
+where $\mathbf{x} \in \mathbb{R}^{d\_\text{in}}$ is the input vector, $\mathbf{W} \in \mathbb{R}^{q \times d\_\text{in}}$ is the weight matrix of the hidden layer and $\mathbf{b} \in \mathbb{R}^{q}$ is the bias vector.
 
 ---
 
@@ -682,13 +682,13 @@ class: middle
 Using this notation, layers can be composed in series to form a deep network with $K$ hidden layers such that
 $$\begin{aligned}
 \mathbf{h}\_0 &= \mathbf{x} \\\\
-\mathbf{h}\_1 &= \sigma(\mathbf{W}^T\_1 \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
-\mathbf{h}\_2 &= \sigma(\mathbf{W}^T\_2 \mathbf{h}\_1 + \mathbf{b}\_2) \\\\
+\mathbf{h}\_1 &= \sigma(\mathbf{W}\_1 \mathbf{h}\_0 + \mathbf{b}\_1) \\\\
+\mathbf{h}\_2 &= \sigma(\mathbf{W}\_2 \mathbf{h}\_1 + \mathbf{b}\_2) \\\\
 \vdots \\\\
-\mathbf{h}\_K &= \sigma(\mathbf{W}^T\_K \mathbf{h}\_{K-1} + \mathbf{b}\_K) \\\\
-\mathbf{y} &= \sigma\_\text{out}(\mathbf{W}^T\_{y} \mathbf{h}\_K + \mathbf{b}\_{y})
+\mathbf{h}\_K &= \sigma(\mathbf{W}\_K \mathbf{h}\_{K-1} + \mathbf{b}\_K) \\\\
+\mathbf{y} &= \sigma\_\text{out}(\mathbf{W}\_{y} \mathbf{h}\_K + \mathbf{b}\_{y})
 \end{aligned}$$
-where $\mathbf{W}\_k \in \mathbb{R}^{q\_{k-1} \times q\_k}$ is the weight matrix of the $k$-th hidden layer and $\mathbf{b}\_k \in \mathbb{R}^{q\_k}$ is the bias vector of the $k$-th layer. The output activation $\sigma\_\text{out}$ depends on the task.
+where $\mathbf{W}\_k \in \mathbb{R}^{q\_k \times q\_{k-1}}$ is the weight matrix of the $k$-th hidden layer and $\mathbf{b}\_k \in \mathbb{R}^{q\_k}$ is the bias vector of the $k$-th layer. The output activation $\sigma\_\text{out}$ depends on the task.
 
 The resulting function $f(\mathbf{x}; \theta)$ is a highly non-linear mapping from inputs $\mathbf{x}$ to outputs $\mathbf{y}$, where $\theta$ denotes the set of all model parameters. This architecture is known as the .bold[multilayer perceptron].
 
@@ -731,7 +731,7 @@ class: middle
 
 ## Output layers
 
-The output layer $\mathbf{y} = \sigma\_\text{out}(\mathbf{W}^T\_y \mathbf{h}\_K + \mathbf{b}\_y)$ depends on the task.
+The output layer $\mathbf{y} = \sigma\_\text{out}(\mathbf{W}\_y \mathbf{h}\_K + \mathbf{b}\_y)$ depends on the task.
 - For regression, it has $d\_\text{out}$ units and $\sigma\_\text{out}$ is the identity.
 - For binary classification, it has one unit and $\sigma\_\text{out}$ is the sigmoid, whose output is $P(Y=1 \mid \mathbf{x})$.
 - For classification into $C$ classes, it has $C$ units and $\sigma\_\text{out}$ is the .bold[softmax],
@@ -1049,7 +1049,7 @@ WeatherNext 2 (Google DeepMind, 2025): a transition model $p(\mathbf{x}\_{t+1} \
 # Summary
 
 - Supervised learning fits a model $p\_\theta(y \mid \mathbf{x})$ to $N$ pairs $(\mathbf{x}\_i, y\_i)$ by maximum likelihood, which gives the squared error for regression and the cross-entropy for classification.
-- A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k^T \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
+- A deep network composes layers $\mathbf{h}\_k = \sigma(\mathbf{W}\_k \mathbf{h}\_{k-1} + \mathbf{b}\_k)$. Convolutional layers exploit the structure of images.
 - Its parameters are trained by stochastic gradient descent, $\theta \leftarrow \theta - \alpha \nabla\_\theta \mathcal{L}$, with gradients computed by automatic differentiation.
 - Its performance is measured on pairs held out from training.
 - A learning agent learns part of its program this way, e.g. a policy $a\_t = \pi\_\theta(e\_t)$ fitted to the pairs $(e\_t, a\_t)$ of an expert.

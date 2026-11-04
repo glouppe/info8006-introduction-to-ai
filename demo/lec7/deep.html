@@ -53,7 +53,7 @@ input[type=range] { width: 100%; margin: 1px 0 0; accent-color: var(--accent); }
 "use strict";
 
 // A deep network with one input, one output and K hidden layers of ReLU units, in the notation of
-// lecture 7: h_0 = x, h_{k,j} = ReLU(sum_i w_{k,ij} h_{k-1,i} + b_{k,j}) for k = 1, ..., K, and
+// lecture 7: h_0 = x, h_{k,j} = ReLU(sum_i w_{k,ji} h_{k-1,i} + b_{k,j}) for k = 1, ..., K, and
 // y = sum_j v_j h_{K,j} + c, on the interval [0, 1].
 const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6";
 const COLORS = ["#d9822b", "#3f8f5a", "#8a5fb5", "#c2577f"];   // hidden units; blue is kept for the output
@@ -217,7 +217,7 @@ function controls() {
     } else {
         const u = layers[selL - 1][selJ];
         box.style.borderColor = COLORS[selJ];
-        u.w.forEach((_, i) => slider(`w_{${selL},${i}${selJ}}`, u.w, i));
+        u.w.forEach((_, i) => slider(`w_{${selL},${selJ}${i}}`, u.w, i));
         slider(`b_{${selL},${selJ}}`, u, "b");
     }
 }
