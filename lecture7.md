@@ -874,8 +874,8 @@ class: middle
 
 .center[![](figures/lec7/nn-conv1d.svg)]
 
-.center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
-The output is obtained by sliding the kernel over the input and computing the inner product at each position.]
+.center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$.<br>
+The kernel slides over the input; each output is an inner product.]
 
 ---
 
@@ -967,7 +967,7 @@ class: middle
 
 .center[![](figures/lec7/nn-conv-pattern.svg)]
 
-.center[Interleaving convolutional and pooling layers enables the network to learn hierarchical features from local to global patterns.]
+.center[Interleaving convolutional and pooling layers widens the .bold[receptive field]: deeper units see larger patches of the input.]
 
 ---
 

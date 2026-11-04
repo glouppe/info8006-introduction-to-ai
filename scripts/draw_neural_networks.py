@@ -641,9 +641,10 @@ def conv_pattern():
         r = relu(z)
         rows.append((w, z, r, pool(r)))
 
-    fig = plt.figure(figsize=(9.6, 4.2))   # as wide as a slide at PLOT_SCALE, as the other convolution figures
-    S = 0.3   # panel height, in figure fraction; widths follow so that panels are square
-    asp = 4.2 / 9.6
+    W, H = 9.6, 5.4   # as wide as a slide at PLOT_SCALE, as the other convolution figures
+    fig = plt.figure(figsize=(W, H))
+    S = 0.27   # panel height, in figure fraction; widths follow so that panels are square
+    asp = H / W
     def panel(cx, cy, size):
         return fig.add_axes([cx - size * asp / 2, cy - size / 2, size * asp, size])
     def show(ax, a, lim=None, cmap=None):
@@ -658,17 +659,18 @@ def conv_pattern():
         fig.add_artist(ConnectionPatch((xa, ya), (xb, yb), "axes fraction", "axes fraction", axesA=a, axesB=b,
                                        arrowstyle="-|>", mutation_scale=16, color=INK, linewidth=1.4, shrinkA=0, shrinkB=0))
 
-    cols = [0.07, 0.235, 0.39, 0.555, 0.715, 0.9]   # input, kernel, convolution, ReLU, pooling, next layer
-    ys = [0.66, 0.24]
-    inp = panel(cols[0], 0.45, S * 1.05)
+    cols = [c / W for c in (1.15, 2.75, 4.15, 5.85, 7.35, 8.9)]   # input, kernel, convolution, ReLU, pooling, next layer
+    ys = [0.68, 0.28]
+    inp = panel(cols[0], 0.48, S * 1.45)
     show(inp, x, cmap="gray")
-    pooled = []
+    pooled, rows_axes = [], []
     for k, (w, z, r, o) in enumerate(rows):
         lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
         kax = panel(cols[1], ys[k], S * 0.42)
         show(kax, w, np.abs(w).max())
         kax.set_title(rf"$\omega_{k}$", fontsize=F_SYM, pad=4)
         a1, a2, a3 = panel(cols[2], ys[k], S), panel(cols[3], ys[k], S), panel(cols[4], ys[k], S * 0.62)
+        rows_axes.append((a1, a2, a3))
         show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
         arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
         arrow(kax, a1); arrow(a1, a2); arrow(a2, a3)
@@ -682,17 +684,38 @@ def conv_pattern():
         arrow(a3, stack, xb=0.1, yb=0.52 if k == 0 else 0.23)   # two points of the front sheet, so the heads do not collide
     stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=F_TITLE, color=INK)
 
-    # receptive field of one pooled value of the first map: its 2x2 block after the ReLU, its 8x8 patch
-    # of the input (7x7 kernel, 2x2 pooling), and the 22x22 patch a second such stage would see
+    # the receptive field of one pooled value of the first map, traced back in red: its 2x2 block after the
+    # ReLU and in the convolution, its 8x8 patch of the input (7x7 kernel, 2x2 pooling), and the 22x22 patch
+    # that a value after a second such stage would see; cone lines join the corners of successive boxes
+    RF = "#c8463d"
     pj, pi = 7, 10
+    a1 = rows_axes[0][0]
     a2, a3 = pooled[0]
-    box = dict(fill=False, edgecolor=INK, linewidth=2.2)
-    a3.add_patch(Rectangle((pi - 0.5, pj - 0.5), 1, 1, **box))
-    a2.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), 2, 2, **box))
-    inp.add_patch(Rectangle((2 * pi - 0.5, 2 * pj - 0.5), K + 1, K + 1, **box))
-    inp.add_patch(Rectangle((2 * pi - 6.5, 2 * pj - 6.5), 22, 22, fill=False, edgecolor=INK, linewidth=1.6, linestyle="--"))
-    inp.text(2 * pi + 4.5, 2 * pj - 7.5, "receptive field", ha="center", va="bottom", fontsize=F_NOTE, color=INK,
-             bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.85))
+    def box(ax, j, i, n, style="-", lw=2.4):
+        ax.add_patch(Rectangle((i - 0.5, j - 0.5), n, n, fill=False, edgecolor=RF, linewidth=lw, linestyle=style,
+                               zorder=6, clip_on=False))
+    def cone(ax_a, ja, ia, na, ax_b, jb, ib, nb):
+        # from the left corners of the box on ax_a to the right corners of the box on ax_b
+        for dy in (0, 1):
+            pa = (ia - 0.5, ja - 0.5 + dy * na)
+            pb = (ib - 0.5 + nb, jb - 0.5 + dy * nb)
+            fig.add_artist(ConnectionPatch(pa, pb, "data", "data", axesA=ax_a, axesB=ax_b, color=RF,
+                                           linewidth=1.1, linestyle=(0, (3, 2)), zorder=-1))   # behind the panels
+    box(a3, pj, pi, 1)
+    box(a2, 2 * pj, 2 * pi, 2)
+    box(a1, 2 * pj, 2 * pi, 2)
+    box(inp, 2 * pj, 2 * pi, K + 1)
+    box(inp, 2 * pj - 7, 2 * pi - 7, 22, style=(0, (4, 2)), lw=1.8)
+    cone(a3, pj, pi, 1, a2, 2 * pj, 2 * pi, 2)
+    cone(a2, 2 * pj, 2 * pi, 2, a1, 2 * pj, 2 * pi, 2)
+    cone(a1, 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
+    def tag(ax, s, dy=0.0):   # under a panel, in red
+        ax.text(0.5, -0.06 - dy, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
+    tag(a3, "1 value")
+    tag(a2, "2 × 2")
+    tag(a1, "2 × 2")
+    tag(inp, "receptive field: 8 × 8")
+    tag(inp, "two layers: 22 × 22", dy=0.1)
 
     # column labels and layer brackets
     labels = [(cols[0], r"input $\mathbf{x}$"), (cols[2], r"convolution $\mathbf{x} \circledast \omega_k$"),
