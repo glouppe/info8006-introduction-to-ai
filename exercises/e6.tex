@@ -390,14 +390,30 @@ In linear regression with Gaussian noise of constant variance, $y_i \sim \N(w^T 
 You are given a number of functions (a-h) of a single variable, $x$, which are graphed below. For each network structure proposed afterwards, indicate which functions they are able to represent. When possible, indicate appropriate values for the parameters.
 
 \begin{center}
-    \includegraphics[width=0.9\linewidth]{figures/nnfunctions.png}
+    \setlength{\tabcolsep}{2pt}
+    \begin{tabular}{cccc}
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {2*x};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {4*x-5};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {x>=2.5 ? 2*x-5 : 0};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {x<=-2.5 ? -2*x-5 : 0};\end{axis}\end{tikzpicture} \\
+        \footnotesize (a) $2x$ & \footnotesize (b) $4x - 5$ & \footnotesize (c) $\begin{cases} 2x - 5 & x \geq 2.5 \\ 0 & x < 2.5 \end{cases}$ & \footnotesize (d) $\begin{cases} -2x - 5 & x \leq -2.5 \\ 0 & x > -2.5 \end{cases}$ \\[2ex]
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {x>=2 ? -x+3 : 1};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {x<=0 ? 3 : (x<=3 ? 3-x : 0)};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=0.007:5, samples=300] {ln(x)};\end{axis}\end{tikzpicture} &
+        \begin{tikzpicture}[diagram]\begin{axis}[diagram plot, width=3.7cm, height=3.7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, xtick={-4, 4}, ytick={-4, 4}, tick label style={font=\scriptsize}]\addplot+[domain=-5:5, samples=401] {x<=0 ? 0.5*x : (x<=3 ? 0 : 3*x-9)};\end{axis}\end{tikzpicture} \\
+        \footnotesize (e) $\begin{cases} -x + 3 & x \geq 2 \\ 1 & x < 2 \end{cases}$ & \footnotesize (f) $\begin{cases} 3 & x \leq 0 \\ 3 - x & 0 < x \leq 3 \\ 0 & x > 3 \end{cases}$ & \footnotesize (g) $\log(x)$ & \footnotesize (h) $\begin{cases} 0.5x & x \leq 0 \\ 0 & 0 < x \leq 3 \\ 3x - 9 & x > 3 \end{cases}$ \\[2ex]
+    \end{tabular}
 \end{center}
 
 \begin{parts}
     \part We start with a linear transformation of the scalar input $x$, weight $w$, and output $y$, such that $y = wx$.
 
     \begin{center}
-        \includegraphics[width=0.4\linewidth]{figures/linearnet.png}
+        \begin{tikzpicture}[network diagram]
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[output unit] (Y) at (3, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w$} (Y);
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
@@ -407,111 +423,199 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \part We then introduce a bias term $b$, such that $y = wx+b$.
 
     \begin{center}
-        \includegraphics[width=0.4\linewidth]{figures/affinenet.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C) at (0, 1.4) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[output unit] (Y) at (3, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w$} (Y);
+            \draw[connection] (C) -- node[weight] {$b$} (Y);
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
         (a) with $w = 2$ and $b = 0$, and (b) with $w = 4$ and $b = -5$.
     \end{solution}
 
-    \part We now introduce a non-linearity $\sigma (.)$ into the network. We use the ReLU non-linearity, which has the form $\ReLU(x) = \max(0, x)$.
+    \part We now introduce a non-linearity into the network, the ReLU $\ReLU(x) = \max(0, x)$, so that $y = \ReLU(wx + b)$.
 
     \begin{center}
-        \includegraphics[width=0.4\linewidth]{figures/onerelu.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C) at (0, 1.4) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[output unit] (Y) at (3, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w$} (Y);
+            \draw[connection] (C) -- node[weight] {$b$} (Y);
+            \node[tag, below=1mm] at (Y.south) {ReLU};
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
         With the output coming directly from the ReLU, this cannot produce any values less than zero. It can produce (c) with $w = 2$ and $b = -5$, and (d) with $w = -2$ and $b = -5$.
     \end{solution}
 
-    \part Now we consider neural networks with multiple affine transformations, as depicted below.
+    \part Now we consider neural networks with multiple affine transformations, $h = w_1 x + b_1$ and $y = w_2 h + b_2$, as depicted below.
 
     \begin{center}
-        \includegraphics[width=0.6\linewidth]{figures/doubleaffine.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C1) at (0, 1.4) {$1$};
+            \node[constant unit] (C2) at (2.8, 1.4) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[unit] (H) at (2.8, 0) {$h$};
+            \node[output unit] (Y) at (5.6, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w_1$} (H);
+            \draw[connection] (C1) -- node[weight] {$b_1$} (H);
+            \draw[connection] (H) -- node[weight] {$w_2$} (Y);
+            \draw[connection] (C2) -- node[weight] {$b_2$} (Y);
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
         Applying multiple affine transformations (with no non-linearity in between) is not any more powerful than a single affine function: $w_2(w_1x + b_1) + b_2 = w_2w_1x + w_2b_1 + b_2$, so this is just an affine function with different coefficients. The functions we can represent are the same as in (b), if we choose $w_1 = w$, $w_2 = 1$, $b_1 = 0$, $b_2 = b$: (a) with $w_1 = 2$, $w_2 = 1$, $b_1 = 0$, $b_2 = 0$, and (b) with $w_1 = 4$, $w_2 = 1$, $b_1 = 0$, $b_2 = -5$.
     \end{solution}
 
-    \part We now add a ReLU non-linearity to the network between the affine transformations.
+    \part We now add a ReLU non-linearity to the network between the affine transformations: $h = \ReLU(w_1 x + b_1)$ and $y = w_2 h + b_2$.
 
     \begin{center}
-        \includegraphics[width=0.6\linewidth]{figures/onehidden.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C1) at (0, 1.4) {$1$};
+            \node[constant unit] (C2) at (2.8, 1.4) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[unit] (H) at (2.8, 0) {$h$};
+            \node[output unit] (Y) at (5.6, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w_1$} (H);
+            \draw[connection] (C1) -- node[weight] {$b_1$} (H);
+            \draw[connection] (H) -- node[weight] {$w_2$} (Y);
+            \draw[connection] (C2) -- node[weight] {$b_2$} (Y);
+            \node[tag, below=1mm] at (H.south) {ReLU};
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
         (c), (d), and (e). The affine transformation after the ReLU is capable of stretching (or flipping) and shifting the ReLU output in the vertical dimension. The parameters to produce these are: (c) with $w_1 = 2$, $b_1 = -5$, $w_2 = 1$, $b_2 = 0$, (d) with $w_1 = -2$, $b_1 = -5$, $w_2 = 1$, $b_2 = 0$, and (e) with $w_1 = 1$, $b_1 = -2$, $w_2 = -1$, $b_2 = 1$.
     \end{solution}
 
-    \part Now we add another hidden layer to the network, as depicted below. You do not have to guess parameters values anymore.
+    \part Now we add another hidden layer to the network, as depicted below: $h_1 = \ReLU(w_1 x + b_1)$, $h_2 = \ReLU(w_2 h_1 + b_2)$ and $y = w_3 h_2 + b_3$. You do not have to guess parameters values anymore.
 
     \begin{center}
-        \includegraphics[width=0.8\linewidth]{figures/twolhidden.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C1) at (0, 1.4) {$1$};
+            \node[constant unit] (C2) at (2.8, 1.4) {$1$};
+            \node[constant unit] (C3) at (5.6, 1.4) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[unit] (H1) at (2.8, 0) {$h_1$};
+            \node[unit] (H2) at (5.6, 0) {$h_2$};
+            \node[output unit] (Y) at (8.4, 0) {$y$};
+            \draw[connection] (X) -- node[weight] {$w_1$} (H1);
+            \draw[connection] (C1) -- node[weight] {$b_1$} (H1);
+            \draw[connection] (H1) -- node[weight] {$w_2$} (H2);
+            \draw[connection] (C2) -- node[weight] {$b_2$} (H2);
+            \draw[connection] (H2) -- node[weight] {$w_3$} (Y);
+            \draw[connection] (C3) -- node[weight] {$b_3$} (Y);
+            \node[tag, below=1mm] at (H1.south) {ReLU};
+            \node[tag, below=1mm] at (H2.south) {ReLU};
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
-        (c), (d), (e), and (f). The network can represent all the same functions as (e) (because note that we could have $w_2 = 1$ and $b_2 = 0$). In addition it can represent (f): the first ReLU can produce the first flat segment, the affine transformation can flip and shift the resulting curve, and then the second ReLU can produce the second flat segment (with the final affine layer not doing anything). Note that (h) cannot be produced since its line has only one flat segment (and the affine layers can only scale, shift, and flip the graph in the vertical dimension; they can't rotate the graph).
+        (c), (d), (e), and (f). The network can represent all the same functions as (e), since the second ReLU can let its input through ($w_2 = 1$ and $b_2 = 0$ when $h_1 \geq 0$). In addition it can represent (f): the first ReLU produces the first flat segment, the affine transformation flips and shifts the resulting curve, and the second ReLU produces the second flat segment, the final affine layer not doing anything.
+
+        It cannot produce (h). With a single unit per layer, the output is a chain of functions of one variable: $h_1$ is flat on one side of its joint and sloped on the other; $h_2$ is constant wherever $h_1$ is, and on the other side applies a ReLU to an affine function, which can only add a flat part. The final layer scales and shifts the result. Such a chain has at most one segment with a nonzero slope, whereas (h) has two.
     \end{solution}
 
-    \part We'd like to consider using a neural net with just one hidden layer, but larger. Let's first consider using just two affine functions, with no nonlinearity in between. You do not have to guess parameters values anymore.
+    \part We'd like to consider using a neural net with just one hidden layer, but larger. Let's first consider using just two affine functions, with no nonlinearity in between, $h_j = w_j x + b_j$ for $j = 0, 1$ and $y = v_0 h_0 + v_1 h_1 + c$. You do not have to guess parameters values anymore.
 
     \begin{center}
-        \includegraphics[width=0.7\linewidth]{figures/2hiddenlin.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C1) at (0, 2) {$1$};
+            \node[constant unit] (C2) at (3, 2) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[unit] (H0) at (3, 0.9) {$h_0$};
+            \node[unit] (H1) at (3, -0.9) {$h_1$};
+            \node[output unit] (Y) at (6, 0) {$y$};
+            \draw[connection] (X) -- node[weight, pos=0.3] {$w_0$} (H0);
+            \draw[connection] (X) -- node[weight, pos=0.3] {$w_1$} (H1);
+            \draw[connection] (C1) -- node[weight, pos=0.35] {$b_0$} (H0);
+            \draw[connection] (C1) -- node[weight, pos=0.2] {$b_1$} (H1);
+            \draw[connection] (H0) -- node[weight] {$v_0$} (Y);
+            \draw[connection] (H1) -- node[weight] {$v_1$} (Y);
+            \draw[connection] (C2) -- node[weight, pos=0.6] {$c$} (Y);
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
         (a) and (b). With no non-linearity, this reduces to a single affine function (in the same way as (d)).
     \end{solution}
 
-    \part Now we'll add a non-linearity between the two affine layers, to produce the neural network below with a hidden layer of size 2. You do not have to guess parameters values anymore.
+    \part Now we'll add a non-linearity between the two affine layers, $h_j = \ReLU(w_j x + b_j)$ for $j = 0, 1$ and $y = v_0 h_0 + v_1 h_1 + c$, to produce the neural network below with a hidden layer of size 2. You do not have to guess parameters values anymore.
 
     \begin{center}
-        \includegraphics[width=0.7\linewidth]{figures/2hiddennl.png}
+        \begin{tikzpicture}[network diagram]
+            \node[constant unit] (C1) at (0, 2) {$1$};
+            \node[constant unit] (C2) at (3, 2) {$1$};
+            \node[unit] (X) at (0, 0) {$x$};
+            \node[unit] (H0) at (3, 0.9) {$h_0$};
+            \node[unit] (H1) at (3, -0.9) {$h_1$};
+            \node[output unit] (Y) at (6, 0) {$y$};
+            \draw[connection] (X) -- node[weight, pos=0.3] {$w_0$} (H0);
+            \draw[connection] (X) -- node[weight, pos=0.3] {$w_1$} (H1);
+            \draw[connection] (C1) -- node[weight, pos=0.35] {$b_0$} (H0);
+            \draw[connection] (C1) -- node[weight, pos=0.2] {$b_1$} (H1);
+            \draw[connection] (H0) -- node[weight] {$v_0$} (Y);
+            \draw[connection] (H1) -- node[weight] {$v_1$} (Y);
+            \draw[connection] (C2) -- node[weight, pos=0.6] {$c$} (Y);
+            \node[tag, above=1mm] at (H0.north) {ReLU};
+            \node[tag, below=1mm] at (H1.south) {ReLU};
+        \end{tikzpicture}
     \end{center}
 
     \begin{solution}
-        All functions except for (g). Note that we can recreate any network of (e) by setting $w_4$ to 0, so this allows us to produce (c), (d) and (e). To produce the rest of the functions, note that $h_1$ and $h_2$ will be two independent functions with a flat part lying on the x-axis, and a portion with positive slope. The final layer takes a weighted sum of these two functions. To produce (a) and (b), the flat portion of one ReLU should start at the point where the other ends ($x = 0$ for (a), or $x = 1$ for (b)). The final layer then vertically flips the ReLU sloping down and adds it to the one sloping up, producing a single sloped line. To produce (h), the ReLU sloping down should have its flat portion end (at $x = 0$) before the other's flat portion begins (at $x = 3$). The down-sloping one is again flipped and added to the up-sloping. To produce (f), both ReLUs should have equal slope, which will cancel to produce the first flat portion above the x-axis.
+        All functions except for (g). Setting $v_1 = 0$ gives back the network of (e), which produces (c), (d) and (e). The output is a weighted sum of two ReLUs, each flat on one side of its joint and sloped on the other, so that it can add two sloped segments or cancel one slope with the other. For instance, (a) is $2\ReLU(x) - 2\ReLU(-x)$, (b) is $\ReLU(4x - 5) - \ReLU(-4x + 5)$, (f) is $\ReLU(3 - x) - \ReLU(-x)$, and (h) is $-0.5\ReLU(-x) + 3\ReLU(x - 3)$.
     \end{solution}
 
-    \part Are there functions that can't be represented by all proposed networks? If yes, explain why and what you would need to model them.
+    \part Are there functions that cannot be represented by any of the proposed networks? If yes, explain why and what you would need to model them.
 
     \begin{solution}
-        Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, \ldots{} (see the activation functions of the \enquote{Machine learning and neural networks} lecture).
+        Yes, function (g), $\log(x)$. Every proposed network computes a piecewise linear function, and $\log(x)$ is not piecewise linear; it is moreover only defined for $x > 0$ and unbounded near $0$.
 
-        However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of (h) should be sufficient.
-
-        Note that the logarithm function is only defined on $\mathbb{R}^+$. If our network is made of activation functions defined on $\mathbb{R}$, we will never be able to restrict the domain of the learned function to only real positive. However, you can be as accurate as you want on the desired domain, but it makes no sense to evaluate your network elsewhere for this problem.
+        By the universal approximation theorem, a network with one hidden layer of ReLU units, as in (h) but with more units, approximates any continuous function arbitrarily well on a closed and bounded interval. It can therefore approximate $\log(x)$ as closely as we want on any interval $[\epsilon, M]$ with $0 < \epsilon < M$, with more units for a better approximation, but not on the whole of $(0, \infty)$.
     \end{solution}
 \end{parts}
 
 \titledquestion{Piecewise-linear functions}
 
-For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\mathrm{ReLU}(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that exactly matches the function over $\R$.
+For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\ReLU(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that exactly matches the function over $\R$.
 
 \begin{center}
     \begin{tikzpicture}[
+        diagram,
         declare function={
             relu(\x) = max(\x, 0);
             a(\x) = relu(\x) + relu(-\x) + 1;
-            b(\x) = relu(\x - 2) -relu(-\x - 2);
+            b(\x) = relu(\x - 2) - relu(-\x - 2);
             c(\x) = relu(-relu(-\x + 2) + 4) - 2;
             d(\x) = relu(-relu(2 * \x / 3) - relu(-\x / 2) + 2);
-        }
+        },
+        curve label/.style={font=\footnotesize, fill=white, inner sep=1pt},
     ]
         \begin{axis}[
+            diagram plot,
             width=7cm,
             height=7cm,
-            grid=major,
             ymin=-6, ymax=6, ylabel=$y$,
             xmin=-6, xmax=6, xlabel=$x$,
+            xtick={-6, -4, ..., 6},
+            ytick={-6, -4, ..., 6},
             domain=-6:6,
-            samples=12 + 1,
+            samples=13,
         ]
-            \addplot[NavyBlue, thick] {a(x)};
-            \addplot[Red, thick] {b(x)};
-            \addplot[ForestGreen, thick] {c(x)};
-            \addplot[Fuchsia, thick] {d(x)};
+            \addplot+ {a(x)};
+            \addplot+ {b(x)};
+            \addplot+ {c(x)};
+            \addplot+ {d(x)};
+            \node[curve label, text=diagram-accent] at (axis cs:-4.3, 5.4) {1};
+            \node[curve label, text=diagram-unit0] at (axis cs:4.6, 3.4) {2};
+            \node[curve label, text=diagram-unit1] at (axis cs:-5, -1.4) {3};
+            \node[curve label, text=diagram-unit2] at (axis cs:0, 2.6) {4};
         \end{axis}
     \end{tikzpicture}
 \end{center}
@@ -520,10 +624,10 @@ For example, $y = \ReLU(x + 2) - \ReLU(-2x)$ is a valid function.
 
 \begin{solution}
     \begin{enumerate}
-        \item \textcolor{NavyBlue}{$y = \ReLU(x) - \ReLU(-x) + 1$}
-        \item \textcolor{Red}{$y = \ReLU(x - 2) - \ReLU(-x - 2)$}
-        \item \textcolor{ForestGreen}{$y = \ReLU(-\ReLU(-x + 2) + 4) - 2$}
-        \item \textcolor{Fuchsia}{$y = \ReLU(-\ReLU(\frac{2}{3} x) - \ReLU(-\frac{1}{2} x) + 2)$}
+        \item \textcolor{diagram-accent}{$y = \ReLU(x) + \ReLU(-x) + 1$}
+        \item \textcolor{diagram-unit0}{$y = \ReLU(x - 2) - \ReLU(-x - 2)$}
+        \item \textcolor{diagram-unit1}{$y = \ReLU(-\ReLU(-x + 2) + 4) - 2$}
+        \item \textcolor{diagram-unit2}{$y = \ReLU(-\ReLU(\frac{2}{3} x) - \ReLU(-\frac{1}{2} x) + 2)$}
     \end{enumerate}
 \end{solution}
 
@@ -1829,7 +1933,7 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
     \begin{enumerate}[label=$\bigcirc$]
         \item The number of parameters of both the linear and convolution layer are doubled.
         \item The linear layer will have twice more parameters and the convolution twice less.
-        \item \correct{The linear layer will have twice more parameters and the convolution will not change.}
+        \item \correct{The linear layer will have at least four times more parameters and the convolution will not change.}
         \item Nothing changes neither for the linear layer nor the convolution one.
     \end{enumerate}
 
