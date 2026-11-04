@@ -664,35 +664,43 @@ def conv_pattern():
         fig.add_artist(ConnectionPatch((xa, ya), (xb, yb), "axes fraction", "axes fraction", axesA=a, axesB=b,
                                        arrowstyle="-|>", mutation_scale=16, color=INK, linewidth=1.4, shrinkA=0, shrinkB=0))
 
-    # columns, in inches: input, kernel, convolution + ReLU, pooling, kernel of layer 2, convolution + ReLU
-    cx = [1.1, 2.6, 3.95, 5.4, 6.6, 8.3]
-    sz = [2.0, 0.6, 1.5, 1.0, 0.6, 1.3]
-    ys, ym = [3.7, 1.55], 2.62
+    # columns, in inches: input, kernel, convolution, ReLU, pooling, then the kernel, convolution and ReLU of layer 2
+    # every panel at one pixel scale, that of the input: a 7x7 kernel is then as large as a 7x7 patch of the cat,
+    # the pooled maps half as large as the convolutions, and the receptive fields compare directly
+    px = 0.033
+    sz = [px * n for n in (48, K, 42, 42, 21, K, 15, 15)]
+    cx, at = [], 0.1
+    for k, w_ in enumerate(sz):
+        cx.append(at + w_ / 2)
+        at += w_ + (0.06 if k == 5 else 0) + (0.6 if k == 6 else 0.3)
+    ys, ym = [3.35, 1.45], 2.4
     inp = panel(cx[0], ym, sz[0])
     show(inp, x, cmap="gray")
-    maps, pools = [], []
+    convs, maps, pools = [], [], []
     for k, (w, z, r, o) in enumerate(rows):
         lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
         kax = panel(cx[1], ys[k], sz[1])
         show(kax, w, np.abs(w).max())
         kax.set_title(rf"$\omega_{k}$", fontsize=F_SYM, pad=4)
-        a1, a3 = panel(cx[2], ys[k], sz[2]), panel(cx[3], ys[k], sz[3])
-        show(a1, r, lim); show(a3, o, lim)
+        a1, a2, a3 = panel(cx[2], ys[k], sz[2]), panel(cx[3], ys[k], sz[3]), panel(cx[4], ys[k], sz[4])
+        show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
         arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
-        arrow(kax, a1); arrow(a1, a3)
-        maps.append(a1); pools.append(a3)
+        arrow(kax, a1); arrow(a1, a2); arrow(a2, a3)
+        convs.append(a1); maps.append(a2); pools.append(a3)
     # the kernel of layer 2: one 7 x 7 slice per pooled map, stacked
     k2 = []
     for d in (1, 0):
-        a = fig.add_axes([(cx[4] - sz[4] / 2 + 0.1 * d) / W, (ym - sz[4] / 2 + 0.1 * d) / H, sz[4] / W, sz[4] / H])
+        a = fig.add_axes([(cx[5] - sz[5] / 2 + 0.06 * d) / W, (ym - sz[5] / 2 + 0.06 * d) / H, sz[5] / W, sz[5] / H])
         show(a, w2[d], np.abs(w2).max())
         k2.append(a)
-    k2[-1].set_title(r"$\omega'$", fontsize=F_SYM, pad=10)
-    out2 = panel(cx[5], ym, sz[5])
-    show(out2, r2, np.percentile(np.abs(r2), 99))
+    k2[-1].set_title(r"$\omega'$", fontsize=F_SYM, pad=8)
+    lim2 = np.percentile(np.abs(z2 - np.median(z2)), 99)
+    c2, out2 = panel(cx[6], ym, sz[6]), panel(cx[7], ym, sz[7])
+    show(c2, z2 - np.median(z2), lim2); show(out2, r2, lim2)
     for k, a3 in enumerate(pools):
         arrow(a3, k2[-1], xb=0, yb=0.75 if k == 0 else 0.25)
-    arrow(k2[-1], out2, xa=1 + 0.1 / sz[4])
+    arrow(k2[-1], c2, xa=1 + 0.06 / sz[5])
+    arrow(c2, out2)
 
     # receptive fields, in red: one pooled value of the first map comes from a 2x2 block of its map, which sees
     # an 8x8 patch of the input (7x7 kernel, then 2x2 pooling); one value of layer 2 sees a 7x7 block of both
@@ -704,32 +712,38 @@ def conv_pattern():
         ax.add_patch(Rectangle((i - 0.5, j - 0.5), n, n, fill=False, edgecolor=RF, linewidth=lw, linestyle=style,
                                zorder=6, clip_on=False))
     def cone(ax_a, ja, ia, na, ax_b, jb, ib, nb, style=(0, (3, 2))):
-        # from the left corners of the box on ax_a to the right corners of the box on ax_b, behind the panels
+        # from the left corners of the box on ax_a to the right corners of the box on ax_b, over the panels
         for dy in (0, 1):
             fig.add_artist(ConnectionPatch((ia - 0.5, ja - 0.5 + dy * na), (ib - 0.5 + nb, jb - 0.5 + dy * nb), "data", "data",
-                                           axesA=ax_a, axesB=ax_b, color=RF, linewidth=1.1, linestyle=style, zorder=-1))
+                                           axesA=ax_a, axesB=ax_b, color=RF, linewidth=1.1, linestyle=style, zorder=6))
     box(out2, vj, vi, 1)
+    box(c2, vj, vi, 1)
+    cone(out2, vj, vi, 1, c2, vj, vi, 1, style=(0, (4, 2)))
     for a3 in pools:
         box(a3, vj, vi, 7, style=(0, (4, 2)), lw=1.8)
-        cone(out2, vj, vi, 1, a3, vj, vi, 7, style=(0, (4, 2)))
+        cone(c2, vj, vi, 1, a3, vj, vi, 7, style=(0, (4, 2)))
     box(pools[0], pj, pi, 1)
     box(maps[0], 2 * pj, 2 * pi, 2)
+    box(convs[0], 2 * pj, 2 * pi, 2)
     box(inp, 2 * pj, 2 * pi, K + 1)
     box(inp, 2 * vj, 2 * vi, 20, style=(0, (4, 2)), lw=1.8)
     cone(pools[0], pj, pi, 1, maps[0], 2 * pj, 2 * pi, 2)
-    cone(maps[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
+    cone(maps[0], 2 * pj, 2 * pi, 2, convs[0], 2 * pj, 2 * pi, 2)
+    cone(convs[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
     def tag(ax, s):   # under a panel, in red
         ax.text(0.5, -0.06, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
     tag(out2, "1 value")
     tag(pools[0], "1 value\n7 × 7")
     tag(pools[1], "7 × 7")
     tag(maps[0], "2 × 2")
+    tag(convs[0], "2 × 2")
     tag(inp, "1 pooled value: 8 × 8\n1 value of layer 2: 20 × 20")
 
     # column labels and layer brackets
-    top = ys[0] + sz[2] / 2 + 0.45
-    for c, s_ in [(cx[0], r"input $\mathbf{x}$"), (cx[2], r"ReLU$(\mathbf{x} \circledast \omega_k)$"),
-                  (cx[3] + 0.2, "max-pooling\n" + r"$\mathbf{o}_k$"), (cx[5], r"ReLU$(\mathbf{o} \circledast \omega')$")]:
+    top = ys[0] + sz[2] / 2 + 0.55
+    for c, s_ in [(cx[0], "input\n" + r"$\mathbf{x}$"), (cx[2], "convolution\n" + r"$\mathbf{x} \circledast \omega_k$"),
+                  (cx[3], "ReLU\n"), (cx[4], "max-pooling\n" + r"$\mathbf{o}_k$"),
+                  (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega'$"), (cx[7], "ReLU\n")]:
         fig.text(c / W, top / H, s_, ha="center", va="center", fontsize=F_TITLE, color=INK)
     def bracket(x0, x1, text):
         y = 0.25
@@ -737,9 +751,9 @@ def conv_pattern():
         for xx in (x0, x1):
             fig.add_artist(matplotlib.lines.Line2D([xx / W, xx / W], [y / H, (y + 0.13) / H], color=GREY, linewidth=1.4))
         fig.text((x0 + x1) / 2 / W, (y - 0.07) / H, text, ha="center", va="top", fontsize=F_TITLE, color=GREY)
-    bracket(cx[1] - sz[1] / 2, cx[2] + sz[2] / 2, "convolutional layer")
-    bracket(cx[3] - sz[3] / 2, cx[3] + sz[3] / 2, "pooling layer")
-    bracket(cx[4] - sz[4] / 2, cx[5] + sz[5] / 2, "convolutional layer")
+    bracket(cx[1] - sz[1] / 2, cx[3] + sz[3] / 2, "convolutional layer")
+    bracket(cx[4] - sz[4] / 2, cx[4] + sz[4] / 2, "pooling\nlayer")
+    bracket(cx[5] - sz[5] / 2, cx[7] + sz[7] / 2, "convolutional\nlayer")
     out = ROOT / "figures" / "lec7" / "nn-conv-pattern.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
     rescale(out)
