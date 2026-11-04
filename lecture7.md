@@ -659,6 +659,10 @@ class: middle
 
 ---
 
+<iframe src="demo/lec7/deep.html" frameborder="0" style="position: absolute; top: 3%; left: 3%; width: 94%; height: 90%;"></iframe>
+
+---
+
 class: middle
 
 ## Multilayer perceptron

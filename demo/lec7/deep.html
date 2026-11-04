@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep network</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/katex.min.css">
+<script src="../../assets/katex.min.js"></script>
+<style>
+:root {
+    --bg: #fff;
+    --ink: #2a2a2a;
+    --muted: #8a8a8a;
+    --panel: #f6f7f9;
+    --accent: #356aaf;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 Roboto, sans-serif; }
+main { display: flex; flex-direction: column; height: 100%; padding: 6px 10px; gap: 6px; }
+#plots { flex: 1 1 auto; min-height: 0; }
+#plots canvas { width: 100%; height: 100%; display: block; }
+.bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 26px; }
+.group .hint { color: var(--muted); font-size: 12px; margin: 0 0 2px; }
+.chips { display: flex; gap: 5px; align-items: center; }
+.chips button { font: inherit; font-size: 14px; min-width: 38px; height: 30px; border-radius: 15px; border: 2px solid; background: #fff; color: var(--ink); cursor: pointer; padding: 0 7px; }
+.chips button.on { color: #fff; }
+.chips button.on .katex { color: #fff; }
+.chips button.pm { min-width: 30px; border-color: #ccd; color: var(--muted); font-size: 16px; line-height: 1; }
+.chips button:disabled { opacity: 0.35; cursor: default; }
+.actions { display: flex; gap: 6px; margin-left: auto; }
+.actions button { font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid #ccd; border-radius: 4px; padding: 5px 14px; cursor: pointer; }
+#sliders { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px 16px; border-left: 4px solid; padding: 2px 0 2px 10px; min-height: 46px; }
+label { display: block; color: var(--muted); font-size: 13px; }
+label .v { float: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; margin: 1px 0 0; accent-color: var(--accent); }
+.katex { font-size: 1.05em; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+    <div id="plots"><canvas id="canvas"></canvas></div>
+    <div class="bar">
+        <div class="group"><p class="hint">layers</p><div class="chips" id="layer-chips"></div></div>
+        <div class="group" id="unit-group"><p class="hint" id="unit-hint"></p><div class="chips" id="unit-chips"></div></div>
+        <div class="actions"><button id="random">random</button><button id="reset">reset</button></div>
+    </div>
+    <div id="sliders"></div>
+</main>
+<script>
+"use strict";
+
+// A deep network with one input, one output and K hidden layers of ReLU units, in the notation of
+// lecture 7: h_0 = x, h_{k,j} = ReLU(sum_i w_{k,ij} h_{k-1,i} + b_{k,j}) for k = 1, ..., K, and
+// y = sum_j v_j h_{K,j} + c, on the interval [0, 1].
+const INK = "#2a2a2a", MUTED = "#8a8a8a", GRID = "#e6e6e6";
+const COLORS = ["#d9822b", "#3f8f5a", "#8a5fb5", "#c2577f"];   // hidden units; blue is kept for the output
+const OUT = "#356aaf";
+const MAX_LAYERS = 4, MAX_UNITS = 4;
+const relu = z => Math.max(0, z);
+const tex = s => katex.renderToString(s, { throwOnError: false });
+const $ = id => document.getElementById(id);
+const round = (z, lo = -3, hi = 3) => Math.max(lo, Math.min(hi, Math.round(z / 0.05) * 0.05));
+
+// ---- the network
+const XS = Array.from({ length: 801 }, (_, i) => i / 800);   // for the curves
+const FINE = Array.from({ length: 8001 }, (_, i) => i / 8000);   // for the linear regions
+
+let layers, out, rnd;
+let selL = 1, selJ = 0;   // the selected unit; selL = 0 selects the output
+
+function seeded(seed) {   // mulberry32
+    return () => {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+}
+
+function forward(xs, upto = layers.length) {
+    // the activations of every layer on xs: acts[0] = [x], acts[k][j] = h_{k,j}
+    const acts = [[xs]];
+    for (let k = 0; k < upto; k++) {
+        const prev = acts[k];
+        acts.push(layers[k].map(u => xs.map((_, n) => relu(u.w.reduce((s, w, i) => s + w * prev[i][n], u.b)))));
+    }
+    return acts;
+}
+
+function output(acts) {
+    const last = acts[acts.length - 1];
+    return XS.map((_, n) => out.v.reduce((s, v, j) => s + v * last[j][n], out.c));
+}
+
+function freshUnit(prev) {
+    // random weights, and a bias that puts the unit's joint inside the interval, so that it adds kinks
+    const w = prev.map(() => round((rnd() < 0.5 ? -1 : 1) * (0.6 + 1.8 * rnd())));
+    const pre = XS.map((_, n) => w.reduce((s, wi, i) => s + wi * prev[i][n], 0));
+    const lo = Math.min(...pre), hi = Math.max(...pre);
+    return { w, b: round(-(lo + (0.2 + 0.6 * rnd()) * (hi - lo))) };
+}
+
+function freshOutput() {
+    const acts = forward(XS), last = acts[acts.length - 1];
+    out = { v: last.map(() => round((rnd() < 0.5 ? -1 : 1) * (0.6 + 1.4 * rnd()))), c: 0 };
+    const ys = output(acts);
+    out.c = round(-(Math.min(...ys) + Math.max(...ys)) / 2);
+}
+
+function build(sizes) {
+    layers = [];
+    for (const q of sizes) {
+        const prev = forward(XS)[layers.length];
+        layers.push(Array.from({ length: q }, () => freshUnit(prev)));
+    }
+    freshOutput();
+}
+
+function reset() { rnd = seeded(7); build([3, 3]); selL = 1; selJ = 0; }
+
+function regions() {
+    // the joints of the network up to each layer, where the on/off pattern of its units changes
+    const acts = forward(FINE), joints = [[]];
+    for (let k = 1; k <= layers.length; k++) {
+        const xs = [], key = n => acts.slice(1, k + 1).map(l => l.map(h => h[n] > 0 ? 1 : 0).join("")).join("|");
+        let prev = key(0);
+        for (let n = 1; n < FINE.length; n++) {
+            const cur = key(n);
+            if (cur !== prev) xs.push((FINE[n - 1] + FINE[n]) / 2);
+            prev = cur;
+        }
+        joints.push(xs);
+    }
+    // the output's own joints: those of the last layer where the slope of y actually changes
+    const last = acts[acts.length - 1], K = layers.length;
+    const y = n => out.v.reduce((s, v, j) => s + v * last[j][n], out.c);
+    const cuts = [0, ...joints[K].map(x => Math.round(x * 8000)), 8000];
+    const slopes = cuts.slice(1).map((b, i) => { const a = cuts[i]; return b - a > 2 ? (y(b - 1) - y(a + 1)) * 8000 / (b - a - 2) : null; });
+    const yj = [];
+    let prev = slopes[0];
+    slopes.slice(1).forEach((m, i) => {
+        if (m === null) return;
+        if (prev === null || Math.abs(m - prev) > 1e-6 * (1 + Math.abs(prev))) yj.push(joints[K][i]);
+        prev = m;
+    });
+    joints.output = yj;
+    return joints;
+}
+
+// ---- controls
+function chip(label, color, on, click) {
+    const b = document.createElement("button");
+    b.innerHTML = tex(label);
+    b.style.borderColor = color;
+    if (on) { b.classList.add("on"); b.style.background = color; }
+    b.addEventListener("click", click);
+    return b;
+}
+function pm(sym, title, disabled, click) {
+    const b = document.createElement("button");
+    b.className = "pm"; b.textContent = sym; b.title = title; b.disabled = disabled;
+    b.addEventListener("click", click);
+    return b;
+}
+
+function controls() {
+    const lc = $("layer-chips");
+    lc.innerHTML = "";
+    layers.forEach((_, k) => lc.appendChild(chip(`\\mathbf{h}_${k + 1}`, INK, selL === k + 1, () => { selL = k + 1; selJ = 0; controls(); draw(); })));
+    lc.appendChild(chip("y", OUT, selL === 0, () => { selL = 0; controls(); draw(); }));
+    lc.appendChild(pm("−", "remove the last hidden layer", layers.length <= 1, () => {
+        layers.pop(); freshOutput(); selL = Math.min(selL, layers.length); controls(); draw();
+    }));
+    lc.appendChild(pm("+", "add a hidden layer", layers.length >= MAX_LAYERS, () => {
+        const prev = forward(XS)[layers.length];
+        layers.push(Array.from({ length: 3 }, () => freshUnit(prev)));
+        freshOutput(); selL = layers.length; selJ = 0; controls(); draw();
+    }));
+
+    const uc = $("unit-chips");
+    uc.innerHTML = "";
+    $("unit-group").hidden = selL === 0;
+    if (selL > 0) {
+        const k = selL - 1, layer = layers[k];
+        $("unit-hint").textContent = `units of layer ${selL}`;
+        layer.forEach((_, j) => uc.appendChild(chip(`h_{${selL},${j}}`, COLORS[j], j === selJ, () => { selJ = j; controls(); draw(); })));
+        uc.appendChild(pm("−", "remove the last unit of this layer", layer.length <= 1, () => {
+            layer.pop();
+            if (k + 1 < layers.length) layers[k + 1].forEach(u => u.w.pop()); else out.v.pop();
+            selJ = Math.min(selJ, layer.length - 1); controls(); draw();
+        }));
+        uc.appendChild(pm("+", "add a unit to this layer", layer.length >= MAX_UNITS, () => {
+            layer.push(freshUnit(forward(XS)[k]));
+            if (k + 1 < layers.length) layers[k + 1].forEach(u => u.w.push(round((rnd() < 0.5 ? -1 : 1) * (0.4 + 0.8 * rnd()))));
+            else out.v.push(round((rnd() < 0.5 ? -1 : 1) * (0.6 + 1.4 * rnd())));
+            selJ = layer.length - 1; controls(); draw();
+        }));
+    }
+
+    const box = $("sliders");
+    box.innerHTML = "";
+    const slider = (label, obj, key) => {
+        const el = document.createElement("label");
+        el.innerHTML = `${tex(label)} <span class="v">${obj[key].toFixed(2)}</span>`;
+        const input = Object.assign(document.createElement("input"), { type: "range", min: -3, max: 3, step: 0.05, value: obj[key] });
+        input.addEventListener("input", () => { obj[key] = +input.value; el.querySelector(".v").textContent = obj[key].toFixed(2); draw(); });
+        el.appendChild(input);
+        box.appendChild(el);
+    };
+    if (selL === 0) {
+        box.style.borderColor = OUT;
+        out.v.forEach((_, j) => slider(`v_{${j}}`, out.v, j));
+        slider("c", out, "c");
+    } else {
+        const u = layers[selL - 1][selJ];
+        box.style.borderColor = COLORS[selJ];
+        u.w.forEach((_, i) => slider(`w_{${selL},${i}${selJ}}`, u.w, i));
+        slider(`b_{${selL},${selJ}}`, u, "b");
+    }
+}
+
+$("random").addEventListener("click", () => { rnd = Math.random; build(layers.map(l => l.length)); controls(); draw(); });
+$("reset").addEventListener("click", () => { reset(); controls(); draw(); });
+
+// ---- drawing
+const canvas = $("canvas"), ctx = canvas.getContext("2d");
+let W = 0, H = 0, hits = [];
+
+function zoom() {
+    // remark scales the slide, and this iframe with it, by a CSS transform: draw at the scaled size,
+    // not at the layout size, or the canvas is enlarged as a bitmap and looks blurred
+    try { const f = window.frameElement; if (f && f.clientWidth) return Math.max(1, f.getBoundingClientRect().width / f.clientWidth); } catch (e) {}
+    return 1;
+}
+function resize() {
+    const r = canvas.getBoundingClientRect(), dpr = (window.devicePixelRatio || 1) * zoom();
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+}
+
+function rich(tokens, x, y, size, color, align = "left") {
+    // words in Roboto; single letters in KaTeX_Math italic and the rest of the math in KaTeX_Main,
+    // with subscripts after "_", as LaTeX
+    const pieces = [];
+    for (const [kind, s] of tokens) {
+        if (kind === "t") { pieces.push([s, `${0.82 * size}px Roboto`, 0]); continue; }
+        const [head, sub] = s.split("_");
+        for (const ch of head) pieces.push([ch, /[a-zA-Z]/.test(ch) && kind === "m" ? `italic ${size}px KaTeX_Math` : `${size}px KaTeX_Main`, 0]);
+        if (sub) for (const ch of sub) pieces.push([ch, (/[a-zA-Z]/.test(ch) ? `italic ${0.7 * size}px KaTeX_Math` : `${0.7 * size}px KaTeX_Main`), 0.28 * size]);
+    }
+    let total = 0;
+    for (const p of pieces) { ctx.font = p[1]; p.push(ctx.measureText(p[0]).width); total += p[3]; }
+    let cx = align === "center" ? x - total / 2 : align === "right" ? x - total : x;
+    ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (const [s, font, dy, wd] of pieces) { ctx.font = font; ctx.fillText(s, cx, y + dy); cx += wd; }
+}
+
+function node(x, y, r, label, col, on = false) {
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fillStyle = "#fff"; ctx.fill();
+    if (on) { ctx.fillStyle = col + "22"; ctx.fill(); }
+    ctx.strokeStyle = col; ctx.lineWidth = on ? 3.2 : 1.6; ctx.stroke();
+    if (label) rich([["m", label]], x, y, Math.min(16, r * 0.95), INK, "center");
+}
+
+function edge(a, b, r, weight, col, strong) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], d = Math.hypot(dx, dy);
+    const m = Math.min(1, Math.abs(weight) / 3);
+    ctx.strokeStyle = col; ctx.globalAlpha = strong ? 0.35 + 0.65 * m : 0.12 + 0.3 * m;
+    ctx.lineWidth = 0.8 + 2.2 * m;
+    ctx.setLineDash(weight < 0 ? [5, 4] : []);
+    ctx.beginPath(); ctx.moveTo(a[0] + dx / d * r, a[1] + dy / d * r); ctx.lineTo(b[0] - dx / d * r, b[1] - dy / d * r); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+}
+
+function vjoints(xs, box, color = MUTED) {
+    ctx.strokeStyle = color; ctx.globalAlpha = 0.6; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+    for (const x of xs) { ctx.beginPath(); ctx.moveTo(box.x0 + x * box.w, box.y0); ctx.lineTo(box.x0 + x * box.w, box.y0 + box.h); ctx.stroke(); }
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+}
+
+function curve(ys, box, ymin, ymax, color, width) {
+    const { x0, y0, w, h } = box;
+    ctx.save(); ctx.beginPath(); ctx.rect(x0 - 1, y0 - 1, w + 2, h + 2); ctx.clip();
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = "round";
+    ctx.beginPath();
+    ys.forEach((y, i) => { const px = x0 + XS[i] * w, py = y0 + (ymax - y) / (ymax - ymin) * h; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+    ctx.stroke(); ctx.restore();
+}
+
+function frame(box, ymin, ymax) {
+    const { x0, y0, w, h } = box;
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1; ctx.strokeRect(x0, y0, w, h);
+    if (ymin < 0 && ymax > 0) {
+        const y = y0 + ymax / (ymax - ymin) * h;
+        ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + w, y); ctx.stroke();
+    }
+}
+
+function draw() {
+    if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    const acts = forward(XS), ys = output(acts), joints = regions(), K = layers.length;
+
+    // the output panel on the right, square and as large as the height allows
+    const s = Math.max(140, Math.min(H - 80, 0.4 * W));
+    const ob = { x0: W - s - 24, y0: (H - s) / 2 + 6, w: s, h: s };
+    // the network on the left: x, the K layers, y; each layer's panel under its column
+    const left = 14, right = ob.x0 - 62;
+    const dc = (right - left) / (K + 1);
+    const colX = k => left + 14 + k * (right - left - 28) / (K + 1);   // k = 0 for x, K + 1 for y
+    const ps = Math.max(50, Math.min(dc - 22, 0.3 * H, 140));
+    const panelY = H - ps - 26;
+    const netTop = 28, netBot = panelY - 44, ym = (netTop + netBot) / 2;
+    const sizes = layers.map(l => l.length), qmax = Math.max(...sizes);
+    const sp = Math.min(62, (netBot - netTop) / qmax), r = Math.max(8, Math.min(17, sp * 0.33, dc * 0.22));
+    const pos = (k, j, q) => [colX(k), ym + (j - (q - 1) / 2) * sp];
+
+    // edges, then nodes
+    for (let k = 0; k < K; k++) {
+        const qp = k === 0 ? 1 : sizes[k - 1];
+        layers[k].forEach((u, j) => u.w.forEach((w, i) => {
+            const on = selL === k + 1 && selJ === j;
+            edge(pos(k, i, qp), pos(k + 1, j, sizes[k]), r, w, on ? COLORS[j] : INK, on);
+        }));
+    }
+    out.v.forEach((v, j) => edge(pos(K, j, sizes[K - 1]), pos(K + 1, 0, 1), r, v, selL === 0 ? OUT : INK, selL === 0));
+    hits = [];
+    node(...pos(0, 0, 1), r, "x", INK);
+    for (let k = 0; k < K; k++) {
+        layers[k].forEach((_, j) => {
+            const p = pos(k + 1, j, sizes[k]);
+            node(...p, r, r >= 13 ? `h_${k + 1},${j}` : "", COLORS[j], selL === k + 1 && selJ === j);
+            hits.push({ x: p[0], y: p[1], r: Math.max(r, 12), k: k + 1, j });
+        });
+    }
+    const py = pos(K + 1, 0, 1);
+    node(...py, r, "y", OUT, selL === 0);
+    hits.push({ x: py[0], y: py[1], r: Math.max(r, 12), k: 0, j: 0 });
+
+    // one panel per layer: its units against x, with the joints of the network up to that layer
+    for (let k = 1; k <= K; k++) {
+        const box = { x0: colX(k) - ps / 2, y0: panelY, w: ps, h: ps };
+        const top = Math.max(0.5, ...acts[k].map(h => Math.max(...h))) * 1.08;
+        frame(box, -0.08 * top, top);
+        vjoints(joints[k], box);
+        acts[k].forEach((h, j) => {
+            const focus = selL !== k || selJ === j;
+            ctx.globalAlpha = focus ? 1 : 0.3;
+            curve(h, box, -0.08 * top, top, COLORS[j], selL === k && selJ === j ? 2.6 : 1.8);
+            ctx.globalAlpha = 1;
+        });
+        rich([["m", `h_${k},j`]], colX(k), panelY - 14, 15, INK, "center");
+        ctx.fillStyle = MUTED; ctx.font = "12px Roboto"; ctx.textAlign = "center"; ctx.textBaseline = "top";
+        ctx.fillText(`${joints[k].length + 1} regions`, colX(k), panelY + ps + 6);
+    }
+
+    // the output panel
+    const lim = Math.min(6, Math.max(1, Math.ceil(Math.max(...ys.map(Math.abs)) * 2) / 2));
+    const Y = y => ob.y0 + (lim - y) / (2 * lim) * ob.h;
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1; ctx.fillStyle = MUTED; ctx.font = "12px Roboto";
+    for (let t = 0; t <= 1.0001; t += 0.25) {
+        const x = ob.x0 + t * ob.w;
+        ctx.beginPath(); ctx.moveTo(x, ob.y0); ctx.lineTo(x, ob.y0 + ob.h); ctx.stroke();
+        ctx.textAlign = "center"; ctx.textBaseline = "top"; ctx.fillText(+t.toFixed(2), x, ob.y0 + ob.h + 4);
+    }
+    const step = lim > 2 ? 1 : 0.5;
+    for (let v = -lim; v <= lim + 1e-9; v += step) {
+        ctx.beginPath(); ctx.moveTo(ob.x0, Y(v)); ctx.lineTo(ob.x0 + ob.w, Y(v)); ctx.stroke();
+        ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(+v.toFixed(1), ob.x0 - 6, Y(v));
+    }
+    ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(ob.x0, Y(0)); ctx.lineTo(ob.x0 + ob.w, Y(0)); ctx.stroke();
+    vjoints(joints.output, ob);
+    curve(ys, ob, -lim, lim, OUT, 2.6);
+    rich([["m", "x"]], ob.x0 + ob.w + 8, Y(0), 16, INK);
+    rich([["t", "output"], ["u", "  "], ["m", "y"], ["u", " = Σ_j "], ["m", "v_j"], ["m", `h_K,j`], ["u", " + "], ["m", "c"]], ob.x0, ob.y0 - 16, 16, INK);
+    const bound = sizes.reduce((p, q) => p * (q + 1), 1);
+    ctx.fillStyle = INK; ctx.font = "14px Roboto"; ctx.textAlign = "left"; ctx.textBaseline = "top";
+    ctx.fillText(`${joints.output.length + 1} linear regions, at most ${sizes.length > 1 ? sizes.map(q => q + 1).join(" × ") + " = " : ""}${bound}`, ob.x0, ob.y0 + ob.h + 22);
+}
+
+const hitAt = e => {
+    const r = canvas.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    return hits.find(h => Math.hypot(h.x - x, h.y - y) <= h.r + 4);
+};
+canvas.addEventListener("click", e => { const h = hitAt(e); if (h) { selL = h.k; selJ = h.j; controls(); draw(); } });
+canvas.addEventListener("mousemove", e => { canvas.style.cursor = hitAt(e) ? "pointer" : "default"; });
+
+reset();
+controls();
+window.addEventListener("resize", resize);
+try { window.parent.addEventListener("resize", () => setTimeout(resize, 50)); } catch (e) {}
+document.fonts.ready.then(() => Promise.all([
+    document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),
+])).then(resize);
+resize();
+</script>
+</body>
+</html>

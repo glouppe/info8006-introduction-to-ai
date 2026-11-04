@@ -38,6 +38,17 @@ sheet of paper in oblique projection, one panel per piece of $f$: a) the sheet f
 b) $g$ is drawn on the folded sheet, c) the sheet unfolds and reveals $g(f(x))$, the pattern of $g$ three times, mirrored on the descending piece. Small plots of
 $f$, $g$ and $g \circ f$ sit above it; the slider scrubs through the animation.
 
+## Deep network
+
+`deep.html` follows the build-up of a network with two hidden layers: one input, one output and one to
+four hidden layers of one to four ReLU units each, $h_{k,j} = \text{ReLU}(\sum_i w_{k,ij} h_{k-1,i} + b_{k,j})$
+with $h_0 = x$, and $y = \sum_j v_j h_{K,j} + c$, on $[0, 1]$. It opens on two layers of three units.
+Chips select a layer (or the output) and a unit, whose sliders are shown alone; nodes can be clicked too.
+Under each layer, a panel draws its units against $x$ with the joints of the network up to that layer
+dotted, and counts their regions; the output panel counts the linear pieces of $y$ against the bound
+$\prod_k (q_k + 1)$. *random* draws new weights for the same architecture, each unit's bias placing its
+joint inside the interval; added layers and units are drawn the same way.
+
 ## Notebooks
 
 The two notebooks of the live coding sessions, adapted from
