@@ -641,12 +641,17 @@ def conv_pattern():
         r = relu(z)
         rows.append((w, z, r, pool(r)))
 
+    # a second convolutional layer over both pooled maps: a 2 x 7 x 7 kernel omega', smoothing each map, and a ReLU
+    pooled_maps = [o for (_, _, _, o) in rows]
+    w2 = np.array([gauss[:, None] * gauss[None, :]] * 2)
+    w2 /= w2.sum()
+    z2 = sum(conv(o, w) for o, w in zip(pooled_maps, w2))
+    r2 = relu(z2 - np.median(z2))
+
     W, H = 9.6, 5.4   # as wide as a slide at PLOT_SCALE, as the other convolution figures
     fig = plt.figure(figsize=(W, H))
-    S = 0.27   # panel height, in figure fraction; widths follow so that panels are square
-    asp = H / W
-    def panel(cx, cy, size):
-        return fig.add_axes([cx - size * asp / 2, cy - size / 2, size * asp, size])
+    def panel(cx, cy, size):   # a square panel centred at (cx, cy), all in inches
+        return fig.add_axes([(cx - size / 2) / W, (cy - size / 2) / H, size / W, size / H])
     def show(ax, a, lim=None, cmap=None):
         if cmap == "gray":
             ax.imshow(a, cmap="gray", vmin=0, vmax=1, interpolation="nearest")
@@ -659,85 +664,82 @@ def conv_pattern():
         fig.add_artist(ConnectionPatch((xa, ya), (xb, yb), "axes fraction", "axes fraction", axesA=a, axesB=b,
                                        arrowstyle="-|>", mutation_scale=16, color=INK, linewidth=1.4, shrinkA=0, shrinkB=0))
 
-    cols = [c / W for c in (1.15, 2.75, 4.15, 5.85, 7.35, 8.9)]   # input, kernel, convolution, ReLU, pooling, next layer
-    ys = [0.68, 0.28]
-    inp = panel(cols[0], 0.48, S * 1.45)
+    # columns, in inches: input, kernel, convolution + ReLU, pooling, kernel of layer 2, convolution + ReLU
+    cx = [1.1, 2.6, 3.95, 5.4, 6.6, 8.3]
+    sz = [2.0, 0.6, 1.5, 1.0, 0.6, 1.3]
+    ys, ym = [3.7, 1.55], 2.62
+    inp = panel(cx[0], ym, sz[0])
     show(inp, x, cmap="gray")
-    pooled, rows_axes = [], []
+    maps, pools = [], []
     for k, (w, z, r, o) in enumerate(rows):
         lim = np.percentile(np.abs(z), 99)   # a few extreme values would wash out the rest
-        kax = panel(cols[1], ys[k], S * 0.42)
+        kax = panel(cx[1], ys[k], sz[1])
         show(kax, w, np.abs(w).max())
         kax.set_title(rf"$\omega_{k}$", fontsize=F_SYM, pad=4)
-        a1, a2, a3 = panel(cols[2], ys[k], S), panel(cols[3], ys[k], S), panel(cols[4], ys[k], S * 0.62)
-        rows_axes.append((a1, a2, a3))
-        show(a1, z, lim); show(a2, r, lim); show(a3, o, lim)
+        a1, a3 = panel(cx[2], ys[k], sz[2]), panel(cx[3], ys[k], sz[3])
+        show(a1, r, lim); show(a3, o, lim)
         arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
-        arrow(kax, a1); arrow(a1, a2); arrow(a2, a3)
-        pooled.append((a2, a3))
-    # the next layer: a stack of feature maps, fed by both pooled maps
-    stack = fig.add_axes([cols[5] - 0.035, 0.36, 0.07, 0.2]); stack.axis("off")
-    for d in range(3):
-        stack.add_patch(Rectangle((0.1 + 0.12 * d, 0.1 + 0.12 * d), 0.55, 0.55, facecolor="white", edgecolor=INK, linewidth=1.1))
-    stack.set_xlim(0, 1); stack.set_ylim(0, 1)
-    for k, (a2, a3) in enumerate(pooled):
-        arrow(a3, stack, xb=0.1, yb=0.52 if k == 0 else 0.23)   # two points of the front sheet, so the heads do not collide
-    stack.text(0.5, -0.12, "next layer", ha="center", va="top", fontsize=F_TITLE, color=INK)
+        arrow(kax, a1); arrow(a1, a3)
+        maps.append(a1); pools.append(a3)
+    # the kernel of layer 2: one 7 x 7 slice per pooled map, stacked
+    k2 = []
+    for d in (1, 0):
+        a = fig.add_axes([(cx[4] - sz[4] / 2 + 0.1 * d) / W, (ym - sz[4] / 2 + 0.1 * d) / H, sz[4] / W, sz[4] / H])
+        show(a, w2[d], np.abs(w2).max())
+        k2.append(a)
+    k2[-1].set_title(r"$\omega'$", fontsize=F_SYM, pad=10)
+    out2 = panel(cx[5], ym, sz[5])
+    show(out2, r2, np.percentile(np.abs(r2), 99))
+    for k, a3 in enumerate(pools):
+        arrow(a3, k2[-1], xb=0, yb=0.75 if k == 0 else 0.25)
+    arrow(k2[-1], out2, xa=1 + 0.1 / sz[4])
 
-    # the receptive field of one pooled value of the first map, traced back in red: its 2x2 block after the
-    # ReLU and in the convolution, its 8x8 patch of the input (7x7 kernel, 2x2 pooling), and the 22x22 patch
-    # that a value after a second such stage would see; cone lines join the corners of successive boxes
+    # receptive fields, in red: one pooled value of the first map comes from a 2x2 block of its map, which sees
+    # an 8x8 patch of the input (7x7 kernel, then 2x2 pooling); one value of layer 2 sees a 7x7 block of both
+    # pooled maps, which see a 20x20 patch of the input (8 + 6 x 2, pooled values being 2 pixels apart)
     RF = "#c8463d"
     pj, pi = 7, 10
-    a1 = rows_axes[0][0]
-    a2, a3 = pooled[0]
+    vj, vi = pj - 3, pi - 3
     def box(ax, j, i, n, style="-", lw=2.4):
         ax.add_patch(Rectangle((i - 0.5, j - 0.5), n, n, fill=False, edgecolor=RF, linewidth=lw, linestyle=style,
                                zorder=6, clip_on=False))
-    def cone(ax_a, ja, ia, na, ax_b, jb, ib, nb):
-        # from the left corners of the box on ax_a to the right corners of the box on ax_b
+    def cone(ax_a, ja, ia, na, ax_b, jb, ib, nb, style=(0, (3, 2))):
+        # from the left corners of the box on ax_a to the right corners of the box on ax_b, behind the panels
         for dy in (0, 1):
-            pa = (ia - 0.5, ja - 0.5 + dy * na)
-            pb = (ib - 0.5 + nb, jb - 0.5 + dy * nb)
-            fig.add_artist(ConnectionPatch(pa, pb, "data", "data", axesA=ax_a, axesB=ax_b, color=RF,
-                                           linewidth=1.1, linestyle=(0, (3, 2)), zorder=-1))   # behind the panels
-    box(a3, pj, pi, 1)
-    box(a2, 2 * pj, 2 * pi, 2)
-    box(a1, 2 * pj, 2 * pi, 2)
+            fig.add_artist(ConnectionPatch((ia - 0.5, ja - 0.5 + dy * na), (ib - 0.5 + nb, jb - 0.5 + dy * nb), "data", "data",
+                                           axesA=ax_a, axesB=ax_b, color=RF, linewidth=1.1, linestyle=style, zorder=-1))
+    box(out2, vj, vi, 1)
+    for a3 in pools:
+        box(a3, vj, vi, 7, style=(0, (4, 2)), lw=1.8)
+        cone(out2, vj, vi, 1, a3, vj, vi, 7, style=(0, (4, 2)))
+    box(pools[0], pj, pi, 1)
+    box(maps[0], 2 * pj, 2 * pi, 2)
     box(inp, 2 * pj, 2 * pi, K + 1)
-    # the next layer: one of its values sees an 8x8 block of the pooled map (7x7 kernel, 2x2 pooling), whose
-    # values see 22x22 input pixels together (8 + 7 x 2, the pooled values being 2 pixels apart)
-    qj, qi = pj - 3, pi - 3
-    box(a3, qj, qi, 8, style=(0, (4, 2)), lw=1.8)
-    box(inp, 2 * qj, 2 * qi, 22, style=(0, (4, 2)), lw=1.8)
-    stack.plot([0.615], [0.615], "o", color=RF, markersize=6, zorder=7)
-    for dy in (0, 1):
-        fig.add_artist(ConnectionPatch((0.615, 0.615), (qi - 0.5 + 8, qj - 0.5 + 8 * dy), "data", "data", axesA=stack,
-                                       axesB=a3, color=RF, linewidth=1.1, linestyle=(0, (4, 2)), zorder=-1))
-    cone(a3, pj, pi, 1, a2, 2 * pj, 2 * pi, 2)
-    cone(a2, 2 * pj, 2 * pi, 2, a1, 2 * pj, 2 * pi, 2)
-    cone(a1, 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
-    def tag(ax, s, dy=0.0):   # under a panel, in red
-        ax.text(0.5, -0.06 - dy, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
-    tag(a3, "1 value\n8 × 8")
-    tag(a2, "2 × 2")
-    tag(a1, "2 × 2")
-    tag(inp, "receptive field: 8 × 8\nnext layer: 22 × 22")
+    box(inp, 2 * vj, 2 * vi, 20, style=(0, (4, 2)), lw=1.8)
+    cone(pools[0], pj, pi, 1, maps[0], 2 * pj, 2 * pi, 2)
+    cone(maps[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
+    def tag(ax, s):   # under a panel, in red
+        ax.text(0.5, -0.06, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
+    tag(out2, "1 value")
+    tag(pools[0], "1 value\n7 × 7")
+    tag(pools[1], "7 × 7")
+    tag(maps[0], "2 × 2")
+    tag(inp, "1 pooled value: 8 × 8\n1 value of layer 2: 20 × 20")
 
     # column labels and layer brackets
-    labels = [(cols[0], r"input $\mathbf{x}$"), (cols[2], r"convolution $\mathbf{x} \circledast \omega_k$"),
-              (cols[3], "ReLU"), (cols[4], r"max-pooling $\mathbf{o}_k$")]
-    for cx, s in labels:
-        fig.text(cx, ys[0] + S / 2 + 0.07, s, ha="center", va="center", fontsize=F_TITLE, color=INK)
+    top = ys[0] + sz[2] / 2 + 0.45
+    for c, s_ in [(cx[0], r"input $\mathbf{x}$"), (cx[2], r"ReLU$(\mathbf{x} \circledast \omega_k)$"),
+                  (cx[3] + 0.2, "max-pooling\n" + r"$\mathbf{o}_k$"), (cx[5], r"ReLU$(\mathbf{o} \circledast \omega')$")]:
+        fig.text(c / W, top / H, s_, ha="center", va="center", fontsize=F_TITLE, color=INK)
     def bracket(x0, x1, text):
-        y = 0.035
-        fig.add_artist(matplotlib.lines.Line2D([x0, x1], [y, y], color=GREY, linewidth=1.4))
+        y = 0.25
+        fig.add_artist(matplotlib.lines.Line2D([x0 / W, x1 / W], [y / H, y / H], color=GREY, linewidth=1.4))
         for xx in (x0, x1):
-            fig.add_artist(matplotlib.lines.Line2D([xx, xx], [y, y + 0.025], color=GREY, linewidth=1.4))
-        fig.text((x0 + x1) / 2, y - 0.012, text, ha="center", va="top", fontsize=F_TITLE, color=GREY)
-    half = S * asp / 2
-    bracket(cols[1] - 0.04, cols[3] + half, "convolutional layer")
-    bracket(cols[4] - S * 0.62 * asp / 2, cols[4] + S * 0.62 * asp / 2 + 0.02, "pooling layer")
+            fig.add_artist(matplotlib.lines.Line2D([xx / W, xx / W], [y / H, (y + 0.13) / H], color=GREY, linewidth=1.4))
+        fig.text((x0 + x1) / 2 / W, (y - 0.07) / H, text, ha="center", va="top", fontsize=F_TITLE, color=GREY)
+    bracket(cx[1] - sz[1] / 2, cx[2] + sz[2] / 2, "convolutional layer")
+    bracket(cx[3] - sz[3] / 2, cx[3] + sz[3] / 2, "pooling layer")
+    bracket(cx[4] - sz[4] / 2, cx[5] + sz[5] / 2, "convolutional layer")
     out = ROOT / "figures" / "lec7" / "nn-conv-pattern.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
     rescale(out)
