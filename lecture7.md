@@ -806,6 +806,8 @@ A model too small for the data .bold[underfits]: both losses stay high. A model 
 
 Width, depth, learning rate, minibatch size and number of epochs are .bold[hyperparameters]. They are chosen on a .bold[validation set], also held out from training. The test set is used once, at the end.
 
+.center[![](figures/lec7/data-split.svg)]
+
 ---
 
 class: middle, center
@@ -870,7 +872,7 @@ However, most machine learning libraries call it convolution.
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv1d.svg)]
+.center[![](figures/lec7/nn-conv1d.svg)]
 
 <br>
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$. <br>
@@ -894,7 +896,7 @@ Draw: Explain the intuition behind the sum of element-wise products which reduce
 
 class: middle
 
-.center.width-100[![](figures/lec7/nn-conv2d.svg)]
+.center[![](figures/lec7/nn-conv2d.svg)]
 
 .center[2d convolution with a kernel $\omega  \in \mathbb{R}^{3 \times 3}$ applied to the input signal $\mathbf{x}$.]
 

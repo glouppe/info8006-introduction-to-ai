@@ -214,6 +214,36 @@ def shallow_net():
     return parts
 
 
+def data_split():
+    """The dataset d split into a training and a test set, then into training, validation and test sets."""
+    width, h = 900, 64
+    fills = {"train": "#e9e9e9", "valid": "#f3d2b1", "test": "#bcd0ea"}
+    roles = {"train": None, "valid": "hyperparameters", "test": "final estimate"}
+
+    def name(x, y, sub):
+        return (f'<text x="{x:g}" y="{y + 10:g}" font-size="28" fill="{INK}" text-anchor="middle">'
+                f'<tspan font-family="KaTeX_Main" font-weight="700">d</tspan>'
+                f'<tspan font-family="KaTeX_Main" font-size="19.6" dy="6">{sub}</tspan></text>')
+
+    parts = []
+    for y0, split in [(30, [("train", 0.8), ("test", 0.2)]), (210, [("train", 0.6), ("valid", 0.2), ("test", 0.2)])]:
+        x = 10
+        for key, frac in split:
+            w = frac * width
+            parts.append(f'<rect x="{x:g}" y="{y0}" width="{w:g}" height="{h}" fill="{fills[key]}" '
+                         f'stroke="white" stroke-width="4"/>')
+            parts.append(name(x + w / 2, y0 + h / 2, key))
+            if roles[key]:
+                parts.append(caption(x + w / 2, y0 + h + 28, roles[key]))
+            else:   # "fit θ", with θ in KaTeX_Math as on the slides
+                parts.append(f'<text x="{x + w / 2:g}" y="{y0 + h + 35:g}" font-size="20" fill="#555555" text-anchor="middle">'
+                             f'<tspan font-family="Roboto, sans-serif">fit </tspan>'
+                             f'<tspan font-family="KaTeX_Math" font-size="21">θ</tspan></text>')
+            x += w
+        parts.append(f'<rect x="10" y="{y0}" width="{width}" height="{h}" fill="none" stroke="{INK}" stroke-width="{STROKE:g}"/>')
+    return parts
+
+
 def two_outputs_net():
     xs = [(70, 230, "x", None)]
     hs = column(300, [("h", str(j)) for j in range(4)], 65, 110)
@@ -713,19 +743,20 @@ def conv_1d():
     xv = np.array([1, 3, 2, 0, -1, 2, 4, 1], float)
     wv = np.array([1, 0, -1], float)
     zv = np.array([np.dot(xv[i:i + 3], wv) for i in range(len(xv) - 2)])
-    fig = plt.figure(figsize=(13, 2.9))
-    c = 0.032   # one cell, in figure width; heights follow the aspect of the canvas
-    ch = c * 13 / 2.9
+    # one position of the kernel; cells keep the size they had when two positions sat side by side
+    fig = plt.figure(figsize=(6.5, 2.9))
+    c = 0.064   # one cell, in figure width; heights follow the aspect of the canvas
+    ch = c * 6.5 / 2.9
     rows = [0.72, 0.4, 0.08]
-    for i0, x0 in [(1, 0.06), (4, 0.56)]:
+    for i0, x0 in [(1, 0.12)]:
         ax_x = place(fig, x0, rows[0], 8 * c, ch); cells(ax_x, xv, 5)
         ax_w = place(fig, x0 + i0 * c, rows[1], 3 * c, ch); cells(ax_w, wv, 5)
         ax_z = place(fig, x0 + c, rows[2], 6 * c, ch); cells(ax_z, zv, 5)
         window(ax_x, 0, i0, 1, 3)
         window(ax_z, 0, i0, 1, 1)
-        fig.text(x0 - 0.008, rows[0] + ch / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=20)
-        fig.text(x0 + i0 * c - 0.008, rows[1] + ch / 2, r"$\omega$", ha="right", va="center", fontsize=20)
-        fig.text(x0 + c - 0.008, rows[2] + ch / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=20)
+        fig.text(x0 - 0.016, rows[0] + ch / 2, r"$\mathbf{x}$", ha="right", va="center", fontsize=20)
+        fig.text(x0 + i0 * c - 0.016, rows[1] + ch / 2, r"$\omega$", ha="right", va="center", fontsize=20)
+        fig.text(x0 + c - 0.016, rows[2] + ch / 2, r"$\mathbf{x} \circledast \omega$", ha="right", va="center", fontsize=20)
         terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
         fig.text(x0 + 4 * c, rows[2] - 0.1, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
                  ha="center", va="top", fontsize=15, color=INK)
@@ -737,21 +768,21 @@ def conv_2d():
                    [3, 1, 0, 2, 4, 1], [1, 0, 2, 3, 1, 2], [0, 2, 1, 0, 3, 1]], float)
     wv = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]], float)
     zv = np.array([[np.sum(xv[j:j + 3, i:i + 3] * wv) for i in range(4)] for j in range(4)])
-    fig = plt.figure(figsize=(13, 4.6))
-    c = 0.027
-    ch = c * 13 / 4.6
+    fig = plt.figure(figsize=(6.5, 4.6))
+    c = 0.054
+    ch = c * 6.5 / 4.6
     lim = np.abs(zv).max()
-    for k, ((j0, i0), x0) in enumerate([((0, 0), 0.03), ((2, 3), 0.53)]):
+    for k, ((j0, i0), x0) in enumerate([((0, 0), 0.06)]):
         ax_x = place(fig, x0, 0.08, 6 * c, 6 * ch); cells(ax_x, xv, lim, fontsize=13)
-        ax_w = place(fig, x0 + 6 * c + 0.05, 0.08 + 1.5 * ch, 3 * c, 3 * ch); cells(ax_w, wv, lim, fontsize=13)
-        ax_z = place(fig, x0 + 9 * c + 0.1, 0.08 + 1 * ch, 4 * c, 4 * ch); cells(ax_z, zv, lim, fontsize=13)
+        ax_w = place(fig, x0 + 6 * c + 0.1, 0.08 + 1.5 * ch, 3 * c, 3 * ch); cells(ax_w, wv, lim, fontsize=13)
+        ax_z = place(fig, x0 + 9 * c + 0.2, 0.08 + 1 * ch, 4 * c, 4 * ch); cells(ax_z, zv, lim, fontsize=13)
         window(ax_x, j0, i0, 3, 3)
         window(ax_z, j0, i0, 1, 1)
-        fig.text(x0 + 6 * c + 0.025, 0.08 + 3 * ch, r"$\circledast$", ha="center", va="center", fontsize=24)
-        fig.text(x0 + 9 * c + 0.075, 0.08 + 3 * ch, r"$=$", ha="center", va="center", fontsize=24)
+        fig.text(x0 + 6 * c + 0.05, 0.08 + 3 * ch, r"$\circledast$", ha="center", va="center", fontsize=24)
+        fig.text(x0 + 9 * c + 0.15, 0.08 + 3 * ch, r"$=$", ha="center", va="center", fontsize=24)
         fig.text(x0 + 3 * c, 0.08 + 6 * ch + 0.05, r"$\mathbf{x}$", ha="center", va="bottom", fontsize=20)
-        fig.text(x0 + 7.5 * c + 0.05, 0.08 + 4.5 * ch + 0.05, r"$\omega$", ha="center", va="bottom", fontsize=20)
-        fig.text(x0 + 11 * c + 0.1, 0.08 + 5 * ch + 0.05, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=20)
+        fig.text(x0 + 7.5 * c + 0.1, 0.08 + 4.5 * ch + 0.05, r"$\omega$", ha="center", va="bottom", fontsize=20)
+        fig.text(x0 + 11 * c + 0.2, 0.08 + 5 * ch + 0.05, r"$\mathbf{x} \circledast \omega$", ha="center", va="bottom", fontsize=20)
     save(fig, "nn-conv2d")
 
 
@@ -886,6 +917,7 @@ def next_token():
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
     svg("nn-shallow", 1110, 500, shallow_net(), folder="lec7", scale=SCALE)
+    svg("data-split", 920, 330, data_split(), folder="lec7", scale=SCALE)
     svg("nn-two-outputs-net", 600, 460, two_outputs_net(), folder="lec7", scale=SCALE)
     svg("nn-two-inputs", 620, 360, two_inputs_net(), folder="lec7", scale=SCALE)
     svg("nn-concat-net", 800, 320, concat_net(), folder="lec7", scale=SCALE)
