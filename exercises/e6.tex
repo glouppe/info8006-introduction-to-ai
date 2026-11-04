@@ -127,7 +127,7 @@
 
 \begin{exercises}[3 (a)--(b), 6, 9 and 11 (a) (November 19), 4 and 12 (November 26)][5]
 
-\titledquestion{Predict the leaderboard score}
+\titledquestion{Scores on a leaderboard}
 
 A leaderboard ranks language models by an overall score. The Bayesian network below represents how this score is computed. In this model, $x_1$, $x_2$ and $x_3$ respectively denote the scores obtained by a model on a validation set, on a public benchmark and on a held-out test set. The three evaluations share the same harness, and a model that does well on one tends to do well on the next. In particular, $x_2 \sim \N(a_1 x_1 + \mu_2, \sigma_2^2)$ and $x_3 \sim \N(a_2 x_2 + \mu_3, \sigma_3^2)$. Finally, $y \sim \N(a_3 x_1 + a_4 x_2 + a_5 x_3 + \mu_y, \sigma_y^2)$ stands for the overall score, which is a linear combination of the three scores plus some Gaussian noise due to rounding errors. Answer the following questions about this model.
 
@@ -213,7 +213,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
     \end{solution}
 \end{parts}
 
-\titledquestion{Heteroscedastic linear regression}
+\titledquestion{Linear regression with unequal noise}
 
 In linear regression with Gaussian noise of constant variance, $y_i \sim \N(w^T x_i, \sigma^2)$, the maximum likelihood estimate of the weights is $w_{\text{MLE}} = (X^T X)^{-1} X^T Y$, where the rows of $X$ are the inputs $x_i^T$ and $Y = (y_i)$. What does this estimate become if the noise is different for each sample, \ie{} $y_i \sim \N(w^T x_i, \sigma_i^2)$ with known variances $\sigma_i^2$?
 
@@ -321,7 +321,7 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
     \end{solution}
 \end{parts}
 
-\titledquestion{Binary classification \source{CS188, Spring 2024}}
+\titledquestion{Training a binary classifier by hand \source{CS188, Spring 2024}}
 
 Consider the following simple neural network for binary classification. Here $x$ is a single real-valued input feature with an associated class $y$ (0 or 1). There are two weight parameters $w_1$ and $w_2$, and non-linearity functions $g_1$ and $g_2$. The network will output a value $a_2$ between 0 and 1, representing the probability of being in class 1. We will be using a loss function $\mathcal{L}$ to compare the prediction $a_2$ with the true class $y$.
 
@@ -461,7 +461,7 @@ Consider the following simple neural network for binary classification. Here $x$
     \end{solution}
 \end{parts}
 
-\titledquestion{Softmax classifier}
+\titledquestion{Classifying road users}
 
 A program classifies road users from camera images into $C = 3$ classes: car (class $0$), truck (class $1$) and bicycle (class $2$). For one image, the last layer of its network computes the logits $\mathbf{z} = (2, 1, -1)$, which the softmax turns into probabilities.
 
@@ -498,7 +498,7 @@ A program classifies road users from camera images into $C = 3$ classes: car (cl
     \end{solution}
 \end{parts}
 
-\titledquestion{Neural network representations \source{CS188, Spring 2024}}
+\titledquestion{What small networks can represent \source{CS188, Spring 2024}}
 
 You are given a number of functions (a-h) of a single variable, $x$, which are graphed below. For each network structure proposed afterwards, indicate which functions they are able to represent. When possible, indicate appropriate values for the parameters.
 
@@ -694,7 +694,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{solution}
 \end{parts}
 
-\titledquestion{Shallow network expressiveness \source{Exam, August 2026, adapted}}
+\titledquestion{Decision regions of a shallow network \source{Exam, August 2026, adapted}}
 
 We consider a neural network for binary classification that takes as input a 2D point $(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability $\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is defined as
 \begin{align*}
@@ -999,7 +999,7 @@ The predicted class is
     \end{solution}
 \end{parts}
 
-\titledquestion{Composing networks}
+\titledquestion{Depth folds the input}
 
 Consider the shallow network with one input $x \in [0, 1]$, one output and three ReLU units,
 \[
@@ -1046,7 +1046,7 @@ Consider the shallow network with one input $x \in [0, 1]$, one output and three
     \end{solution}
 \end{parts}
 
-\titledquestion{Training loop \source{Exam, January 2024}}
+\titledquestion{One step of gradient descent \source{Exam, January 2024}}
 
 Let us consider a neural network $f$ with one hidden layer taking as input a scalar $x \in \mathbb{R}$ and producing as output a prediction $\hat{y}=f(x;\theta) \in \mathbb{R}$. The neural network is defined as
 \[
@@ -1212,7 +1212,7 @@ where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6, w_7, w_8, w_9)$ is the set of par
     \end{subparts}
 \end{parts}
 
-\titledquestion{Problem statement, output layer and loss function}
+\titledquestion{From task to loss: cats and dogs}
 
 A dataset $\mathbf{d}$ consists of $N=500$ images of cats and dogs, with exactly one cat or one dog appearing in each image. Each image has a spatial resolution of $32\times32$ pixels and is encoded in RGB format using three channels of real-valued entries. The first channel represents the red component of the image, the second channel represents the green component, and the third channel represents the blue component.
 
@@ -1429,7 +1429,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
     \end{solution}
 \end{parts}
 
-\titledquestion{2d convolution}
+\titledquestion{Convolving an image}
 
 \begin{parts}
     \part Represent the 2D convolution $x \circledast \omega$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel, with the following convolution kernel $\omega$ (the box marks the window of the first output value).
@@ -1505,7 +1505,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
     \end{solution}
 \end{parts}
 
-\titledquestion{Neural network parameters}
+\titledquestion{Two image encoders}
 
 Two teams, A and B, each design a neural network for a challenging task: compressing a 720p HD color image ($720 \times 1280$ pixels). The image is represented using three channels corresponding to the red, green, and blue components, $\mathbf{x} \in \mathbb{R}^{3 \times 720 \times 1280}$.
 
