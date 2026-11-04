@@ -188,6 +188,7 @@
 %   random variable is a white circle, observed variable a shaded one, as in the slides of
 %   lecture 5; dependency is an arrow from a parent to its child. Variables are always circles:
 %   long names become letters, spelled out by a diagram caption label (sheet 4, car diagnosis).
+%   Decision networks add decision variable (square) and utility variable (diamond) nodes (sheet 7).
 %
 %   Neural networks, drawn as the network diagrams of lecture 7, 1 cm by 1 cm between grid points:
 %       \begin{tikzpicture}[network diagram]
@@ -309,6 +310,8 @@
     },
     observed variable/.style={random variable, fill=diagram-fill},
     dependency/.style={link, ->},
+    decision variable/.style={rectangle, draw=diagram-ink, fill=white, line width=0.7pt, minimum size=8mm, inner sep=1pt},
+    utility variable/.style={diamond, draw=diagram-ink, fill=white, line width=0.7pt, minimum size=11mm, inner sep=0pt},
     % Neural networks, 1 cm by 1 cm between grid points, as the network diagrams of lecture 7
     network diagram/.style={diagram, x=1cm, y=1cm},
     unit/.style={

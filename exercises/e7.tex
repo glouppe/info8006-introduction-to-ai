@@ -19,8 +19,8 @@
 \maketitle
 
 \begin{recap}
-    \topic{Markov decision processes}
-    A \term{Markov decision process} (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ such that
+    \topic{Making decisions}
+    \emph{Markov decision processes.} A \term{Markov decision process} (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ such that
     \begin{itemize}
         \item $\mathcal{S}$ is a set of \term{states} $s$;
         \item $\mathcal{A}$ is a set of \term{actions} $a$;
@@ -29,48 +29,52 @@
     \end{itemize}
     and $0 < \gamma \leq 1$ is the \term{discount factor}.
 
-    \topic{Utilities and policies}
-    The \term{discounted utility} of a reward sequence is $V([r_0, r_1, r_2, \ldots]) = r_0 + \gamma r_1 + \gamma^2 r_2 + \ldots$, which is additive for $\gamma = 1$. A \term{policy} $\pi : \mathcal{S} \to \mathcal{A}$ maps states to actions, and the expected utility obtained by executing $\pi$ starting in $s$ is
+    \emph{Utilities and policies.} The \term{discounted utility} of a reward sequence is $V([r_0, r_1, r_2, \ldots]) = r_0 + \gamma r_1 + \gamma^2 r_2 + \ldots$, which is additive for $\gamma = 1$. A \term{policy} $\pi : \mathcal{S} \to \mathcal{A}$ maps states to actions, and the expected utility obtained by executing $\pi$ starting in $s$ is
     \[
-        V^\pi(s) = \mathbb{E}\left[\sum_{t=0}^\infty \gamma^t R(s_t)\right] \Biggr\rvert_{s_0 = s}.
+        V^\pi(s) = \mathbb{E}\left[\sum_{t \geq 0} \gamma^t R(s_t) \mid s_0 = s, \pi \right].
     \]
     The \term{optimal policy} $\pi^*$ maximizes the expected utility, and the \term{value} of a state is $V(s) = V^{\pi^*}(s)$. Then, $\pi^*(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V(s')$.
 
-    \topic{Bellman equation}
-    The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
+    \emph{Bellman equation.} The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
     \[
         V(s) = R(s) + \gamma \max_a \sum_{s'} P(s' \mid s, a) V(s').
     \]
+    When the reward depends on the transition, $R(s, a, s')$, it moves under the sum: $V(s) = \max_a \sum_{s'} P(s' \mid s, a) [R(s, a, s') + \gamma V(s')]$.
 
-    \topic{Value iteration}
-    Starting from initial estimates $V_0(s)$, \term{value iteration} repeats the \term{Bellman update}
+    \emph{Value iteration.} Starting from initial estimates $V_0(s)$, \term{value iteration} repeats the \term{Bellman update}
     \[
         V_{i+1}(s) = R(s) + \gamma \max_a \sum_{s'} P(s' \mid s, a) V_i(s')
     \]
-    until convergence. It always converges to the unique solution of the Bellman equations whenever $\gamma < 1$.
+    until convergence. It converges to the unique solution of the Bellman equations whenever $\gamma < 1$, and also for $\gamma = 1$ when every policy reaches a terminal state.
 
-    \topic{Policy iteration}
-    \term{Policy iteration} alternates \term{policy evaluation}, which calculates $V_i = V^{\pi_i}$ by solving the linear equations $V_i(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$, and \term{policy improvement},
+    \emph{Policy iteration.} \term{Policy iteration} alternates \term{policy evaluation}, which calculates $V_i = V^{\pi_i}$ by solving the linear equations $V_i(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$, and \term{policy improvement},
     \[
         \pi_{i+1}(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V_i(s').
     \]
+    \term{Modified policy iteration} replaces the exact evaluation by a few simplified Bellman updates $V_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$.
+
+    \emph{Partially observable MDPs.} When the state is not observed, the agent collects percepts $e$ through a sensor model $P(e \mid s)$ and maintains a \term{belief state} $b$, a distribution over states. After doing $a$ and perceiving $e$, it becomes
+    \[
+        b' = \alpha \mathbf{P}(e \mid S') \sum_s \mathbf{P}(S' \mid s, a) b(s).
+    \]
+    The optimal action depends only on $b$: a POMDP is an MDP over belief states, with the reward $\rho(b) = \sum_s b(s) R(s)$.
 
     \topic{Reinforcement learning}
-    In \term{reinforcement learning}, the transition model $P(s' \mid s, a)$ and the reward function $R(s)$ are unknown: the agent learns from trials, whose trajectories are sequences of transitions $(s, r, a, s')$. In \term{passive RL}, the policy $\pi$ is fixed and the agent learns the utilities $V^\pi(s)$; in \term{active RL}, it learns the optimal policy $\pi^*$. A \term{model-based} agent estimates $\hat{P}(s' \mid s, a)$ and $\hat{R}(s)$ from experience and solves the resulting empirical MDP. A \term{model-free} agent does not; for instance, \term{direct utility estimation} approximates $V^\pi(s)$ by the sample average $\hat{V}^\pi(s)$ of the observed rewards-to-go from $s$.
+    \emph{Reinforcement learning.} In \term{reinforcement learning}, the transition model $P(s' \mid s, a)$ and the reward function $R(s)$ are unknown: the agent learns from trials, whose trajectories are sequences of transitions $(s, r, a, s')$, each holding a state, its reward $r = R(s)$, the action done and the next state. In \term{passive RL}, the policy $\pi$ is fixed and the agent learns the utilities $V^\pi(s)$; in \term{active RL}, it learns the optimal policy $\pi^*$. A \term{model-based} agent estimates $\hat{P}(s' \mid s, a)$ and $\hat{R}(s)$ from experience and solves the resulting empirical MDP. A \term{model-free} agent does not; for instance, \term{direct utility estimation} approximates $V^\pi(s)$ by the sample average of the observed rewards-to-go from $s$.
 
-    \topic{Temporal-difference learning}
-    \term{Temporal-difference} (TD) \term{learning} updates $V^\pi(s)$ each time the agent experiences a transition $(s, r = R(s), a = \pi(s), s')$, to better agree with the Bellman equations for a fixed policy:
+    \emph{Temporal-difference learning.} \term{Temporal-difference} (TD) \term{learning} updates $V^\pi(s)$ each time the agent experiences a transition $(s, r = R(s), a = \pi(s), s')$, to better agree with the Bellman equations for a fixed policy:
     \[
         V^\pi(s) \leftarrow V^\pi(s) + \alpha (r + \gamma V^\pi(s') - V^\pi(s)),
     \]
     where $\alpha$ is the \term{learning rate}.
 
-    \topic{Q-Learning}
-    The \term{state-action-value} $Q(s, a)$ is the expected utility starting out having taken action $a$ from $s$ and thereafter acting optimally, so that $V(s) = \max_a Q(s, a)$ and $\pi^*(s) = \arg \max_a Q(s, a)$. \term{Q-Learning} learns it in a model-free fashion, by updating $Q(s, a)$ each time the agent experiences a transition $(s, r, a, s')$:
+    \emph{Exploration.} An agent that always acts greedily with respect to its current estimates may never discover better actions. An \term{$\epsilon$-greedy} agent acts randomly with a small probability $\epsilon$ and follows its current policy otherwise. An \term{exploration function} $f(v, n)$, such as $f(v, n) = v + K/n$, instead makes the agent optimistic about the actions it has tried $n$ times only, in $V^+_{i+1}(s) = R(s) + \gamma \max_a f\left(\sum_{s'} P(s' \mid s, a) V^+_i(s'), N(s, a)\right)$.
+
+    \emph{Q-Learning.} The \term{state-action-value} $Q(s, a)$ is the expected utility starting out having taken action $a$ from $s$ and thereafter acting optimally, so that $V(s) = \max_a Q(s, a)$ and $\pi^*(s) = \arg \max_a Q(s, a)$. \term{Q-Learning} learns it in a model-free fashion, by updating $Q(s, a)$ each time the agent experiences a transition $(s, r, a, s')$:
     \[
         Q(s, a) \leftarrow Q(s, a) + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)).
     \]
-    In \term{approximate Q-Learning}, $Q(s, a) = w_1 f_1(s, a) + \ldots + w_d f_d(s, a)$ is a linear model of features $f_k(s, a)$, and the update becomes $w_k \leftarrow w_k + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)) f_k(s, a)$.
+    It converges to the optimal Q-values, even when acting suboptimally, provided it explores enough. In \term{approximate Q-Learning}, $Q(s, a) = w_1 f_1(s, a) + \ldots + w_d f_d(s, a)$ is a linear model of features $f_k(s, a)$, and the update becomes $w_k \leftarrow w_k + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)) f_k(s, a)$.
 \end{recap}
 
 \begin{exercises}[1, 4]
@@ -79,32 +83,30 @@
 
 \titledquestion{Micro-Blackjack \source{CS188, Spring 2014}}
 
-In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely to be a 2, 3 or 4. At each step, if the total score of the cards is lower than 6, you can either \enquote{draw} ($d$) or \enquote{cash} ($c$). Otherwise, you can only cash. When you cash, the game stops and your utility is equal to your total score (up to 5) plus 1, or zero if you get a total of 6 or higher. Until you cash and after it, you receive no reward. There is no discount ($\gamma = 1$).
+A card-playing program plays Micro-Blackjack. It repeatedly draws a card (with replacement), equally likely to be a 2, 3 or 4, and adds its value to its score, which starts at 0. At each step, if the score is lower than 6, the program can either \enquote{draw} ($d$) or \enquote{cash} ($c$). Otherwise, it can only cash. When it cashes, the game stops and its utility is equal to its score (up to 5) plus 1, or zero if the score is 6 or higher. Until it cashes and after it, it receives no reward. There is no discount ($\gamma = 1$).
 
 \begin{parts}
     \part Formalize Micro-Blackjack as an MDP.
 
     \begin{solution}
-        A Markov decision process (MDP) is a tuple $(S, A, P, R)$, where $S$ is a set of reachable states, $A(s)$ is a set of available actions, $P(s' \mid s, a)$ is a (stationary) transition model and $R(s)$ is a reward function.
-
-        In our case,
+        A state $s = (s_1, s_2)$ holds the score $s_1 \in \{0, 2, 3, 4, 5, 6{+}\}$ (all scores of 6 or more behave alike) and whether the program has cashed, $s_2 \in \{0, 1\}$. The states with $s_2 = 1$ are terminal. The available actions are
         \begin{align*}
-            S & \subset \mathbb{N} \times \cbk{0, 1} \\
-            A(s = (s_1, s_2)) & = \begin{cases}
-                \cbk{d, c} & \text{if } s_1 < 6 \text{ and } s_2 = 0 \\
-                \cbk{c} & \text{if } s_1 \geq 6 \text{ and } s_2 = 0 \\
-                \cbk{} & \text{otherwise}
-            \end{cases} \\
+            \mathcal{A}(s) & = \begin{cases}
+                \cbk{d, c} & \text{if } s_1 < 6 \text{ and } s_2 = 0, \\
+                \cbk{c} & \text{if } s_1 \geq 6 \text{ and } s_2 = 0, \\
+                \cbk{} & \text{otherwise,}
+            \end{cases}
+        \end{align*}
+        and the transition model and the reward function are
+        \begin{align*}
             P(s' = (s_1', s_2') \mid s = (s_1, s_2), a) & = \begin{cases}
-                1 & \text{if } s_2 = 0 \text{ and } s_1' = s_1 \\
-                & \quad \text{and } s_2' = 1 \text{ and } a = c \\
-                \frac{1}{3} & \text{if } s_2 = 0 \text{ and } s_1' - s_1 \in \cbk{2, 3, 4} \\
-                & \quad \text{and } s_2' = 0 \text{ and } a = d \\
-                0 & \text{otherwise}
+                1 & \text{if } a = c, \ s_1' = s_1 \text{ and } s_2' = 1, \\
+                \frac{1}{3} & \text{if } a = d, \ s_1' - s_1 \in \cbk{2, 3, 4} \text{ and } s_2' = 0, \\
+                0 & \text{otherwise,}
             \end{cases} \\
             R(s = (s_1, s_2)) & = \begin{cases}
-                s_1 + 1 & \text{if } s_1 < 6 \text{ and } s_2 = 1 \\
-                0 & \text{otherwise}
+                s_1 + 1 & \text{if } s_1 < 6 \text{ and } s_2 = 1, \\
+                0 & \text{otherwise.}
             \end{cases}
         \end{align*}
     \end{solution}
@@ -112,195 +114,136 @@ In Micro-Blackjack, you repeatedly draw a card (with replacement) that is likely
     \part Derive the optimal policy for this MDP.
 
     \begin{solution}
-        Let $(s_0, s_1, \dots, s_l)$ be a sequence of states, \ie{} a path. Its utility is
+        The value $V(s)$ of a state, its maximum expected utility, satisfies the Bellman equation
         \begin{equation*}
-            \sum_{t = 0}^{l} \gamma^t R(s_t),
+            V(s) = R(s) + \gamma \max_{a \in \mathcal{A}(s)} \sum_{s'} P(s' \mid s, a) V(s'),
         \end{equation*}
-        where $\gamma \in (0, 1]$ is the discount factor. For a policy $\pi : S \mapsto A$ to be optimal, it should maximize its \emph{expected} utility
-        \begin{align*}
-            V^\pi(s_0) & = \E \sbk*{\sum_{t = 0}^\infty \gamma^t R(s_t)} \\
-            & = R(s_0) + \gamma \, \E \sbk*{V^\pi(s_1)} \\
-            & = R(s_0) + \gamma \sum_{s_1} P(s_1 \mid s_0, \pi(s_0)) V^\pi(s_1),
-        \end{align*}
-        where the states $s_{t+1} \sim P(s \mid s_t, \pi(s_t))$. Therefore, we define the value $V(s)$ of a state $s$ is its maximum expected utility, \ie{}
-        \begin{align*}
-            V(s) & = V^{\pi^*}(s) \\
-            & = \max_\pi V^\pi(s) \\
-            & = \max_\pi R(s) + \gamma \sum_{s'} P(s' \mid s, \pi(s)) V^\pi(s') \\
-            & = R(s) + \gamma \max_\pi \sum_{s'} P(s' \mid s, \pi(s)) V^\pi(s') \\
-            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) \max_\pi V^\pi(s') \\
-            & = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V(s') ,
-        \end{align*}
-        where $\pi^*$ is the optimal policy
-        \begin{align*}
-            \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V(s') .
-        \end{align*}
-
-        To find this optimal policy, we can apply either the \emph{value iteration} or \emph{policy iteration} algorithms.
+        and the optimal policy is $\pi^*(s) = \arg \max_{a \in \mathcal{A}(s)} \sum_{s'} P(s' \mid s, a) V(s')$. Since no action is available in the terminal states, their value is their reward, $V((s_1, 1)) = R((s_1, 1))$. We can apply either value iteration or policy iteration.
 
         \begin{itemize}
-            \item In value iteration, we estimate the value $V(s)$ by value estimates $V_i(s)$ and update them with the Bellman operator
+            \item In value iteration, we start from $V_0(s) = R(s)$ and repeat the Bellman update
             \begin{equation*}
-                V_{i+1}(s) = (B V_i)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V_{i}(s')
+                V_{i+1}(s) = R(s) + \gamma \max_{a \in \mathcal{A}(s)} \sum_{s'} P(s' \mid s, a) V_{i}(s')
             \end{equation*}
-            until convergence ($V_{i + 1} = V_i$). For our task, it should be noted that all states $s = (s_1, 1)$ are terminal, meaning that they don't allow to take any actions. Consequently, the value of these states is exactly their reward, \ie{}
-            \begin{equation*}
-                V(s = (s_1, 1)) = R(s) .
-            \end{equation*}
-            Let $V_0(s) = R(s)$ be our first value estimate. For example, for the first term of the first iteration, we have:
+            until convergence ($V_{i + 1} = V_i$). Although $\gamma = 1$, it converges, since every game ends: every policy reaches a terminal state within four steps. For example, for the first state of the first iteration, we have
             \begin{align*}
-                &V_1(s_1 = 0, s_2 = 0) = R(s_1 = 0, s_2 = 0) + \\
-                &\gamma \max \left\{ \underbrace{P( s'=(0, 1) \mid s=(0, 0 ), c)\, V_0 (s'=(0, 1))}_{a=c} ; \right. \\
-                &\qquad \left. \underbrace{P(s'=(2,0) \mid s=(0,0), d)\, V_0(s'=(2,0))+ \ldots}_{a=d} \right\}
-            \end{align*}
-            \begin{align*}
-                \rightarrow V_1(s_1 = 0, s_2 = 0) &=0 +1 \max \left\{ 1 \times 1; \frac{1}{3}\times 0 + \frac{1}{3}\times 0 + \frac{1}{3}\times 0\right\} \\
-                &=1
+                V_1((0, 0)) &= R((0, 0)) + \gamma \max \left\{ \underbrace{V_0((0, 1))}_{a=c}, \ \underbrace{\tfrac{1}{3} V_0((2, 0)) + \tfrac{1}{3} V_0((3, 0)) + \tfrac{1}{3} V_0((4, 0))}_{a=d} \right\} \\
+                &= 0 + \max \left\{ 1, \ 0 \right\} = 1.
             \end{align*}
 
             \begin{center}
                 \begin{tabular}{ccccccccccccc}
                     \toprule
                     $s_2$ & \multicolumn{6}{c}{0} & \multicolumn{6}{c}{1} \\
-                    \cmidrule(lr){2-7} \cmidrule(lr){8-13}
-                    $s_1$ & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
-                    \midrule
+                \cmidrule(lr){2-7} \cmidrule(lr){8-13}
+                $s_1$ & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
+                \midrule
                     $V_0(s)$ & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     $V_1(s)$ & 1 & 3 & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $V_2(s)$ & $\frac{12}{3}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
+                    $V_2(s)$ & 4 & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     $V_3(s)$ & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     $V_4(s)$ & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
                     \bottomrule
                 \end{tabular}
             \end{center}
 
-            Each iteration of this algorithm takes $\mathcal{O}(\abs{S}^2 \abs{A})$ operations.
-
-            With the state utilities $V(s)$ obtained, the optimal policy can be deduced with:
-            \begin{align*}
-                \pi^*(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V(s') .
-            \end{align*}
-
+            Each iteration takes $\mathcal{O}(\abs{\mathcal{S}}^2 \abs{\mathcal{A}})$ operations. The optimal policy follows from the values:
             \begin{center}
                 \begin{tabular}{ccccccccccccc}
                     \toprule
                     $s_2$ & \multicolumn{6}{c}{0} & \multicolumn{6}{c}{1} \\
-                    \cmidrule(lr){2-7} \cmidrule(lr){8-13}
-                    $s_1$ & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
-                    \midrule
+                \cmidrule(lr){2-7} \cmidrule(lr){8-13}
+                $s_1$ & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
+                \midrule
                     $\pi^*(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
                     \bottomrule
                 \end{tabular}
             \end{center}
 
-            \item In policy iteration, we estimate the optimal policy $\pi^*$ by policy estimates $\pi_i$ and update them with
+            \item In policy iteration, we start from a policy $\pi_0$, evaluate it by solving the linear equations
             \begin{equation*}
-                \pi_{i+1}(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V^{\pi_i}(s'),
+                V^{\pi_i}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V^{\pi_i}(s'),
             \end{equation*}
-            where $V^{\pi_i}$ is the unique solution of the simplified Bellman equation
-            \begin{equation*}
-                V^{\pi_i}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V^{\pi_i}(s') .
-            \end{equation*}
-            However, finding $V^{\pi_i}$ exactly requires $\mathcal{O}(\abs{S}^3)$ operations, which is usually intractable. Instead in \emph{modified} policy iteration, we keep value estimates $V_j$ and update them with the simplified Bellman operator
-            \begin{equation*}
-                V_{j + 1}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i) V_j(s') .
-            \end{equation*}
-            After sufficient convergence ($V_{j+1} \approx V_{j}$), we update the policy estimate with respect to the last value estimate
-            \begin{equation*}
-                \pi_j(s) = \arg \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V_j(s')
-            \end{equation*}
-            and then start updating the value estimates again. The algorithm stops when the policy estimates have converged. Let $V_0(s) = R(s)$ be our first value estimate.
+            and improve it with $\pi_{i+1}(s) = \arg \max_{a \in \mathcal{A}(s)} \sum_{s'} P(s' \mid s, a) V^{\pi_i}(s')$, until the policy no longer changes. Here, the equations are triangular, since the score only increases, and are solved from the highest score down.
 
-            \begin{center}
-                \begin{tabular}{ccccccccccccc}
-                    \toprule
-                    $s_2$ & \multicolumn{6}{c}{0} & \multicolumn{6}{c}{1} \\
-                    \cmidrule(lr){2-7} \cmidrule(lr){8-13}
-                    $s_1$ & 0 & 2 & 3 & 4 & 5 & $6+$ & 0 & 2 & 3 & 4 & 5 & $6+$ \\
-                    \midrule
-                    $V_0(s)$ & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $\pi_0(s)$ & $c$ & $c$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
-                    $V_1(s)$ & 1 & 3 & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $V_2(s)$ & 1 & 3 & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $\pi_1(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
-                    $V_3(s)$ & $\frac{12}{3}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $V_4(s)$ & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $V_5(s)$ & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    $\pi_3(s)$ & $d$ & $d$ & $c$ & $c$ & $c$ & $c$ & \multicolumn{6}{c}{$-$} \\
-                    $V_6(s)= V_5(s) (\rightarrow\pi_3(s) = \pi^*(s) $) & $\frac{38}{9}$ & $\frac{11}{3}$ & 4 & 5 & 6 & 0 & 1 & 3 & 4 & 5 & 6 & 0 \\
-                    \bottomrule
-                \end{tabular}
-            \end{center}
+            With $\pi_0(s) = c$ everywhere, $V^{\pi_0}((s_1, 0)) = s_1 + 1$ for $s_1 < 6$ and $V^{\pi_0}((6{+}, 0)) = 0$. Improving it, drawing from $(0, 0)$ is worth $\frac{1}{3}(3 + 4 + 5) = 4 > 1$, from $(2, 0)$ it is worth $\frac{1}{3}(5 + 6 + 0) = \frac{11}{3} > 3$, and from $(3, 0)$ only $\frac{1}{3}(6 + 0 + 0) = 2 < 4$; drawing from $(4, 0)$ or $(5, 0)$ always busts. Hence $\pi_1 = (d, d, c, c, c, c)$ for $s_1 = 0, 2, 3, 4, 5, 6{+}$.
 
-            The modified policy iteration algorithm does not necessarily converge faster than the value iteration algorithm, but the simplified Bellman operator is (much) easier and faster to compute than the standard one. One could consider modified policy iteration as a version of value iteration where the optimal actions are \enquote{cached} periodically instead of recalculating them at each iteration.
+            Evaluating $\pi_1$ from the highest score down gives $V^{\pi_1}((5, 0)) = 6$, $V^{\pi_1}((4, 0)) = 5$, $V^{\pi_1}((3, 0)) = 4$, $V^{\pi_1}((2, 0)) = \frac{1}{3}(5 + 6 + 0) = \frac{11}{3}$ and $V^{\pi_1}((0, 0)) = \frac{1}{3}(\frac{11}{3} + 4 + 5) = \frac{38}{9}$. Improving $\pi_1$ changes no action ($\frac{38}{9} > 1$, $\frac{11}{3} > 3$, $2 < 4$), so that $\pi_2 = \pi_1 = \pi^*$, the policy found by value iteration.
+
+            For large problems, solving the linear equations exactly costs $\mathcal{O}(\abs{\mathcal{S}}^3)$ operations; \emph{modified} policy iteration then replaces the exact evaluation by a few simplified Bellman updates $V_{j+1}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_j(s')$.
         \end{itemize}
     \end{solution}
 \end{parts}
 
-\titledquestion{Crying baby problem}
+\titledquestion{Overheating machine}
 
-To earn some money you have decided to do babysitting. Tonight you will take care of a 9 months old baby. His parents asked you to feed him when he is hungry. Because you are a super-babysitter you know from your experience that the probability of the baby crying when he is hungry is equal to 0.8 and to cry when he is not hungry is equal to 0.1. The cost of feeding the baby is equal to \qty{5}{\$} whereas if you don't feed him while he is hungry it costs you \qty{10}{\$} (because the parent will be upset and will reduce your pay). You will have many things to do tonight and so you decide to optimize your time by just checking every hour whether the baby is crying. Between two intervals of time you assume that the baby has a probability of 0.2 to get hungry. You can also assume that the baby has a uniform probability of being hungry when you start your babysitting.
+A maintenance robot looks after a machine that may overheat. It cannot measure the temperature directly: every hour, it only checks whether the machine's alarm is on, and decides whether to cool the machine for the next hour. The alarm is on with probability 0.8 when the machine is overheating, and with probability 0.1 when it is not. Cooling costs 5 (energy), whereas leaving an overheating machine without cooling for an hour costs 10 (wear). Between two checks, a machine that is not overheating starts overheating with probability 0.2, an overheating machine that is not cooled keeps overheating, and a machine that has been cooled is no longer overheating at the next check. When the robot starts, the machine is overheating with probability 0.5.
 
 \begin{parts}
-    \part Draw the dynamic Bayesian network as well as the conditional probability tables associated with your babysitting of tonight.
+    \part Draw the dynamic decision network of this problem, as well as its conditional probability tables and its reward function.
 
     \begin{solution}
-        Let $H_t \in \cbk{0, 1}$ indicate whether the baby is hungry at time $t$, $C_t \in \cbk{0, 1}$ the baby is crying at time $t$ and $F_t \in \cbk{0, 1}$ the fact that you fed the baby at time $t$. Your cost is $R_t \in \cbk{0, -5, -10}$.
+        Let $H_t \in \cbk{0, 1}$ indicate whether the machine is overheating at time $t$, $E_t \in \cbk{0, 1}$ whether the alarm is on, and $F_t \in \cbk{0, 1}$ whether the robot cools the machine. The reward is $R_t \in \cbk{0, -5, -10}$. The alarm is observed, and the decision depends on it.
 
         \begin{center}
-            \begin{tikzpicture}[node distance = 2cm]
-                \node[state] (H) {$H_t$};
-                \node[state] (R) [below right of=H] {$R_t$};
-                \node[state] (F) [below right of=R] {$F_t$};
-                \node[state] (C) [below left of=R] {$C_t$};
-                \node[state] (H1) [above right of=R] {$H_{t+1}$};
-
-                \draw[arrow] (H) to (C);
-                \draw[arrow] (H) to (R);
-                \draw[arrow] (F) to (R);
-                \draw[arrow] (H) to (H1);
-                \draw[arrow] (F) to (H1);
+            \begin{tikzpicture}[bn diagram]
+                \node[random variable] (H) at (0, 0) {$H_t$};
+                \node[random variable] (H1) at (3.6, 0) {$H_{t+1}$};
+                \node[observed variable] (E) at (0, -2) {$E_t$};
+                \node[decision variable] (F) at (1.8, -2) {$F_t$};
+                \node[utility variable] (R) at (1.8, -3.8) {$R_t$};
+                \draw[dependency] (H) -- (H1);
+                \draw[dependency] (H) -- (E);
+                \draw[dependency] (E) -- (F);
+                \draw[dependency] (F) -- (H1);
+                \draw[dependency] (F) -- (R);
+                \draw[dependency] (H) to[out=-150, in=180] (R);
             \end{tikzpicture}
         \end{center}
 
         \begin{center}
-            \begin{tabular}{ccccc}
+            \begin{tabular}{cc}
                 \toprule
-                $H_t$ & $F_t$ & $P(C_t = 1 \mid H_t)$ & $P(H_{t+1} = 1 \mid H_t, F_t)$ & $R_t(H_t, F_t)$ \\
+                $H_t$ & $P(E_t = 1 \mid H_t)$ \\
                 \midrule
-                0 & 0 & 0.1 & 0.2 & 0 \\
-                1 & 0 & 0.8 & 1 & -10 \\
-                0 & 1 & - & 0 & -5 \\
-                1 & 1 & - & 0 & -5 \\
+                0 & 0.1 \\
+                1 & 0.8 \\
+                \bottomrule
+            \end{tabular}
+            \qquad
+            \begin{tabular}{cccc}
+                \toprule
+                $H_t$ & $F_t$ & $P(H_{t+1} = 1 \mid H_t, F_t)$ & $R_t(H_t, F_t)$ \\
+                \midrule
+                0 & 0 & 0.2 & 0 \\
+                1 & 0 & 1 & $-10$ \\
+                0 & 1 & 0 & $-5$ \\
+                1 & 1 & 0 & $-5$ \\
                 \bottomrule
             \end{tabular}
         \end{center}
 
-        For completeness we also have to define the prior $P(H_0 = 1) = 0.5$. Note that $R_t$ is a deterministic function of $H_t$ and $F_t$ instead of a distribution.
+        For completeness we also have to define the prior $P(H_0 = 1) = 0.5$. Note that $R_t$ is a deterministic function of $H_t$ and $F_t$.
     \end{solution}
 
-    \part Give the sequence of belief states if you assume the sequence of observation-action pairs $(0, 0)$, $(1, 1)$, $(0, 0)$, $(0, 0)$.
+    \part Give the sequence of belief states if the robot observes the alarm and acts as follows: $(e_t, f_t) = (0, 0)$, $(1, 1)$, $(0, 0)$, $(0, 0)$ for $t = 0, 1, 2, 3$.
 
     \begin{solution}
-        In this problem, the environment is only \emph{partially} observable (POMDP). You, the agent, does not know the current state $s = H_t$. Instead, you collect an observation $e = C_t$ through a sensor model $P(e \mid s)$ which allows to reason about the unknown state $s$ and to take an informed action $a = F_t$.
-
-        If $b$ is the current belief state (a distribution over the state space $S$) and the agent does an action $a$ and observes $e'$, then
+        The environment is only partially observable (POMDP): the robot does not know the current state $s = H_t$, but perceives $e = E_t$ through the sensor model $P(e \mid s)$ and acts $a = F_t$. If $b$ is the current belief state and the robot does $a$ and then perceives $e'$, the next belief state is
+        \begin{equation*}
+            b'(s') = \alpha P(e' \mid s') \sum_s P(s' \mid s, a) b(s).
+        \end{equation*}
+        Here, this gives
         \begin{align*}
-            b'(s') & = \sum_s P(s' \mid s, a, e') b(s) \\
-            & = \alpha P(e' \mid s') \sum_s P(s' \mid s, a) b(s)
-        \end{align*}
-        is the next belief state. Within the formulation of our problem, this gives
-        \begin{align*}
-            b_{t+1}(h_{t+1}) & = \alpha P(c_{t+1} \mid h_{t+1}) \sum_{h_t} P(h_{t+1} \mid h_t, f_t) b_t(h_t),
+            b_{t+1}(h_{t+1}) & = \alpha P(e_{t+1} \mid h_{t+1}) \sum_{h_t} P(h_{t+1} \mid h_t, f_t) b_t(h_t),
         \end{align*}
         with the initial belief
         \begin{align*}
-            b_0 & = P(H_0 \mid c_0) \\
-            & = \alpha P(c_0 \mid H_0) P(H_0)
+            b_0 & = P(H_0 \mid e_0) = \alpha P(e_0 \mid H_0) P(H_0).
         \end{align*}
-        Then, knowing from the statement that $c_{0:3} = f_{0:3} = (0, 1, 0, 0)$, we have
+        With $e_{0:3} = f_{0:3} = (0, 1, 0, 0)$ and beliefs written as $(b(0), b(1))$, we have
         \begin{align*}
-            b_0 & = \alpha_0 \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.5 \\ 0.5} \approx \mat{0.8181 \\ 0.1819} \\
+            b_0 & = \alpha_0 \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.5 \\ 0.5} \approx \mat{0.8182 \\ 0.1818} \\
             b_1 & = \alpha_1 \mat{0.1 & 0 \\ 0 & 0.8} \mat{0.8 & 0 \\ 0.2 & 1} b_0 \approx \mat{0.1915 \\ 0.8085} \\
             b_2 & = \alpha_2 \mat{0.9 & 0 \\ 0 & 0.2} \mat{1 & 1 \\ 0 & 0} b_1 = \mat{1 \\ 0} \\
             b_3 & = \alpha_3 \mat{0.9 & 0 \\ 0 & 0.2} \mat{0.8 & 0 \\ 0.2 & 1} b_2 \approx \mat{0.9474 \\ 0.0526} .
@@ -310,17 +253,13 @@ To earn some money you have decided to do babysitting. Tonight you will take car
     \part From the sequence of belief states, determine the sequence of expected rewards.
 
     \begin{solution}
-        The expected reward of a belief state $b$ is defined as
+        The expected reward of a belief state $b$ is $\rho(b) = \sum_s b(s) R(s)$. Here, the reward also depends on the action:
         \begin{equation*}
-            \rho(b) = \sum_s b(s) R(s) .
+            \rho_t = \sum_{h_t} R_t(h_t, f_t) b_t(h_t).
         \end{equation*}
-        In our case, the expected reward also depend on the action, that is
-        \begin{equation*}
-            \rho_t = \sum_{h_t} R_t(h_t, f_t) b(h_t) = R_t(H_t, f_t)^T b_t.
-        \end{equation*}
-        Then, by substitution,
+        Then,
         \begin{align*}
-            \rho_0 & = \mat{0 & -10} b_0 \approx -1.819 \\
+            \rho_0 & = \mat{0 & -10} b_0 \approx -1.818 \\
             \rho_1 & = \mat{-5 & -5} b_1 = -5 \\
             \rho_2 & = \mat{0 & -10} b_2 = 0 \\
             \rho_3 & = \mat{0 & -10} b_3 \approx -0.526 .
