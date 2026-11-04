@@ -30,6 +30,26 @@
 \end{tikzpicture}
 }
 
+\newcommand{\convolved}[1]{%
+\begin{tikzpicture}[diagram, baseline=(current bounding box.center)]
+    \begin{axis}[%
+        width=4.6cm,
+        height=2.9cm,
+        axis x line=middle,
+        axis y line=left,
+        xmin=-1,
+        xmax=17,
+        ymin=-4.3,
+        ymax=4.3,
+        xmajorticks=false,
+        ytick={-4, 4},
+        tick label style={font=\scriptsize},
+    ]
+        \addplot+[ycomb,black,thick,mark size=1.2pt,mark options={fill=white}] coordinates {#1};
+    \end{axis}
+\end{tikzpicture}
+}
+
 \newcommand{\kernel}[1]{%
 \begin{tikzpicture}
     \begin{axis}[%
@@ -100,11 +120,12 @@
     The output layer $\mathbf{y} = \sigma(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
     \begin{itemize}
         \item for regression, its width is the dimensionality $d_{\text{out}}$ of the output and its activation function is the identity $\sigma(\cdot) = \cdot$;
-        \item for binary classification, its width is $1$ and its activation function is the sigmoid, which models the probability $p(y = 1 \mid \mathbf{x})$;
-        \item for multi-class classification, the \term{softmax} function produces a vector $\mathbf{y} \in \bigtriangleup^C$ of probability estimates $p(Y = i \mid \mathbf{x})$, where
+        \item for binary classification, its width is $1$ and its activation function is the sigmoid, which models the probability $P(Y = 1 \mid \mathbf{x})$;
+        \item for classification into $C$ classes, its width is $C$ and its activation function is the \term{softmax}
         \[
-            \mathrm{Softmax}(\mathbf{z})_i = \frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)} \quad \text{for } i = 1, \ldots, C.
+            \mathrm{Softmax}(\mathbf{z})_i = \frac{\exp(z_i)}{\sum_{i'=0}^{C-1} \exp(z_{i'})} \quad \text{for } i = 0, \ldots, C-1,
         \]
+        so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y = i \mid \mathbf{x})$ summing to 1.
     \end{itemize}
 
     \topic{Loss functions}
@@ -123,9 +144,9 @@
     \topic{Gradient descent}
     To minimize a loss function $\mathcal{L}(\theta)$, \term{gradient descent} updates the model parameters iteratively using the update rule
     \[
-        \theta_{t+1} = \theta_t - \gamma \nabla_\theta \mathcal{L}(\theta_t),
+        \theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t),
     \]
-    where $\theta_0$ are the initial parameters of the model and $\gamma$ is the \term{learning rate}.
+    where $\theta_0$ are the initial parameters of the model and $\alpha$ is the \term{learning rate}.
 
     \topic{Backpropagation}
     The gradient $\nabla_\theta \mathcal{L}(\theta)$ is computed for a training pair $(\mathbf{x}, \mathbf{y})$ in two passes through the network:
@@ -196,10 +217,10 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
     \begin{solution}
         A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $d$ is the leaderboard and consists of independent position-time tuples $(x_i, y_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(x, y)$, approximated by a neural network $h(x, y; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
         \begin{align*}
-            \phi_{\text{MLE}} & = \arg\max_\phi p(d \mid \phi) \\
+            \phi_{\text{MLE}} & = \arg\max_\phi p(\mathbf{d} \mid \phi) \\
             & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \\
             & = \arg\max_\phi \prod_{i=1}^5 p(t_i \mid x_i, y_i, \phi) \, p(x_i, y_i) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(x_i, y_i; \phi), 1) \\
             & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(x_i, y_i; \phi))^2}{2}}} \\
             & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2
         \end{align*}
@@ -217,10 +238,10 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
     \begin{solution}
         Now that we hold a prior belief on the parameters, our task is to find the most likely set of parameters given the data, that is maximum a posteriori (MAP) estimation.
         \begin{align*}
-            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi \mid d) \\
-            & = \arg\max_\phi p(d \mid \phi) p(\phi) \\
+            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi \mid \mathbf{d}) \\
+            & = \arg\max_\phi p(\mathbf{d} \mid \phi) p(\phi) \\
             & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \prod_{j=1}^6 p(w_j) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t; h(x, y; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(x_i, y_i; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
             & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
         \end{align*}
         Here again, we have an objective $L'(\phi)$ to minimize, which we evaluate for each of the proposed sets.
@@ -237,9 +258,9 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
     \begin{solution}
         If the table is not provided, it is intractable to evaluate and compare all possible sets of parameters. However, we still want to minimize the MLE (or MAP) objective $L(\phi)$. We can improve a set of parameters $\phi$ by following the opposite of the objective's gradient $\nabla_{\! \phi} L(\phi)$, \ie{} performing \emph{gradient descent} steps
         \begin{equation*}
-            \phi \gets \phi - \gamma \nabla_{\! \phi} L(\phi) ,
+            \phi \gets \phi - \alpha \nabla_{\! \phi} L(\phi) ,
         \end{equation*}
-        where $\gamma$ is the learning rate.
+        where $\alpha$ is the learning rate.
     \end{solution}
 \end{parts}
 
@@ -283,13 +304,13 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \end{equation*}
     \end{solution}
 
-    \part Suppose now that the parameters are unknown, and that the scores $x_3$ on the held-out test set are not observed. Given a learning set $d = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, derive the maximum likelihood estimate of the parameters of $p(y \mid x_1, x_2)$.
+    \part Suppose now that the parameters are unknown, and that the scores $x_3$ on the held-out test set are not observed. Given a learning set $\mathbf{d} = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, derive the maximum likelihood estimate of the parameters of $p(y \mid x_1, x_2)$.
 
     \begin{solution}
         \allowdisplaybreaks
         We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(y \mid w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
         \begin{align*}
-            h_{\text{MLE}} & = \arg \max_h p(d \mid h) \\
+            h_{\text{MLE}} & = \arg \max_h p(\mathbf{d} \mid h) \\
             & = \arg \max_h \prod_i p(x_i, y_i \mid h) \\
             & = \arg \max_h \log \prod_i p(x_i, y_i \mid h) \\
             & = \arg \max_h \sum_i \log p(x_i, y_i \mid h) \\
@@ -376,7 +397,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
         (a) with $w = 2$ and $b = 0$, and (b) with $w = 4$ and $b = -5$.
     \end{solution}
 
-    \part We now introduce a non-linearity $\sigma (.)$ into the network. We use the ReLU non-linearity, which has the form ReLU(x) = max(0, x).
+    \part We now introduce a non-linearity $\sigma (.)$ into the network. We use the ReLU non-linearity, which has the form $\ReLU(x) = \max(0, x)$.
 
     \begin{center}
         \includegraphics[width=0.4\linewidth]{figures/onerelu.png}
@@ -393,7 +414,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{center}
 
     \begin{solution}
-        Applying multiple affine transformations (with no non-linearity in between) is not any more powerful than a single affine function: $w_2(w_1x + b_1) + b_2 = w_2w_1x + w_2b_1 + b_2$, so this is just a affine function with different coefficients. The functions we can represent are the same as in 1, if we choose $w_1 = w$, $w_2 = 1$, $b_1 = 0$, $b_2 = b$: (a) with $w_1 = 2$, $w_2 = 1$, $b_1 = 0$, $b_2 = 0$, and (b) with $w_1 = 4$, $w_2 = 1$, $b_1 = 0$, $b_2 = -5$.
+        Applying multiple affine transformations (with no non-linearity in between) is not any more powerful than a single affine function: $w_2(w_1x + b_1) + b_2 = w_2w_1x + w_2b_1 + b_2$, so this is just an affine function with different coefficients. The functions we can represent are the same as in (b), if we choose $w_1 = w$, $w_2 = 1$, $b_1 = 0$, $b_2 = b$: (a) with $w_1 = 2$, $w_2 = 1$, $b_1 = 0$, $b_2 = 0$, and (b) with $w_1 = 4$, $w_2 = 1$, $b_1 = 0$, $b_2 = -5$.
     \end{solution}
 
     \part We now add a ReLU non-linearity to the network between the affine transformations.
@@ -413,7 +434,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{center}
 
     \begin{solution}
-        (c), (d), (e), and (f). The network can represent all the same functions as Q5 (because note that we could have $w_2 = 1$ and $b_2 = 0$). In addition it can represent (f): the first ReLU can produce the first flat segment, the affine transformation can flip and shift the resulting curve, and then the second ReLU can produce the second flat segment (with the final affine layer not doing anything). Note that (h) cannot be produced since its line has only one flat segment (and the affine layers can only scale, shift, and flip the graph in the vertical dimension; they can't rotate the graph).
+        (c), (d), (e), and (f). The network can represent all the same functions as (e) (because note that we could have $w_2 = 1$ and $b_2 = 0$). In addition it can represent (f): the first ReLU can produce the first flat segment, the affine transformation can flip and shift the resulting curve, and then the second ReLU can produce the second flat segment (with the final affine layer not doing anything). Note that (h) cannot be produced since its line has only one flat segment (and the affine layers can only scale, shift, and flip the graph in the vertical dimension; they can't rotate the graph).
     \end{solution}
 
     \part We'd like to consider using a neural net with just one hidden layer, but larger. Let's first consider using just two affine functions, with no nonlinearity in between. You do not have to guess parameters values anymore.
@@ -423,7 +444,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{center}
 
     \begin{solution}
-        (a) and (b). With no non-linearity, this reduces to a single affine function (in the same way as Q4).
+        (a) and (b). With no non-linearity, this reduces to a single affine function (in the same way as (d)).
     \end{solution}
 
     \part Now we'll add a non-linearity between the two affine layers, to produce the neural network below with a hidden layer of size 2. You do not have to guess parameters values anymore.
@@ -433,7 +454,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{center}
 
     \begin{solution}
-        All functions except for (g). Note that we can recreate any network from (5) by setting $w_4$ to 0, so this allows us to produce (c), (d) and (e). To produce the rest of the functions, note that $h_1$ and $h_2$ will be two independent functions with a flat part lying on the x-axis, and a portion with positive slope. The final layer takes a weighted sum of these two functions. To produce (a) and (b), the flat portion of one ReLU should start at the point where the other ends ($x = 0$ for (a), or $x = 1$ for (b). The final layer then vertically flips the ReLU sloping down and adds it to the one sloping up, producing a single sloped line. To produce (h), the ReLU sloping down should have its flat portion end (at $x = 0$ before the other's flat portion begins (at $x = 3$). The down-sloping one is again flipped and added to the up-sloping. To produce (f), both ReLUs should have equal slope, which will cancel to produce the first flat portion above the x-axis.
+        All functions except for (g). Note that we can recreate any network of (e) by setting $w_4$ to 0, so this allows us to produce (c), (d) and (e). To produce the rest of the functions, note that $h_1$ and $h_2$ will be two independent functions with a flat part lying on the x-axis, and a portion with positive slope. The final layer takes a weighted sum of these two functions. To produce (a) and (b), the flat portion of one ReLU should start at the point where the other ends ($x = 0$ for (a), or $x = 1$ for (b)). The final layer then vertically flips the ReLU sloping down and adds it to the one sloping up, producing a single sloped line. To produce (h), the ReLU sloping down should have its flat portion end (at $x = 0$) before the other's flat portion begins (at $x = 3$). The down-sloping one is again flipped and added to the up-sloping. To produce (f), both ReLUs should have equal slope, which will cancel to produce the first flat portion above the x-axis.
     \end{solution}
 
     \part Are there functions that can't be represented by all proposed networks? If yes, explain why and what you would need to model them.
@@ -441,7 +462,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \begin{solution}
         Yes, function (g) cannot be modeled. We first see that the function is smooth and representing it only with few ReLU activations is not enough. We should probably use smoother activations like SiLU, tanh, \ldots{} (see the activation functions of the \enquote{Machine learning and neural networks} lecture).
 
-        However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of part 8 should be sufficient.
+        However, we remember the universal approximation theorem which states that a single-hidden-layer network with a finite number of hidden units can approximate any continuous function on a compact subset of $\mathbb{R}^d$ to arbitrary accuracy. Then, adding sufficient amount of hidden units of the 1-layer network of (h) should be sufficient.
 
         Note that the logarithm function is only defined on $\mathbb{R}^+$. If our network is made of activation functions defined on $\mathbb{R}$, we will never be able to restrict the domain of the learned function to only real positive. However, you can be as accurate as you want on the desired domain, but it makes no sense to evaluate your network elsewhere for this problem.
     \end{solution}
@@ -519,7 +540,7 @@ Consider the following simple neural network for binary classification. Here $x$
         For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}^N$ where $y_i$ acts as a target for the network.
     \end{solution}
 
-    \part Using the chain rule, differentiate $\mathcal{L}$ w.r.t. $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in part 1 will be helpful; you may use any of those variables.)
+    \part Using the chain rule, differentiate $\mathcal{L}$ w.r.t. $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in (a) will be helpful; you may use any of those variables.)
 
     \begin{solution}
         \[
@@ -573,7 +594,7 @@ Consider the following simple neural network for binary classification. Here $x$
         \[
             \frac{\partial z_2}{\partial w_2} = \frac{\partial}{\partial w_2} (w_2a_1) = a_1.
         \]
-        Plugging all the partial derivatives to the expression found in part 3, we have
+        Plugging all the partial derivatives into the expression found in (c), we have
         \begin{align*}
             \dfrac{\partial \mathcal{L}}{\partial w_2} &= \dfrac{a_2 - y}{a_2 (1 - a_2)} g_2(z_2)(1 - g_2(z_2)) a_1 \\
             &= \dfrac{a_2 - y}{a_2 (1 - a_2)} a_2(1 - a_2) a_1 \\
@@ -606,11 +627,11 @@ Consider the following simple neural network for binary classification. Here $x$
         \]
     \end{solution}
 
-    \part What is the gradient descent update for $w_1$ with step-size $\lambda$ in terms of the values computed above?
+    \part What is the gradient descent update for $w_1$ with learning rate $\alpha$ in terms of the values computed above?
 
     \begin{solution}
         \[
-            w_1 \leftarrow w_1 - \lambda (a_2 - y)w_2 a_1(1-a_1)x.
+            w_1 \leftarrow w_1 - \alpha (a_2 - y)w_2 a_1(1-a_1)x.
         \]
         You see here the importance of the forward pass. Iteratively, when receiving the input $x$, we compute all the intermediate activations (here, $a_1$ and $a_2$) and the loss (given $y$). Then, we propagate backward (from the output to the input) the values following the chain rule for the gradient of the loss w.r.t. parameters of interest. Finally, we update the parameters using the computed gradient.
     \end{solution}
@@ -681,12 +702,12 @@ where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6, w_7, w_8, w_9)$ is the set of par
             which gives a gradient equal to $-160$.
         \end{solution}
 
-        \subpart Update the parameter $w_8$ using one step of gradient descent with a learning rate $\gamma = 0.0005$.
+        \subpart Update the parameter $w_8$ using one step of gradient descent with a learning rate $\alpha = 0.0005$.
 
         \begin{solution}
             The gradient step is given by
             \[
-                w_8 \leftarrow w_8 - \gamma \dfrac{\partial \mathcal{L}}{\partial w_8}
+                w_8 \leftarrow w_8 - \alpha \dfrac{\partial \mathcal{L}}{\partial w_8}
             \]
             which gives an updated $w_8$ equal to $1.08$.
         \end{solution}
@@ -701,7 +722,7 @@ where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6, w_7, w_8, w_9)$ is the set of par
 
 \titledquestion{1d convolution}
 
-Represent the convolution $x \circledast u$ of each of the following signals $x$
+Represent the convolution $x \circledast \omega$ of each of the following signals $x$
 
 \begin{center}
     \signal{2 * (mod(x, 10) < 5) - 1}
@@ -711,7 +732,7 @@ Represent the convolution $x \circledast u$ of each of the following signals $x$
     \signal{cos(360 * x / 15.29)}
 \end{center}
 
-with each of the following convolution kernels $u$.
+with each of the following convolution kernels $\omega$.
 
 \begin{center}
     \kernel{x / 1.5 - 1}
@@ -719,10 +740,25 @@ with each of the following convolution kernels $u$.
     \kernel{1 - 2 * (mod(x, 3) == 0)}
 \end{center}
 
+\begin{solution}
+    Without padding, each output has $20 - 4 + 1 = 17$ values, $(x \circledast \omega)[i] = \sum_{m=0}^{3} x_{i+m} \omega_m$. The kernels are $\omega = (-1, -\frac{1}{3}, \frac{1}{3}, 1)$, $(-1, -1, 1, 1)$ and $(-1, 1, 1, -1)$; the outputs below share the vertical scale $[-4, 4]$, one row per signal and one column per kernel.
+    \begin{center}
+        \setlength{\tabcolsep}{2pt}
+        \begin{tabular}{cccc}
+        & $(-1, -\frac{1}{3}, \frac{1}{3}, 1)$ & $(-1, -1, 1, 1)$ & $(-1, 1, 1, -1)$ \\
+        1 & \convolved{(0,-0.000) (1,-0.000) (2,-2.000) (3,-2.667) (4,-2.000) (5,0.000) (6,0.000) (7,2.000) (8,2.667) (9,2.000) (10,-0.000) (11,-0.000) (12,-2.000) (13,-2.667) (14,-2.000) (15,0.000) (16,0.000)} & \convolved{(0,0.000) (1,0.000) (2,-2.000) (3,-4.000) (4,-2.000) (5,0.000) (6,0.000) (7,2.000) (8,4.000) (9,2.000) (10,0.000) (11,0.000) (12,-2.000) (13,-4.000) (14,-2.000) (15,0.000) (16,0.000)} & \convolved{(0,0.000) (1,0.000) (2,2.000) (3,0.000) (4,-2.000) (5,0.000) (6,0.000) (7,-2.000) (8,0.000) (9,2.000) (10,0.000) (11,0.000) (12,2.000) (13,0.000) (14,-2.000) (15,0.000) (16,0.000)} \\
+        2 & \convolved{(0,1.667) (1,1.667) (2,-0.833) (3,-1.667) (4,-0.833) (5,1.667) (6,1.667) (7,-0.833) (8,-1.667) (9,-0.833) (10,1.667) (11,1.667) (12,-0.833) (13,-1.667) (14,-0.833) (15,1.667) (16,1.667)} & \convolved{(0,2.000) (1,2.000) (2,-0.500) (3,-3.000) (4,-0.500) (5,2.000) (6,2.000) (7,-0.500) (8,-3.000) (9,-0.500) (10,2.000) (11,2.000) (12,-0.500) (13,-3.000) (14,-0.500) (15,2.000) (16,2.000)} & \convolved{(0,0.000) (1,0.000) (2,2.500) (3,0.000) (4,-2.500) (5,0.000) (6,0.000) (7,2.500) (8,0.000) (9,-2.500) (10,0.000) (11,0.000) (12,2.500) (13,0.000) (14,-2.500) (15,0.000) (16,0.000)} \\
+        3 & \convolved{(0,-1.333) (1,-1.333) (2,-1.333) (3,-0.533) (4,0.533) (5,1.333) (6,1.333) (7,1.333) (8,0.533) (9,-0.533) (10,-1.333) (11,-1.333) (12,-1.333) (13,-0.533) (14,0.533) (15,1.333) (16,1.333)} & \convolved{(0,-1.600) (1,-1.600) (2,-1.600) (3,-0.800) (4,0.800) (5,1.600) (6,1.600) (7,1.600) (8,0.800) (9,-0.800) (10,-1.600) (11,-1.600) (12,-1.600) (13,-0.800) (14,0.800) (15,1.600) (16,1.600)} & \convolved{(0,0.000) (1,-0.000) (2,0.000) (3,-0.800) (4,-0.800) (5,0.000) (6,-0.000) (7,0.000) (8,0.800) (9,0.800) (10,0.000) (11,-0.000) (12,0.000) (13,-0.800) (14,-0.800) (15,0.000) (16,-0.000)} \\
+        4 & \convolved{(0,-0.747) (1,-1.106) (2,-1.281) (3,-1.242) (4,-0.997) (5,-0.586) (6,-0.077) (7,0.445) (8,0.892) (9,1.191) (10,1.292) (11,1.178) (12,0.867) (13,0.412) (14,-0.111) (15,-0.616) (16,-1.019)} & \convolved{(0,-0.904) (1,-1.339) (2,-1.551) (3,-1.504) (4,-1.207) (5,-0.709) (6,-0.093) (7,0.538) (8,1.080) (9,1.442) (10,1.564) (11,1.426) (12,1.050) (13,0.499) (14,-0.135) (15,-0.746) (16,-1.233)} & \convolved{(0,0.266) (1,0.169) (2,0.043) (3,-0.090) (4,-0.207) (5,-0.291) (6,-0.325) (7,-0.306) (8,-0.236) (9,-0.126) (10,0.004) (11,0.134) (12,0.242) (13,0.309) (14,0.325) (15,0.287) (16,0.201)} \\
+        \end{tabular}
+    \end{center}
+    The first kernel is a smoothed derivative: its output is positive where the signal increases, negative where it decreases and zero where it is constant, so that the triangle wave gives a rounded square wave and the cosine a sine. The second compares the two halves of its window: it also measures the slope, but responds most strongly to jumps, with peaks of $\pm 4$ at the edges of the square wave. The third compares the centre of its window with its ends: it is zero wherever the signal is linear (the flat parts of the square wave, the ramps of the sawtooth and of the triangle), positive at local maxima and negative at local minima, so that it detects corners; on the cosine, whose curvature is proportional to the signal itself, it returns a small copy of the signal.
+\end{solution}
+
 \titledquestion{2d convolution}
 
 \begin{parts}
-    \part Represent the 2D convolution $x \circledast u$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
+    \part Represent the 2D convolution $x \circledast \omega$ of the following greyscale image $x$, where a value of $0$ corresponds to a white pixel and a value of $1$ corresponds to a black pixel,
 
     \begin{center}
         \begin{tikzpicture}
@@ -747,7 +783,7 @@ with each of the following convolution kernels $u$.
         \end{tikzpicture}
     \end{center}
 
-    with the following convolution kernel $u$
+    with the following convolution kernel $\omega$
 
     \begin{center}
         \begin{tikzpicture}
@@ -773,10 +809,10 @@ with each of the following convolution kernels $u$.
         \end{tikzpicture}
     \end{center}
 
-    Is the result dependent on the choice of coordinate system (\ie{} on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $u[j,i]$)?
+    Is the result dependent on the choice of coordinate system (\ie{} on which directions are considered the ``$i$'' and ``$j$'' directions in $x[j,i]$ and $\omega[j,i]$)?
 
     \begin{solution}
-        The result is equivariant to the choice of coordinate system. The resulting feature map, as drawn on the sheet of paper, remains the same. Only the interpretation of which pixel is represented by $(x \circledast u)[j,i]$ changes.
+        The result is equivariant to the choice of coordinate system. The resulting feature map, as drawn on the sheet of paper, remains the same. Only the interpretation of which pixel is represented by $(x \circledast \omega)[j,i]$ changes.
 
         \begin{center}
             \begin{tikzpicture}
@@ -805,7 +841,7 @@ with each of the following convolution kernels $u$.
         \end{center}
     \end{solution}
 
-    \part The image $x$ now is a coloured image and has tree channels (one for the red colour, one for the green colour and one for the blue colour):
+    \part The image $x$ now is a coloured image and has three channels (one for the red colour, one for the green colour and one for the blue colour):
 
     \begin{center}
         \begin{minipage}{0.30\linewidth}
@@ -826,8 +862,8 @@ with each of the following convolution kernels $u$.
                     column sep=-\pgflinewidth,
                 ] {
                     |[fill=red!10]| 0.1 & |[fill=red!30]| 0.3 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9  \\
-                    |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 & \\
-                    |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 &  \\
+                    |[fill=red!20]| 0.2 & |[fill=red!50]| 0.5 & |[fill=red!80]| 0.8 & |[fill=red!70]| 0.7 \\
+                    |[fill=red!40]| 0.4 & |[fill=red!70]| 0.7 & |[fill=red!100]| 1.0 & |[fill=red!80]| 0.8 \\
                     |[fill=red!20]| 0.2 & |[fill=red!60]| 0.6 & |[fill=red!90]| 0.9 & |[fill=red!70]| 0.7 \\
                 };
             \end{tikzpicture}
@@ -852,7 +888,7 @@ with each of the following convolution kernels $u$.
                 ] {
                     |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
                     |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2& |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0  \\
-                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 &  \\
+                    |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
                     |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!20]| 0.2 & |[fill=green!100]| 1.0 \\
                 };
             \end{tikzpicture}
@@ -877,19 +913,19 @@ with each of the following convolution kernels $u$.
                 ] {
                     |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
                     |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2& |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1  \\
-                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 &  \\
+                    |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
                     |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!20]| 0.2 & |[fill=blue!10]| 0.1 \\
                 };
             \end{tikzpicture}
         \end{minipage}
     \end{center}
 
-    Represent the 2D convolution $x \circledast u$ with the following convolution kernel $u$
+    Represent the 2D convolution $x \circledast \omega$ with the following convolution kernel $\omega$
 
     \begin{center}
         \begin{minipage}{0.30\linewidth}
             \centering
-            $u[0,:,:]$
+            $\omega[0,:,:]$
 
             \begin{tikzpicture}
                 \matrix[
@@ -916,7 +952,7 @@ with each of the following convolution kernels $u$.
         \hfill
         \begin{minipage}{0.30\linewidth}
             \centering
-            $u[1,:,:]$
+            $\omega[1,:,:]$
 
             \begin{tikzpicture}
                 \matrix[
@@ -943,7 +979,7 @@ with each of the following convolution kernels $u$.
         \hfill
         \begin{minipage}{0.30\linewidth}
             \centering
-            $u[2,:,:]$
+            $\omega[2,:,:]$
 
             \begin{tikzpicture}
                 \matrix[
@@ -997,7 +1033,7 @@ with each of the following convolution kernels $u$.
 
 \titledquestion{Problem statement, output layer and loss function}
 
-A dataset $d$ consists of $N=500$ images of cats and dogs, with exactly one cat or one dog appearing in each image. Each image has a spatial resolution of $32\times32$ pixels and is encoded in RGB format using three channels of real-valued entries. The first channel represents the red component of the image, the second channel represents the green component, and the third channel represents the blue component.
+A dataset $\mathbf{d}$ consists of $N=500$ images of cats and dogs, with exactly one cat or one dog appearing in each image. Each image has a spatial resolution of $32\times32$ pixels and is encoded in RGB format using three channels of real-valued entries. The first channel represents the red component of the image, the second channel represents the green component, and the third channel represents the blue component.
 
 You would like to formulate a supervised learning problem in order to develop a deep learning model suited to a given task.
 
@@ -1010,7 +1046,7 @@ You are interested in three different tasks:
 
 For each problem, you want to identify a probabilistic model in the form $p_\theta(y \mid x)$ from a dataset that you will construct:
 \[
-    d = \left( (x_0, y_0), (x_1, y_2), \ldots \right).
+    \mathbf{d} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}.
 \]
 
 \begin{parts}
@@ -1021,18 +1057,18 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
 
         For the first task, $Y$ is the distribution of the beauty score associated with an image. $Y \in \mathbb{R}$.
 
-        For the second task, $Y$ is a binary random variable indicating whether the image contains a dog (let's say $Y=1$ in this case) or a cat ($Y=0$). $Y \in \Delta^2$.
+        For the second task, $Y$ is a binary random variable indicating whether the image contains a dog (let's say $Y=1$ in this case) or a cat ($Y=0$): $Y \in \{0, 1\}$.
 
         For the third case, $Y$ is a collection of categorical random variables $P_{u,v}$, each one associated with each pixel of the image $X$:
         \[
             Y = \bigcup_{v=0}^{31} \bigcup_{u=0}^{31} P_{u,v}.
         \]
-        Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background. $P_{u,v} \in \Delta^3$.
+        Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background: $P_{u,v} \in \{\text{cat}, \text{dog}, \text{background}\}$.
     \end{solution}
 
-    \uplevel{Once the task has been formulated, you construct the dataset $d$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.}
+    \uplevel{Once the task has been formulated, you construct the dataset $\mathbf{d}$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.}
 
-    \part Show that finding the parameters $\theta$ that maximize the likelihood of your model over a sample of $d$,
+    \part Show that finding the parameters $\theta$ that maximize the likelihood of your model over a sample of $\mathbf{d}$,
     \[
         p\left( (x_i,y_i) \mid \theta \right),
     \]
@@ -1082,32 +1118,32 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
             Y \mid X &\sim \text{Categ}\left(q_1 (X), q_2 (X), q_3(X)\right) \\
             \rightarrow p(y \mid x) &\propto (q_1(x))^{\mathbb{I}(y=\text{dog} )}(q_2(x))^{\mathbb{I}(y = \text{cat})}(q_3(x))^{\mathbb{I}(y=\text{background})}
         \end{align*}
-        with $q_1(x)+q_2(x)+q_3(x) = 1$ and with $\mathbb{I}(y=\alpha )$ being 1 if the pixel $y$ belongs to the class $\alpha$, $0$ otherwise. The neural network estimates the probability that each pixel belongs to a dog, a cat, or the background. It outputs $\hat{q}_1(X;\theta)$, $\hat{q}_2(X;\theta)$, and $\hat{q}_3(X;\theta)$, corresponding to the probabilities that a pixel belongs to a dog, a cat, or the background, respectively.
+        with $q_1(x)+q_2(x)+q_3(x) = 1$ and with $\mathbb{I}(y=c)$ being 1 if the pixel $y$ belongs to the class $c$, $0$ otherwise. The neural network estimates the probability that each pixel belongs to a dog, a cat, or the background. It outputs $\hat{q}_1(X;\theta)$, $\hat{q}_2(X;\theta)$, and $\hat{q}_3(X;\theta)$, corresponding to the probabilities that a pixel belongs to a dog, a cat, or the background, respectively.
 
         From the statistical model, and assuming that the samples $(x_i,y_i)$ are independent and identically distributed, a loss function can be derived to maximize the likelihood of the model given the observed dataset $d$:
         \begin{align*}
-            \theta_{\text{MLE}} &= \arg \max_\theta p(d \mid \theta) \\
-            &= \arg \max_\theta p((x_0, y_0), (x_1,y_1), \ldots \mid \theta) \\
-            &= \arg \max _\theta \prod_{i=0}^{500} p(x_i, y_i \mid \theta ) \\
-            &= \arg \max _\theta \prod_{i=0}^{500} p(y_i \mid x_i, \theta ) \\
-            &= \arg \max _\theta \sum_{i=0}^{500} \log (p(y_i \mid x_i, \theta )) \\
-            &= \arg \min _\theta \sum_{i=0}^{500} -\log (p(y_i \mid x_i, \theta )) \\
-            &= \arg \min_\theta \mathcal{L}(\theta,d)
+            \theta_{\text{MLE}} &= \arg \max_\theta p(\mathbf{d} \mid \theta) \\
+            &= \arg \max_\theta p((x_1, y_1), \ldots, (x_N, y_N) \mid \theta) \\
+            &= \arg \max _\theta \prod_{i=1}^{N} p(x_i, y_i \mid \theta ) \\
+            &= \arg \max _\theta \prod_{i=1}^{N} p(y_i \mid x_i, \theta ) \\
+            &= \arg \max _\theta \sum_{i=1}^{N} \log (p(y_i \mid x_i, \theta )) \\
+            &= \arg \min _\theta \sum_{i=1}^{N} -\log (p(y_i \mid x_i, \theta )) \\
+            &= \arg \min_\theta \mathcal{L}(\theta,\mathbf{d})
         \end{align*}
 
         For the first task with Gaussian likelihood, the loss is the mean squared error:
         \[
-            \mathcal{L}(\theta,d) = \frac{1}{500} \sum _{(x_i, y_i)\in d}(y_i - \hat \mu (x_i ; \theta))^2
+            \mathcal{L}(\theta,\mathbf{d}) = \frac{1}{500} \sum _{(x_i, y_i)\in \mathbf{d}}(y_i - \hat \mu (x_i ; \theta))^2
         \]
 
         For the second task with a Bernoulli likelihood, the loss is the binary cross-entropy:
         \[
-            \mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d}y_i \log(\hat q(x_i; \theta)) + (1-y_i)\log (1- \hat q(x_i;\theta))
+            \mathcal{L}(\theta,\mathbf{d}) = -\frac{1}{500} \sum _{(x_i, y_i)\in \mathbf{d}}y_i \log(\hat q(x_i; \theta)) + (1-y_i)\log (1- \hat q(x_i;\theta))
         \]
 
         For the third task with categorical likelihood, the loss is the cross-entropy:
         \[
-            \mathcal{L}(\theta,d) = -\frac{1}{500} \sum _{(x_i, y_i)\in d} \frac{1}{32 \times 32}\sum_{u=0}^{31} \sum_{v=0}^{31}\sum_{c=0}^2 y_{i, c, uv} \log(\hat q_c(x_i; \theta))
+            \mathcal{L}(\theta,\mathbf{d}) = -\frac{1}{500} \sum _{(x_i, y_i)\in \mathbf{d}} \frac{1}{32 \times 32}\sum_{u=0}^{31} \sum_{v=0}^{31}\sum_{c=0}^2 y_{i, c, uv} \log(\hat q_c(x_i; \theta))
         \]
 
         Regarding the output layer, the linear projection
@@ -1156,7 +1192,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
         The problem is a regression problem. The neural network should give an estimate of $\E\{ Y \mid X\}$.
     \end{solution}
 
-    \part Draw a Bayesian network modelling the image, the type of animal and its age. Find a new expression for $p(y \mid x) = p(y \mid x)$ that makes the effect of the type of the animal in the image explicit.
+    \part Draw a Bayesian network modelling the image, the type of animal and its age. Find a new expression for $p(y \mid x)$ that makes the effect of the type of the animal in the image explicit.
 
     \begin{solution}
         Let $A$ denote the random variable describing the type of animal present in the image (let's say $A=1$ if it is a dog). The animal type $A$ depends on the image $X$ and influences the age $Y$. Thus, the age $Y$ depends on both the image $X$ and the animal type $A$.
@@ -1186,7 +1222,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
 
         \begin{align*}
             p(y \mid x) &= \sum _a p(y \mid A=a,x)p(A=a \mid x) \\
-            &=p(y \mid A=1,x)p(A=1 \mid x) + p(y \mid A=0, x) (1-p(A=0 \mid x))
+            &=p(y \mid A=1,x)p(A=1 \mid x) + p(y \mid A=0, x) (1-p(A=1 \mid x))
         \end{align*}
     \end{solution}
 
@@ -1199,10 +1235,10 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
         \begin{align*}
             \E\{Y \mid X \} &= \E \{ \E \{Y \mid X, A \}\} \\
             &=\sum_a \E \{Y \mid X, A=a \} p(A=a \mid X) \\
-            &=\E \{Y \mid X, A=1, \} p(A=1 \mid X) + \E \{Y \mid X, A=0 \} (1-p(A=1 \mid X))
+            &=\E \{Y \mid X, A=1 \} p(A=1 \mid X) + \E \{Y \mid X, A=0 \} (1-p(A=1 \mid X))
         \end{align*}
 
-        The expression can also be obtained directly by applying the expectation operator $\mathbb{E}_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in point~5.
+        The expression can also be obtained directly by applying the expectation operator $\mathbb{E}_{Y\mid X}\{\cdot\}$ to both sides of the expression derived in (e).
 
         The expected age is therefore a weighted mean of the age inferred under the assumption that the image contains a dog and the age inferred under the assumption that it contains a cat. Each age is weighted by the corresponding probability.
 
@@ -1471,13 +1507,13 @@ The predicted class is
                 \begin{array}{l}
                     x_1\leq1 \\
                     x_2\leq2 \\
-                    \hat y \geq 5
+                    \hat y \geq 0.5
                 \end{array}
                 \right.
                 \quad\Longrightarrow\quad
                 \left\{
                 \begin{array}{l}
-                    \{x_1 , x_2 \} \in \phi \\
+                    \text{no } (x_1, x_2) \\
                     \hat c = 1
                 \end{array}
                 \right.
@@ -1560,7 +1596,7 @@ The predicted class is
     \begin{solution}
         The new unit is active when
         \[
-            -2x_1 + -x_2 + 5 > 0
+            -2x_1 - x_2 + 5 > 0
         \]
 
         The three hidden units define seven different linear regions:
@@ -1630,7 +1666,7 @@ The predicted class is
         \begin{enumerate}
             \item[1.]
             \begin{equation*}
-                -2 \geq 0 \rightarrow \{ x_1 ,x_2\} \in \phi
+                -2 \geq 0: \text{ no } (x_1, x_2)
             \end{equation*}
 
             \item[2.]
@@ -1739,12 +1775,6 @@ The predicted class is
                 \node at (axis cs:2.0,3.0) {\Large $ \hat c = 0$};
                 \node at (axis cs:-0.5,5.5) {\Large $ \hat c = 1$};
                 \node at (axis cs:4.2,-3.0) {\Large $ \hat c = 1$};
-                % \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
-                % \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
-                % \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
-                % \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
-                % \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
-                % \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
 
                 \end{axis}
             \end{tikzpicture}
@@ -1806,16 +1836,16 @@ The dimensions of the different units throughout Sandrine's encoder are given be
                + 460800 \times 921600 + 460800 \\
             &\quad + 460800 \times 460800 + 460800
                + 230400 \times 460800 + 230400 \\
-            &= \boxed{3\,033\,907\,430\,400}.
+            &= \boxed{3\,291\,219\,993\,600}.
         \end{align*}
 
-        Thus, using $32$ bits per parameter, the memory required to store the parameters is
+        Thus, using $32$ bits (4 bytes) per parameter, the memory required to store the parameters is
         \begin{align*}
             M
-            &=\frac{12\,135\,629\,721\,600}{2^{40}}\ \mathrm{TB} \\
-            &\approx \boxed{11.04\ \mathrm{TB}}.
+            &= 3\,291\,219\,993\,600 \times 4\ \text{bytes} = \frac{13\,164\,879\,974\,400}{2^{40}}\ \text{TiB} \\
+            &\approx \boxed{11.97\ \text{TiB}}.
         \end{align*}
-        Clearly, the Sandrine's encoder in infeasible.
+        Clearly, Sandrine's encoder is infeasible.
     \end{solution}
 
     \part What is the compression ratio achieved by Sandrine's encoder?
@@ -1828,7 +1858,7 @@ The dimensions of the different units throughout Sandrine's encoder are given be
 
     \uplevel{Karl decides to use a convolutional neural network, also with ReLU nonlinear activations for his encoder.
 
-    Each block of the network consists of a convolutional layer with $3\times3$ kernels, followed by a ReLU activation and a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
+    Each block of the network consists of a convolutional layer with $3\times3$ kernels, followed by a ReLU activation and, in every block but the last, a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
 
     The HD color image is still represented using three channels corresponding to the red, green, and blue components. The dimensions of the different units throughout Karl's encoder are given below:
 
@@ -1880,8 +1910,9 @@ The dimensions of the different units throughout Sandrine's encoder are given be
 
         The ReLU does not modify the dimensions. Finally, the $2\times2$ max-pooling layer reduces each spatial dimension by a factor of $2$. Assuming $b$ and $c$ are even, the output of the block has shape
         \[
-            \boxed{k\times\frac{b}{2}\times\frac{c}{2}}.
+            \boxed{k\times\frac{b}{2}\times\frac{c}{2}},
         \]
+        except for the last block, which has no pooling and keeps the shape $k \times b \times c$.
         The number of kernels and their shapes throughout the network are:
         \begin{enumerate}
             \item $4$ kernels of shape $3\times3\times3$,
@@ -1905,9 +1936,9 @@ The dimensions of the different units throughout Sandrine's encoder are given be
         Thus, using $32$ bits per parameter, the memory required to store the parameters is
         \begin{align*}
             M
-            &= 7368\times32\ \text{bits} \\
-            &= \frac{29\,472}{2^{20}}\ \text{MB} \\
-            &\approx \boxed{0.0281\ \text{MB}}.
+            &= 7368\times4\ \text{bytes} = 29\,472\ \text{bytes} \\
+            &= \frac{29\,472}{2^{10}}\ \text{KiB} \\
+            &\approx \boxed{28.8\ \text{KiB}}.
         \end{align*}
         Karl's encoder clearly fits in a laptop.
     \end{solution}
@@ -1928,18 +1959,49 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
 \begin{parts}
     \part Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
 
+    \begin{solution}
+        At each step $t$ of the games we watch, the Grandmaster perceives $e_t$ and plays $a_t \in \mathcal{A} = \{\text{North}, \text{South}, \text{East}, \text{West}, \text{Stop}\}$; Pacman's world is fully observable, so $e_t = s_t$. Each step gives an input-output pair $(\mathbf{x}_i, y_i)$, with features $\mathbf{x}_i = g(e_t) \in \mathbb{R}^d$ computed from the game state (positions of Pacman, the ghosts and the food, distances, walls around Pacman, \ldots) and the label $y_i = a_t$. Collecting $N$ steps gives a dataset $\mathbf{d} = \{(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_N, y_N)\}$.
+
+        The inference problem is a classification problem with $|\mathcal{A}|$ classes: we look for a model $P_\theta(y \mid \mathbf{x})$ of the Grandmaster's choice given the features, whose parameters $\theta$ maximize the likelihood of $\mathbf{d}$,
+        \[
+            \theta^* = \arg\max_\theta \prod_{i=1}^N P_\theta(y_i \mid \mathbf{x}_i).
+        \]
+        Since there is no closed-form solution for a neural network, we minimize the negative log-likelihood by (stochastic) gradient descent. Our agent is then the simple reflex agent $\pi_\theta(e_t) = \arg\max_{a \in \mathcal{A}} P_{\theta^*}(a \mid g(e_t))$, whose condition-action rules are learned from the Grandmaster rather than written by hand.
+    \end{solution}
+
     \part How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
+
+    \begin{solution}
+        A multilayer perceptron with input $\mathbf{x} = g(e_t) \in \mathbb{R}^d$, $K$ hidden layers and $C = |\mathcal{A}| = 5$ outputs:
+        \begin{align*}
+            \mathbf{h}_0 & = \mathbf{x}, \\
+            \mathbf{h}_k & = \ReLU(\mathbf{W}_k \mathbf{h}_{k-1} + \mathbf{b}_k), \quad k = 1, \ldots, K, \\
+            f(\mathbf{x}; \theta) & = \mathrm{Softmax}(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y),
+        \end{align*}
+        with $\mathbf{W}_k \in \mathbb{R}^{q_k \times q_{k-1}}$, $\mathbf{b}_k \in \mathbb{R}^{q_k}$ ($q_0 = d$), $\mathbf{W}_y \in \mathbb{R}^{C \times q_K}$ and $\mathbf{b}_y \in \mathbb{R}^C$, so that $\theta = \{\mathbf{W}_1, \mathbf{b}_1, \ldots, \mathbf{W}_K, \mathbf{b}_K, \mathbf{W}_y, \mathbf{b}_y\}$. The output $f_a(\mathbf{x}; \theta)$ is the probability $P_\theta(a \mid \mathbf{x})$ that the Grandmaster plays $a$. Numbering the actions $0, \ldots, C-1$, the loss is the cross-entropy, the negative log-likelihood of $\mathbf{d}$:
+        \[
+            \mathcal{L}(\theta) = -\frac{1}{N} \sum_{i=1}^N \log f_{y_i}(\mathbf{x}_i; \theta).
+        \]
+        Illegal actions (into a wall) can be masked by setting their probability to zero before taking the $\arg\max$.
+    \end{solution}
 
     \part Discuss the expected performance of the resulting agent when \begin{enumerate*}
         \item the Grandmaster agent is optimal, and
         \item the Grandmaster agent is suboptimal.
     \end{enumerate*}
+
+    \begin{solution}
+        \begin{enumerate*}
+            \item If the Grandmaster is optimal, our agent is at best as good as the Grandmaster, and in practice worse. It only imitates the Grandmaster on the states the Grandmaster visits: once a small error leads it to a state that never appears in $\mathbf{d}$, its predictions there are unreliable and errors can compound over the rest of the game. More data, from varied situations, and features $g$ that generalize across mazes reduce this effect.
+            \item If the Grandmaster is suboptimal, our agent learns its mistakes along with its good moves, since the loss only rewards agreeing with the Grandmaster. Nothing in the data tells which moves were good: doing better requires a signal about the outcome of the moves, such as the score, which is the setting of reinforcement learning.
+        \end{enumerate*}
+    \end{solution}
 \end{parts}
 
 \end{exercises}
 
 \begin{quiz}
-    \item We build a MLP with 2 hidden layers of 32 units, ReLU activations and squared error loss. We discard the biases from our linear layers. We know that our input is a vector of 2 elements and the output is a scalar. How much parameters do we have in the network?
+    \item We build a MLP with 2 hidden layers of 32 units, ReLU activations and squared error loss. We discard the biases from our linear layers. We know that our input is a vector of 2 elements and the output is a scalar. How many parameters do we have in the network?
     \begin{enumerate}[label=$\bigcirc$]
         \item 1024.
         \item \correct{1120.}
@@ -1964,7 +2026,7 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
         \item It can be done with a convolution layer with a kernel $(K+ 1, K+1)$ or a linear layer with weight matrix $(HW, KK)$.
     \end{enumerate}
 
-    \item From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If only look at weight parameters (no biases)\ldots
+    \item From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If we only look at weight parameters (no biases)\ldots
     \begin{enumerate}[label=$\bigcirc$]
         \item The number of parameters of both the linear and convolution layer are doubled.
         \item The linear layer will have twice more parameters and the convolution twice less.
@@ -1988,7 +2050,7 @@ You observe a Grandmaster agent playing Pacman. How can you use the moves you ob
     \begin{enumerate}[label=$\bigcirc$]
         \item Yes, since he's updating using the gradient of $x$.
         \item Yes, but not for the reason above.
-        \item No, since he is updating updating $x$ in the wrong direction.
+        \item No, since he is updating $x$ in the wrong direction.
         \item \correct{No, but not for the reason above.}
     \end{enumerate}
 \end{quiz}
