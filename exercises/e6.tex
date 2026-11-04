@@ -543,7 +543,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \begin{center}
         \begin{tikzpicture}[network diagram]
             \node[constant unit] (C1) at (0, 2) {$1$};
-            \node[constant unit] (C2) at (3, 2) {$1$};
+            \node[constant unit] (C2) at (4.6, 1.9) {$1$};
             \node[unit] (X) at (0, 0) {$x$};
             \node[unit] (H0) at (3, 0.9) {$h_0$};
             \node[unit] (H1) at (3, -0.9) {$h_1$};
@@ -554,7 +554,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
             \draw[connection] (C1) -- node[weight, pos=0.2] {$b_1$} (H1);
             \draw[connection] (H0) -- node[weight] {$v_0$} (Y);
             \draw[connection] (H1) -- node[weight] {$v_1$} (Y);
-            \draw[connection] (C2) -- node[weight, pos=0.6] {$c$} (Y);
+            \draw[connection] (C2) -- node[weight] {$c$} (Y);
         \end{tikzpicture}
     \end{center}
 
@@ -567,7 +567,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \begin{center}
         \begin{tikzpicture}[network diagram]
             \node[constant unit] (C1) at (0, 2) {$1$};
-            \node[constant unit] (C2) at (3, 2) {$1$};
+            \node[constant unit] (C2) at (4.6, 1.9) {$1$};
             \node[unit] (X) at (0, 0) {$x$};
             \node[unit] (H0) at (3, 0.9) {$h_0$};
             \node[unit] (H1) at (3, -0.9) {$h_1$};
@@ -578,7 +578,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
             \draw[connection] (C1) -- node[weight, pos=0.2] {$b_1$} (H1);
             \draw[connection] (H0) -- node[weight] {$v_0$} (Y);
             \draw[connection] (H1) -- node[weight] {$v_1$} (Y);
-            \draw[connection] (C2) -- node[weight, pos=0.6] {$c$} (Y);
+            \draw[connection] (C2) -- node[weight] {$c$} (Y);
             \node[tag, above=1mm] at (H0.north) {ReLU};
             \node[tag, below=1mm] at (H1.south) {ReLU};
         \end{tikzpicture}
@@ -652,7 +652,25 @@ For example, $y = \ReLU(x + 2) - \ReLU(-2x)$ is a valid function.
 Consider the following simple neural network for binary classification. Here $x$ is a single real-valued input feature with an associated class $y$ (0 or 1). There are two weight parameters $w_1$ and $w_2$, and non-linearity functions $g_1$ and $g_2$. The network will output a value $a_2$ between 0 and 1, representing the probability of being in class 1. We will be using a loss function $\mathcal{L}$ to compare the prediction $a_2$ with the true class $y$.
 
 \begin{center}
-    \includegraphics[width=\linewidth]{figures/classif_2.png}
+    \begin{tikzpicture}[computation diagram, x=0.95cm]
+        \node[variable node] (X) at (0, 0) {$x$};
+        \node[variable node] (Z1) at (2, 0) {$z_1$};
+        \node[operation node] (G1) at (3.4, 0) {$g_1$};
+        \node[variable node] (A1) at (4.8, 0) {$a_1$};
+        \node[variable node] (Z2) at (6.8, 0) {$z_2$};
+        \node[operation node] (G2) at (8.2, 0) {$g_2$};
+        \node[variable node] (A2) at (9.6, 0) {$a_2$};
+        \node[variable node] (L) at (11.4, 0) {$\mathcal{L}$};
+        \node[variable node] (Y) at (11.4, 1.5) {$y$};
+        \draw[connection] (X) -- node[weight] {$w_1$} (Z1);
+        \draw[connection] (Z1) -- (G1);
+        \draw[connection] (G1) -- (A1);
+        \draw[connection] (A1) -- node[weight] {$w_2$} (Z2);
+        \draw[connection] (Z2) -- (G2);
+        \draw[connection] (G2) -- (A2);
+        \draw[connection] (A2) -- (L);
+        \draw[connection] (Y) -- (L);
+    \end{tikzpicture}
 \end{center}
 
 \begin{parts}
@@ -677,7 +695,7 @@ Consider the following simple neural network for binary classification. Here $x$
         For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}^N$ where $y_i$ acts as a target for the network.
     \end{solution}
 
-    \part Using the chain rule, differentiate $\mathcal{L}$ w.r.t. $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in (a) will be helpful; you may use any of those variables.)
+    \part Using the chain rule, differentiate $\mathcal{L}$ with respect to $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in (a) will be helpful; you may use any of those variables.)
 
     \begin{solution}
         \[
@@ -685,19 +703,14 @@ Consider the following simple neural network for binary classification. Here $x$
         \]
     \end{solution}
 
-    \part Motivate a choice for the output activation function $g_2$ given the nature of the problem. Motivate also a loss function. Give the expression of the gradients of both functions w.r.t. to their inputs.
+    \part Motivate a choice for the output activation function $g_2$ given the nature of the problem. Motivate also a loss function. Give the expression of the gradients of both functions with respect to their inputs.
 
     \begin{solution}
-        From the statement
-        \begin{enumerate}[label=(\alph*)]
-            \item we know that we are in a classification problem (specifically, a binary classification),
-            \item we know that the output $a_2$ should be between 0 and 1 and represents the probability $p(Y = 1 \mid x)$.
-        \end{enumerate}
-        From (b), we have $a_2: \mathbb{R} \mapsto [0,1]$. A typical choice that fulfill this requirement is the sigmoid function $\sigma(z) = \dfrac{1}{1 + e^{-z}}$. The gradient of the sigmoid w.r.t. its input is
+        The problem is a binary classification, and the output $a_2$ is the probability $P(Y = 1 \mid x)$, between 0 and 1. The output activation must therefore map $\mathbb{R}$ to $(0, 1)$: a typical choice that fulfills this requirement is the sigmoid function $\sigma(z) = \dfrac{1}{1 + e^{-z}}$, $\sigma: \mathbb{R} \to (0, 1)$. The gradient of the sigmoid with respect to its input is
         \[
             \dfrac{\partial \sigma(z)}{\partial z} = \dfrac{e^{-z}}{(1 + e^{-z})^2} = \sigma(z)\sigma(-z) = \sigma(z)(1-\sigma(z)).
         \]
-        For the loss function, either we remember the cross-entropy loss seen in the theoretical lecture, or we compute it from maximum likelihood estimation.
+        For the loss function, we derive the cross-entropy from maximum likelihood estimation.
 
         The likelihood of a pair $(x, y)$ can be derived from our model as
         \[
@@ -706,15 +719,15 @@ Consider the following simple neural network for binary classification. Here $x$
                 \text{if } y = 0\ \text{ then }\ P(Y = y \mid x) = 1 -\text{NN}_{\theta}(x)
             \end{cases}
         \]
-        where $\text{NN}_{\theta}$ is the neural network parameterized by $\theta = [w_1, w_2]$. Denoting $\text{NN}_{\theta}(x) = a_2$, the likelihood expression for one pair can be reformulated as
+        where $\text{NN}_{\theta}$ is the neural network parameterized by $\theta = [w_1, w_2]$. Denoting $\text{NN}_{\theta}(x) = a_2$, the likelihood of one pair is $a_2^y (1 - a_2)^{1-y}$, and its log-likelihood is
         \[
-            L(x, y; \theta) = y\log a_2 + (1-y) \log (1 - a_2).
+            \log L(x, y; \theta) = y\log a_2 + (1-y) \log (1 - a_2).
         \]
-        Since we want to maximize the likelihood, but minimize the loss, we can set the latter to
+        Since we want to maximize the log-likelihood, but minimize the loss, we can set the latter to
         \[
             \mathcal{L}(a_2, y) = -y\log a_2 - (1-y) \log (1 - a_2)
         \]
-        which corresponds to the binary cross-entropy loss. The gradient of the loss w.r.t. $a_2$ is
+        which corresponds to the binary cross-entropy loss. The gradient of the loss with respect to $a_2$ is
         \[
             \dfrac{\partial \mathcal{L}(a_2, y)}{\partial a_2} = -\dfrac{y}{a_2} + \dfrac{(1-y)}{(1-a_2)} = \dfrac{a_2 - y}{a_2(1- a_2)}.
         \]
@@ -727,7 +740,7 @@ Consider the following simple neural network for binary classification. Here $x$
     and $g_1$ and $g_2$ are both sigmoid functions $\sigma(z) = \frac{1}{1 + e^{-z}}$. If you made this choice in the previous question, use your results to get the expression of $\frac{\partial \mathcal{L}}{\partial w_2}$. Otherwise, start by expressing $\frac{\partial \sigma(z)}{\partial z}$ and $\frac{\partial \mathcal{L}}{\partial a_2}$.
 
     \begin{solution}
-        We first miss $\frac{\partial z_2}{\partial w_2}$ which is
+        We still need $\frac{\partial z_2}{\partial w_2}$, which is
         \[
             \frac{\partial z_2}{\partial w_2} = \frac{\partial}{\partial w_2} (w_2a_1) = a_1.
         \]
@@ -770,7 +783,7 @@ Consider the following simple neural network for binary classification. Here $x$
         \[
             w_1 \leftarrow w_1 - \alpha (a_2 - y)w_2 a_1(1-a_1)x.
         \]
-        You see here the importance of the forward pass. Iteratively, when receiving the input $x$, we compute all the intermediate activations (here, $a_1$ and $a_2$) and the loss (given $y$). Then, we propagate backward (from the output to the input) the values following the chain rule for the gradient of the loss w.r.t. parameters of interest. Finally, we update the parameters using the computed gradient.
+        You see here the importance of the forward pass. Iteratively, when receiving the input $x$, we compute all the intermediate activations (here, $a_1$ and $a_2$) and the loss (given $y$). Then, we propagate backward (from the output to the input) the values following the chain rule for the gradient of the loss with respect to the parameters of interest. Finally, we update the parameters using the computed gradient.
     \end{solution}
 \end{parts}
 
