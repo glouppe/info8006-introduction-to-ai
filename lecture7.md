@@ -488,9 +488,12 @@ class: middle
 
 ## Universal approximation theorem
 
-The .bold[universal approximation theorem] states that any continuous function on a closed and bounded domain can be approximated arbitrarily well by a shallow network with sufficiently many hidden units, provided that the activation function is not a polynomial. 
+.bold[Theorem] (Cybenko, 1989; Leshno et al., 1993). Let ${\sigma : \mathbb{R} \to \mathbb{R}}$ be continuous and not a polynomial. For every compact set ${K \subset \mathbb{R}^{d\_\text{in}}}$, every continuous function ${f : K \to \mathbb{R}}$ and every $\epsilon > 0$, there exist $q$, $w\_{ji}$, $b\_j$, $v\_j$ and $c$ such that
+$$\sup\_{\mathbf{x} \in K} \left| f(\mathbf{x}) - \left( \sum\_{j=0}^{q-1} v\_j \\, \sigma\left( \sum\_{i=0}^{d\_\text{in}-1} w\_{ji} x\_i + b\_j \right) + c \right) \right| < \epsilon.$$
 
-For example, for 1d input and 1d output, any continuous function $f: [a, b] \to \mathbb{R}$ can be approximated to arbitrary accuracy by a piecewise linear function with enough linear segments, which can be represented by a shallow network with enough hidden units.
+A shallow network with enough hidden units approximates any continuous function on a closed and bounded domain arbitrarily well.
+
+For $d\_\text{in} = 1$ and ReLU units, each hidden unit adds one joint to a piecewise linear approximation of $f$.
 
 ???
 
