@@ -20,66 +20,52 @@
 
 \begin{recap}
     \topic{Making decisions}
-    \emph{Markov decision processes.} A \term{Markov decision process} (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ such that
-    \begin{itemize}
-        \item $\mathcal{S}$ is a set of \term{states} $s$;
-        \item $\mathcal{A}$ is a set of \term{actions} $a$;
-        \item $P$ is a (stationary) \term{transition model} such that $P(s' \mid s, a)$ denotes the probability of reaching state $s'$ if action $a$ is done in state $s$;
-        \item $R$ is a \term{reward function} that maps immediate (finite) reward values $R(s)$ obtained in states $s$,
-    \end{itemize}
-    and $0 < \gamma \leq 1$ is the \term{discount factor}.
+    \emph{Markov decision processes.} A \term{Markov decision process} (MDP) is a tuple $(\mathcal{S}, \mathcal{A}, P, R)$ of \term{states} $s \in \mathcal{S}$, \term{actions} $a \in \mathcal{A}$, a \term{transition model} $P(s' \mid s, a)$ and a \term{reward function} $R(s)$, with a \term{discount factor} $0 < \gamma \leq 1$.
 
-    \emph{Utilities and policies.} The \term{discounted utility} of a reward sequence is $V([r_0, r_1, r_2, \ldots]) = r_0 + \gamma r_1 + \gamma^2 r_2 + \ldots$, which is additive for $\gamma = 1$. A \term{policy} $\pi : \mathcal{S} \to \mathcal{A}$ maps states to actions, and the expected utility obtained by executing $\pi$ starting in $s$ is
+    \emph{Utilities and policies.} A \term{policy} $\pi : \mathcal{S} \to \mathcal{A}$ has the expected utility
     \[
         V^\pi(s) = \mathbb{E}\left[\sum_{t \geq 0} \gamma^t R(s_t) \mid s_0 = s, \pi \right].
     \]
-    The \term{optimal policy} $\pi^*$ maximizes the expected utility, and the \term{value} of a state is $V(s) = V^{\pi^*}(s)$. Then, $\pi^*(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V(s')$.
+    The \term{optimal policy} $\pi^*$ maximizes it, the \term{value} of a state is $V(s) = V^{\pi^*}(s)$, and $\pi^*(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V(s')$.
 
-    \emph{Bellman equation.} The utility of a state is the immediate reward for that state, plus the expected discounted utility of the next state, assuming that the agent chooses the optimal action:
+    \emph{Bellman equation.}
     \[
-        V(s) = R(s) + \gamma \max_a \sum_{s'} P(s' \mid s, a) V(s').
+        V(s) = R(s) + \gamma \max_a \sum_{s'} P(s' \mid s, a) V(s'),
     \]
-    When the reward depends on the transition, $R(s, a, s')$, it moves under the sum: $V(s) = \max_a \sum_{s'} P(s' \mid s, a) [R(s, a, s') + \gamma V(s')]$.
+    or, with rewards on transitions, $V(s) = \max_a \sum_{s'} P(s' \mid s, a) [R(s, a, s') + \gamma V(s')]$.
 
-    \emph{Value iteration.} Starting from initial estimates $V_0(s)$, \term{value iteration} repeats the \term{Bellman update}
+    \emph{Value iteration.} From $V_0$, repeat the \term{Bellman update}
     \[
         V_{i+1}(s) = R(s) + \gamma \max_a \sum_{s'} P(s' \mid s, a) V_i(s')
     \]
-    until convergence. It converges to the unique solution of the Bellman equations whenever $\gamma < 1$, and also for $\gamma = 1$ when every policy reaches a terminal state.
+    until convergence, guaranteed for $\gamma < 1$, and for $\gamma = 1$ when every policy reaches a terminal state.
 
-    \emph{Policy iteration.} \term{Policy iteration} alternates \term{policy evaluation}, which calculates $V_i = V^{\pi_i}$ by solving the linear equations $V_i(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$, and \term{policy improvement},
-    \[
-        \pi_{i+1}(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V_i(s').
-    \]
-    \term{Modified policy iteration} replaces the exact evaluation by a few simplified Bellman updates $V_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$.
+    \emph{Policy iteration.} Alternate \term{policy evaluation}, solving $V_i(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$, and \term{policy improvement}, $\pi_{i+1}(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V_i(s')$. \term{Modified policy iteration} replaces the evaluation by a few updates $V_{i+1}(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi_i(s)) V_i(s')$.
 
-    \emph{Partially observable MDPs.} When the state is not observed, the agent collects percepts $e$ through a sensor model $P(e \mid s)$ and maintains a \term{belief state} $b$, a distribution over states. After doing $a$ and perceiving $e$, it becomes
+    \emph{Partially observable MDPs.} The agent perceives $e$ through a sensor model $P(e \mid s)$ and maintains a \term{belief state} $b$ over the states. After doing $a$ and perceiving $e$,
     \[
         b' = \alpha \mathbf{P}(e \mid S') \sum_s \mathbf{P}(S' \mid s, a) b(s).
     \]
-    The optimal action depends only on $b$: a POMDP is an MDP over belief states, with the reward $\rho(b) = \sum_s b(s) R(s)$.
+    A POMDP is an MDP over belief states, with the reward $\rho(b) = \sum_s b(s) R(s)$.
 
     \topic{Reinforcement learning}
-    \emph{Reinforcement learning.} In \term{reinforcement learning}, the transition model $P(s' \mid s, a)$ and the reward function $R(s)$ are unknown: the agent learns from trials, whose trajectories are sequences of transitions $(s, r, a, s')$, each holding a state, its reward $r = R(s)$, the action done and the next state. In \term{passive RL}, the policy $\pi$ is fixed and the agent learns the utilities $V^\pi(s)$; in \term{active RL}, it learns the optimal policy $\pi^*$. A \term{model-based} agent estimates $\hat{P}(s' \mid s, a)$ and $\hat{R}(s)$ from experience and solves the resulting empirical MDP. A \term{model-free} agent does not; for instance, \term{direct utility estimation} approximates $V^\pi(s)$ by the sample average of the observed rewards-to-go from $s$.
+    \emph{Reinforcement learning.} $P$ and $R$ are unknown; the agent observes transitions $(s, r, a, s')$, with $r = R(s)$. In \term{passive RL}, the policy $\pi$ is fixed and the agent learns $V^\pi$; in \term{active RL}, it learns $\pi^*$. A \term{model-based} agent estimates $\hat{P}(s' \mid s, a)$ and $\hat{R}(s)$ and solves the resulting MDP. \term{Direct utility estimation} approximates $V^\pi(s)$ by the average of the observed rewards-to-go from $s$.
 
-    \emph{Temporal-difference learning.} \term{Temporal-difference} (TD) \term{learning} updates $V^\pi(s)$ each time the agent experiences a transition $(s, r = R(s), a = \pi(s), s')$, to better agree with the Bellman equations for a fixed policy:
+    \emph{Temporal-difference learning.} For each transition $(s, r, a = \pi(s), s')$, with the \term{learning rate} $\alpha$,
     \[
-        V^\pi(s) \leftarrow V^\pi(s) + \alpha (r + \gamma V^\pi(s') - V^\pi(s)),
+        V^\pi(s) \leftarrow V^\pi(s) + \alpha (r + \gamma V^\pi(s') - V^\pi(s)).
     \]
-    where $\alpha$ is the \term{learning rate}.
 
-    \emph{Exploration.} An agent that always acts greedily with respect to its current estimates may never discover better actions. An \term{$\epsilon$-greedy} agent acts randomly with a small probability $\epsilon$ and follows its current policy otherwise. An \term{exploration function} $f(v, n)$, such as $f(v, n) = v + K/n$, instead makes the agent optimistic about the actions it has tried $n$ times only, in $V^+_{i+1}(s) = R(s) + \gamma \max_a f\left(\sum_{s'} P(s' \mid s, a) V^+_i(s'), N(s, a)\right)$.
+    \emph{Exploration.} An \term{$\epsilon$-greedy} agent acts randomly with probability $\epsilon$. An \term{exploration function}, such as $f(v, n) = v + K/n$, is optimistic about actions tried $n$ times only: $V^+_{i+1}(s) = R(s) + \gamma \max_a f\left(\sum_{s'} P(s' \mid s, a) V^+_i(s'), N(s, a)\right)$.
 
-    \emph{Q-Learning.} The \term{state-action-value} $Q(s, a)$ is the expected utility starting out having taken action $a$ from $s$ and thereafter acting optimally, so that $V(s) = \max_a Q(s, a)$ and $\pi^*(s) = \arg \max_a Q(s, a)$. \term{Q-Learning} learns it in a model-free fashion, by updating $Q(s, a)$ each time the agent experiences a transition $(s, r, a, s')$:
+    \emph{Q-Learning.} The \term{state-action-value} $Q(s, a)$ is the expected utility of doing $a$ in $s$ and acting optimally thereafter, so that $V(s) = \max_a Q(s, a)$ and $\pi^*(s) = \arg \max_a Q(s, a)$. For each transition $(s, r, a, s')$,
     \[
-        Q(s, a) \leftarrow Q(s, a) + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)).
+        Q(s, a) \leftarrow Q(s, a) + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)),
     \]
-    It converges to the optimal Q-values, even when acting suboptimally, provided it explores enough. In \term{approximate Q-Learning}, $Q(s, a) = w_1 f_1(s, a) + \ldots + w_d f_d(s, a)$ is a linear model of features $f_k(s, a)$, and the update becomes $w_k \leftarrow w_k + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)) f_k(s, a)$.
+    which converges to the optimal Q-values provided the agent explores enough. In \term{approximate Q-Learning}, $Q(s, a) = \sum_k w_k f_k(s, a)$ and $w_k \leftarrow w_k + \alpha (r + \gamma \max_{a'} Q(s', a') - Q(s, a)) f_k(s, a)$.
 \end{recap}
 
-\begin{exercises}[1, 4]
-
-\exercisegroup{Making decisions}
+\begin{exercises}[1, 2 (a)--(b) and 4 (December 3), 5 (a) and 6 (December 10)]
 
 \titledquestion{Micro-Blackjack \source{CS188, Spring 2014}}
 
@@ -309,8 +295,6 @@ For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghos
         \end{equation*}
     \end{solution}
 \end{parts}
-
-\exercisegroup{Reinforcement learning}
 
 \titledquestion{Passive reinforcement learning}
 
