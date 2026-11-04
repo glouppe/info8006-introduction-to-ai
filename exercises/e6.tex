@@ -114,7 +114,7 @@
     \[
         \theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t),
     \]
-    where $\theta_0$ are the initial parameters of the model and $\alpha$ is the \term{learning rate}. When $\mathcal{L}(\theta) = \frac{1}{N} \sum_{i} \ell(y_i, f(\mathbf{x}_i; \theta))$, \term{stochastic gradient descent} replaces the gradient by its average over a random minibatch of the pairs.
+    where $\theta_0$ are the initial parameters of the model and $\alpha$ is the \term{learning rate}. When $\mathcal{L}(\theta) = \frac{1}{N} \sum_{i} \ell(y_i, f(\mathbf{x}_i; \theta))$, \term{stochastic gradient descent} replaces the gradient of $\mathcal{L}$ by the average gradient of $\ell$ over a random minibatch of the pairs.
 
     \emph{Chain rule.} The gradient of the loss is obtained by the chain rule. For example, for $h_1 = \sigma(w_1 x + b_1)$, $\hat{y} = w_2 h_1 + b_2$ and $\ell = (y - \hat{y})^2$, the chain $w_1 \to h_1 \to \hat{y} \to \ell$ gives
     \[
@@ -167,38 +167,38 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \end{equation*}
     \end{solution}
 
-    \part Suppose now that the parameters are unknown, and that the scores $x_3$ on the held-out test set are not observed. Given a learning set $\mathbf{d} = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, derive the maximum likelihood estimate of the parameters of $p(y \mid x_1, x_2)$.
+    \part Suppose now that the parameters are unknown, and that the scores $x_3$ on the held-out test set are not observed. Given a dataset $\mathbf{d} = \cbk{(x_{i,1}, x_{i,2}, y_i)}$ of $N$ independent and identically distributed points, derive the maximum likelihood estimate of the parameters of $p(y \mid x_1, x_2)$.
 
     \begin{solution}
         \allowdisplaybreaks
-        We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(y \mid w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $h = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $d$, \ie{} the \emph{maximum likelihood estimation} (MLE)
+        We know that the distribution of $y$ given $x_1$ and $x_2$ takes the form $\N(y \mid w_1 x_1 + w_2 x_2 + b, \sigma^2)$. Then, our task is to find the parameters $\theta = (w_1, w_2, b, \sigma)$ that maximize the likelihood of $\mathbf{d}$, \ie{} the \emph{maximum likelihood estimation} (MLE)
         \begin{align*}
-            h_{\text{MLE}} & = \arg \max_h p(\mathbf{d} \mid h) \\
-            & = \arg \max_h \prod_i p(x_i, y_i \mid h) \\
-            & = \arg \max_h \log \prod_i p(x_i, y_i \mid h) \\
-            & = \arg \max_h \sum_i \log p(x_i, y_i \mid h) \\
-            & = \arg \max_h \sum_i \log p(y_i \mid h, x_i) + \log p(x_i) \\
-            & = \arg \max_h \sum_i \log p(y_i \mid h, x_i) \\
-            & = \arg \max_h \sum_i \log \sbk*{\frac{1}{\sqrt{2 \pi \sigma^2}} \exp\rbk*{- \frac{(w^T x_i - y_i)^2}{2 \sigma^2}}} \\
-            & = \arg \max_h \sum_i - \frac{1}{2} \log (2 \pi \sigma^2) - \frac{(w^T x_i - y_i)^2}{2 \sigma^2} \\
-            & = \arg \min_h \log \sigma^2 + \frac{1}{\sigma^2} \frac{1}{N} \sum_i (w^T x_i - y_i)^2 ,
+            \theta_{\text{MLE}} & = \arg \max_\theta p(\mathbf{d} \mid \theta) \\
+            & = \arg \max_\theta \prod_i p(\mathbf{x}_i, y_i \mid \theta) \\
+            & = \arg \max_\theta \log \prod_i p(\mathbf{x}_i, y_i \mid \theta) \\
+            & = \arg \max_\theta \sum_i \log p(\mathbf{x}_i, y_i \mid \theta) \\
+            & = \arg \max_\theta \sum_i \log p(y_i \mid \theta, \mathbf{x}_i) + \log p(\mathbf{x}_i) \\
+            & = \arg \max_\theta \sum_i \log p(y_i \mid \theta, \mathbf{x}_i) \\
+            & = \arg \max_\theta \sum_i \log \sbk*{\frac{1}{\sqrt{2 \pi \sigma^2}} \exp\rbk*{- \frac{(\mathbf{w}^T \mathbf{x}_i - y_i)^2}{2 \sigma^2}}} \\
+            & = \arg \max_\theta \sum_i - \frac{1}{2} \log (2 \pi \sigma^2) - \frac{(\mathbf{w}^T \mathbf{x}_i - y_i)^2}{2 \sigma^2} \\
+            & = \arg \min_\theta \log \sigma^2 + \frac{1}{\sigma^2} \frac{1}{N} \sum_i (\mathbf{w}^T \mathbf{x}_i - y_i)^2 ,
         \end{align*}
-        where $x_i = \mat{x_{i,1} & x_{i,2} & 1}^T$ and $w = \mat{w_1 & w_2 & b}^T$. In the last expression, we observe that the minimizer of the summation term is independent of $\sigma$. Therefore,
+        where $\mathbf{x}_i = \mat{x_{i,1} & x_{i,2} & 1}^T$ and $\mathbf{w} = \mat{w_1 & w_2 & b}^T$. In the last expression, we observe that the minimizer of the summation term is independent of $\sigma$. Therefore,
         \begin{align*}
-            w_{\text{MLE}} & = \arg \min_w \sum_i (w^T x_i - y_i)^2 ,
+            \mathbf{w}_{\text{MLE}} & = \arg \min_{\mathbf{w}} \sum_i (\mathbf{w}^T \mathbf{x}_i - y_i)^2 ,
         \end{align*}
-        which exactly corresponds to a \emph{linear regression} problem. Then, we find $w_{\text{MLE}}$ by canceling the gradient with respect to $w$, \ie{}
+        which exactly corresponds to a \emph{linear regression} problem. Then, we find $\mathbf{w}_{\text{MLE}}$ by canceling the gradient with respect to $\mathbf{w}$, \ie{}
         \begin{align*}
-            0 & = \nabla_{\!w} \sum_i (w^T x_i - y_i)^2 \\
-            & = \nabla_{\!w} \sum_i (w^T x_i - y_i) (w^T x_i - y_i) \\
-            & = \nabla_{\!w} \sum_i \rbk*{(w^T x_i)^2 + y_i^2 - 2 w^T x_i y_i} \\
-            & = \nabla_{\!w} \rbk*{w^T X^T X w + Y^T Y - 2 w^T X^T Y} \\
-            & = 2 X^T X w - 2 X^T Y
+            0 & = \nabla_{\!\mathbf{w}} \sum_i (\mathbf{w}^T \mathbf{x}_i - y_i)^2 \\
+            & = \nabla_{\!\mathbf{w}} \sum_i (\mathbf{w}^T \mathbf{x}_i - y_i) (\mathbf{w}^T \mathbf{x}_i - y_i) \\
+            & = \nabla_{\!\mathbf{w}} \sum_i \rbk*{(\mathbf{w}^T \mathbf{x}_i)^2 + y_i^2 - 2 \mathbf{w}^T \mathbf{x}_i y_i} \\
+            & = \nabla_{\!\mathbf{w}} \rbk*{\mathbf{w}^T \mathbf{X}^T \mathbf{X} \mathbf{w} + \mathbf{y}^T \mathbf{y} - 2 \mathbf{w}^T \mathbf{X}^T \mathbf{y}} \\
+            & = 2 \mathbf{X}^T \mathbf{X} \mathbf{w} - 2 \mathbf{X}^T \mathbf{y}
         \end{align*}
-        where $X = (x_i^T) \in \R^{N \times 3}$ and $Y = (y_i) \in \R^{N}$. Finally, we have
+        where $\mathbf{X} = (\mathbf{x}_i^T) \in \R^{N \times 3}$ and $\mathbf{y} = (y_i) \in \R^{N}$. Finally, we have
         \begin{alignat*}{2}
-            && 0 & = X^T X w_{\text{MLE}} - X^T Y \\
-            \Leftrightarrow \quad && w_{\text{MLE}} & = (X^T X)^{-1} X^T Y .
+            && 0 & = \mathbf{X}^T \mathbf{X} \mathbf{w}_{\text{MLE}} - \mathbf{X}^T \mathbf{y} \\
+            \Leftrightarrow \quad && \mathbf{w}_{\text{MLE}} & = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y} .
         \end{alignat*}
         Afterwards, we find $\sigma_{\text{MLE}}$ such that
         \begin{align*}
@@ -207,7 +207,7 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         \end{align*}
         where $\text{MSE}$ denotes the \emph{mean squared error}
         \begin{equation*}
-            \frac{1}{N} \sum_i ({w_{\text{MLE}}}^T x_i - y_i)^2 .
+            \frac{1}{N} \sum_i (\mathbf{w}_{\text{MLE}}^T \mathbf{x}_i - y_i)^2 .
         \end{equation*}
         By (a), the fitted parameters estimate combinations of those of the network, $w_1 = a_3$, $w_2 = a_4 + a_5 a_2$, $b = a_5 \mu_3 + \mu_y$ and $\sigma^2 = a_5^2 \sigma_3^2 + \sigma_y^2$. Without observations of $x_3$, the individual parameters $a_2, a_4, a_5, \mu_3, \mu_y, \sigma_3, \sigma_y$ cannot be recovered separately.
     \end{solution}
@@ -215,20 +215,20 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
 
 \titledquestion{Linear regression with unequal noise}
 
-In linear regression with Gaussian noise of constant variance, $y_i \sim \N(w^T x_i, \sigma^2)$, the maximum likelihood estimate of the weights is $w_{\text{MLE}} = (X^T X)^{-1} X^T Y$, where the rows of $X$ are the inputs $x_i^T$ and $Y = (y_i)$. What does this estimate become if the noise is different for each sample, \ie{} $y_i \sim \N(w^T x_i, \sigma_i^2)$ with known variances $\sigma_i^2$?
+In linear regression with Gaussian noise of constant variance, $y_i \sim \N(\mathbf{w}^T \mathbf{x}_i, \sigma^2)$, the maximum likelihood estimate of the weights is $\mathbf{w}_{\text{MLE}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}$, where the rows of $\mathbf{X}$ are the inputs $\mathbf{x}_i^T$ and $\mathbf{y} = (y_i)$. What does this estimate become if the noise is different for each sample, \ie{} $y_i \sim \N(\mathbf{w}^T \mathbf{x}_i, \sigma_i^2)$ with known variances $\sigma_i^2$?
 
 \begin{solution}
     The log-likelihood of the weights is
     \begin{equation*}
-        L(w) = \sum_i \log \N(y_i \mid w^T x_i, \sigma_i^2) = - \sum_i \frac{(w^T x_i - y_i)^2}{2 \sigma_i^2} + \text{const},
+        L(\mathbf{w}) = \sum_i \log \N(y_i \mid \mathbf{w}^T \mathbf{x}_i, \sigma_i^2) = - \sum_i \frac{(\mathbf{w}^T \mathbf{x}_i - y_i)^2}{2 \sigma_i^2} + \text{const},
     \end{equation*}
-    so that maximizing it minimizes a weighted sum of squares, each sample weighted by its precision $1 / \sigma_i^2$. With $W = \diag(1 / \sigma_1^2, \ldots, 1 / \sigma_N^2)$,
+    so that maximizing it minimizes a weighted sum of squares, each sample weighted by its precision $1 / \sigma_i^2$. With $\boldsymbol{\Lambda} = \diag(1 / \sigma_1^2, \ldots, 1 / \sigma_N^2)$,
     \begin{equation*}
-        \nabla_{\!w} L(w) = - X^T W (X w - Y) = 0
+        \nabla_{\!\mathbf{w}} L(\mathbf{w}) = - \mathbf{X}^T \boldsymbol{\Lambda} (\mathbf{X} \mathbf{w} - \mathbf{y}) = 0
         \quad \Leftrightarrow \quad
-        w_{\text{MLE}} = (X^T W X)^{-1} X^T W Y .
+        \mathbf{w}_{\text{MLE}} = (\mathbf{X}^T \boldsymbol{\Lambda} \mathbf{X})^{-1} \mathbf{X}^T \boldsymbol{\Lambda} \mathbf{y} .
     \end{equation*}
-    Noisy samples count less. With equal variances, $W$ is proportional to the identity and the estimate of the homoscedastic case is recovered.
+    Noisy samples count less. With equal variances, $\boldsymbol{\Lambda}$ is proportional to the identity and the estimate of the homoscedastic case is recovered.
 \end{solution}
 
 \titledquestion{Travel-time heuristic \source{Exam, January 2022}}
@@ -254,7 +254,7 @@ From the log, the robot's program learns a heuristic approximating the best time
     h(r, c; \phi) & = \ReLU(r w_1 + c w_2 + w_3) + \ReLU(r w_4 + c w_5 + w_6) \\
     \ReLU(z) & = \max(z, 0) ,
 \end{align*}
-where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights of the neural network.
+where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the neural network.
 
 \begin{parts}
     \part Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
@@ -366,7 +366,7 @@ Consider the following simple neural network for binary classification. Here $x$
         \[
             a_2 = g_2(w_2 g_1(w_1 x)).
         \]
-        For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}^N$ where $y_i$ acts as a target for the network.
+        For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}_{i=1}^N$, where $y_i$ acts as a target for the network.
     \end{solution}
 
     \part Using the chain rule, differentiate $\mathcal{L}$ with respect to $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in (a) will be helpful; you may use any of those variables.)
@@ -389,13 +389,13 @@ Consider the following simple neural network for binary classification. Here $x$
         The likelihood of a pair $(x, y)$ can be derived from our model as
         \[
             \begin{cases}
-                \text{if } y = 1\ \text{ then }\ P(Y = y \mid x) = \text{NN}_{\theta}(x) \\
-                \text{if } y = 0\ \text{ then }\ P(Y = y \mid x) = 1 -\text{NN}_{\theta}(x)
+                \text{if } y = 1\ \text{ then }\ P(Y = y \mid x) = f(x; \theta) \\
+                \text{if } y = 0\ \text{ then }\ P(Y = y \mid x) = 1 - f(x; \theta)
             \end{cases}
         \]
-        where $\text{NN}_{\theta}$ is the neural network parameterized by $\theta = [w_1, w_2]$. Denoting $\text{NN}_{\theta}(x) = a_2$, the likelihood of one pair is $a_2^y (1 - a_2)^{1-y}$, and its log-likelihood is
+        where $f$ is the neural network with parameters $\theta = (w_1, w_2)$. Denoting $f(x; \theta) = a_2$, the likelihood of one pair is $a_2^y (1 - a_2)^{1-y}$, and its log-likelihood is
         \[
-            \log L(x, y; \theta) = y\log a_2 + (1-y) \log (1 - a_2).
+            \log P(Y = y \mid x) = y\log a_2 + (1-y) \log (1 - a_2).
         \]
         Since we want to maximize the log-likelihood, but minimize the loss, we can set the latter to
         \[
@@ -630,7 +630,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
     \end{center}
 
     \begin{solution}
-        (c), (d), (e), and (f). The network can represent all the same functions as (e), since the second ReLU can let its input through ($w_2 = 1$ and $b_2 = 0$ when $h_1 \geq 0$). In addition it can represent (f): the first ReLU produces the first flat segment, the affine transformation flips and shifts the resulting curve, and the second ReLU produces the second flat segment, the final affine layer not doing anything.
+        (c), (d), (e), and (f). The network can represent all the same functions as (e), since the second ReLU lets its input through with $w_2 = 1$ and $b_2 = 0$, $h_1$ being non-negative. In addition it can represent (f): the first ReLU produces the first flat segment, the affine transformation flips and shifts the resulting curve, and the second ReLU produces the second flat segment, the final affine layer not doing anything.
 
         It cannot produce (h). With a single unit per layer, the output is a chain of functions of one variable: $h_1$ is flat on one side of its joint and sloped on the other; $h_2$ is constant wherever $h_1$ is, and on the other side applies a ReLU to an affine function, which can only add a flat part. The final layer scales and shifts the result. Such a chain has at most one segment with a nonzero slope, whereas (h) has two.
     \end{solution}
@@ -696,7 +696,7 @@ You are given a number of functions (a-h) of a single variable, $x$, which are g
 
 \titledquestion{Decision regions of a shallow network \source{Exam, August 2026, adapted}}
 
-We consider a neural network for binary classification that takes as input a 2D point $(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability $\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is defined as
+We consider a neural network for binary classification that takes as input a 2D point $(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability $\hat{y}=f(x_1,x_2)\in(0,1)$. The network has one hidden layer with two units and is defined as
 \begin{align*}
     h_0 &= \ReLU(x_1-1), \\
     h_1 &= \ReLU(x_2-2), \\
@@ -1244,7 +1244,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
         \[
             Y = (P_{u,v})_{0 \leq u, v \leq 31}.
         \]
-        Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a cat, a dog, or the background: $P_{u,v} \in \{\text{cat}, \text{dog}, \text{background}\}$.
+        Each $P_{u,v}$ indicates whether pixel $(u,v)$ belongs to a dog, a cat, or the background: $P_{u,v} \in \{\text{dog}, \text{cat}, \text{background}\}$.
     \end{solution}
 
     \uplevel{Once the task has been formulated, you construct the dataset $\mathbf{d}$ by annotating each of the $500$ images, thereby obtaining a sample $y_i\sim Y$ associated with a sampled image $x_i\sim X$.}
@@ -1366,7 +1366,7 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
 
         $x \sim X$ is the picture ($X \in \mathbb{R}^{3 \times 32 \times 32}$).
 
-        $\theta$ is the parameters of the model.
+        $\theta$ denotes the parameters of the model.
 
         The problem is a regression problem. The neural network should give an estimate of $\E\{ Y \mid X\}$.
     \end{solution}
@@ -1746,10 +1746,10 @@ The dimensions of the different layers of team A's encoder are given below:
 
     \item We have an image of shape $(H, W)$, we want to pass it through a layer which reduces each dimension by a constant $K$, \ie{} produces an output image of shape $(H-K, W-K)$.
     \begin{enumerate}[label=$\bigcirc$]
-        \item It can be done with a convolution layer with a kernel $(K, K)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.
-        \item It can be done with a convolution layer with a kernel $(K - 1, K - 1)$ or a linear layer with weight matrix $(HW, KK)$.
-        \item It can be done with a convolution layer with a kernel $(K+ 1, K+1)$ or a linear layer with weight matrix $(HW, KK)$.
-        \item \correct{It can be done with a convolution layer with a kernel $(K + 1, K + 1)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.}
+        \item It can be done with a convolution layer with a kernel of size $K \times K$ or a linear layer with a weight matrix of size $(H-K)(W-K) \times HW$.
+        \item It can be done with a convolution layer with a kernel of size $(K - 1) \times (K - 1)$ or a linear layer with a weight matrix of size $K^2 \times HW$.
+        \item It can be done with a convolution layer with a kernel of size $(K + 1) \times (K + 1)$ or a linear layer with a weight matrix of size $K^2 \times HW$.
+        \item \correct{It can be done with a convolution layer with a kernel of size $(K + 1) \times (K + 1)$ or a linear layer with a weight matrix of size $(H-K)(W-K) \times HW$.}
     \end{enumerate}
 
     \item From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If we only look at weight parameters (no biases)\ldots
@@ -1757,7 +1757,7 @@ The dimensions of the different layers of team A's encoder are given below:
         \item The number of parameters of both the linear and convolution layer are doubled.
         \item The linear layer will have twice more parameters and the convolution twice less.
         \item \correct{The linear layer will have at least four times more parameters and the convolution will not change.}
-        \item Nothing changes neither for the linear layer nor the convolution one.
+        \item Neither the linear layer nor the convolution changes.
     \end{enumerate}
 
     \item Which expression is equal to the function $|x| + 1$ below, for every $x \in \mathbb{R}$?
