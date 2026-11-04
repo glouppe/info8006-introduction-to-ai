@@ -809,7 +809,9 @@ def conv_channels():
         cmap = LSC.from_list(names[cidx], ["#ffffff", hues[cidx]])
         cells(ax, x[cidx], 1, fmt=None, cmap=cmap)
         window(ax, j0, i0, 3, 3)
-        ax.text(15.6, -0.9, names[cidx], ha="right", va="bottom", fontsize=15, color=hues[cidx])
+        # each name left of its own slice, in the strip where that slice shows above the one in front
+        fig.text(0.03 + d * off * asp - 0.006, 0.12 + d * off + big - off / 2, names[cidx], ha="right", va="center",
+                 fontsize=15, color=hues[cidx])
     fig.text(0.03 + big * asp / 2 + off * asp, 0.92, r"input $\mathbf{x} \in \mathbb{R}^{3 \times H \times W}$", ha="center", fontsize=18)
     ks = 0.22
     lim = np.abs(w).max()
