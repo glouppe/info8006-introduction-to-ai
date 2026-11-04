@@ -108,11 +108,13 @@ with inputs $\mathbf{x}\_i \in \mathbb{R}^d$ and outputs $y\_i \in \mathcal{Y}$.
 
 From this data, we want to identify a probabilistic model $$p\_\theta(y \mid \mathbf{x})$$ that best explains the data.
 
-As in Lectures 4 to 6, the model is a density $p$ for continuous $y$ and a probability $P$ for discrete $y$.
-
 ]
 .kol-1-3[<br><br>.center[![](figures/lec7/latent.svg)]]
 ]
+
+???
+
+As in Lectures 4 to 6, the model is a density $p$ for continuous $y$ and a probability $P$ for discrete $y$.
 
 ---
 
