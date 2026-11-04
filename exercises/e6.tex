@@ -207,9 +207,9 @@
 
 \begin{exercises}[1, 4, 7]
 
-\titledquestion{Escape game \source{Exam, January 2022}}
+\titledquestion{Travel-time heuristic \source{Exam, January 2022}}
 
-A new virtual escape game came out, and you decide to play it. You arrive in a $5 \times 5$ grid world where each cell $(x, y)$ is a room with doors leading to the adjacent rooms. The game's goal is to reach the exit room as fast as possible, but its position is unknown. Furthermore, some regions of the world are full of riddles, and crossing rooms in these regions takes longer. Fortunately, a leaderboard with the players' best times is provided, starting from a few different rooms. Due to rounding errors, you assume that the best times reported in the leaderboard are measurements affected by additive Gaussian noise $\N(0, 1)$.
+A delivery robot works in a building laid out as a $5 \times 5$ grid of rooms, where each cell $(r, c)$ is a room with doors leading to the adjacent rooms. The robot must reach its charging station as fast as possible, but the station's position is unknown to it. Furthermore, some regions of the building are cluttered, and crossing rooms in these regions takes longer. Fortunately, the other robots of the fleet have logged their best times to the station, starting from a few different rooms. Due to rounding errors, the best times in the log are assumed to be measurements affected by additive Gaussian noise $\N(0, 1)$.
 
 \begin{center}
     \begin{tabular}{ccc}
@@ -225,10 +225,10 @@ A new virtual escape game came out, and you decide to play it. You arrive in a $
     \end{tabular}
 \end{center}
 
-From the leaderboard, you wish to learn a heuristic approximating the best time to get to the exit, starting from room $(x, y)$. You decide to use a small neural network as approximator, described by the following parametric function,
+From the log, the robot's program learns a heuristic approximating the best time to get to the station, starting from room $(r, c)$. It uses a small neural network as approximator, described by the following parametric function,
 \begin{align*}
-    h(x, y; \phi) & = \text{ReLU}(x w_1 + y w_2 + w_3) + \text{ReLU}(x w_4 + y w_5 + w_6) \\
-    \text{ReLU}(x) & = \max(x, 0) ,
+    h(r, c; \phi) & = \ReLU(r w_1 + c w_2 + w_3) + \ReLU(r w_4 + c w_5 + w_6) \\
+    \ReLU(z) & = \max(z, 0) ,
 \end{align*}
 where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights of the neural network.
 
@@ -248,18 +248,18 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
     \end{center}
 
     \begin{solution}
-        A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $d$ is the leaderboard and consists of independent position-time tuples $(x_i, y_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(x, y)$, approximated by a neural network $h(x, y; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
+        A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $\mathbf{d}$ is the log and consists of independent position-time tuples $(r_i, c_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(r, c)$, approximated by a neural network $h(r, c; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
         \begin{align*}
             \phi_{\text{MLE}} & = \arg\max_\phi p(\mathbf{d} \mid \phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(t_i \mid x_i, y_i, \phi) \, p(x_i, y_i) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(x_i, y_i; \phi), 1) \\
-            & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(x_i, y_i; \phi))^2}{2}}} \\
-            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2
+            & = \arg\max_\phi \prod_{i=1}^5 p(r_i, c_i, t_i \mid \phi) \\
+            & = \arg\max_\phi \prod_{i=1}^5 p(t_i \mid r_i, c_i, \phi) \, p(r_i, c_i) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \phi), 1) \\
+            & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(r_i, c_i; \phi))^2}{2}}} \\
+            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi))^2
         \end{align*}
         Now that we have an objective $L(\phi)$ to minimize, we can evaluate it for each of the proposed sets and select the best one.
         \begin{align*}
-            L(\phi_A) & = \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi_A))^2 = (2.0 - 5.5)^2 + (3.5 - 6.5)^2 + \dots = 29.75 \\
+            L(\phi_A) & = \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi_A))^2 = (2.0 - 5.5)^2 + (3.5 - 6.5)^2 + \dots = 29.75 \\
             L(\phi_B) & = 35.75 \\
             L(\phi_C) & = 205.25
         \end{align*}
@@ -273,9 +273,9 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters/weights o
         \begin{align*}
             \phi_{\text{MAP}} & = \arg\max_\phi p(\phi \mid \mathbf{d}) \\
             & = \arg\max_\phi p(\mathbf{d} \mid \phi) p(\phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(x_i, y_i, t_i \mid \phi) \prod_{j=1}^6 p(w_j) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(x_i, y_i; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
-            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(x_i, y_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
+            & = \arg\max_\phi \prod_{i=1}^5 p(r_i, c_i, t_i \mid \phi) \prod_{j=1}^6 p(w_j) \\
+            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
+            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
         \end{align*}
         Here again, we have an objective $L'(\phi)$ to minimize, which we evaluate for each of the proposed sets.
         \begin{align*}
