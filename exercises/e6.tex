@@ -1788,49 +1788,42 @@ The predicted class is
 
 \titledquestion{Neural network parameters}
 
-Sandrine and Karl, two long-time data scientist friends, each decide to design a neural network to solve a challenging task: compressing a high-definition color image  in a HD 720p resolution ($1280\times720$ pixels).
+Two teams, A and B, each design a neural network for a challenging task: compressing a 720p HD color image ($720 \times 1280$ pixels). The image is represented using three channels corresponding to the red, green, and blue components, $\mathbf{x} \in \mathbb{R}^{3 \times 720 \times 1280}$.
 
-To do so, both decide to use an encoder network and a decoder network. The first network, the \emph{encoder}, transforms the input image into a low-dimensional latent representation which constitutes the compressed representation. The second network, the \emph{decoder}, reconstructs the original image as faithfully as possible from this low-dimensional representation.
+Both teams use an encoder network and a decoder network. The first network, the \emph{encoder}, transforms the input image into a low-dimensional latent representation $\mathbf{h}_\text{lat}$, which constitutes the compressed representation. The second network, the \emph{decoder}, reconstructs the original image as faithfully as possible from this low-dimensional representation. We define the \emph{compression ratio} $\eta$ of an encoder as the number of values of the image divided by the number of values of its latent representation.
 
-Sandrine decides to use a multilayer perceptron with ReLU nonlinear activations for her encoder. Each block $i$ of her encoder therefore consists of a linear projection followed by the nonlinear activation:
+Team A uses a multilayer perceptron with ReLU activations for its encoder. It flattens the image into a single vector before feeding it to the network, and each block $k$ of its encoder consists of a linear projection followed by the activation:
 \[
-    h_i = \sigma\left(W_i h_{i-1}+b_i\right).
+    \mathbf{h}_k = \sigma\left(\mathbf{W}_k \mathbf{h}_{k-1}+\mathbf{b}_k\right), \quad \mathbf{h}_0 = \mathbf{x}.
 \]
-
-The HD color image is represented using three channels corresponding to the red, green, and blue components. Sandrine flattens the image into a single vector before feeding it to the network.
-
-The dimensions of the different units throughout Sandrine's encoder are given below:
+The dimensions of the different layers of team A's encoder are given below:
 
 \begin{center}
-    \includegraphics[width=0.4\linewidth]{figures/sandr_graph.png}
+    \begin{tikzpicture}[diagram]
+        \draw[diagram-ink, fill=diagram-fill, line width=0.6pt] (-0.3, 0) rectangle (0.3, 4.00);
+        \node[anchor=north, align=center, font=\footnotesize] at (0.0, -0.1) {$\mathbf{x}$\\$2\,764\,800$};
+        \draw[diagram-ink, fill=diagram-fill, line width=0.6pt] (2.3000000000000003, 0) rectangle (2.9, 1.33);
+        \node[anchor=north, align=center, font=\footnotesize] at (2.6, -0.1) {$\mathbf{h}_1$\\$921\,600$};
+        \draw[diagram-ink, fill=diagram-fill, line width=0.6pt] (4.9, 0) rectangle (5.5, 0.67);
+        \node[anchor=north, align=center, font=\footnotesize] at (5.2, -0.1) {$\mathbf{h}_2$\\$460\,800$};
+        \draw[diagram-ink, fill=diagram-fill, line width=0.6pt] (7.500000000000001, 0) rectangle (8.100000000000001, 0.67);
+        \node[anchor=north, align=center, font=\footnotesize] at (7.800000000000001, -0.1) {$\mathbf{h}_3$\\$460\,800$};
+        \draw[diagram-ink, fill=diagram-fill, line width=0.6pt] (10.1, 0) rectangle (10.700000000000001, 0.33);
+        \node[anchor=north, align=center, font=\footnotesize] at (10.4, -0.1) {$\mathbf{h}_\text{lat}$\\$230\,400$};
+    \end{tikzpicture}
 \end{center}
 
 \begin{parts}
-    \part How many trainable parameters does Sandrine's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+    \part How many trainable parameters does team A's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
 
     \begin{solution}
-        The dimension of $W_i$ and $b_i$ for each layer are:
-        \begin{enumerate}
-            \item
-            \begin{equation*}
-                W_1 ^{921600 \times 2764800} \quad b_1^{921600}
-            \end{equation*}
-
-            \item
-            \begin{equation*}
-                W_2 ^{460800 \times 921600} \quad b_2^{460800}
-            \end{equation*}
-
-            \item
-            \begin{equation*}
-                W_3 ^{460800 \times 460800} \quad b_3^{460800}
-            \end{equation*}
-
-            \item
-            \begin{equation*}
-                W_4 ^{230400 \times 460800} \quad b_4^{230400}
-            \end{equation*}
-        \end{enumerate}
+        The weights and biases of the four layers have shapes
+        \begin{align*}
+            \mathbf{W}_1 & \in \mathbb{R}^{921\,600 \times 2\,764\,800}, & \mathbf{b}_1 & \in \mathbb{R}^{921\,600}, \\
+            \mathbf{W}_2 & \in \mathbb{R}^{460\,800 \times 921\,600}, & \mathbf{b}_2 & \in \mathbb{R}^{460\,800}, \\
+            \mathbf{W}_3 & \in \mathbb{R}^{460\,800 \times 460\,800}, & \mathbf{b}_3 & \in \mathbb{R}^{460\,800}, \\
+            \mathbf{W}_4 & \in \mathbb{R}^{230\,400 \times 460\,800}, & \mathbf{b}_4 & \in \mathbb{R}^{230\,400}.
+        \end{align*}
         The total number of parameters is:
         \begin{align*}
             N_{\mathrm{param}}
@@ -1847,39 +1840,77 @@ The dimensions of the different units throughout Sandrine's encoder are given be
             &= 3\,291\,219\,993\,600 \times 4\ \text{bytes} = \frac{13\,164\,879\,974\,400}{2^{40}}\ \text{TiB} \\
             &\approx \boxed{11.97\ \text{TiB}}.
         \end{align*}
-        Clearly, Sandrine's encoder is infeasible.
+        Clearly, team A's encoder is infeasible.
     \end{solution}
 
-    \part What is the compression ratio achieved by Sandrine's encoder?
+    \part What is the compression ratio achieved by team A's encoder?
 
     \begin{solution}
         \begin{equation*}
-            \eta = 1 - \frac{230400}{3\times 1280 \times 720} = 92 \%
+            \eta = \frac{3 \times 720 \times 1280}{230\,400} = \frac{2\,764\,800}{230\,400} = 12:
         \end{equation*}
+        the latent representation holds $1/12$ of the values of the image, a saving of $1 - 1/12 \approx 92\%$. This counts values, not bits: if the pixels are stored on 8 bits and the latent values as 32-bit floats, the ratio in bits is only $12 \times 8 / 32 = 3$.
     \end{solution}
 
-    \uplevel{Karl decides to use a convolutional neural network, also with ReLU nonlinear activations for his encoder.
+    \uplevel{Team B uses a convolutional neural network, also with ReLU activations, for its encoder.
 
-    Each block of the network consists of a convolutional layer with $3\times3$ kernels, followed by a ReLU activation and, in every block but the last, a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros.
+    Each block of the network consists of a convolutional layer with $3\times3$ kernels, followed by a ReLU activation and, in every block but the last, a max-pooling layer with a pooling area of $2\times 2$. Before being passed through each block, the input feature maps of each block are padded with a one-pixel-wide border of zeros. The shapes of the different layers of team B's encoder are given below, as channels $\times$ height $\times$ width:
 
-    The HD color image is still represented using three channels corresponding to the red, green, and blue components. The dimensions of the different units throughout Karl's encoder are given below:
+\begin{center}
+    \begin{tikzpicture}[diagram, x=0.9cm, y=0.9cm]
+        \draw[diagram-ink, fill=white, line width=0.5pt] (0.18, 0.18) rectangle (0.46, 3.18);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (0.09, 0.09) rectangle (0.37, 3.09);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (0.00, 0.00) rectangle (0.28, 3.00);
+        \node[anchor=north, align=center, font=\footnotesize] at (0.5, -0.1) {$\mathbf{x}$\\$3 \times 720 \times 1280$};
+        \draw[diagram-ink, fill=white, line width=0.5pt] (3.27, 0.27) rectangle (3.55, 2.57);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (3.18, 0.18) rectangle (3.46, 2.48);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (3.09, 0.09) rectangle (3.37, 2.39);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (3.00, 0.00) rectangle (3.28, 2.30);
+        \node[anchor=north, align=center, font=\footnotesize] at (3.5, -0.1) {$\mathbf{h}_1$\\$4 \times 360 \times 640$};
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.63, 0.63) rectangle (6.91, 2.33);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.54, 0.54) rectangle (6.82, 2.24);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.45, 0.45) rectangle (6.73, 2.15);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.36, 0.36) rectangle (6.64, 2.06);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.27, 0.27) rectangle (6.55, 1.97);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.18, 0.18) rectangle (6.46, 1.88);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.09, 0.09) rectangle (6.37, 1.79);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (6.00, 0.00) rectangle (6.28, 1.70);
+        \node[anchor=north, align=center, font=\footnotesize] at (6.5, -0.1) {$\mathbf{h}_2$\\$8 \times 180 \times 320$};
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.63, 0.63) rectangle (9.91, 1.83);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.54, 0.54) rectangle (9.82, 1.74);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.45, 0.45) rectangle (9.73, 1.65);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.36, 0.36) rectangle (9.64, 1.56);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.27, 0.27) rectangle (9.55, 1.47);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.18, 0.18) rectangle (9.46, 1.38);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.09, 0.09) rectangle (9.37, 1.29);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (9.00, 0.00) rectangle (9.28, 1.20);
+        \node[anchor=north, align=center, font=\footnotesize] at (9.5, -0.1) {$\mathbf{h}_3$\\$32 \times 90 \times 160$};
+        \node[font=\footnotesize] at (10.22, 1.32) {$\cdots$};
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.63, 0.63) rectangle (12.91, 1.83);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.54, 0.54) rectangle (12.82, 1.74);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.45, 0.45) rectangle (12.73, 1.65);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.36, 0.36) rectangle (12.64, 1.56);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.27, 0.27) rectangle (12.55, 1.47);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.18, 0.18) rectangle (12.46, 1.38);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.09, 0.09) rectangle (12.37, 1.29);
+        \draw[diagram-ink, fill=white, line width=0.5pt] (12.00, 0.00) rectangle (12.28, 1.20);
+        \node[anchor=north, align=center, font=\footnotesize] at (12.5, -0.1) {$\mathbf{h}_\text{lat}$\\$16 \times 90 \times 160$};
+        \node[font=\footnotesize] at (13.22, 1.32) {$\cdots$};
+    \end{tikzpicture}
+\end{center}}
 
-    \begin{center}
-        \includegraphics[width=0.6\linewidth]{figures/Karl_graph.png}
-    \end{center}}
-
-    \part How many parameters does Karl's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
+    \part How many parameters does team B's encoder contain? Is this network realistic to implement on a standard laptop? Assume that each parameter is encoded using $32$ bits.
 
     \begin{solution}
         Let the input of a block be
         \[
-            h \in \mathbb{R}^{a\times b\times c},
+            \mathbf{h} \in \mathbb{R}^{a\times b\times c},
         \]
         where $a$ denotes the number of input channels, and $b$ and $c$ denote the height and width of the feature maps, respectively.
 
         Before the convolution, the input is padded with a border of zeros of width $1$. The padded input therefore has shape
         \[
-            h_p \in \mathbb{R}^{a\times(b+2)\times(c+2)}.
+            \mathbf{h}_p \in \mathbb{R}^{a\times(b+2)\times(c+2)}.
         \]
 
         A convolutional kernel of spatial size $3\times3$ must span all $a$ input channels. Consequently, each kernel has shape
@@ -1935,22 +1966,42 @@ The dimensions of the different units throughout Sandrine's encoder are given be
             &=112+296+2336+4624 \\
             &=\boxed{7368}.
         \end{align*}
-        Thus, using $32$ bits per parameter, the memory required to store the parameters is
+        Thus, using $32$ bits (4 bytes) per parameter, the memory required to store the parameters is
         \begin{align*}
             M
             &= 7368\times4\ \text{bytes} = 29\,472\ \text{bytes} \\
             &= \frac{29\,472}{2^{10}}\ \text{KiB} \\
             &\approx \boxed{28.8\ \text{KiB}}.
         \end{align*}
-        Karl's encoder clearly fits in a laptop.
+        Team B's encoder clearly fits in a laptop.
     \end{solution}
 
-    \part What is the compression ratio achieved by Karl's encoder?
+    \part What is the compression ratio achieved by team B's encoder?
 
     \begin{solution}
         \begin{equation*}
-            \eta = 1 - \frac{16 \times 160 \times 90}{3\times 1280 \times 720} = 92 \%
+            \eta = \frac{3 \times 720 \times 1280}{16 \times 90 \times 160} = \frac{2\,764\,800}{230\,400} = 12,
         \end{equation*}
+        the same as team A's, with about $4 \times 10^8$ times fewer parameters.
+    \end{solution}
+
+    \part On how many pixels of the image does one value of the latent representation depend, for each team?
+
+    \begin{solution}
+        For team A, every value of $\mathbf{h}_\text{lat}$ depends on every pixel of the image, since each linear layer connects all its inputs to all its outputs.
+
+        For team B, a value depends only on its \emph{receptive field}, a square patch of the image (in all three channels). We follow its size $r$ through the network, together with the distance $s$ in pixels between two neighbouring values of the current layer: a $3 \times 3$ convolution adds $2s$ to $r$, and a $2 \times 2$ max-pooling adds $s$ to $r$ and doubles $s$. Starting from $r = s = 1$:
+        \begin{center}
+            \begin{tabular}{lccccccc}
+                \toprule
+                & conv. & pool. & conv. & pool. & conv. & pool. & conv. \\
+                \midrule
+                $r$ & 3 & 4 & 8 & 10 & 18 & 22 & 38 \\
+                $s$ & 1 & 2 & 2 & 4 & 4 & 8 & 8 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+        One value of team B's latent representation depends on a $38 \times 38$ patch of the image (less at its borders, where the patch includes padding), $3 \times 38 \times 38 = 4332$ of its $2\,764\,800$ values. Each value describes a local region of the image, which is why the encoder needs so few parameters.
     \end{solution}
 \end{parts}
 
