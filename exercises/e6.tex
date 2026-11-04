@@ -1761,9 +1761,9 @@ The dimensions of the different layers of team A's encoder are given below:
     \item We have an image of shape $(H, W)$, we want to pass it through a layer which reduces each dimension by a constant $K$, \ie{} produces an output image of shape $(H-K, W-K)$.
     \begin{enumerate}[label=$\bigcirc$]
         \item It can be done with a convolution layer with a kernel $(K, K)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.
-        \item \correct{It can be done with a convolution layer with a kernel $(K + 1, K + 1)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.}
         \item It can be done with a convolution layer with a kernel $(K - 1, K - 1)$ or a linear layer with weight matrix $(HW, KK)$.
         \item It can be done with a convolution layer with a kernel $(K+ 1, K+1)$ or a linear layer with weight matrix $(HW, KK)$.
+        \item \correct{It can be done with a convolution layer with a kernel $(K + 1, K + 1)$ or a linear layer with weight matrix $(HW, (H-K)(W-K))$.}
     \end{enumerate}
 
     \item From the previous question, we double the number of input pixels by setting the shape of the input image to $(H', W)$ with $H' = 2H$. The latter implies that the output image should be of shape $(H' - K, W - K)$. If we only look at weight parameters (no biases)\ldots
@@ -1777,9 +1777,9 @@ The dimensions of the different layers of team A's encoder are given below:
     \item Which expression is equal to $|x| + 1$ for every $x \in \mathbb{R}$?
     \begin{enumerate}[label=$\bigcirc$]
         \item $\ReLU(x) - \ReLU(-x) + 1$.
-        \item \correct{$\ReLU(x) + \ReLU(-x) + 1$.}
         \item $\ReLU(x + 1) + \ReLU(-x + 1)$.
         \item $\ReLU(x + 1) - \ReLU(x - 1)$.
+        \item \correct{$\ReLU(x) + \ReLU(-x) + 1$.}
     \end{enumerate}
 
     \item The function $y = \ReLU(x - 2) - \ReLU(-x - 2)$ is \ldots
@@ -1792,16 +1792,16 @@ The dimensions of the different layers of team A's encoder are given below:
 
     \item In deep learning, a layer in a multi-layer perceptron is defined as \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
         \item \correct{$\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.}
+        \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
         \item $\mathbf{h} = \sigma(\mathbf{W} + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{q \times d}$ is a matrix of weights.
         \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
     \end{enumerate}
 
     \item A network is trained for a growing number of epochs. After 20 epochs, its training loss is $0.22$ and its validation loss $0.44$; after 80 epochs, they are $0.02$ and $0.71$. After 80 epochs, the network \ldots
     \begin{enumerate}[label=$\bigcirc$]
-        \item underfits, since its validation loss is high.
         \item \correct{overfits: it fits its training pairs better and new pairs worse.}
+        \item underfits, since its validation loss is high.
         \item generalizes better, since its training loss is lower.
         \item has converged, since its training loss is close to $0$.
     \end{enumerate}
