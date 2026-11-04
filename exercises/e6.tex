@@ -5,30 +5,6 @@
 
 \newcommand{\ReLU}{\mathrm{ReLU}}
 
-\newcommand{\signal}[1]{%
-\begin{tikzpicture}[diagram]
-    \begin{axis}[%
-        width=8cm,
-        height=4cm,
-        axis x line=middle,
-        axis y line=middle,
-        axis line style={->},
-        domain=0:19,
-        samples=20,
-        xmin=-1,
-        xmax=20,
-        ymin=-1,
-        ymax=1,
-        xmajorticks=false,
-        ymajorticks=true,
-        ytick={1},
-        yticklabels={1},
-        yticklabel style={anchor=east},
-    ]
-        \addplot+[ycomb, diagram-accent, line width=0.9pt, mark=*, mark size=1.4pt, mark options={fill=white}] {#1};
-    \end{axis}
-\end{tikzpicture}
-}
 
 \pgfplotsset{
     region grid/.style={
@@ -47,49 +23,7 @@
 }
 \tikzset{region label/.style={draw=diagram-ink, fill=white, inner sep=1.5pt, font=\footnotesize}}
 
-\newcommand{\convolved}[1]{%
-\begin{tikzpicture}[diagram, baseline=(current bounding box.center)]
-    \begin{axis}[%
-        width=4.6cm,
-        height=2.9cm,
-        axis x line=middle,
-        axis y line=left,
-        xmin=-1,
-        xmax=17,
-        ymin=-4.3,
-        ymax=4.3,
-        xmajorticks=false,
-        ytick={-4, 4},
-        tick label style={font=\scriptsize},
-    ]
-        \addplot+[ycomb, diagram-accent, line width=0.8pt, mark=*, mark size=1.1pt, mark options={fill=white}] coordinates {#1};
-    \end{axis}
-\end{tikzpicture}
-}
 
-\newcommand{\kernel}[1]{%
-\begin{tikzpicture}[diagram]
-    \begin{axis}[%
-        width=3cm,
-        height=4cm,
-        axis x line=middle,
-        axis y line=middle,
-        domain=0:3,
-        samples=4,
-        xmin=-1,
-        xmax=4,
-        ymin=-1,
-        ymax=+1,
-        xmajorticks=false,
-        ymajorticks=true,
-        ytick={1},
-        yticklabels={1},
-        yticklabel style={anchor=east},
-    ]
-        \addplot+[ycomb, diagram-accent, line width=0.9pt, mark=*, mark size=1.4pt, mark options={fill=white}] {#1};
-    \end{axis}
-\end{tikzpicture}
-}
 
 \title{\bfseries INFO8006 Introduction to Artificial Intelligence}
 \author{Exercise session 6: Machine learning}
@@ -205,7 +139,7 @@
     The \term{receptive field} of a value is the patch of the input it depends on: a $w \times w$ kernel sees $w \times w$ values, and each further convolutional or pooling layer widens it. A \term{convolutional neural network} (CNN) uses convolutional layers, pooling layers and fully connected layers.
 \end{recap}
 
-\begin{exercises}[3 (a)--(b), 6, 9 and 12 (a) (November 19), 4 and 13 (November 26)][5 and 11]
+\begin{exercises}[3 (a)--(b), 6, 9 and 11 (a) (November 19), 4 and 12 (November 26)][5]
 
 \titledquestion{Predict the leaderboard score}
 
@@ -1509,46 +1443,6 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
     \end{solution}
 \end{parts}
 
-\titledquestion{Choosing the number of epochs}
-
-A team trains a multilayer perceptron for a classification task, on a training set, and measures the cross-entropy on the training set and on a validation set after a growing number of epochs:
-\begin{center}
-    \begin{tabular}{lcccccc}
-        \toprule
-        Epochs & 1 & 5 & 10 & 20 & 40 & 80 \\
-        \midrule
-        Training loss & 0.92 & 0.55 & 0.38 & 0.22 & 0.09 & 0.02 \\
-        Validation loss & 0.95 & 0.60 & 0.47 & 0.44 & 0.52 & 0.71 \\
-        \bottomrule
-    \end{tabular}
-\end{center}
-
-\begin{parts}
-    \part Where does the model underfit, and where does it overfit?
-
-    \begin{solution}
-        It underfits for the first epochs (1 to 10), where both losses are high and still decrease together. It overfits beyond about 20 epochs: the training loss keeps decreasing towards 0 while the validation loss increases, the model memorizing its training pairs rather than learning what generalizes to new ones.
-    \end{solution}
-
-    \part Which number of epochs would you choose? Why on the validation loss rather than on the training loss?
-
-    \begin{solution}
-        20 epochs, where the validation loss is lowest ($0.44$). The training loss always favours training longer, since $\theta$ is fitted to those very pairs; the validation set, held out from training, estimates the loss on new pairs.
-    \end{solution}
-
-    \part The team reports $0.44$ as the loss to expect on new data. What is wrong with this estimate, and what should they do?
-
-    \begin{solution}
-        The number of epochs was chosen because it gives the lowest validation loss, so that $0.44$ is optimistic: the validation set was used to make a choice. The team should keep a test set, used neither for training nor for choosing hyperparameters, and evaluate the chosen model on it once, at the end.
-    \end{solution}
-
-    \part The team cares about the error rate, the fraction of misclassified images. Why is the network trained on the cross-entropy rather than on the error rate?
-
-    \begin{solution}
-        The error rate is piecewise constant in $\theta$: a small change of the parameters changes no prediction, so that its gradient is zero almost everywhere and gradient descent cannot minimize it. The cross-entropy is differentiable and decreases when the probability of the observed class increases.
-    \end{solution}
-\end{parts}
-
 \titledquestion{2d convolution}
 
 \begin{parts}
@@ -1844,154 +1738,6 @@ The dimensions of the different layers of team A's encoder are given below:
     \end{solution}
 \end{parts}
 
-\exercisegroup{Supplementary exercises}
-
-\titledquestion{Piecewise-linear functions}
-
-For each of the piecewise-linear functions below, write a function $y = f(x)$ as a composition of sums ($+, -$), ReLU ($\ReLU(x) = \max(x, 0)$) non-linearities, and real parameters (weights and biases) that exactly matches the function over $\R$.
-
-\begin{center}
-    \begin{tikzpicture}[
-        diagram,
-        declare function={
-            relu(\x) = max(\x, 0);
-            a(\x) = relu(\x) + relu(-\x) + 1;
-            b(\x) = relu(\x - 2) - relu(-\x - 2);
-            c(\x) = relu(-relu(-\x + 2) + 4) - 2;
-            d(\x) = relu(-relu(2 * \x / 3) - relu(-\x / 2) + 2);
-        },
-        curve label/.style={font=\footnotesize, fill=white, inner sep=1pt},
-    ]
-        \begin{axis}[
-            diagram plot,
-            width=7cm,
-            height=7cm,
-            ymin=-6, ymax=6, ylabel=$y$,
-            xmin=-6, xmax=6, xlabel=$x$,
-            xtick={-6, -4, ..., 6},
-            ytick={-6, -4, ..., 6},
-            domain=-6:6,
-            samples=13,
-        ]
-            \addplot+ {a(x)};
-            \addplot+ {b(x)};
-            \addplot+ {c(x)};
-            \addplot+ {d(x)};
-            \node[curve label, text=diagram-accent] at (axis cs:-4.3, 5.4) {1};
-            \node[curve label, text=diagram-unit0] at (axis cs:4.6, 3.4) {2};
-            \node[curve label, text=diagram-unit1] at (axis cs:-5, -1.4) {3};
-            \node[curve label, text=diagram-unit2] at (axis cs:0, 2.6) {4};
-        \end{axis}
-    \end{tikzpicture}
-\end{center}
-
-For example, $y = \ReLU(x + 2) - \ReLU(-2x)$ is a valid function.
-
-\begin{solution}
-    \begin{enumerate}
-        \item \textcolor{diagram-accent}{$y = \ReLU(x) + \ReLU(-x) + 1$}
-        \item \textcolor{diagram-unit0}{$y = \ReLU(x - 2) - \ReLU(-x - 2)$}
-        \item \textcolor{diagram-unit1}{$y = \ReLU(-\ReLU(-x + 2) + 4) - 2$}
-        \item \textcolor{diagram-unit2}{$y = \ReLU(-\ReLU(\frac{2}{3} x) - \ReLU(-\frac{1}{2} x) + 2)$}
-    \end{enumerate}
-\end{solution}
-
-\titledquestion{1d convolution}
-
-Consider the following four signals $x \in \mathbb{R}^{20}$, numbered 1 to 4 from left to right and top to bottom,
-
-\begin{center}
-    \signal{2 * (mod(x, 10) < 5) - 1}
-    \signal{mod(x, 5) / 2 - 1}
-
-    \signal{abs(mod(x, 10) - 5) / 2.5 - 1}
-    \signal{cos(360 * x / 15.29)}
-\end{center}
-
-and the following three convolution kernels $\omega \in \mathbb{R}^4$.
-
-\begin{center}
-    \begin{tabular}{ccc}
-        \kernel{x / 1.5 - 1} & \kernel{1 - 2 * (x < 2)} & \kernel{1 - 2 * (mod(x, 3) == 0)} \\
-        $(-1, -\frac{1}{3}, \frac{1}{3}, 1)$ & $(-1, -1, 1, 1)$ & $(-1, 1, 1, -1)$
-    \end{tabular}
-\end{center}
-
-\begin{parts}
-    \part Compute the convolution $x \circledast \omega$ of the first signal (the square wave) with each kernel, without padding, so that each output has $20 - 4 + 1 = 17$ values.
-
-    \begin{solution}
-        With $(x \circledast \omega)[i] = \sum_{m=0}^{3} x_{i+m} \omega_m$ for $i = 0, \ldots, 16$, the square wave ($+1$ for five samples, then $-1$ for five samples) gives
-        \begin{align*}
-            (-1, -\tfrac{1}{3}, \tfrac{1}{3}, 1) & : (0, 0, -2, -\tfrac{8}{3}, -2, 0, 0, 2, \tfrac{8}{3}, 2, 0, 0, -2, -\tfrac{8}{3}, -2, 0, 0), \\
-            (-1, -1, 1, 1) & : (0, 0, -2, -4, -2, 0, 0, 2, 4, 2, 0, 0, -2, -4, -2, 0, 0), \\
-            (-1, 1, 1, -1) & : (0, 0, 2, 0, -2, 0, 0, -2, 0, 2, 0, 0, 2, 0, -2, 0, 0).
-        \end{align*}
-    \end{solution}
-    \part Without computing every value, sketch the convolution of the three other signals with each kernel. What does each kernel detect?
-
-    \begin{solution}
-        The outputs below share the vertical scale $[-4, 4]$, one row per signal and one column per kernel (the first row is (a)).
-        \begin{center}
-            \setlength{\tabcolsep}{2pt}
-            \begin{tabular}{cccc}
-            & $(-1, -\frac{1}{3}, \frac{1}{3}, 1)$ & $(-1, -1, 1, 1)$ & $(-1, 1, 1, -1)$ \\
-            1 & \convolved{(0,-0.000) (1,-0.000) (2,-2.000) (3,-2.667) (4,-2.000) (5,0.000) (6,0.000) (7,2.000) (8,2.667) (9,2.000) (10,-0.000) (11,-0.000) (12,-2.000) (13,-2.667) (14,-2.000) (15,0.000) (16,0.000)} & \convolved{(0,0.000) (1,0.000) (2,-2.000) (3,-4.000) (4,-2.000) (5,0.000) (6,0.000) (7,2.000) (8,4.000) (9,2.000) (10,0.000) (11,0.000) (12,-2.000) (13,-4.000) (14,-2.000) (15,0.000) (16,0.000)} & \convolved{(0,0.000) (1,0.000) (2,2.000) (3,0.000) (4,-2.000) (5,0.000) (6,0.000) (7,-2.000) (8,0.000) (9,2.000) (10,0.000) (11,0.000) (12,2.000) (13,0.000) (14,-2.000) (15,0.000) (16,0.000)} \\
-            2 & \convolved{(0,1.667) (1,1.667) (2,-0.833) (3,-1.667) (4,-0.833) (5,1.667) (6,1.667) (7,-0.833) (8,-1.667) (9,-0.833) (10,1.667) (11,1.667) (12,-0.833) (13,-1.667) (14,-0.833) (15,1.667) (16,1.667)} & \convolved{(0,2.000) (1,2.000) (2,-0.500) (3,-3.000) (4,-0.500) (5,2.000) (6,2.000) (7,-0.500) (8,-3.000) (9,-0.500) (10,2.000) (11,2.000) (12,-0.500) (13,-3.000) (14,-0.500) (15,2.000) (16,2.000)} & \convolved{(0,0.000) (1,0.000) (2,2.500) (3,0.000) (4,-2.500) (5,0.000) (6,0.000) (7,2.500) (8,0.000) (9,-2.500) (10,0.000) (11,0.000) (12,2.500) (13,0.000) (14,-2.500) (15,0.000) (16,0.000)} \\
-            3 & \convolved{(0,-1.333) (1,-1.333) (2,-1.333) (3,-0.533) (4,0.533) (5,1.333) (6,1.333) (7,1.333) (8,0.533) (9,-0.533) (10,-1.333) (11,-1.333) (12,-1.333) (13,-0.533) (14,0.533) (15,1.333) (16,1.333)} & \convolved{(0,-1.600) (1,-1.600) (2,-1.600) (3,-0.800) (4,0.800) (5,1.600) (6,1.600) (7,1.600) (8,0.800) (9,-0.800) (10,-1.600) (11,-1.600) (12,-1.600) (13,-0.800) (14,0.800) (15,1.600) (16,1.600)} & \convolved{(0,0.000) (1,-0.000) (2,0.000) (3,-0.800) (4,-0.800) (5,0.000) (6,-0.000) (7,0.000) (8,0.800) (9,0.800) (10,0.000) (11,-0.000) (12,0.000) (13,-0.800) (14,-0.800) (15,0.000) (16,-0.000)} \\
-            4 & \convolved{(0,-0.747) (1,-1.106) (2,-1.281) (3,-1.242) (4,-0.997) (5,-0.586) (6,-0.077) (7,0.445) (8,0.892) (9,1.191) (10,1.292) (11,1.178) (12,0.867) (13,0.412) (14,-0.111) (15,-0.616) (16,-1.019)} & \convolved{(0,-0.904) (1,-1.339) (2,-1.551) (3,-1.504) (4,-1.207) (5,-0.709) (6,-0.093) (7,0.538) (8,1.080) (9,1.442) (10,1.564) (11,1.426) (12,1.050) (13,0.499) (14,-0.135) (15,-0.746) (16,-1.233)} & \convolved{(0,0.266) (1,0.169) (2,0.043) (3,-0.090) (4,-0.207) (5,-0.291) (6,-0.325) (7,-0.306) (8,-0.236) (9,-0.126) (10,0.004) (11,0.134) (12,0.242) (13,0.309) (14,0.325) (15,0.287) (16,0.201)} \\
-            \end{tabular}
-        \end{center}
-        The first kernel is a smoothed derivative: its output is positive where the signal increases, negative where it decreases and zero where it is constant, so that the triangle wave gives a rounded square wave and the cosine a sine. The second compares the two halves of its window: it also measures the slope, but responds most strongly to jumps, with peaks of $\pm 4$ at the edges of the square wave. The third compares the centre of its window with its ends: it is zero wherever the signal is linear (the flat parts of the square wave, the ramps of the sawtooth and of the triangle), positive at local maxima and negative at local minima, so that it detects corners; on the cosine, whose curvature is proportional to the signal itself, it returns a small copy of the signal.
-    \end{solution}
-\end{parts}
-
-\titledquestion{Learning to play Pacman \source{Exam, August 2020}}
-
-You observe a Grandmaster agent playing Pacman: at each step $t$, it perceives $e_t$ and plays an action $a_t$. How can you use the moves you observe to train your own agent?
-
-\begin{parts}
-    \part Describe formally the data you would collect, the inference problem you would consider, and how you would solve it.
-
-    \begin{solution}
-        At each step $t$ of the games we watch, the Grandmaster perceives $e_t$ and plays $a_t \in \mathcal{A} = \{\text{North}, \text{South}, \text{East}, \text{West}, \text{Stop}\}$; Pacman's world is fully observable, so $e_t = s_t$. Each step gives an input-output pair $(\mathbf{x}_i, y_i)$, with features $\mathbf{x}_i = g(e_t) \in \mathbb{R}^d$ computed from the game state (positions of Pacman, the ghosts and the food, distances, walls around Pacman, \ldots) and the label $y_i = a_t$. Collecting $N$ steps gives a dataset $\mathbf{d} = \{(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_N, y_N)\}$.
-
-        The inference problem is a classification problem with $|\mathcal{A}|$ classes: we look for a model $P_\theta(y \mid \mathbf{x})$ of the Grandmaster's choice given the features, whose parameters $\theta$ maximize the likelihood of $\mathbf{d}$,
-        \[
-            \theta^* = \arg\max_\theta \prod_{i=1}^N P_\theta(y_i \mid \mathbf{x}_i).
-        \]
-        Since there is no closed-form solution for a neural network, we minimize the negative log-likelihood by (stochastic) gradient descent. Our agent is then the simple reflex agent $\pi_\theta(e_t) = \arg\max_{a \in \mathcal{A}} P_{\theta^*}(a \mid g(e_t))$, whose condition-action rules are learned from the Grandmaster rather than written by hand.
-    \end{solution}
-
-    \part How would you design a neural network to control your agent? Define mathematically the neural network architecture, its inputs, its outputs, its parameters, as well as the loss you would use to train it.
-
-    \begin{solution}
-        A multilayer perceptron with input $\mathbf{x} = g(e_t) \in \mathbb{R}^d$, $K$ hidden layers and $C = |\mathcal{A}| = 5$ outputs:
-        \begin{align*}
-            \mathbf{h}_0 & = \mathbf{x}, \\
-            \mathbf{h}_k & = \ReLU(\mathbf{W}_k \mathbf{h}_{k-1} + \mathbf{b}_k), \quad k = 1, \ldots, K, \\
-            f(\mathbf{x}; \theta) & = \mathrm{Softmax}(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y),
-        \end{align*}
-        with $\mathbf{W}_k \in \mathbb{R}^{q_k \times q_{k-1}}$, $\mathbf{b}_k \in \mathbb{R}^{q_k}$ ($q_0 = d$), $\mathbf{W}_y \in \mathbb{R}^{C \times q_K}$ and $\mathbf{b}_y \in \mathbb{R}^C$, so that $\theta = \{\mathbf{W}_1, \mathbf{b}_1, \ldots, \mathbf{W}_K, \mathbf{b}_K, \mathbf{W}_y, \mathbf{b}_y\}$. The output $f_a(\mathbf{x}; \theta)$ is the probability $P_\theta(a \mid \mathbf{x})$ that the Grandmaster plays $a$. Numbering the actions $0, \ldots, C-1$, the loss is the cross-entropy, the negative log-likelihood of $\mathbf{d}$:
-        \[
-            \mathcal{L}(\theta) = -\frac{1}{N} \sum_{i=1}^N \log f_{y_i}(\mathbf{x}_i; \theta).
-        \]
-        Illegal actions (into a wall) can be masked by setting their probability to zero before taking the $\arg\max$.
-    \end{solution}
-
-    \part Discuss the expected performance of the resulting agent when \begin{enumerate*}
-        \item the Grandmaster agent is optimal, and
-        \item the Grandmaster agent is suboptimal.
-    \end{enumerate*}
-
-    \begin{solution}
-        \begin{enumerate*}
-            \item If the Grandmaster is optimal, our agent is at best as good as the Grandmaster, and in practice worse. It only imitates the Grandmaster on the states the Grandmaster visits: once a small error leads it to a state that never appears in $\mathbf{d}$, its predictions there are unreliable and errors can compound over the rest of the game. More data, from varied situations, and features $g$ that generalize across mazes reduce this effect.
-            \item If the Grandmaster is suboptimal, our agent learns its mistakes along with its good moves, since the loss only rewards agreeing with the Grandmaster. Nothing in the data tells which moves were good: doing better requires a signal about the outcome of the moves, such as the score, which is the setting of reinforcement learning.
-        \end{enumerate*}
-    \end{solution}
-\end{parts}
-
 \end{exercises}
 
 \begin{quiz}
@@ -2028,12 +1774,52 @@ You observe a Grandmaster agent playing Pacman: at each step $t$, it perceives $
         \item Nothing changes neither for the linear layer nor the convolution one.
     \end{enumerate}
 
+    \item Which expression is equal to $|x| + 1$ for every $x \in \mathbb{R}$?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item $\ReLU(x) - \ReLU(-x) + 1$.
+        \item \correct{$\ReLU(x) + \ReLU(-x) + 1$.}
+        \item $\ReLU(x + 1) + \ReLU(-x + 1)$.
+        \item $\ReLU(x + 1) - \ReLU(x - 1)$.
+    \end{enumerate}
+
+    \item The function $y = \ReLU(x - 2) - \ReLU(-x - 2)$ is \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item \correct{$0$ on $[-2, 2]$, $x - 2$ for $x > 2$ and $x + 2$ for $x < -2$.}
+        \item $0$ on $[-2, 2]$, $x - 2$ for $x > 2$ and $-x - 2$ for $x < -2$.
+        \item $x$ for every $x$, since the two units cancel.
+        \item $0$ for $x \leq 2$ and $x - 2$ for $x > 2$.
+    \end{enumerate}
+
     \item In deep learning, a layer in a multi-layer perceptron is defined as \ldots
     \begin{enumerate}[label=$\bigcirc$]
         \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is the standard deviation function.
         \item \correct{$\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\sigma$ is an activation function, such as the sigmoid function.}
         \item $\mathbf{h} = \sigma(\mathbf{W} + \mathbf{x} - \mathbf{b})$, where $\mathbf{W} \in \mathbb{R}^{q \times d}$ is a matrix of weights.
         \item $\mathbf{h} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$, where $\mathbf{b} \in \mathbb{R}^d$ is the most likely vector of hidden states given $\mathbf{x}$.
+    \end{enumerate}
+
+    \item A network is trained for a growing number of epochs. After 20 epochs, its training loss is $0.22$ and its validation loss $0.44$; after 80 epochs, they are $0.02$ and $0.71$. After 80 epochs, the network \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item underfits, since its validation loss is high.
+        \item \correct{overfits: it fits its training pairs better and new pairs worse.}
+        \item generalizes better, since its training loss is lower.
+        \item has converged, since its training loss is close to $0$.
+    \end{enumerate}
+
+    \item The number of epochs of the previous question is chosen as the one with the lowest validation loss, $0.44$. To estimate the loss of the chosen network on new data, \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item report $0.44$, since the validation pairs were not used for training.
+        \item report the training loss after 20 epochs.
+        \item \correct{evaluate the network once on a test set, used neither for training nor for choosing the number of epochs.}
+        \item average the training and validation losses.
+    \end{enumerate}
+
+    \item A classifier is trained by minimizing the cross-entropy rather than its error rate (the fraction of misclassified examples) because \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item the error rate cannot be computed on the training set.
+        \item the cross-entropy is always smaller than the error rate.
+        \item \correct{the error rate is piecewise constant in $\theta$, with a zero gradient almost everywhere.}
+        \item the error rate is only defined for two classes.
     \end{enumerate}
 
     \item A program performs gradient descent on a function $f(x)$ using the update
@@ -2046,6 +1832,30 @@ You observe a Grandmaster agent playing Pacman: at each step $t$, it perceives $
         \item Yes, but not for the reason above.
         \item No, since it updates $x$ in the wrong direction.
         \item \correct{No, but not for the reason above.}
+    \end{enumerate}
+
+    \item A signal $\mathbf{x} \in \mathbb{R}^{20}$ is convolved with a kernel $\omega \in \mathbb{R}^4$, without padding. How many values does $\mathbf{x} \circledast \omega$ have?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item $16$.
+        \item \correct{$17$.}
+        \item $20$.
+        \item $23$.
+    \end{enumerate}
+
+    \item Which kernel responds most strongly to the jumps of a square wave (a signal alternating between $+1$ and $-1$ every five samples)?
+    \begin{enumerate}[label=$\bigcirc$]
+        \item $(\frac{1}{4}, \frac{1}{4}, \frac{1}{4}, \frac{1}{4})$.
+        \item $(0, 1, 0, 0)$.
+        \item $(1, 1, 1, 1)$.
+        \item \correct{$(-1, -1, 1, 1)$.}
+    \end{enumerate}
+
+    \item The kernel $\omega = (-1, 1, 1, -1)$ is applied to a ramp $x_i = a i + b$. The output is \ldots
+    \begin{enumerate}[label=$\bigcirc$]
+        \item \correct{$0$ everywhere.}
+        \item the constant $a$.
+        \item a ramp of slope $a$.
+        \item the input itself.
     \end{enumerate}
 \end{quiz}
 
