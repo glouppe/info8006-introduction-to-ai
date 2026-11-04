@@ -415,9 +415,9 @@ def deep_buildup():
     h = np.stack([relu(w * X + b) for w, b, _ in SHALLOW])
     pre = [np.dot(ws, h) + b for ws, b in DEEP]
     fig, axs = plt.subplots(3, 4, figsize=(13, 10))
-    titles = [[rf"$w'_{{{j}0}}h_0 + w'_{{{j}1}}h_1 + w'_{{{j}2}}h_2 + b'_{j}$" for j in range(3)],
-              [rf"$h'_{j} = \mathrm{{ReLU}}(\cdot)$" for j in range(3)],
-              [rf"$v_{j} h'_{j}$" for j in range(3)]]
+    titles = [[rf"$w_{{{j}0}}^{{\prime}}h_0 + w_{{{j}1}}^{{\prime}}h_1 + w_{{{j}2}}^{{\prime}}h_2 + b_{j}^{{\prime}}$" for j in range(3)],
+              [rf"$h_{j}^{{\prime}} = \mathrm{{ReLU}}(\cdot)$" for j in range(3)],
+              [rf"$v_{j} h_{j}^{{\prime}}$" for j in range(3)]]
     for j in range(3):
         rows = [pre[j], relu(pre[j]), V2[j] * relu(pre[j])]
         for r in range(3):
@@ -432,7 +432,7 @@ def deep_buildup():
     ax = axs[1, 3]
     axes_1d(ax, (-1.2, 1.2))
     ax.plot(X, y, color=OUT)
-    ax.set_title(r"$y = v_0 h'_0 + v_1 h'_1 + v_2 h'_2 + c$", fontsize=12.5)
+    ax.set_title(r"$y = v_0 h_0^{\prime} + v_1 h_1^{\prime} + v_2 h_2^{\prime} + c$", fontsize=12.5)
     fig.tight_layout()
     save(fig, "nn-deep-buildup")
 
