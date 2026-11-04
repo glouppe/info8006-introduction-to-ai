@@ -188,6 +188,20 @@
 %   random variable is a white circle, observed variable a shaded one, as in the slides of
 %   lecture 5; dependency is an arrow from a parent to its child. Variables are always circles:
 %   long names become letters, spelled out by a diagram caption label (sheet 4, car diagnosis).
+%
+%   Neural networks, drawn as the network diagrams of lecture 7, 1 cm by 1 cm between grid points:
+%       \begin{tikzpicture}[network diagram]
+%           \node[unit] (X) at (0, 0) {$x$};
+%           \node[constant unit] (C) at (0, 1.5) {$1$};
+%           \node[output unit] (Y) at (2.5, 0) {$y$};
+%           \draw[connection] (X) -- node[weight] {$w$} (Y);
+%           \draw[connection] (C) -- node[weight] {$b$} (Y);
+%       \end{tikzpicture}
+%   unit is a white circle, output unit has the course blue outline (the deck keeps blue for
+%   outputs), constant unit is the grey constant input 1 of the biases; weights label the edges.
+%   Computation graphs use [computation diagram] with variable node (circle) and operation node
+%   (square). Arrays of values are drawn with \cells, plots of functions with the pgfplots style
+%   diagram plot (both defined below the styles).
 
 \usetikzlibrary{arrows.meta}
 
@@ -199,6 +213,13 @@
 \colorlet{diagram-flooded}{black!28}
 \definecolor{diagram-pacman}{HTML}{F2C230}
 \definecolor{diagram-robot}{HTML}{C8463D}
+% the colours of lecture 7: hidden units, and the two ends of the diverging scale of its arrays
+\definecolor{diagram-unit0}{HTML}{D9822B}
+\definecolor{diagram-unit1}{HTML}{3F8F5A}
+\definecolor{diagram-unit2}{HTML}{8A5FB5}
+\definecolor{diagram-unit3}{HTML}{C2577F}
+\colorlet{diagram-negative}{diagram-unit0}
+\colorlet{diagram-positive}{diagram-accent}
 
 \tikzset{
     diagram/.style={
@@ -288,6 +309,36 @@
     },
     observed variable/.style={random variable, fill=diagram-fill},
     dependency/.style={link, ->},
+    % Neural networks, 1 cm by 1 cm between grid points, as the network diagrams of lecture 7
+    network diagram/.style={diagram, x=1cm, y=1cm},
+    unit/.style={
+        circle,
+        draw=diagram-ink,
+        fill=white,
+        line width=0.7pt,
+        minimum size=8.5mm,
+        inner sep=0pt,
+    },
+    output unit/.style={unit, draw=diagram-accent, line width=1pt},
+    constant unit/.style={unit, draw=diagram-muted, text=diagram-muted},
+    connection/.style={link, ->},
+    weight/.style={font=\footnotesize, fill=white, inner sep=1pt},
+    % Computation graphs: circles for variables, squares for operations
+    computation diagram/.style={diagram, x=1cm, y=1cm},
+    variable node/.style={unit, minimum size=7.5mm},
+    operation node/.style={
+        rectangle,
+        draw=diagram-ink,
+        fill=white,
+        line width=0.7pt,
+        minimum size=6.5mm,
+        inner sep=2pt,
+        font=\footnotesize,
+    },
+    % Arrays of values (\cells below)
+    cell/.style={rectangle, draw=white, line width=0.8pt, minimum size=#1, inner sep=0pt, font=\footnotesize},
+    cell/.default=6mm,
+    window/.style={draw=diagram-ink, line width=1.4pt},
     % Grid worlds
     world diagram/.style={diagram, x=0.62cm, y=0.62cm},
     grid lines/.style={draw=diagram-grid, line width=0.4pt, step=1},
@@ -555,6 +606,54 @@
     }%
 }
 \newcommand{\correct}[1]{\ifprintanswers\leavevmode\exercises@tick{\color{SolutionColor}#1}\else#1\fi}
+
+% Arrays of values, as the convolution figures of lecture 7:
+%     \begin{tikzpicture}[diagram, x=6mm, y=6mm] \cells{2}{{1, -2, 0}, {0.5, 2, -1}} \end{tikzpicture}
+% draws one cell per value, row by row from (0, 0) downwards, with its value written in it and a
+% thin frame around the array. Without the optional colour, cells follow the diverging scale of
+% the deck (diagram-negative below 0, white at 0, diagram-positive above, saturated at the given
+% maximum); with one (black for a greyscale image, red, green or blue for the channels of a colour
+% image), they go from white at 0 to that colour at the maximum. Values on dark cells are white.
+% A kernel's window is drawn over the cells with the window style, e.g.
+%     \draw[window] (-0.5, 0.5) rectangle (2.5, -2.5);
+\newcommand{\cells}[3][]{%
+    \foreach \exercises@row [count=\exercises@j from 0] in {#3} {%
+        \foreach \exercises@v [count=\exercises@i from 0] in \exercises@row {%
+            \pgfmathsetmacro\exercises@p{min(85, abs(\exercises@v) / #2 * 85)}%
+            \if\relax\detokenize{#1}\relax
+                \pgfmathparse{\exercises@v < 0 ? 1 : 0}%
+                \ifnum\pgfmathresult=1 \def\exercises@hue{diagram-negative}\else\def\exercises@hue{diagram-positive}\fi
+            \else
+                \def\exercises@hue{#1}%
+            \fi
+            \pgfmathparse{\exercises@p > 50 ? 1 : 0}%
+            \ifnum\pgfmathresult=1 \def\exercises@ink{white}\else\def\exercises@ink{diagram-ink}\fi
+            \node[cell, fill=\exercises@hue!\exercises@p!white, text=\exercises@ink] at (\exercises@i, -\exercises@j) {$\exercises@v$};
+            \xdef\exercises@ncols{\exercises@i}%
+        }%
+        \xdef\exercises@nrows{\exercises@j}%
+    }%
+    \draw[diagram-ink, line width=0.5pt] (-0.5, 0.5) rectangle (\exercises@ncols + 0.5, -\exercises@nrows - 0.5);
+}
+
+% Plots of functions, square as those of lecture 7: \begin{axis}[diagram plot, xmin=..., ...].
+% Curves drawn with \addplot+ are in the course blue, then in the colours of the hidden units of the deck.
+\pgfplotsset{
+    diagram plot/.style={
+        width=6cm,
+        height=6cm,
+        scale only axis=false,
+        axis lines=middle,
+        axis line style={-{Stealth[length=1.8mm, width=1.4mm]}, diagram-ink},
+        grid=major,
+        major grid style={diagram-grid, line width=0.3pt},
+        tick label style={font=\footnotesize},
+        label style={font=\small},
+        enlargelimits=false,
+        every axis plot/.append style={line width=1.1pt, no markers},
+        cycle list={{diagram-accent}, {diagram-unit0}, {diagram-unit1}, {diagram-unit2}, {diagram-unit3}},
+    },
+}
 
 %%%%%%%%%
 % Links %

@@ -30,6 +30,23 @@
 \end{tikzpicture}
 }
 
+\pgfplotsset{
+    region grid/.style={
+        diagram plot,
+        width=7.6cm,
+        height=9.4cm,
+        xmin=-1, xmax=6,
+        ymin=-2, ymax=7,
+        xtick={-1, 0, ..., 6},
+        ytick={-2, -1, ..., 7},
+        xlabel={$x_1$},
+        ylabel={$x_2$},
+        xlabel style={anchor=north west},
+        ylabel style={anchor=south east},
+    },
+}
+\tikzset{region label/.style={draw=diagram-ink, fill=white, inner sep=1.5pt, font=\footnotesize}}
+
 \newcommand{\convolved}[1]{%
 \begin{tikzpicture}[diagram, baseline=(current bounding box.center)]
     \begin{axis}[%
@@ -1265,13 +1282,13 @@ For each problem, you want to identify a probabilistic model in the form $p_\the
 
 We consider a neural network for binary classification that takes as input a 2D point $(x_1,x_2)\in\mathbb{R}^2$ and outputs a probability $\hat{y}=f(x_1,x_2)\in[0,1]$. The network has one hidden layer with two units and is defined as
 \begin{align*}
-    h_1 &= \operatorname{ReLU}(x_1-1), \\
-    h_2 &= \operatorname{ReLU}(x_2-2), \\
-    \hat{y} &= \sigma(h_1+h_2-2),
+    h_0 &= \ReLU(x_1-1), \\
+    h_1 &= \ReLU(x_2-2), \\
+    \hat{y} &= \sigma(h_0+h_1-2),
 \end{align*}
 where
 \[
-    \operatorname{ReLU}(z)=\max(0,z)
+    \ReLU(z)=\max(0,z)
 \]
 is the rectified linear unit and
 \[
@@ -1293,11 +1310,45 @@ The predicted class is
 
     \begin{solution}
         \begin{center}
-            \includegraphics[width=0.7\linewidth]{figures/shalow_drawing.png}
+            \begin{tikzpicture}[computation diagram, x=0.92cm]
+                \node[variable node] (X1) at (0, 1) {$x_1$};
+                \node[variable node] (X2) at (0, -1) {$x_2$};
+                \node[variable node] (C1) at (1.5, 2.3) {$-1$};
+                \node[variable node] (C2) at (1.5, -2.3) {$-2$};
+                \node[operation node] (S0) at (1.5, 1) {$+$};
+                \node[operation node] (S1) at (1.5, -1) {$+$};
+                \node[variable node] (Z0) at (3, 1) {$z_0$};
+                \node[variable node] (Z1) at (3, -1) {$z_1$};
+                \node[operation node] (R0) at (4.5, 1) {ReLU};
+                \node[operation node] (R1) at (4.5, -1) {ReLU};
+                \node[variable node] (H0) at (6, 1) {$h_0$};
+                \node[variable node] (H1) at (6, -1) {$h_1$};
+                \node[variable node] (C3) at (7.5, 1.6) {$-2$};
+                \node[operation node] (S) at (7.5, 0) {$+$};
+                \node[variable node] (Z) at (9, 0) {$z$};
+                \node[operation node] (G) at (10.5, 0) {$\sigma$};
+                \node[variable node] (Y) at (12, 0) {$\hat{y}$};
+                \draw[connection] (X1) -- (S0);
+                \draw[connection] (C1) -- (S0);
+                \draw[connection] (X2) -- (S1);
+                \draw[connection] (C2) -- (S1);
+                \draw[connection] (S0) -- (Z0);
+                \draw[connection] (S1) -- (Z1);
+                \draw[connection] (Z0) -- (R0);
+                \draw[connection] (Z1) -- (R1);
+                \draw[connection] (R0) -- (H0);
+                \draw[connection] (R1) -- (H1);
+                \draw[connection] (H0) -- (S);
+                \draw[connection] (H1) -- (S);
+                \draw[connection] (C3) -- (S);
+                \draw[connection] (S) -- (Z);
+                \draw[connection] (Z) -- (G);
+                \draw[connection] (G) -- (Y);
+            \end{tikzpicture}
         \end{center}
     \end{solution}
 
-    \part The ReLU activation functions divide the input space into several regions, depending on whether each hidden unit is active ($h_i>0$) or inactive ($h_i=0$).
+    \part The ReLU activation functions divide the input space into several regions, depending on whether each hidden unit is active ($h_j>0$) or inactive ($h_j=0$).
 
     \begin{subparts}
         \subpart Identify and characterize these regions in terms of conditions on $x_1$ and $x_2$.
@@ -1307,19 +1358,19 @@ The predicted class is
             \begin{align*}
                 x_1 > 1
                 &\quad\Longrightarrow\quad
-                h_1=x_1-1>0, \\
+                h_0=x_1-1>0, \\
                 x_1 \leq 1
                 &\quad\Longrightarrow\quad
-                h_1=0,
+                h_0=0,
             \end{align*}
             and
             \begin{align*}
                 x_2 > 2
                 &\quad\Longrightarrow\quad
-                h_2=x_2-2>0, \\
+                h_1=x_2-2>0, \\
                 x_2 \leq 2
                 &\quad\Longrightarrow\quad
-                h_2=0.
+                h_1=0.
             \end{align*}
 
             Therefore, four regions can be distinguished:
@@ -1336,8 +1387,8 @@ The predicted class is
                     \quad\Longrightarrow\quad
                     \left\{
                     \begin{array}{l}
-                        h_1=x_1-1 \\
-                        h_2=x_2-2
+                        h_0=x_1-1 \\
+                        h_1=x_2-2
                     \end{array}
                     \right.
                 \]
@@ -1353,8 +1404,8 @@ The predicted class is
                     \quad\Longrightarrow\quad
                     \left\{
                     \begin{array}{l}
-                        h_1=x_1-1 \\
-                        h_2=0
+                        h_0=x_1-1 \\
+                        h_1=0
                     \end{array}
                     \right.
                 \]
@@ -1370,8 +1421,8 @@ The predicted class is
                     \quad\Longrightarrow\quad
                     \left\{
                     \begin{array}{l}
-                        h_1=0 \\
-                        h_2=x_2-2
+                        h_0=0 \\
+                        h_1=x_2-2
                     \end{array}
                     \right.
                 \]
@@ -1387,8 +1438,8 @@ The predicted class is
                     \quad\Longrightarrow\quad
                     \left\{
                     \begin{array}{l}
-                        h_1=0 \\
-                        h_2=0
+                        h_0=0 \\
+                        h_1=0
                     \end{array}
                     \right.
                 \]
@@ -1402,7 +1453,7 @@ The predicted class is
                 \item For $x_1>1$ and $x_2>2$,
                 \begin{align*}
                     \hat{y}
-                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma(h_0+h_1-2) \\
                     &=\sigma((x_1-1)+(x_2-2)-2) \\
                     &=\sigma(x_1+x_2-5) \\
                     &=\boxed{\frac{1}{1+e^{-(x_1+x_2-5)}}}.
@@ -1411,7 +1462,7 @@ The predicted class is
                 \item For $x_1>1$ and $x_2\leq2$,
                 \begin{align*}
                     \hat{y}
-                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma(h_0+h_1-2) \\
                     &=\sigma((x_1-1)+0-2) \\
                     &=\sigma(x_1-3) \\
                     &=\boxed{\frac{1}{1+e^{-(x_1-3)}}}.
@@ -1420,7 +1471,7 @@ The predicted class is
                 \item For $x_1\leq1$ and $x_2>2$,
                 \begin{align*}
                     \hat{y}
-                    &=\sigma(h_1+h_2-2) \\
+                    &=\sigma(h_0+h_1-2) \\
                     &=\sigma(0+(x_2-2)-2) \\
                     &=\sigma(x_2-4) \\
                     &=\boxed{\frac{1}{1+e^{-(x_2-4)}}}.
@@ -1439,145 +1490,31 @@ The predicted class is
 
     \part Plot the decision boundary $\hat{y}=0.5$ of the classifier on the grid below. Clearly indicate which region(s) are classified as class $1$ and which are classified as class $0$.
 
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{axis}[region grid]
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
     \begin{solution}
-        Remembering that the sigmoid is strictly increasing and:
-        \[
-            \sigma(0)=0.5,
-        \]
-        the decision boundaries can be easily plotted.
-
+        Since the sigmoid is increasing and $\sigma(0) = 0.5$, we have $\hat{y} \geq 0.5$ if and only if $h_0 + h_1 - 2 \geq 0$. In each region of (b):
         \begin{enumerate}
-            \item
-            \[
-                \left\{
-                \begin{array}{l}
-                    x_1>1 \\
-                    x_2>2 \\
-                    \hat y \geq 0.5
-                \end{array}
-                \right.
-                \quad\Longrightarrow\quad
-                \left\{
-                \begin{array}{l}
-                    x_2 \geq -x_1 + 5 \\
-                    \hat c = 1
-                \end{array}
-                \right.
-            \]
-
-            \item
-            \[
-                \left\{
-                \begin{array}{l}
-                    x_1>1 \\
-                    x_2\leq2 \\
-                    \hat y \geq 0.5
-                \end{array}
-                \right.
-                \quad\Longrightarrow\quad
-                \left\{
-                \begin{array}{l}
-                    x_1 \geq 3 \\
-                    \hat c = 1
-                \end{array}
-                \right.
-            \]
-
-            \item
-            \[
-                \left\{
-                \begin{array}{l}
-                    x_1\leq1 \\
-                    x_2>2 \\
-                    \hat y \geq 0.5
-                \end{array}
-                \right.
-                \quad\Longrightarrow\quad
-                \left\{
-                \begin{array}{l}
-                    x_2 \geq 4 \\
-                    \hat c = 1
-                \end{array}
-                \right.
-            \]
-
-            \item
-            \[
-                \left\{
-                \begin{array}{l}
-                    x_1\leq1 \\
-                    x_2\leq2 \\
-                    \hat y \geq 0.5
-                \end{array}
-                \right.
-                \quad\Longrightarrow\quad
-                \left\{
-                \begin{array}{l}
-                    \text{no } (x_1, x_2) \\
-                    \hat c = 1
-                \end{array}
-                \right.
-            \]
+            \item for $x_1 > 1$ and $x_2 > 2$, $\hat{c} = 1$ if and only if $x_1 + x_2 \geq 5$;
+            \item for $x_1 > 1$ and $x_2 \leq 2$, $\hat{c} = 1$ if and only if $x_1 \geq 3$;
+            \item for $x_1 \leq 1$ and $x_2 > 2$, $\hat{c} = 1$ if and only if $x_2 \geq 4$;
+            \item for $x_1 \leq 1$ and $x_2 \leq 2$, $\hat{y} = \sigma(-2) < 0.5$, so $\hat{c} = 0$ everywhere.
         \end{enumerate}
-
-        We have $\hat c = 0$ in the other regions. The decision boundary is plotted below in thick black:
-
+        The decision boundary is the broken line from $(-\infty, 4)$ to $(1, 4)$, $(3, 2)$ and $(3, -\infty)$; class $1$ (shaded) lies above and to the right of it, class $0$ below and to the left. The joints of the hidden units are dashed.
         \begin{center}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    width=10cm,
-                    height=8cm,
-                    xmin=-1,
-                    xmax=6,
-                    ymin=-1,
-                    ymax=7,
-                    axis lines=middle,
-                    xlabel={$x_1$},
-                    ylabel={$x_2$},
-                    grid=both,
-                    xtick={-1,0,...,6},
-                    ytick={-1,0,...,7},
-                    axis line style={->},
-                    enlargelimits=false,
-                ]
-
-                % ReLU boundaries
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:7,
-                ] ({1},{x});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] ({x},{2});
-
-                % Decision boundary: x1 + x2 = 5
-                \addplot[
-                    very thick,
-                    domain=1:3,
-                ] ({x},{5-x});
-
-                % Decision boundary: x1 = 3
-                \addplot[
-                    very thick,
-                    domain=-1:2,
-                ] ({3},{x});
-
-                % Decision boundary: x2 = 4
-                \addplot[
-                    very thick,
-                    domain=-1:1,
-                ] ({x},{4});
-
-                % Class labels
-                \node at (axis cs:4.8,5.8) {\Large $\hat c = 1$};
-                \node at (axis cs:1,1) {\Large$\hat c = 0$};
-
+            \begin{tikzpicture}[diagram]
+                \begin{axis}[region grid]
+                    \fill[diagram-accent, fill opacity=0.1] (axis cs:-1, 4) -- (axis cs:1, 4) -- (axis cs:3, 2) -- (axis cs:3, -2) -- (axis cs:6, -2) -- (axis cs:6, 7) -- (axis cs:-1, 7) -- cycle;
+                    \draw[diagram-unit0, dashed, thick] (axis cs:1, -2) -- (axis cs:1, 7);
+                    \draw[diagram-unit1, dashed, thick] (axis cs:-1, 2) -- (axis cs:6, 2);
+                    \draw[diagram-accent, line width=1.6pt] (axis cs:-1, 4) -- (axis cs:1, 4) -- (axis cs:3, 2) -- (axis cs:3, -2);
+                    \node[fill=white, inner sep=1pt] at (axis cs:4.5, 5) {$\hat{c} = 1$};
+                    \node[fill=white, inner sep=1pt] at (axis cs:-0.1, 0.5) {$\hat{c} = 0$};
                 \end{axis}
             \end{tikzpicture}
         \end{center}
@@ -1585,202 +1522,64 @@ The predicted class is
 
     \part We now consider a modified network with a third hidden unit:
     \begin{align*}
-        h_1 &= \operatorname{ReLU}(x_1-1), \\
-        h_2 &= \operatorname{ReLU}(x_2-2), \\
-        h_3 &= \operatorname{ReLU}(-2x_1-x_2+5), \\
-        \hat{y} &= \sigma(h_1+h_2+h_3-2).
+        h_0 &= \ReLU(x_1-1), \\
+        h_1 &= \ReLU(x_2-2), \\
+        h_2 &= \ReLU(-2x_1-x_2+5), \\
+        \hat{y} &= \sigma(h_0+h_1+h_2-2).
     \end{align*}
 
-    On a new grid, plot the new decision boundary and compare it to the original one. What is the effect of adding $h_3$?
+    On the grid below, plot the new decision boundary and compare it to the original one. What is the effect of adding $h_2$?
+
+    \begin{center}
+        \begin{tikzpicture}[diagram]
+            \begin{axis}[region grid]
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
 
     \begin{solution}
-        The new unit is active when
-        \[
-            -2x_1 - x_2 + 5 > 0
-        \]
-
-        The three hidden units define seven different linear regions:
-
+        The new unit is active when $2x_1 + x_2 < 5$. The three joints $x_1 = 1$, $x_2 = 2$ and $2x_1 + x_2 = 5$ cut the plane into seven linear regions; the eighth activation pattern, with all units inactive, cannot occur, since $x_1 \leq 1$ and $x_2 \leq 2$ give $2x_1 + x_2 \leq 4 < 5$.
         \begin{center}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    width=10cm,
-                    height=8cm,
-                    xmin=-1,
-                    xmax=6,
-                    ymin=-1,
-                    ymax=7,
-                    axis lines=middle,
-                    xlabel={$x_1$},
-                    ylabel={$x_2$},
-                    grid=both,
-                    xtick={-1,0,...,6},
-                    ytick={-1,0,...,7},
-                    axis line style={->},
-                    enlargelimits=false,
-                ]
-
-                % ReLU boundaries
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:7,
-                ] ({1},{x});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] ({x},{2});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] ({x},{2});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] {5-2*x};
-
-                % Class labels
-                \node at (axis cs:0.5,0.5) {\Large $ \boxed{1}$};
-                \node at (axis cs:-0.5,3.5) {\Large $ \boxed{2}$};
-                \node at (axis cs:0.5,6.0) {\Large $ \boxed{3}$};
-                \node at (axis cs:1.5,1.0) {\Large $ \boxed{4}$};
-                \node at (axis cs:1.2,2.5) {\Large $ \boxed{5}$};
-                \node at (axis cs:4.0,1.0) {\Large $ \boxed{6}$};
-                \node at (axis cs:4.8,5.8) {\Large $ \boxed{7}$};
-
+            \begin{tikzpicture}[diagram]
+                \begin{axis}[region grid]
+                    \draw[diagram-unit0, dashed, thick] (axis cs:1, -2) -- (axis cs:1, 7);
+                    \draw[diagram-unit1, dashed, thick] (axis cs:-1, 2) -- (axis cs:6, 2);
+                    \draw[diagram-unit2, dashed, thick] (axis cs:-1, 7) -- (axis cs:3.5, -2);
+                    \node[region label] at (axis cs:0.5, 0.5) {1};
+                    \node[region label] at (axis cs:0.3, 3) {2};
+                    \node[region label] at (axis cs:0.5, 6) {3};
+                    \node[region label] at (axis cs:1.6, 0.6) {4};
+                    \node[region label] at (axis cs:1.17, 2.35) {5};
+                    \node[region label] at (axis cs:4.5, 1) {6};
+                    \node[region label] at (axis cs:4.2, 5) {7};
                 \end{axis}
             \end{tikzpicture}
         \end{center}
-
-        For each region: the class $1$ is predicted for:
+        With $z = h_0 + h_1 + h_2 - 2$, the class is $1$ where $z \geq 0$:
         \begin{enumerate}
-            \item[1.]
-            \begin{equation*}
-                -2 \geq 0: \text{ no } (x_1, x_2)
-            \end{equation*}
-
-            \item[2.]
-            \begin{equation*}
-                x_2 \geq 4
-            \end{equation*}
-
-            \item[3.]
-            \begin{equation*}
-                x_1 \leq \frac{1}{2}
-            \end{equation*}
-
-            \item[4.]
-            \begin{equation*}
-                x_1 \geq 3
-            \end{equation*}
-
-            \item[5.]
-            \begin{equation*}
-                x_2 \geq -x_1 + 5
-            \end{equation*}
-
-            \item[6.]
-            \begin{equation*}
-                x_2 \leq -x_1 + 2
-            \end{equation*}
-
-            \item[7.]
-            \begin{equation*}
-                x_1 \leq 0
-            \end{equation*}
+            \item $x_1 \leq 1$, $x_2 \leq 2$ ($h_2$ only): $z = -2x_1 - x_2 + 3$, class $1$ where $2x_1 + x_2 \leq 3$;
+            \item $x_1 \leq 1$, $x_2 > 2$, $2x_1 + x_2 < 5$ ($h_1$, $h_2$): $z = -2x_1 + 1$, class $1$ where $x_1 \leq \frac{1}{2}$;
+            \item $x_1 \leq 1$, $x_2 > 2$, $2x_1 + x_2 \geq 5$ ($h_1$ only): $z = x_2 - 4$, class $1$ where $x_2 \geq 4$;
+            \item $x_1 > 1$, $x_2 \leq 2$, $2x_1 + x_2 < 5$ ($h_0$, $h_2$): $z = -x_1 - x_2 + 2$, class $1$ where $x_1 + x_2 \leq 2$;
+            \item $x_1 > 1$, $x_2 > 2$, $2x_1 + x_2 < 5$ (all three): $z = -x_1 < 0$, class $0$ everywhere;
+            \item $x_1 > 1$, $x_2 \leq 2$, $2x_1 + x_2 \geq 5$ ($h_0$ only): $z = x_1 - 3$, class $1$ where $x_1 \geq 3$;
+            \item $x_1 > 1$, $x_2 > 2$, $2x_1 + x_2 \geq 5$ ($h_0$, $h_1$): $z = x_1 + x_2 - 5$, class $1$ where $x_1 + x_2 \geq 5$.
         \end{enumerate}
-
-        The decision boundary is shown below:
-
+        Class $0$ is now the bounded hexagon with vertices $(1, 1)$, $(\frac{1}{2}, 2)$, $(\frac{1}{2}, 4)$, $(1, 4)$, $(3, 2)$ and $(3, -1)$, and everything else is class $1$ (shaded), including the origin, where $z = 3$.
         \begin{center}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    width=10cm,
-                    height=8cm,
-                    xmin=-1,
-                    xmax=6,
-                    ymin=-4,
-                    ymax=7,
-                    axis lines=middle,
-                    xlabel={$x_1$},
-                    ylabel={$x_2$},
-                    grid=both,
-                    xtick={-1,0,...,6},
-                    ytick={-4,-3,...,7},
-                    axis line style={->},
-                    enlargelimits=false,
-                ]
-
-                % ReLU boundaries
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-4:7,
-                ] ({1},{x});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] ({x},{2});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] ({x},{2});
-
-                \addplot[
-                    dashed,
-                    thick,
-                    opacity=0.4,
-                    domain=-1:6,
-                ] {5-2*x};
-
-                % Decision boundary: x2 = 4
-                \addplot[
-                    very thick,
-                    domain=-1:0.5,
-                ] ({x},{4});
-
-                \addplot[
-                    very thick,
-                    domain=4:7,
-                ] ({0.5},{x});
-
-                \addplot[
-                    very thick,
-                    domain=-4:-1,
-                ] ({3},{x});
-
-                \addplot[
-                    very thick,
-                    domain=3:6,
-                ] ({x},{-x+2});
-
-                % Class labels
-                \node at (axis cs:2.0,3.0) {\Large $ \hat c = 0$};
-                \node at (axis cs:-0.5,5.5) {\Large $ \hat c = 1$};
-                \node at (axis cs:4.2,-3.0) {\Large $ \hat c = 1$};
-
+            \begin{tikzpicture}[diagram]
+                \begin{axis}[region grid]
+                    \fill[diagram-accent, fill opacity=0.1, even odd rule] (axis cs:-1, -2) rectangle (axis cs:6, 7) (axis cs:1, 1) -- (axis cs:0.5, 2) -- (axis cs:0.5, 4) -- (axis cs:1, 4) -- (axis cs:3, 2) -- (axis cs:3, -1) -- cycle;
+                    \draw[diagram-unit0, dashed, thick] (axis cs:1, -2) -- (axis cs:1, 7);
+                    \draw[diagram-unit1, dashed, thick] (axis cs:-1, 2) -- (axis cs:6, 2);
+                    \draw[diagram-unit2, dashed, thick] (axis cs:-1, 7) -- (axis cs:3.5, -2);
+                    \draw[diagram-accent, line width=1.6pt] (axis cs:1, 1) -- (axis cs:0.5, 2) -- (axis cs:0.5, 4) -- (axis cs:1, 4) -- (axis cs:3, 2) -- (axis cs:3, -1) -- cycle;
+                    \node[fill=white, inner sep=1pt] at (axis cs:4.5, 5) {$\hat{c} = 1$};
+                    \node[fill=white, inner sep=1pt] at (axis cs:2, 2.7) {$\hat{c} = 0$};
                 \end{axis}
             \end{tikzpicture}
         \end{center}
-
-        The third ReLU unit partitions the input space into more linear regions, allowing the network to represent a more complex decision boundary. In regions where the unit is inactive, the decision boundary remains unchanged. In regions where it is active, the additional term can significantly change the decision boundary.
+        Where $h_2$ is inactive ($2x_1 + x_2 \geq 5$, regions 3, 6 and 7), the boundary is unchanged. Where it is active, it adds $-2x_1 - x_2 + 5$ to $z$ and changes the decision: the region of class $0$, which was unbounded and contained the origin, becomes a bounded hexagon. One more unit adds one more joint, and with it more linear regions and a more complex decision boundary.
     \end{solution}
 \end{parts}
 
