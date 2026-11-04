@@ -176,7 +176,7 @@ where $\mathbf{w}$ and $b$ are parameters to determine.
 
 <br>
 
-Following the principle of maximum likelihood estimation (Lecture 5), we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_i, y\_i) \\\}$ with respect to $\mathbf{w}$ and $b$,
+Following the principle of maximum likelihood estimation, we maximize the log-likelihood of the data $\mathbf{d} = \\\{ (\mathbf{x}\_i, y\_i) \\\}$ with respect to $\mathbf{w}$ and $b$,
 $$\begin{aligned}
 \log \prod\_{i=1}^N p(y\_i \mid \mathbf{x}\_i, \mathbf{w}, b) &= \sum\_{i=1}^N \log \mathcal{N}(y\_i \mid \mathbf{w}^T \mathbf{x}\_i + b, \sigma^2) \\\\
 &= -\frac{1}{2\sigma^2} \sum\_{i=1}^N (y\_i - (\mathbf{w}^T \mathbf{x}\_i + b))^2 + \text{const}.
