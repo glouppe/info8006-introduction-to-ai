@@ -239,7 +239,7 @@ This model is the core building block of deep neural networks!
 
 class: middle
 
-Following the principle of maximum likelihood estimation (Lecture 5), we have
+Following the principle of maximum likelihood estimation, we have
 
 $$\begin{aligned}
 &\arg \max\_{\mathbf{w},b} P(\mathbf{d} \mid \mathbf{w},b) \\\\
