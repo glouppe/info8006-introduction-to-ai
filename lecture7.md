@@ -142,7 +142,7 @@ class: middle
 
 .center.width-100[![](figures/lec7/nn-next-token.svg)]
 
-.center[Language models predict the next token, a classification over the vocabulary (illustrative probabilities).]
+.center[Language models predict the next token by classification over the vocabulary (illustrative probabilities).]
 
 ---
 
