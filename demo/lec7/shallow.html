@@ -241,8 +241,14 @@ const output = (us, c0, x) => us.reduce((s, u) => s + u.v * relu(u.w * x + u.b),
 const canvas = $("canvas"), ctx = canvas.getContext("2d");
 let W = 0, H = 0;
 
+function zoom() {
+    // remark scales the slide, and this iframe with it, by a CSS transform: draw at the scaled size,
+    // not at the layout size, or the canvas is enlarged as a bitmap and looks blurred
+    try { const f = window.frameElement; if (f && f.clientWidth) return Math.max(1, f.getBoundingClientRect().width / f.clientWidth); } catch (e) {}
+    return 1;
+}
 function resize() {
-    const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    const r = canvas.getBoundingClientRect(), dpr = (window.devicePixelRatio || 1) * zoom();
     W = r.width; H = r.height;
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -402,6 +408,7 @@ if (only === "build" || only === "approximate") {
     setMode(only === "build" ? "build" : "fit");
 }
 window.addEventListener("resize", resize);
+try { window.parent.addEventListener("resize", () => setTimeout(resize, 50)); } catch (e) {}
 document.fonts.ready.then(() => Promise.all([
     document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),
 ])).then(() => { resize(); refresh(); });

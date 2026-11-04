@@ -69,7 +69,7 @@ const DEFAULTS = [
     { w0: -0.6, w1: 1.4, b: -0.1, v: 0.7 },
     { w0: -1.2, w1: -0.8, b: 0.2, v: 0.6 },
 ];
-const C0 = 0.05, RES = 160;
+const C0 = 0.05, RES = 240;
 const relu = z => Math.max(0, z);
 const tex = s => katex.renderToString(s, { throwOnError: false });
 const $ = id => document.getElementById(id);
@@ -150,8 +150,14 @@ $("defaults").addEventListener("click", () => {
 // ---- drawing
 const canvas = $("canvas"), ctx = canvas.getContext("2d");
 let W = 0, H = 0;
+function zoom() {
+    // remark scales the slide, and this iframe with it, by a CSS transform: draw at the scaled size,
+    // not at the layout size, or the canvas is enlarged as a bitmap and looks blurred
+    try { const f = window.frameElement; if (f && f.clientWidth) return Math.max(1, f.getBoundingClientRect().width / f.clientWidth); } catch (e) {}
+    return 1;
+}
 function resize() {
-    const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    const r = canvas.getBoundingClientRect(), dpr = (window.devicePixelRatio || 1) * zoom();
     W = r.width; H = r.height;
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -326,6 +332,7 @@ canvas.addEventListener("mousemove", e => { canvas.style.cursor = hitAt(e) ? "po
 
 unitControls();
 window.addEventListener("resize", resize);
+try { window.parent.addEventListener("resize", () => setTimeout(resize, 50)); } catch (e) {}
 document.fonts.ready.then(() => Promise.all([
     document.fonts.load("italic 16px KaTeX_Math"), document.fonts.load("16px KaTeX_Main"), document.fonts.load("14px Roboto"),
 ])).then(() => { resize(); refresh(); });
