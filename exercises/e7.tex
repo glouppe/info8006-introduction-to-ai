@@ -269,23 +269,24 @@ A maintenance robot looks after a machine that may overheat. It cannot measure t
 
 \titledquestion{Pursuit evasion \source{CS188, Spring 2014}}
 
-\noindent
-\begin{minipage}{0.7\linewidth}
-    Pacman is trapped in the following 2 by 2 maze with a hungry ghost. When it is his turn to move, Pacman must move one step horizontally or vertically to a neighboring square. When it is the ghost's turn, he must also move one step horizontally or vertically. The ghost and Pacman alternate moves. After every move (by either the ghost or Pacman), if Pacman and the ghost occupy the same square, Pacman is eaten and receive utility \num{-100}. Otherwise, he receives utility of \num{1}. The ghost attempts to minimize the utility that Pacman receives. Pacman makes the first move. The game is not guaranteed to terminate.
-\end{minipage}%
-\hfill
-\begin{minipage}{0.275\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/e6_pacman.png}
-\end{minipage}
+Pacman is trapped in the 2 by 2 maze below with a hungry ghost. When it is its turn to move, Pacman must move one step horizontally or vertically to a neighboring square. When it is the ghost's turn, it must also move one step horizontally or vertically. The ghost and Pacman alternate moves. After every move (by either the ghost or Pacman), if Pacman and the ghost occupy the same square, Pacman is eaten and receives a utility of \num{-100}. Otherwise, it receives a utility of \num{1}. The ghost attempts to minimize the utility that Pacman receives. Pacman makes the first move. The game is not guaranteed to terminate.
 
-For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghost moves down, then Pacman moves left, Pacman earns a reward of 1 initially ($R(s_0)$) and after the two first moves and \num{-100} after the last move, for a total utility of \num{-97}.
+\begin{center}
+    \begin{tikzpicture}[world diagram, x=1cm, y=1cm]
+        \draw[grid lines] (0, 0) grid (2, 2);
+        \draw[world border] (0, 0) rectangle (2, 2);
+        \pic at (0.5, 1.5) {ghost};
+        \pic at (0.5, 0.5) {pacman};
+    \end{tikzpicture}
+\end{center}
+
+For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghost moves down, then Pacman moves left, Pacman earns a reward of 1 initially ($R(s_0)$) and after the first two moves and \num{-100} after the last move, for a total utility of \num{-97}.
 
 \begin{parts}
     \part Assume a discount factor $\gamma = 0.5$, where the discount factor is applied once every time either Pacman or the ghost moves. What is the Minimax value of the complete (infinite) game?
 
     \begin{solution}
-        If we assume the game starts from the displayed state $s_0$, Pacman has always an action to get out of reach of the ghost. Hence, if Pacman is optimal, which is true by definition in Minimax, he will never get eaten. Therefore, we can compute the initial state value
+        If we assume the game starts from the displayed state $s_0$, Pacman always has an action to get out of reach of the ghost. Hence, if Pacman is optimal, which is true by definition in Minimax, it never gets eaten. Therefore, we can compute the initial state value
         \begin{equation*}
             V(s_0) = \sum_{t = 0}^\infty \gamma^t \underbrace{R(s_t)}_{1} = \lim_{t \to \infty} \frac{1 - \gamma^{t+1}}{1 - \gamma} = \frac{1}{1 - \gamma} = 2 ,
         \end{equation*}
@@ -298,138 +299,39 @@ For example, with a discount factor of $\gamma = 1$, if Pacman moves right, ghos
         If $\gamma < 1$, we know that the value/policy iteration algorithms converge toward a fixed point, even if the game does not terminate. Conversely, Minimax is not guaranteed to terminate due to its recursivity.
     \end{solution}
 
-    \uplevel{This game is similar to an MDP because rewards are earned at every timestep. However, it is also an adversarial game involving decisions by two agents. Let $s$ be the state (\eg{} the positions of Pacman and the ghost and who is playing) and let $A(s)$ be the set of actions available to the player in state $s$. Let $s' = T(s, a)$ denote the successor of a state $s$ resulting from the action $a$. Finally, let $R(s)$ denote the utility received after moving to state $s$.}
+    \uplevel{This game is similar to an MDP because rewards are earned at every timestep. However, it is also an adversarial game involving decisions by two agents. Let $s$ be the state (\eg{} the positions of Pacman and the ghost and who is playing) and let $\mathcal{A}(s)$ be the set of actions available to the player in state $s$. Let $s' = T(s, a)$ denote the successor of a state $s$ resulting from the action $a$. Finally, let $R(s)$ denote the utility received after moving to state $s$.}
 
     \part Write down an expression (analogous to Bellman equation) for $V(s)$, the value of the current state if it is Pacman's turn.
 
     \begin{solution}
         \begin{equation*}
-            V(s) = R(s) + \gamma \max_{a \in A(s)} \sbk*{ R(T(s, a)) + \gamma \min_{a' \in A(T(s, a))} V(T(T(s, a), a')) }
+            V(s) = R(s) + \gamma \max_{a \in \mathcal{A}(s)} \sbk*{ R(T(s, a)) + \gamma \min_{a' \in \mathcal{A}(T(s, a))} V(T(T(s, a), a')) }
         \end{equation*}
     \end{solution}
 \end{parts}
 
 \exercisegroup{Reinforcement learning}
 
-\titledquestion{Q-learning}
-
-An agent is in an unknown environment where there are three states $\cbk{A, B, C}$ and two actions $\cbk{0, 1}$. We are given the following tuples $(s, a, r, s')$, generated by taking actions in the environment.
-
-\begin{center}
-    \begin{tabular}{cccc}
-        \toprule
-        $s$ & $a$ & $r$ & $s'$ \\
-        \midrule
-        $A$ & $0$ & $+2$ & $A$ \\
-        $C$ & $1$ & $-2$ & $A$ \\
-        $B$ & $1$ & $+1$ & $B$ \\
-        $A$ & $0$ & $-1$ & $B$ \\
-        $B$ & $1$ & $-2$ & $C$ \\
-        $C$ & $0$ & $+4$ & $B$ \\
-        $B$ & $0$ & $+1$ & $A$ \\
-        \bottomrule
-    \end{tabular}
-\end{center}
-
-Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
-
-\begin{parts}
-    \part Apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to $0$.
-
-    \begin{solution}
-        As seen in the previous exercise, given trial trajectories of some policy $\pi$, it is possible to estimate its expected utility $V^\pi$ even without knowing the transition model $P(s' \mid s, a)$ or the reward function $R(s)$ of the environment. However, estimating $V^\pi$ only evaluates the quality of $\pi$, but does not describe how to improve it.
-
-        By definition, the optimal policy $\pi^*$ is the one that maximizes the expect utility of the state $s$, \ie{}
-        \begin{equation*}
-            \pi^*(s) = \arg \max_a \sum_{s'} P(s' \mid s, a) V(s')
-        \end{equation*}
-        where $V(s) = \max_\pi V^\pi(s)$ is the state-value of $s$. Unfortunately, even if we knew $V$, we could not find the optimal actions without knowing the transition model. However, if we knew the state-action-value $Q(s, a)$ of taking action $a$ in state $s$, we would be able to select the optimal action
-        \begin{equation*}
-            \pi^*(s) = \arg \max_a Q(s, a) ,
-        \end{equation*}
-        where
-        \begin{align*}
-            Q(s, a) & = R(s) + \gamma \sum_{s'} P(s' \mid s, a) V(s') \\
-            & = R(s) + \gamma \sum_{s'} P(s' \mid s, a) \max_{a'} Q(s', a')
-        \end{align*}
-        since $V(s) = \max_a Q(s, a)$. Fortunately, state-action-values $Q(s, a)$ can be learned in a model-free fashion using the $Q$-learning algorithm. Similarly to temporal-difference learning, in $Q$-learning, we perform stochastic gradient descent updates
-        \begin{align*}
-            \hat{Q}(s, a) & \gets \hat{Q}(s, a) - \alpha \rbk*{\hat{Q}(s, a) - r - \gamma \max_{a'} \hat{Q}(s', a')} \\
-            & \gets (1 - \alpha) \hat{Q}(s, a) + \alpha \rbk*{r + \gamma \max_{a'} \hat{Q}(s', a')}
-        \end{align*}
-        from observed tuples $(s, r, a, s')$.
-
-        In our case, the sequence of updates would be
-        \begin{align*}
-            \hat{Q}(A, 0) & \gets (1 - \alpha) \hat{Q}(A, 0) + \alpha \rbk*{2 + \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} \\
-            & = \frac{1}{4} 0 + \frac{3}{4} \rbk{2 + \frac{1}{2} 0} = \frac{+3}{2} \\
-            \hat{Q}(C, 1) & \gets (1 - \alpha) \hat{Q}(C, 1) + \alpha \rbk*{-2 + \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} \\
-            & = \frac{1}{4} 0 + \frac{3}{4} \rbk{-2 + \frac{1}{2} \frac{3}{2}} = \frac{-15}{16} \\
-            \hat{Q}(B, 1) & \gets (1 - \alpha) \hat{Q}(B, 1) + \alpha \rbk*{1 + \gamma \max \cbk{\hat{Q}(B, 0), \hat{Q}(B, 1)}} \\
-            & = \frac{1}{4} 0 + \frac{3}{4} \rbk{1 + \frac{1}{2} 0} = \frac{+3}{4} \\
-            \hat{Q}(A, 0) & \gets (1 - \alpha) \hat{Q}(A, 0) + \alpha \rbk*{-1 + \gamma \max \cbk{\hat{Q}(B, 0), \hat{Q}(B, 1)}} \\
-            & = \frac{1}{4} \frac{3}{2} + \frac{3}{4} \rbk{-1 + \frac{1}{2} \frac{3}{4}} = \frac{-3}{32} \\
-            \hat{Q}(B, 1) & \gets \dots
-        \end{align*}
-        It should be noted that, as for TD learning, we are not limited to perform only one update for each tuple. Reusing tuples several times (in other orders) is a good way to reach convergence faster while generating less trials.
-    \end{solution}
-
-    \part We now switch to a feature-based estimator $\hat{Q}(s, a) = w_0 + w_1 f_1(s, a)$, with $f_1(s, a) = 2 a - 1$. Starting from weights $w_0 = w_1 = 0$, update the weights according to the approximate $Q$-learning algorithm.
-
-    \begin{solution}
-        We would like our estimates $\hat{Q}(s, a)$ to satisfy the Bellman equation, \ie{} to minimize
-        \begin{equation*}
-            L = \underset{s' \mid s, a}{\E} \sbk*{\rbk*{R(s) + \gamma \max_{a'} \hat{Q}(s', a') - \hat{Q}(s, a)}^2} .
-        \end{equation*}
-        To reach this objective we follow the opposite of its gradient
-        \begin{equation*}
-            \nabla_{\!w} L = 2 \underset{s' \mid s, a}{\E} \sbk*{\rbk*{\hat{Q}(s, a) - R(s) - \gamma \max_{a'} \hat{Q}(s', a')} \nabla_{\!w} \hat{Q}(s, a)}
-        \end{equation*}
-        with respect to the weights\footnotemark{} $w$ of $\hat{Q}(s, a)$. Once again, due to the expectation, we are forced to use a stochastic approximation of the gradient from observed tuples $(s, a, r, s')$ and to update the weights as
-        \begin{equation*}
-            w \gets w - \alpha \rbk*{\hat{Q}(s, a) - r - \gamma \max_{a'} \hat{Q}(s', a')} \nabla_w \hat{Q}(s, a) ,
-        \end{equation*}
-        where $\alpha$ is the learning rate. In our case,
-        \begin{equation*}
-            \nabla_{\!w} \hat{Q}(s, a) = \mat{\partial_{w_0} \\ \partial_{w_1} } (w_0 + w_1 f_1(s, a)) = \mat{ 1 \\ f_1(s, a)} = \mat{1 \\ 2 a - 1}
-        \end{equation*}
-        and the two first weight updates would be
-        \begin{align*}
-            w & \gets w - \alpha \rbk*{\hat{Q}(A, 0) - 2 - \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} \nabla_{\!w} \hat{Q}(A, 0) \\
-            & \gets \mat{0 \\ 0} - \frac{3}{4} \rbk*{-2 - \frac{1}{2} \max\cbk{0, 0}} \mat{1 \\ -1} = \mat{\frac{+3}{2} \\ \frac{-3}{2}} \\
-            w & \gets w - \alpha \rbk*{\hat{Q}(C, 1) + 2 - \gamma \max \cbk{\hat{Q}(A, 0), \hat{Q}(A, 1)}} \nabla_{\!w} \hat{Q}(C, 1) \\
-            & \gets \mat{\frac{+3}{2} \\ \frac{-3}{2}} - \frac{3}{4} \rbk*{2 - \frac{1}{2} \max\cbk{0, 3}} \mat{1 \\ 1} = \mat{\frac{+9}{8} \\ \frac{-15}{8}} .
-        \end{align*}
-
-        \footnotetext{It should be noted that the target $R(s) + \gamma \max_{a'} \hat{Q}(s', a')$ should not affected by the gradient operation as it is considered constant in the objective. In practice, this is not true as modifying the weights in a parametric function $\hat{Q}$ does so for all state-action pairs $(s, a)$ at once. This generally makes the approximate $Q$-learning algorithm very unstable.}
-    \end{solution}
-\end{parts}
-
 \titledquestion{Passive reinforcement learning}
 
-Consider the grid-world below and an agent who is trying to learn the optimal policy. The agent starts from the bottom-left corner and can take the actions \texttt{north} ($N$), \texttt{south} ($S$), \texttt{west} ($W$) and \texttt{east} ($E$). Rewards are only awarded for reaching the terminal (shaded) states.
+Consider the grid-world below and an agent that follows a fixed, possibly stochastic, policy $\pi$, whose expected utilities $V^\pi$ it learns (passive reinforcement learning). The agent starts from the bottom-left corner and can take the actions \texttt{north} ($N$), \texttt{south} ($S$), \texttt{west} ($W$) and \texttt{east} ($E$). Rewards are only awarded for reaching the terminal (shaded) states.
 
 \begin{center}
-    \begin{tikzpicture}
-        \draw[step=1cm, black, thin] (0,0) grid (3,3);
-        \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
-        \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-
-        \draw[black, thin, fill=yellow] (0.5, 0.5) -- ++(30:0.33) arc (30:330:0.33) -- cycle;
-        \fill[black] (0.5, 0.72) circle (0.05);
-
-        \draw (0.5, -0.5) node {1};
-        \draw (1.5, -0.5) node {2};
-        \draw (2.5, -0.5) node {3};
-        \draw (-0.5, 0.5) node {1};
-        \draw (-0.5, 1.5) node {2};
-        \draw (-0.5, 2.5) node {3};
-
-        \draw (1.5, 0.5) node {$-8$};
-        \draw (2.5, 0.5) node {$+3$};
-        \draw (0.5, 2.5) node {$-6$};
-        \draw (1.5, 2.5) node {$-1$};
-        \draw (2.5, 2.5) node {$+5$};
+    \begin{tikzpicture}[world diagram, x=1cm, y=1cm]
+        \fill[diagram-fill] (1, 0) rectangle (3, 1);
+        \fill[diagram-fill] (0, 2) rectangle (3, 3);
+        \draw[grid lines] (0, 0) grid (3, 3);
+        \draw[world border] (0, 0) rectangle (3, 3);
+        \foreach \k in {1, 2, 3} {
+            \node[diagram caption] at (\k - 0.5, -0.3) {\k};
+            \node[diagram caption] at (-0.3, \k - 0.5) {\k};
+        }
+        \pic at (0.5, 0.5) {pacman};
+        \node at (1.5, 0.5) {$-8$};
+        \node at (2.5, 0.5) {$+3$};
+        \node at (0.5, 2.5) {$-6$};
+        \node at (1.5, 2.5) {$-1$};
+        \node at (2.5, 2.5) {$+5$};
     \end{tikzpicture}
 \end{center}
 
@@ -455,14 +357,14 @@ You observe the following trials, whose trajectories are sequences of tuples $(s
 Assuming a discount factor $\gamma = 1$,
 
 \begin{parts}
-    \part Perform direct utility estimation of the expected utilities $V^\pi(s)$, given the four first trials.
+    \part Perform direct utility estimation of the expected utilities $V^\pi(s)$, given the first four trials, averaging the rewards-to-go observed at every visit of each state.
 
     \begin{solution}
         In this setting, the transition model $P(s' \mid s, a)$ and the reward function $R(s)$ are unknown. We wish to learn the expected utility $V^\pi$ of the policy $\pi$ without modeling the environment, \ie{} without building approximates $\hat{P}(s' \mid s, a)$ and $\hat{R}(s)$. The principle of direct utility estimation is to approximate $V^\pi(s)$ by the average utility $\hat{V}(s)$ of the state $s$ within all trial trajectories, \ie{}
         \begin{equation*}
             \hat{V}(s) = \frac{1}{N(s)} \sum_{(i, j) \in I(s)} \sum_{t = 0}^{\infty} \gamma^t r^i_{j + t} \approx V^\pi(s) = \left. \E \sbk*{\sum_{t = 0}^{\infty} \gamma^t R(s_t)} \right|_{s_0 = s}
         \end{equation*}
-        where $I(s) = \cbk{(i, j): s^i_j = s}$ indexes the occurrences of $s$ and $N(s) = \abs{I(s)}$ is the number of occurrences of $s$. For examples, in our case and excluding the fifth trial,
+        where $I(s) = \cbk{(i, j): s^i_j = s}$ indexes the occurrences of $s$ and $N(s) = \abs{I(s)}$ is the number of occurrences of $s$. For example, in our case and excluding the fifth trial,
         \begin{align*}
             I((1, 1)) & = \cbk{(1, 0), (2, 0), (3, 0), (4, 0)} \\
             \hat{V}((1, 1)) & \approx \frac{1}{4} \rbk*{- 1 \, \gamma^3 + 5 \, \gamma^4 - 8 \, \gamma^3 - 1 \, \gamma^5} = \frac{-5}{4} \\
@@ -471,30 +373,27 @@ Assuming a discount factor $\gamma = 1$,
             I((2, 3)) & = \cbk{(1, 3), (4, 5)} \\
             \hat{V}((2, 3)) & \approx \frac{1}{2} \rbk*{- 1 \, \gamma^0 - 1 \, \gamma^0} = -1 .
         \end{align*}
-        Importantly, since the agent hasn't reached the states $(1, 3)$ and $(3, 3)$ yet, it is not possible to estimate their expected utility. Instead, we assume a default value of $0$.
+        Importantly, since the agent has not reached the states $(1, 3)$ and $(3, 1)$ yet, it is not possible to estimate their expected utility. Instead, we assume a default value of $0$.
 
         \begin{center}
-            \begin{tikzpicture}
-                \draw[step=1cm, black, thin] (0,0) grid (3,3);
-                \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
-                \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-
-                \draw (0.5, -0.5) node {1};
-                \draw (1.5, -0.5) node {2};
-                \draw (2.5, -0.5) node {3};
-                \draw (-0.5, 0.5) node {1};
-                \draw (-0.5, 1.5) node {2};
-                \draw (-0.5, 2.5) node {3};
-
-                \draw (0.5, 0.5) node {$\frac{-5}{4}$};
-                \draw (1.5, 0.5) node {$-8$};
-                \draw (2.5, 0.5) node {0};
-                \draw (0.5, 1.5) node {$\frac{-5}{4}$};
-                \draw (1.5, 1.5) node {$\frac{-6}{5}$};
-                \draw (2.5, 1.5) node {$+2$};
-                \draw (0.5, 2.5) node {0};
-                \draw (1.5, 2.5) node {$-1$};
-                \draw (2.5, 2.5) node {$+5$};
+            \begin{tikzpicture}[world diagram, x=1cm, y=1cm]
+                \fill[diagram-fill] (1, 0) rectangle (3, 1);
+                \fill[diagram-fill] (0, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \foreach \k in {1, 2, 3} {
+                    \node[diagram caption] at (\k - 0.5, -0.3) {\k};
+                    \node[diagram caption] at (-0.3, \k - 0.5) {\k};
+                }
+                \node at (0.5, 0.5) {$-\frac{5}{4}$};
+                \node at (1.5, 0.5) {$-8$};
+                \node at (2.5, 0.5) {$0$};
+                \node at (0.5, 1.5) {$-\frac{5}{4}$};
+                \node at (1.5, 1.5) {$-\frac{6}{5}$};
+                \node at (2.5, 1.5) {$+2$};
+                \node at (0.5, 2.5) {$0$};
+                \node at (1.5, 2.5) {$-1$};
+                \node at (2.5, 2.5) {$+5$};
             \end{tikzpicture}
         \end{center}
     \end{solution}
@@ -506,62 +405,152 @@ Assuming a discount factor $\gamma = 1$,
         \begin{equation*}
             V^\pi(s) = R(s) + \gamma \sum_{s'} P(s' \mid s, \pi(s)) V^\pi(s').
         \end{equation*}
-        Then, we would like our estimates $\hat{V}(s)$ to verify the Bellman equation, \ie{} to minimize
+        Then, we would like our estimates $V^\pi(s)$ to verify the Bellman equation, \ie{} to minimize
         \begin{equation*}
-            L = \underset{s' \mid s}{\E} \sbk*{\rbk*{R(s) + \gamma \hat{V}(s') - \hat{V}(s)}^2} .
+            L = \underset{s' \mid s}{\E} \sbk*{\rbk*{R(s) + \gamma V^\pi(s') - V^\pi(s)}^2} .
         \end{equation*}
         One way to reach this objective is to follow the opposite of its gradient
         \begin{equation*}
-            \nabla L = 2 \underset{s' \mid s}{\E} \sbk*{\hat{V}(s) - R(s) - \gamma \hat{V}(s')}
+            \nabla L = 2 \underset{s' \mid s}{\E} \sbk*{V^\pi(s) - R(s) - \gamma V^\pi(s')}
         \end{equation*}
-        with respect to $\hat{V}(s)$, \ie{} to perform \emph{gradient descent}. Unfortunately, due to the expectation, we don't have access to the true gradient. Instead, we use a \emph{stochastic} approximation of the gradient from observed\footnotemark{} tuples $(s, r, a, s')$ and update $\hat{V}(s)$ as
+        with respect to $V^\pi(s)$, \ie{} to perform \emph{gradient descent}. Unfortunately, due to the expectation, we don't have access to the true gradient. Instead, we use a \emph{stochastic} approximation of the gradient from observed\footnotemark{} tuples $(s, r, a, s')$ and update $V^\pi(s)$ as
         \begin{align*}
-            \hat{V}(s) & \gets \hat{V}(s) - \alpha \rbk*{\hat{V}(s) - r - \gamma \hat{V}(s')} \\
-            & \gets (1 - \alpha) \hat{V}(s) + \alpha \rbk*{r + \gamma \hat{V}(s')}
+            V^\pi(s) & \leftarrow V^\pi(s) - \alpha \rbk*{V^\pi(s) - r - \gamma V^\pi(s')} \\
+            & \leftarrow (1 - \alpha) V^\pi(s) + \alpha \rbk*{r + \gamma V^\pi(s')}
         \end{align*}
-        where $\alpha$ is the learning rate. For a fixed learning rate, the average of $\hat{V}(s)$ converge towards (oscillates around) the true expected utility $V^\pi(s)$. For a (slowly) decreasing learning rate, $\hat{V}(s)$ itself converges to $V^\pi(s)$. For historical reasons, this algorithm is called temporal-difference (TD) learning.
+        where $\alpha$ is the learning rate. For a fixed learning rate, the average of $V^\pi(s)$ converges towards (oscillates around) the true expected utility $V^\pi(s)$. For a (slowly) decreasing learning rate, $V^\pi(s)$ itself converges to $V^\pi(s)$. For historical reasons, this algorithm is called temporal-difference (TD) learning.
 
-        \footnotetext{We are not limited to perform only one update for each tuple $(s, r, a, s')$. Indeed, as we assume the policy to be stationary, past trials are as likely to happen again as more recent ones. Therefore, reusing tuples several times (in other orders) is a good way to improve estimates while generating less trials.}
+        \footnotetext{We are not limited to one update for each tuple $(s, r, a, s')$. Indeed, as we assume the policy to be stationary, past trials are as likely to happen again as more recent ones. Therefore, reusing tuples several times (in other orders) is a good way to improve estimates while generating fewer trials.}
 
         Following the trajectory of the fifth trial, we perform the updates
         \begin{align*}
-            V^\pi((1, 1)) & \gets (1 - \alpha) V^\pi((1, 1)) + \alpha \rbk*{0 + \gamma V^\pi((1, 2))} = \frac{1}{2} \frac{-5}{4} + \frac{1}{2} \frac{-5}{4} = \frac{-5}{4} \\
-            V^\pi((1, 2)) & \gets (1 - \alpha) V^\pi((1, 2)) + \alpha \rbk*{0 + \gamma V^\pi((2, 2))} = \frac{1}{2} \frac{-5}{4} + \frac{1}{2} \frac{-6}{5} = \frac{-49}{40} \\
-            V^\pi((2, 2)) & \gets (1 - \alpha) V^\pi((2, 2)) + \alpha \rbk*{0 + \gamma V^\pi((3, 2))} = \frac{1}{2} \frac{-6}{5} + \frac{1}{2} 2 = \frac{+4}{10} \\
-            V^\pi((3, 2)) & \gets (1 - \alpha) V^\pi((3, 2)) + \alpha \rbk*{0 + \gamma V^\pi((3, 1))} = \frac{1}{2} 2 + \frac{1}{2} 0 = +1 \\
-            V^\pi((3, 1)) & \gets (1 - \alpha) V^\pi((3, 1)) + \alpha \rbk*{3 + 0} = \frac{1}{2} 0 + \frac{1}{2} 3 = \frac{+3}{2} .
+            V^\pi((1, 1)) & \leftarrow (1 - \alpha) V^\pi((1, 1)) + \alpha \rbk*{0 + \gamma V^\pi((1, 2))} = \frac{1}{2} \frac{-5}{4} + \frac{1}{2} \frac{-5}{4} = \frac{-5}{4} \\
+            V^\pi((1, 2)) & \leftarrow (1 - \alpha) V^\pi((1, 2)) + \alpha \rbk*{0 + \gamma V^\pi((2, 2))} = \frac{1}{2} \frac{-5}{4} + \frac{1}{2} \frac{-6}{5} = \frac{-49}{40} \\
+            V^\pi((2, 2)) & \leftarrow (1 - \alpha) V^\pi((2, 2)) + \alpha \rbk*{0 + \gamma V^\pi((3, 2))} = \frac{1}{2} \frac{-6}{5} + \frac{1}{2} 2 = \frac{2}{5} \\
+            V^\pi((3, 2)) & \leftarrow (1 - \alpha) V^\pi((3, 2)) + \alpha \rbk*{0 + \gamma V^\pi((3, 1))} = \frac{1}{2} 2 + \frac{1}{2} 0 = +1 \\
+            V^\pi((3, 1)) & \leftarrow (1 - \alpha) V^\pi((3, 1)) + \alpha \rbk*{3 + 0} = \frac{1}{2} 0 + \frac{1}{2} 3 = \frac{+3}{2} .
         \end{align*}
 
         \begin{center}
-            \begin{tikzpicture}
-                \draw[step=1cm, black, thin] (0,0) grid (3,3);
-                \fill[black, fill opacity=0.05] (1,0) rectangle (3,1);
-                \fill[black, fill opacity=0.05] (0,2) rectangle (3,3);
-
-                \draw (0.5, -0.5) node {1};
-                \draw (1.5, -0.5) node {2};
-                \draw (2.5, -0.5) node {3};
-                \draw (-0.5, 0.5) node {1};
-                \draw (-0.5, 1.5) node {2};
-                \draw (-0.5, 2.5) node {3};
-
-                \draw (0.5, 0.5) node {$\frac{-5}{4}$};
-                \draw (1.5, 0.5) node {$-8$};
-                \draw (2.5, 0.5) node {$\frac{+3}{2}$};
-                \draw (0.5, 1.5) node {$\frac{-49}{40}$};
-                \draw (1.5, 1.5) node {$\frac{+4}{10}$};
-                \draw (2.5, 1.5) node {$+1$};
-                \draw (0.5, 2.5) node {0};
-                \draw (1.5, 2.5) node {$-1$};
-                \draw (2.5, 2.5) node {$+5$};
+            \begin{tikzpicture}[world diagram, x=1cm, y=1cm]
+                \fill[diagram-fill] (1, 0) rectangle (3, 1);
+                \fill[diagram-fill] (0, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \foreach \k in {1, 2, 3} {
+                    \node[diagram caption] at (\k - 0.5, -0.3) {\k};
+                    \node[diagram caption] at (-0.3, \k - 0.5) {\k};
+                }
+                \node at (0.5, 0.5) {$-\frac{5}{4}$};
+                \node at (1.5, 0.5) {$-8$};
+                \node at (2.5, 0.5) {$+\frac{3}{2}$};
+                \node at (0.5, 1.5) {$-\frac{49}{40}$};
+                \node at (1.5, 1.5) {$+\frac{2}{5}$};
+                \node at (2.5, 1.5) {$+1$};
+                \node at (0.5, 2.5) {$0$};
+                \node at (1.5, 2.5) {$-1$};
+                \node at (2.5, 2.5) {$+5$};
             \end{tikzpicture}
         \end{center}
     \end{solution}
 \end{parts}
 
-\titledquestion{Football}
+\titledquestion{Q-Learning}
 
-ULiège's football team is playing against UCL's team next week. With a lot of losses this season, Liège needs to improve their attack strategy to win the game and increase their popularity. Luckily, the team captain follows INFO8006 and knows how to model the attack as a Markov Decision Process. The captain considers four states \texttt{close} (\C), \texttt{away} (\A), \texttt{fail} (\F), and \texttt{goal} (\G), and two actions \texttt{pass} (\P) and \texttt{shoot} (\S). Although the transition probabilities are unsure, the possible transitions $(s, a, s')$ are known. To each transition is associated an increase/decrease of the team's popularity.
+An agent is in an unknown environment where there are three states $\cbk{A, B, C}$ and two actions $\cbk{0, 1}$. We are given the following transitions, generated by taking actions in the environment. Here, the reward depends on the transition, $r = R(s, a, s')$, so that each tuple $(s, a, r, s')$ lists the state, the action, the reward received for the transition and the next state.
+
+\begin{center}
+    \begin{tabular}{cccc}
+        \toprule
+        $s$ & $a$ & $r$ & $s'$ \\
+        \midrule
+        $A$ & $0$ & $+2$ & $A$ \\
+        $C$ & $1$ & $-2$ & $A$ \\
+        $B$ & $1$ & $+1$ & $B$ \\
+        $A$ & $0$ & $-1$ & $B$ \\
+        $B$ & $1$ & $-2$ & $C$ \\
+        $C$ & $0$ & $+4$ & $B$ \\
+        $B$ & $0$ & $+1$ & $A$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+Assuming a discount factor $\gamma = 0.5$ and a learning rate $\alpha = 0.75$,
+
+\begin{parts}
+    \part Apply the Q-Learning algorithm to obtain state-action-value $Q(s, a)$ estimates, processing the transitions once, in order. Estimates are initialized to $0$.
+
+    \begin{solution}
+        As seen in the previous exercise, given trial trajectories of some policy $\pi$, it is possible to estimate its expected utility $V^\pi$ even without knowing the transition model $P(s' \mid s, a)$ or the reward function. However, estimating $V^\pi$ only evaluates the quality of $\pi$, but does not describe how to improve it.
+
+        If we knew the state-action-value $Q(s, a)$ of taking action $a$ in state $s$, we would be able to select the optimal action $\pi^*(s) = \arg \max_a Q(s, a)$ without the transition model, where, with rewards on transitions,
+        \begin{equation*}
+            Q(s, a) = \sum_{s'} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \max_{a'} Q(s', a') \right].
+        \end{equation*}
+        Q-Learning learns these values in a model-free fashion, with the update
+        \begin{equation*}
+            Q(s, a) \leftarrow (1 - \alpha) Q(s, a) + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a')}
+        \end{equation*}
+        for each observed transition $(s, a, r, s')$. In our case, the sequence of updates is
+        \begin{align*}
+            Q(A, 0) & \leftarrow \tfrac{1}{4} \cdot 0 + \tfrac{3}{4} \rbk*{+2 + \tfrac{1}{2} \max \cbk{Q(A, 0), Q(A, 1)}} = \frac{3}{2} \\
+            Q(C, 1) & \leftarrow \tfrac{1}{4} \cdot 0 + \tfrac{3}{4} \rbk*{-2 + \tfrac{1}{2} \max \cbk{Q(A, 0), Q(A, 1)}} = -\frac{15}{16} \\
+            Q(B, 1) & \leftarrow \tfrac{1}{4} \cdot 0 + \tfrac{3}{4} \rbk*{+1 + \tfrac{1}{2} \max \cbk{Q(B, 0), Q(B, 1)}} = \frac{3}{4} \\
+            Q(A, 0) & \leftarrow \tfrac{1}{4} \cdot \frac{3}{2} + \tfrac{3}{4} \rbk*{-1 + \tfrac{1}{2} \max \cbk{Q(B, 0), Q(B, 1)}} = -\frac{3}{32} \\
+            Q(B, 1) & \leftarrow \tfrac{1}{4} \cdot \frac{3}{4} + \tfrac{3}{4} \rbk*{-2 + \tfrac{1}{2} \max \cbk{Q(C, 0), Q(C, 1)}} = -\frac{21}{16} \\
+            Q(C, 0) & \leftarrow \tfrac{1}{4} \cdot 0 + \tfrac{3}{4} \rbk*{+4 + \tfrac{1}{2} \max \cbk{Q(B, 0), Q(B, 1)}} = 3 \\
+            Q(B, 0) & \leftarrow \tfrac{1}{4} \cdot 0 + \tfrac{3}{4} \rbk*{+1 + \tfrac{1}{2} \max \cbk{Q(A, 0), Q(A, 1)}} = \frac{3}{4}.
+        \end{align*}
+        Hence $Q(A, 0) = -\frac{3}{32}$, $Q(A, 1) = 0$, $Q(B, 0) = \frac{3}{4}$, $Q(B, 1) = -\frac{21}{16}$, $Q(C, 0) = 3$ and $Q(C, 1) = -\frac{15}{16}$, so that the greedy policy is $\pi(A) = 1$, $\pi(B) = 0$, $\pi(C) = 0$. As for temporal-difference learning, we are not limited to one update for each tuple: reusing the tuples several times (in other orders) is a good way to reach convergence faster while generating fewer trials.
+    \end{solution}
+
+    \part We now switch to a feature-based estimator $Q(s, a) = w_0 + w_1 f_1(s, a)$, with $f_1(s, a) = 2 a - 1$. Starting from weights $w_0 = w_1 = 0$, update the weights according to the approximate Q-Learning algorithm, processing the transitions once, in order.
+
+    \begin{solution}
+        We would like our estimates $Q(s, a)$ to satisfy the Bellman equation, \ie{} to minimize
+        \begin{equation*}
+            L = \underset{s' \mid s, a}{\E} \sbk*{\rbk*{R(s, a, s') + \gamma \max_{a'} Q(s', a') - Q(s, a)}^2} .
+        \end{equation*}
+        To reach this objective we follow the opposite of its gradient with respect to the weights\footnotemark{} $\mathbf{w} = (w_0, w_1)$ of $Q(s, a)$. Due to the expectation, we use a stochastic approximation of the gradient from each observed transition $(s, a, r, s')$, and update the weights as
+        \begin{equation*}
+            \mathbf{w} \leftarrow \mathbf{w} + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a') - Q(s, a)} \nabla_{\mathbf{w}} Q(s, a),
+        \end{equation*}
+        where $\nabla_{\mathbf{w}} Q(s, a) = (1, f_1(s, a)) = (1, 2a - 1)$.
+        For instance, the first two updates are
+        \begin{align*}
+            \mathbf{w} & \leftarrow \mat{0 \\ 0} + \frac{3}{4} \rbk*{2 + \frac{1}{2} \max\cbk{0, 0} - 0} \mat{1 \\ -1} = \mat{\frac{3}{2} \\ -\frac{3}{2}}, \\
+            \mathbf{w} & \leftarrow \mat{\frac{3}{2} \\ -\frac{3}{2}} + \frac{3}{4} \rbk*{-2 + \frac{1}{2} \max\cbk{3, 0} - 0} \mat{1 \\ 1} = \mat{\frac{9}{8} \\ -\frac{15}{8}},
+        \end{align*}
+        since then $Q(A, 0) = w_0 - w_1 = 3$, $Q(A, 1) = 0$ and $Q(C, 1) = w_0 + w_1 = 0$. All the updates are, with the target $r + \gamma \max_{a'} Q(s', a')$:
+        \begin{center}
+            \begin{tabular}{cccccc}
+                \toprule
+                $(s, a, r, s')$ & $f_1(s, a)$ & $Q(s, a)$ & Target & $w_0$ & $w_1$ \\
+                \midrule
+            $(A, 0, +2, A)$ & $-1$ & $0$ & $2$ & $\frac{3}{2}$ & $-\frac{3}{2}$ \\
+            $(C, 1, -2, A)$ & $+1$ & $0$ & $-\frac{1}{2}$ & $\frac{9}{8}$ & $-\frac{15}{8}$ \\
+            $(B, 1, +1, B)$ & $+1$ & $-\frac{3}{4}$ & $\frac{5}{2}$ & $\frac{57}{16}$ & $\frac{9}{16}$ \\
+            $(A, 0, -1, B)$ & $-1$ & $3$ & $\frac{17}{16}$ & $\frac{135}{64}$ & $\frac{129}{64}$ \\
+            $(B, 1, -2, C)$ & $+1$ & $\frac{33}{8}$ & $\frac{1}{16}$ & $-\frac{15}{16}$ & $-\frac{33}{32}$ \\
+            $(C, 0, +4, B)$ & $-1$ & $\frac{3}{32}$ & $\frac{259}{64}$ & $\frac{519}{256}$ & $-\frac{1023}{256}$ \\
+            $(B, 0, +1, A)$ & $-1$ & $\frac{771}{128}$ & $\frac{1027}{256}$ & $\frac{531}{1024}$ & $-\frac{2547}{1024}$ \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+
+        \footnotetext{The target $r + \gamma \max_{a'} Q(s', a')$ is treated as a constant when taking the gradient. In practice, it is not, since modifying the weights of a parametric function $Q$ modifies all state-action pairs $(s, a)$ at once, which can make approximate Q-Learning unstable.}
+    \end{solution}
+
+    \part Why can this estimator not represent the Q-values of (a)?
+
+    \begin{solution}
+        The feature $f_1(s, a) = 2a - 1$ ignores the state: the estimator gives the same value $w_0 - w_1$ to action $0$ in every state, and $w_0 + w_1$ to action $1$, whereas the Q-values of (a) differ from one state to another. Its greedy policy takes the same action everywhere. Features that depend on $s$ are needed to tell the states apart.
+    \end{solution}
+\end{parts}
+
+\titledquestion{Robot football}
+
+ULiège's robot football team plays against UCL's robots in a RoboCup match next week. After a lot of losses this season, the team needs a better attack strategy, and its coaching program models the attack as a Markov decision process. It considers four states \texttt{close} (\C), \texttt{away} (\A), \texttt{fail} (\F), and \texttt{goal} (\G), the last two being terminal, and two actions \texttt{pass} (\P) and \texttt{shoot} (\S). Although the transition probabilities are unknown, the possible transitions $(s, a, s')$ are known, and to each transition is associated a reward $R(s, a, s')$.
 
 \begin{center}
     \begin{tabular}{cccc}
@@ -585,7 +574,7 @@ ULiège's football team is playing against UCL's team next week. With a lot of l
     \end{tabular}
 \end{center}
 
-The current strategy of the team is to always shoot. Last match, they had several attack opportunities, resulting in the following actions.
+The current strategy of the team is to always shoot. Last match, the robots had several attack opportunities, resulting in the following transitions.
 
 \begin{center}
     \begin{tabular}{ccccccccc}
@@ -618,11 +607,11 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
             \end{tabular}
         \end{center}
 
-        We can now determine the expected utility $V^\pi$ of the team's current policy $\pi(s) = \S$ using the following Bellman operator
+        We can now determine the expected utility $V^\pi$ of the team's current policy $\pi(s) = \S$, with rewards on transitions, by iterating
         \begin{equation*}
             V_{i + 1}^\pi(s) = \sum_{s'} P(s' \mid s, \pi(s)) \sbk*{R(s, \pi(s), s') + \gamma V_i^\pi(s')} ,
         \end{equation*}
-        with $V_0^\pi(s) = 0$ for all state $s$. Because the states \F and \G are terminal, their expected utility remains constant and we only have to update \C and \A. For the first iteration,
+        with $V_0^\pi(s) = 0$ for all states $s$. Because the states \F{} and \G{} are terminal, their expected utility remains constant and we only have to update \C{} and \A. For the first iteration,
         \begin{align*}
             V_1^\pi(\C) & = \sum_{s'} P(s' \mid \C, \S) \sbk*{R(\C, \S, s') + \gamma V_0^\pi(s')} \\
             & = 0.25 (3 + \gamma \, 0) + 0.25 (-5 + \gamma \, 0) + 0.5 (10 + \gamma \, 0) = 4.5
@@ -632,7 +621,7 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
             V_1^\pi(\A) & = \sum_{s'} P(s' \mid \A, \S) \sbk*{R(\A, \S, s') + \gamma V_0^\pi(s')} \\
             & = 0.25 (3 + \gamma \, 0) + 0.75 (-10 + \gamma \, 0) = -6.75 .
         \end{align*}
-        We repeat the same procedure until $V_{i + 1}^\pi(s) \approx V_i^\pi(s)$ for all state $s$.
+        We repeat the same procedure until $V_{i + 1}^\pi(s) \approx V_i^\pi(s)$ for all states $s$ (values rounded to four decimals).
 
         \begin{center}
             \begin{tabular}{ccccc}
@@ -641,17 +630,18 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
                 \midrule
                 $V_0^\pi(s)$ & 0 & 0 & 0 & 0 \\
                 $V_1^\pi(s)$ & 4.5 & -6.75 & 0 & 0 \\
-                $V_2^\pi(s)$ & \num{5.3437} & \num{-5.9063} & 0 & 0 \\
-                $V_3^\pi(s)$ & \num{5.5019} & \num{-5.7480} & 0 & 0 \\
-                $V_4^\pi(s)$ & \num{5.5316} & \num{-5.7183} & 0 & 0 \\
+                $V_2^\pi(s)$ & \num{5.3438} & \num{-5.9062} & 0 & 0 \\
+                $V_3^\pi(s)$ & \num{5.5020} & \num{-5.7480} & 0 & 0 \\
+                $V_4^\pi(s)$ & \num{5.5316} & \num{-5.7184} & 0 & 0 \\
                 \vdots & \vdots & \vdots & \vdots & \vdots \\
                 $V_8^\pi(s)$ & \num{5.5385} & \num{-5.7115} & 0 & 0 \\
                 \bottomrule
             \end{tabular}
         \end{center}
+        Since the policy is fixed, the values also solve the linear equations $V^\pi(\C) = 4.5 + 0.1875 \, V^\pi(\C)$ and $V^\pi(\A) = -6.75 + 0.1875 \, V^\pi(\C)$, hence exactly $V^\pi(\C) = \frac{72}{13} \approx 5.5385$ and $V^\pi(\A) = -\frac{297}{52} \approx -5.7115$.
     \end{solution}
 
-    \uplevel{The captain found the tapes of the previous season where they had much more success. Together with the team, the captain selects the following instructive actions.
+    \uplevel{The coaching program finds the logs of the previous season, when the team had much more success, and selects the following instructive transitions.
 
     \begin{center}
         \begin{tabular}{ccccccccc}
@@ -663,31 +653,35 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
         \end{tabular}
     \end{center}}
 
-    \part Given the selected tuples, apply the $Q$-learning algorithm to obtain state-action-value $Q(s, a)$ estimates. Estimates are initialized to 0.
+    \part Given the selected transitions, apply the Q-Learning algorithm to obtain state-action-value $Q(s, a)$ estimates, processing the transitions once, in order. Estimates are initialized to 0.
 
     \begin{solution}
-        In $Q$-learning, the state-action-value $Q(s, a)$ estimates are updated following
+        In Q-Learning, the state-action-value estimates are updated following
+        \begin{equation*}
+            Q(s, a) \leftarrow (1 - \alpha) Q(s, a) + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a')}
+        \end{equation*}
+        for each observed transition $(s, a, s')$, with the reward $r = R(s, a, s')$ given by the table. The terminal states keep $Q(\F, \cdot) = Q(\G, \cdot) = 0$. In the order of the selected transitions, we have
         \begin{align*}
-            Q(s, a) & \gets Q(s, a) - \alpha \rbk*{Q(s, a) - r - \gamma \max_{a'} Q(s', a')} \\
-            & \gets (1 - \alpha) Q(s, a) + \alpha \rbk*{r + \gamma \max_{a'} Q(s', a')}
+            Q(\C, \S) & \leftarrow (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \G) + \gamma \max_{a'} Q(\G, a')} \\
+            & \leftarrow 0.75 \times 0 + 0.25 \rbk{10 + 0} = 2.5 \\
+            Q(\C, \S) & \leftarrow (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \C) + \gamma \max_{a'} Q(\C, a')} \\
+            & \leftarrow 0.75 \times 2.5 + 0.25 \rbk{3 + 0.75 \max \cbk{2.5, 0}} = 3.094 \\
+            Q(\A, \S) & \leftarrow (1 - \alpha) Q(\A, \S) + \alpha \rbk*{R(\A, \S, \F) + \gamma \max_{a'} Q(\F, a')} \\
+            & \leftarrow 0.75 \times 0 + 0.25 \rbk{-10 + 0} = -2.5 \\
+            Q(\A, \P) & \leftarrow (1 - \alpha) Q(\A, \P) + \alpha \rbk*{R(\A, \P, \C) + \gamma \max_{a'} Q(\C, a')} \\
+            & \leftarrow 0.75 \times 0 + 0.25 \rbk{2 + 0.75 \max \cbk{0, 3.094}} = 1.080 \\
+            Q(\C, \P) & \leftarrow 0.75 \times 0 + 0.25 \rbk{R(\C, \P, \C) + 0.75 \max \cbk{0, 3.094}} = 0.25 \rbk{1 + 2.320} = 0.830 \\
+            Q(\A, \P) & \leftarrow 0.75 \times 1.080 + 0.25 \rbk{R(\A, \P, \C) + 0.75 \max \cbk{0.830, 3.094}} = 1.890 \\
+            Q(\A, \S) & \leftarrow 0.75 \times (-2.5) + 0.25 \rbk{R(\A, \S, \F) + 0} = -4.375 \\
+            Q(\C, \P) & \leftarrow 0.75 \times 0.830 + 0.25 \rbk{R(\C, \P, \F) + 0} = 0.123 .
         \end{align*}
-        for observed tuples $(s, r, a, s')$. In our case, we have a list a 16 (8 + 8) tuples $(s, a, s')$ and we have access to the reward function $R(s, a, s')$. Using the tuples in arbitrary order, we have
-        \begin{align*}
-            Q(\C, \S) & \gets (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \G) + \gamma \max_{a'} Q(\G, a')} \\
-            & \gets 0.75 \times 0 + 0.25 \rbk{10 + 0} = 2.5 \\
-            Q(\C, \S) & \gets (1 - \alpha) Q(\C, \S) + \alpha \rbk*{R(\C, \S, \C) + \gamma \max_{a'} Q(\C, a')} \\
-            & \gets 0.75 \times 2.5 + 0.25 \rbk{3 + 0.75 \max \cbk{2.5, 0}} = 3.094 \\
-            Q(\A, \S) & \gets (1 - \alpha) Q(\A, \S) + \alpha \rbk*{R(\A, \S, \F) + \gamma \max_{a'} Q(\F, a')} \\
-            & \gets 0.75 \times 0 + 0.25 \rbk{-10 + 0} = -2.5 \\
-            Q(\A, \P) & \gets (1 - \alpha) Q(\A, \P) + \alpha \rbk*{R(\A, \P, \C) + \gamma \max_{a'} Q(\C, a')} \\
-            & \gets 0.75 \times 0 + 0.25 \rbk{2 + 0.75 \max \cbk{3.094, 0}} = 4.320 \\
-            Q(\C, \P) & \gets \dots
-        \end{align*}
+        Hence $Q(\C, \S) = 3.094$, $Q(\C, \P) = 0.123$, $Q(\A, \S) = -4.375$ and $Q(\A, \P) = 1.890$.
     \end{solution}
 
     \part Determine the optimal policy according to the state-action-value estimates.
 
     \begin{solution}
+        Taking the action of highest $Q(s, a)$ in each state, since $3.094 > 0.123$ and $1.890 > -4.375$,
         \begin{equation*}
             \pi(s) = \begin{cases}
                 \S & \text{if } s = \C \\
@@ -695,94 +689,198 @@ Assuming a discount factor $\gamma = 0.75$ and a learning rate $\alpha = 0.25$,
             \end{cases}
         \end{equation*}
     \end{solution}
+
+    \part None of the selected transitions is a goal scored from away, $(\A, \S, \G)$, worth $+20$. Should the team trust the policy of (c) in state \A? How could the coaching program learn more?
+
+    \begin{solution}
+        Not entirely. All the observed shots from \A{} failed, so that $Q(\A, \S)$ is negative, and a robot that follows the greedy policy $\pi(\A) = \P$ will never shoot from away again: it will never observe the goal worth $+20$ that a shot from \A{} can score, and its estimate of $Q(\A, \S)$ will never improve. Q-Learning converges to the optimal Q-values only if every action keeps being tried. The program should therefore explore, for instance by acting $\epsilon$-greedily (shooting from \A{} with a small probability $\epsilon$), or with an exploration function such as $f(v, n) = v + K/n$, which makes it optimistic about the actions it has tried only $n$ times.
+    \end{solution}
 \end{parts}
 
-\exercisegroup{Supplementary exercises}
+\titledquestion{Contraction of the Bellman update \aima{17}}
 
-\titledquestion{Buying the textbook \aima{16}}
-
-Consider a student, Sam, who has the choice to buy or not buy a textbook for a course. We'll model this as a decision problem with one Boolean decision node, $B$, indicating whether the agent chooses to buy the book, and two Boolean chance nodes, $M$, indicating whether the student has mastered the material of the course, and $F$, indicating whether the student fails the course. There is also a utility node, $U$. Sam has an additive utility function: 0 for not buying the book and \qty{-100}{\$} for buying it; and 0 for failing the course and \qty{2000}{\$} for passing it. Sam's conditional probability estimates are as follows:
-
-\begin{center}
-    \begin{tabular}{cccc}
-        \toprule
-        $B$ & $M$ & $P(M \mid B)$ & $P(F = 1 \mid B, M)$ \\
-        \midrule
-        0 & 0 & 0.3 & 0.7 \\
-        1 & 0 & 0.1 & 0.5 \\
-        0 & 1 & 0.7 & 0.2 \\
-        1 & 1 & 0.9 & 0.1 \\
-        \bottomrule
-    \end{tabular}
-\end{center}
-
-\begin{parts}
-    \part Draw the decision network for this problem.
-
-    \part Compute the expected utility of buying the book and of not buying it.
-
-    \part What should Sam do?
-\end{parts}
-
-\titledquestion{Contraction of the Bellman operator \aima{17}}
-
-The slides of the course states that the Bellman operator
+Let $B$ denote the Bellman update, which maps a utility function $V$ to the function
 \begin{equation*}
-    (B V)(s) = R(s) + \gamma \max_{a \in A(s)} \sum_{s'} P(s' \mid s, a) V(s')
+    (B V)(s) = R(s) + \gamma \max_{a \in \mathcal{A}(s)} \sum_{s'} P(s' \mid s, a) V(s').
 \end{equation*}
-is a contraction.
+The Bellman update is a contraction, which guarantees the convergence of value iteration for $\gamma < 1$.
 
 \begin{parts}
-    \part Show that, for any two functions $f: \R \mapsto \R$ and $g: \R \mapsto \R$,
+    \part Show that, for any two functions $f: \mathcal{X} \to \R$ and $g: \mathcal{X} \to \R$ over a finite set $\mathcal{X}$,
     \begin{equation*}
         \abs{\max_x f(x) - \max_x g(x)} \leq \max_x \, \abs{f(x) - g(x)} .
     \end{equation*}
 
-    \part Apply the previous result to prove that the Bellman operator is a contraction of factor $\gamma$, that is
+    \begin{solution}
+        Suppose, without loss of generality, that $\max_x f(x) \geq \max_x g(x)$, and let $x^*$ be a maximizer of $f$. Then
+        \begin{equation*}
+            \abs{\max_x f(x) - \max_x g(x)} = f(x^*) - \max_x g(x) \leq f(x^*) - g(x^*) \leq \max_x \abs{f(x) - g(x)} .
+        \end{equation*}
+    \end{solution}
+
+    \part Apply the previous result to prove that the Bellman update is a contraction of factor $\gamma$, that is, for any two utility functions $V, V': \mathcal{S} \to \R$,
     \begin{equation*}
-        \norm{(BV) - (BV')}_\infty \leq \gamma \norm{V - V'}_\infty .
+        \norm{B V - B V'}_\infty \leq \gamma \norm{V - V'}_\infty ,
     \end{equation*}
-    \blindfootnote{The infinity norm of a function $f: \R \mapsto \R$ is defined as
-    \begin{equation*}
-        \norm{f}_\infty = \sup_x \abs{f(x)} .
-    \end{equation*}}
+    where $\norm{V}_\infty = \max_s \abs{V(s)}$.
+
+    \begin{solution}
+        The rewards cancel, and (a) applies to the maximum over the actions:
+        \begin{align*}
+            \norm{B V - B V'}_\infty
+            & = \gamma \max_s \abs{\max_a \sum_{s'} P(s' \mid s, a) V(s') - \max_a \sum_{s'} P(s' \mid s, a) V'(s')} \\
+            & \leq \gamma \max_s \max_a \abs{\sum_{s'} P(s' \mid s, a) (V(s') - V'(s'))} \\
+            & \leq \gamma \max_s \max_a \sum_{s'} P(s' \mid s, a) \abs{V(s') - V'(s')} \\
+            & \leq \gamma \max_s \max_a \sum_{s'} P(s' \mid s, a) \norm{V - V'}_\infty = \gamma \norm{V - V'}_\infty ,
+        \end{align*}
+        since the probabilities $P(s' \mid s, a)$ sum to $1$ over $s'$.
+    \end{solution}
 \end{parts}
 
-\titledquestion{Value iteration \aima{17}}\label{sec:17.8}
+\titledquestion{Value iteration \aima{17}}
 
-Consider the $3 \times 3$ world shown in Figure \ref{fig:grid-mdp}. The transition model is the same as in the $4 \times 3$ \ref{fig:sequential}: \qty{80}{\percent} of the time the agent goes in the direction it selects; the rest of the time it moves at right angles to the intended direction.
+Consider the $3 \times 3$ world below, where each square is labelled with its reward. The upper right square is a terminal state. In each state, the agent can move north, south, east or west: 80\% of the time it goes in the direction it selects, and the rest of the time it moves at right angles to the intended direction (10\% on each side). A move into a wall leaves the agent where it is.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics{figures/e6_grid_mdp.pdf}
-    \caption{(a) $3\times3$ world for Exercise~\ref{sec:17.8}. The reward for each state is indicated. The upper right square is a terminal state. (b) $101 \times 3$ world for Exercise~\ref{sec:17.9}. The start state has reward $0$.}
-    \label{fig:grid-mdp}
-\end{figure}
+\begin{center}
+            \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+                \fill[diagram-fill] (2, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \node at (0.5, 2.5) {$r$};
+                \node at (1.5, 2.5) {$-1$};
+                \node at (2.5, 2.5) {$+10$};
+                \foreach \x in {0.5, 1.5, 2.5} {
+                    \node at (\x, 1.5) {$-1$};
+                    \node at (\x, 0.5) {$-1$};
+                }
+            \end{tikzpicture}
+\end{center}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics{figures/e6_sequential.pdf}
-    \caption{(a) A simple $4\times 3$ environment that presents the agent with a sequential decision problem. The two terminal states have reward $+1$ and $-1$, respectively, and all other states have a reward of $-0.04$. (b) Illustration of the transition model of the environment: the \enquote{intended} outcome occurs with probability $0.8$, but with probability $0.2$ the agent moves at right angles to the intended direction. A collision with a wall results in no movement.}
-    \label{fig:sequential}
-\end{figure}
-
-Implement value iteration for this world for each value of $r$ below. Use discounted rewards with a discount factor $\gamma = \num{0.99}$. Show the policy obtained in each case. Explain intuitively why the value of $r$ leads to each policy.
+Apply value iteration for this world for each value of $r$ below, with a discount factor $\gamma = \num{0.99}$. Show the policy obtained in each case. Explain intuitively why the value of $r$ leads to each policy.
 
 \begin{parts}
     \part $r = -100$
 
+    \begin{solution}
+        The agent avoids the upper left square at all costs: from below it, it even moves south, away from the goal, since moving north could end there.
+        \begin{center}
+            \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+                \fill[diagram-fill] (2, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \node at (0.5, 0.5) {$\rightarrow$};
+                \node at (1.5, 0.5) {$\rightarrow$};
+                \node at (2.5, 0.5) {$\uparrow$};
+                \node at (0.5, 1.5) {$\downarrow$};
+                \node at (1.5, 1.5) {$\rightarrow$};
+                \node at (2.5, 1.5) {$\uparrow$};
+                \node at (0.5, 2.5) {$\rightarrow$};
+                \node at (1.5, 2.5) {$\rightarrow$};
+                \node[font=\footnotesize] at (2.5, 2.5) {$+10$};
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+
     \part $r = -3$
+
+    \begin{solution}
+        Every step costs, the upper left square a little more: the agent heads for the goal along the shortest path, east then north, and leaves the upper left square at once.
+        \begin{center}
+            \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+                \fill[diagram-fill] (2, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \node at (0.5, 0.5) {$\rightarrow$};
+                \node at (1.5, 0.5) {$\rightarrow$};
+                \node at (2.5, 0.5) {$\uparrow$};
+                \node at (0.5, 1.5) {$\rightarrow$};
+                \node at (1.5, 1.5) {$\rightarrow$};
+                \node at (2.5, 1.5) {$\uparrow$};
+                \node at (0.5, 2.5) {$\rightarrow$};
+                \node at (1.5, 2.5) {$\rightarrow$};
+                \node[font=\footnotesize] at (2.5, 2.5) {$+10$};
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
 
     \part $r = 0$
 
+    \begin{solution}
+        The upper left square is free: the agent goes north first, to the top row, which costs nothing on its first square, then east to the goal.
+        \begin{center}
+            \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+                \fill[diagram-fill] (2, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \node at (0.5, 0.5) {$\uparrow$};
+                \node at (1.5, 0.5) {$\uparrow$};
+                \node at (2.5, 0.5) {$\uparrow$};
+                \node at (0.5, 1.5) {$\uparrow$};
+                \node at (1.5, 1.5) {$\uparrow$};
+                \node at (2.5, 1.5) {$\uparrow$};
+                \node at (0.5, 2.5) {$\rightarrow$};
+                \node at (1.5, 2.5) {$\rightarrow$};
+                \node[font=\footnotesize] at (2.5, 2.5) {$+10$};
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+
     \part $r = +3$
+
+    \begin{solution}
+        Staying in the upper left square forever earns $3$ at every step, worth about $3 / (1 - 0.99) = 300$, much more than the $+10$ of the goal: the agent heads for the upper left square and stays there by bumping into the walls (north or west), and moves away from the goal wherever it might slip into it.
+        \begin{center}
+            \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+                \fill[diagram-fill] (2, 2) rectangle (3, 3);
+                \draw[grid lines] (0, 0) grid (3, 3);
+                \draw[world border] (0, 0) rectangle (3, 3);
+                \node at (0.5, 0.5) {$\uparrow$};
+                \node at (1.5, 0.5) {$\leftarrow$};
+                \node at (2.5, 0.5) {$\leftarrow$};
+                \node at (0.5, 1.5) {$\uparrow$};
+                \node at (1.5, 1.5) {$\leftarrow$};
+                \node at (2.5, 1.5) {$\downarrow$};
+                \node at (0.5, 2.5) {$\uparrow\leftarrow$};
+                \node at (1.5, 2.5) {$\leftarrow$};
+                \node[font=\footnotesize] at (2.5, 2.5) {$+10$};
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
 \end{parts}
 
-\titledquestion{Discount factor \aima{17}}\label{sec:17.9}
+\titledquestion{Discount factor \aima{17}}
 
-Consider the $101 \times 3$ world shown in Figure \ref{fig:grid-mdp}. In the start state the agent has a choice of two deterministic actions, \texttt{up} or \texttt{down}, but in the other states the agent has one deterministic action, \texttt{right}. Assuming a discounted reward function, compute the utility of each action as a function of $\gamma$. For what values of the discount factor $\gamma$ should the agent choose \texttt{up} and for which \texttt{down}?
+Consider the $101 \times 3$ world below. In the start state, of reward $0$, the agent has a choice of two deterministic actions, \texttt{up} or \texttt{down}, but in the other states the agent has one deterministic action, \texttt{right}, until it leaves the world at the right end. Assuming a discounted reward function, compute the utility of each action as a function of $\gamma$. For what values of the discount factor $\gamma$ should the agent choose \texttt{up} and for which \texttt{down}?
+
+\begin{center}
+    \begin{tikzpicture}[world diagram, x=0.9cm, y=0.9cm]
+        \draw[grid lines] (0, 0) grid (6, 3);
+        \fill[white] (4.05, -0.05) rectangle (4.95, 3.05);
+        \draw[world border] (0, 0) rectangle (6, 3);
+        \node at (0.5, 1.5) {$0$};
+        \node at (1.5, 2.5) {$+50$};
+        \node at (1.5, 0.5) {$-50$};
+        \foreach \x in {2.5, 3.5, 5.5} {
+            \node at (\x, 2.5) {$-1$};
+            \node at (\x, 0.5) {$+1$};
+        }
+        \node at (4.5, 2.5) {$\cdots$};
+        \node at (4.5, 0.5) {$\cdots$};
+        \node[diagram caption, anchor=east] at (-0.1, 1.5) {start};
+        \node[diagram caption] at (3.5, -0.4) {100 squares after the first};
+    \end{tikzpicture}
+\end{center}
 
 \blindfootnote{This simple example actually reflects many real-world situations in which one must weigh the value of an immediate action versus the potential long-term consequences, such as choosing to dump pollutants into a lake.}
+
+\begin{solution}
+    Going \texttt{up}, the agent receives $+50$ after one step, then $-1$ at each of the next $100$ steps; going \texttt{down}, it receives the opposite rewards. Hence
+    \begin{align*}
+        V(\texttt{up}) & = 50 \gamma - \sum_{t=2}^{101} \gamma^t = 50 \gamma - \gamma^2 \frac{1 - \gamma^{100}}{1 - \gamma}, &
+        V(\texttt{down}) & = -V(\texttt{up}).
+    \end{align*}
+    The agent should choose \texttt{up} when $V(\texttt{up}) > 0$, that is when $50 > \gamma (1 - \gamma^{100}) / (1 - \gamma)$, which holds for $\gamma < 0.9844$ (solved numerically), and \texttt{down} for $\gamma > 0.9844$. A short-sighted agent takes the immediate $+50$; a far-sighted one accepts the immediate $-50$ for the hundred $+1$ that follow.
+\end{solution}
 
 \titledquestion{Policy iteration \aima{17}}
 
@@ -799,18 +897,15 @@ Answer the following questions:
 \begin{parts}
     \part What can be determined \emph{qualitatively} about the optimal policy in states 1 and 2?
 
-\begin{comment}
     \begin{solution}
         Intuitively, the agent wants to get to state 3 as soon as possible, because it will pay a cost for each time step it spends in states 1 and 2. However, the only action that reaches state 3 (action b) succeeds with low probability, so the agent should minimize the cost it incurs while trying to reach the terminal state. This suggests that the agent should definitely try action $b$ in state 1, but, in state 2, it might be better to try action $a$ to get to state 1, rather than aiming directly for state 3. The decision in state 2 involves a numerical trade-off.
     \end{solution}
-\end{comment}
 
     \part Apply policy iteration, showing each step in full, to determine the optimal policy and the values of states 1 and 2. Assume that the initial policy has action $b$ in both states.
 
-\begin{comment}
     \begin{solution}
         \begin{itemize}
-            \item Initialization: $R \leftarrow\langle- 1,-2,0\rangle, \pi^0 \leftarrow\langle b, b\rangle$.
+            \item Initialization: $R \leftarrow\langle- 1,-2,0\rangle, \pi_0 \leftarrow\langle b, b\rangle$.
             \item Value determination:
             \[
                 \begin{array}{l}{V(s_{1})=-1+0.1 V(s_{3})+0.9 V(s_{1})} \\ {V(s_{2})=-2+0.1 V(s_{3})+0.9 V(s_{2})} \\ {V(s_{3})=0}\end{array}
@@ -819,10 +914,10 @@ Answer the following questions:
             Policy update:
             \begin{itemize}
                 \item In state 1,
-                $\pi^1(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, a) V(s_i) = 0.8 \times -20 + 0.2 \times -10 = -18$ and $\pi^1(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, b) V(s_i) = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi^1(s_1) = b$.
+                $\pi_1(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, a) V(s_i) = 0.8 \times -20 + 0.2 \times -10 = -18$ and $\pi_1(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, b) V(s_i) = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi_1(s_1) = b$.
 
                 \item In state 2,
-                $\pi^1(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, a) V(s_i) = 0.2 \times -20 + 0.8 \times -10 = -12$ and $\pi^1(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, b) V(s_i) = 0.1 \times 0 + 0.9 \times -20 = -18$, thus $\pi^1(s_2) = a$.
+                $\pi_1(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, a) V(s_i) = 0.2 \times -20 + 0.8 \times -10 = -12$ and $\pi_1(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, b) V(s_i) = 0.1 \times 0 + 0.9 \times -20 = -18$, thus $\pi_1(s_2) = a$.
             \end{itemize}
             \item Value determination:
             \[
@@ -832,43 +927,20 @@ Answer the following questions:
             Policy update:
             \begin{itemize}
                 \item In state 1,
-                $\pi^1(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, a) V(s_i) = 0.8 \times -12.5 + 0.2 \times -10 = -12$ and $\pi^1(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, b) V(s_i) = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi^1(s_1) = b$.
+                $\pi_2(s_1) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, a) V(s_i) = 0.8 \times -12.5 + 0.2 \times -10 = -12$ and $\pi_2(s_1) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_1, b) V(s_i) = 0.1 \times 0 + 0.9 \times -10 = -9$, thus $\pi_2(s_1) = b$.
 
                 \item In state 2,
-                $\pi^1(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, a) V(s_i) = 0.2 \times -12.5 + 0.8 \times -10 = -10.5$ and $\pi^1(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, b) V(s_i) = 0.1 \times 0 + 0.9 \times -12.5 = -11.25$, thus $\pi^1(s_2) = a$.
+                $\pi_2(s_2) = a$ leads to $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, a) V(s_i) = 0.2 \times -12.5 + 0.8 \times -10 = -10.5$ and $\pi_2(s_2) = b$ leads $\sum_{i \in \{1, 2, 3\}} P(s_i \mid s_2, b) V(s_i) = 0.1 \times 0 + 0.9 \times -12.5 = -11.25$, thus $\pi_2(s_2) = a$.
             \end{itemize}
             \item Unchanged, which implies convergence.
         \end{itemize}
     \end{solution}
-\end{comment}
 
     \part What happens to policy iteration if the initial policy has action $a$ in both states? Does discounting help? Does the optimal policy depend on the discount factor?
 
-\begin{comment}
     \begin{solution}
-        An initial policy with action $a$ in both states leads to an unsolvable problem. The initial value determination problem has the form \[\begin{array}{l}{u_{1}=-1+0.2 u_{1}+0.8 u_{2}} \\ {u_{2}=-2+0.8 u_{1}+0.2 u_{2}} \\ {u_{3}=0}\end{array}\] and the first two equations are inconsistent. If we were to try to solve them iteratively, we would find the values tending to $-\infty$. Discounting leads to well-defined solutions by bounding the penalty (expected dis- counted cost) an agent can incur at either state. However, the choice of discount factor will affect the policy that results. For $\gamma$ small, the cost incurred in the distant future plays a negligible role in the value computation, because $\gamma^n$ is near $0$. As a result, an agent could choose action $b$ in state 2 because the discounted short-term cost of remaining in the non-terminal states (states 1 and 2) outweighs the discounted long-term cost of action $b$ failing repeatedly and leaving the agent in state 2.
+        An initial policy with action $a$ in both states leads to an unsolvable problem. The initial value determination problem has the form \[\begin{array}{l}{u_{1}=-1+0.2 u_{1}+0.8 u_{2}} \\ {u_{2}=-2+0.8 u_{1}+0.2 u_{2}} \\ {u_{3}=0}\end{array}\] and the first two equations are inconsistent. If we were to try to solve them iteratively, we would find the values tending to $-\infty$. Discounting leads to well-defined solutions by bounding the penalty (expected discounted cost) an agent can incur at either state. However, the choice of discount factor will affect the policy that results. For $\gamma$ small, the cost incurred in the distant future plays a negligible role in the value computation, because $\gamma^n$ is near $0$. As a result, an agent could choose action $b$ in state 2 because the discounted short-term cost of remaining in the non-terminal states (states 1 and 2) outweighs the discounted long-term cost of action $b$ failing repeatedly and leaving the agent in state 2.
     \end{solution}
-\end{comment}
-\end{parts}
-
-\titledquestion{Dutch auction \aima{18}}
-
-A Dutch auction is similar to an English auction, but rather than starting the bidding at a low price and increasing, the seller starts at a high price and gradually lowers the price until some buyer is willing to accept that price. If multiple bidders accept the price, one is arbitrarily chosen as the winner. More formally, the seller begins with a price $p$ and gradually lowers $p$ by increments of $d$ until at least one buyer accepts the price.
-
-Assuming all bidders act rationally, is it true that for arbitrarily small $d$, a Dutch auction will always result in the bidder with the highest value for the item obtaining the item? If so, show mathematically why. If not, explain how it may be possible for the bidder with highest value for the item not to obtain it.
-
-\titledquestion{Hockey overtime \aima{18}}
-
-Teams in the National Hockey League historically received 2 points for winning a game and 0 for losing. If the game is tied, an overtime period is played; if nobody wins in overtime, the game is a tie and each team gets 1 point. But league officials felt that teams were playing too conservatively in overtime (to avoid a loss), and it would be more exciting if overtime produced a winner. So in 1999 the officials experimented in mechanism design: the rules were changed, giving a team that loses in overtime 1 point, not 0. It is still 2 points for a win and 1 for a tie.
-
-\begin{parts}
-    \part Was hockey a zero-sum game before the rule change? After?
-
-    \part Suppose that at a certain time $t$ in a game, the home team has probability $p$ of winning in regulation time, probability $0.78 - p$ of losing, and probability $0.22$ of going into overtime, where they have probability $q$ of winning, $0.9 - q$ of losing, and $0.1$ of tying. Give equations for the expected value for the home and visiting teams.
-
-    \part Imagine that it were legal and ethical for the two teams to enter into a pact where they agree that they will skate to a tie in regulation time, and then both try in earnest to win in overtime. Under what conditions, in terms of $p$ and $q$, would it be rational for both teams to agree to this pact?
-
-    \part Some experts report that since the rule change, the percentage of games with a winner in overtime went up \qty{18.2}{\percent}, as desired, but the percentage of overtime games also went up \qty{3.6}{\percent}. What does that suggest about possible collusion or conservative play after the rule change?
 \end{parts}
 
 \end{exercises}
@@ -887,10 +959,10 @@ Teams in the National Hockey League historically received 2 points for winning a
         \item is a model-based reinforcement learning algorithm.
         \item is an on-policy reinforcement learning algorithm.
         \item converges to an optimal policy, but only when acting optimally.
-        \item \correct{requires a random exploration strategy to converge to an optimal policy.}
+        \item \correct{requires enough exploration (\eg{} $\epsilon$-greedy) to converge to an optimal policy.}
     \end{enumerate}
 
-    \item Assume that we run $\epsilon$-greedy Q-learning until convergence. What is the optimal policy $\pi^*$ we obtain for an arbitrary state $s$?
+    \item Assume that we run $\epsilon$-greedy Q-Learning until convergence. What is the optimal policy $\pi^*$ we obtain for an arbitrary state $s$?
     \begin{enumerate}[label=$\bigcirc$]
         \item $\pi^*(s) = \arg\max_s V(s)$
         \item $\pi^*(s) = \begin{cases}
@@ -917,7 +989,7 @@ Teams in the National Hockey League historically received 2 points for winning a
         \item $n$ is the sum of the sizes of the action and state spaces.
     \end{enumerate}
 
-    \item In DQN (Mnih et al, 2015), a reinforcement learning agent is trained to \ldots
+    \item In DQN (Mnih et al., 2015), a reinforcement learning agent is trained \ldots
     \begin{enumerate}[label=$\bigcirc$]
         \item to classify images.
         \item to control a robot in a simulated environment.
@@ -925,7 +997,7 @@ Teams in the National Hockey League historically received 2 points for winning a
         \item to play the game of Go.
     \end{enumerate}
 
-    \item In DQN (Mnih et al, 2015), the Q-table is approximated with \ldots
+    \item In DQN (Mnih et al., 2015), the Q-table is approximated with \ldots
     \begin{enumerate}[label=$\bigcirc$]
         \item a hash table.
         \item a transposition table.
