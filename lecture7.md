@@ -37,7 +37,7 @@ class: middle
 A learning agent improves its performance element with experience (Lecture 1). Here, the performance element is a function with parameters $\theta$:
 - a policy $a\_t = \pi\_\theta(e\_t)$ (Lectures 1, 8 and 9),
 - a heuristic $h(n)$ (Lecture 2) or an evaluation function $\text{eval}(s)$ (Lecture 3),
-- a model $\mathbf{P}\_\theta(X)$ (Lecture 5), such as the transition and sensor models of Lecture 6.
+- a model $\mathbf{P}\_\theta(X)$ (Lectures 5 and 6).
 
 The learning element adjusts $\theta$ from the feedback.
 
