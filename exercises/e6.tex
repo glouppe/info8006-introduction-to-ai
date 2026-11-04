@@ -251,10 +251,10 @@ A delivery robot works in a building laid out as a $5 \times 5$ grid of rooms, w
 
 From the log, the robot's program learns a heuristic approximating the best time to get to the station, starting from room $(r, c)$. It uses a small neural network as approximator, described by the following parametric function,
 \begin{align*}
-    h(r, c; \phi) & = \ReLU(r w_1 + c w_2 + w_3) + \ReLU(r w_4 + c w_5 + w_6) \\
+    h(r, c; \theta) & = \ReLU(r w_1 + c w_2 + w_3) + \ReLU(r w_4 + c w_5 + w_6) \\
     \ReLU(z) & = \max(z, 0) ,
 \end{align*}
-where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the neural network.
+where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the neural network.
 
 \begin{parts}
     \part Among the following sets of parameters ($A$, $B$ or $C$), which one would you use? Justify your answer.
@@ -264,30 +264,30 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the ne
             \toprule
             Set & $w_1$ & $w_2$ & $w_3$ & $w_4$ & $w_5$ & $w_6$ \\
             \midrule
-            $\phi_A$ & $-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
-            $\phi_B$ & $-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
-            $\phi_C$ & $-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
+            $\theta_A$ & $-1.5$ & $1$ & $4$ & $1$ & $-1.5$ & $6$ \\
+            $\theta_B$ & $-1$ & $1.5$ & $3$ & $0$ & $-1$ & $4$ \\
+            $\theta_C$ & $-2$ & $0.5$ & $4.5$ & $1.5$ & $0$ & $5$ \\
             \bottomrule
         \end{tabular}
     \end{center}
 
     \begin{solution}
-        A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $\mathbf{d}$ is the log and consists of independent position-time tuples $(r_i, c_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(r, c)$, approximated by a neural network $h(r, c; \phi)$. We also learn that our time measurements are affected by Gaussian noise.
+        A set of parameters is better than another if it explains the data better, that is if the likelihood is higher. Our task is to find the set of parameters that maximizes the likelihood under the assumed probability model. In our case, the data $\mathbf{d}$ is the log and consists of independent position-time tuples $(r_i, c_i, t_i)$. From the statement, we gather that the (best) time $t$ is a function of the starting position $(r, c)$, approximated by a neural network $h(r, c; \theta)$. We also learn that our time measurements are affected by Gaussian noise.
         \begin{align*}
-            \phi_{\text{MLE}} & = \arg\max_\phi p(\mathbf{d} \mid \phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(r_i, c_i, t_i \mid \phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(t_i \mid r_i, c_i, \phi) \, p(r_i, c_i) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \phi), 1) \\
-            & = \arg\max_\phi \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(r_i, c_i; \phi))^2}{2}}} \\
-            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi))^2
+            \theta_{\text{MLE}} & = \arg\max_\theta p(\mathbf{d} \mid \theta) \\
+            & = \arg\max_\theta \prod_{i=1}^5 p(r_i, c_i, t_i \mid \theta) \\
+            & = \arg\max_\theta \prod_{i=1}^5 p(t_i \mid r_i, c_i, \theta) \, p(r_i, c_i) \\
+            & = \arg\max_\theta \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \theta), 1) \\
+            & = \arg\max_\theta \sum_{i=1}^5 \log \sbk*{\frac{1}{\sqrt{2 \pi}} \exp \rbk*{-\frac{(t_i - h(r_i, c_i; \theta))^2}{2}}} \\
+            & = \arg\min_\theta \sum_{i=1}^5 (t_i - h(r_i, c_i; \theta))^2
         \end{align*}
-        Now that we have an objective $L(\phi)$ to minimize, we can evaluate it for each of the proposed sets and select the best one.
+        Now that we have an objective $L(\theta)$ to minimize, we can evaluate it for each of the proposed sets and select the best one.
         \begin{align*}
-            L(\phi_A) & = \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi_A))^2 = (2.0 - 5.5)^2 + (3.5 - 6.5)^2 + \dots = 29.75 \\
-            L(\phi_B) & = 35.75 \\
-            L(\phi_C) & = 205.25
+            L(\theta_A) & = \sum_{i=1}^5 (t_i - h(r_i, c_i; \theta_A))^2 = (2.0 - 5.5)^2 + (3.5 - 6.5)^2 + \dots = 29.75 \\
+            L(\theta_B) & = 35.75 \\
+            L(\theta_C) & = 205.25
         \end{align*}
-        The best set is $\phi_A$.
+        The best set is $\theta_A$.
     \end{solution}
 
     \part You now assume a Gaussian prior $\N(0, 1)$ on each parameter. Which set of parameters in the table above would you now choose? Justify your answer.
@@ -295,27 +295,27 @@ where $\phi = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the ne
     \begin{solution}
         Now that we hold a prior belief on the parameters, our task is to find the most likely set of parameters given the data, that is maximum a posteriori (MAP) estimation.
         \begin{align*}
-            \phi_{\text{MAP}} & = \arg\max_\phi p(\phi \mid \mathbf{d}) \\
-            & = \arg\max_\phi p(\mathbf{d} \mid \phi) p(\phi) \\
-            & = \arg\max_\phi \prod_{i=1}^5 p(r_i, c_i, t_i \mid \phi) \prod_{j=1}^6 p(w_j) \\
-            & = \arg\max_\phi \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \phi), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
-            & = \arg\min_\phi \sum_{i=1}^5 (t_i - h(r_i, c_i; \phi))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\phi}^2}
+            \theta_{\text{MAP}} & = \arg\max_\theta p(\theta \mid \mathbf{d}) \\
+            & = \arg\max_\theta p(\mathbf{d} \mid \theta) p(\theta) \\
+            & = \arg\max_\theta \prod_{i=1}^5 p(r_i, c_i, t_i \mid \theta) \prod_{j=1}^6 p(w_j) \\
+            & = \arg\max_\theta \prod_{i=1}^5 \N(t_i; h(r_i, c_i; \theta), 1) \prod_{j=1}^6 \N(w_j; 0, 1) \\
+            & = \arg\min_\theta \sum_{i=1}^5 (t_i - h(r_i, c_i; \theta))^2 + \underbrace{\sum_{j=1}^6 (w_j)^2}_{\norm{\theta}^2}
         \end{align*}
-        Here again, we have an objective $L'(\phi)$ to minimize, which we evaluate for each of the proposed sets.
+        Here again, we have an objective $L'(\theta)$ to minimize, which we evaluate for each of the proposed sets.
         \begin{align*}
-            L'(\phi_A) & = L(\phi_A) + \sum_{j=1}^6 (w_j)^2 = 29.75 + (-1.5)^2 + (1)^2 + \dots = 88.25 \\
-            L'(\phi_B) & = 65.0 \\
-            L'(\phi_C) & = 257.0
+            L'(\theta_A) & = L(\theta_A) + \sum_{j=1}^6 (w_j)^2 = 29.75 + (-1.5)^2 + (1)^2 + \dots = 88.25 \\
+            L'(\theta_B) & = 65.0 \\
+            L'(\theta_C) & = 257.0
         \end{align*}
-        The best set is $\phi_B$.
+        The best set is $\theta_B$.
     \end{solution}
 
     \part Discuss the procedure you would implement on a computer to find the optimal set of parameters, had the table above not been provided.
 
     \begin{solution}
-        If the table is not provided, it is intractable to evaluate and compare all possible sets of parameters. However, we still want to minimize the MLE (or MAP) objective $L(\phi)$. We can improve a set of parameters $\phi$ by following the opposite of the objective's gradient $\nabla_{\! \phi} L(\phi)$, \ie{} performing \emph{gradient descent} steps
+        If the table is not provided, it is intractable to evaluate and compare all possible sets of parameters. However, we still want to minimize the MLE (or MAP) objective $L(\theta)$. We can improve a set of parameters $\theta$ by following the opposite of the objective's gradient $\nabla_{\! \theta} L(\theta)$, \ie{} performing \emph{gradient descent} steps
         \begin{equation*}
-            \phi \gets \phi - \alpha \nabla_{\! \phi} L(\phi) ,
+            \theta \gets \theta - \alpha \nabla_{\! \theta} L(\theta) ,
         \end{equation*}
         where $\alpha$ is the learning rate.
     \end{solution}
