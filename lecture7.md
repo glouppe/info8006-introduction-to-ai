@@ -369,10 +369,10 @@ class: middle
 
 ## Example: imitation learning in Pacman
 
-Can we learn to play Pacman only by watching an expert, e.g. the minimax agent of Lecture 3?
+Can we learn to play Pacman only by watching an expert, e.g. a minimax agent?
 - At each step, the expert perceives $e\_t$ and acts $a\_t$. Pacman's world is fully observable, so $e\_t = s\_t$.
 - Each step gives a pair $(\mathbf{x}, y)$, with features $\mathbf{x} = g(e\_t)$ and the expert's action $y = a\_t$.
-- We learn a simple reflex agent (Lecture 1), $a\_t = \pi\_\theta(e\_t) = f(g(e\_t); \theta)$ with $f : \mathbb{R}^d \to \mathcal{A}$, whose condition-action rules are learned rather than written.
+- We learn a simple reflex agent $a\_t = \pi\_\theta(e\_t) = f(g(e\_t); \theta)$ with $f : \mathbb{R}^d \to \mathcal{A}$, whose condition-action rules are learned rather than written.
 - This is a multiclass classification problem.
 
 .center.width-70[![](figures/lec7/pacman.png)]
