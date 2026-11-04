@@ -2181,8 +2181,8 @@ z
    </g>
   </g>
   <g id="text_31">
-   <!-- input $\mathbf{x} \in \mathbb{R}^{3 \times 16 \times 16}$ -->
-   <g transform="translate(32.655 23.04) scale(0.18 -0.18)">
+   <!-- input $\mathbf{x} \in \mathrm{\mathbb{R}}^{3 \times 16 \times 16}$ -->
+   <g transform="translate(33.195 23.04) scale(0.18 -0.18)">
     <defs>
      <path id="Roboto-Regular-4d" d="M 1066 0 
 L 488 0 
@@ -2347,47 +2347,46 @@ Q 794 1194 958 897
 Q 1122 600 1356 403 
 z
 " transform="scale(0.015625)"/>
-     <path id="STIXGeneral-Italic-2dd" d="M 1229 4179 
-L 3360 4179 
-Q 3827 4179 4108 3894 
-Q 4390 3610 4390 3142 
-Q 4390 2554 4060 2186 
-Q 3731 1818 3149 1715 
-L 4026 0 
-L 2925 0 
-L 2125 1690 
-L 1549 1690 
-L 1094 0 
-L 109 0 
-L 1229 4179 
+     <path id="STIXGeneral-Regular-379" d="M 4557 0 
+L 3232 0 
+L 1984 1734 
+L 1510 1734 
+L 1510 0 
+L 448 0 
+L 448 4237 
+L 2496 4237 
+Q 3168 4237 3593 3933 
+Q 4019 3629 4019 2982 
+Q 4019 2554 3801 2250 
+Q 3584 1946 3181 1824 
+L 4557 0 
 z
-M 3866 3821 
-L 3392 2022 
-Q 3770 2144 3962 2438 
-Q 4154 2733 4154 3136 
-Q 4154 3584 3866 3821 
+M 3142 3866 
+L 3142 2054 
+Q 3418 2170 3578 2419 
+Q 3738 2669 3738 2970 
+Q 3738 3597 3142 3866 
 z
-M 3142 1978 
-L 3648 3872 
-Q 3450 3942 3296 3942 
-L 2150 3942 
-L 1613 1926 
-L 2630 1926 
-Q 2957 1926 3142 1978 
+M 2861 2048 
+L 2861 3904 
+Q 2835 3904 2716 3929 
+Q 2598 3955 2541 3955 
+L 1510 3955 
+L 1510 2016 
+L 2509 2016 
+Q 2573 2016 2861 2048 
 z
-M 3629 237 
-L 2899 1696 
-Q 2829 1683 2682 1683 
-Q 2630 1683 2531 1686 
-Q 2432 1690 2387 1690 
-L 3072 237 
-L 3629 237 
+M 4006 282 
+L 2886 1760 
+Q 2739 1734 2323 1734 
+L 3379 282 
+L 4006 282 
 z
-M 1907 3942 
-L 1408 3942 
-L 416 237 
-L 915 237 
-L 1907 3942 
+M 1229 282 
+L 1229 3955 
+L 730 3955 
+L 730 282 
+L 1229 282 
 z
 " transform="scale(0.015625)"/>
      <path id="Cmr10-6e" d="M 609 494 
@@ -2555,14 +2554,14 @@ z
     <use xlink:href="#Roboto-Regular-4" transform="translate(223.339844 0.084203)"/>
     <use xlink:href="#Cmb10-2d" transform="translate(248.095703 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(320.781307 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(407.382927 0.084203)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(491.776013 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(540.776054 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-64" transform="translate(609.155976 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-45" transform="translate(644.155976 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(693.156016 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-64" transform="translate(761.535939 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-45" transform="translate(796.535939 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(407.382927 0.084203)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(486.087154 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(535.087194 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(603.467117 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(638.467117 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(687.467157 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(755.84708 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(790.84708 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_32">
@@ -2643,8 +2642,8 @@ z
    </g>
   </g>
   <g id="text_33">
-   <!-- kernel $\omega \in \mathbb{R}^{3 \times 3 \times 3}$ -->
-   <g transform="translate(211.035 64.8) scale(0.18 -0.18)">
+   <!-- kernel $\omega \in \mathrm{\mathbb{R}}^{3 \times 3 \times 3}$ -->
+   <g transform="translate(211.575 64.8) scale(0.18 -0.18)">
     <defs>
      <path id="Roboto-Regular-4f" d="M 1381 1566 
 L 1019 1188 
@@ -2764,12 +2763,12 @@ z
     <use xlink:href="#Roboto-Regular-4" transform="translate(269.921875 0.084203)"/>
     <use xlink:href="#Cmmi10-1d" transform="translate(294.677734 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(376.884823 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(463.486443 0.084203)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(547.879529 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(596.879569 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(665.259492 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(714.259532 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(782.639455 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(463.486443 0.084203)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(542.190669 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(591.190709 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(659.570632 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(708.570672 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(776.950595 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_34">
@@ -2806,8 +2805,8 @@ z
    </g>
   </g>
   <g id="text_35">
-   <!-- $\mathbf{x} \circledast \omega \in \mathbb{R}^{14 \times 14}$ -->
-   <g transform="translate(374.095 44.86) scale(0.2 -0.2)">
+   <!-- $\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{14 \times 14}$ -->
+   <g transform="translate(374.695 44.86) scale(0.2 -0.2)">
     <defs>
      <path id="Cmr10-3b" d="M 178 1056 
 L 178 1281 
@@ -2841,12 +2840,12 @@ z
     <use xlink:href="#STIXGeneral-Regular-4ae" transform="translate(72.685604 0.084203)"/>
     <use xlink:href="#Cmmi10-1d" transform="translate(176.885582 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(259.09267 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(345.69429 0.084203)"/>
-    <use xlink:href="#Cmr10-64" transform="translate(430.087377 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-3b" transform="translate(465.087377 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(514.087417 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-64" transform="translate(582.46734 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-3b" transform="translate(617.46734 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(345.69429 0.084203)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(424.398517 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(459.398517 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(508.398557 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-64" transform="translate(576.77848 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(611.77848 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_36">

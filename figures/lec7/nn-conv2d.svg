@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="355.86pt" height="159.78pt" viewBox="0 0 444.82 199.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="355.38pt" height="159.78pt" viewBox="0 0 444.22 199.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -21,8 +21,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 199.72 
-L 444.82 199.72 
-L 444.82 0 
+L 444.22 199.72 
+L 444.22 0 
 L 0 0 
 L 0 199.72 
 z
@@ -1091,8 +1091,8 @@ z
    </g>
   </g>
   <g id="text_64">
-   <!-- $\mathbf{x} \in \mathbb{R}^{6 \times 6}$ -->
-   <g transform="translate(44.76 24.8) scale(0.2 -0.2)">
+   <!-- $\mathbf{x} \in \mathrm{\mathbb{R}}^{6 \times 6}$ -->
+   <g transform="translate(45.26 24.8) scale(0.2 -0.2)">
     <defs>
      <path id="Cmb10-2d" d="M 109 0 
 L 109 325 
@@ -1161,47 +1161,46 @@ Q 794 1194 958 897
 Q 1122 600 1356 403 
 z
 " transform="scale(0.015625)"/>
-     <path id="STIXGeneral-Italic-2dd" d="M 1229 4179 
-L 3360 4179 
-Q 3827 4179 4108 3894 
-Q 4390 3610 4390 3142 
-Q 4390 2554 4060 2186 
-Q 3731 1818 3149 1715 
-L 4026 0 
-L 2925 0 
-L 2125 1690 
-L 1549 1690 
-L 1094 0 
-L 109 0 
-L 1229 4179 
+     <path id="STIXGeneral-Regular-379" d="M 4557 0 
+L 3232 0 
+L 1984 1734 
+L 1510 1734 
+L 1510 0 
+L 448 0 
+L 448 4237 
+L 2496 4237 
+Q 3168 4237 3593 3933 
+Q 4019 3629 4019 2982 
+Q 4019 2554 3801 2250 
+Q 3584 1946 3181 1824 
+L 4557 0 
 z
-M 3866 3821 
-L 3392 2022 
-Q 3770 2144 3962 2438 
-Q 4154 2733 4154 3136 
-Q 4154 3584 3866 3821 
+M 3142 3866 
+L 3142 2054 
+Q 3418 2170 3578 2419 
+Q 3738 2669 3738 2970 
+Q 3738 3597 3142 3866 
 z
-M 3142 1978 
-L 3648 3872 
-Q 3450 3942 3296 3942 
-L 2150 3942 
-L 1613 1926 
-L 2630 1926 
-Q 2957 1926 3142 1978 
+M 2861 2048 
+L 2861 3904 
+Q 2835 3904 2716 3929 
+Q 2598 3955 2541 3955 
+L 1510 3955 
+L 1510 2016 
+L 2509 2016 
+Q 2573 2016 2861 2048 
 z
-M 3629 237 
-L 2899 1696 
-Q 2829 1683 2682 1683 
-Q 2630 1683 2531 1686 
-Q 2432 1690 2387 1690 
-L 3072 237 
-L 3629 237 
+M 4006 282 
+L 2886 1760 
+Q 2739 1734 2323 1734 
+L 3379 282 
+L 4006 282 
 z
-M 1907 3942 
-L 1408 3942 
-L 416 237 
-L 915 237 
-L 1907 3942 
+M 1229 282 
+L 1229 3955 
+L 730 3955 
+L 730 282 
+L 1229 282 
 z
 " transform="scale(0.015625)"/>
      <path id="Cmr10-45" d="M 1600 -141 
@@ -1289,15 +1288,15 @@ z
     </defs>
     <use xlink:href="#Cmb10-2d" transform="translate(0 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(72.685604 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(159.287224 0.084203)"/>
-    <use xlink:href="#Cmr10-45" transform="translate(243.68031 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(292.68035 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-45" transform="translate(361.060273 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(159.287224 0.084203)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(237.991451 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(286.991491 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-45" transform="translate(355.371413 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_65">
-   <!-- $\omega \in \mathbb{R}^{3 \times 3}$ -->
-   <g transform="translate(203.6 63.68) scale(0.2 -0.2)">
+   <!-- $\omega \in \mathrm{\mathbb{R}}^{3 \times 3}$ -->
+   <g transform="translate(204.2 63.68) scale(0.2 -0.2)">
     <defs>
      <path id="Cmmi10-1d" d="M 775 -72 
 Q 413 -72 252 193 
@@ -1405,15 +1404,15 @@ z
     </defs>
     <use xlink:href="#Cmmi10-1d" transform="translate(0 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(82.207088 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(168.808708 0.084203)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(253.201795 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(302.201835 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-6e" transform="translate(370.581758 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(168.808708 0.084203)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(247.512935 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(296.512975 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-6e" transform="translate(364.892898 41.373437) scale(0.7)"/>
    </g>
   </g>
   <g id="text_66">
-   <!-- $\mathbf{x} \circledast \omega \in \mathbb{R}^{4 \times 4}$ -->
-   <g transform="translate(319.82 50.72) scale(0.2 -0.2)">
+   <!-- $\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{4 \times 4}$ -->
+   <g transform="translate(320.42 50.72) scale(0.2 -0.2)">
     <defs>
      <path id="Cmr10-3b" d="M 178 1056 
 L 178 1281 
@@ -1447,10 +1446,10 @@ z
     <use xlink:href="#STIXGeneral-Regular-4ae" transform="translate(72.685604 0.084203)"/>
     <use xlink:href="#Cmmi10-1d" transform="translate(176.885582 0.084203)"/>
     <use xlink:href="#Cmsy10-3b" transform="translate(259.09267 0.084203)"/>
-    <use xlink:href="#STIXGeneral-Italic-2dd" transform="translate(345.69429 0.084203)"/>
-    <use xlink:href="#Cmr10-3b" transform="translate(430.087377 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmsy10-d" transform="translate(479.087417 41.373437) scale(0.7)"/>
-    <use xlink:href="#Cmr10-3b" transform="translate(547.46734 41.373437) scale(0.7)"/>
+    <use xlink:href="#STIXGeneral-Regular-379" transform="translate(345.69429 0.084203)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(424.398517 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmsy10-d" transform="translate(473.398557 41.373437) scale(0.7)"/>
+    <use xlink:href="#Cmr10-3b" transform="translate(541.77848 41.373437) scale(0.7)"/>
    </g>
   </g>
  </g>
