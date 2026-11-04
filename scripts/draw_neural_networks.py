@@ -641,12 +641,16 @@ def conv_pattern():
         r = relu(z)
         rows.append((w, z, r, pool(r)))
 
-    # a second convolutional layer over both pooled maps: a 2 x 7 x 7 kernel omega', smoothing each map, and a ReLU
+    # a second convolutional layer over both pooled maps: two kernels omega'_0 and omega'_1 of size 2 x 7 x 7,
+    # the sum and the difference of the smoothed maps, each giving one output channel, then a ReLU
     pooled_maps = [o for (_, _, _, o) in rows]
-    w2 = np.array([gauss[:, None] * gauss[None, :]] * 2)
-    w2 /= w2.sum()
-    z2 = sum(conv(o, w) for o, w in zip(pooled_maps, w2))
-    r2 = relu(z2 - np.median(z2))
+    blur = gauss[:, None] * gauss[None, :]
+    blur /= 2 * blur.sum()
+    w2s = [np.array([blur, blur]), np.array([blur, -blur])]
+    z2s = []
+    for w2 in w2s:
+        z2 = sum(conv(o, w) for o, w in zip(pooled_maps, w2))
+        z2s.append(z2 - np.median(z2))
 
     W, H = 9.6, 5.4   # as wide as a slide at PLOT_SCALE, as the other convolution figures
     fig = plt.figure(figsize=(W, H))
@@ -687,20 +691,24 @@ def conv_pattern():
         arrow(inp, kax, ya=0.75 if k == 0 else 0.25)
         arrow(kax, a1); arrow(a1, a2); arrow(a2, a3)
         convs.append(a1); maps.append(a2); pools.append(a3)
-    # the kernel of layer 2: one 7 x 7 slice per pooled map, stacked
-    k2 = []
-    for d in (1, 0):
-        a = fig.add_axes([(cx[5] - sz[5] / 2 + 0.06 * d) / W, (ym - sz[5] / 2 + 0.06 * d) / H, sz[5] / W, sz[5] / H])
-        show(a, w2[d], np.abs(w2).max())
-        k2.append(a)
-    k2[-1].set_title(r"$\omega'$", fontsize=F_SYM, pad=8)
-    lim2 = np.percentile(np.abs(z2 - np.median(z2)), 99)
-    c2, out2 = panel(cx[6], ym, sz[6]), panel(cx[7], ym, sz[7])
-    show(c2, z2 - np.median(z2), lim2); show(out2, r2, lim2)
-    for k, a3 in enumerate(pools):
-        arrow(a3, k2[-1], xb=0, yb=0.75 if k == 0 else 0.25)
-    arrow(k2[-1], c2, xa=1 + 0.06 / sz[5])
-    arrow(c2, out2)
+    # the kernels of layer 2, one per output channel, each a stack of one 7 x 7 slice per pooled map
+    c2s, out2s = [], []
+    for k, (w2, z2) in enumerate(zip(w2s, z2s)):
+        stack_ = []
+        for d in (1, 0):
+            a = fig.add_axes([(cx[5] - sz[5] / 2 + 0.06 * d) / W, (ys[k] - sz[5] / 2 + 0.06 * d) / H, sz[5] / W, sz[5] / H])
+            show(a, w2[d], np.abs(w2).max())
+            stack_.append(a)
+        stack_[-1].set_title(rf"$\omega^{{\prime}}_{k}$", fontsize=F_SYM, pad=13)
+        lim2 = np.percentile(np.abs(z2), 99)
+        c2, out2 = panel(cx[6], ys[k], sz[6]), panel(cx[7], ys[k], sz[7])
+        show(c2, z2, lim2); show(out2, relu(z2), lim2)
+        for kk, a3 in enumerate(pools):   # every kernel sees both pooled maps
+            arrow(a3, stack_[-1], xb=0, yb=0.75 if kk == 0 else 0.25)
+        arrow(stack_[-1], c2, xa=1 + 0.06 / sz[5])
+        arrow(c2, out2)
+        c2s.append(c2); out2s.append(out2)
+    c2, out2 = c2s[0], out2s[0]
 
     # receptive fields, in red: one pooled value of the first map comes from a 2x2 block of its map, which sees
     # an 8x8 patch of the input (7x7 kernel, then 2x2 pooling); one value of layer 2 sees a 7x7 block of both
@@ -743,7 +751,7 @@ def conv_pattern():
     top = ys[0] + sz[2] / 2 + 0.55
     for c, s_ in [(cx[0], "input\n" + r"$\mathbf{x}$"), (cx[2], "convolution\n" + r"$\mathbf{x} \circledast \omega_k$"),
                   (cx[3], "ReLU\n"), (cx[4], "max-pooling\n" + r"$\mathbf{o}_k$"),
-                  (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega'$"), (cx[7], "ReLU\n")]:
+                  (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega^{\prime}_k$"), (cx[7], "ReLU\n")]:
         fig.text(c / W, top / H, s_, ha="center", va="center", fontsize=F_TITLE, color=INK)
     def bracket(x0, x1, text):
         y = 0.25
