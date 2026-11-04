@@ -34,21 +34,19 @@
 \maketitle
 
 \begin{recap}
-    \topic{Problem statement}
+    \topic{Problem}
     Let $\mathbf{d} \sim p(\mathbf{x}, y)$ be a dataset of $N$ example input-output pairs
     \[
         \mathbf{d} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \ldots, (\mathbf{x}_N, y_N)\},
     \]
     where $\mathbf{x}_i \in \mathbb{R}^d$ are $d$-dimensional vectors representing the input values and $y_i \in \mathcal{Y}$ are the corresponding output values. From this data, we want to identify a probabilistic model $p_\theta(y \mid \mathbf{x})$ that best explains the data. The problem is a \term{regression} problem if $y \in \mathbb{R}$ and a \term{classification} problem if $y \in \{0, 1, \ldots, C-1\}$.
 
-    \topic{Linear regression}
-    Linear regression models $p(y \mid \mathbf{x}) = \mathcal{N}(y \mid \mathbf{w}^T \mathbf{x} + b, \sigma^2)$, with parameters $\mathbf{w}$ and $b$.
+    \topic{Models}
+    \emph{Linear regression.} Linear regression models $p(y \mid \mathbf{x}) = \mathcal{N}(y \mid \mathbf{w}^T \mathbf{x} + b, \sigma^2)$, with parameters $\mathbf{w}$ and $b$.
 
-    \topic{Logistic regression}
-    Logistic regression models $P(Y = 1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x} + b)$, with the sigmoid $\sigma(z) = 1 / (1 + \exp(-z))$.
+    \emph{Logistic regression.} Logistic regression models $P(Y = 1 \mid \mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x} + b)$, with the sigmoid $\sigma(z) = 1 / (1 + \exp(-z))$.
 
-    \topic{Multilayer perceptron}
-    A \term{shallow network} with input $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$, $q$ hidden units and one output computes
+    \emph{Multilayer perceptron.} A \term{shallow network} with input $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$, $q$ hidden units and one output computes
     \[
         h_j = \sigma\Big(\sum_{i=0}^{d_{\text{in}}-1} w_{ji} x_i + b_j\Big) \quad \text{for } j = 0, \ldots, q-1, \qquad y = \sum_{j=0}^{q-1} v_j h_j + c,
     \]
@@ -64,16 +62,14 @@
     \end{align*}
     where $\mathbf{W}_k \in \mathbb{R}^{q_k \times q_{k-1}}$ is the weight matrix and $\mathbf{b}_k \in \mathbb{R}^{q_k}$ is the bias vector of the $k$-th layer. The resulting function $f(\mathbf{x}; \theta)$, where $\theta$ denotes the set of all model parameters, is a \term{multilayer perceptron}. With ReLU units, it is piecewise linear: a shallow network with one input has at most $q + 1$ linear regions, a deep network with $K$ layers of $q$ units up to $(q + 1)^K$.
 
-    \topic{Activation functions}
-    Activation functions $\sigma : \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network. Common activation functions include
+    \emph{Activation functions.} Activation functions $\sigma : \mathbb{R} \to \mathbb{R}$ introduce non-linearities in the network. Common activation functions include
     \begin{itemize}
         \item the sigmoid $\sigma(x) = \frac{1}{1 + \exp(-x)}$, which maps inputs to the range $(0, 1)$;
         \item the hyperbolic tangent $\sigma(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}$, which maps inputs to the range $(-1, 1)$;
         \item the rectified linear unit $\sigma(x) = \ReLU(x) = \max(0, x)$.
     \end{itemize}
 
-    \topic{Output layers}
-    The output layer $\mathbf{y} = \sigma_\text{out}(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
+    \emph{Output layers.} The output layer $\mathbf{y} = \sigma_\text{out}(\mathbf{W}_y \mathbf{h}_K + \mathbf{b}_y)$ depends on the task:
     \begin{itemize}
         \item for regression, its width is the dimensionality $d_{\text{out}}$ of the output and $\sigma_\text{out}$ is the identity;
         \item for binary classification, its width is $1$ and $\sigma_\text{out}$ is the sigmoid, whose output is $P(Y = 1 \mid \mathbf{x})$;
@@ -84,8 +80,7 @@
         so that $\mathbf{y}$ is a vector of $C$ probabilities $P(Y = i \mid \mathbf{x})$ summing to 1.
     \end{itemize}
 
-    \topic{Convolution}
-    For the 1d input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete \term{convolution} $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
+    \emph{Convolution.} For the 1d input $\mathbf{x} \in \mathbb{R}^W$ and the convolutional kernel $\omega \in \mathbb{R}^w$, the discrete \term{convolution} $\mathbf{x} \circledast \omega$ is a vector of size $W - w + 1$ such that
     \[
         (\mathbf{x} \circledast \omega)[i] = \sum_{m=0}^{w-1} \mathbf{x}_{m+i} \omega_m.
     \]
@@ -94,15 +89,14 @@
         (\mathbf{x} \circledast \omega)[j, i] = \sum_{c=0}^{C-1} \sum_{n=0}^{h-1} \sum_{m=0}^{w-1} \mathbf{x}_{c, n+j, m+i} \omega_{c, n, m}.
     \]
 
-    \topic{Convolutional neural networks}
-    A \term{convolutional layer} is defined by a set of $K$ kernels $\omega_k$ of size $C \times h \times w$. It applies the 2d convolution to the input tensor $\mathbf{x}$ of size $C \times H \times W$ to produce a set of $K$ feature maps $\mathbf{o}_k$, the $K$ channels of its output. With a pooling area of size $h \times w$, \term{max-pooling} maps a tensor $\mathbf{x} \in \mathbb{R}^{C \times (rh) \times (sw)}$ to a tensor $\mathbf{o} \in \mathbb{R}^{C \times r \times s}$ such that
+    \emph{Convolutional neural networks.} A \term{convolutional layer} is defined by a set of $K$ kernels $\omega_k$ of size $C \times h \times w$. It applies the 2d convolution to the input tensor $\mathbf{x}$ of size $C \times H \times W$ to produce a set of $K$ feature maps $\mathbf{o}_k$, the $K$ channels of its output. With a pooling area of size $h \times w$, \term{max-pooling} maps a tensor $\mathbf{x} \in \mathbb{R}^{C \times (rh) \times (sw)}$ to a tensor $\mathbf{o} \in \mathbb{R}^{C \times r \times s}$ such that
     \[
         \mathbf{o}_{c,j,i} = \max_{n < h, m < w} \mathbf{x}_{c,hj+n,wi+m}.
     \]
     The \term{receptive field} of a value is the patch of the input it depends on: a $w \times w$ kernel sees $w \times w$ values, and each further convolutional or pooling layer widens it. A \term{convolutional neural network} (CNN) uses convolutional layers, pooling layers and fully connected layers.
 
-    \topic{Loss functions}
-    The parameters $\theta$ of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over the dataset $\mathbf{d} = \{(\mathbf{x}_i, \mathbf{y}_i)\}$ of $N$ input-output pairs. The loss function is derived from the likelihood:
+    \topic{Training}
+    \emph{Loss functions.} The parameters $\theta$ of a deep network $f(\mathbf{x}; \theta)$ are learned by minimizing a loss function $\mathcal{L}(\theta)$ over the dataset $\mathbf{d} = \{(\mathbf{x}_i, \mathbf{y}_i)\}$ of $N$ input-output pairs. The loss function is derived from the likelihood:
     \begin{itemize}
         \item for regression, assuming a Gaussian likelihood, the loss is the \term{mean squared error}
         \[
@@ -116,22 +110,19 @@
         for logistic regression, it is $-\frac{1}{N} \sum_{i=1}^N \left[ y_i \log \sigma(\mathbf{w}^T \mathbf{x}_i + b) + (1 - y_i) \log(1 - \sigma(\mathbf{w}^T \mathbf{x}_i + b)) \right]$, which has no closed-form minimizer.
     \end{itemize}
 
-    \topic{Gradient descent}
-    To minimize a loss function $\mathcal{L}(\theta)$, \term{gradient descent} updates the model parameters iteratively using the update rule
+    \emph{Gradient descent.} To minimize a loss function $\mathcal{L}(\theta)$, \term{gradient descent} updates the model parameters iteratively using the update rule
     \[
         \theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t),
     \]
     where $\theta_0$ are the initial parameters of the model and $\alpha$ is the \term{learning rate}. When $\mathcal{L}(\theta) = \frac{1}{N} \sum_{i} \ell(y_i, f(\mathbf{x}_i; \theta))$, \term{stochastic gradient descent} replaces the gradient by its average over a random minibatch of the pairs.
 
-    \topic{Chain rule}
-    The gradient of the loss is obtained by the chain rule. For example, for $h_1 = \sigma(w_1 x + b_1)$, $\hat{y} = w_2 h_1 + b_2$ and $\ell = (y - \hat{y})^2$, the chain $w_1 \to h_1 \to \hat{y} \to \ell$ gives
+    \emph{Chain rule.} The gradient of the loss is obtained by the chain rule. For example, for $h_1 = \sigma(w_1 x + b_1)$, $\hat{y} = w_2 h_1 + b_2$ and $\ell = (y - \hat{y})^2$, the chain $w_1 \to h_1 \to \hat{y} \to \ell$ gives
     \[
         \frac{\partial \ell}{\partial w_1} = \frac{\partial \ell}{\partial \hat{y}} \frac{\partial \hat{y}}{\partial h_1} \frac{\partial h_1}{\partial w_1} = -2(y - \hat{y}) \, w_2 \, \sigma'(w_1 x + b_1) \, x.
     \]
     On the \term{computation graph} of the network (variables and the operations that produce them), the \term{forward pass} computes every intermediate value from the input to the loss; the \term{backward pass} then multiplies the local derivatives from the loss back to each parameter, reusing the values of the forward pass. \term{Automatic differentiation} implements this procedure for any program.
 
-    \topic{Generalization}
-    We want a small loss on new pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. An honest estimate comes from a \term{test set} $\mathbf{d}_\text{test}$, held out from training. A model too small for the data \term{underfits} (both losses stay high); a model large enough to memorize $\mathbf{d}$ \term{overfits} (the training loss decreases while the test loss increases). \term{Hyperparameters} (width, depth, learning rate, minibatch size, number of epochs) are chosen on a \term{validation set}, also held out from training; the test set is used once, at the end.
+    \emph{Generalization.} We want a small loss on new pairs drawn from $p(\mathbf{x}, y)$, not on the pairs of $\mathbf{d}$. An honest estimate comes from a \term{test set} $\mathbf{d}_\text{test}$, held out from training. A model too small for the data \term{underfits} (both losses stay high); a model large enough to memorize $\mathbf{d}$ \term{overfits} (the training loss decreases while the test loss increases). \term{Hyperparameters} (width, depth, learning rate, minibatch size, number of epochs) are chosen on a \term{validation set}, also held out from training; the test set is used once, at the end.
 \end{recap}
 
 \begin{exercises}[3 (a)--(b), 6, 9 and 11 (a) (November 19), 4 and 12 (November 26)][5]
