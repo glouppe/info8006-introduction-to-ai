@@ -183,7 +183,8 @@ def terminology():
 def shallow_net():
     # a) every parameter on its edge, with the constant input 1 for the biases; b) the compact form
     parts = []
-    x, one, hs, y, one2 = (70, 340), (70, 150), [(330, 170), (330, 310), (330, 450)], (590, 310), (330, 40)
+    # the network of b) node for node, with the constant inputs 1 as auxiliary nodes above x and the hidden units
+    x, one, hs, y, one2 = (70, 310), (70, 150), [(260, 170), (260, 310), (260, 450)], (450, 310), (260, 40)
     for j, h in enumerate(hs):
         parts += [link(x, h), link(one, h), link(h, y)]
     parts.append(link(one2, y))
@@ -198,14 +199,14 @@ def shallow_net():
     def mid(p, q, t=0.5, dx=0, dy=0):
         return p[0] + t * (q[0] - p[0]) + dx, p[1] + t * (q[1] - p[1]) + dy
     for j, h in enumerate(hs):
-        parts.append(halo(math(*mid(x, h, 0.74), [("w", "i"), (str(j), "s")], size=26, fill=UNITS[j])))
-        parts.append(halo(math(*mid(one, h, 0.3), [("b", "i"), (str(j), "s")], size=26, fill=UNITS[j])))
+        parts.append(halo(math(*mid(x, h, 0.45), [("w", "i"), (str(j), "s")], size=26, fill=UNITS[j])))
+        parts.append(halo(math(*mid(one, h, (0.5, 0.72, 0.72)[j]), [("b", "i"), (str(j), "s")], size=26, fill=UNITS[j])))
         parts.append(halo(math(*mid(h, y, 0.5), [("v", "i"), (str(j), "s")], size=26, fill=UNITS[j])))
     parts.append(halo(math(*mid(one2, y, 0.5), [("c", "i")], size=26, fill=GREY)))
     parts += [caption(10, 30, "a)", anchor="start")]
     # b) compact
-    ox = 700
-    xb, hb, yb = (ox + 70, 310), [(ox + 260, 170), (ox + 260, 310), (ox + 260, 450)], (ox + 450, 310)
+    ox = 620
+    xb, hb, yb = (ox + x[0], x[1]), [(ox + h[0], h[1]) for h in hs], (ox + y[0], y[1])
     for h in hb:
         parts += [link(xb, h), link(h, yb)]
     parts += [unit_node(*xb, "x"), unit_node(*yb, "y", None, OUT)] + [unit_node(*h, "h", str(j), UNITS[j]) for j, h in enumerate(hb)]
@@ -884,7 +885,7 @@ def next_token():
 
 if __name__ == "__main__":
     svg("nn-terminology", 660, 450, terminology(), folder="lec7", scale=SCALE)
-    svg("nn-shallow", 1210, 500, shallow_net(), folder="lec7", scale=SCALE)
+    svg("nn-shallow", 1110, 500, shallow_net(), folder="lec7", scale=SCALE)
     svg("nn-two-outputs-net", 600, 460, two_outputs_net(), folder="lec7", scale=SCALE)
     svg("nn-two-inputs", 620, 360, two_inputs_net(), folder="lec7", scale=SCALE)
     svg("nn-concat-net", 800, 320, concat_net(), folder="lec7", scale=SCALE)
