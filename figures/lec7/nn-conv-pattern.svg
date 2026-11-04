@@ -29,37 +29,47 @@ z
 " style="fill: none"/>
   </g>
   <g id="patch_2">
+   <path d="M 646.87176 172.4976 
+Q 595.263086 124.128103 543.654411 75.758606 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="patch_3">
+   <path d="M 646.87176 172.4976 
+Q 595.263086 136.525269 543.654411 100.552937 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="patch_4">
    <path d="M 528.157954 85.05648 
 Q 476.182491 81.73224 424.207029 78.408 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_3">
+  <g id="patch_5">
    <path d="M 528.157954 88.155771 
 Q 476.182491 85.781314 424.207029 83.406857 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_4">
+  <g id="patch_6">
    <path d="M 419.208171 78.408 
 Q 360.5076 78.408 301.807029 78.408 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_5">
+  <g id="patch_7">
    <path d="M 419.208171 83.406857 
 Q 360.5076 83.406857 301.807029 83.406857 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_6">
+  <g id="patch_8">
    <path d="M 296.808171 78.408 
 Q 196.400186 110.18025 95.9922 141.9525 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_7">
+  <g id="patch_9">
    <path d="M 296.808171 83.406857 
 Q 196.400186 125.364279 95.9922 167.3217 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
   <g id="axes_1">
-   <g id="patch_8">
+   <g id="patch_10">
     <path d="M 7.2 249.7716 
 L 159.4152 249.7716 
 L 159.4152 97.5564 
@@ -74,29 +84,29 @@ iVBORw0KGgoAAAANSUhEUgAAANMAAADTCAYAAAAbBybZAAAS5UlEQVR4nO2dSZOWxdKGU21RnBCxGRya
    </g>
    <g id="matplotlib.axis_1"/>
    <g id="matplotlib.axis_2"/>
-   <g id="patch_9">
+   <g id="patch_11">
     <path d="M 7.2 249.7716 
 L 7.2 97.5564 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_10">
+   <g id="patch_12">
     <path d="M 159.4152 249.7716 
 L 159.4152 97.5564 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_11">
+   <g id="patch_13">
     <path d="M 7.2 249.7716 
 L 159.4152 249.7716 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_12">
+   <g id="patch_14">
     <path d="M 7.2 97.5564 
 L 159.4152 97.5564 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_1">
     <!-- receptive field: 8 × 8 -->
-    <g style="fill: #c8463d" transform="translate(21.501975 269.548887) scale(0.14 -0.14)">
+    <g style="fill: #c8463d" transform="translate(21.501975 269.89752) scale(0.14 -0.14)">
      <defs>
       <path id="Roboto-Regular-56" d="M 2072 2863 
 Q 1941 2884 1788 2884 
@@ -392,50 +402,39 @@ z
      <use xlink:href="#Roboto-Regular-4" transform="translate(802.03125 0)"/>
      <use xlink:href="#Roboto-Regular-1c" transform="translate(826.78125 0)"/>
     </g>
-   </g>
-   <g id="text_2">
-    <!-- two layers: 22 × 22 -->
-    <g style="fill: #c8463d" transform="translate(25.2776 284.626032) scale(0.14 -0.14)">
+    <!-- next layer: 22 × 22 -->
+    <g style="fill: #c8463d" transform="translate(27.098694 284.594785) scale(0.14 -0.14)">
      <defs>
-      <path id="Roboto-Regular-5b" d="M 3431 797 
-L 4081 3381 
-L 4659 3381 
-L 3675 0 
-L 3206 0 
-L 2384 2563 
-L 1584 0 
-L 1116 0 
-L 134 3381 
-L 709 3381 
-L 1375 850 
-L 2163 3381 
-L 2628 3381 
-L 3431 797 
+      <path id="Roboto-Regular-52" d="M 984 3381 
+L 1003 2956 
+Q 1391 3444 2016 3444 
+Q 3088 3444 3097 2234 
+L 3097 0 
+L 2519 0 
+L 2519 2238 
+Q 2516 2603 2352 2778 
+Q 2188 2953 1841 2953 
+Q 1559 2953 1346 2803 
+Q 1134 2653 1016 2409 
+L 1016 0 
+L 438 0 
+L 438 3381 
+L 984 3381 
 z
 " transform="scale(0.015625)"/>
-      <path id="Roboto-Regular-53" d="M 284 1722 
-Q 284 2219 479 2616 
-Q 675 3013 1023 3228 
-Q 1372 3444 1819 3444 
-Q 2509 3444 2936 2966 
-Q 3363 2488 3363 1694 
-L 3363 1653 
-Q 3363 1159 3173 767 
-Q 2984 375 2632 156 
-Q 2281 -63 1825 -63 
-Q 1138 -63 711 415 
-Q 284 894 284 1681 
-L 284 1722 
-z
-M 866 1653 
-Q 866 1091 1127 750 
-Q 1388 409 1825 409 
-Q 2266 409 2525 754 
-Q 2784 1100 2784 1722 
-Q 2784 2278 2520 2623 
-Q 2256 2969 1819 2969 
-Q 1391 2969 1128 2628 
-Q 866 2288 866 1653 
+      <path id="Roboto-Regular-5c" d="M 1572 2147 
+L 2322 3381 
+L 2997 3381 
+L 1891 1709 
+L 3031 0 
+L 2363 0 
+L 1581 1266 
+L 800 0 
+L 128 0 
+L 1269 1709 
+L 163 3381 
+L 831 3381 
+L 1572 2147 
 z
 " transform="scale(0.015625)"/>
       <path id="Roboto-Regular-45" d="M 2525 0 
@@ -489,38 +488,6 @@ L 700 3381
 L 1544 847 
 z
 " transform="scale(0.015625)"/>
-      <path id="Roboto-Regular-57" d="M 2406 897 
-Q 2406 1131 2229 1261 
-Q 2053 1391 1614 1484 
-Q 1175 1578 917 1709 
-Q 659 1841 536 2022 
-Q 413 2203 413 2453 
-Q 413 2869 764 3156 
-Q 1116 3444 1663 3444 
-Q 2238 3444 2595 3147 
-Q 2953 2850 2953 2388 
-L 2372 2388 
-Q 2372 2625 2170 2797 
-Q 1969 2969 1663 2969 
-Q 1347 2969 1169 2831 
-Q 991 2694 991 2472 
-Q 991 2263 1156 2156 
-Q 1322 2050 1755 1953 
-Q 2188 1856 2456 1722 
-Q 2725 1588 2854 1398 
-Q 2984 1209 2984 938 
-Q 2984 484 2621 210 
-Q 2259 -63 1681 -63 
-Q 1275 -63 962 81 
-Q 650 225 473 483 
-Q 297 741 297 1041 
-L 875 1041 
-Q 891 750 1108 579 
-Q 1325 409 1681 409 
-Q 2009 409 2207 542 
-Q 2406 675 2406 897 
-z
-" transform="scale(0.015625)"/>
       <path id="Roboto-Regular-16" d="M 3359 0 
 L 378 0 
 L 378 416 
@@ -543,28 +510,28 @@ L 3359 0
 z
 " transform="scale(0.015625)"/>
      </defs>
-     <use xlink:href="#Roboto-Regular-58"/>
-     <use xlink:href="#Roboto-Regular-5b" transform="translate(32.671875 0)"/>
-     <use xlink:href="#Roboto-Regular-53" transform="translate(107.8125 0)"/>
-     <use xlink:href="#Roboto-Regular-4" transform="translate(164.84375 0)"/>
-     <use xlink:href="#Roboto-Regular-50" transform="translate(189.59375 0)"/>
-     <use xlink:href="#Roboto-Regular-45" transform="translate(213.859375 0)"/>
-     <use xlink:href="#Roboto-Regular-5d" transform="translate(267.515625 0)"/>
-     <use xlink:href="#Roboto-Regular-49" transform="translate(314.1875 0)"/>
-     <use xlink:href="#Roboto-Regular-56" transform="translate(367.171875 0)"/>
-     <use xlink:href="#Roboto-Regular-57" transform="translate(401.015625 0)"/>
-     <use xlink:href="#Roboto-Regular-1e" transform="translate(452.578125 0)"/>
-     <use xlink:href="#Roboto-Regular-4" transform="translate(476.796875 0)"/>
-     <use xlink:href="#Roboto-Regular-16" transform="translate(501.546875 0)"/>
-     <use xlink:href="#Roboto-Regular-16" transform="translate(557.703125 0)"/>
-     <use xlink:href="#Roboto-Regular-4" transform="translate(613.859375 0)"/>
-     <use xlink:href="#Roboto-Regular-82" transform="translate(638.609375 0)"/>
-     <use xlink:href="#Roboto-Regular-4" transform="translate(691.9375 0)"/>
-     <use xlink:href="#Roboto-Regular-16" transform="translate(716.6875 0)"/>
-     <use xlink:href="#Roboto-Regular-16" transform="translate(772.84375 0)"/>
+     <use xlink:href="#Roboto-Regular-52"/>
+     <use xlink:href="#Roboto-Regular-49" transform="translate(55.171875 0)"/>
+     <use xlink:href="#Roboto-Regular-5c" transform="translate(108.15625 0)"/>
+     <use xlink:href="#Roboto-Regular-58" transform="translate(157.71875 0)"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(190.390625 0)"/>
+     <use xlink:href="#Roboto-Regular-50" transform="translate(215.140625 0)"/>
+     <use xlink:href="#Roboto-Regular-45" transform="translate(239.40625 0)"/>
+     <use xlink:href="#Roboto-Regular-5d" transform="translate(293.0625 0)"/>
+     <use xlink:href="#Roboto-Regular-49" transform="translate(339.734375 0)"/>
+     <use xlink:href="#Roboto-Regular-56" transform="translate(392.71875 0)"/>
+     <use xlink:href="#Roboto-Regular-1e" transform="translate(426.5625 0)"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(450.78125 0)"/>
+     <use xlink:href="#Roboto-Regular-16" transform="translate(475.53125 0)"/>
+     <use xlink:href="#Roboto-Regular-16" transform="translate(531.6875 0)"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(587.84375 0)"/>
+     <use xlink:href="#Roboto-Regular-82" transform="translate(612.59375 0)"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(665.921875 0)"/>
+     <use xlink:href="#Roboto-Regular-16" transform="translate(690.671875 0)"/>
+     <use xlink:href="#Roboto-Regular-16" transform="translate(746.828125 0)"/>
     </g>
    </g>
-   <g id="patch_13">
+   <g id="patch_15">
     <path d="M 70.623 141.9525 
 L 95.9922 141.9525 
 L 95.9922 167.3217 
@@ -573,18 +540,18 @@ L 70.623 141.9525
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_14">
-    <path d="M 48.42495 119.75445 
-L 118.19025 119.75445 
-L 118.19025 189.51975 
-L 48.42495 189.51975 
-L 48.42495 119.75445 
+   <g id="patch_16">
+    <path d="M 51.5961 122.9256 
+L 121.3614 122.9256 
+L 121.3614 192.6909 
+L 51.5961 192.6909 
+L 51.5961 122.9256 
 z
 " style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
    </g>
   </g>
   <g id="axes_2">
-   <g id="patch_15">
+   <g id="patch_17">
     <path d="M 176.46264 117.94896 
 L 220.55256 117.94896 
 L 220.55256 73.85904 
@@ -599,27 +566,27 @@ iVBORw0KGgoAAAANSUhEUgAAAD0AAAA9CAYAAAAeYmHpAAABQElEQVR4nO2bMWoCURRF/9dBR4IpFJtR
    </g>
    <g id="matplotlib.axis_3"/>
    <g id="matplotlib.axis_4"/>
-   <g id="patch_16">
+   <g id="patch_18">
     <path d="M 176.46264 117.94896 
 L 176.46264 73.85904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_17">
+   <g id="patch_19">
     <path d="M 220.55256 117.94896 
 L 220.55256 73.85904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_18">
+   <g id="patch_20">
     <path d="M 176.46264 117.94896 
 L 220.55256 117.94896 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_19">
+   <g id="patch_21">
     <path d="M 176.46264 73.85904 
 L 220.55256 73.85904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_3">
+   <g id="text_2">
     <!-- $\omega_0$ -->
     <g transform="translate(188.2076 68.85904) scale(0.2 -0.2)">
      <defs>
@@ -705,7 +672,7 @@ z
    </g>
   </g>
   <g id="axes_3">
-   <g id="patch_20">
+   <g id="patch_22">
     <path d="M 246.8196 148.392 
 L 351.7956 148.392 
 L 351.7956 43.416 
@@ -720,27 +687,27 @@ iVBORw0KGgoAAAANSUhEUgAAAJIAAACSCAYAAACue5OOAAAWXElEQVR4nO1dSY9c13W+b6ixq+eRc5MU
    </g>
    <g id="matplotlib.axis_5"/>
    <g id="matplotlib.axis_6"/>
-   <g id="patch_21">
+   <g id="patch_23">
     <path d="M 246.8196 148.392 
 L 246.8196 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_22">
+   <g id="patch_24">
     <path d="M 351.7956 148.392 
 L 351.7956 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_23">
+   <g id="patch_25">
     <path d="M 246.8196 148.392 
 L 351.7956 148.392 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_24">
+   <g id="patch_26">
     <path d="M 246.8196 43.416 
 L 351.7956 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_4">
+   <g id="text_3">
     <!-- 2 × 2 -->
     <g style="fill: #c8463d" transform="translate(284.247756 165.19056) scale(0.14 -0.14)">
      <use xlink:href="#Roboto-Regular-16"/>
@@ -750,7 +717,7 @@ L 351.7956 43.416
      <use xlink:href="#Roboto-Regular-16" transform="translate(158.984375 0)"/>
     </g>
    </g>
-   <g id="patch_25">
+   <g id="patch_27">
     <path d="M 296.808171 78.408 
 L 301.807029 78.408 
 L 301.807029 83.406857 
@@ -761,7 +728,7 @@ z
    </g>
   </g>
   <g id="axes_4">
-   <g id="patch_26">
+   <g id="patch_28">
     <path d="M 369.2196 148.392 
 L 474.1956 148.392 
 L 474.1956 43.416 
@@ -776,27 +743,27 @@ iVBORw0KGgoAAAANSUhEUgAAAJIAAACSCAYAAACue5OOAAAMxUlEQVR4nO2d20/b2RHHD+AbxpiLMZhr
    </g>
    <g id="matplotlib.axis_7"/>
    <g id="matplotlib.axis_8"/>
-   <g id="patch_27">
+   <g id="patch_29">
     <path d="M 369.2196 148.392 
 L 369.2196 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_28">
+   <g id="patch_30">
     <path d="M 474.1956 148.392 
 L 474.1956 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_29">
+   <g id="patch_31">
     <path d="M 369.2196 148.392 
 L 474.1956 148.392 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_30">
+   <g id="patch_32">
     <path d="M 369.2196 43.416 
 L 474.1956 43.416 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_5">
+   <g id="text_4">
     <!-- 2 × 2 -->
     <g style="fill: #c8463d" transform="translate(406.647756 165.19056) scale(0.14 -0.14)">
      <use xlink:href="#Roboto-Regular-16"/>
@@ -806,7 +773,7 @@ L 474.1956 43.416
      <use xlink:href="#Roboto-Regular-16" transform="translate(158.984375 0)"/>
     </g>
    </g>
-   <g id="patch_31">
+   <g id="patch_33">
     <path d="M 419.208171 78.408 
 L 424.207029 78.408 
 L 424.207029 83.406857 
@@ -817,7 +784,7 @@ z
    </g>
   </g>
   <g id="axes_5">
-   <g id="patch_32">
+   <g id="patch_34">
     <path d="M 497.16504 128.44656 
 L 562.25016 128.44656 
 L 562.25016 63.36144 
@@ -832,29 +799,29 @@ iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAFj0lEQVR4nO2d209cVRTG9zA37jPlTrmU
    </g>
    <g id="matplotlib.axis_9"/>
    <g id="matplotlib.axis_10"/>
-   <g id="patch_33">
+   <g id="patch_35">
     <path d="M 497.16504 128.44656 
 L 497.16504 63.36144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_34">
+   <g id="patch_36">
     <path d="M 562.25016 128.44656 
 L 562.25016 63.36144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_35">
+   <g id="patch_37">
     <path d="M 497.16504 128.44656 
 L 562.25016 128.44656 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_36">
+   <g id="patch_38">
     <path d="M 497.16504 63.36144 
 L 562.25016 63.36144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_6">
+   <g id="text_5">
     <!-- 1 value -->
-    <g style="fill: #c8463d" transform="translate(507.63135 142.851667) scale(0.14 -0.14)">
+    <g style="fill: #c8463d" transform="translate(507.63135 143.2003) scale(0.14 -0.14)">
      <defs>
       <path id="Roboto-Regular-15" d="M 2278 0 
 L 1697 0 
@@ -891,8 +858,16 @@ z
      <use xlink:href="#Roboto-Regular-59" transform="translate(207.265625 0)"/>
      <use xlink:href="#Roboto-Regular-49" transform="translate(262.390625 0)"/>
     </g>
+    <!-- 8 × 8 -->
+    <g style="fill: #c8463d" transform="translate(514.647756 157.897566) scale(0.14 -0.14)">
+     <use xlink:href="#Roboto-Regular-1c"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(56.15625 0)"/>
+     <use xlink:href="#Roboto-Regular-82" transform="translate(80.90625 0)"/>
+     <use xlink:href="#Roboto-Regular-4" transform="translate(134.234375 0)"/>
+     <use xlink:href="#Roboto-Regular-1c" transform="translate(158.984375 0)"/>
+    </g>
    </g>
-   <g id="patch_37">
+   <g id="patch_39">
     <path d="M 528.157954 85.05648 
 L 531.257246 85.05648 
 L 531.257246 88.155771 
@@ -901,9 +876,18 @@ L 528.157954 85.05648
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="patch_40">
+    <path d="M 518.86008 75.758606 
+L 543.654411 75.758606 
+L 543.654411 100.552937 
+L 518.86008 100.552937 
+L 518.86008 75.758606 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_6">
-   <g id="patch_38">
+   <g id="patch_41">
     <path d="M 176.46264 273.46896 
 L 220.55256 273.46896 
 L 220.55256 229.37904 
@@ -918,27 +902,27 @@ iVBORw0KGgoAAAANSUhEUgAAAD0AAAA9CAYAAAAeYmHpAAABTElEQVR4nO2aMU7CYBiG++MfIGIdRHAB
    </g>
    <g id="matplotlib.axis_11"/>
    <g id="matplotlib.axis_12"/>
-   <g id="patch_39">
+   <g id="patch_42">
     <path d="M 176.46264 273.46896 
 L 176.46264 229.37904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_40">
+   <g id="patch_43">
     <path d="M 220.55256 273.46896 
 L 220.55256 229.37904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_41">
+   <g id="patch_44">
     <path d="M 176.46264 273.46896 
 L 220.55256 273.46896 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_42">
+   <g id="patch_45">
     <path d="M 176.46264 229.37904 
 L 220.55256 229.37904 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_7">
+   <g id="text_6">
     <!-- $\omega_1$ -->
     <g transform="translate(188.2076 224.37904) scale(0.2 -0.2)">
      <defs>
@@ -965,7 +949,7 @@ z
    </g>
   </g>
   <g id="axes_7">
-   <g id="patch_43">
+   <g id="patch_46">
     <path d="M 246.8196 303.912 
 L 351.7956 303.912 
 L 351.7956 198.936 
@@ -980,29 +964,29 @@ iVBORw0KGgoAAAANSUhEUgAAAJIAAACSCAYAAACue5OOAAAWbElEQVR4nO1dSY9c13W+r+rV0DVXz83m
    </g>
    <g id="matplotlib.axis_13"/>
    <g id="matplotlib.axis_14"/>
-   <g id="patch_44">
+   <g id="patch_47">
     <path d="M 246.8196 303.912 
 L 246.8196 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_45">
+   <g id="patch_48">
     <path d="M 351.7956 303.912 
 L 351.7956 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_46">
+   <g id="patch_49">
     <path d="M 246.8196 303.912 
 L 351.7956 303.912 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_47">
+   <g id="patch_50">
     <path d="M 246.8196 198.936 
 L 351.7956 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_8">
-   <g id="patch_48">
+   <g id="patch_51">
     <path d="M 369.2196 303.912 
 L 474.1956 303.912 
 L 474.1956 198.936 
@@ -1017,29 +1001,29 @@ iVBORw0KGgoAAAANSUhEUgAAAJIAAACSCAYAAACue5OOAAAQCElEQVR4nO2dS29b1xHHh9QlKZF6UKLe
    </g>
    <g id="matplotlib.axis_15"/>
    <g id="matplotlib.axis_16"/>
-   <g id="patch_49">
+   <g id="patch_52">
     <path d="M 369.2196 303.912 
 L 369.2196 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_50">
+   <g id="patch_53">
     <path d="M 474.1956 303.912 
 L 474.1956 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_51">
+   <g id="patch_54">
     <path d="M 369.2196 303.912 
 L 474.1956 303.912 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_52">
+   <g id="patch_55">
     <path d="M 369.2196 198.936 
 L 474.1956 198.936 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_9">
-   <g id="patch_53">
+   <g id="patch_56">
     <path d="M 497.16504 283.96656 
 L 562.25016 283.96656 
 L 562.25016 218.88144 
@@ -1054,29 +1038,29 @@ iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAGa0lEQVR4nO2d229UVRTG19xLp5cpLXRK
    </g>
    <g id="matplotlib.axis_17"/>
    <g id="matplotlib.axis_18"/>
-   <g id="patch_54">
+   <g id="patch_57">
     <path d="M 497.16504 283.96656 
 L 497.16504 218.88144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_55">
+   <g id="patch_58">
     <path d="M 562.25016 283.96656 
 L 562.25016 218.88144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_56">
+   <g id="patch_59">
     <path d="M 497.16504 283.96656 
 L 562.25016 283.96656 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_57">
+   <g id="patch_60">
     <path d="M 497.16504 218.88144 
 L 562.25016 218.88144 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_10">
-   <g id="patch_58">
+   <g id="patch_61">
     <path d="M 621.954 212.544 
 L 648.5652 212.544 
 L 648.5652 169.776 
@@ -1084,7 +1068,7 @@ L 621.954 169.776
 z
 " clip-path="url(#p1109dc560d)" style="fill: #ffffff; stroke: #2a2a2a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_59">
+   <g id="patch_62">
     <path d="M 627.76008 203.2128 
 L 654.37128 203.2128 
 L 654.37128 160.4448 
@@ -1092,7 +1076,7 @@ L 627.76008 160.4448
 z
 " clip-path="url(#p1109dc560d)" style="fill: #ffffff; stroke: #2a2a2a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_60">
+   <g id="patch_63">
     <path d="M 633.56616 193.8816 
 L 660.17736 193.8816 
 L 660.17736 151.1136 
@@ -1100,43 +1084,9 @@ L 633.56616 151.1136
 z
 " clip-path="url(#p1109dc560d)" style="fill: #ffffff; stroke: #2a2a2a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
-   <g id="text_8">
+   <g id="text_7">
     <!-- next layer -->
     <g style="fill: #2a2a2a" transform="translate(602.916975 243.1512) scale(0.18 -0.18)">
-     <defs>
-      <path id="Roboto-Regular-52" d="M 984 3381 
-L 1003 2956 
-Q 1391 3444 2016 3444 
-Q 3088 3444 3097 2234 
-L 3097 0 
-L 2519 0 
-L 2519 2238 
-Q 2516 2603 2352 2778 
-Q 2188 2953 1841 2953 
-Q 1559 2953 1346 2803 
-Q 1134 2653 1016 2409 
-L 1016 0 
-L 438 0 
-L 438 3381 
-L 984 3381 
-z
-" transform="scale(0.015625)"/>
-      <path id="Roboto-Regular-5c" d="M 1572 2147 
-L 2322 3381 
-L 2997 3381 
-L 1891 1709 
-L 3031 0 
-L 2363 0 
-L 1581 1266 
-L 800 0 
-L 128 0 
-L 1269 1709 
-L 163 3381 
-L 831 3381 
-L 1572 2147 
-z
-" transform="scale(0.015625)"/>
-     </defs>
      <use xlink:href="#Roboto-Regular-52"/>
      <use xlink:href="#Roboto-Regular-49" transform="translate(55.171875 0)"/>
      <use xlink:href="#Roboto-Regular-5c" transform="translate(108.15625 0)"/>
@@ -1149,8 +1099,26 @@ z
      <use xlink:href="#Roboto-Regular-56" transform="translate(392.71875 0)"/>
     </g>
    </g>
+   <g id="line2d_1">
+    <defs>
+     <path id="m20a111dfc8" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #c8463d"/>
+    </defs>
+    <g clip-path="url(#p1109dc560d)">
+     <use xlink:href="#m20a111dfc8" x="646.87176" y="172.4976" style="fill: #c8463d; stroke: #c8463d"/>
+    </g>
+   </g>
   </g>
-  <g id="patch_61">
+  <g id="patch_64">
    <path d="M 159.4152 135.6102 
 Q 167.93892 115.7571 175.845126 97.342289 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1160,7 +1128,7 @@ L 176.260672 104.48563
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_62">
+  <g id="patch_65">
    <path d="M 220.55256 95.904 
 Q 233.68608 95.904 245.254352 95.904 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1170,7 +1138,7 @@ L 238.854352 99.104
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_63">
+  <g id="patch_66">
    <path d="M 351.7956 95.904 
 Q 360.5076 95.904 367.654352 95.904 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1180,7 +1148,7 @@ L 361.254352 99.104
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_64">
+  <g id="patch_67">
    <path d="M 474.1956 95.904 
 Q 485.68032 95.904 495.599792 95.904 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1190,7 +1158,7 @@ L 489.199792 99.104
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_65">
+  <g id="patch_68">
    <path d="M 159.4152 211.7178 
 Q 167.93892 231.5709 175.845126 249.985711 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1200,7 +1168,7 @@ L 170.379781 245.367269
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_66">
+  <g id="patch_69">
    <path d="M 220.55256 251.424 
 Q 233.68608 251.424 245.254352 251.424 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1210,7 +1178,7 @@ L 238.854352 254.624
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_67">
+  <g id="patch_70">
    <path d="M 351.7956 251.424 
 Q 360.5076 251.424 367.654352 251.424 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1220,7 +1188,7 @@ L 361.254352 254.624
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_68">
+  <g id="patch_71">
    <path d="M 474.1956 251.424 
 Q 485.68032 251.424 495.599792 251.424 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1230,7 +1198,7 @@ L 489.199792 254.624
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_69">
+  <g id="patch_72">
    <path d="M 562.25016 95.904 
 Q 592.10208 137.8944 621.047062 178.60908 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1240,7 +1208,7 @@ L 614.730673 175.24705
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_70">
+  <g id="patch_73">
    <path d="M 562.25016 251.424 
 Q 592.10208 226.9296 620.743959 203.428075 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1250,37 +1218,37 @@ L 617.82617 209.961566
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="line2d_1">
+  <g id="line2d_2">
    <path d="M 170.8596 346.68 
 L 474.1956 346.68 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="line2d_2">
+  <g id="line2d_3">
    <path d="M 170.8596 346.68 
 L 170.8596 336.96 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="line2d_3">
+  <g id="line2d_4">
    <path d="M 474.1956 346.68 
 L 474.1956 336.96 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="line2d_4">
+  <g id="line2d_5">
    <path d="M 497.16504 346.68 
 L 576.07416 346.68 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="line2d_5">
+  <g id="line2d_6">
    <path d="M 497.16504 346.68 
 L 497.16504 336.96 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="line2d_6">
+  <g id="line2d_7">
    <path d="M 576.07416 346.68 
 L 576.07416 336.96 
 " style="fill: none; stroke: #8a8a8a; stroke-width: 1.4; stroke-linecap: square"/>
   </g>
-  <g id="text_9">
+  <g id="text_8">
    <!-- input $\mathbf{x}$ -->
    <g style="fill: #2a2a2a" transform="translate(56.2176 20.7) scale(0.18 -0.18)">
     <defs>
@@ -1327,10 +1295,35 @@ z
     <use xlink:href="#Cmb10-2d" transform="translate(248.095703 0.921875)"/>
    </g>
   </g>
-  <g id="text_10">
+  <g id="text_9">
    <!-- convolution $\mathbf{x} \circledast \omega_k$ -->
    <g style="fill: #2a2a2a" transform="translate(225.0576 20.7) scale(0.18 -0.18)">
     <defs>
+     <path id="Roboto-Regular-53" d="M 284 1722 
+Q 284 2219 479 2616 
+Q 675 3013 1023 3228 
+Q 1372 3444 1819 3444 
+Q 2509 3444 2936 2966 
+Q 3363 2488 3363 1694 
+L 3363 1653 
+Q 3363 1159 3173 767 
+Q 2984 375 2632 156 
+Q 2281 -63 1825 -63 
+Q 1138 -63 711 415 
+Q 284 894 284 1681 
+L 284 1722 
+z
+M 866 1653 
+Q 866 1091 1127 750 
+Q 1388 409 1825 409 
+Q 2266 409 2525 754 
+Q 2784 1100 2784 1722 
+Q 2784 2278 2520 2623 
+Q 2256 2969 1819 2969 
+Q 1391 2969 1128 2628 
+Q 866 2288 866 1653 
+z
+" transform="scale(0.015625)"/>
      <path id="STIXGeneral-Regular-4ae" d="M 3917 1056 
 Q 3917 781 3642 781 
 Q 3520 781 3421 893 
@@ -1478,7 +1471,7 @@ z
     <use xlink:href="#Cmmi10-3e" transform="translate(782.40316 -14.999962) scale(0.7)"/>
    </g>
   </g>
-  <g id="text_11">
+  <g id="text_10">
    <!-- ReLU -->
    <g style="fill: #2a2a2a" transform="translate(400.955569 20.7) scale(0.18 -0.18)">
     <defs>
@@ -1541,7 +1534,7 @@ z
     <use xlink:href="#Roboto-Regular-39" transform="translate(165.734375 0)"/>
    </g>
   </g>
-  <g id="text_12">
+  <g id="text_11">
    <!-- max-pooling $\mathbf{o}_k$ -->
    <g style="fill: #2a2a2a" transform="translate(469.3176 20.7) scale(0.18 -0.18)">
     <defs>
@@ -1656,7 +1649,7 @@ z
     <use xlink:href="#Cmmi10-3e" transform="translate(627.930072 -14.999962) scale(0.7)"/>
    </g>
   </g>
-  <g id="text_13">
+  <g id="text_12">
    <!-- convolutional layer -->
    <g style="fill: #8a8a8a" transform="translate(247.589944 364.8456) scale(0.18 -0.18)">
     <use xlink:href="#Roboto-Regular-47"/>
@@ -1680,7 +1673,7 @@ z
     <use xlink:href="#Roboto-Regular-56" transform="translate(798.796875 0)"/>
    </g>
   </g>
-  <g id="text_14">
+  <g id="text_13">
    <!-- pooling layer -->
    <g style="fill: #8a8a8a" transform="translate(485.665537 364.8456) scale(0.18 -0.18)">
     <use xlink:href="#Roboto-Regular-54"/>

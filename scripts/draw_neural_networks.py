@@ -705,17 +705,24 @@ def conv_pattern():
     box(a2, 2 * pj, 2 * pi, 2)
     box(a1, 2 * pj, 2 * pi, 2)
     box(inp, 2 * pj, 2 * pi, K + 1)
-    box(inp, 2 * pj - 7, 2 * pi - 7, 22, style=(0, (4, 2)), lw=1.8)
+    # the next layer: one of its values sees an 8x8 block of the pooled map (7x7 kernel, 2x2 pooling), whose
+    # values see 22x22 input pixels together (8 + 7 x 2, the pooled values being 2 pixels apart)
+    qj, qi = pj - 3, pi - 3
+    box(a3, qj, qi, 8, style=(0, (4, 2)), lw=1.8)
+    box(inp, 2 * qj, 2 * qi, 22, style=(0, (4, 2)), lw=1.8)
+    stack.plot([0.615], [0.615], "o", color=RF, markersize=6, zorder=7)
+    for dy in (0, 1):
+        fig.add_artist(ConnectionPatch((0.615, 0.615), (qi - 0.5 + 8, qj - 0.5 + 8 * dy), "data", "data", axesA=stack,
+                                       axesB=a3, color=RF, linewidth=1.1, linestyle=(0, (4, 2)), zorder=-1))
     cone(a3, pj, pi, 1, a2, 2 * pj, 2 * pi, 2)
     cone(a2, 2 * pj, 2 * pi, 2, a1, 2 * pj, 2 * pi, 2)
     cone(a1, 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
     def tag(ax, s, dy=0.0):   # under a panel, in red
         ax.text(0.5, -0.06 - dy, s, transform=ax.transAxes, ha="center", va="top", fontsize=F_NOTE, color=RF)
-    tag(a3, "1 value")
+    tag(a3, "1 value\n8 × 8")
     tag(a2, "2 × 2")
     tag(a1, "2 × 2")
-    tag(inp, "receptive field: 8 × 8")
-    tag(inp, "two layers: 22 × 22", dy=0.1)
+    tag(inp, "receptive field: 8 × 8\nnext layer: 22 × 22")
 
     # column labels and layer brackets
     labels = [(cols[0], r"input $\mathbf{x}$"), (cols[2], r"convolution $\mathbf{x} \circledast \omega_k$"),
