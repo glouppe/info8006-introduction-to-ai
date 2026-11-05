@@ -92,7 +92,7 @@
     \emph{Generalization.} The loss on new pairs is estimated on a \term{test set} held out from training. A model \term{underfits} when both losses stay high, and \term{overfits} when the training loss decreases while the test loss increases. \term{Hyperparameters} (width, depth, learning rate, minibatch size, number of epochs) are chosen on a \term{validation set}, also held out; the test set is used once, at the end.
 \end{recap}
 
-\begin{exercises}[3, 6 (a)--(e) and 7 (a)--(c) (November 19), 9, 11 (a) and 12 (November 26)]
+\begin{exercises}[2, 5 (a)--(e) and 6 (a)--(c) (November 19), 8, 10 (a) and 11 (November 26)]
 
 \titledquestion{Scores on a leaderboard}
 
@@ -179,24 +179,6 @@ A leaderboard ranks language models by an overall score. The Bayesian network be
         By (a), the fitted parameters estimate combinations of those of the network, $w_1 = a_3$, $w_2 = a_4 + a_5 a_2$, $b = a_5 \mu_3 + \mu_y$ and $\sigma^2 = a_5^2 \sigma_3^2 + \sigma_y^2$. Without observations of $x_3$, the individual parameters $a_2, a_4, a_5, \mu_3, \mu_y, \sigma_3, \sigma_y$ cannot be recovered separately.
     \end{solution}
 \end{parts}
-
-\titledquestion{Linear regression with unequal noise}
-
-In linear regression with Gaussian noise of constant variance, $y_i \sim \N(\mathbf{w}^T \mathbf{x}_i, \sigma^2)$, the maximum likelihood estimate of the weights is $\mathbf{w}_{\text{MLE}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}$, where the rows of $\mathbf{X}$ are the inputs $\mathbf{x}_i^T$ and $\mathbf{y} = (y_i)$. What does this estimate become if the noise is different for each sample, \ie{} $y_i \sim \N(\mathbf{w}^T \mathbf{x}_i, \sigma_i^2)$ with known variances $\sigma_i^2$?
-
-\begin{solution}
-    The log-likelihood of the weights is
-    \begin{equation*}
-        L(\mathbf{w}) = \sum_i \log \N(y_i \mid \mathbf{w}^T \mathbf{x}_i, \sigma_i^2) = - \sum_i \frac{(\mathbf{w}^T \mathbf{x}_i - y_i)^2}{2 \sigma_i^2} + \text{const},
-    \end{equation*}
-    so that maximizing it minimizes a weighted sum of squares, each sample weighted by its precision $1 / \sigma_i^2$. With $\boldsymbol{\Lambda} = \diag(1 / \sigma_1^2, \ldots, 1 / \sigma_N^2)$,
-    \begin{equation*}
-        \nabla_{\!\mathbf{w}} L(\mathbf{w}) = - \mathbf{X}^T \boldsymbol{\Lambda} (\mathbf{X} \mathbf{w} - \mathbf{y}) = 0
-        \quad \Leftrightarrow \quad
-        \mathbf{w}_{\text{MLE}} = (\mathbf{X}^T \boldsymbol{\Lambda} \mathbf{X})^{-1} \mathbf{X}^T \boldsymbol{\Lambda} \mathbf{y} .
-    \end{equation*}
-    Noisy samples count less. With equal variances, $\boldsymbol{\Lambda}$ is proportional to the identity and the estimate of the homoscedastic case is recovered.
-\end{solution}
 
 \titledquestion{Travel-time heuristic \source{Exam, January 2022}}
 
