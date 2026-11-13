@@ -64,7 +64,7 @@ L 121.248 256.766484
 L 121.248 142.718484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_7">
+   <g id="f0_13" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 54.72 175.982484 
 L 73.728 175.982484 
 L 73.728 194.990484 
@@ -73,7 +73,7 @@ L 54.72 175.982484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_8">
+   <g id="f0_14" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 40.464 161.726484 
 L 87.984 161.726484 
 L 87.984 209.246484 
@@ -82,9 +82,99 @@ L 40.464 161.726484
 z
 " style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_34" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 68.976 175.982484 
+L 87.984 175.982484 
+L 87.984 194.990484 
+L 68.976 194.990484 
+L 68.976 175.982484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_35" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 54.72 161.726484 
+L 102.24 161.726484 
+L 102.24 209.246484 
+L 54.72 209.246484 
+L 54.72 161.726484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_55" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 73.728 190.238484 
+L 92.736 190.238484 
+L 92.736 209.246484 
+L 73.728 209.246484 
+L 73.728 190.238484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_56" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 59.472 175.982484 
+L 106.992 175.982484 
+L 106.992 223.502484 
+L 59.472 223.502484 
+L 59.472 175.982484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_76" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 64.224 204.494484 
+L 83.232 204.494484 
+L 83.232 223.502484 
+L 64.224 223.502484 
+L 64.224 204.494484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_77" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 49.968 190.238484 
+L 97.488 190.238484 
+L 97.488 237.758484 
+L 49.968 237.758484 
+L 49.968 190.238484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_97" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 49.968 204.494484 
+L 68.976 204.494484 
+L 68.976 223.502484 
+L 49.968 223.502484 
+L 49.968 204.494484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_98" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 35.712 190.238484 
+L 83.232 190.238484 
+L 83.232 237.758484 
+L 35.712 237.758484 
+L 35.712 190.238484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_118" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 45.216 190.238484 
+L 64.224 190.238484 
+L 64.224 209.246484 
+L 45.216 209.246484 
+L 45.216 190.238484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_119" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 30.96 175.982484 
+L 78.48 175.982484 
+L 78.48 223.502484 
+L 30.96 223.502484 
+L 30.96 175.982484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_2">
-   <g id="patch_9">
+   <g id="patch_7">
     <path d="M 142.848 139.658484 
 L 159.48 139.658484 
 L 159.48 123.026484 
@@ -99,22 +189,22 @@ iVBORw0KGgoAAAANSUhEUgAAABgAAAAXCAYAAAARIY8tAAAA2klEQVR4nGP89uPPfwYk8O3XXzj7/3+E
    </g>
    <g id="matplotlib.axis_3"/>
    <g id="matplotlib.axis_4"/>
-   <g id="patch_10">
+   <g id="patch_8">
     <path d="M 142.848 139.658484 
 L 142.848 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_11">
+   <g id="patch_9">
     <path d="M 159.48 139.658484 
 L 159.48 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_12">
+   <g id="patch_10">
     <path d="M 142.848 139.658484 
 L 159.48 139.658484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_13">
+   <g id="patch_11">
     <path d="M 142.848 123.026484 
 L 159.48 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -205,7 +295,7 @@ z
    </g>
   </g>
   <g id="axes_3">
-   <g id="patch_14">
+   <g id="patch_12">
     <path d="M 181.08 181.238484 
 L 280.872 181.238484 
 L 280.872 81.446484 
@@ -220,27 +310,27 @@ iVBORw0KGgoAAAANSUhEUgAAAIoAAACLCAYAAAC+2wHBAAAV60lEQVR4nO1dSZMc13HOrqpep3uWnh3r
    </g>
    <g id="matplotlib.axis_5"/>
    <g id="matplotlib.axis_6"/>
-   <g id="patch_15">
+   <g id="patch_13">
     <path d="M 181.08 181.238484 
 L 181.08 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_16">
+   <g id="patch_14">
     <path d="M 280.872 181.238484 
 L 280.872 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_17">
+   <g id="patch_15">
     <path d="M 181.08 181.238484 
 L 280.872 181.238484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_18">
+   <g id="patch_16">
     <path d="M 181.08 81.446484 
 L 280.872 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_19">
+   <g id="f0_12" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 228.6 114.710484 
 L 233.352 114.710484 
 L 233.352 119.462484 
@@ -249,9 +339,54 @@ L 228.6 114.710484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_33" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 242.856 114.710484 
+L 247.608 114.710484 
+L 247.608 119.462484 
+L 242.856 119.462484 
+L 242.856 114.710484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_54" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 247.608 128.966484 
+L 252.36 128.966484 
+L 252.36 133.718484 
+L 247.608 133.718484 
+L 247.608 128.966484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_75" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 238.104 143.222484 
+L 242.856 143.222484 
+L 242.856 147.974484 
+L 238.104 147.974484 
+L 238.104 143.222484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_96" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 223.848 143.222484 
+L 228.6 143.222484 
+L 228.6 147.974484 
+L 223.848 147.974484 
+L 223.848 143.222484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_117" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 219.096 128.966484 
+L 223.848 128.966484 
+L 223.848 133.718484 
+L 219.096 133.718484 
+L 219.096 128.966484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_4">
-   <g id="patch_20">
+   <g id="patch_17">
     <path d="M 302.472 181.238484 
 L 402.264 181.238484 
 L 402.264 81.446484 
@@ -266,27 +401,27 @@ iVBORw0KGgoAAAANSUhEUgAAAIsAAACLCAYAAABRGWr/AAAMfUlEQVR4nO2d207c1xXGNwxzYBiGwzAc
    </g>
    <g id="matplotlib.axis_7"/>
    <g id="matplotlib.axis_8"/>
-   <g id="patch_21">
+   <g id="patch_18">
     <path d="M 302.472 181.238484 
 L 302.472 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_22">
+   <g id="patch_19">
     <path d="M 402.264 181.238484 
 L 402.264 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_23">
+   <g id="patch_20">
     <path d="M 302.472 181.238484 
 L 402.264 181.238484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_24">
+   <g id="patch_21">
     <path d="M 302.472 81.446484 
 L 402.264 81.446484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_25">
+   <g id="f0_11" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 349.992 114.710484 
 L 354.744 114.710484 
 L 354.744 119.462484 
@@ -295,9 +430,54 @@ L 349.992 114.710484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_32" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 364.248 114.710484 
+L 369 114.710484 
+L 369 119.462484 
+L 364.248 119.462484 
+L 364.248 114.710484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_53" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 369 128.966484 
+L 373.752 128.966484 
+L 373.752 133.718484 
+L 369 133.718484 
+L 369 128.966484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_74" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 359.496 143.222484 
+L 364.248 143.222484 
+L 364.248 147.974484 
+L 359.496 147.974484 
+L 359.496 143.222484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_95" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 345.24 143.222484 
+L 349.992 143.222484 
+L 349.992 147.974484 
+L 345.24 147.974484 
+L 345.24 143.222484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_116" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 340.488 128.966484 
+L 345.24 128.966484 
+L 345.24 133.718484 
+L 340.488 133.718484 
+L 340.488 128.966484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_5">
-   <g id="patch_26">
+   <g id="patch_22">
     <path d="M 423.864 156.290484 
 L 473.76 156.290484 
 L 473.76 106.394484 
@@ -312,27 +492,27 @@ iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAYAAAAcjSspAAAFJUlEQVR4nO2cyW9cRRCHe3bvM/E6jpd4
    </g>
    <g id="matplotlib.axis_9"/>
    <g id="matplotlib.axis_10"/>
-   <g id="patch_27">
+   <g id="patch_23">
     <path d="M 423.864 156.290484 
 L 423.864 106.394484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_28">
+   <g id="patch_24">
     <path d="M 473.76 156.290484 
 L 473.76 106.394484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_29">
+   <g id="patch_25">
     <path d="M 423.864 156.290484 
 L 473.76 156.290484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_30">
+   <g id="patch_26">
     <path d="M 423.864 106.394484 
 L 473.76 106.394484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_31">
+   <g id="f0_4" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 440.496 115.898484 
 L 457.128 115.898484 
 L 457.128 132.530484 
@@ -341,7 +521,7 @@ L 440.496 115.898484
 z
 " style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_32">
+   <g id="f0_10" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 447.624 123.026484 
 L 450 123.026484 
 L 450 125.402484 
@@ -350,9 +530,99 @@ L 447.624 123.026484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_25" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 447.624 115.898484 
+L 464.256 115.898484 
+L 464.256 132.530484 
+L 447.624 132.530484 
+L 447.624 115.898484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_31" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 454.752 123.026484 
+L 457.128 123.026484 
+L 457.128 125.402484 
+L 454.752 125.402484 
+L 454.752 123.026484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_46" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 450 123.026484 
+L 466.632 123.026484 
+L 466.632 139.658484 
+L 450 139.658484 
+L 450 123.026484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_52" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 457.128 130.154484 
+L 459.504 130.154484 
+L 459.504 132.530484 
+L 457.128 132.530484 
+L 457.128 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_67" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 445.248 130.154484 
+L 461.88 130.154484 
+L 461.88 146.786484 
+L 445.248 146.786484 
+L 445.248 130.154484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_73" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 452.376 137.282484 
+L 454.752 137.282484 
+L 454.752 139.658484 
+L 452.376 139.658484 
+L 452.376 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_88" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 438.12 130.154484 
+L 454.752 130.154484 
+L 454.752 146.786484 
+L 438.12 146.786484 
+L 438.12 130.154484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_94" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 445.248 137.282484 
+L 447.624 137.282484 
+L 447.624 139.658484 
+L 445.248 139.658484 
+L 445.248 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_109" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 435.744 123.026484 
+L 452.376 123.026484 
+L 452.376 139.658484 
+L 435.744 139.658484 
+L 435.744 123.026484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_115" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 442.872 130.154484 
+L 445.248 130.154484 
+L 445.248 132.530484 
+L 442.872 132.530484 
+L 442.872 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_6">
-   <g id="patch_33">
+   <g id="patch_27">
     <path d="M 142.848 276.458484 
 L 159.48 276.458484 
 L 159.48 259.826484 
@@ -367,22 +637,22 @@ iVBORw0KGgoAAAANSUhEUgAAABgAAAAXCAYAAAARIY8tAAAA8ElEQVR4nGP8+/PLfwYk8PfzKzj716tb
    </g>
    <g id="matplotlib.axis_11"/>
    <g id="matplotlib.axis_12"/>
-   <g id="patch_34">
+   <g id="patch_28">
     <path d="M 142.848 276.458484 
 L 142.848 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_35">
+   <g id="patch_29">
     <path d="M 159.48 276.458484 
 L 159.48 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_36">
+   <g id="patch_30">
     <path d="M 142.848 276.458484 
 L 159.48 276.458484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_37">
+   <g id="patch_31">
     <path d="M 142.848 259.826484 
 L 159.48 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -414,7 +684,7 @@ z
    </g>
   </g>
   <g id="axes_7">
-   <g id="patch_38">
+   <g id="patch_32">
     <path d="M 181.08 318.038484 
 L 280.872 318.038484 
 L 280.872 218.246484 
@@ -429,29 +699,29 @@ iVBORw0KGgoAAAANSUhEUgAAAIoAAACLCAYAAAC+2wHBAAAV/UlEQVR4nO1dyY8c13n/qquq93X24ZBD
    </g>
    <g id="matplotlib.axis_13"/>
    <g id="matplotlib.axis_14"/>
-   <g id="patch_39">
+   <g id="patch_33">
     <path d="M 181.08 318.038484 
 L 181.08 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_40">
+   <g id="patch_34">
     <path d="M 280.872 318.038484 
 L 280.872 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_41">
+   <g id="patch_35">
     <path d="M 181.08 318.038484 
 L 280.872 318.038484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_42">
+   <g id="patch_36">
     <path d="M 181.08 218.246484 
 L 280.872 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_8">
-   <g id="patch_43">
+   <g id="patch_37">
     <path d="M 302.472 318.038484 
 L 402.264 318.038484 
 L 402.264 218.246484 
@@ -466,29 +736,29 @@ iVBORw0KGgoAAAANSUhEUgAAAIsAAACLCAYAAABRGWr/AAAPxklEQVR4nO2dSW9cxxHHezgbOdyGHO6U
    </g>
    <g id="matplotlib.axis_15"/>
    <g id="matplotlib.axis_16"/>
-   <g id="patch_44">
+   <g id="patch_38">
     <path d="M 302.472 318.038484 
 L 302.472 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_45">
+   <g id="patch_39">
     <path d="M 402.264 318.038484 
 L 402.264 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_46">
+   <g id="patch_40">
     <path d="M 302.472 318.038484 
 L 402.264 318.038484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_47">
+   <g id="patch_41">
     <path d="M 302.472 218.246484 
 L 402.264 218.246484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_9">
-   <g id="patch_48">
+   <g id="patch_42">
     <path d="M 423.864 293.090484 
 L 473.76 293.090484 
 L 473.76 243.194484 
@@ -503,27 +773,27 @@ iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAYAAAAcjSspAAAF9klEQVR4nO1c20+cVRCfb6/ALrBcCkux
    </g>
    <g id="matplotlib.axis_17"/>
    <g id="matplotlib.axis_18"/>
-   <g id="patch_49">
+   <g id="patch_43">
     <path d="M 423.864 293.090484 
 L 423.864 243.194484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_50">
+   <g id="patch_44">
     <path d="M 473.76 293.090484 
 L 473.76 243.194484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_51">
+   <g id="patch_45">
     <path d="M 423.864 293.090484 
 L 473.76 293.090484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_52">
+   <g id="patch_46">
     <path d="M 423.864 243.194484 
 L 473.76 243.194484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_53">
+   <g id="f0_7" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 440.496 252.698484 
 L 457.128 252.698484 
 L 457.128 269.330484 
@@ -532,9 +802,54 @@ L 440.496 252.698484
 z
 " style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_28" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 447.624 252.698484 
+L 464.256 252.698484 
+L 464.256 269.330484 
+L 447.624 269.330484 
+L 447.624 252.698484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_49" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 450 259.826484 
+L 466.632 259.826484 
+L 466.632 276.458484 
+L 450 276.458484 
+L 450 259.826484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_70" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 445.248 266.954484 
+L 461.88 266.954484 
+L 461.88 283.586484 
+L 445.248 283.586484 
+L 445.248 266.954484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_91" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 438.12 266.954484 
+L 454.752 266.954484 
+L 454.752 283.586484 
+L 438.12 283.586484 
+L 438.12 266.954484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_112" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 435.744 259.826484 
+L 452.376 259.826484 
+L 452.376 276.458484 
+L 435.744 276.458484 
+L 435.744 259.826484 
+z
+" style="fill: none; stroke-dasharray: 7.2,3.6; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_10">
-   <g id="patch_54">
+   <g id="patch_47">
     <path d="M 499.68 135.338484 
 L 516.312 135.338484 
 L 516.312 118.706484 
@@ -549,29 +864,29 @@ iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAuElEQVR4nGP88/fffwYo+P33HwMy+PkL
    </g>
    <g id="matplotlib.axis_19"/>
    <g id="matplotlib.axis_20"/>
-   <g id="patch_55">
+   <g id="patch_48">
     <path d="M 499.68 135.338484 
 L 499.68 118.706484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_56">
+   <g id="patch_49">
     <path d="M 516.312 135.338484 
 L 516.312 118.706484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_57">
+   <g id="patch_50">
     <path d="M 499.68 135.338484 
 L 516.312 135.338484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_58">
+   <g id="patch_51">
     <path d="M 499.68 118.706484 
 L 516.312 118.706484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_11">
-   <g id="patch_59">
+   <g id="patch_52">
     <path d="M 495.36 139.658484 
 L 511.992 139.658484 
 L 511.992 123.026484 
@@ -586,22 +901,22 @@ iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAuElEQVR4nGP88/fffwYo+P33HwMy+PkL
    </g>
    <g id="matplotlib.axis_21"/>
    <g id="matplotlib.axis_22"/>
-   <g id="patch_60">
+   <g id="patch_53">
     <path d="M 495.36 139.658484 
 L 495.36 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_61">
+   <g id="patch_54">
     <path d="M 511.992 139.658484 
 L 511.992 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_62">
+   <g id="patch_55">
     <path d="M 495.36 139.658484 
 L 511.992 139.658484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_63">
+   <g id="patch_56">
     <path d="M 495.36 123.026484 
 L 511.992 123.026484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -632,7 +947,7 @@ z
    </g>
   </g>
   <g id="axes_12">
-   <g id="patch_64">
+   <g id="patch_57">
     <path d="M 537.912 149.162484 
 L 573.552 149.162484 
 L 573.552 113.522484 
@@ -647,27 +962,27 @@ iVBORw0KGgoAAAANSUhEUgAAADIAAAAxCAYAAACYq/ofAAAEBklEQVR4nO2ZSW/TQBTHx/ZkcZO0adOm
    </g>
    <g id="matplotlib.axis_23"/>
    <g id="matplotlib.axis_24"/>
-   <g id="patch_65">
+   <g id="patch_58">
     <path d="M 537.912 149.162484 
 L 537.912 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_66">
+   <g id="patch_59">
     <path d="M 573.552 149.162484 
 L 573.552 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_67">
+   <g id="patch_60">
     <path d="M 537.912 149.162484 
 L 573.552 149.162484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_68">
+   <g id="patch_61">
     <path d="M 537.912 113.522484 
 L 573.552 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_69">
+   <g id="f0_1" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 554.544 123.026484 
 L 556.92 123.026484 
 L 556.92 125.402484 
@@ -676,9 +991,54 @@ L 554.544 123.026484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_22" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 561.672 123.026484 
+L 564.048 123.026484 
+L 564.048 125.402484 
+L 561.672 125.402484 
+L 561.672 123.026484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_43" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 564.048 130.154484 
+L 566.424 130.154484 
+L 566.424 132.530484 
+L 564.048 132.530484 
+L 564.048 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_64" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 559.296 137.282484 
+L 561.672 137.282484 
+L 561.672 139.658484 
+L 559.296 139.658484 
+L 559.296 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_85" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 552.168 137.282484 
+L 554.544 137.282484 
+L 554.544 139.658484 
+L 552.168 139.658484 
+L 552.168 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_106" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 549.792 130.154484 
+L 552.168 130.154484 
+L 552.168 132.530484 
+L 549.792 132.530484 
+L 549.792 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_13">
-   <g id="patch_70">
+   <g id="patch_62">
     <path d="M 616.752 149.162484 
 L 652.392 149.162484 
 L 652.392 113.522484 
@@ -693,27 +1053,27 @@ iVBORw0KGgoAAAANSUhEUgAAADEAAAAxCAYAAABznEEcAAAC7ElEQVR4nO2ZS28SURTH78AFCuVlEYxV
    </g>
    <g id="matplotlib.axis_25"/>
    <g id="matplotlib.axis_26"/>
-   <g id="patch_71">
+   <g id="patch_63">
     <path d="M 616.752 149.162484 
 L 616.752 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_72">
+   <g id="patch_64">
     <path d="M 652.392 149.162484 
 L 652.392 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_73">
+   <g id="patch_65">
     <path d="M 616.752 149.162484 
 L 652.392 149.162484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_74">
+   <g id="patch_66">
     <path d="M 616.752 113.522484 
 L 652.392 113.522484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_75">
+   <g id="f0_0" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
     <path d="M 633.384 123.026484 
 L 635.76 123.026484 
 L 635.76 125.402484 
@@ -722,9 +1082,54 @@ L 633.384 123.026484
 z
 " style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
    </g>
+   <g id="f1_21" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 640.512 123.026484 
+L 642.888 123.026484 
+L 642.888 125.402484 
+L 640.512 125.402484 
+L 640.512 123.026484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_42" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 642.888 130.154484 
+L 645.264 130.154484 
+L 645.264 132.530484 
+L 642.888 132.530484 
+L 642.888 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_63" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 638.136 137.282484 
+L 640.512 137.282484 
+L 640.512 139.658484 
+L 638.136 139.658484 
+L 638.136 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f4_84" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 631.008 137.282484 
+L 633.384 137.282484 
+L 633.384 139.658484 
+L 631.008 139.658484 
+L 631.008 137.282484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="f5_105" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+    <path d="M 628.632 130.154484 
+L 631.008 130.154484 
+L 631.008 132.530484 
+L 628.632 132.530484 
+L 628.632 130.154484 
+z
+" style="fill: none; stroke: #c8463d; stroke-width: 2.4; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_14">
-   <g id="patch_76">
+   <g id="patch_67">
     <path d="M 499.68 272.138484 
 L 516.312 272.138484 
 L 516.312 255.506484 
@@ -739,29 +1144,29 @@ iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAwElEQVR4nGP89/fPfwYo+P/3FwMy+P/r
    </g>
    <g id="matplotlib.axis_27"/>
    <g id="matplotlib.axis_28"/>
-   <g id="patch_77">
+   <g id="patch_68">
     <path d="M 499.68 272.138484 
 L 499.68 255.506484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_78">
+   <g id="patch_69">
     <path d="M 516.312 272.138484 
 L 516.312 255.506484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_79">
+   <g id="patch_70">
     <path d="M 499.68 272.138484 
 L 516.312 272.138484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_80">
+   <g id="patch_71">
     <path d="M 499.68 255.506484 
 L 516.312 255.506484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_15">
-   <g id="patch_81">
+   <g id="patch_72">
     <path d="M 495.36 276.458484 
 L 511.992 276.458484 
 L 511.992 259.826484 
@@ -776,22 +1181,22 @@ iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAuElEQVR4nGP88/fffwYo+P33HwMy+PkL
    </g>
    <g id="matplotlib.axis_29"/>
    <g id="matplotlib.axis_30"/>
-   <g id="patch_82">
+   <g id="patch_73">
     <path d="M 495.36 276.458484 
 L 495.36 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_83">
+   <g id="patch_74">
     <path d="M 511.992 276.458484 
 L 511.992 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_84">
+   <g id="patch_75">
     <path d="M 495.36 276.458484 
 L 511.992 276.458484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_85">
+   <g id="patch_76">
     <path d="M 495.36 259.826484 
 L 511.992 259.826484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -806,7 +1211,7 @@ L 511.992 259.826484
    </g>
   </g>
   <g id="axes_16">
-   <g id="patch_86">
+   <g id="patch_77">
     <path d="M 537.912 285.962484 
 L 573.552 285.962484 
 L 573.552 250.322484 
@@ -821,29 +1226,29 @@ iVBORw0KGgoAAAANSUhEUgAAADIAAAAxCAYAAACYq/ofAAAD9UlEQVR4nO1aS2/bRhBemStSoihKlmTZ
    </g>
    <g id="matplotlib.axis_31"/>
    <g id="matplotlib.axis_32"/>
-   <g id="patch_87">
+   <g id="patch_78">
     <path d="M 537.912 285.962484 
 L 537.912 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_88">
+   <g id="patch_79">
     <path d="M 573.552 285.962484 
 L 573.552 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_89">
+   <g id="patch_80">
     <path d="M 537.912 285.962484 
 L 573.552 285.962484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_90">
+   <g id="patch_81">
     <path d="M 537.912 250.322484 
 L 573.552 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
   <g id="axes_17">
-   <g id="patch_91">
+   <g id="patch_82">
     <path d="M 616.752 285.962484 
 L 652.392 285.962484 
 L 652.392 250.322484 
@@ -858,28 +1263,28 @@ iVBORw0KGgoAAAANSUhEUgAAADEAAAAxCAYAAABznEEcAAAClUlEQVR4nO1YTW/TQBDdxJs4dpw0X01S
    </g>
    <g id="matplotlib.axis_33"/>
    <g id="matplotlib.axis_34"/>
-   <g id="patch_92">
+   <g id="patch_83">
     <path d="M 616.752 285.962484 
 L 616.752 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_93">
+   <g id="patch_84">
     <path d="M 652.392 285.962484 
 L 652.392 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_94">
+   <g id="patch_85">
     <path d="M 616.752 285.962484 
 L 652.392 285.962484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_95">
+   <g id="patch_86">
     <path d="M 616.752 250.322484 
 L 652.392 250.322484 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
   </g>
-  <g id="patch_96">
+  <g id="patch_87">
    <path d="M 121.248 171.230484 
 Q 132.048 151.286484 142.102659 132.718881 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -889,7 +1294,7 @@ L 141.869013 139.870483
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_97">
+  <g id="patch_88">
    <path d="M 159.48 131.342484 
 Q 170.28 131.342484 179.514752 131.342484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -899,7 +1304,7 @@ L 173.114752 134.542484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_98">
+  <g id="patch_89">
    <path d="M 280.872 131.342484 
 Q 291.672 131.342484 300.906752 131.342484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -909,7 +1314,7 @@ L 294.506752 134.542484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_99">
+  <g id="patch_90">
    <path d="M 402.264 131.342484 
 Q 413.064 131.342484 422.298752 131.342484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -919,7 +1324,7 @@ L 415.898752 134.542484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_100">
+  <g id="patch_91">
    <path d="M 121.248 228.254484 
 Q 132.048 248.198484 142.102659 266.766088 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -929,7 +1334,7 @@ L 136.24119 262.662044
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_101">
+  <g id="patch_92">
    <path d="M 159.48 268.142484 
 Q 170.28 268.142484 179.514752 268.142484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -939,7 +1344,7 @@ L 173.114752 271.342484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_102">
+  <g id="patch_93">
    <path d="M 280.872 268.142484 
 Q 291.672 268.142484 300.906752 268.142484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -949,7 +1354,7 @@ L 294.506752 271.342484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_103">
+  <g id="patch_94">
    <path d="M 402.264 268.142484 
 Q 413.064 268.142484 422.298752 268.142484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -959,7 +1364,7 @@ L 415.898752 271.342484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_104">
+  <g id="patch_95">
    <path d="M 473.76 131.342484 
 Q 484.56 129.263484 493.822972 127.480362 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -969,7 +1374,7 @@ L 488.143249 131.83246
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_105">
+  <g id="patch_96">
    <path d="M 473.76 268.142484 
 Q 484.56 201.821484 495.108422 137.045382 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -979,7 +1384,7 @@ L 497.238165 143.876502
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_106">
+  <g id="patch_97">
    <path d="M 516.312 131.342484 
 Q 527.112 131.342484 536.346752 131.342484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -989,7 +1394,7 @@ L 529.946752 134.542484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_107">
+  <g id="patch_98">
    <path d="M 573.552 131.342484 
 Q 595.152 131.342484 615.186752 131.342484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -999,7 +1404,7 @@ L 608.786752 134.542484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_108">
+  <g id="patch_99">
    <path d="M 473.76 131.342484 
 Q 484.56 197.663484 495.108422 262.439587 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1009,7 +1414,7 @@ L 490.921372 256.637121
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_109">
+  <g id="patch_100">
    <path d="M 473.76 268.142484 
 Q 484.56 270.221484 493.822972 272.004606 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1019,7 +1424,7 @@ L 486.93346 273.937126
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_110">
+  <g id="patch_101">
    <path d="M 516.312 268.142484 
 Q 527.112 268.142484 536.346752 268.142484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -1029,7 +1434,7 @@ L 529.946752 271.342484
 z
 " style="fill: #2a2a2a; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
   </g>
-  <g id="patch_111">
+  <g id="patch_102">
    <path d="M 573.552 268.142484 
 Q 595.152 268.142484 615.186752 268.142484 
 " style="fill: none; stroke: #2a2a2a; stroke-width: 1.4; stroke-linecap: round"/>
@@ -2228,64 +2633,364 @@ z
     <use xlink:href="#Roboto-Regular-56" transform="translate(177.578125 0)"/>
    </g>
   </g>
-  <g id="patch_112">
+  <g id="f0_2" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 633.384 123.026484 
 Q 595.152 123.026484 556.92 123.026484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_113">
+  <g id="f0_3" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 633.384 125.402484 
 Q 595.152 125.402484 556.92 125.402484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_114">
+  <g id="f0_5" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 554.544 123.026484 
 Q 505.836 119.462484 457.128 115.898484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_115">
+  <g id="f0_6" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 554.544 125.402484 
 Q 505.836 128.966484 457.128 132.530484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_116">
+  <g id="f0_8" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 554.544 123.026484 
 Q 505.836 187.862484 457.128 252.698484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_117">
+  <g id="f0_9" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 554.544 125.402484 
 Q 505.836 197.366484 457.128 269.330484 
 " style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_118">
+  <g id="f0_15" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 447.624 123.026484 
 Q 401.184 118.868484 354.744 114.710484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_119">
+  <g id="f0_16" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 447.624 125.402484 
 Q 401.184 122.432484 354.744 119.462484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_120">
+  <g id="f0_17" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 349.992 114.710484 
 Q 291.672 114.710484 233.352 114.710484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_121">
+  <g id="f0_18" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 349.992 119.462484 
 Q 291.672 119.462484 233.352 119.462484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_122">
+  <g id="f0_19" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 228.6 114.710484 
 Q 151.164 145.346484 73.728 175.982484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
-  <g id="patch_123">
+  <g id="f0_20" opacity="1"><animate attributeName="opacity" values="1;0;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
    <path d="M 228.6 119.462484 
 Q 151.164 157.226484 73.728 194.990484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_23" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 640.512 123.026484 
+Q 602.28 123.026484 564.048 123.026484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_24" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 640.512 125.402484 
+Q 602.28 125.402484 564.048 125.402484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_26" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 561.672 123.026484 
+Q 512.964 119.462484 464.256 115.898484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_27" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 561.672 125.402484 
+Q 512.964 128.966484 464.256 132.530484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_29" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 561.672 123.026484 
+Q 512.964 187.862484 464.256 252.698484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_30" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 561.672 125.402484 
+Q 512.964 197.366484 464.256 269.330484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_36" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 454.752 123.026484 
+Q 411.876 118.868484 369 114.710484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_37" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 454.752 125.402484 
+Q 411.876 122.432484 369 119.462484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_38" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 364.248 114.710484 
+Q 305.928 114.710484 247.608 114.710484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_39" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 364.248 119.462484 
+Q 305.928 119.462484 247.608 119.462484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_40" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 242.856 114.710484 
+Q 165.42 145.346484 87.984 175.982484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f1_41" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 242.856 119.462484 
+Q 165.42 157.226484 87.984 194.990484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_44" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 642.888 130.154484 
+Q 604.656 130.154484 566.424 130.154484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_45" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 642.888 132.530484 
+Q 604.656 132.530484 566.424 132.530484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_47" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 564.048 130.154484 
+Q 515.34 126.590484 466.632 123.026484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_48" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 564.048 132.530484 
+Q 515.34 136.094484 466.632 139.658484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_50" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 564.048 130.154484 
+Q 515.34 194.990484 466.632 259.826484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_51" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 564.048 132.530484 
+Q 515.34 204.494484 466.632 276.458484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_57" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 457.128 130.154484 
+Q 415.44 129.560484 373.752 128.966484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_58" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 457.128 132.530484 
+Q 415.44 133.124484 373.752 133.718484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_59" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 369 128.966484 
+Q 310.68 128.966484 252.36 128.966484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_60" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 369 133.718484 
+Q 310.68 133.718484 252.36 133.718484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_61" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 247.608 128.966484 
+Q 170.172 159.602484 92.736 190.238484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f2_62" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 247.608 133.718484 
+Q 170.172 171.482484 92.736 209.246484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_65" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 638.136 137.282484 
+Q 599.904 137.282484 561.672 137.282484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_66" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 638.136 139.658484 
+Q 599.904 139.658484 561.672 139.658484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_68" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 559.296 137.282484 
+Q 510.588 133.718484 461.88 130.154484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_69" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 559.296 139.658484 
+Q 510.588 143.222484 461.88 146.786484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_71" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 559.296 137.282484 
+Q 510.588 202.118484 461.88 266.954484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_72" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 559.296 139.658484 
+Q 510.588 211.622484 461.88 283.586484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_78" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 452.376 137.282484 
+Q 408.312 140.252484 364.248 143.222484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_79" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 452.376 139.658484 
+Q 408.312 143.816484 364.248 147.974484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_80" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 359.496 143.222484 
+Q 301.176 143.222484 242.856 143.222484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_81" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 359.496 147.974484 
+Q 301.176 147.974484 242.856 147.974484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_82" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 238.104 143.222484 
+Q 160.668 173.858484 83.232 204.494484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f3_83" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 238.104 147.974484 
+Q 160.668 185.738484 83.232 223.502484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_86" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 631.008 137.282484 
+Q 592.776 137.282484 554.544 137.282484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_87" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 631.008 139.658484 
+Q 592.776 139.658484 554.544 139.658484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_89" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 552.168 137.282484 
+Q 503.46 133.718484 454.752 130.154484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_90" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 552.168 139.658484 
+Q 503.46 143.222484 454.752 146.786484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_92" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 552.168 137.282484 
+Q 503.46 202.118484 454.752 266.954484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_93" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 552.168 139.658484 
+Q 503.46 211.622484 454.752 283.586484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_99" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 445.248 137.282484 
+Q 397.62 140.252484 349.992 143.222484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_100" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 445.248 139.658484 
+Q 397.62 143.816484 349.992 147.974484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_101" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 345.24 143.222484 
+Q 286.92 143.222484 228.6 143.222484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_102" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 345.24 147.974484 
+Q 286.92 147.974484 228.6 147.974484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_103" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 223.848 143.222484 
+Q 146.412 173.858484 68.976 204.494484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f4_104" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 223.848 147.974484 
+Q 146.412 185.738484 68.976 223.502484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_107" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 628.632 130.154484 
+Q 590.4 130.154484 552.168 130.154484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_108" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 628.632 132.530484 
+Q 590.4 132.530484 552.168 132.530484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_110" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 549.792 130.154484 
+Q 501.084 126.590484 452.376 123.026484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_111" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 549.792 132.530484 
+Q 501.084 136.094484 452.376 139.658484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_113" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 549.792 130.154484 
+Q 501.084 194.990484 452.376 259.826484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_114" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 549.792 132.530484 
+Q 501.084 204.494484 452.376 276.458484 
+" style="fill: none; stroke-dasharray: 4.4,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_120" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 442.872 130.154484 
+Q 394.056 129.560484 345.24 128.966484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_121" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 442.872 132.530484 
+Q 394.056 133.124484 345.24 133.718484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_122" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 340.488 128.966484 
+Q 282.168 128.966484 223.848 128.966484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_123" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 340.488 133.718484 
+Q 282.168 133.718484 223.848 133.718484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_124" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 219.096 128.966484 
+Q 141.66 159.602484 64.224 190.238484 
+" style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
+  </g>
+  <g id="f5_125" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;1" keyTimes="0.0000;0.1667;0.3333;0.5000;0.6667;0.8333" calcMode="discrete" dur="9s" repeatCount="indefinite"/>
+   <path d="M 219.096 133.718484 
+Q 141.66 171.482484 64.224 209.246484 
 " style="fill: none; stroke-dasharray: 3.3,2.2; stroke-dashoffset: 0; stroke: #c8463d; stroke-width: 1.1; stroke-linecap: round"/>
   </g>
  </g>

@@ -468,7 +468,7 @@ z
      <use xlink:href="#Roboto-Regular-17"/>
     </g>
    </g>
-   <g id="patch_7">
+   <g id="f0_0" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 7.2 33.84 
 L 33.12 33.84 
 L 33.12 59.76 
@@ -477,7 +477,7 @@ L 7.2 33.84
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_8">
+   <g id="f1_2" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 59.04 33.84 
 L 84.96 33.84 
 L 84.96 59.76 
@@ -486,7 +486,7 @@ L 59.04 33.84
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_9">
+   <g id="f2_4" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 7.2 85.68 
 L 33.12 85.68 
 L 33.12 111.6 
@@ -495,7 +495,7 @@ L 7.2 85.68
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_10">
+   <g id="f3_6" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 59.04 85.68 
 L 84.96 85.68 
 L 84.96 111.6 
@@ -506,7 +506,7 @@ z
    </g>
   </g>
   <g id="axes_2">
-   <g id="patch_11">
+   <g id="patch_7">
     <path d="M 154.08 111.6 
 L 205.92 111.6 
 L 205.92 59.76 
@@ -571,22 +571,22 @@ L 205.92 111.6
      <g id="line2d_34"/>
     </g>
    </g>
-   <g id="patch_12">
+   <g id="patch_8">
     <path d="M 154.08 111.6 
 L 154.08 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_13">
+   <g id="patch_9">
     <path d="M 205.92 111.6 
 L 205.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_14">
+   <g id="patch_10">
     <path d="M 154.08 111.6 
 L 205.92 111.6 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_15">
+   <g id="patch_11">
     <path d="M 154.08 59.76 
 L 205.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -615,9 +615,45 @@ L 205.92 59.76
      <use xlink:href="#Roboto-Regular-15"/>
     </g>
    </g>
+   <g id="f0_1" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 154.08 59.76 
+L 180 59.76 
+L 180 85.68 
+L 154.08 85.68 
+L 154.08 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_3" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 180 59.76 
+L 205.92 59.76 
+L 205.92 85.68 
+L 180 85.68 
+L 180 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_5" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 154.08 85.68 
+L 180 85.68 
+L 180 111.6 
+L 154.08 111.6 
+L 154.08 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_7" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 180 85.68 
+L 205.92 85.68 
+L 205.92 111.6 
+L 180 111.6 
+L 180 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_3">
-   <g id="patch_16">
+   <g id="patch_12">
     <path d="M 241.2 137.52 
 L 344.88 137.52 
 L 344.88 33.84 
@@ -724,22 +760,22 @@ L 344.88 85.68
 L 293.04 33.84 
 " clip-path="url(#p265a914807)" style="fill: none; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #2a2a2a; stroke-width: 1.4"/>
    </g>
-   <g id="patch_17">
+   <g id="patch_13">
     <path d="M 241.2 137.52 
 L 241.2 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_18">
+   <g id="patch_14">
     <path d="M 344.88 137.52 
 L 344.88 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_19">
+   <g id="patch_15">
     <path d="M 241.2 137.52 
 L 344.88 137.52 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_20">
+   <g id="patch_16">
     <path d="M 241.2 33.84 
 L 344.88 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -840,7 +876,7 @@ L 344.88 33.84
      <use xlink:href="#Roboto-Regular-17"/>
     </g>
    </g>
-   <g id="patch_21">
+   <g id="f0_8" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 241.2 59.76 
 L 267.12 59.76 
 L 267.12 85.68 
@@ -849,7 +885,7 @@ L 241.2 59.76
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_22">
+   <g id="f1_10" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 318.96 59.76 
 L 344.88 59.76 
 L 344.88 85.68 
@@ -858,7 +894,7 @@ L 318.96 59.76
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_23">
+   <g id="f2_12" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 267.12 111.6 
 L 293.04 111.6 
 L 293.04 137.52 
@@ -867,7 +903,7 @@ L 267.12 111.6
 z
 " style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_24">
+   <g id="f3_14" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
     <path d="M 318.96 85.68 
 L 344.88 85.68 
 L 344.88 111.6 
@@ -878,7 +914,7 @@ z
    </g>
   </g>
   <g id="axes_4">
-   <g id="patch_25">
+   <g id="patch_17">
     <path d="M 388.08 111.6 
 L 439.92 111.6 
 L 439.92 59.76 
@@ -943,22 +979,22 @@ L 439.92 111.6
      <g id="line2d_68"/>
     </g>
    </g>
-   <g id="patch_26">
+   <g id="patch_18">
     <path d="M 388.08 111.6 
 L 388.08 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_27">
+   <g id="patch_19">
     <path d="M 439.92 111.6 
 L 439.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_28">
+   <g id="patch_20">
     <path d="M 388.08 111.6 
 L 439.92 111.6 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_29">
+   <g id="patch_21">
     <path d="M 388.08 59.76 
 L 439.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -987,9 +1023,45 @@ L 439.92 59.76
      <use xlink:href="#Roboto-Regular-18"/>
     </g>
    </g>
+   <g id="f0_9" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 388.08 59.76 
+L 414 59.76 
+L 414 85.68 
+L 388.08 85.68 
+L 388.08 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_11" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 414 59.76 
+L 439.92 59.76 
+L 439.92 85.68 
+L 414 85.68 
+L 414 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_13" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 388.08 85.68 
+L 414 85.68 
+L 414 111.6 
+L 388.08 111.6 
+L 388.08 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_15" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 414 85.68 
+L 439.92 85.68 
+L 439.92 111.6 
+L 414 111.6 
+L 414 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_5">
-   <g id="patch_30">
+   <g id="patch_22">
     <path d="M 475.2 137.52 
 L 578.88 137.52 
 L 578.88 33.84 
@@ -1096,22 +1168,22 @@ L 578.88 85.68
 L 527.04 33.84 
 " clip-path="url(#pd31f0b85d9)" style="fill: none; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #2a2a2a; stroke-width: 1.4"/>
    </g>
-   <g id="patch_31">
+   <g id="patch_23">
     <path d="M 475.2 137.52 
 L 475.2 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_32">
+   <g id="patch_24">
     <path d="M 578.88 137.52 
 L 578.88 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_33">
+   <g id="patch_25">
     <path d="M 475.2 137.52 
 L 578.88 137.52 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_34">
+   <g id="patch_26">
     <path d="M 475.2 33.84 
 L 578.88 33.84 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -1212,9 +1284,45 @@ L 578.88 33.84
      <use xlink:href="#Roboto-Regular-17"/>
     </g>
    </g>
+   <g id="f0_16" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 475.2 33.84 
+L 527.04 33.84 
+L 527.04 85.68 
+L 475.2 85.68 
+L 475.2 33.84 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_18" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 527.04 33.84 
+L 578.88 33.84 
+L 578.88 85.68 
+L 527.04 85.68 
+L 527.04 33.84 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_20" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 475.2 85.68 
+L 527.04 85.68 
+L 527.04 137.52 
+L 475.2 137.52 
+L 475.2 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_22" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 527.04 85.68 
+L 578.88 85.68 
+L 578.88 137.52 
+L 527.04 137.52 
+L 527.04 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
   </g>
   <g id="axes_6">
-   <g id="patch_35">
+   <g id="patch_27">
     <path d="M 622.08 111.6 
 L 673.92 111.6 
 L 673.92 59.76 
@@ -1279,22 +1387,22 @@ L 673.92 111.6
      <g id="line2d_102"/>
     </g>
    </g>
-   <g id="patch_36">
+   <g id="patch_28">
     <path d="M 622.08 111.6 
 L 622.08 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_37">
+   <g id="patch_29">
     <path d="M 673.92 111.6 
 L 673.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_38">
+   <g id="patch_30">
     <path d="M 622.08 111.6 
 L 673.92 111.6 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="patch_39">
+   <g id="patch_31">
     <path d="M 622.08 59.76 
 L 673.92 59.76 
 " style="fill: none; stroke: #2a2a2a; stroke-linejoin: miter; stroke-linecap: square"/>
@@ -1322,6 +1430,42 @@ L 673.92 59.76
     <g style="fill: #2a2a2a" transform="translate(657.309844 101.89) scale(0.13 -0.13)">
      <use xlink:href="#Roboto-Regular-16"/>
     </g>
+   </g>
+   <g id="f0_17" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 622.08 59.76 
+L 648 59.76 
+L 648 85.68 
+L 622.08 85.68 
+L 622.08 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f1_19" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 648 59.76 
+L 673.92 59.76 
+L 673.92 85.68 
+L 648 85.68 
+L 648 59.76 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f2_21" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 622.08 85.68 
+L 648 85.68 
+L 648 111.6 
+L 622.08 111.6 
+L 622.08 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="f3_23" opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0.0000;0.2500;0.5000;0.7500" calcMode="discrete" dur="4.8s" repeatCount="indefinite"/>
+    <path d="M 648 85.68 
+L 673.92 85.68 
+L 673.92 111.6 
+L 648 111.6 
+L 648 85.68 
+z
+" style="fill: none; stroke: #2a2a2a; stroke-width: 2.6; stroke-linejoin: miter"/>
    </g>
   </g>
   <g id="text_61">

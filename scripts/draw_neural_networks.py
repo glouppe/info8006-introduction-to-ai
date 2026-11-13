@@ -27,11 +27,14 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
 - `nn-activations.svg`, the sigmoid, tanh and ReLU activation functions;
 - `lr-gaussian-model.svg` and `lr-residuals.svg`, linear regression as a linear Gaussian model, and its
   squared residuals;
-- `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed
-  here, with the receptive field of one pooled value boxed back to the input;
-- `nn-conv1d.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg` and `nn-pooling.svg`, a 1d and a 2d
-  convolution at two positions of the window, a 3x3x3 kernel on the cat's three channels, and
-  subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed;
+- `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, then a
+  second convolutional layer, computed here, with the receptive fields boxed back to the input;
+- `nn-conv1d.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg`, `nn-conv-layer.svg` and `nn-pooling.svg`,
+  a 1d and a 2d convolution, a 3x3x3 kernel on the cat's three channels, four such kernels in a layer,
+  and subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed;
+- all six convolution and pooling figures are animated (SMIL, which runs in an <img>, in a loop): the
+  windows slide over the input with the output they give, the pooling windows go from block to block,
+  and the receptive fields of `nn-conv-pattern.svg` move over the cat; frame 0 is the static figure;
 - `nn-next-token.svg`, a language model predicting the next token twice on a sentence about Pacman,
   with illustrative probabilities (no model is run).
 """
@@ -115,12 +118,46 @@ def rescale(path):
     tag = re.sub(r'(width|height)="([\d.]+)pt"', fix, svg_text[i:j])
     path.write_text(svg_text[:i] + tag + svg_text[j:], encoding="utf-8")
 
-def save(fig, name):
+def save(fig, name, frames=None):
     out = ROOT / "figures" / "lec7" / f"{name}.svg"
     fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
     rescale(out)
+    if frames:
+        animate(out, *frames)
     plt.close(fig)
     print(out.relative_to(ROOT))
+
+
+# ---- animated figures: the artists of frame t carry the gid f<t>_<n>; `animate` then shows one frame at a
+# time, in a loop, with SMIL (which runs in an <img>). Frame 0 is visible without the animation (PDF export).
+# A window scanning a whole image is drawn once instead, with the gid m_<n>, and moved by `moves`, the offset
+# of each frame in inches (one SVG unit is a point).
+
+def tagger():
+    count = [0]
+    def tag(t, *artists):
+        for a in artists:
+            a.set_gid(f"f{t}_{count[0]}" if t is not None else f"m_{count[0]}")
+            count[0] += 1
+    return tag
+
+
+def animate(path, n, step, moves=None):
+    timing = f'keyTimes="{";".join(f"{s / n:.4f}" for s in range(n))}" calcMode="discrete" dur="{n * step:g}s" repeatCount="indefinite"'
+    def show(m):
+        t = int(m.group(1))
+        values = ";".join("1" if s == t else "0" for s in range(n))
+        return f'{m.group(0)[:-1]} opacity="{1 if t == 0 else 0}"><animate attributeName="opacity" values="{values}" {timing}/>'
+    def move(m):
+        values = ";".join(f"{72 * dx:.2f} {72 * dy:.2f}" for dx, dy in moves)
+        return f'{m.group(0)}<animateTransform attributeName="transform" type="translate" values="{values}" {timing}/>'
+    svg_text = path.read_text(encoding="utf-8")
+    svg_text, k = re.subn(r'<g id="f(\d+)_\d+">', show, svg_text)
+    if moves:
+        svg_text, k2 = re.subn(r'<g id="m_\d+">', move, svg_text)
+        k += k2
+    assert k > 0, path
+    path.write_text(svg_text, encoding="utf-8")
 
 
 # ---- network diagrams
@@ -612,6 +649,11 @@ KSTK = 0.1     # the offset between the slices of a kernel
 F_NUM, F_SYM, F_TITLE, F_OP, F_NOTE = 13, 20, 18, 26, 14   # values in cells, symbols, titles, operators, notes
 
 
+def scan(n, step=0.15):
+    """The frames of windows scanning an n x n output row by row, one image pixel (PIX) per position."""
+    return n * n, step, [(i * PIX, j * PIX) for j, i in np.ndindex(n, n)]
+
+
 def conv_pattern():
     """The cat of the opening slides through two 7x7 kernels, a ReLU and a 2x2 max-pooling, computed with
     numpy, with the receptive field of one pooled value boxed back to the input."""
@@ -713,31 +755,29 @@ def conv_pattern():
     # receptive fields, in red: one pooled value of the first map comes from a 2x2 block of its map, which sees
     # an 8x8 patch of the input (7x7 kernel, then 2x2 pooling); one value of layer 2 sees a 7x7 block of both
     # pooled maps, which see a 20x20 patch of the input (8 + 6 x 2, pooled values being 2 pixels apart)
+    # The fields move over the cat, one frame per position of the pooled value (pj, pi), in a loop.
     RF = "#c8463d"
-    pj, pi = 7, 10
-    vj, vi = pj - 3, pi - 3
+    tag = tagger()
     def box(ax, j, i, n, style="-", lw=2.4):
-        ax.add_patch(Rectangle((i - 0.5, j - 0.5), n, n, fill=False, edgecolor=RF, linewidth=lw, linestyle=style,
-                               zorder=6, clip_on=False))
+        return [ax.add_patch(Rectangle((i - 0.5, j - 0.5), n, n, fill=False, edgecolor=RF, linewidth=lw, linestyle=style,
+                                       zorder=6, clip_on=False))]
     def cone(ax_a, ja, ia, na, ax_b, jb, ib, nb, style=(0, (3, 2))):
         # from the left corners of the box on ax_a to the right corners of the box on ax_b, over the panels
-        for dy in (0, 1):
-            fig.add_artist(ConnectionPatch((ia - 0.5, ja - 0.5 + dy * na), (ib - 0.5 + nb, jb - 0.5 + dy * nb), "data", "data",
-                                           axesA=ax_a, axesB=ax_b, color=RF, linewidth=1.1, linestyle=style, zorder=6))
-    box(out2, vj, vi, 1)
-    box(c2, vj, vi, 1)
-    cone(out2, vj, vi, 1, c2, vj, vi, 1, style=(0, (4, 2)))
-    for a3 in pools:
-        box(a3, vj, vi, 7, style=(0, (4, 2)), lw=1.8)
-        cone(c2, vj, vi, 1, a3, vj, vi, 7, style=(0, (4, 2)))
-    box(pools[0], pj, pi, 1)
-    box(maps[0], 2 * pj, 2 * pi, 2)
-    box(convs[0], 2 * pj, 2 * pi, 2)
-    box(inp, 2 * pj, 2 * pi, K + 1)
-    box(inp, 2 * vj, 2 * vi, 20, style=(0, (4, 2)), lw=1.8)
-    cone(pools[0], pj, pi, 1, maps[0], 2 * pj, 2 * pi, 2)
-    cone(maps[0], 2 * pj, 2 * pi, 2, convs[0], 2 * pj, 2 * pi, 2)
-    cone(convs[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1)
+        return [fig.add_artist(ConnectionPatch((ia - 0.5, ja - 0.5 + dy * na), (ib - 0.5 + nb, jb - 0.5 + dy * nb), "data", "data",
+                                               axesA=ax_a, axesB=ax_b, color=RF, linewidth=1.1, linestyle=style, zorder=6))
+                for dy in (0, 1)]
+    path = [(7, 10), (7, 13), (10, 14), (13, 12), (13, 9), (10, 8)]
+    for t, (pj, pi) in enumerate(path):
+        vj, vi = pj - 3, pi - 3
+        drawn = box(out2, vj, vi, 1) + box(c2, vj, vi, 1) + cone(out2, vj, vi, 1, c2, vj, vi, 1, style=(0, (4, 2)))
+        for a3 in pools:
+            drawn += box(a3, vj, vi, 7, style=(0, (4, 2)), lw=1.8) + cone(c2, vj, vi, 1, a3, vj, vi, 7, style=(0, (4, 2)))
+        drawn += (box(pools[0], pj, pi, 1) + box(maps[0], 2 * pj, 2 * pi, 2) + box(convs[0], 2 * pj, 2 * pi, 2)
+                  + box(inp, 2 * pj, 2 * pi, K + 1) + box(inp, 2 * vj, 2 * vi, 20, style=(0, (4, 2)), lw=1.8)
+                  + cone(pools[0], pj, pi, 1, maps[0], 2 * pj, 2 * pi, 2)
+                  + cone(maps[0], 2 * pj, 2 * pi, 2, convs[0], 2 * pj, 2 * pi, 2)
+                  + cone(convs[0], 2 * pj, 2 * pi, 2, inp, 2 * pj, 2 * pi, K + 1))
+        tag(t, *drawn)
 
     # column labels and layer brackets
     top = ys[0] + sz[2] / 2 + 0.75
@@ -762,11 +802,7 @@ def conv_pattern():
     bracket(cx[1] - sz[1] / 2, cx[3] + sz[3] / 2, "convolutional layer")
     bracket(cx[4] - sz[4] / 2, cx[4] + sz[4] / 2, "pooling\nlayer")
     bracket(cx[5] - sz[5] / 2, cx[7] + sz[7] / 2, "convolutional\nlayer")
-    out = ROOT / "figures" / "lec7" / "nn-conv-pattern.svg"
-    fig.savefig(out, bbox_inches="tight", transparent=True, metadata={"Date": None})
-    rescale(out)
-    plt.close(fig)
-    print(out.relative_to(ROOT))
+    save(fig, "nn-conv-pattern", frames=(len(path), 1.5))
 
 
 # ---- convolution and pooling, cell by cell, in the style of `nn-conv-pattern.svg`
@@ -793,8 +829,8 @@ def cells(ax, a, lim, fmt="{:g}", fontsize=15, cmap=None):
 
 def window(ax, j, i, h, w, style="-"):
     from matplotlib.patches import Rectangle
-    ax.add_patch(Rectangle((i - 0.5, j - 0.5), w, h, fill=False, edgecolor=INK, linewidth=2.6, linestyle=style,
-                           clip_on=False, zorder=5))
+    return ax.add_patch(Rectangle((i - 0.5, j - 0.5), w, h, fill=False, edgecolor=INK, linewidth=2.6, linestyle=style,
+                                  clip_on=False, zorder=5))
 
 
 def place(fig, x, y, w, h):
@@ -826,15 +862,18 @@ def conv_1d():
     ax_x = ax(x0, rows[0], 8 * CELL, CELL); cells(ax_x, xv, 5, fontsize=F_NUM)
     ax_w = ax(x0 + i0 * CELL, rows[1], 3 * CELL, CELL); cells(ax_w, wv, 5, fontsize=F_NUM)
     ax_z = ax(x0 + CELL, rows[2], 6 * CELL, CELL); cells(ax_z, zv, 5, fontsize=F_NUM)
-    window(ax_x, 0, i0, 1, 3)
-    window(ax_z, 0, i0, 1, 1)
     text(x0 - 0.1, rows[0] + CELL / 2, r"$\mathbf{x} \in \mathrm{\mathbb{R}}^{8}$", ha="right", va="center", fontsize=F_SYM)
     text(x0 + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega \in \mathrm{\mathbb{R}}^{3}$", ha="right", va="center", fontsize=F_SYM)
     text(x0 + CELL - 0.1, rows[2] + CELL / 2, r"$\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{6}$", ha="right", va="center", fontsize=F_SYM)
-    terms = " + ".join(f"{xv[i0 + m]:g} \\cdot {wv[m]:g}" for m in range(3)).replace("\\cdot -1", "\\cdot (-1)")
-    text(x0 + 4 * CELL, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i0}] = {terms} = {zv[i0]:g}$",
-         ha="center", va="top", fontsize=F_TITLE, color=INK)
-    save(fig, "nn-conv1d")
+    # the window slides over the input, one frame per output; the kernel stays drawn under position 1
+    tag = tagger()
+    for i in range(len(zv)):
+        par = lambda v: f"({v:g})" if v < 0 else f"{v:g}"
+        terms = " + ".join(f"{par(xv[i + m])} \\cdot {par(wv[m])}" for m in range(3))
+        tag(i, window(ax_x, 0, i, 1, 3), window(ax_z, 0, i, 1, 1),
+            text(x0 + 4 * CELL, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i}] = {terms} = {zv[i]:g}$",
+                 ha="center", va="top", fontsize=F_TITLE, color=INK))
+    save(fig, "nn-conv1d", frames=(len(zv), 1.2))
 
 
 def conv_2d():
@@ -850,14 +889,15 @@ def conv_2d():
     ax_x = ax(xx, y0, 6 * CELL, 6 * CELL); cells(ax_x, xv, lim, fontsize=F_NUM)
     ax_w = ax(xw, cy - 1.5 * CELL, 3 * CELL, 3 * CELL); cells(ax_w, wv, lim, fontsize=F_NUM)
     ax_z = ax(xz, cy - 2 * CELL, 4 * CELL, 4 * CELL); cells(ax_z, zv, lim, fontsize=F_NUM)
-    window(ax_x, 0, 0, 3, 3)
-    window(ax_z, 0, 0, 1, 1)
+    tag = tagger()
+    for t, (j, i) in enumerate(np.ndindex(*zv.shape)):
+        tag(t, window(ax_x, j, i, 3, 3), window(ax_z, j, i, 1, 1))
     text(xx + 6 * CELL + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
     text(xw + 3 * CELL + 0.3, cy, r"$=$", ha="center", va="center", fontsize=F_OP)
     text(xx + 3 * CELL, y0 + 6 * CELL + 0.1, r"$\mathbf{x} \in \mathrm{\mathbb{R}}^{6 \times 6}$", ha="center", va="bottom", fontsize=F_SYM)
     text(xw + 1.5 * CELL, cy + 1.5 * CELL + 0.1, r"$\omega \in \mathrm{\mathbb{R}}^{3 \times 3}$", ha="center", va="bottom", fontsize=F_SYM)
     text(xz + 2 * CELL, cy + 2 * CELL + 0.1, r"$\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{4 \times 4}$", ha="center", va="bottom", fontsize=F_SYM)
-    save(fig, "nn-conv2d")
+    save(fig, "nn-conv2d", frames=(zv.size, 0.8))
 
 
 def the_cat():
@@ -866,9 +906,10 @@ def the_cat():
     return np.asarray(img, dtype=float).transpose(2, 0, 1) / 255
 
 
-def rgb_stack(ax, text, x, j0, i0, y0):
+def rgb_stack(ax, text, x, y0, tag):
     """The cat as a stack of its R, G and B slices, red at the back, from (0.4, y0) in inches; the name of
-    each slice left of it, in the strip where it shows above the slice in front."""
+    each slice left of it, in the strip where it shows above the slice in front. A 3 x 3 window on every
+    slice, which `scan` moves."""
     from matplotlib.colors import LinearSegmentedColormap as LSC
     hues, names = ["#c8463d", "#3f8f5a", "#356aaf"], ["R", "G", "B"]
     n = x.shape[1] * PIX
@@ -876,7 +917,7 @@ def rgb_stack(ax, text, x, j0, i0, y0):
         d = 2 - cidx
         a = ax(0.4 + d * STK, y0 + d * STK, n, n)
         cells(a, x[cidx], 1, fmt=None, cmap=LSC.from_list(names[cidx], ["#ffffff", hues[cidx]]))
-        window(a, j0, i0, 3, 3)
+        tag(None, window(a, 0, 0, 3, 3))
         text(0.4 + d * STK - 0.06, y0 + d * STK + n - STK / 2, names[cidx], ha="right", va="center",
              fontsize=F_NOTE, color=hues[cidx])
     text(0.4 + n / 2 + STK, y0 + n + 2 * STK + 0.12, r"input $\mathbf{x} \in \mathrm{\mathbb{R}}^{3 \times 16 \times 16}$",
@@ -905,10 +946,11 @@ def conv_channels():
     z = np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)])
     fig = plt.figure(figsize=(9.6, 3.2))
     ax, text = inches(fig)
-    j0, i0, y0 = 5, 6, 0.2
+    y0 = 0.2
     n = 16 * PIX
     cy = y0 + (n + 2 * STK) / 2
-    right = rgb_stack(ax, text, x, j0, i0, y0)
+    tag = tagger()   # the windows scan the whole image
+    right = rgb_stack(ax, text, x, y0, tag)
     text(right + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
     kx = right + 0.6
     size = kernel_stack(ax, w, kx, cy - (3 * CELL + 2 * KSTK) / 2, fmt="{:g}")
@@ -917,10 +959,10 @@ def conv_channels():
     zx, m = kx + size + 0.6, 14 * PIX
     a = ax(zx, cy - m / 2, m, m)
     cells(a, z, np.abs(z).max(), fmt=None)
-    window(a, j0, i0, 1, 1)
+    tag(None, window(a, 0, 0, 1, 1))
     text(zx + m / 2, cy + m / 2 + 0.12, r"$\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{14 \times 14}$", ha="center", va="bottom", fontsize=F_SYM)
     text(zx + m + 0.2, cy, "one value sums\nover the 3 channels\nof the 3 × 3 window", ha="left", va="center", fontsize=F_NOTE, color=GREY)
-    save(fig, "nn-conv-channels")
+    save(fig, "nn-conv-channels", frames=scan(14))
 
 
 def conv_layer():
@@ -934,10 +976,11 @@ def conv_layer():
     zs = [np.array([[np.sum(x[:, j:j + 3, i:i + 3] * w) for i in range(14)] for j in range(14)]) for w in ws]
     fig = plt.figure(figsize=(9.6, 3.6))
     ax, text = inches(fig)
-    j0, i0, y0 = 5, 6, 0.2
+    y0 = 0.2
     n = 16 * PIX
     cy = y0 + (n + 2 * STK) / 2
-    right = rgb_stack(ax, text, x, j0, i0, y0)
+    tag = tagger()
+    right = rgb_stack(ax, text, x, y0, tag)
     text(right + 0.3, cy, r"$\circledast$", ha="center", va="center", fontsize=F_OP)
     # the K kernels in a 2 x 2 grid, each named above it
     size, gap = 3 * CELL + 2 * KSTK, 0.35
@@ -960,12 +1003,12 @@ def conv_layer():
         a = ax(zx + k * ostk, my + k * ostk, m, m)
         cells(a, zs[k], np.abs(zs[k]).max(), fmt=None)
         frame(a, UNITS[k])
-        window(a, j0, i0, 1, 1)
+        tag(None, window(a, 0, 0, 1, 1))
         text(zx + k * ostk - 0.06, my + k * ostk + m - ostk / 2, rf"$\mathbf{{o}}_{k}$", ha="right", va="center",
              fontsize=F_NOTE + 1, color=UNITS[k])
     text(zx + m / 2 + 1.5 * ostk, my + m + (K - 1) * ostk + 0.12, r"output $\mathbf{o} \in \mathrm{\mathbb{R}}^{4 \times 14 \times 14}$",
          ha="center", va="bottom", fontsize=F_TITLE)
-    save(fig, "nn-conv-layer")
+    save(fig, "nn-conv-layer", frames=scan(14))
 
 
 def pooling():
@@ -977,21 +1020,23 @@ def pooling():
     fig = plt.figure(figsize=(9.6, 2.7))
     ax, text = inches(fig)
     lim = 9
-    for k, (title, out, picks, fmt) in enumerate([
-            ("subsampling", sub, [(j, i) for (j, i) in blocks], "{:g}"),
-            ("max-pooling", mx, [tuple(np.add((j, i), np.unravel_index(np.argmax(xv[j:j + 2, i:i + 2]), (2, 2)))) for (j, i) in blocks], "{:g}"),
-            ("average-pooling", av, [], "{:g}")]):
+    tag = tagger()
+    # one frame per block: the cell it keeps (the block itself for the average), and the output it gives
+    for k, (title, out, picks, size, fmt) in enumerate([
+            ("subsampling", sub, blocks, 1, "{:g}"),
+            ("max-pooling", mx, [tuple(np.add((j, i), np.unravel_index(np.argmax(xv[j:j + 2, i:i + 2]), (2, 2)))) for (j, i) in blocks], 1, "{:g}"),
+            ("average-pooling", av, blocks, 2, "{:g}")]):
         x0, y0 = 0.1 + k * 3.25, 0.5
         ax_x = ax(x0, y0, 4 * CELL, 4 * CELL); cells(ax_x, xv, lim, fontsize=F_NUM)
         ax_o = ax(x0 + 4 * CELL + 0.6, y0 + CELL, 2 * CELL, 2 * CELL); cells(ax_o, out, lim, fmt=fmt, fontsize=F_NUM)
         ax_x.axhline(1.5, color=INK, linewidth=1.4, linestyle="--"); ax_x.axvline(1.5, color=INK, linewidth=1.4, linestyle="--")
-        for (j, i) in picks:
-            window(ax_x, j, i, 1, 1)
+        for t, (j, i) in enumerate(picks):
+            tag(t, window(ax_x, j, i, size, size), window(ax_o, t // 2, t % 2, 1, 1))
         text(x0 + 4 * CELL + 0.3, y0 + 2 * CELL, r"$\rightarrow$", ha="center", va="center", fontsize=F_OP)
         text(x0 + (6 * CELL + 0.6) / 2, y0 + 4 * CELL + 0.12, title, ha="center", va="bottom", fontsize=F_TITLE)
         text(x0 + 2 * CELL, y0 - 0.1, r"$\mathrm{\mathbb{R}}^{4 \times 4}$", ha="center", va="top", fontsize=F_NOTE + 2, color=GREY)
         text(x0 + 5 * CELL + 0.6, y0 + CELL - 0.1, r"$\mathrm{\mathbb{R}}^{2 \times 2}$", ha="center", va="top", fontsize=F_NOTE + 2, color=GREY)
-    save(fig, "nn-pooling")
+    save(fig, "nn-pooling", frames=(len(blocks), 1.2))
 
 def next_token():
     """A language model predicting the next token, twice, on a sentence of the course's world.
