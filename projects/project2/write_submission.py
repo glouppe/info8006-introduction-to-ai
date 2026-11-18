@@ -24,7 +24,6 @@ class SubmissionWriter:
         self.model.load_state_dict(torch.load(model_path, map_location="cpu"))
         self.model.eval()
 
-
     def predict_on_testset(self):
         """
         Generate predictions for the test set.
@@ -58,7 +57,7 @@ class SubmissionWriter:
 
 if __name__ == "__main__":
     writer = SubmissionWriter(
-        test_set_path="pacman_test.pkl",
+        test_set_path="datasets/pacman_test.pkl",
         model_path="pacman_model.pth"  # change if needed
     )
     predictions = writer.predict_on_testset()

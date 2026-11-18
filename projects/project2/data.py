@@ -16,7 +16,7 @@ def state_to_tensor(state):
         state: a GameState object
     """
     # Your code here
-    return # ...
+    return  # ...
 
 
 class PacmanDataset(Dataset):
