@@ -29,10 +29,11 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
   squared residuals;
 - `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, then a
   second convolutional layer, computed here, with the receptive fields boxed back to the input;
-- `nn-conv1d.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg`, `nn-conv-layer.svg` and `nn-pooling.svg`,
-  a 1d and a 2d convolution, a 3x3x3 kernel on the cat's three channels, four such kernels in a layer,
-  and subsampling, max-pooling and average-pooling of a 4x4 input, cell by cell, every value computed;
-- all six convolution and pooling figures are animated (SMIL, which runs in an <img>, in a loop): the
+- `nn-conv1d.svg`, `nn-conv1d-pad.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg`, `nn-conv-layer.svg` and
+  `nn-pooling.svg`, a 1d convolution, without and with zero padding, a 2d convolution, a 3x3x3 kernel
+  on the cat's three channels, four such kernels in a layer, and subsampling, max-pooling and
+  average-pooling of a 4x4 input, cell by cell, every value computed;
+- all seven convolution and pooling figures are animated (SMIL, which runs in an <img>, in a loop): the
   windows slide over the input with the output they give, the pooling windows go from block to block,
   and the receptive fields of `nn-conv-pattern.svg` move over the cat; frame 0 is the static figure;
 - `nn-next-token.svg`, a language model predicting the next token twice on a sentence about Pacman,
@@ -852,28 +853,37 @@ def frame(ax, color, width=2.6):
         sp.set_color(color); sp.set_linewidth(width)
 
 
-def conv_1d():
+def conv_1d(p=0, name="nn-conv1d"):
+    """A 1d convolution of an 8-value signal with a 3-value kernel, the window sliding over the input; with
+    p > 0, the input padded with p zeros on each side (in grey), and the output as long as the input."""
+    from matplotlib.patches import Rectangle
     xv = np.array([1, 3, 2, 0, -1, 2, 4, 1], float)
     wv = np.array([1, 0, -1], float)
-    zv = np.array([np.dot(xv[i:i + 3], wv) for i in range(len(xv) - 2)])
-    fig = plt.figure(figsize=(5.4, 3.0))
+    xp = np.pad(xv, p)
+    zv = np.array([np.dot(xp[i:i + 3], wv) for i in range(len(xp) - 2)])
+    fig = plt.figure(figsize=(5.4 + 2 * p * CELL, 3.0))
     ax, text = inches(fig)
-    x0, i0, rows = 1.7, 1, [2.3, 1.4, 0.5]
-    ax_x = ax(x0, rows[0], 8 * CELL, CELL); cells(ax_x, xv, 5, fontsize=F_NUM)
-    ax_w = ax(x0 + i0 * CELL, rows[1], 3 * CELL, CELL); cells(ax_w, wv, 5, fontsize=F_NUM)
-    ax_z = ax(x0 + CELL, rows[2], 6 * CELL, CELL); cells(ax_z, zv, 5, fontsize=F_NUM)
-    text(x0 - 0.1, rows[0] + CELL / 2, r"$\mathbf{x} \in \mathrm{\mathbb{R}}^{8}$", ha="right", va="center", fontsize=F_SYM)
-    text(x0 + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega \in \mathrm{\mathbb{R}}^{3}$", ha="right", va="center", fontsize=F_SYM)
-    text(x0 + CELL - 0.1, rows[2] + CELL / 2, r"$\mathbf{x} \circledast \omega \in \mathrm{\mathbb{R}}^{6}$", ha="right", va="center", fontsize=F_SYM)
+    x0, i0, rows = 1.7 + p * CELL, 1, [2.3, 1.4, 0.5]   # x0: the left edge of x, its padding further left
+    xl = x0 - p * CELL
+    ax_x = ax(xl, rows[0], len(xp) * CELL, CELL); cells(ax_x, xp, 5, fontsize=F_NUM)
+    for i in [*range(p), *range(len(xp) - p, len(xp))]:
+        ax_x.add_patch(Rectangle((i - 0.5, -0.5), 1, 1, facecolor="#ececec", edgecolor="white", linewidth=1.5, zorder=2))
+        ax_x.text(i, 0, "0", ha="center", va="center", fontsize=F_NUM, color=GREY, zorder=3)
+    ax_w = ax(xl + i0 * CELL, rows[1], 3 * CELL, CELL); cells(ax_w, wv, 5, fontsize=F_NUM)
+    ax_z = ax(xl + CELL, rows[2], len(zv) * CELL, CELL); cells(ax_z, zv, 5, fontsize=F_NUM)
+    text(xl - 0.1, rows[0] + CELL / 2, r"$\mathbf{x} \in \mathrm{\mathbb{R}}^{8}$", ha="right", va="center", fontsize=F_SYM)
+    text(xl + i0 * CELL - 0.1, rows[1] + CELL / 2, r"$\omega \in \mathrm{\mathbb{R}}^{3}$", ha="right", va="center", fontsize=F_SYM)
+    text(xl + CELL - 0.1, rows[2] + CELL / 2, rf"$\mathbf{{x}} \circledast \omega \in \mathrm{{\mathbb{{R}}}}^{{{len(zv)}}}$",
+         ha="right", va="center", fontsize=F_SYM)
     # the window slides over the input, one frame per output; the kernel stays drawn under position 1
     tag = tagger()
+    par = lambda v: f"({v:g})" if v < 0 else f"{v:g}"
     for i in range(len(zv)):
-        par = lambda v: f"({v:g})" if v < 0 else f"{v:g}"
-        terms = " + ".join(f"{par(xv[i + m])} \\cdot {par(wv[m])}" for m in range(3))
+        terms = " + ".join(f"{par(xp[i + m])} \\cdot {par(wv[m])}" for m in range(3))
         tag(i, window(ax_x, 0, i, 1, 3), window(ax_z, 0, i, 1, 1),
-            text(x0 + 4 * CELL, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i}] = {terms} = {zv[i]:g}$",
+            text(xl + len(xp) * CELL / 2, rows[2] - 0.2, rf"$(\mathbf{{x}} \circledast \omega)[{i}] = {terms} = {zv[i]:g}$",
                  ha="center", va="top", fontsize=F_TITLE, color=INK))
-    save(fig, "nn-conv1d", frames=(len(zv), 1.2))
+    save(fig, name, frames=(len(zv), 1.2))
 
 
 def conv_2d():
@@ -1121,6 +1131,7 @@ if __name__ == "__main__":
     lr_residuals()
     conv_pattern()
     conv_1d()
+    conv_1d(p=1, name="nn-conv1d-pad")
     conv_2d()
     conv_channels()
     conv_layer()

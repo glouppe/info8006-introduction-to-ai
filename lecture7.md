@@ -861,8 +861,6 @@ $$\begin{aligned}
 (\mathbf{x} \circledast \omega)[i] &= \sum\_{m=0}^{w-1} \mathbf{x}\_{m+i}  \omega\_m .
 \end{aligned}
 $$
-Optionally, the input $\mathbf{x}$ can be padded with $p$ zeros on each side before applying the convolution, resulting in an output of size $W - w + 1 + 2p$. Setting $p = \frac{w-1}{2}$ (for odd $w$) preserves the input size.
-
 .alert[Technically, $\circledast$ denotes the cross-correlation operator. However, most machine learning libraries call it convolution.]
 
 ---
@@ -873,6 +871,15 @@ class: middle
 
 .center[1d convolution with a kernel $\omega = (\omega\_0, \omega\_1, \omega\_2)$ applied to the input signal $\mathbf{x}$.<br>
 The kernel slides over the input; each output is an inner product.]
+
+---
+
+class: middle
+
+.center[![](figures/lec7/nn-conv1d-pad.svg)]
+
+.center[1d convolution with .bold[zero padding]: $p = 1$ zero on each side of the input.<br>
+The output has size $W - w + 1 + 2p$, which is $W$ for $p = \frac{w-1}{2}$ (odd $w$).]
 
 ---
 
