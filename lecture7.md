@@ -863,10 +863,7 @@ $$\begin{aligned}
 $$
 Optionally, the input $\mathbf{x}$ can be padded with $p$ zeros on each side before applying the convolution, resulting in an output of size $W - w + 1 + 2p$. Setting $p = \frac{w-1}{2}$ (for odd $w$) preserves the input size.
 
-.italic[
-Technically, $\circledast$ denotes the cross-correlation operator.
-However, most machine learning libraries call it convolution.
-]
+.alert[Technically, $\circledast$ denotes the cross-correlation operator. However, most machine learning libraries call it convolution.]
 
 ---
 
