@@ -1,7 +1,6 @@
 from pacman_module.game import Agent
 
 from data import state_to_tensor
-from train import PacmanDataset
 
 
 class PacmanAgent(Agent):
@@ -26,4 +25,4 @@ class PacmanAgent(Agent):
         """
         x = state_to_tensor(state).unsqueeze(0)
         # Your code here
-        return # ...
+        return  # ...

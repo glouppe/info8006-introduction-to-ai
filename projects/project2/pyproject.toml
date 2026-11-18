@@ -1,0 +1,38 @@
+[project]
+name = "info8006-project2"
+version = "2026.0.0"
+requires-python = "==3.12.*"
+dependencies = [
+    "torch>=2.5,<2.12; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+    "torch==2.2.2; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "numpy>=1.26,<2",
+    "pandas>=2.0",
+    "pycodestyle>=2.11",
+]
+
+[dependency-groups]
+# uv sync --group notebook
+notebook = [
+    "torchvision",
+    "einops",
+    "tqdm",
+    "matplotlib",
+    "ipykernel",
+]
+
+[tool.uv]
+package = false
+
+# Linux and Windows: CPU-only torch wheels.
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu", marker = "sys_platform != 'darwin'" },
+]
+torchvision = [
+    { index = "pytorch-cpu", marker = "sys_platform != 'darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

@@ -226,7 +226,7 @@ class GameState:
         return [tuple(map(int,s.getPosition())) for s in self.getGhostStates()]
 
     def getGhostDirections(self):
-        return [tuple(map(int,s.getDirection())) for s in self.getGhostStates()]
+        return [s.getDirection() for s in self.getGhostStates()]
 
     def getGhostBeliefStates(self):
         return np.copy(self.data.beliefStates)

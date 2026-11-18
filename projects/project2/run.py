@@ -3,7 +3,7 @@ import random
 import torch
 
 from pacman_module.pacman import runGame
-from pacman_module.ghostAgents import SmartyGhost
+from pacman_module.ghostAgents import GreedyGhost, SmartyGhost
 
 from architecture import PacmanNetwork
 from pacmanagent import PacmanAgent
@@ -13,7 +13,7 @@ SEED = 42
 random.seed(SEED)
 np.random.seed(SEED)
 
-path_to_saved_model = ".pth"
+path_to_saved_model = "pacman_model.pth"
 
 # Feel free to add code here depending on your implementation
 
@@ -23,10 +23,10 @@ model.eval()
 
 pacman_agent = PacmanAgent(model)
 
-score, elapsed_time, nodes = runGame(
+score, elapsed_time, nodes, moves = runGame(
     layout_name="test_layout",
     pacman=pacman_agent,
-    ghosts=[SmartyGhost(1)],
+    ghosts=[SmartyGhost(1), GreedyGhost(2)],
     beliefstateagent=None,
     displayGraphics=True,
     expout=0.0,

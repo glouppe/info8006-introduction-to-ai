@@ -21,8 +21,8 @@ class Pipeline(nn.Module):
         self.dataset = PacmanDataset(self.path)
         self.model = PacmanNetwork()
 
-        self.criterion = # ...
-        self.optimizer = # ...
+        self.criterion = None  # TODO
+        self.optimizer = None  # TODO
 
     def train(self):
         print("Beginning of the training of your network...")
@@ -34,5 +34,5 @@ class Pipeline(nn.Module):
 
 
 if __name__ == "__main__":
-    pipeline = Pipeline(path="pacman_dataset.pkl")
+    pipeline = Pipeline(path="datasets/pacman_dataset.pkl")
     pipeline.train()
