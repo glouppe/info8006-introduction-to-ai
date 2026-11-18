@@ -218,6 +218,8 @@ $V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2 + ...$
 ]
 ]
 
+.success[.bold[Coherent] means that ranking sequences by their utility $V$ never contradicts the preferences, including stationarity: of two sequences that start with the same reward, the preferred one stays preferred once that reward is dropped.]
+
 ???
 
 Explain what coherent means:
