@@ -308,14 +308,14 @@ Consider the following simple neural network for binary classification. Here $x$
         \end{align*}
     \end{solution}
 
-    \part Derive the arguments of the loss $\mathcal{L}(a_2, y)$ in terms of the input $x$, weights $w_i$, and activation functions $g_i$.
+    \part Write the loss $\mathcal{L}(a_2, y)$ as a function of $x$, $y$, $w_1$, $w_2$, $g_1$ and $g_2$. Which of these quantities are learned by gradient descent, which are given by the training data, and which are fixed by the design of the network?
 
     \begin{solution}
-        The argument $a_2$ has been derived in the previous question. We have
+        From (a),
         \[
-            a_2 = g_2(w_2 g_1(w_1 x)).
+            \mathcal{L}(a_2, y) = \mathcal{L}(g_2(w_2 g_1(w_1 x)), y).
         \]
-        For the other input $y$, the latter is given as input of the problem. Indeed, in supervised learning, we assume access to a training dataset made of input-output pairs $\{(x_i, y_i)\}_{i=1}^N$, where $y_i$ acts as a target for the network.
+        The weights $w_1$ and $w_2$ are learned: gradient descent differentiates the loss with respect to them. The input $x$ and its class $y$ are given, as one pair of the training set $\{(x_i, y_i)\}_{i=1}^N$. The functions $g_1$ and $g_2$, like the loss itself, are fixed when the network is designed.
     \end{solution}
 
     \part Using the chain rule, differentiate $\mathcal{L}$ with respect to $w_2$. Write your expression as a product of partial derivatives at each node: \ie{} the partial derivative of the node's output with respect to its inputs. (Hint: the series of expressions you wrote in (a) will be helpful; you may use any of those variables.)
