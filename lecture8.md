@@ -162,7 +162,6 @@ This is similar to search problems, where the successor function could only depe
 
 ]
 .kol-1-3[
-<br>
 .width-100[![](figures/lec8/optimal-policy.png)]
 .center[Optimal policy when $R(s)=-0.04$ for all non-terminal states $s$.]
 ]
