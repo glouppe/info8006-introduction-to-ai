@@ -36,3 +36,4 @@ CLAUDE.md
 # Everything the students must not see: the Gradescope autograders and the
 # test submissions, solutions included
 projects/instructor/
+.DS_Store
