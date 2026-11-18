@@ -157,10 +157,7 @@ This is similar to search problems, where the successor function could only depe
 .grid[
 .kol-2-3[
 - In deterministic single-agent search problems, our goal was to find an optimal plan, or .italic[sequence] of actions, from start to goal.
-- For MDPs, we want to find an optimal .bold[policy] $\pi^* : \mathcal{S} \to \mathcal{A}$.
-    - Lecture 1 writes $\pi : \mathcal{P}^\* \to \mathcal{A}$ on percept sequences; here the state is observed and Markovian, so the current state is enough.
-    - An optimal policy is one that maximizes the expected utility, e.g. the expected sum of rewards.
-    - An explicit policy defines a reflex agent.
+- For MDPs, we want to find an optimal .bold[policy] $\pi^\* : \mathcal{S} \to \mathcal{A}$, a reflex agent on the current state.
 - Expectiminimax computed no policy, only an action for a single state.
 
 ]
