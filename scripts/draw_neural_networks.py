@@ -28,7 +28,8 @@ text in Roboto and math in Computer Modern, the hidden units in the colors of th
 - `lr-gaussian-model.svg` and `lr-residuals.svg`, linear regression as a linear Gaussian model, and its
   squared residuals;
 - `nn-conv-pattern.svg`, the deck's cat through two 7x7 kernels, a ReLU and a 2x2 max-pooling, then a
-  second convolutional layer, computed here, with the receptive fields boxed back to the input;
+  second convolutional layer, computed here, with the receptive fields boxed back to the input, and two
+  fully connected layers down to three class outputs;
 - `nn-conv1d.svg`, `nn-conv1d-pad.svg`, `nn-conv2d.svg`, `nn-conv-channels.svg`, `nn-conv-layer.svg` and
   `nn-pooling.svg`, a 1d convolution, without and with zero padding, a 2d convolution, a 3x3x3 kernel
   on the cat's three channels, four such kernels in a layer, and subsampling, max-pooling and
@@ -695,7 +696,7 @@ def conv_pattern():
         z2 = sum(conv(o, w) for o, w in zip(pooled_maps, w2))
         z2s.append(z2 - np.median(z2))
 
-    W, H = 9.6, 5.4   # as wide as a slide at PLOT_SCALE, as the other convolution figures
+    W, H = 11.4, 5.4   # wider than a slide at PLOT_SCALE, shown with .width-100
     fig = plt.figure(figsize=(W, H))
     def panel(cx, cy, size):   # a square panel centred at (cx, cy), all in inches
         return fig.add_axes([(cx - size / 2) / W, (cy - size / 2) / H, size / W, size / H])
@@ -753,6 +754,29 @@ def conv_pattern():
         c2s.append(c2); out2s.append(out2)
     c2, out2 = c2s[0], out2s[0]
 
+    # two fully connected layers on the flattened maps of layer 2: hidden units, then one output per class,
+    # in the course blue as in the network diagrams; positions in inches, drawn in figure fractions (the
+    # inch transform ignores the tight bounding box), arrow tips on the outlines
+    from matplotlib.patches import Ellipse, FancyArrowPatch
+    ru = 0.11
+    xh, xo = cx[7] + sz[7] / 2 + 0.55, cx[7] + sz[7] / 2 + 1.45
+    hidden = [(xh, ym + 0.36 * d) for d in (2, 1, 0, -1, -2)]
+    outputs = [(xo, ym + 0.45 * d) for d in (1, 0, -1)]
+    def edge(p, q):
+        fig.add_artist(FancyArrowPatch((p[0] / W, p[1] / H), (q[0] / W, q[1] / H), transform=fig.transFigure, arrowstyle="-|>", mutation_scale=9,
+                                       color=INK, linewidth=0.8, shrinkA=0, shrinkB=ru * 72))
+    for k in range(2):
+        for q in hidden:
+            edge((cx[7] + sz[7] / 2, ys[k]), q)
+    for p in hidden:
+        for q in outputs:
+            edge(p, q)
+    for (x_, y_), c in [(h, INK) for h in hidden] + [(o, BLUE) for o in outputs]:
+        fig.add_artist(Ellipse((x_ / W, y_ / H), 2 * ru / W, 2 * ru / H, transform=fig.transFigure, facecolor="white", edgecolor=c,
+                              linewidth=1.8, zorder=3))
+    for (x_, y_), name in zip(outputs, ("cat", "dog", "car")):
+        fig.text((x_ + ru + 0.06) / W, y_ / H, name, ha="left", va="center", fontsize=F_NOTE + 2, color=INK)
+
     # receptive fields, in red: one pooled value of the first map comes from a 2x2 block of its map, which sees
     # an 8x8 patch of the input (7x7 kernel, then 2x2 pooling); one value of layer 2 sees a 7x7 block of both
     # pooled maps, which see a 20x20 patch of the input (8 + 6 x 2, pooled values being 2 pixels apart)
@@ -784,7 +808,8 @@ def conv_pattern():
     top = ys[0] + sz[2] / 2 + 0.75
     for c, s_ in [(cx[0], "input\n" + r"$\mathbf{x}$"), (cx[2], "convolution\n" + r"$\mathbf{x} \circledast \omega_k$"),
                   (cx[3], "ReLU\n"), (cx[4], "max-pooling\n" + r"$\mathbf{o}_k$"),
-                  (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega^{\prime}_k$"), (cx[7], "ReLU\n")]:
+                  (cx[6], "convolution\n" + r"$\mathbf{o} \circledast \omega^{\prime}_k$"), (cx[7], "ReLU\n"),
+                  (xo, "output\n" + r"$\hat{\mathbf{y}}$")]:
         fig.text(c / W, top / H, s_, ha="center", va="center", fontsize=F_TITLE, color=INK)
     def shape(c, y, dims, va="bottom"):
         fig.text(c / W, y / H, r"$\mathrm{\mathbb{R}}^{" + r" \times ".join(map(str, dims)) + "}$", ha="center", va=va,
@@ -803,6 +828,7 @@ def conv_pattern():
     bracket(cx[1] - sz[1] / 2, cx[3] + sz[3] / 2, "convolutional layer")
     bracket(cx[4] - sz[4] / 2, cx[4] + sz[4] / 2, "pooling\nlayer")
     bracket(cx[5] - sz[5] / 2, cx[7] + sz[7] / 2, "convolutional\nlayer")
+    bracket(xh - ru, xo + ru, "fully connected\nlayers")
     save(fig, "nn-conv-pattern", frames=(len(path), 1.5))
 
 
