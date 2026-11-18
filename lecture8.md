@@ -194,8 +194,6 @@ What preferences should an agent have over state or reward sequences?
 - More or less? $[2,3,4]$ or $[1, 2, 2]$?
 - Now or later? $[1,0,0]$ or $[0,0,1]$?
 
-Lecture 1 scores a run with $V(s\_{1:T})$. With a reward $R(s\_t)$ at each step, this amounts to scoring its reward sequence.
-
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
 ---
