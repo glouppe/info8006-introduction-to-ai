@@ -879,7 +879,7 @@ class: middle
 .center[![](figures/lec7/nn-conv1d-pad.svg)]
 
 .center[.bold[Zero padding] adds $p$ zeros on each side of the input $\mathbf{x}$ (here $p = 1$).<br>
-The output then has size $W - w + 1 + 2p$, the size of the input when $p = \frac{w-1}{2}$.]
+The output then has size $W - w + 1 + 2p$, so $p = \frac{w-1}{2}$ keeps the input size.]
 
 ---
 
