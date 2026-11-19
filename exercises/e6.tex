@@ -275,24 +275,34 @@ where $\theta = (w_1, w_2, w_3, w_4, w_5, w_6)$ is the set of parameters of the 
 Consider the following simple neural network for binary classification. Here $x$ is a single real-valued input feature with an associated class $y$ (0 or 1). There are two weight parameters $w_1$ and $w_2$, and non-linearity functions $g_1$ and $g_2$. The network will output a value $a_2$ between 0 and 1, representing the probability of being in class 1. We will be using a loss function $\mathcal{L}$ to compare the prediction $a_2$ with the true class $y$.
 
 \begin{center}
-    \begin{tikzpicture}[computation diagram, x=0.95cm]
+    \begin{tikzpicture}[computation diagram, x=0.88cm]
         \node[variable node] (X) at (0, 0) {$x$};
-        \node[variable node] (Z1) at (2, 0) {$z_1$};
-        \node[operation node] (G1) at (3.4, 0) {$g_1$};
-        \node[variable node] (A1) at (4.8, 0) {$a_1$};
-        \node[variable node] (Z2) at (6.8, 0) {$z_2$};
-        \node[operation node] (G2) at (8.2, 0) {$g_2$};
-        \node[variable node] (A2) at (9.6, 0) {$a_2$};
-        \node[variable node] (L) at (11.4, 0) {$\mathcal{L}$};
-        \node[variable node] (Y) at (11.4, 1.5) {$y$};
-        \draw[connection] (X) -- node[weight] {$w_1$} (Z1);
+        \node[variable node] (W1) at (1.5, 1.4) {$w_1$};
+        \node[operation node] (M1) at (1.5, 0) {$\times$};
+        \node[variable node] (Z1) at (3, 0) {$z_1$};
+        \node[operation node] (G1) at (4.5, 0) {$g_1$};
+        \node[variable node] (A1) at (6, 0) {$a_1$};
+        \node[variable node] (W2) at (7.5, 1.4) {$w_2$};
+        \node[operation node] (M2) at (7.5, 0) {$\times$};
+        \node[variable node] (Z2) at (9, 0) {$z_2$};
+        \node[operation node] (G2) at (10.5, 0) {$g_2$};
+        \node[variable node] (A2) at (12, 0) {$a_2$};
+        \node[variable node] (Y) at (13.5, 1.4) {$y$};
+        \node[operation node] (Loss) at (13.5, 0) {loss};
+        \node[variable node] (L) at (15, 0) {$\mathcal{L}$};
+        \draw[connection] (X) -- (M1);
+        \draw[connection] (W1) -- (M1);
+        \draw[connection] (M1) -- (Z1);
         \draw[connection] (Z1) -- (G1);
         \draw[connection] (G1) -- (A1);
-        \draw[connection] (A1) -- node[weight] {$w_2$} (Z2);
+        \draw[connection] (A1) -- (M2);
+        \draw[connection] (W2) -- (M2);
+        \draw[connection] (M2) -- (Z2);
         \draw[connection] (Z2) -- (G2);
         \draw[connection] (G2) -- (A2);
-        \draw[connection] (A2) -- (L);
-        \draw[connection] (Y) -- (L);
+        \draw[connection] (A2) -- (Loss);
+        \draw[connection] (Y) -- (Loss);
+        \draw[connection] (Loss) -- (L);
     \end{tikzpicture}
 \end{center}
 
