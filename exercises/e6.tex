@@ -684,6 +684,7 @@ The predicted class is
     \part Draw the computation graph representing the neural network. Use circled nodes for variables (inputs, outputs, and intermediate values) and squared nodes for operations (addition, ReLU, and sigmoid).
 
     \begin{solution}
+        Each operation becomes a square and each value a circle. We name the intermediate values $z_0 = x_1 - 1$, $z_1 = x_2 - 2$ (the inputs of the ReLUs) and $z = h_0 + h_1 - 2$ (the input of the sigmoid); the constants $-1$, $-2$ and $-2$ are inputs of the additions.
         \begin{center}
             \begin{tikzpicture}[computation diagram, x=0.92cm]
                 \node[variable node] (X1) at (0, 1) {$x_1$};
@@ -729,137 +730,32 @@ The predicted class is
         \subpart Identify and characterize these regions in terms of conditions on $x_1$ and $x_2$.
 
         \begin{solution}
-            The two ReLU units are characterized by
-            \begin{align*}
-                x_1 > 1
-                &\quad\Longrightarrow\quad
-                h_0=x_1-1>0, \\
-                x_1 \leq 1
-                &\quad\Longrightarrow\quad
-                h_0=0,
-            \end{align*}
-            and
-            \begin{align*}
-                x_2 > 2
-                &\quad\Longrightarrow\quad
-                h_1=x_2-2>0, \\
-                x_2 \leq 2
-                &\quad\Longrightarrow\quad
-                h_1=0.
-            \end{align*}
-
-            Therefore, four regions can be distinguished:
-
-            \begin{enumerate}
-                \item
-                \[
-                    \left\{
-                    \begin{array}{l}
-                        x_1>1 \\
-                        x_2>2
-                    \end{array}
-                    \right.
-                    \quad\Longrightarrow\quad
-                    \left\{
-                    \begin{array}{l}
-                        h_0=x_1-1 \\
-                        h_1=x_2-2
-                    \end{array}
-                    \right.
-                \]
-
-                \item
-                \[
-                    \left\{
-                    \begin{array}{l}
-                        x_1>1 \\
-                        x_2\leq2
-                    \end{array}
-                    \right.
-                    \quad\Longrightarrow\quad
-                    \left\{
-                    \begin{array}{l}
-                        h_0=x_1-1 \\
-                        h_1=0
-                    \end{array}
-                    \right.
-                \]
-
-                \item
-                \[
-                    \left\{
-                    \begin{array}{l}
-                        x_1\leq1 \\
-                        x_2>2
-                    \end{array}
-                    \right.
-                    \quad\Longrightarrow\quad
-                    \left\{
-                    \begin{array}{l}
-                        h_0=0 \\
-                        h_1=x_2-2
-                    \end{array}
-                    \right.
-                \]
-
-                \item
-                \[
-                    \left\{
-                    \begin{array}{l}
-                        x_1\leq1 \\
-                        x_2\leq2
-                    \end{array}
-                    \right.
-                    \quad\Longrightarrow\quad
-                    \left\{
-                    \begin{array}{l}
-                        h_0=0 \\
-                        h_1=0
-                    \end{array}
-                    \right.
-                \]
-            \end{enumerate}
+            Since $\ReLU(z) = z$ for $z > 0$ and $0$ otherwise, unit $h_0$ is active when $x_1 > 1$, with $h_0 = x_1 - 1$, and inactive ($h_0 = 0$) when $x_1 \leq 1$. Likewise, $h_1$ is active when $x_2 > 2$, with $h_1 = x_2 - 2$. The vertical line $x_1 = 1$ and the horizontal line $x_2 = 2$, where the units switch on (their \emph{joints}), cut the plane into four regions:
+            \begin{center}
+                \begin{tabular}{clcc}
+                    \toprule
+                    Region & Conditions & $h_0$ & $h_1$ \\
+                    \midrule
+                    1 & $x_1 > 1$, $x_2 > 2$ & $x_1 - 1$ & $x_2 - 2$ \\
+                    2 & $x_1 > 1$, $x_2 \leq 2$ & $x_1 - 1$ & $0$ \\
+                    3 & $x_1 \leq 1$, $x_2 > 2$ & $0$ & $x_2 - 2$ \\
+                    4 & $x_1 \leq 1$, $x_2 \leq 2$ & $0$ & $0$ \\
+                    \bottomrule
+                \end{tabular}
+            \end{center}
         \end{solution}
 
         \subpart For each region, give a simplified expression for the output probability $\hat{y}$ as a function of $x_1$ and $x_2$.
 
         \begin{solution}
+            Substituting $h_0$ and $h_1$ from the table into $\hat{y} = \sigma(h_0 + h_1 - 2)$:
             \begin{enumerate}
-                \item For $x_1>1$ and $x_2>2$,
-                \begin{align*}
-                    \hat{y}
-                    &=\sigma(h_0+h_1-2) \\
-                    &=\sigma((x_1-1)+(x_2-2)-2) \\
-                    &=\sigma(x_1+x_2-5) \\
-                    &=\boxed{\frac{1}{1+e^{-(x_1+x_2-5)}}}.
-                \end{align*}
-
-                \item For $x_1>1$ and $x_2\leq2$,
-                \begin{align*}
-                    \hat{y}
-                    &=\sigma(h_0+h_1-2) \\
-                    &=\sigma((x_1-1)+0-2) \\
-                    &=\sigma(x_1-3) \\
-                    &=\boxed{\frac{1}{1+e^{-(x_1-3)}}}.
-                \end{align*}
-
-                \item For $x_1\leq1$ and $x_2>2$,
-                \begin{align*}
-                    \hat{y}
-                    &=\sigma(h_0+h_1-2) \\
-                    &=\sigma(0+(x_2-2)-2) \\
-                    &=\sigma(x_2-4) \\
-                    &=\boxed{\frac{1}{1+e^{-(x_2-4)}}}.
-                \end{align*}
-
-                \item For $x_1\leq1$ and $x_2\leq2$,
-                \begin{align*}
-                    \hat{y}
-                    &=\sigma(0+0-2) \\
-                    &=\sigma(-2) \\
-                    &=\boxed{\frac{1}{1+e^2}}.
-                \end{align*}
+                \item $\hat{y} = \sigma((x_1 - 1) + (x_2 - 2) - 2) = \sigma(x_1 + x_2 - 5)$;
+                \item $\hat{y} = \sigma((x_1 - 1) + 0 - 2) = \sigma(x_1 - 3)$;
+                \item $\hat{y} = \sigma(0 + (x_2 - 2) - 2) = \sigma(x_2 - 4)$;
+                \item $\hat{y} = \sigma(0 + 0 - 2) = \sigma(-2) \approx 0.12$, a constant.
             \end{enumerate}
+            In each region, the network is a logistic regression on $(x_1, x_2)$; only its weights change from one region to the next.
         \end{solution}
     \end{subparts}
 
@@ -873,14 +769,14 @@ The predicted class is
     \end{center}
 
     \begin{solution}
-        Since the sigmoid is increasing and $\sigma(0) = 0.5$, we have $\hat{y} \geq 0.5$ if and only if $h_0 + h_1 - 2 \geq 0$. In each region of (b):
+        Since the sigmoid is increasing and $\sigma(0) = 0.5$, we have $\hat{y} \geq 0.5$ if and only if its argument is nonnegative. Using the expressions of (b) in each region:
         \begin{enumerate}
-            \item for $x_1 > 1$ and $x_2 > 2$, $\hat{c} = 1$ if and only if $x_1 + x_2 \geq 5$;
-            \item for $x_1 > 1$ and $x_2 \leq 2$, $\hat{c} = 1$ if and only if $x_1 \geq 3$;
-            \item for $x_1 \leq 1$ and $x_2 > 2$, $\hat{c} = 1$ if and only if $x_2 \geq 4$;
-            \item for $x_1 \leq 1$ and $x_2 \leq 2$, $\hat{y} = \sigma(-2) < 0.5$, so $\hat{c} = 0$ everywhere.
+            \item $\hat{c} = 1$ if and only if $x_1 + x_2 \geq 5$, a diagonal line;
+            \item $\hat{c} = 1$ if and only if $x_1 \geq 3$, a vertical line;
+            \item $\hat{c} = 1$ if and only if $x_2 \geq 4$, a horizontal line;
+            \item $\hat{y} \approx 0.12 < 0.5$, so $\hat{c} = 0$ in the whole region.
         \end{enumerate}
-        The decision boundary is the broken line from $(-\infty, 4)$ to $(1, 4)$, $(3, 2)$ and $(3, -\infty)$; class $1$ (shaded) lies above and to the right of it, class $0$ below and to the left. The joints of the hidden units are dashed.
+        Each region contributes one straight piece, and the pieces meet on the joints (dashed below): $x_2 = 4$ meets $x_1 + x_2 = 5$ at $(1, 4)$, on $x_1 = 1$, and $x_1 + x_2 = 5$ meets $x_1 = 3$ at $(3, 2)$, on $x_2 = 2$. The decision boundary is therefore the broken line from $(-\infty, 4)$ through $(1, 4)$ and $(3, 2)$ down to $(3, -\infty)$. Class $1$ (shaded) lies above and to the right of it, class $0$ below and to the left.
         \begin{center}
             \begin{tikzpicture}[diagram]
                 \begin{axis}[region grid]
@@ -913,7 +809,7 @@ The predicted class is
     \end{center}
 
     \begin{solution}
-        The new unit is active when $2x_1 + x_2 < 5$. The three joints $x_1 = 1$, $x_2 = 2$ and $2x_1 + x_2 = 5$ cut the plane into seven linear regions; the eighth activation pattern, with all units inactive, cannot occur, since $x_1 \leq 1$ and $x_2 \leq 2$ give $2x_1 + x_2 \leq 4 < 5$.
+        We repeat the method of (b) and (c) with three units. The new unit $h_2$ is active when $2x_1 + x_2 < 5$, below the diagonal line $2x_1 + x_2 = 5$, which is its joint. The three joints cut the plane into the seven regions numbered below. Three units could be active or inactive in $2^3 = 8$ ways, but the pattern where all are inactive cannot occur: $x_1 \leq 1$ and $x_2 \leq 2$ imply $2x_1 + x_2 \leq 4 < 5$, so $h_2$ is then active.
         \begin{center}
             \begin{tikzpicture}[diagram]
                 \begin{axis}[region grid]
@@ -930,17 +826,17 @@ The predicted class is
                 \end{axis}
             \end{tikzpicture}
         \end{center}
-        With $z = h_0 + h_1 + h_2 - 2$, the class is $1$ where $z \geq 0$:
+        As in (c), the class is $1$ where $z = h_0 + h_1 + h_2 - 2 \geq 0$. In each region, we add the active units (named in parentheses) and simplify $z$:
         \begin{enumerate}
-            \item $x_1 \leq 1$, $x_2 \leq 2$ ($h_2$ only): $z = -2x_1 - x_2 + 3$, class $1$ where $2x_1 + x_2 \leq 3$;
+            \item $x_1 \leq 1$, $x_2 \leq 2$ ($h_2$): $z = (-2x_1 - x_2 + 5) - 2 = -2x_1 - x_2 + 3$, class $1$ where $2x_1 + x_2 \leq 3$;
             \item $x_1 \leq 1$, $x_2 > 2$, $2x_1 + x_2 < 5$ ($h_1$, $h_2$): $z = -2x_1 + 1$, class $1$ where $x_1 \leq \frac{1}{2}$;
-            \item $x_1 \leq 1$, $x_2 > 2$, $2x_1 + x_2 \geq 5$ ($h_1$ only): $z = x_2 - 4$, class $1$ where $x_2 \geq 4$;
+            \item $x_1 \leq 1$, $x_2 > 2$, $2x_1 + x_2 \geq 5$ ($h_1$): $z = x_2 - 4$, class $1$ where $x_2 \geq 4$;
             \item $x_1 > 1$, $x_2 \leq 2$, $2x_1 + x_2 < 5$ ($h_0$, $h_2$): $z = -x_1 - x_2 + 2$, class $1$ where $x_1 + x_2 \leq 2$;
-            \item $x_1 > 1$, $x_2 > 2$, $2x_1 + x_2 < 5$ (all three): $z = -x_1 < 0$, class $0$ everywhere;
-            \item $x_1 > 1$, $x_2 \leq 2$, $2x_1 + x_2 \geq 5$ ($h_0$ only): $z = x_1 - 3$, class $1$ where $x_1 \geq 3$;
+            \item $x_1 > 1$, $x_2 > 2$, $2x_1 + x_2 < 5$ ($h_0$, $h_1$, $h_2$): $z = -x_1 < 0$, class $0$ in the whole region;
+            \item $x_1 > 1$, $x_2 \leq 2$, $2x_1 + x_2 \geq 5$ ($h_0$): $z = x_1 - 3$, class $1$ where $x_1 \geq 3$;
             \item $x_1 > 1$, $x_2 > 2$, $2x_1 + x_2 \geq 5$ ($h_0$, $h_1$): $z = x_1 + x_2 - 5$, class $1$ where $x_1 + x_2 \geq 5$.
         \end{enumerate}
-        Class $0$ is now the bounded hexagon with vertices $(1, 1)$, $(\frac{1}{2}, 2)$, $(\frac{1}{2}, 4)$, $(1, 4)$, $(3, 2)$ and $(3, -1)$, and everything else is class $1$ (shaded), including the origin, where $z = 3$.
+        Putting the class-$0$ parts of the seven regions together gives a bounded hexagon, with vertices $(1, 1)$, $(\frac{1}{2}, 2)$, $(\frac{1}{2}, 4)$, $(1, 4)$, $(3, 2)$ and $(3, -1)$. Everything outside it is class $1$ (shaded), including the origin, where $z = 3$.
         \begin{center}
             \begin{tikzpicture}[diagram]
                 \begin{axis}[region grid]
@@ -954,7 +850,7 @@ The predicted class is
                 \end{axis}
             \end{tikzpicture}
         \end{center}
-        Where $h_2$ is inactive ($2x_1 + x_2 \geq 5$, regions 3, 6 and 7), the boundary is unchanged. Where it is active, it adds $-2x_1 - x_2 + 5$ to $z$ and changes the decision: the region of class $0$, which was unbounded and contained the origin, becomes a bounded hexagon. One more unit adds one more joint, and with it more linear regions and a more complex decision boundary.
+        Above the line $2x_1 + x_2 = 5$, $h_2 = 0$ and the network computes the same function as before: in regions 3, 6 and 7, the boundary is unchanged. Below it, $h_2$ adds $-2x_1 - x_2 + 5$ to $z$, a term that grows as we move away from the line, and turns the points far enough below it to class $1$. The region of class $0$, which was unbounded and contained the origin, becomes a bounded hexagon. Each additional hidden unit adds a joint, hence more linear regions and a more flexible decision boundary.
     \end{solution}
 \end{parts}
 
