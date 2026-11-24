@@ -693,6 +693,7 @@ class Game:
         expout = int(self.rules.getMoveTimeout(agentIndex))
         totalComputationTime = 0
         totalExpandedNodes = 0
+        totalMoves = 0
         if (expout > 0):
             pacmodule.pacman.GameState.setMaximumExpanded(expout)
         while not self.gameOver:
@@ -742,6 +743,7 @@ class Game:
             # Track progress
             if agentIndex == numAgents - 1:
                 self.numMoves += 1
+                totalMoves += 1
             # Next agent
             agentIndex = (agentIndex + 1) % numAgents
 
@@ -751,4 +753,4 @@ class Game:
         totalScore = self.state.getScore()
 
         self.display.finish()
-        return totalScore,totalComputationTime,totalExpandedNodes
+        return totalScore, totalComputationTime, totalExpandedNodes, totalMoves
