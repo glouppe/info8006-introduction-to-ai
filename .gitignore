@@ -1,6 +1,7 @@
 # Others
 doc/
 reports.txt
+pdf/all.pdf
 
 # LaTeX
 *.aux
