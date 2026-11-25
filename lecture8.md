@@ -765,12 +765,12 @@ That is, we transition from $b$ to $b'$, instead of $s$ to $s'$.
 
 # Summary
 
-- An MDP $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ scores a run by its discounted rewards $\sum\_{t \geq 0} \gamma^t R(s\_t)$. Its solution is a policy $\pi : \mathcal{S} \to \mathcal{A}$, optimal when it maximizes $V^\pi(s)$ in every state.
-- The values of the optimal policy satisfy the Bellman equation,
+- An MDP $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$ is solved by a policy $\pi^\*$ that maximizes the expected discounted reward $V^\pi(s)$ in every state.
+- The optimal values satisfy the Bellman equation
 $$V(s) = R(s) + \gamma \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s'),$$
-from which $\pi^\*(s) = \arg \max\_{a} \sum\_{s'} P(s' \mid s,a) V(s')$.
-- Value iteration solves it by iterating the Bellman update, a contraction of factor $\gamma$; policy iteration alternates evaluation and improvement, and stops when the policy no longer changes.
-- A POMDP is an MDP over belief states, where the update is filtering. Exact solutions are out of reach, but an agent can still look ahead with a decision network.
+and $\pi^\*$ takes the maximizing action.
+- Value iteration iterates the Bellman update; policy iteration alternates evaluation and improvement.
+- A POMDP is an MDP over belief states. An online agent filters its belief and looks ahead with a dynamic decision network.
 
 ---
 
