@@ -34,8 +34,6 @@ Reasoning under uncertainty and .bold[taking decisions]:
 
 # Grid world
 
-.grid[
-.kol-2-3[
 Assume our agent lives in a $3 \times 4$ grid environment.
 - Noisy movements: actions do not always go as planned.
 - The agent receives rewards at each time step.
@@ -43,9 +41,8 @@ Assume our agent lives in a $3 \times 4$ grid environment.
     - Big rewards come at the end (good or bad).
 
 Goal: maximize sum of rewards.
-]
-.kol-1-3[<br>.width-100[![](figures/lec8/grid-world.png)]]
-]
+
+.center.width-35[![](figures/lec8/grid-world.png)]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
