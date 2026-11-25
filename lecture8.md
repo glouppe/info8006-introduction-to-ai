@@ -611,7 +611,7 @@ What if the environment is only .bold[partially observable]?
 - The agent does not know in which state $s$ it is in.
     - Therefore, it cannot evaluate the reward $R(s)$ associated to the unknown state.
     - Also, it makes no sense to talk about a policy $\pi(s)$.
-- Instead, the agent collects percepts $e \in \mathcal{E}$ (Lecture 1) through a sensor model $P(e \mid s)$, from which it can reason about the unknown state $s$.
+- Instead, the agent collects percepts $e \in \mathcal{E}$ through a sensor model $P(e \mid s)$, from which it can reason about the unknown state $s$.
 
 A .bold[POMDP] is the tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma, \mathcal{E}, P(e \mid s))$.
 
