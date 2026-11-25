@@ -242,7 +242,7 @@ class: middle
     - Sooner rewards probably do have higher utility than later rewards.
     - Will help our algorithms converge.
 ]
-.kol-1-2[.width-100[![](figures/lec8/discounting.png)]]
+.kol-1-2[.width-100[![](figures/lec8/discounting.svg)]]
 ]
 
 Example: discount $\gamma=0.5$<br>
@@ -272,7 +272,7 @@ Solutions:
 
 class: middle
 
-.center.width-25[![](figures/lec8/fixed-policy.png)]
+.center.width-35[![](figures/lec8/fixed-policy.svg)]
 
 ## Policy evaluation
 
@@ -291,7 +291,15 @@ class: middle
 Among all policies the agent could execute, the .bold[optimal policy] is the policy $\pi\_s^\*$ that maximizes the expected utility:
 $$\pi\_s^\* = \arg \max\_\pi V^\pi(s)$$
 
+---
+
+class: middle
+
 Because of discounted utilities, the optimal policy is .italic[independent] of the starting state $s$. Therefore we simply write $\pi^\*$.
+
+.center.width-55[![](figures/lec8/optimal-policy-merge.svg)]
+
+.center[If $\pi^\ast\_a$ and $\pi^\ast\_b$ reach the same state $c$, they choose the same action there:<br>otherwise, one of them could be improved by switching to the other at $c$.]
 
 ???
 
@@ -381,7 +389,7 @@ class: middle
 
 ## Rewards on transitions
 
-Some problems reward the transition rather than the state: the fuel a move spends, the toll of a road, the points a capture scores. With $R(s,a,s')$, the Bellman equation carries the reward under the sum,
+Some problems reward the transition rather than the state. With $R(s,a,s')$, the Bellman equation carries the reward under the sum,
 $$V(s) = \max\_a \sum\_{s'} P(s' \mid s,a) \left[ R(s,a,s') + \gamma V(s') \right].$$
 
 Both formalisms are equivalent:
@@ -486,7 +494,7 @@ Figure on the right: $\gamma$ helps with convergence.
 
 class: middle
 
-.center.width-30[![](figures/lec8/policy-evaluation-tree.png)]
+.center.width-40[![](figures/lec8/policy-evaluation-tree.svg)]
 
 ## Problems with value iteration
 
@@ -511,7 +519,7 @@ This algorithm is still optimal, and might converge (much) faster under some con
 
 class: middle
 
-.center.width-25[![](figures/lec8/fixed-policy.png)]
+.center.width-35[![](figures/lec8/fixed-policy.svg)]
 
 ## Policy evaluation
 
@@ -726,7 +734,7 @@ While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent ca
 
 class: middle
 
-.width-100[![](figures/lec8/generic-ddn.svg)]
+.center.width-80[![](figures/lec8/generic-ddn.svg)]
 
 At time $t$, the agent must decide what to do.
 - Shaded nodes represent variables with known values.
