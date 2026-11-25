@@ -753,7 +753,7 @@ class: middle
 .grid[
 .kol-1-2[.width-100[![](figures/lec8/pomdp-tree.svg)]]
 .kol-1-2[
-Its look-ahead search is an expectiminimax tree over belief states:
+Looking ahead in the dynamic decision network builds an expectiminimax tree over belief states:
 - triangles .bold[maximize] over the actions; each belief $b$ follows by filtering;
 - circles .bold[average] over the next percept, with $P(e \mid b, a)$ computed by inference;
 - leaves evaluate the beliefs at the horizon.
