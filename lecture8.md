@@ -134,6 +134,7 @@ $$
 
 ---
 
+exclude: true
 class: middle
 
 .grid[
