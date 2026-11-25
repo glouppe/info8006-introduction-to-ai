@@ -44,7 +44,7 @@ Assume our agent lives in a $3 \times 4$ grid environment.
 
 Goal: maximize sum of rewards.
 ]
-.kol-1-3[<br><br><br><br><br>.width-100[![](figures/lec8/grid-world.png)]]
+.kol-1-3[<br>.width-100[![](figures/lec8/grid-world.png)]]
 ]
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
