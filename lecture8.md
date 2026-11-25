@@ -735,7 +735,7 @@ count: false
 
 .center.width-80[![](figures/lec8/ddn-2.svg)]
 
-.bold[Actions] $A$ (squares) steer the transitions, $P(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t, A\_t)$. The past actions are known; $A\_t$ is the decision to make.
+.bold[Actions] $A$ (squares) steer the transitions, $P(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t, A\_t)$.
 
 ---
 
