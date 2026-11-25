@@ -201,7 +201,8 @@ class: middle
 
 .bold[Theorem.] If we assume .bold[stationary] preferences over reward sequences, i.e. such that
 $$[r\_0, r\_1, r\_2, ...] \succ [r\_0, r\_1', r\_2', ...] \Rightarrow [r\_1, r\_2, ...] \succ [r\_1', r\_2', ...],$$
-then there are only two coherent ways to assign utilities to sequences:
+then there are only two ways to assign utilities $V$ to sequences that are .bold[coherent] with the preferences, i.e. such that
+$$[r\_0, r\_1, ...] \succ [r\_0', r\_1', ...] \Leftrightarrow V([r\_0, r\_1, ...]) > V([r\_0', r\_1', ...])\text{:}$$
 
 .grid[
 .kol-1-3.center[
@@ -216,8 +217,6 @@ $V([r\_0, r\_1, r\_2, ...]) = r\_0 + r\_1 + r\_2 + ...$
 $V([r\_0, r\_1, r\_2, ...]) = r\_0 + \gamma r\_1 + \gamma^2 r\_2 + ...$
 ]
 ]
-
-.success[.bold[Coherent] means that the utility $V$ ranks sequences as the preferences do: one sequence has a higher utility than another exactly when it is preferred.]
 
 ???
 
