@@ -726,7 +726,7 @@ class: middle
 
 .center.width-80[![](figures/lec8/ddn-1.svg)]
 
-Solving a POMDP exactly is out of reach, but an agent can still decide .bold[online], by looking ahead. Its model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$: the hidden states $\mathbf{X}$ and the percepts $\mathbf{E}$.
+Solving a POMDP exactly is out of reach, but an agent can still decide .bold[online], by looking ahead. Its model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$.
 
 ---
 
