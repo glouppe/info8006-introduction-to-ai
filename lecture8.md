@@ -726,7 +726,7 @@ class: middle
 
 .center.width-80[![](figures/lec8/ddn-1.svg)]
 
-Solving a POMDP exactly is out of reach, but an agent can still decide .bold[online], by looking ahead. Its model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$.
+Exact POMDP solutions are out of reach, but an agent can decide .bold[online], by looking ahead. It unrolls its .bold[dynamic Bayesian network] up to a horizon, here $t+3$.
 
 ---
 
@@ -735,7 +735,7 @@ count: false
 
 .center.width-80[![](figures/lec8/ddn-2.svg)]
 
-.bold[Actions] $A$ (squares) steer the transitions, $P(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t, A\_t)$.
+Add the .bold[actions] $A$ (squares), which steer the transitions $P(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t, A\_t)$.
 
 ---
 
@@ -744,7 +744,7 @@ count: false
 
 .center.width-80[![](figures/lec8/ddn-3.svg)]
 
-.bold[Rewards] $R$ (diamonds) score the states, as in an MDP, and $U\_{t+3}$ estimates the value $V$ of the last state, as an evaluation function at the horizon. The result is a .bold[dynamic decision network].
+Add the .bold[rewards] $R$ and, at the horizon, the estimated value $U\_{t+3}$ of $\mathbf{X}\_{t+3}$ (diamonds). The result is a .bold[dynamic decision network].
 
 ---
 
