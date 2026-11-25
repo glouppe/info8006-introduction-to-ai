@@ -724,11 +724,11 @@ Although we have reduced POMDPs to MDPs, the Belief MDP we obtain has a .bold[co
 
 # Online agents
 
-While it is difficult to directly derive $\pi^\*$, a decision-theoretic agent can be constructed for POMDPs:
-- The transition and sensor models are represented by a .italic[dynamic Bayesian network];
-- The dynamic Bayesian network is extended with decision ($A$) and utility ($R$ and $U$) nodes to form a dynamic decision network;
-- A .bold[filtering algorithm] is used to incorporate each new percept and action and to update the belief state representation;
-- Decisions are made by projecting forward possible action sequences and choosing (approximately) the best one, in a manner similar to a truncated expectiminimax.
+Computing $\pi^\*$ exactly is out of reach, but an agent can still decide online:
+- a .italic[dynamic Bayesian network] represents the transition and sensor models;
+- decision ($A$) and utility ($R$, $U$) nodes extend it into a .bold[dynamic decision network];
+- .bold[filtering] updates the belief state after each action and percept;
+- the agent looks ahead over action sequences and picks the best, as a truncated expectiminimax.
 
 ---
 
