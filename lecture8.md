@@ -276,7 +276,7 @@ class: middle
 
 ## Policy evaluation
 
-The .bold[expectation] of $f(X)$ is $\mathbb{E}\left[f(X)\right] = \sum\_x P(x) f(x)$. The expected utility of executing $\pi$ from $s$ is therefore
+The expected utility of executing $\pi$ from $s$ is
 $$V^\pi(s) = \mathbb{E}\left[\sum\_{t \geq 0} \gamma^t R(s\_t) \mid s\_0 = s, \pi \right],$$
 over the state sequences that $\pi$ generates from $s$.
 
