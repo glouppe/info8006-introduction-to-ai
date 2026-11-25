@@ -120,7 +120,7 @@ class: middle
 ## Example
 
 - $\mathcal{S}$: locations $(i,j)$ on the grid.
-- $\mathcal{A}$: $[\text{Up}, \text{Down}, \text{Right}, \text{Left}]$.
+- $\mathcal{A}$: $\\{\uparrow, \downarrow, \rightarrow, \leftarrow\\}$.
 - Transition model: $P(s' \mid s,a)$
 - Reward:
 $$
