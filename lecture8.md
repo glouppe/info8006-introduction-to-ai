@@ -67,8 +67,8 @@ Stochastic actions<br><br>
 ]
 
 - Each action achieves the intended effect with probability $0.8$.
-- The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intended direction.
-- If there is a wall in the direction the agent would have been taken, the agent stays put.
+- With probability $0.2$, the agent moves at right angles instead.
+- If a wall blocks the move, the agent stays put.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
