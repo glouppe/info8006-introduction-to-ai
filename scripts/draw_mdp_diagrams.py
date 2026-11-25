@@ -353,7 +353,7 @@ def stub(x, y):
 
 
 def pomdp_tree():
-    rows = [40, 124, 208, 292, 376, 460, 542]
+    rows = [40, 175, 300, 435, 560, 695, 805]   # edges long enough to carry their labels
     # the rows: the belief states b where the agent decides, the percepts the environment draws, the leaves
     labels = [[("b", "i"), (sub, "_"), ("", ".")] for sub in ("t", "t+1", "t+2")]
     percepts = [[("E", "b"), (sub, "_"), ("", ".")] for sub in ("t+1", "t+2", "t+3")]
@@ -389,6 +389,21 @@ def pomdp_tree():
                     parts.append(stub(x, rows[k] + BOTTOM))
     for x, v in zip(levels[6], ["10", "4", "6", "3"]):
         parts.append(leaf(x, rows[6], v))
+    # on the expanded path, the action taken at each belief and the percept drawn at each chance node
+    path = open_ + [500]
+    for k, (letter, sub) in enumerate([("a", "t"), ("e", "t+1"), ("a", "t+1"), ("e", "t+2"), ("a", "t+2"), ("e", "t+3")], 1):
+        x0 = path[k - 1]
+        y0 = rows[k - 1] + (BOTTOM if letter == "a" else CHANCE_R)
+        x1 = path[k]
+        y1 = rows[k] - (CHANCE_R if letter == "a" else (LEAF[1] / 2 if k == 6 else TOP))
+        mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+        # on the edge itself, its halo breaking the line, as the dice of lecture 3's backgammon tree
+        lx, ly, anchor = mx, my, "middle"
+        label = formula(lx, ly, [(letter, "i"), (sub, "_"), ("", ".")], size=28, anchor=anchor)
+        # the halo is a copy of the label underneath: a stroke on the label itself would paint over its glyphs
+        parts.append(label.replace("<text ", '<text stroke="white" stroke-width="16" stroke-linejoin="round" ', 1)
+                     .replace(f'fill="{INK}"', 'fill="white"', 1))
+        parts.append(label)
     return parts
 
 
@@ -399,4 +414,4 @@ if __name__ == "__main__":
     svg("discounting", 620, 610, discounting())
     for step in (1, 2, 3):
         svg(f"ddn-{step}", 1000, 380, generic_ddn(step))
-    svg("pomdp-tree", 640, 572, pomdp_tree(), x0=270)
+    svg("pomdp-tree", 640, 838, pomdp_tree(), x0=270)

@@ -722,27 +722,11 @@ Although we have reduced POMDPs to MDPs, the Belief MDP we obtain has a .bold[co
 
 ---
 
-# Putting it all together
-
-Solving a POMDP exactly is out of reach, but an agent can still decide online, with the loop of lecture 1 and the belief $b\_t = P(\mathbf{X}\_t \mid e\_{1:t}, a\_{1:t-1})$:
-$$b\_t = \text{update}(b\_{t-1}, a\_{t-1}, e\_t), \qquad a\_t = \pi(b\_t).$$
-Each piece of this loop has been seen before.
-
-| Piece | Here | Lectures |
-| --- | --- | :---: |
-| Model of the environment | a dynamic Bayesian network | 5, 6 |
-| Belief update | filtering | 6 |
-| Policy | a look-ahead search with chance nodes, cut at a horizon | 2, 3 |
-| Values at the horizon | an evaluation function, from value iteration or learned | 3, 7, 8 |
-| Choice of the action | the maximum expected utility of the discounted rewards | 4, 8 |
-
----
-
 class: middle
 
 .center.width-80[![](figures/lec8/ddn-1.svg)]
 
-The model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$: the hidden states $\mathbf{X}$ and the percepts $\mathbf{E}$. Shaded nodes are known: the percepts up to time $t$.
+Solving a POMDP exactly is out of reach, but an agent can still decide .bold[online], by looking ahead. Its model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$: the hidden states $\mathbf{X}$ and the percepts $\mathbf{E}$. Shaded nodes are known: the percepts up to time $t$.
 
 ---
 
@@ -769,16 +753,16 @@ class: middle
 .grid[
 .kol-1-2[.width-100[![](figures/lec8/pomdp-tree.svg)]]
 .kol-1-2[
-Its look-ahead search is the expectiminimax tree of lecture 3, over belief states:
+Its look-ahead search is an expectiminimax tree over belief states:
 - triangles .bold[maximize] over the actions; each belief $b$ follows by filtering;
 - circles .bold[average] over the next percept, with $P(e \mid b, a)$ computed by inference;
 - leaves evaluate the beliefs at the horizon.
 ]
 ]
 
-There are no chance nodes for the outcomes of actions: given $a$ and $e$, the next belief is determined.
-
 ???
+
+There are no chance nodes for the outcomes of actions: given $a$ and $e$, the next belief is determined.
 
 Notice that there are no chance nodes corresponding to the action outcomes; this is because the belief-state update for an action is deterministic regardless of the actual outcome.
 
