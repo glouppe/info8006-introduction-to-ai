@@ -722,44 +722,80 @@ Although we have reduced POMDPs to MDPs, the Belief MDP we obtain has a .bold[co
 
 ---
 
-# Online agents
+# Putting it all together
 
-Computing $\pi^\*$ exactly is out of reach, but an agent can still decide online:
-- a .italic[dynamic Bayesian network] represents the transition and sensor models;
-- decision ($A$) and utility ($R$, $U$) nodes extend it into a .bold[dynamic decision network];
-- .bold[filtering] updates the belief state after each action and percept;
-- the agent looks ahead over action sequences and picks the best, as a truncated expectiminimax.
+Solving a POMDP exactly is out of reach, but an agent can still decide online, with the loop of lecture 1 and the belief $b\_t = P(\mathbf{X}\_t \mid e\_{1:t}, a\_{1:t-1})$:
+$$b\_t = \text{update}(b\_{t-1}, a\_{t-1}, e\_t), \qquad a\_t = \pi(b\_t).$$
+Each piece of this loop has been seen before.
 
----
-
-class: middle
-
-.center.width-80[![](figures/lec8/generic-ddn.svg)]
-
-At time $t$, the agent must decide what to do.
-- Shaded nodes represent variables with known values.
-- The network is unrolled for a finite horizon.
-- It includes reward nodes for $\mathbf{X}\_{t+1}$ and $\mathbf{X}\_{t+2}$, and a node $U\_{t+3}$ for the estimated value $V$ of $\mathbf{X}\_{t+3}$.
+| Piece | Here | Lectures |
+| --- | --- | :---: |
+| Model of the environment | a dynamic Bayesian network | 5, 6 |
+| Belief update | filtering | 6 |
+| Policy | a look-ahead search with chance nodes, cut at a horizon | 2, 3 |
+| Values at the horizon | an evaluation function, from value iteration or learned | 3, 7, 8 |
+| Choice of the action | the maximum expected utility of the discounted rewards | 4, 8 |
 
 ---
 
 class: middle
 
-.center.width-60[![](figures/lec8/pomdp-tree.svg)]
+.center.width-80[![](figures/lec8/ddn-1.svg)]
 
-Part of the look-ahead search of the decision network:
-- triangles are belief states, where the agent decides; filtering computes each from the actions and percepts that lead to it;
-- circles are the percepts chosen by the environment.
+The model is a .bold[dynamic Bayesian network], unrolled up to a horizon $t+3$: the hidden states $\mathbf{X}$ and the percepts $\mathbf{E}$. Shaded nodes are known: the percepts up to time $t$.
 
-The decision follows by backing up the (estimated) utilities from the leaves: averages at the circles, maxima at the triangles.
+---
+
+class: middle
+count: false
+
+.center.width-80[![](figures/lec8/ddn-2.svg)]
+
+.bold[Actions] $A$ (squares) steer the transitions, $P(\mathbf{X}\_{t+1} \mid \mathbf{X}\_t, A\_t)$. The past actions are known; $A\_t$ is the decision to make.
+
+---
+
+class: middle
+count: false
+
+.center.width-80[![](figures/lec8/ddn-3.svg)]
+
+.bold[Rewards] $R$ (diamonds) score the states, as in an MDP, and $U\_{t+3}$ estimates the value $V$ of the last state, as an evaluation function at the horizon. The result is a .bold[dynamic decision network].
+
+---
+
+class: middle
+
+.grid[
+.kol-1-2[.width-100[![](figures/lec8/pomdp-tree.svg)]]
+.kol-1-2[
+Its look-ahead search is the expectiminimax tree of lecture 3, over belief states:
+- triangles .bold[maximize] over the actions; each belief $b$ follows by filtering;
+- circles .bold[average] over the next percept, with $P(e \mid b, a)$ computed by inference;
+- leaves evaluate the beliefs at the horizon.
+]
+]
+
+There are no chance nodes for the outcomes of actions: given $a$ and $e$, the next belief is determined.
 
 ???
 
-Notice that there are no chance nodes
-corresponding to the action outcomes; this is because the belief-state update for an action is
-deterministic regardless of the actual outcome.
+Notice that there are no chance nodes corresponding to the action outcomes; this is because the belief-state update for an action is deterministic regardless of the actual outcome.
 
 That is, we transition from $b$ to $b'$, instead of $s$ to $s'$.
+
+---
+
+class: middle
+
+## Deciding online
+
+At every time step $t$, the agent
+1. perceives $e\_t$ and filters, $b\_t = \text{update}(b\_{t-1}, a\_{t-1}, e\_t)$;
+2. searches the tree from $b\_t$ to the horizon and backs up the values;
+3. executes the best action $a\_t$, and discards the tree.
+
+At $t+1$, the horizon moves one step further: the agent searches again from its new belief, as a chess engine does after every move.
 
 ---
 

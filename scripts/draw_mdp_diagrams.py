@@ -12,9 +12,11 @@ Writes to `figures/lec8/`:
   successors s' of the q-state (s, a);
 - `optimal-policy-merge.svg`, the argument that the optimal policy does not depend on the starting
   state: the optimal policies of a and of b reach the same state c, where they choose the same action;
-- `generic-ddn.svg`, a dynamic decision network unrolled up to t + 3 (Figure 17.10 of Russell and
-  Norvig, 3rd edition): actions as squares, rewards and utility as diamonds, known values shaded;
-- `pomdp-tree.svg`, part of the look-ahead search of that network (Figure 17.11).
+- `ddn-1.svg` to `ddn-3.svg`, a dynamic decision network unrolled up to t + 3 (Figure 17.10 of Russell
+  and Norvig, 3rd edition), built in three steps: the dynamic Bayesian network of lecture 6, then the
+  actions as squares, then the rewards and the utility at the horizon as diamonds; known values shaded;
+- `pomdp-tree.svg`, part of the look-ahead search of that network (Figure 17.11), its rows labelled by
+  the beliefs b_t of lecture 1 and the percepts.
 
 Edges are arrows, their tips on the outline of the node they reach. States are triangles, q-states and chance nodes circles, as the MAX and chance nodes of lecture 3:
 the trees of an MDP are those of expectimax. Nodes, strokes and fonts are those of
@@ -303,7 +305,9 @@ def toward(p, q, rp, rq):
     return (p[0] + dx / n * rp, p[1] + dy / n * rp), (q[0] - dx / n * rq, q[1] - dy / n * rq)
 
 
-def generic_ddn():
+def generic_ddn(step=3):
+    """The network built in three steps, at the same size: 1 the dynamic Bayesian network of lecture 6,
+    2 with the actions, 3 with the rewards and the utility at the horizon."""
     subs = ["t−1", "t", "t+1", "t+2", "t+3"]
     acts = ["t−2", "t−1", "t", "t+1", "t+2"]
     y_a, y_x, y_r, y_e = 50, 175, 260, 330
@@ -315,10 +319,12 @@ def generic_ddn():
         p, q = toward(a, (x, y_x), 0, R)
         dx, dy = x - a[0], y_x - a[1]
         t = 30 / max(abs(dx), abs(dy))
-        parts.append(arrow((a[0] + dx * t, a[1] + dy * t), q))
+        if step >= 2:
+            parts.append(arrow((a[0] + dx * t, a[1] + dy * t), q))
         parts.append(arrow(*toward((x, y_x), (x, y_e), R, R)))
         if k < 4:
             parts.append(arrow(*toward((x, y_x), (xs[k + 1], y_x), R, R)))
+        if k < 4 and step >= 3:
             r = (x + 62, y_r)
             dx, dy = r[0] - x, r[1] - y_x
             n = (dx * dx + dy * dy) ** 0.5
@@ -326,14 +332,17 @@ def generic_ddn():
             p, _ = toward((x, y_x), r, R, 0)
             parts.append(arrow(p, (r[0] - dx / n * cut, r[1] - dy / n * cut)))
     parts.append(arrow((20, y_x), (xs[0] - R, y_x)))
-    parts.append(arrow((xs[-1] + R, y_x), (xs[-1] + 95 - 38, y_x)))
+    if step >= 3:
+        parts.append(arrow((xs[-1] + R, y_x), (xs[-1] + 95 - 38, y_x)))
     for k, x in enumerate(xs):
-        parts.append(decision(x - 75, y_a, acts[k], known=k < 2))
+        if step >= 2:
+            parts.append(decision(x - 75, y_a, acts[k], known=k < 2))
         parts.append(variable(x, y_x, "X", subs[k]))
         parts.append(variable(x, y_e, "E", subs[k], known=k < 2))
-        if k < 4:
+        if k < 4 and step >= 3:
             parts.append(utility(x + 62, y_r, "R", subs[k], known=k < 2))
-    parts.append(utility(xs[-1] + 95, y_x, "U", "t+3"))
+    if step >= 3:
+        parts.append(utility(xs[-1] + 95, y_x, "U", "t+3"))
     return parts
 
 
@@ -345,19 +354,11 @@ def stub(x, y):
 
 def pomdp_tree():
     rows = [40, 124, 208, 292, 376, 460, 542]
-    labels = [
-        [("A", "i"), ("t", "_"), ("", "."), (" in ", "w"), ("P", "b"), ("(", "r"), ("X", "b"), ("t", "_"), ("", "."),
-         (" | ", "r"), ("E", "b"), ("1:t", "_"), ("", "."), (")", "r")],
-        [("E", "b"), ("t+1", "_"), ("", ".")],
-        [("A", "i"), ("t+1", "_"), ("", "."), (" in ", "w"), ("P", "b"), ("(", "r"), ("X", "b"), ("t+1", "_"),
-         ("", "."), (" | ", "r"), ("E", "b"), ("1:t+1", "_"), ("", "."), (")", "r")],
-        [("E", "b"), ("t+2", "_"), ("", ".")],
-        [("A", "i"), ("t+2", "_"), ("", "."), (" in ", "w"), ("P", "b"), ("(", "r"), ("X", "b"), ("t+2", "_"),
-         ("", "."), (" | ", "r"), ("E", "b"), ("1:t+2", "_"), ("", "."), (")", "r")],
-        [("E", "b"), ("t+3", "_"), ("", ".")],
-        [("U", "i"), ("(", "r"), ("X", "b"), ("t+3", "_"), ("", "."), (")", "r")],
-    ]
-    parts = [formula(300, y, lab, size=22, fill=GREY, anchor="end") for lab, y in zip(labels, rows)]
+    # the rows: the belief states b where the agent decides, the percepts the environment draws, the leaves
+    labels = [[("b", "i"), (sub, "_"), ("", ".")] for sub in ("t", "t+1", "t+2")]
+    percepts = [[("E", "b"), (sub, "_"), ("", ".")] for sub in ("t+1", "t+2", "t+3")]
+    labels = [labels[0], percepts[0], labels[1], percepts[1], labels[2], percepts[2], [("U", "i"), ("t+3", "_"), ("", ".")]]
+    parts = [formula(345, y, lab, size=32, fill=GREY, anchor="end") for lab, y in zip(labels, rows)]
     # each level: the x of its nodes, the one expanded, where the ellipsis goes
     levels = [[600], [400, 490, 600, 710, 800], [430, 540, 700, 820], [540, 660, 790, 880],
               [430, 540, 660, 790], [470, 580, 720, 820], [500, 610, 760, 860]]
@@ -396,5 +397,6 @@ if __name__ == "__main__":
     svg("policy-evaluation-tree", 520, 385, policy_evaluation_tree(), x0=60)
     svg("optimal-policy-merge", 700, 370, optimal_policy_merge())
     svg("discounting", 620, 610, discounting())
-    svg("generic-ddn", 1000, 380, generic_ddn())
-    svg("pomdp-tree", 920, 572, pomdp_tree())
+    for step in (1, 2, 3):
+        svg(f"ddn-{step}", 1000, 380, generic_ddn(step))
+    svg("pomdp-tree", 640, 572, pomdp_tree(), x0=270)
