@@ -38,9 +38,6 @@ Reasoning under uncertainty and .bold[taking decisions]:
 .kol-2-3[
 Assume our agent lives in a $3 \times 4$ grid environment.
 - Noisy movements: actions do not always go as planned.
-    - Each action achieves the intended effect with probability $0.8$.
-    - The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intended direction.
-    - If there is a wall in the direction the agent would have been taken, the agent stays put.
 - The agent receives rewards at each time step.
     - Small 'living' reward each step (can be negative).
     - Big rewards come at the end (good or bad).
@@ -60,14 +57,18 @@ class: middle
 .kol-1-4.center[
 Deterministic actions
 
-.width-100[![](figures/lec8/grid-world-deterministic.png)]
+.width-70[![](figures/lec8/grid-world-deterministic.png)]
 ]
 .kol-3-4.center[
 Stochastic actions<br><br>
 
-.width-90[![](figures/lec8/grid-world-stochastic.png)]
+.width-65[![](figures/lec8/grid-world-stochastic.png)]
 ]
 ]
+
+- Each action achieves the intended effect with probability $0.8$.
+- The rest of the time, with probability $0.2$, the action moves the agent at right angles to the intended direction.
+- If there is a wall in the direction the agent would have been taken, the agent stays put.
 
 .footnote[Image credits: [CS188](https://inst.eecs.berkeley.edu/~cs188/), UC Berkeley.]
 
