@@ -6,7 +6,9 @@ Writes `figures/lec3/minimax-tree-1.svg` to `minimax-tree-3.svg`, the two-ply ga
 Russell and Norvig (Figure 5.2) with its minimax values backed up one level at a time: the
 leaves only, then the MIN nodes, then the root and the move of MAX. Same shapes as the game
 trees of exercise sheet 2: MAX nodes are triangles pointing up, MIN nodes triangles pointing
-down, terminal states boxes, backed-up values in the course blue. Roboto is embedded from
+down, terminal states boxes, backed-up values in the course blue; edges are arrows, their tips on the
+outline of the node they reach (instructor, Nov 25, 2026), except in the MCTS figures, whose blue arrows
+show the direction of selection and backpropagation. Roboto is embedded from
 `assets/fonts/`, since an SVG shown as an image cannot load fonts from the page.
 
 Also writes `minimax-pruned.svg` (the same tree with two unknown leaves), `alpha-beta-1.svg` to
@@ -113,15 +115,34 @@ def leaf(x, y, value):
             f'stroke="{INK}" stroke-width="{STROKE}"/>' + text(x, y, str(value), size=26))
 
 
-def line(p, q, colour=INK, width=STROKE):
+HEADS = set()   # the colours of the arrow heads drawn since the last svg()
+
+
+def head(colour):
+    """The marker of an arrow head in `colour`, its tip at the end of the path; it scales with the stroke."""
+    HEADS.add(colour)
+    return f' marker-end="url(#head-{colour.lstrip("#")})"'
+
+
+def heads():
+    out = "".join(f'<marker id="head-{c.lstrip("#")}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" '
+                  f'markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{c}"/></marker>'
+                  for c in sorted(HEADS))
+    HEADS.clear()
+    return out
+
+
+def line(p, q, colour=INK, width=STROKE, arrow=True):
+    """An edge from p to q, with an arrow head whose tip ends at q (on the outline of the node there)."""
+    tip = head(colour) if arrow else ""
     return (f'<path d="M {p[0]:g} {p[1]:g} L {q[0]:g} {q[1]:g}" stroke="{colour}" stroke-width="{width:g}" '
-            f'stroke-linecap="round" fill="none"/>')
+            f'stroke-linecap="{"butt" if arrow else "round"}" fill="none"{tip}/>')
 
 
 def svg(name, width, height, parts):
     out = ROOT / "figures" / "lec3" / f"{name}.svg"
     out.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" '
-                   f'height="{height}"><defs>{fonts()}</defs>{"".join(parts)}</svg>\n', encoding="utf-8")
+                   f'height="{height}"><defs>{fonts()}{heads()}</defs>{"".join(parts)}</svg>\n', encoding="utf-8")
     print(f"{out.relative_to(ROOT)}  {width}x{height}")
 
 
@@ -150,7 +171,7 @@ def faded_leaf(x, y):
 
 def faded_line(p, q):
     return (f'<path d="M {p[0]:g} {p[1]:g} L {q[0]:g} {q[1]:g}" stroke="{FADED}" stroke-width="{STROKE}" '
-            f'fill="none"{DASH}/>')
+            f'fill="none"{DASH}{head(FADED)}/>')
 
 
 def two_ply(leaves, seen=None, values=None, intervals=None, best=None, labels=("MAX", "MIN", "utility"),
@@ -351,7 +372,7 @@ def chance(x, y, value=None, side=1):
 
 def stub(x, y):
     """The first moves below a node that is not expanded, and an ellipsis."""
-    return "".join(line((x, y), (x + dx, y + 26), width=1.4) for dx in (-14, 0, 14))
+    return "".join(line((x, y), (x + dx, y + 26), width=1.4, arrow=False) for dx in (-14, 0, 14))
 
 
 def dice(x, y, p, roll):
@@ -533,7 +554,7 @@ def arrow(p, q, colour=BLUE, width=3.5):
     ux, uy = dx / d, dy / d
     head = (f"{b[0]:g},{b[1]:g} {b[0] - 14 * ux + 7 * uy:g},{b[1] - 14 * uy - 7 * ux:g} "
             f"{b[0] - 14 * ux - 7 * uy:g},{b[1] - 14 * uy + 7 * ux:g}")
-    return (line(a, (b[0] - 10 * ux, b[1] - 10 * uy), colour=colour, width=width)
+    return (line(a, (b[0] - 10 * ux, b[1] - 10 * uy), colour=colour, width=width, arrow=False)
             + f'<polygon points="{head}" fill="{colour}"/>')
 
 
@@ -560,12 +581,13 @@ def mcts_tree(step):
     for k, p in parent.items():
         on_path = step in (1, 4) and k in path
         if not on_path:
-            parts.append(line(pos[p], pos[k], colour="#9a9a9a", width=1.6))
+            parts.append(line(pos[p], pos[k], colour="#9a9a9a", width=1.6, arrow=False))
     if step == 1:
         for a, b in zip(path, path[1:]):
             parts.append(arrow(pos[a], pos[b]))
     if step >= 2:
-        parts.append(arrow(pos["a22"], new) if step == 2 else line(pos["a22"], new, colour="#9a9a9a", width=1.6))
+        parts.append(arrow(pos["a22"], new) if step == 2 else line(pos["a22"], new, colour="#9a9a9a", width=1.6,
+                                                                       arrow=False))
     if step == 3:
         x0, y0, y1 = new[0], new[1] + MCTS_R, new[1] + 105
         d, k = f"M {x0} {y0}", 4
