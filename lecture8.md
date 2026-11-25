@@ -628,7 +628,7 @@ We will assume that the agent maintains a belief state $b$.
 - $b(s)$  denotes the probability $P(S=s)$ under the current belief state;
 - the belief state $b$ is updated as evidence $e$ are collected.
 
-This is filtering (Lecture 6), with the action $a$ in the transition model.
+This is filtering, with the action $a$ in the transition model.
 
 ---
 
