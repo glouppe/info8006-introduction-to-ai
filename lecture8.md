@@ -747,12 +747,11 @@ class: middle
 
 .center.width-60[![](figures/lec8/pomdp-tree.svg)]
 
-Part of the look-ahead solution of the previous decision network:
-- Each triangular node is a belief state in which the agent makes a decision.
-    - The belief state at each node can be computed by applying a filtering algorithm to the sequence of percepts and actions leading to it.
-- The round nodes correspond to choices by the environment.
+Part of the look-ahead search of the decision network:
+- triangles are belief states, where the agent decides; filtering computes each from the actions and percepts that lead to it;
+- circles are the percepts chosen by the environment.
 
-A decision can be extracted from the search tree by backing up the (estimated) utility values from the leaves, taking the average at the chance nodes and taking the maximum at the decision nodes.
+The decision follows by backing up the (estimated) utilities from the leaves: averages at the circles, maxima at the triangles.
 
 ???
 
